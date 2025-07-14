@@ -1,0 +1,16 @@
+FROM node:18-alpine AS builder
+RUN apk add --no-cache libc6-compat
+WORKDIR /workspace/apps/web
+COPY pnpm-lock.yaml package.json .npmrc ./
+RUN npm install -g pnpm && pnpm install --frozen-lockfile
+COPY . .
+RUN pnpm build
+
+FROM node:18-alpine
+WORKDIR /workspace/apps/web
+ENV NODE_ENV=production
+COPY --from=builder /workspace/apps/web/.next ./.next
+COPY --from=builder /workspace/apps/web/node_modules ./node_modules
+COPY --from=builder /workspace/apps/web/public ./public
+EXPOSE 3000
+CMD ["pnpm", "start"]

@@ -1,0 +1,15 @@
+FROM node:18-alpine AS builder
+RUN apk add --no-cache libc6-compat
+WORKDIR /workspace/apps/graphql
+COPY pnpm-lock.yaml package.json tsconfig*.json .npmrc ./
+RUN npm install -g pnpm && pnpm install --frozen-lockfile
+COPY . .
+RUN pnpm build
+
+FROM node:18-alpine
+WORKDIR /workspace/apps/graphql
+ENV NODE_ENV=production
+COPY --from=builder /workspace/apps/graphql/dist ./dist
+COPY --from=builder /workspace/apps/graphql/node_modules ./node_modules
+EXPOSE 4000
+CMD ["node", "dist/main.js"]

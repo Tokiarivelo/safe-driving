@@ -1,0 +1,15 @@
+fragment userFragment on User {
+  id
+  firstName
+  lastName
+  email
+  phone
+  username
+  images {
+    ...Image
+  }
+  Role {
+    id
+    name
+  }
+}
