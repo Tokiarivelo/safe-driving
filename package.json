@@ -1,0 +1,29 @@
+{
+  "name": "@safe-driving/source",
+  "private": true,
+  "scripts": {
+    "web:dev": "pnpm --filter web dev",
+    "web:dev:wt": "pnpm --filter web dev:wt",
+    "web:generate": "pnpm --filter web generate",
+    "web:build": "pnpm --filter web build",
+    "graphql:dev": "pnpm --filter graphql-server start:dev",
+    "graphql:build": "pnpm --filter graphql-server build",
+    "graphql:start:prod": "pnpm --filter graphql-server start:prod",
+    "graphql:format": "pnpm --filter graphql-server prisma:format",
+    "graphql:lint": "pnpm --filter graphql-server prisma:lint",
+    "graphql:prisma:generate": "pnpm --filter graphql-server prisma:generate",
+    "graphql:prisma:migrate": "pnpm --filter graphql-server prisma:migrate",
+    "graphql:prisma:migrate:apply": "pnpm --filter graphql-server prisma:migrate:apply",
+    "graphql:prisma:migrate:deploy": "pnpm --filter graphql-server prisma:migrate:deploy",
+    "graphql:prisma:migrate:reset": "pnpm --filter graphql-server prisma:migrate:reset",
+    "graphql:prisma:studio": "pnpm --filter graphql-server prisma:studio",
+    "graphql:prisma:db-push": "pnpm --filter graphql-server prisma:db-push"
+  },
+  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
+  "dependencies": {
+    "prettier": "^3.5.3"
+  },
+  "engines": {
+    "node": ">=23"
+  }
+}

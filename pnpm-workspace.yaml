@@ -1,0 +1,16 @@
+packages:
+  - apps/*
+  - packages/*
+onlyBuiltDependencies:
+  - '@apollo/protobufjs'
+  - '@firebase/util'
+  - '@nestjs/core'
+  - '@prisma/client'
+  - '@prisma/engines'
+  - '@swc/core'
+  - '@tailwindcss/oxide'
+  - bcrypt
+  - prisma
+  - protobufjs
+  - sharp
+  - unrs-resolver

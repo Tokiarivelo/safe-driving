@@ -1,0 +1,5 @@
+fragment Image on UserImage {
+  id
+  url
+  type
+}

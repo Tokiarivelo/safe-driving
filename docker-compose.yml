@@ -1,0 +1,61 @@
+services:
+  # web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.web.dev
+  #   container_name: web_dev
+  #   volumes:
+  #     - ./apps/web:/workspace/apps/web
+  #     - /workspace/apps/web/node_modules
+  #   working_dir: /workspace/apps/web
+  #   ports:
+  #     - '3000:3000'
+  #   environment:
+  #     - NODE_ENV=development
+  #   command: pnpm dev
+
+  # graphql:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.graphql.dev
+  #   container_name: graphql_dev
+  #   volumes:
+  #     - ./apps/graphql:/workspace/apps/graphql
+  #     - /workspace/apps/graphql/node_modules
+  #   working_dir: /workspace/apps/graphql
+  #   ports:
+  #     - '4000:4000'
+  #   environment:
+  #     - NODE_ENV=development
+  #   command: pnpm start:dev
+
+  postgis:
+    image: postgis/postgis:15-3.3
+    container_name: postgis
+    restart: always
+    environment:
+      POSTGRES_USER: safedriving_admin
+      POSTGRES_PASSWORD: safedriving_pass
+      POSTGRES_DB: safedriving_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@safedriving.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgis
+
+volumes:
+  postgis_data:
+  pgadmin_data:
