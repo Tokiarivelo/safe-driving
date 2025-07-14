@@ -1,0 +1,70 @@
+generator client {
+  provider               = "prisma-client-js"
+  generatedFileExtension = "ts"
+  importFileExtension    = "ts"
+  moduleFormat           = "cjs"
+  runtime                = "nodejs"
+}
+
+generator nestgraphql {
+  provider                              = "prisma-nestjs-graphql"
+  output                                = "../src/dtos/@generated"
+  dtoInputNameSuffix                    = "Input"
+  dtoModelNameSuffix                    = "Model"
+  prismaClientImport                    = "@prisma/client"
+  fields_Validator_from                 = "class-validator"
+  fields_Validator_input                = true
+  requireSingleFieldsInWhereUniqueInput = true
+  emitSingle                            = true
+  // emitCompiled                          = true
+  purgeOutput                           = true
+  noTypeId                              = true
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id    String @id @default(uuid())
+  name  String @unique
+  users User[] @relation("UserRoles")
+}
+
+model User {
+  id         String         @id @default(uuid())
+  email      String         @unique
+  firstName  String
+  lastName   String?
+  phone      String?
+  username   String         @unique
+  password   String
+  isVerified Boolean        @default(false)
+  tokens     RefreshToken[]
+  images     UserImage[]
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  Role       Role[]         @relation("UserRoles")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expiresAt DateTime
+  userId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "RefreshToken_userId_relation")
+
+  @@index([userId], map: "RefreshToken_userId_fkey")
+}
+
+model UserImage {
+  id     String @id @default(uuid())
+  url    String
+  type   String
+  userId String
+  user   User   @relation(fields: [userId], references: [id], map: "UserImage_userId_relation")
+
+  @@index([userId], map: "UserImage_userId_fkey")
+}
