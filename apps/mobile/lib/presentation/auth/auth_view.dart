@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/widgets/auth/auth_widget.dart';
+import 'package:safe_driving/shared/widgets/auth/auth_widget.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({super.key});
@@ -48,14 +48,17 @@ class AuthViewState extends State<AuthView> {
             onSignIn: _handleSignIn,
             onGoogleSignIn: _handleGoogleSignIn,
             onFacebookSignIn: _handleFacebookSignIn,
+            onNavigateToRegister: navigateToRegister,
           ),
           // Register Page
           AuthWidget(
             isLogin: false,
             isForgotPassword: false,
+            onForgotPassword: navigateToForgotPassword,
             onSignUp: _handleSignUp,
             onGoogleSignIn: _handleGoogleSignIn,
             onFacebookSignIn: _handleFacebookSignIn,
+            onNavigateToLogin: navigateToLogin,
           ),
           // Forgot Password Page
           AuthWidget(

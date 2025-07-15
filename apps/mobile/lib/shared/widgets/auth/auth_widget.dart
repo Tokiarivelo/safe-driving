@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart' ;
 import 'package:safe_driving/core/constants/colors.dart';
-import 'package:safe_driving/widgets/color/colors_widget.dart';
+import 'package:safe_driving/shared/widgets/colors/colors_widget.dart';
 
 class AuthWidget extends StatefulWidget {
   final bool isLogin;
@@ -14,6 +14,8 @@ class AuthWidget extends StatefulWidget {
   final VoidCallback? onResetPassword;
   final VoidCallback? onGoogleSignIn;
   final VoidCallback? onFacebookSignIn;
+  final VoidCallback? onNavigateToLogin;
+  final VoidCallback? onNavigateToRegister;
 
   const AuthWidget({
     super.key,
@@ -25,6 +27,8 @@ class AuthWidget extends StatefulWidget {
     this.onResetPassword,
     this.onGoogleSignIn,
     this.onFacebookSignIn,
+    this.onNavigateToLogin,
+    this.onNavigateToRegister,
   });
 
   @override
@@ -190,55 +194,25 @@ class AuthWidgetState extends State<AuthWidget> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 20),
+                _buildNavigationLink(),
               ],
               if (widget.isForgotPassword) ...[
                 const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      width: 80,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.buttonWithoutBackGround),
-                        borderRadius: BorderRadius.circular(5)
+                GestureDetector(
+                    onTap: widget.onSignIn,
+                    child: Row(
+                        children: [
+                          Icon(Icons.arrow_back, color: AppColors.buttonWithoutBackGround),
+                          GestureDetector(
+                            onTap: widget.onSignIn,
+                            child: Text("Back to login",style: TextStyle(color: AppColors.buttonWithoutBackGround),),
+                          )
+                        ],
                       ),
-                      child: GestureDetector(
-                                
-                        onTap: widget.onSignIn,
-                        child: Text(
-                          "Sign In",
-                          style: const TextStyle(
-                            fontFamily: 'Inder',
-                            color: AppColors.textColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      width: 80,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.buttonWithoutBackGround),
-                        borderRadius: BorderRadius.circular(5),
-                        
-                      ),
-                      child: GestureDetector(
-                        onTap: widget.onSignUp,
-                        child: Text(
-                          "Sign Up",
-                          style: const TextStyle(
-                            fontFamily: 'Inder',
-                           
-                            color: AppColors.textColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                    
+                  ),
+               
               ],
             ],
           ),
@@ -384,5 +358,61 @@ class AuthWidgetState extends State<AuthWidget> {
         ),
       ),
     );
+  }
+
+  Widget _buildNavigationLink() {
+    if (widget.isLogin) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Pas encore de compte ? ",
+            style: TextStyle(
+              fontFamily: 'Inder',
+              color: AppColors.textColor,
+              fontSize: 12,
+            ),
+          ),
+          GestureDetector(
+            onTap: widget.onNavigateToRegister,
+            child: Text(
+              "S'inscrire",
+              style: TextStyle(
+                fontFamily: 'Inder',
+                color: AppColors.buttonWithoutBackGround,
+                fontSize: 12,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Vous avez déjà un compte ? ",
+            style: TextStyle(
+              fontFamily: 'Inder',
+              color: AppColors.textColor,
+              fontSize: 12,
+            ),
+          ),
+          GestureDetector(
+            onTap: widget.onNavigateToLogin,
+            child: Text(
+              "Se connecter",
+              style: TextStyle(
+                fontFamily: 'Inder',
+                color: AppColors.buttonWithoutBackGround,
+                fontSize: 12,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
   }
 }
