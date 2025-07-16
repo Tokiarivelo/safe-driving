@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 class AppColors{
   //for principal background
@@ -17,4 +17,6 @@ class AppColors{
   static const Color borderInputField = Color(0xFFEB397D);
   static const Color placeHolderInput = Color(0xFFB15C8B);
   static const Color error = Color.fromARGB(255, 238, 16, 31);
+  //utils
+  static  Color blur = Colors.black.withAlpha(50);
 }
