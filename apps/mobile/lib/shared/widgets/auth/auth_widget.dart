@@ -329,12 +329,17 @@ class AuthWidgetState extends State<AuthWidget> {
         if (!widget.isForgotPassword) ...[
           _buildInputField(
             hint: widget.isLogin ? "Email or Username" : "First Name",
-            icon: Icons.person,
+            icon: widget.isLogin ? Icons.person : Icons.person_outline,
           ),
           if (!widget.isLogin)
             _buildInputField(
               hint: "Last Name",
-              icon: Icons.person,
+              icon: Icons.person_outline,
+            ),
+          if (!widget.isLogin)
+            _buildInputField(
+              hint: "Email",
+              icon: Icons.email,
             ),
           _buildInputField(
             hint: "Password",
@@ -367,11 +372,22 @@ class AuthWidgetState extends State<AuthWidget> {
       onTap: widget.onForgotPassword,
       child: Align(
         alignment: Alignment.centerRight,
-        child: Text(
-          "Forgot Password?",
-          style: TextStyle(
-            fontFamily: 'Inder',
-            color: AppColors.buttonWithoutBackGround,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: AppColors.buttonWithoutBackGround,
+              ),
+            ),
+          ),
+          child: Text(
+            "Forgot Password?",
+            style: TextStyle(
+              fontFamily: 'Inder',
+              color: AppColors.buttonWithoutBackGround,
+              fontWeight: FontWeight.bold,
+              fontSize: 10
+            ),
           ),
         ),
       ),
