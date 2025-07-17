@@ -11,6 +11,140 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import {
+  EyeIcon,
+  EyeOffIcon,
+  KeyIcon,
+  LockKeyhole,
+  MailIcon,
+  MoveLeft,
+  UserRound,
+} from 'lucide-react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import Image from 'next/image';
+
+export const Register = () => {
+  const { form, loading, showPassword, register, handleShowPassword } = useRegister();
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#C02AA8] from-0% to-[#C936A1] to-15% to-[#EE6984] to-60% to-[#FE7F78] to-85% w-full flex items-center justify-center">
+      <div className=" bg-gradient-to-br from-[#f96556] from-14%  to-[#FF7746]  to-64% rounded-sm shadow-[0_0_9px_rgba(0,0,0,0.5)] overflow-hidden max-w-4xl h-[550px] w-full xxs:h-800 xxs:w-300 sm:flex sm:justify-between  xs:h-700s xs:w-450s sm:w-[600px] md:w-[750px] lg:max-w-4xl lg:w-full">
+        <div className="w-[62%] rounded-tl-sm rounded-bl-sm bg-gradient-to-br from-[#EA3A7E] from-14%  to-[#FF7746]  to-64% h-[550px]  text-white flex items-center xxs:w xxs:h-350s xs:h-350s xs:w xs:w-20 md:w-[55%] sm:w-[50%]">
+          <div className="w-full h-3/4 overflow-hidden text-center xs:pt sm:p-4 sm:pt-11 lg:px-14">
+            <h1 className="text-xl lg:text-2xl  mb-5 mt-5 leading-tight">
+              🔒 Mot de passe oublié ?
+            </h1>
+            <p className="text-md opacity-90 leading-relaxed xxs:f-2 xxs:p-2">
+              Pas de panique, ça arrive à tout le monde.
+              <br />
+              Entrez votre adresse e-mail dans le formulaire et nous
+              <br />
+              vous enverrons un lien pour réinitialiser votre mot de
+              <br />
+              passe en toute sécurité.
+            </p>
+          </div>
+        </div>
+        <div className="w-[38%] min-h-[550px] bg-white rounded-tr-md rounded-br-md xxs:bor xxs:w  xs:bor xs:w sm:w-[50%] md:w-[45%]">
+          <div className="w-full  h-1/3  flex items-center justify-center xxs:p xxs:pb xs:p xs:pb">
+            <Image
+              src={'/logo.svg'}
+              alt="photo"
+              width={100}
+              height={100}
+              priority={true}
+              blurDataURL=""
+              className="h-25 w-auto mt-5"
+            />
+          </div>
+          <div className="w-full h-3/2  px-6">
+            <Form {...form}>
+              <div className="space-y-5">
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder="Password"
+                          {...field}
+                          startOrnerIcon={<LockKeyhole className="h-5 w-5 text-pink-600" />}
+                          endOrnerIcon={
+                            <button
+                              type="button"
+                              className="cursor-pointer "
+                              onClick={handleShowPassword}
+                            >
+                              {showPassword ? (
+                                <EyeIcon className="h-5 w-5 text-pink-600 hover:text-pink-600" />
+                              ) : (
+                                <EyeOffIcon className="h-5 w-5 text-pink-600 hover:text-pink-600" />
+                              )}
+                            </button>
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-500" />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  onClick={form.handleSubmit(register)}
+                  className="w-full h-10 bg-vio  rounded-sm text-white"
+                >
+                  {loading ? (
+                    <span className="flex items-center justify-center">
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path className="opacity-75" fill="currentColor"></path>
+                      </svg>
+                      Signing in...
+                    </span>
+                  ) : (
+                    'Se connecter'
+                  )}
+                </Button>
+              </div>
+              <div className="flex justify-center w-full">
+                <p className="text-sm text-[#822072] mb-4 mt-2 flex  gap-2">
+                  <MoveLeft size={20} strokeWidth={1.5} /> Back to Sign In
+                </p>
+              </div>
+            </Form>
+          </div>
+        </div>
+      </div>
+    </div>
+    /*'use client';
+
+import { useRegister } from './useSignupAction';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { EyeIcon, EyeOffIcon, KeyIcon, MailIcon, User, User2Icon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -26,7 +160,7 @@ export const Register = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md bg-white rounded-[13px] shadow-xl overflow-hidden"
       >
-        {/* En-tête avec dégradé */}
+       
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-center">
           <div className="flex justify-center mb-3">
             <img src="/logo.svg" alt="Logo Safe Driving" className="h-10 w-auto" />
@@ -34,10 +168,10 @@ export const Register = () => {
           <h1 className="text-xl font-bold text-white">Créer un compte</h1>
         </div>
 
-        {/* Contenu du formulaire - Espacements optimisés */}
+       
         <div className="p-5 space-y-3">
           <Form {...form}>
-            {/* Champ Nom complet */}
+           
             <FormField
               control={form.control}
               name="firstName"
@@ -57,7 +191,7 @@ export const Register = () => {
               )}
             />
             sqdqdsqdqs
-            {/* Champ Email */}
+           
             <FormField
               control={form.control}
               name="email"
@@ -76,7 +210,7 @@ export const Register = () => {
                 </FormItem>
               )}
             />
-            {/* Champ Nom d'utilisateur */}
+         
             <FormField
               control={form.control}
               name="username"
@@ -97,7 +231,7 @@ export const Register = () => {
                 </FormItem>
               )}
             />
-            {/* Champ Mot de passe */}
+
             <FormField
               control={form.control}
               name="password"
@@ -129,7 +263,7 @@ export const Register = () => {
                 </FormItem>
               )}
             />
-            {/* Champ Confirmation mot de passe */}
+            
             <FormField
               control={form.control}
               name="confirmPassword"
@@ -163,7 +297,7 @@ export const Register = () => {
                 </FormItem>
               )}
             />
-            {/* Bouton d'inscription */}
+        
             <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} className="pt-2">
               <Button
                 type="submit"
@@ -202,7 +336,7 @@ export const Register = () => {
             </motion.div>
           </Form>
 
-          {/* Séparateur */}
+
           <div className="relative my-3">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200"></div>
@@ -212,7 +346,7 @@ export const Register = () => {
             </div>
           </div>
 
-          {/* Boutons sociaux */}
+     
           <div className="grid grid-cols-2 gap-2">
             <button className="flex items-center justify-center gap-1 h-8 rounded-lg border border-gray-200 bg-white text-gray-700 text-xs font-medium hover:bg-gray-50">
               <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
@@ -229,7 +363,7 @@ export const Register = () => {
             </button>
           </div>
 
-          {/* Lien vers login */}
+      
           <p className="text-center text-xs text-gray-500 mt-3">
             Vous avez déjà un compte?
             <Link href="/login" className="font-medium text-blue-600 hover:text-blue-500">
@@ -238,7 +372,7 @@ export const Register = () => {
           </p>
         </div>
       </motion.div>
-    </div>
+    </div>*/
   );
 };
 

@@ -15,7 +15,7 @@ type CustomProps = {
 type ShadcnInputProps = React.ComponentProps<'input'> & CustomProps;
 
 const Input = ({
-  className = 'mb-1 border border-gray-300 text-gray-900 text-sm rounded w-full p-2.5',
+  className = 'mb-1 border border-[#E33486] text-gray-900 text-sm rounded w-full p-2.5 bg-[#FADBF0] laceholder:text-[#B15C8B]',
   inputClassname,
   startOrnerIcon,
   endOrnerIcon,
@@ -24,7 +24,7 @@ const Input = ({
   return (
     <div className={cn(className, 'px-12 relative')}>
       {/* Icon component */}
-      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red-400">
         {startOrnerIcon}
       </span>
       {/* Shadcn Input component */}
