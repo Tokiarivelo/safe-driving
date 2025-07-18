@@ -33,19 +33,22 @@ model Role {
 }
 
 model User {
-  id         String         @id @default(uuid())
-  email      String         @unique
-  firstName  String
-  lastName   String?
-  phone      String?
-  username   String         @unique
-  password   String
-  isVerified Boolean        @default(false)
-  tokens     RefreshToken[]
-  images     UserImage[]
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-  Role       Role[]         @relation("UserRoles")
+  id            String          @id @default(uuid())
+  email         String          @unique
+  firstName     String
+  lastName      String?
+  phone         String?
+  username      String          @unique
+  password      String
+  isVerified    Boolean         @default(false)
+  tokens        RefreshToken[]
+  images        UserImage[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  Role          Role[]          @relation("UserRoles")
+  vehicles      DriverVehicle[]
+  DriverIDCards DriverIDCards[]
+  DriverLicense DriverLicense[]
 }
 
 model RefreshToken {
@@ -67,4 +70,39 @@ model UserImage {
   user   User   @relation(fields: [userId], references: [id], map: "UserImage_userId_relation")
 
   @@index([userId], map: "UserImage_userId_fkey")
+}
+
+model VehicleType {
+  id       String          @id @default(uuid())
+  name     String          @unique
+  vehicles DriverVehicle[]
+}
+
+model DriverVehicle {
+  id                 String      @id @default(uuid())
+  userId             String
+  user               User        @relation(fields: [userId], references: [id], onDelete: Cascade, map: "DriverCar_userId_relation")
+  brand              String?
+  model              String?
+  registrationNumber String?
+  place              Int
+  vehicleTypeId      String
+  type               VehicleType @relation(fields: [vehicleTypeId], references: [id])
+
+  @@index([userId], map: "DriverVehicle_userId_fkey")
+}
+
+model DriverIDCards {
+  id        String  @id @default(uuid())
+  userId    String  @unique
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "DriverIDCards_userId_relation")
+  recto_url String?
+  verso_url String?
+}
+
+model DriverLicense {
+  id     String  @id @default(uuid())
+  userId String  @unique
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "DriverLicense_userId_relation")
+  url    String?
 }

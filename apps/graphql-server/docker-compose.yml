@@ -1,0 +1,34 @@
+services:
+  safe-driving-db:
+    image: postgis/postgis:latest
+    container_name: safe-driving-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sd_usr
+      POSTGRES_PASSWORD: sd_pwd
+      POSTGRES_DB: sd_db
+    volumes:
+      - ./volumes/safe_driving_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U sd_usr -d sd_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  safe-driving-minio-db:
+    image: minio/minio:latest
+    container_name: safe-driving-minio-server
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: sd_minio_usr
+      MINIO_ROOT_PASSWORD: sd_minio_pwd
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
