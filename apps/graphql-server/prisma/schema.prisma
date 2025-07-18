@@ -79,15 +79,16 @@ model VehicleType {
 }
 
 model DriverVehicle {
-  id                 String      @id @default(uuid())
+  id                 String             @id @default(uuid())
   userId             String
-  user               User        @relation(fields: [userId], references: [id], onDelete: Cascade, map: "DriverCar_userId_relation")
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade, map: "DriverCar_userId_relation")
   brand              String?
   model              String?
   registrationNumber String?
   place              Int
   vehicleTypeId      String
-  type               VehicleType @relation(fields: [vehicleTypeId], references: [id])
+  type               VehicleType        @relation(fields: [vehicleTypeId], references: [id])
+  DriverVehicleImg   DriverVehicleImg[]
 
   @@index([userId], map: "DriverVehicle_userId_fkey")
 }
@@ -105,4 +106,12 @@ model DriverLicense {
   userId String  @unique
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "DriverLicense_userId_relation")
   url    String?
+}
+
+model DriverVehicleImg {
+  id        String        @id @default(uuid())
+  vehicleId String
+  vehicle   DriverVehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade, map: "DriverVehicle_vehicleId_relation")
+  category  String?
+  url       String?
 }
