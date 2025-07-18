@@ -28,7 +28,7 @@ export const Register = () => {
   const { form, loading, showPassword, register, handleShowPassword } = useRegister();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#C02AA8] from-0% to-[#C936A1] to-15% to-[#EE6984] to-60% to-[#FE7F78] to-85% w-full flex items-center justify-center">
+    <div className="bg-wa  min-h-screen bg-gradient-to-br from-[#C02AA8] from-0% to-[#C936A1] to-15% to-[#EE6984] to-60% to-[#FE7F78] to-85% w-full flex items-center justify-center">
       <div className=" bg-gradient-to-br from-[#f96556] from-14%  to-[#FF7746]  to-64% rounded-sm shadow-[0_0_9px_rgba(0,0,0,0.5)] overflow-hidden max-w-4xl h-[550px] w-full xxs:h-800 xxs:w-300 sm:flex sm:justify-between  xs:h-700s xs:w-450s sm:w-[600px] md:w-[750px] lg:max-w-4xl lg:w-full">
         <div className="w-[62%] rounded-tl-sm rounded-bl-sm bg-gradient-to-br from-[#EA3A7E] from-14%  to-[#FF7746]  to-64% h-[550px]  text-white flex items-center xxs:w xxs:h-350s xs:h-350s xs:w xs:w-20 md:w-[55%] sm:w-[50%]">
           <div className="w-full h-3/4 overflow-hidden text-center xs:pt sm:p-4 sm:pt-11 lg:px-14">

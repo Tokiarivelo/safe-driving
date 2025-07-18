@@ -28,9 +28,9 @@ export const Signout = () => {
   const { form, loading, showPassword, login, handleShowPassword } = useLogin();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#C02AA8] from-0% to-[#C936A1] to-15% to-[#EE6984] to-60% to-[#FE7F78] to-85% w-full flex items-center justify-center">
-      <div className=" bg-gradient-to-br from-[#f96556] from-14%  to-[#FF7746]  to-64% rounded-sm shadow-[0_0_9px_rgba(0,0,0,0.5)] overflow-hidden max-w-4xl h-[600px] w-full xxs:h-800 xxs:w-300 sm:flex sm:justify-between  xs:h-700s xs:w-450s sm:w-[600px] md:w-[750px] lg:max-w-4xl lg:w-full">
-        <div className="w-[62%] rounded-tl-sm rounded-bl-sm bg-gradient-to-br from-[#EA3A7E] from-14%  to-[#FF7746]  to-64% h-[600px]  text-white flex items-center xxs:w xxs:h-350s xs:h-350s xs:w xs:w-20 md:w-[55%] sm:w-[50%]">
+    <div className="min-h-screen bg-linear-to-br from-[#C02AA8] from-0% to-[#C936A1] to-15% to-[#EE6984] to-60% to-[#FE7F78] to-85% w-full flex items-center justify-center">
+      <div className=" bg-linear-to-br from-[#f96556] from-14%  to-[#FF7746]  to-64% rounded-sm shadow-[0_0_9px_rgba(0,0,0,0.5)] overflow-hidden max-w-4xl h-[600px] w-full xxs:h-800 xxs:w-300 sm:flex sm:justify-between  xs:h-700s xs:w-450s sm:w-[600px] md:w-[750px] lg:max-w-4xl lg:w-full">
+        <div className="w-[62%] rounded-tl-sm rounded-bl-sm bg-linear-to-br from-[#EA3A7E] from-14%  to-[#FF7746]  to-64% h-[600px]  text-white flex items-center xxs:w xxs:h-350s xs:h-350s xs:w xs:w-20 md:w-[55%] sm:w-[50%]">
           <div className="w-full h-3/4 overflow-hidden text-center lg:m-18  xs:pt sm:p-4 sm:pt-11 ">
             <h1 className="text-3xl  mb-2 pt-5 xxs:mbx xxs:f-20  sm:text-xl xs:mb xs:f-20 sm:text-sm">
               🚀Prêt à rejoindre Safe Driving ?
@@ -47,7 +47,7 @@ export const Signout = () => {
               Connectez-vous pour réserver votre transport en un clin d'œil et suivre votre course
               en temps réel.
             </p>
-            <button className="rounded-sm border-1 border-white text-white px-25 py-1.5 hover:bg-white hover:text-orange-500 transition-all duration-300 font-medium xxs:hidden">
+            <button className="rounded-sm border border-white text-white px-25 py-1.5 hover:bg-white hover:text-orange-500 transition-all duration-300 font-medium xxs:hidden">
               Sign up
             </button>
           </div>
