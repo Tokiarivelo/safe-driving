@@ -25,6 +25,9 @@ export class UserRegistrationInput {
   @Field()
   role: string;
 
+  @Field()
+  type: string;
+
   @Field(() => ClientRegistrationInput)
   client: ClientRegistrationInput;
 
