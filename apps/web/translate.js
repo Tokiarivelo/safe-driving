@@ -1,8 +1,13 @@
 const fs = require('fs-extra');
 const path = require('path');
 const axios = require('axios');
+require('dotenv').config();
 
-const LIBRE_URL = 'http://localhost:5000';
+const LIBRE_URL = process.env.LIBRE_URL;
+if (!LIBRE_URL) {
+  console.error(' Erreur : La variable LIBRE_URL est manquante dans le fichier .env');
+  process.exit(1);
+}
 const TARGET_LANGS = ['fr', 'en'];
 const DELAY_MS = 1000;
 
