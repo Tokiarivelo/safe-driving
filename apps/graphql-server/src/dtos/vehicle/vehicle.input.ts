@@ -2,7 +2,7 @@ import { Field, InputType, Int } from '@nestjs/graphql';
 import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
 
 @InputType()
-export class CarInput {
+export class VehicleInput {
   @Field()
   brand: string;
 
@@ -19,7 +19,7 @@ export class CarInput {
   vehicleType: string;
 
   @Field(() => [GraphQLUpload])
-  carImages: Promise<FileUpload>[];
+  vehicleImages: Promise<FileUpload>[];
 
   @Field(() => [GraphQLUpload])
   assuranceImages: Promise<FileUpload>[];

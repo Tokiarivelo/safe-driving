@@ -7,15 +7,16 @@ import { DeleteOneUserArgs } from 'src/dtos/@generated';
 import { PrismaService } from 'src/prisma-module/prisma.service';
 import { SALT_ROUNDS } from 'src/auth/constants';
 import { DriverRegistrationInput } from '../dtos/user/driver-registration.input';
-import { CarInput } from '../dtos/car/car.input';
 import { StorageService } from '../storage/storage.service';
 import { FileUpload } from 'graphql-upload-ts';
+import { VehicleService } from '../vehicle/vehicle.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly storageService: StorageService,
+    private readonly vehicleService: VehicleService,
   ) {}
 
   async create(input: UserCreateInput): Promise<User> {
@@ -89,7 +90,7 @@ export class UsersService {
   }
 
   async createDriver(driver: DriverRegistrationInput, id: string) {
-    const car = this.createCar(driver.car, id);
+    const car = this.vehicleService.createVehicle(driver.vehicle, id);
 
     await this.createIDCards(driver.idCardImages, id);
 
@@ -114,63 +115,6 @@ export class UsersService {
         verso_url: urls[1],
       },
     });
-  }
-
-  private async createCar(input: CarInput, id: string) {
-    const car = await this.prisma.driverVehicle.create({
-      data: {
-        userId: id,
-        brand: input.brand,
-        model: input.model,
-        registrationNumber: input.registrationNumber,
-        place: input.place,
-        vehicleTypeId: input.vehicleType,
-      },
-    });
-
-    for (const carImage of input.carImages) {
-      const url = await this.storageService.uploadToMinIO(
-        await carImage,
-        'car',
-      );
-      await this.prisma.driverVehicleImg.create({
-        data: {
-          vehicleId: car.id,
-          category: 'car',
-          url: url,
-        },
-      });
-    }
-
-    for (const assuranceImage of input.assuranceImages) {
-      const url = await this.storageService.uploadToMinIO(
-        await assuranceImage,
-        'assurance',
-      );
-      await this.prisma.driverVehicleImg.create({
-        data: {
-          vehicleId: car.id,
-          category: 'assurance',
-          url: url,
-        },
-      });
-    }
-
-    for (const registrationImage of input.registrationImages) {
-      const url = await this.storageService.uploadToMinIO(
-        await registrationImage,
-        'registration',
-      );
-      await this.prisma.driverVehicleImg.create({
-        data: {
-          vehicleId: car.id,
-          category: 'registration',
-          url: url,
-        },
-      });
-    }
-
-    return car;
   }
 
   private async createLicense(

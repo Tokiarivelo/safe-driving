@@ -1,11 +1,11 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { CarInput } from '../car/car.input';
+import { VehicleInput } from '../vehicle/vehicle.input';
 import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
 
 @InputType()
 export class DriverRegistrationInput {
-  @Field(() => CarInput)
-  car: CarInput;
+  @Field(() => VehicleInput)
+  vehicle: VehicleInput;
 
   @Field(() => GraphQLUpload)
   idCardImages: Promise<FileUpload>[];
