@@ -56,6 +56,12 @@ services:
     depends_on:
       - postgis
 
+  libretranslate:
+    image: libretranslate/libretranslate
+    container_name: libretranslate
+    restart: always
+    ports:
+      - "5000:5000"
 volumes:
   postgis_data:
   pgadmin_data:

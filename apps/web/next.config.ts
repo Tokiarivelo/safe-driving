@@ -1,8 +1,11 @@
 import type { NextConfig } from 'next';
 
-const nextConfig: NextConfig = {
-  // output: 'standalone',
-  /* config options here */
+const nextConfig = {
+  i18n: {
+    locales: ['fr', 'en'],
+    defaultLocale: 'fr',
+  },
+  transpilePackages: ['react-i18next'],
 };
 
 export default nextConfig;
