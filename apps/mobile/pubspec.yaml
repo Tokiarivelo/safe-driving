@@ -1,0 +1,33 @@
+name: safe_driving
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.2.0
+  provider: ^6.1.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/img/social/google.png
+    - assets/img/social/facebook.png
+    - assets/logo/logo.svg
+    - assets/logo/logo_white.svg
+  fonts:
+    - family: Inder
+      fonts:
+        - asset: assets/fonts/Inder/Inder-Regular.ttf
+          weight: 700
+
+
