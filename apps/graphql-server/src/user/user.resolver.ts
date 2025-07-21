@@ -5,9 +5,8 @@ import { FindManyUserArgs, User, UserCreateInput } from 'src/dtos/@generated';
 import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
 import { StorageService } from '../storage/storage.service';
-import { FileCategoryInput } from '../dtos/storage/storage.input';
+import { UserRegistrationInput } from '../dtos/user/user-registration.input';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -40,31 +39,24 @@ export class UsersResolver {
     return this.usersService.findById(user.id);
   }
 
-  @Mutation(() => User, { name: 'createUser' })
-  async create(@Args('input') input: UserCreateInput): Promise<User> {
-    return this.usersService.create(input);
-  }
+  // @Mutation(() => User, { name: 'createUser' })
+  // async create(@Args('input') input: UserCreateInput): Promise<User> {
+  //   return this.usersService.create(input);
+  // }
 
-  @Mutation(() => [[String]])
-  async uploadFilesByCategory(
-    @Args({ name: 'categories', type: () => [FileCategoryInput] })
-    categories: FileCategoryInput[],
-  ) {
-    return Promise.all(
-      categories.map(async (group) => {
-        const { category, files } = group;
+  async create(@Args('input') input: UserRegistrationInput): Promise<User> {
+    const user = await this.usersService.create(input.user);
 
-        console.log(group);
+    const hasUserRole = user.Role.some((role) => role.name === 'USER');
+    const hasDriverRole = user.Role.some((role) => role.name === 'DRIVER');
 
-        const urls = await Promise.all(
-          files.map(async (filePromise) => {
-            const file = await filePromise;
-            return this.storageService.uploadToMinIO(file, category); // optionally pass category
-          }),
-        );
+    if (hasUserRole) {
+      const client = input.client;
+    }
+    if (hasDriverRole) {
+      await this.usersService.createDriver(input.driver, user.id);
+    }
 
-        return urls; // List of file URLs for this category
-      }),
-    );
+    return user;
   }
 }

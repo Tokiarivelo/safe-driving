@@ -25,5 +25,5 @@ export class CarInput {
   assuranceImages: Promise<FileUpload>[];
 
   @Field(() => [GraphQLUpload])
-  registrationImages: Promise<FileUpload[]>[];
+  registrationImages: Promise<FileUpload>[];
 }
