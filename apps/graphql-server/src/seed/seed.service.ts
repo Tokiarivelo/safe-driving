@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { RoleEnum } from 'src/dtos/enums/role.enum';
 import { PrismaService } from 'src/prisma-module/prisma.service';
+import { VehicleTypeEnum } from '../dtos/enums/vehicleType.enum';
 
 @Injectable()
 export class SeedService implements OnModuleInit {
@@ -23,5 +24,17 @@ export class SeedService implements OnModuleInit {
     }
 
     console.log('✅ Roles seeded');
+
+    for (const vehicleTypeName of Object.values(VehicleTypeEnum)) {
+      await this.prisma.vehicleType.upsert({
+        where: { name: vehicleTypeName },
+        update: {},
+        create: {
+          name: vehicleTypeName,
+        },
+      });
+    }
+
+    console.log('✅ Vehicle types seeded.');
   }
 }

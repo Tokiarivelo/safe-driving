@@ -3,6 +3,7 @@
  * This is only a minimal backend to get started.
  */
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -43,6 +44,13 @@ async function bootstrap() {
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
   );
+
+  app.use(graphqlUploadExpress({ maxFileSize: 10_000_000 }));
+
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+  });
 }
 
 bootstrap();
