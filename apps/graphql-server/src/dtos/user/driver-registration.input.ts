@@ -8,7 +8,7 @@ export class DriverRegistrationInput {
   car: CarInput;
 
   @Field(() => GraphQLUpload)
-  idCardImage: Promise<FileUpload>;
+  idCardImage: Promise<FileUpload>[];
 
   @Field(() => GraphQLUpload)
   driverLicenseImage: Promise<FileUpload>;
