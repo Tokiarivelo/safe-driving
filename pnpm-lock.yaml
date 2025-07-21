@@ -4128,6 +4128,10 @@ packages:
   '@types/http-errors@2.0.5':
     resolution: {integrity: sha512-r8Tayk8HJnX0FztbZN7oVqGccWgw98T/0neJphO91KkmOzug1KkofZURD4UaD5uH8AqcFLfdPErnBod0u71/qg==}
 
+  '@types/i18next-fs-backend@1.2.0':
+    resolution: {integrity: sha512-30XnjBF+SLndemvooRQRtcoD5xmF2nNNTa5RqE63+OWssaZOxN9r895ZvXUMbkk8YZr1Cy3scpQBZ6YXLH+jEg==}
+    deprecated: This is a stub types definition. i18next-fs-backend provides its own type definitions, so you do not need this installed.
+
   '@types/istanbul-lib-coverage@2.0.6':
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
 
@@ -14822,6 +14826,10 @@ snapshots:
   '@types/http-errors@2.0.4': {}
 
   '@types/http-errors@2.0.5': {}
+
+  '@types/i18next-fs-backend@1.2.0':
+    dependencies:
+      i18next-fs-backend: 2.6.0
 
   '@types/istanbul-lib-coverage@2.0.6': {}
 
