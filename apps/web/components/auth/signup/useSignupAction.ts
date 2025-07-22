@@ -1,28 +1,22 @@
-'use client';
-
 import { useForm } from 'react-hook-form';
+import { LoginFormValues, loginSchema } from './login.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { toast } from 'sonner'; // 👈 import direct
 import { useState } from 'react';
-import { toast } from 'sonner';
-import { useRegisterMutation } from '@/graphql/generated/graphql';
 import { useRouter } from 'next/navigation';
-import { SignUpFormValues, signupShema } from './signup.schema';
+import { signIn } from 'next-auth/react';
 
-export const useRegister = () => {
-  const [mutationLogin, { loading, error }] = useRegisterMutation();
-
+export const useLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const form = useForm<SignUpFormValues>({
-    resolver: zodResolver(signupShema),
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
       password: '',
-      confirmPassword: '',
-      firstName: '',
-      username: '',
     },
   });
 
@@ -30,50 +24,50 @@ export const useRegister = () => {
     setShowPassword(!showPassword);
   };
 
-  const register = async (values: SignUpFormValues) => {
+  const login = async (dataLogin: LoginFormValues) => {
     try {
-      const { confirmPassword, ...dataInput } = values;
-      const { data, errors } = await mutationLogin({
-        variables: {
-          data: dataInput,
-        },
-      });
-
-      if (errors) {
-        return toast.error('Erreur lors de la création du compte', {
-          description: 'Une erreur est survenue',
-        });
+      setLoading(true);
+      if (!dataLogin.email || !dataLogin.password) {
+        setLoading(false);
+        return toast.error('Email et mot de passe requis');
       }
 
-      const user = data?.register?.id;
-
-      if (!user) {
-        return toast.error('Erreur lors de la création du compte', {
-          description: 'Une erreur est survenue',
-        });
-      }
-
-      toast.success(`Inscription réussie 🎉`, {
-        description: `Votre inscription a été enregistré ! Redirection en cours...`,
+      const { email, password } = dataLogin;
+      const res = await signIn('credentials', {
+        redirect: false, // on gère la redirection nous-mêmes
+        email,
+        password,
+        callbackUrl: '/dashboard', // où renvoyer en cas de succès
       });
 
-      router.replace('/login'); // Redirection vers la page d'accueil
-      return data;
+      setLoading(false);
 
-      // Redirection ou gestion de la réussite
+      if (res?.error) {
+        setError(res.error);
+        return toast.error('Erreur lors de la connexion');
+      }
+
+      toast.success(`Connexion réussie 🎉`, {
+        description: `Bienvenue! Redirection en cours...`,
+      });
+
+      router.push((res?.url as string) || '/dashboard');
+      return res;
     } catch (error) {
-      toast.error('Erreur lors de la création du compte', {
-        description: 'Une erreur est survenue',
-      });
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error('Une erreur est survenue');
+      }
+      throw error;
     }
   };
-
   return {
-    form,
-    loading,
-    showPassword,
-    register,
+    login,
     handleShowPassword,
+    loading,
+    form,
     error,
+    showPassword,
   };
 };
