@@ -42,7 +42,13 @@
 
   /* Auth cards */
   --auth-color-primary: #eb397d;
-  --auth-color-secondary: #822072;
+  /* couleur du projet important*/
+  --auth-color-text-custom-magenta: #822072;
+  --auth-color-bg-white: #ffffff;
+  --auth-color-button: #dc318d;
+  --auth-color-icon: #e33486;
+  --auth-color-input: #fadbf0;
+  --auth-color-placeholder: #b15c8b;
 
   --auth-background: linear-gradient(135deg, #c02aa8 0%, #c02aa8 15%, #ee6984 60%, #fe7f78 100%);
   --auth-gradient-card: linear-gradient(135deg, #ea3a7e 14%, #ff7746 64%);
@@ -53,6 +59,7 @@
   --auth-color-btn-bg-hover: #c2185b;
   --auth-color-input-border: #e91e63;
   --auth-shadow: 3px 4px 9px rgba(0, 0, 0, 0.5);
+  --auth-card-shadow: 0 0 9px rgba(0, 0, 0, 0.5);
 }
 
 :root {
@@ -91,7 +98,13 @@
 
   /* Auth cards */
   --auth-color-primary: #eb397d;
-  --auth-color-secondary: #822072;
+  /* couleur du projet important*/
+  --auth-color-text-custom-magenta: #822072;
+  --auth-color-bg-white: #ffffff;
+  --auth-color-button: #dc318d;
+  --auth-color-icon: #e33486;
+  --auth-color-input: #fadbf0;
+  --auth-color-placeholder: #b15c8b;
 
   --auth-background: linear-gradient(135deg, #c02aa8 0%, #c02aa8 15%, #ee6984 60%, #fe7f78 100%);
   --auth-gradient-card: linear-gradient(135deg, #ea3a7e 14%, #ff7746 64%);
@@ -102,6 +115,7 @@
   --auth-color-btn-bg-hover: #c2185b;
   --auth-color-input-border: #e91e63;
   --auth-shadow: 3px 4px 9px rgba(0, 0, 0, 0.5);
+  --auth-card-shadow: 0 0 9px rgba(0, 0, 0, 0.5);
 }
 
 @theme inline {
@@ -145,15 +159,22 @@
   --color-auth-primary: var(--auth-color-primary);
   --color-auth-secondary: var(--auth-color-secondary);
   --color-auth-text-light: var(--auth-color-text-light);
+  --color-auth-btn-hover: var(--auth-color-btn-bg);
   --shadow-auth: var(--auth-shadow);
+  --shadow-auth-card: var(--auth-card-shadow);
+  /*========couleur complet==========*/
+  --color-auth-color-text-custom-magenta: var(--auth-color-text-custom-magenta);
+  --color-auth-color-bg-white: var(--auth-color-bg-white);
+  --color-auth-color-button: var(--auth-color-button);
+  --color-auth-color-icon: var(--auth-color-icon);
+  --color-auth-color-input: var(--auth-color-input);
+  --color-auth-color-placeholder: var(--auth-color-placeholder);
 }
-
 /* =========== Auth card ======== */
 @utility auth-background {
   background: var(--auth-background);
 }
-
 @utility auth-card-bg-gradient {
   background: var(--auth-gradient-card);
 }
-/* ========= End Auth card ====== */
+/* =============== End =============== */

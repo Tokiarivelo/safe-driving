@@ -38,7 +38,7 @@ services:
       POSTGRES_PASSWORD: sd_pwd
       POSTGRES_DB: sd_db
     ports:
-      - "5432:5432"
+      - "5435:5432"
     volumes:
       - safe_driving_data:/var/lib/postgresql/data
     healthcheck:

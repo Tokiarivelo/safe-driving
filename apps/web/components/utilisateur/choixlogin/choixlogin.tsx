@@ -1,24 +1,6 @@
 'use client';
-
-import { useChoixlogin } from './useChoixloginAction';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { EyeIcon, EyeOffIcon, KeyIcon, LockKeyhole, MailIcon, UserRound } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
 import Image from 'next/image';
-
 export const Choixlogin = () => {
-  const { form, loading, showPassword, login, handleShowPassword } = useChoixlogin();
-
   return (
     <div className="min-h-screen bg-linear-to-br from-[#C02AA8] from-0% to-[#C936A1] to-15% to-[#EE6984] to-60% to-[#FE7F78] to-85% w-full flex items-center justify-center">
       <div className=" bg-white rounded-sm shadow-[0_0_9px_rgba(0,0,0,0.5)] overflow-hidden  h-[550px] w-full-4xl w-full xxs:w-300 xs:w-450s sm:w-[620px] md:w-[750px] lg:max-w-4xl lg:w-full">
