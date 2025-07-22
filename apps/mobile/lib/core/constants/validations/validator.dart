@@ -29,8 +29,9 @@ class RegexFormatter {
     if (!RegExp(r'[a-z]').hasMatch(password)) missing.add("1 minuscule");
     if (!RegExp(r'[A-Z]').hasMatch(password)) missing.add("1 majuscule");
     if (!RegExp(r'\d').hasMatch(password)) missing.add("1 chiffre");
-    if (!RegExp(r'[@$!%*?&]').hasMatch(password))
+    if (!RegExp(r'[@$!%*?&]').hasMatch(password)) {
       missing.add("1 symbole (@\$!%*?&)");
+    }
 
     if (missing.isEmpty) return "";
     return "Manque: ${missing.join(", ")}";
@@ -69,12 +70,15 @@ class RegexFormatter {
 
     if (username.length < 3) return "3 caractères minimum";
     if (username.length > 20) return "20 caractères maximum";
-    if (!RegExp(r'^[a-zA-Z0-9]').hasMatch(username))
+    if (!RegExp(r'^[a-zA-Z0-9]').hasMatch(username)) {
       return "Doit commencer par une lettre ou un chiffre";
-    if (!RegExp(r'[a-zA-Z0-9]$').hasMatch(username))
+    }
+    if (!RegExp(r'[a-zA-Z0-9]$').hasMatch(username)) {
       return "Doit finir par une lettre ou un chiffre";
-    if (!RegExp(r'^[a-zA-Z0-9_-]+$').hasMatch(username))
+    }
+    if (!RegExp(r'^[a-zA-Z0-9_-]+$').hasMatch(username)) {
       return "Seuls les lettres, chiffres, _ et - sont autorisés";
+    }
 
     return "";
   }

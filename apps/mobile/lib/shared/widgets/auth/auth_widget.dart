@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:safe_driving/core/constants/colors.dart';
-import 'package:safe_driving/core/validations/validator.dart';
-import 'package:safe_driving/shared/widgets/colors/colors_widget.dart';
-import 'package:safe_driving/shared/widgets/snackbar/snackbar_helper.dart';
+import '../../../core/constants/colors/colors.dart';
+import '../../../core/constants/validations/validator.dart';
+import '../../../shared/widgets/colors/colors_widget.dart';
+import '../snackbar/snackbar_helper.dart';
 
 class AuthWidget extends StatefulWidget {
   final bool isLogin;

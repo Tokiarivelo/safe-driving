@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors.dart';
+import '../../../core/constants/colors/colors.dart';
 
 class SnackbarHelper {
   static void showError(BuildContext context, String message) {
@@ -16,9 +16,7 @@ class SnackbarHelper {
         backgroundColor: AppColors.error,
         duration: const Duration(seconds: 4),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         margin: const EdgeInsets.all(16),
       ),
     );
@@ -38,9 +36,7 @@ class SnackbarHelper {
         backgroundColor: Colors.green,
         duration: const Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         margin: const EdgeInsets.all(16),
       ),
     );
@@ -60,9 +56,7 @@ class SnackbarHelper {
         backgroundColor: Colors.orange,
         duration: const Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         margin: const EdgeInsets.all(16),
       ),
     );
@@ -82,9 +76,7 @@ class SnackbarHelper {
         backgroundColor: Colors.blue,
         duration: const Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         margin: const EdgeInsets.all(16),
       ),
     );
