@@ -9,7 +9,7 @@ export class StorageService {
 
   async uploadToMinIO(file: FileUpload, path: string): Promise<string> {
     const { createReadStream, filename, mimetype } = file;
-    const bucket = 'safe-driving';
+    const bucket = process.env.MINIO_BUCKET;
     const objectName = path + '/' + `${crypto.randomUUID()}-${filename}`;
     const stream = createReadStream();
 
@@ -20,6 +20,6 @@ export class StorageService {
 
     await this.minioClient.putObject(bucket, objectName, stream);
 
-    return `http://localhost:9000/${bucket}/${objectName}`;
+    return `${process.env.MINIO_ENDPOINT}/${bucket}/${objectName}`;
   }
 }

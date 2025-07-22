@@ -30,22 +30,27 @@ services:
   #   command: pnpm start:dev
 
   postgis:
-    image: postgis/postgis:15-3.3
-    container_name: postgis
-    restart: always
+    image: postgis/postgis:latest
+    container_name: safe-driving-db
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: safedriving_admin
-      POSTGRES_PASSWORD: safedriving_pass
-      POSTGRES_DB: safedriving_db
+      POSTGRES_USER: sd_usr
+      POSTGRES_PASSWORD: sd_pwd
+      POSTGRES_DB: sd_db
     ports:
       - "5432:5432"
     volumes:
-      - postgis_data:/var/lib/postgresql/data
+      - safe_driving_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U sd_usr -d sd_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
-    restart: always
+    restart: unless-stopped
     ports:
       - "8080:80"
     environment:
@@ -59,9 +64,36 @@ services:
   libretranslate:
     image: libretranslate/libretranslate
     container_name: libretranslate
-    restart: always
+    restart: unless-stopped
     ports:
       - "5000:5000"
+
+  safe-driving-minio-db:
+    image: minio/minio:latest
+    container_name: safe-driving-minio-server
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: sd_minio_usr
+      MINIO_ROOT_PASSWORD: sd_minio_pwd
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    volumes:
+      - minio_data:/data
+
+      
 volumes:
-  postgis_data:
   pgadmin_data:
+  minio_data:
+  safe_driving_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./volumes/safe_driving_data
+      o: bind
