@@ -73,5 +73,56 @@
   "pleaseEnterLastName": "Veuillez saisir votre nom de famille",
   "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
   "pleaseConfirmPassword": "Veuillez confirmer votre mot de passe",
-  "passwordsDoNotMatchError": "Les mots de passe ne correspondent pas"
+  "passwordsDoNotMatchError": "Les mots de passe ne correspondent pas",
+
+  "onboardingRole": "Rôle",
+  "onboardingWelcome": "Bienvenue",
+  "onboardingGps": "GPS",
+  "onboardingNotifications": "Notifications",
+  "onboardingPreferences": "Préférences",
+  "onboardingSummary": "Récapitulatif",
+
+  "stepRoleTitle": "Vous êtes… ?",
+  "stepRoleUser": "Je suis utilisateur",
+  "stepRoleDriver": "Je suis un chauffeur",
+
+  "stepWelcomeTitle": "Bienvenue chez Safe Driving !",
+  "stepWelcomeSubtitle": "Merci d'avoir rejoint notre communauté ! Laissez-nous vous guider pour personnaliser votre expérience.",
+  "stepWelcomeLater": "Plus tard",
+  "stepWelcomeStart": "Démarrer",
+
+  "stepGpsTitle": "Où êtes-vous ?",
+  "stepGpsSubtitle": "Pour vous proposer les véhicules les plus proches, autorisez l'accès à votre position. C'est rapide et sécurisé.",
+  "stepGpsLater": "Plus tard",
+  "stepGpsEnable": "Activer",
+
+  "stepNotificationsTitle": "Restez informé",
+  "stepNotificationsSubtitle": "Choisissez de recevoir des alertes en temps réel sur l'arrivée de votre chauffeur et l'état de votre trajet.",
+  "stepNotificationsLater": "Plus tard",
+  "stepNotificationsEnable": "Activer",
+
+  "stepPreferencesTitle": "Faites-le à votre façon",
+  "stepPreferencesSubtitle": "Sélectionnez vos modes de transport favoris et activez le thème sombre si vous préférez une expérience plus douce pour les yeux.",
+  "stepPreferencesTheme": "Thème",
+  "stepPreferencesThemeLight": "Clair",
+  "stepPreferencesThemeDark": "Sombre",
+  "stepPreferencesTransport": "Type de transport",
+  "stepPreferencesTransportCar": "Voiture",
+  "stepPreferencesTransportMoto": "Moto",
+  "stepPreferencesTransportTukTuk": "TukTuk",
+  "stepPreferencesTransportBike": "Vélo",
+  "stepPreferencesLater": "Plus tard",
+  "stepPreferencesValidate": "Valider",
+
+  "stepSummaryTitle": "Tout est prêt !",
+  "stepSummarySubtitle": "Voilà un résumé de vos choix. Vous pouvez toujours les modifier plus tard dans les paramètres. Prêt·e à démarrer ?",
+  "stepSummaryGps": "GPS",
+  "stepSummaryNotifications": "Notifications",
+  "stepSummaryTheme": "Thème : {theme}",
+  "stepSummaryTransports": "Transport(s) :",
+  "stepSummaryNoTransports": "Aucun transport sélectionné",
+  "stepSummaryCancel": "Annuler",
+  "stepSummaryValidate": "Valider",
+
+  "next": "Suivant"
 }

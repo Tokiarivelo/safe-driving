@@ -299,5 +299,225 @@
   "passwordsDoNotMatchError": "Passwords do not match",
   "@passwordsDoNotMatchError": {
     "description": "Erreur mots de passe différents"
+  },
+
+  "onboardingRole": "Role",
+  "@onboardingRole": {
+    "description": "Titre de l'étape de sélection du rôle"
+  },
+
+  "onboardingWelcome": "Welcome",
+  "@onboardingWelcome": {
+    "description": "Titre de l'étape de bienvenue"
+  },
+
+  "onboardingGps": "GPS",
+  "@onboardingGps": {
+    "description": "Titre de l'étape GPS"
+  },
+
+  "onboardingNotifications": "Notifications",
+  "@onboardingNotifications": {
+    "description": "Titre de l'étape notifications"
+  },
+
+  "onboardingPreferences": "Preferences",
+  "@onboardingPreferences": {
+    "description": "Titre de l'étape préférences"
+  },
+
+  "onboardingSummary": "Summary",
+  "@onboardingSummary": {
+    "description": "Titre de l'étape récapitulatif"
+  },
+
+  "stepRoleTitle": "You are…?",
+  "@stepRoleTitle": {
+    "description": "Titre de l'étape de sélection du rôle"
+  },
+
+  "stepRoleUser": "I am a user",
+  "@stepRoleUser": {
+    "description": "Bouton utilisateur"
+  },
+
+  "stepRoleDriver": "I am a driver",
+  "@stepRoleDriver": {
+    "description": "Bouton chauffeur"
+  },
+
+  "stepWelcomeTitle": "Welcome to Safe Driving!",
+  "@stepWelcomeTitle": {
+    "description": "Titre de bienvenue"
+  },
+
+  "stepWelcomeSubtitle": "Thank you for joining our community! Let us guide you to customize your experience.",
+  "@stepWelcomeSubtitle": {
+    "description": "Sous-titre de bienvenue"
+  },
+
+  "stepWelcomeLater": "Later",
+  "@stepWelcomeLater": {
+    "description": "Bouton plus tard bienvenue"
+  },
+
+  "stepWelcomeStart": "Get Started",
+  "@stepWelcomeStart": {
+    "description": "Bouton démarrer"
+  },
+
+  "stepGpsTitle": "Where are you?",
+  "@stepGpsTitle": {
+    "description": "Titre étape GPS"
+  },
+
+  "stepGpsSubtitle": "To offer you the closest vehicles, allow access to your location. It's quick and secure.",
+  "@stepGpsSubtitle": {
+    "description": "Sous-titre étape GPS"
+  },
+
+  "stepGpsLater": "Later",
+  "@stepGpsLater": {
+    "description": "Bouton plus tard GPS"
+  },
+
+  "stepGpsEnable": "Enable",
+  "@stepGpsEnable": {
+    "description": "Bouton activer GPS"
+  },
+
+  "stepNotificationsTitle": "Stay informed",
+  "@stepNotificationsTitle": {
+    "description": "Titre étape notifications"
+  },
+
+  "stepNotificationsSubtitle": "Choose to receive real-time alerts about your driver's arrival and trip status.",
+  "@stepNotificationsSubtitle": {
+    "description": "Sous-titre étape notifications"
+  },
+
+  "stepNotificationsLater": "Later",
+  "@stepNotificationsLater": {
+    "description": "Bouton plus tard notifications"
+  },
+
+  "stepNotificationsEnable": "Enable",
+  "@stepNotificationsEnable": {
+    "description": "Bouton activer notifications"
+  },
+
+  "stepPreferencesTitle": "Make it your way",
+  "@stepPreferencesTitle": {
+    "description": "Titre étape préférences"
+  },
+
+  "stepPreferencesSubtitle": "Select your favorite transport modes and enable dark theme if you prefer a gentler experience for your eyes.",
+  "@stepPreferencesSubtitle": {
+    "description": "Sous-titre étape préférences"
+  },
+
+  "stepPreferencesTheme": "Theme",
+  "@stepPreferencesTheme": {
+    "description": "Label thème"
+  },
+
+  "stepPreferencesThemeLight": "Light",
+  "@stepPreferencesThemeLight": {
+    "description": "Thème clair"
+  },
+
+  "stepPreferencesThemeDark": "Dark",
+  "@stepPreferencesThemeDark": {
+    "description": "Thème sombre"
+  },
+
+  "stepPreferencesTransport": "Transport type",
+  "@stepPreferencesTransport": {
+    "description": "Label type de transport"
+  },
+
+  "stepPreferencesTransportCar": "Car",
+  "@stepPreferencesTransportCar": {
+    "description": "Voiture"
+  },
+
+  "stepPreferencesTransportMoto": "Motorbike",
+  "@stepPreferencesTransportMoto": {
+    "description": "Moto"
+  },
+
+  "stepPreferencesTransportTukTuk": "TukTuk",
+  "@stepPreferencesTransportTukTuk": {
+    "description": "TukTuk"
+  },
+
+  "stepPreferencesTransportBike": "Bike",
+  "@stepPreferencesTransportBike": {
+    "description": "Vélo"
+  },
+
+  "stepPreferencesLater": "Later",
+  "@stepPreferencesLater": {
+    "description": "Bouton plus tard préférences"
+  },
+
+  "stepPreferencesValidate": "Validate",
+  "@stepPreferencesValidate": {
+    "description": "Bouton valider préférences"
+  },
+
+  "stepSummaryTitle": "All set!",
+  "@stepSummaryTitle": {
+    "description": "Titre étape récapitulatif"
+  },
+
+  "stepSummarySubtitle": "Here's a summary of your choices. You can always modify them later in settings. Ready to get started?",
+  "@stepSummarySubtitle": {
+    "description": "Sous-titre étape récapitulatif"
+  },
+
+  "stepSummaryGps": "GPS",
+  "@stepSummaryGps": {
+    "description": "Label GPS récapitulatif"
+  },
+
+  "stepSummaryNotifications": "Notifications",
+  "@stepSummaryNotifications": {
+    "description": "Label notifications récapitulatif"
+  },
+
+  "stepSummaryTheme": "Theme: {theme}",
+  "@stepSummaryTheme": {
+    "description": "Label thème récapitulatif",
+    "placeholders": {
+      "theme": {
+        "type": "String"
+      }
+    }
+  },
+
+  "stepSummaryTransports": "Transport(s):",
+  "@stepSummaryTransports": {
+    "description": "Label transports récapitulatif"
+  },
+
+  "stepSummaryNoTransports": "No transport selected",
+  "@stepSummaryNoTransports": {
+    "description": "Texte aucun transport sélectionné"
+  },
+
+  "stepSummaryCancel": "Cancel",
+  "@stepSummaryCancel": {
+    "description": "Bouton annuler récapitulatif"
+  },
+
+  "stepSummaryValidate": "Validate",
+  "@stepSummaryValidate": {
+    "description": "Bouton valider récapitulatif"
+  },
+
+  "next": "Next",
+  "@next": {
+    "description": "Bouton suivant"
   }
 }

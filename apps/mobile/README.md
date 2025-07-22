@@ -48,21 +48,21 @@ Application mobile Flutter pour Safe Driving, incluant un système d'authentific
 
 ### Module d'Authentification
 
-**Écran de Connexion**
+## Écran de Connexion
 
 - Champ e-mail avec validation
 - Champ mot de passe sécurisé
 - Bouton **Sign in**
 - Navigation vers Inscription et Mot de passe oublié
 
-**Écran d'Inscription**
+## Écran d'Inscription
 
 - Champs Nom, E-mail, Mot de passe
 - Validation en temps réel
 - Bouton **Sign up**
 - Retour vers l'écran de Connexion
 
-**Écran Mot de Passe Oublié**
+## Écran Mot de Passe Oublié
 
 - Champ E-mail
 - Bouton **Reset password**
@@ -70,34 +70,34 @@ Application mobile Flutter pour Safe Driving, incluant un système d'authentific
 
 ### Menu Interactif d'Onboarding
 
-**Étape 1 - Sélection du Rôle**
+## Étape 1 - Sélection du Rôle
 
 - Choix entre Utilisateur et Chauffeur
 - Interface avec boutons optimisés
 
-**Étape 2 - Bienvenue**
+## Étape 2 - Bienvenue
 
 - Message de bienvenue personnalisé
 - Options "Plus tard" et "Démarrer"
 
-**Étape 3 - Configuration GPS**
+## Étape 3 - Configuration GPS
 
 - Boutons radio rapprochés avec `visualDensity` optimisée
 - Texte avec `FontWeight.w600` pour meilleure lisibilité
 - Options Activer/Plus tard
 
-**Étape 4 - Notifications**
+## Étape 4 - Notifications
 
 - Interface identique au GPS
 - Gestion des alertes temps réel
 
-**Étape 5 - Préférences**
+## Étape 5 - Préférences
 
 - Sélection du thème (Clair/Sombre)
 - Choix des modes de transport avec icônes
 - FilterChips interactifs
 
-**Étape 6 - Récapitulatif**
+## Étape 6 - Récapitulatif
 
 - Résumé des choix utilisateur
 - Possibilité de modification
@@ -166,8 +166,7 @@ Application mobile Flutter pour Safe Driving, incluant un système d'authentific
 
 ## Structure du Projet
 
-```
-lib/
+```lib/
 ├── core/
 │   └── constants/
 │       └── colors/

@@ -145,6 +145,12 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
     });
   }
 
+  void _updateLanguage(String language) {
+    setState(() {
+      _appState = _appState.copyWith(selectedLanguage: language);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -764,6 +770,11 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               style: TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
             const SizedBox(height: 8),
+            Text(
+              'Transport(s) :',
+              style: TextStyle(color: AppColors.buttonWithoutBackGround),
+            ),
+            const SizedBox(height: 8),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
@@ -776,11 +787,6 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Transport(s) :',
-                    style: TextStyle(color: AppColors.buttonWithoutBackGround),
-                  ),
-                  const SizedBox(height: 8),
                   if (_appState.selectedTransports.isNotEmpty)
                     Wrap(
                       spacing: 8,
@@ -825,6 +831,99 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                         fontStyle: FontStyle.italic,
                       ),
                     ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Langue :',
+              style: TextStyle(color: AppColors.buttonWithoutBackGround),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.fillButtonBackgorund.withValues(alpha: 0.3),
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => _updateLanguage('Français'),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: _appState.selectedLanguage == 'Français'
+                            ? AppColors.fillButtonBackgorund
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: _appState.selectedLanguage == 'Français'
+                              ? AppColors.fillButtonBackgorund
+                              : AppColors.buttonWithoutBackGround.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '🇫🇷',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            'Français',
+                            style: TextStyle(
+                              color: _appState.selectedLanguage == 'Français'
+                                  ? AppColors.light
+                                  : AppColors.buttonWithoutBackGround,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  GestureDetector(
+                    onTap: () => _updateLanguage('English'),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: _appState.selectedLanguage == 'English'
+                            ? AppColors.fillButtonBackgorund
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: _appState.selectedLanguage == 'English'
+                              ? AppColors.fillButtonBackgorund
+                              : AppColors.buttonWithoutBackGround.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '🇺🇸',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            'English',
+                            style: TextStyle(
+                              color: _appState.selectedLanguage == 'English'
+                                  ? AppColors.light
+                                  : AppColors.buttonWithoutBackGround,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

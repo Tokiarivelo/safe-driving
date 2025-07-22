@@ -457,6 +457,264 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Passwords do not match'**
   String get passwordsDoNotMatchError;
+
+  /// Titre de l'étape de sélection du rôle
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get onboardingRole;
+
+  /// Titre de l'étape de bienvenue
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get onboardingWelcome;
+
+  /// Titre de l'étape GPS
+  ///
+  /// In en, this message translates to:
+  /// **'GPS'**
+  String get onboardingGps;
+
+  /// Titre de l'étape notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get onboardingNotifications;
+
+  /// Titre de l'étape préférences
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get onboardingPreferences;
+
+  /// Titre de l'étape récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get onboardingSummary;
+
+  /// Titre de l'étape de sélection du rôle
+  ///
+  /// In en, this message translates to:
+  /// **'You are…?'**
+  String get stepRoleTitle;
+
+  /// Bouton utilisateur
+  ///
+  /// In en, this message translates to:
+  /// **'I am a user'**
+  String get stepRoleUser;
+
+  /// Bouton chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'I am a driver'**
+  String get stepRoleDriver;
+
+  /// Titre de bienvenue
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Safe Driving!'**
+  String get stepWelcomeTitle;
+
+  /// Sous-titre de bienvenue
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for joining our community! Let us guide you to customize your experience.'**
+  String get stepWelcomeSubtitle;
+
+  /// Bouton plus tard bienvenue
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get stepWelcomeLater;
+
+  /// Bouton démarrer
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get stepWelcomeStart;
+
+  /// Titre étape GPS
+  ///
+  /// In en, this message translates to:
+  /// **'Where are you?'**
+  String get stepGpsTitle;
+
+  /// Sous-titre étape GPS
+  ///
+  /// In en, this message translates to:
+  /// **'To offer you the closest vehicles, allow access to your location. It\'s quick and secure.'**
+  String get stepGpsSubtitle;
+
+  /// Bouton plus tard GPS
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get stepGpsLater;
+
+  /// Bouton activer GPS
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get stepGpsEnable;
+
+  /// Titre étape notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Stay informed'**
+  String get stepNotificationsTitle;
+
+  /// Sous-titre étape notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Choose to receive real-time alerts about your driver\'s arrival and trip status.'**
+  String get stepNotificationsSubtitle;
+
+  /// Bouton plus tard notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get stepNotificationsLater;
+
+  /// Bouton activer notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get stepNotificationsEnable;
+
+  /// Titre étape préférences
+  ///
+  /// In en, this message translates to:
+  /// **'Make it your way'**
+  String get stepPreferencesTitle;
+
+  /// Sous-titre étape préférences
+  ///
+  /// In en, this message translates to:
+  /// **'Select your favorite transport modes and enable dark theme if you prefer a gentler experience for your eyes.'**
+  String get stepPreferencesSubtitle;
+
+  /// Label thème
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get stepPreferencesTheme;
+
+  /// Thème clair
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get stepPreferencesThemeLight;
+
+  /// Thème sombre
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get stepPreferencesThemeDark;
+
+  /// Label type de transport
+  ///
+  /// In en, this message translates to:
+  /// **'Transport type'**
+  String get stepPreferencesTransport;
+
+  /// Voiture
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get stepPreferencesTransportCar;
+
+  /// Moto
+  ///
+  /// In en, this message translates to:
+  /// **'Motorbike'**
+  String get stepPreferencesTransportMoto;
+
+  /// TukTuk
+  ///
+  /// In en, this message translates to:
+  /// **'TukTuk'**
+  String get stepPreferencesTransportTukTuk;
+
+  /// Vélo
+  ///
+  /// In en, this message translates to:
+  /// **'Bike'**
+  String get stepPreferencesTransportBike;
+
+  /// Bouton plus tard préférences
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get stepPreferencesLater;
+
+  /// Bouton valider préférences
+  ///
+  /// In en, this message translates to:
+  /// **'Validate'**
+  String get stepPreferencesValidate;
+
+  /// Titre étape récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'All set!'**
+  String get stepSummaryTitle;
+
+  /// Sous-titre étape récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Here\'s a summary of your choices. You can always modify them later in settings. Ready to get started?'**
+  String get stepSummarySubtitle;
+
+  /// Label GPS récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'GPS'**
+  String get stepSummaryGps;
+
+  /// Label notifications récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get stepSummaryNotifications;
+
+  /// Label thème récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Theme: {theme}'**
+  String stepSummaryTheme(String theme);
+
+  /// Label transports récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Transport(s):'**
+  String get stepSummaryTransports;
+
+  /// Texte aucun transport sélectionné
+  ///
+  /// In en, this message translates to:
+  /// **'No transport selected'**
+  String get stepSummaryNoTransports;
+
+  /// Bouton annuler récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get stepSummaryCancel;
+
+  /// Bouton valider récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Validate'**
+  String get stepSummaryValidate;
+
+  /// Bouton suivant
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
 }
 
 class _AppLocalizationsDelegate

@@ -196,4 +196,140 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get passwordsDoNotMatchError =>
       'Les mots de passe ne correspondent pas';
+
+  @override
+  String get onboardingRole => 'Rôle';
+
+  @override
+  String get onboardingWelcome => 'Bienvenue';
+
+  @override
+  String get onboardingGps => 'GPS';
+
+  @override
+  String get onboardingNotifications => 'Notifications';
+
+  @override
+  String get onboardingPreferences => 'Préférences';
+
+  @override
+  String get onboardingSummary => 'Récapitulatif';
+
+  @override
+  String get stepRoleTitle => 'Vous êtes… ?';
+
+  @override
+  String get stepRoleUser => 'Je suis utilisateur';
+
+  @override
+  String get stepRoleDriver => 'Je suis un chauffeur';
+
+  @override
+  String get stepWelcomeTitle => 'Bienvenue chez Safe Driving !';
+
+  @override
+  String get stepWelcomeSubtitle =>
+      'Merci d\'avoir rejoint notre communauté ! Laissez-nous vous guider pour personnaliser votre expérience.';
+
+  @override
+  String get stepWelcomeLater => 'Plus tard';
+
+  @override
+  String get stepWelcomeStart => 'Démarrer';
+
+  @override
+  String get stepGpsTitle => 'Où êtes-vous ?';
+
+  @override
+  String get stepGpsSubtitle =>
+      'Pour vous proposer les véhicules les plus proches, autorisez l\'accès à votre position. C\'est rapide et sécurisé.';
+
+  @override
+  String get stepGpsLater => 'Plus tard';
+
+  @override
+  String get stepGpsEnable => 'Activer';
+
+  @override
+  String get stepNotificationsTitle => 'Restez informé';
+
+  @override
+  String get stepNotificationsSubtitle =>
+      'Choisissez de recevoir des alertes en temps réel sur l\'arrivée de votre chauffeur et l\'état de votre trajet.';
+
+  @override
+  String get stepNotificationsLater => 'Plus tard';
+
+  @override
+  String get stepNotificationsEnable => 'Activer';
+
+  @override
+  String get stepPreferencesTitle => 'Faites-le à votre façon';
+
+  @override
+  String get stepPreferencesSubtitle =>
+      'Sélectionnez vos modes de transport favoris et activez le thème sombre si vous préférez une expérience plus douce pour les yeux.';
+
+  @override
+  String get stepPreferencesTheme => 'Thème';
+
+  @override
+  String get stepPreferencesThemeLight => 'Clair';
+
+  @override
+  String get stepPreferencesThemeDark => 'Sombre';
+
+  @override
+  String get stepPreferencesTransport => 'Type de transport';
+
+  @override
+  String get stepPreferencesTransportCar => 'Voiture';
+
+  @override
+  String get stepPreferencesTransportMoto => 'Moto';
+
+  @override
+  String get stepPreferencesTransportTukTuk => 'TukTuk';
+
+  @override
+  String get stepPreferencesTransportBike => 'Vélo';
+
+  @override
+  String get stepPreferencesLater => 'Plus tard';
+
+  @override
+  String get stepPreferencesValidate => 'Valider';
+
+  @override
+  String get stepSummaryTitle => 'Tout est prêt !';
+
+  @override
+  String get stepSummarySubtitle =>
+      'Voilà un résumé de vos choix. Vous pouvez toujours les modifier plus tard dans les paramètres. Prêt·e à démarrer ?';
+
+  @override
+  String get stepSummaryGps => 'GPS';
+
+  @override
+  String get stepSummaryNotifications => 'Notifications';
+
+  @override
+  String stepSummaryTheme(String theme) {
+    return 'Thème : $theme';
+  }
+
+  @override
+  String get stepSummaryTransports => 'Transport(s) :';
+
+  @override
+  String get stepSummaryNoTransports => 'Aucun transport sélectionné';
+
+  @override
+  String get stepSummaryCancel => 'Annuler';
+
+  @override
+  String get stepSummaryValidate => 'Valider';
+
+  @override
+  String get next => 'Suivant';
 }

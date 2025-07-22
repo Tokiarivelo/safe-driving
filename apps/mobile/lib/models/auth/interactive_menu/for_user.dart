@@ -13,12 +13,14 @@ class AppState {
   final bool notifEnabled;
   final String selectedTheme;
   final List<String> selectedTransports;
+  final String selectedLanguage;
 
   const AppState({
     this.gpsEnabled = false,
     this.notifEnabled = false,
     this.selectedTheme = 'Clair',
     this.selectedTransports = const [],
+    this.selectedLanguage = 'Français',
   });
 
   AppState copyWith({
@@ -26,12 +28,14 @@ class AppState {
     bool? notifEnabled,
     String? selectedTheme,
     List<String>? selectedTransports,
+    String? selectedLanguage,
   }) {
     return AppState(
       gpsEnabled: gpsEnabled ?? this.gpsEnabled,
       notifEnabled: notifEnabled ?? this.notifEnabled,
       selectedTheme: selectedTheme ?? this.selectedTheme,
       selectedTransports: selectedTransports ?? this.selectedTransports,
+      selectedLanguage: selectedLanguage ?? this.selectedLanguage,
     );
   }
 }
