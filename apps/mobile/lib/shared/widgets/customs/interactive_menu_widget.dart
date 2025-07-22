@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/models/auth/interactive_menu/for_user.dart';
+import 'package:safe_driving/shared/widgets/animations/animation_widget.dart';
 
 class InteractiveMenuWidget extends StatefulWidget {
   const InteractiveMenuWidget({super.key});
@@ -10,46 +12,137 @@ class InteractiveMenuWidget extends StatefulWidget {
 }
 
 class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
-  int _currentStep = 1;
+  static const int _totalSteps = 6;
 
-  // États d'expansion pour chaque tile
+  int _currentStep = 1;
+  AppState _appState = const AppState();
   final Map<int, bool> _expandedTiles = {};
 
-  // États pour les steps
-  bool _gpsEnabled = false;
-  bool _notifEnabled = false;
-  String _selectedTheme = 'Clair';
-  final List<String> _selectedTransports = [];
-
-  final List<_StepInfo> _steps = [
-    _StepInfo(title: 'Bienvenue', icon: null, emoji: '👋'),
-    _StepInfo(title: 'GPS', icon: Icons.location_on),
-    _StepInfo(title: 'Notifications', icon: Icons.notifications),
-    _StepInfo(title: 'Préférence', icon: Icons.settings),
-    _StepInfo(title: 'Récapitulatif', icon: Icons.recent_actors),
+  // Configuration des étapes
+  static const List<StepInfo> _steps = [
+    StepInfo(title: 'Bienvenue', emoji: '👋'),
+    StepInfo(title: 'GPS', icon: Icons.location_on),
+    StepInfo(title: 'Notifications', icon: Icons.notifications),
+    StepInfo(title: 'Préférence', icon: Icons.settings),
+    StepInfo(title: 'Récapitulatif', icon: Icons.recent_actors),
   ];
 
+  static const List<String> _transportModes = [
+    'Voiture',
+    'Moto',
+    'TukTuk',
+    'Vélo',
+  ];
+
+  static const Map<String, IconData> _transportIcons = {
+    'Voiture': Icons.directions_car,
+    'Moto': Icons.motorcycle,
+    'TukTuk': Icons.electric_rickshaw,
+    'Vélo': Icons.pedal_bike,
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeExpandedTiles();
+  }
+
+  void _initializeExpandedTiles() {
+    for (int i = 2; i <= _totalSteps; i++) {
+      _expandedTiles[i] = false;
+    }
+  }
+
+  // Navigation entre les étapes (ici steps ce sont les expansions)
   void _nextStep() {
-    if (_currentStep < 6) setState(() => _currentStep++);
+    if (_currentStep < _totalSteps) {
+      _updateStep(_currentStep + 1);
+    }
+  }
+
+  void _goToStep(int step) {
+    if (step >= 1 && step <= _totalSteps) {
+      _updateStep(step);
+    }
+  }
+
+  void _nextStepImmediate() {
+    if (_currentStep < _totalSteps) {
+      final newStep = _currentStep + 1;
+      setState(() {
+        if (_currentStep > 1) {
+          _expandedTiles[_currentStep] = false;
+        }
+        _currentStep = newStep;
+        if (newStep > 1) {
+          _expandedTiles[newStep] = true;
+        }
+      });
+    }
+  }
+
+  void _updateStep(int newStep) {
+    setState(() {
+      if (_currentStep > 1) {
+        _expandedTiles[_currentStep] = false;
+      }
+      _currentStep = newStep;
+      // Ouvrir immédiatement la nouvelle step
+      if (newStep > 1) {
+        _expandedTiles[newStep] = true;
+      }
+    });
   }
 
   String _getStepTitle(int step) {
-    switch (step) {
-      case 1:
-        return 'Rôle';
-      case 2:
-        return 'Bienvenue';
-      case 3:
-        return 'GPS';
-      case 4:
-        return 'Notifications';
-      case 5:
-        return 'Préférences';
-      case 6:
-        return 'Récapitulatif';
-      default:
-        return 'Étape $step';
-    }
+    const titles = {
+      1: 'Rôle',
+      2: 'Bienvenue',
+      3: 'GPS',
+      4: 'Notifications',
+      5: 'Préférences',
+      6: 'Récapitulatif',
+    };
+    return titles[step] ?? 'Étape $step';
+  }
+
+  // Update state
+  void _updateGps(bool value) {
+    setState(() {
+      _appState = _appState.copyWith(gpsEnabled: value);
+    });
+  }
+
+  void _updateNotifications(bool value) {
+    setState(() {
+      _appState = _appState.copyWith(notifEnabled: value);
+    });
+  }
+
+  void _updateTheme(String theme) {
+    setState(() {
+      _appState = _appState.copyWith(selectedTheme: theme);
+    });
+  }
+
+  void _updateTransport(String transport, bool selected) {
+    setState(() {
+      final newTransports = List<String>.from(_appState.selectedTransports);
+      if (selected) {
+        newTransports.add(transport);
+      } else {
+        newTransports.remove(transport);
+      }
+      _appState = _appState.copyWith(selectedTransports: newTransports);
+    });
+  }
+
+  void _removeTransport(String transport) {
+    setState(() {
+      final newTransports = List<String>.from(_appState.selectedTransports);
+      newTransports.remove(transport);
+      _appState = _appState.copyWith(selectedTransports: newTransports);
+    });
   }
 
   @override
@@ -93,7 +186,11 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 30),
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        bottom: 30,
+                      ),
                       child: Container(
                         width: 330,
                         padding: const EdgeInsets.all(16),
@@ -144,83 +241,98 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
     );
   }
 
-  //Les expansions
+  //Les expansions avec effet de slide (on utilise un widget animation)
   Widget _buildExpansionTile(int step) {
     final info = _steps[step - 2];
-    final isExpanded = _expandedTiles[step] ?? (_currentStep == step);
+    final isExpanded = _expandedTiles[step] ?? false;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      child: ExpansionTile(
-        key: Key('step_$step'),
-        backgroundColor: AppColors.transparent,
-        collapsedBackgroundColor: AppColors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: AppColors.light),
-        ),
-        collapsedShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: AppColors.light),
-        ),
-        initiallyExpanded: isExpanded,
-        onExpansionChanged: (open) {
-          setState(() {
-            _expandedTiles[step] = open;
-            if (open) {
-              _currentStep = step;
-            }
-          });
-        },
-        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        title: Row(
-          children: [
-            if (info.emoji != null)
-              Transform.translate(
-                offset: const Offset(-4, 0),
-                child: Container(
-                  width: 24,
-                  height: 30,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    info.emoji!,
-                    style: const TextStyle(fontSize: 20),
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          key: ValueKey(
+            'expansion_tile_${step}_$isExpanded',
+          ), // Clé dynamique pour forcer le rebuild
+          backgroundColor: AppColors.transparent,
+          collapsedBackgroundColor: AppColors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: AppColors.light, width: 1.0),
+          ),
+          collapsedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: AppColors.light, width: 1.0),
+          ),
+          initiallyExpanded: isExpanded,
+          maintainState:
+              true, // Maintient l'état pour éviter les reconstructions
+          onExpansionChanged: (bool expanded) {
+            setState(() {
+              _expandedTiles[step] = expanded;
+              if (expanded && _currentStep != step) {
+                // Fermer les autres tiles
+                for (int i = 2; i <= 6; i++) {
+                  if (i != step) {
+                    _expandedTiles[i] = false;
+                  }
+                }
+                _currentStep = step;
+              }
+            });
+          },
+          controlAffinity: ListTileControlAffinity
+              .trailing, // on assure que la flèche est bien gérée (compliquer à gérer avec SlidingExpansionTile)
+          tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          title: Row(
+            children: [
+              if (info.emoji != null)
+                Transform.translate(
+                  offset: const Offset(-4, 0),
+                  child: Container(
+                    width: 24,
+                    height: 30,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      info.emoji!,
+                      style: const TextStyle(fontSize: 20),
+                    ),
                   ),
+                )
+              else if (info.icon != null)
+                Icon(info.icon, color: AppColors.light, size: 24),
+              const SizedBox(width: 8),
+              Text(
+                info.title,
+                style: TextStyle(
+                  color: AppColors.light,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 16,
                 ),
-              )
-            else if (info.icon != null)
-              Icon(info.icon, color: AppColors.light, size: 24),
-            const SizedBox(width: 8),
-            Text(
-              info.title,
-              style: TextStyle(
-                color: AppColors.light,
-                fontWeight: FontWeight.normal,
-                fontSize: 16,
+              ),
+            ],
+          ),
+          children: [
+            slideSmoothAnimation(
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.secondBackgroundColor,
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
+                  ),
+                  border: Border(
+                    top: BorderSide(color: AppColors.blur, width: 1),
+                  ),
+                  boxShadow: [BoxShadow(color: AppColors.blur, blurRadius: 15)],
+                ),
+                padding: const EdgeInsets.all(16),
+                child: _buildStepContent(step),
               ),
             ),
           ],
         ),
-        trailing: Icon(
-          isExpanded ? Icons.expand_less : Icons.expand_more,
-          color: AppColors.light,
-        ),
-        children: [
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.secondBackgroundColor,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(12),
-                bottomRight: Radius.circular(12),
-              ),
-              border: Border(top: BorderSide(color: AppColors.blur, width: 1)),
-              boxShadow: [BoxShadow(color: AppColors.blur, blurRadius: 15)],
-            ),
-            padding: const EdgeInsets.all(16),
-            child: _buildStepContent(step),
-          ),
-        ],
       ),
     );
   }
@@ -239,7 +351,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 fontWeight: FontWeight.w400,
               ),
             ),
-                    const SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -255,7 +367,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     onPressed: _nextStep,
                     child: const Text(
                       'Je suis utilisateur',
-                      style: TextStyle(color: AppColors.light, fontSize: 9),
+                      style: TextStyle(color: AppColors.light, fontSize: 10),
                     ),
                   ),
                 ),
@@ -269,10 +381,10 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: _nextStep,
                     child: const Text(
                       'Je suis un chauffeur',
-                      style: TextStyle(color: AppColors.light, fontSize: 9),
+                      style: TextStyle(color: AppColors.light, fontSize: 10),
                     ),
                   ),
                 ),
@@ -313,7 +425,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  onPressed: () => setState(() => _currentStep = 3),
+                  onPressed: _nextStepImmediate,
                   child: Text(
                     'Plus tard',
                     style: TextStyle(color: AppColors.buttonWithoutBackGround),
@@ -326,7 +438,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  onPressed: () => setState(() => _currentStep = 3),
+                  onPressed: _nextStepImmediate,
                   child: const Text(
                     'Démarrer',
                     style: TextStyle(color: AppColors.light),
@@ -361,20 +473,36 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               children: [
                 Expanded(
                   child: RadioListTile<bool>(
-                    title: const Text('Plus tard'),
+                    contentPadding: EdgeInsets.zero,
+                    visualDensity: const VisualDensity(horizontal: -4),
+                    title: Text(
+                      'Plus tard',
+                      style: TextStyle(
+                        color: AppColors.buttonWithoutBackGround,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     value: false,
-                    groupValue: _gpsEnabled,
+                    groupValue: _appState.gpsEnabled,
                     activeColor: AppColors.buttonWithoutBackGround,
-                    onChanged: (v) => setState(() => _gpsEnabled = v!),
+                    onChanged: (value) => _updateGps(value!),
                   ),
                 ),
                 Expanded(
                   child: RadioListTile<bool>(
-                    title: const Text('Activer'),
+                    contentPadding: EdgeInsets.zero,
+                    visualDensity: const VisualDensity(horizontal: -4),
+                    title: Text(
+                      'Activer',
+                      style: TextStyle(
+                        color: AppColors.buttonWithoutBackGround,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     value: true,
-                    groupValue: _gpsEnabled,
+                    groupValue: _appState.gpsEnabled,
                     activeColor: AppColors.buttonWithoutBackGround,
-                    onChanged: (v) => setState(() => _gpsEnabled = v!),
+                    onChanged: (value) => _updateGps(value!),
                   ),
                 ),
               ],
@@ -388,7 +516,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                onPressed: () => setState(() => _currentStep = 4),
+                onPressed: _nextStepImmediate,
                 child: const Text(
                   'Suivant',
                   style: TextStyle(color: AppColors.light),
@@ -422,20 +550,36 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               children: [
                 Expanded(
                   child: RadioListTile<bool>(
-                    title: const Text('Plus tard'),
+                    contentPadding: EdgeInsets.zero,
+                    visualDensity: const VisualDensity(horizontal: -4),
+                    title: Text(
+                      'Plus tard',
+                      style: TextStyle(
+                        color: AppColors.buttonWithoutBackGround,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     value: false,
-                    groupValue: _notifEnabled,
+                    groupValue: _appState.notifEnabled,
                     activeColor: AppColors.buttonWithoutBackGround,
-                    onChanged: (v) => setState(() => _notifEnabled = v!),
+                    onChanged: (value) => _updateNotifications(value!),
                   ),
                 ),
                 Expanded(
                   child: RadioListTile<bool>(
-                    title: const Text('Activer'),
+                    contentPadding: EdgeInsets.zero,
+                    visualDensity: const VisualDensity(horizontal: -4),
+                    title: Text(
+                      'Activer',
+                      style: TextStyle(
+                        color: AppColors.buttonWithoutBackGround,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     value: true,
-                    groupValue: _notifEnabled,
+                    groupValue: _appState.notifEnabled,
                     activeColor: AppColors.buttonWithoutBackGround,
-                    onChanged: (v) => setState(() => _notifEnabled = v!),
+                    onChanged: (value) => _updateNotifications(value!),
                   ),
                 ),
               ],
@@ -449,7 +593,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                onPressed: () => setState(() => _currentStep = 5),
+                onPressed: _nextStepImmediate,
                 child: const Text(
                   'Suivant',
                   style: TextStyle(color: AppColors.light),
@@ -487,14 +631,14 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               children: [
                 ChoiceChip(
                   label: const Text('Clair'),
-                  selected: _selectedTheme == 'Clair',
-                  onSelected: (_) => setState(() => _selectedTheme = 'Clair'),
+                  selected: _appState.selectedTheme == 'Clair',
+                  onSelected: (_) => _updateTheme('Clair'),
                 ),
                 const SizedBox(width: 8),
                 ChoiceChip(
                   label: const Text('Sombre'),
-                  selected: _selectedTheme == 'Sombre',
-                  onSelected: (_) => setState(() => _selectedTheme = 'Sombre'),
+                  selected: _appState.selectedTheme == 'Sombre',
+                  onSelected: (_) => _updateTheme('Sombre'),
                 ),
               ],
             ),
@@ -507,7 +651,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.fillButtonBackgorund.withOpacity(0.3),
+                  color: AppColors.fillButtonBackgorund.withValues(alpha: 0.3),
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(8),
@@ -515,30 +659,15 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               padding: const EdgeInsets.all(8),
               child: Wrap(
                 spacing: 8,
-                children: ['Voiture', 'Moto', 'TukTuk', 'Vélo'].map((mode) {
-                  final sel = _selectedTransports.contains(mode);
+                children: _transportModes.map((mode) {
+                  final isSelected = _appState.selectedTransports.contains(
+                    mode,
+                  );
                   return FilterChip(
-                    avatar: Icon(
-                      mode == 'Voiture'
-                          ? Icons.directions_car
-                          : mode == 'Moto'
-                          ? Icons.motorcycle
-                          : mode == 'TukTuk'
-                          ? Icons.electric_rickshaw
-                          : Icons.pedal_bike,
-                      size: 18,
-                    ),
+                    avatar: Icon(_transportIcons[mode], size: 18),
                     label: Text(mode),
-                    selected: sel,
-                    onSelected: (on) {
-                      setState(() {
-                        if (on) {
-                          _selectedTransports.add(mode);
-                        } else {
-                          _selectedTransports.remove(mode);
-                        }
-                      });
-                    },
+                    selected: isSelected,
+                    onSelected: (selected) => _updateTransport(mode, selected),
                     selectedColor: AppColors.fillButtonBackgorund,
                     checkmarkColor: AppColors.light,
                   );
@@ -557,7 +686,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  onPressed: () => setState(() => _currentStep = 6),
+                  onPressed: _nextStepImmediate,
                   child: Text(
                     'Plus tard',
                     style: TextStyle(color: AppColors.buttonWithoutBackGround),
@@ -570,7 +699,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  onPressed: () => setState(() => _currentStep = 6),
+                  onPressed: _nextStepImmediate,
                   child: const Text(
                     'Valider',
                     style: TextStyle(color: AppColors.light),
@@ -604,9 +733,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             Row(
               children: [
                 Switch(
-                  value: _gpsEnabled,
+                  value: _appState.gpsEnabled,
                   activeColor: AppColors.progress,
-                  onChanged: (v) => setState(() => _gpsEnabled = v),
+                  onChanged: _updateGps,
                 ),
                 const SizedBox(width: 8),
                 const Text(
@@ -618,9 +747,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             Row(
               children: [
                 Switch(
-                  value: _notifEnabled,
+                  value: _appState.notifEnabled,
                   activeColor: AppColors.progress,
-                  onChanged: (v) => setState(() => _notifEnabled = v),
+                  onChanged: _updateNotifications,
                 ),
                 const SizedBox(width: 8),
                 const Text(
@@ -631,14 +760,14 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Thème : $_selectedTheme',
+              'Thème : ${_appState.selectedTheme}',
               style: TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
             const SizedBox(height: 8),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.fillButtonBackgorund.withOpacity(0.3),
+                  color: AppColors.fillButtonBackgorund.withValues(alpha: 0.3),
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(8),
@@ -648,24 +777,18 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Transport :',
+                    'Transport(s) :',
                     style: TextStyle(color: AppColors.buttonWithoutBackGround),
                   ),
                   const SizedBox(height: 8),
-                  if (_selectedTransports.isNotEmpty)
+                  if (_appState.selectedTransports.isNotEmpty)
                     Wrap(
                       spacing: 8,
                       runSpacing: 4,
-                      children: _selectedTransports.map((transport) {
+                      children: _appState.selectedTransports.map((transport) {
                         return Chip(
                           avatar: Icon(
-                            transport == 'Voiture'
-                                ? Icons.directions_car
-                                : transport == 'Moto'
-                                ? Icons.motorcycle
-                                : transport == 'TukTuk'
-                                ? Icons.electric_rickshaw
-                                : Icons.pedal_bike,
+                            _transportIcons[transport],
                             size: 16,
                             color: AppColors.buttonWithoutBackGround,
                           ),
@@ -681,15 +804,11 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                             size: 18,
                             color: AppColors.buttonWithoutBackGround,
                           ),
-                          onDeleted: () {
-                            setState(() {
-                              _selectedTransports.remove(transport);
-                            });
-                          },
+                          onDeleted: () => _removeTransport(transport),
                           backgroundColor: AppColors.secondBackgroundColor,
                           side: BorderSide(
-                            color: AppColors.fillButtonBackgorund.withOpacity(
-                              0.5,
+                            color: AppColors.fillButtonBackgorund.withValues(
+                              alpha: 0.5,
                             ),
                             width: 1,
                           ),
@@ -700,8 +819,8 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     Text(
                       'Aucun transport sélectionné',
                       style: TextStyle(
-                        color: AppColors.buttonWithoutBackGround.withOpacity(
-                          0.6,
+                        color: AppColors.buttonWithoutBackGround.withValues(
+                          alpha: 0.6,
                         ),
                         fontStyle: FontStyle.italic,
                       ),
@@ -721,7 +840,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  onPressed: () => setState(() => _currentStep = 1),
+                  onPressed: () => _goToStep(1),
                   child: Text(
                     'Annuler',
                     style: TextStyle(color: AppColors.buttonWithoutBackGround),
@@ -751,11 +870,4 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         return const SizedBox.shrink();
     }
   }
-}
-
-class _StepInfo {
-  final String title;
-  final IconData? icon;
-  final String? emoji;
-  _StepInfo({required this.title, this.icon, this.emoji});
 }
