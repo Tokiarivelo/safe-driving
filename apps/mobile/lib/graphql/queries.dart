@@ -6,7 +6,6 @@ fragment UserFragment on User {
   firstName
   lastName
   phone
-  username
   isVerified
   createdAt
   updatedAt
@@ -25,26 +24,66 @@ fragment UserFragment on User {
 
 // Authentication mutations
 const String loginMutation = r'''
-mutation Login($email: String!, $password: String!) {
-  login(email: $email, password: $password) {
-    token
+mutation Login($data: LoginInput!) {
+  login(data: $data) {
+    tokens {
+      token
+      expiresAt
+    }
     user {
-      ...UserFragment
+      id
+      email
+      firstName
+      lastName
+      phone
+      isVerified
+      createdAt
+      updatedAt
+      Role {
+        id
+        name
+      }
+      images {
+        id
+        url
+        type
+        userId
+      }
     }
   }
 }
-''' + userFragment;
+''';
 
 const String registerMutation = r'''
-mutation Register($input: CreateUserInput!) {
-  register(input: $input) {
-    token
+mutation Register($data: RegisterInput!) {
+  register(data: $data) {
+    tokens {
+      token
+      expiresAt
+    }
     user {
-      ...UserFragment
+      id
+      email
+      firstName
+      lastName
+      phone
+      isVerified
+      createdAt
+      updatedAt
+      Role {
+        id
+        name
+      }
+      images {
+        id
+        url
+        type
+        userId
+      }
     }
   }
 }
-''' + userFragment;
+''';
 
 // User queries
 const String getUserQuery = r'''
@@ -106,49 +145,9 @@ query GetRoles {
 }
 ''';
 
-// Password operations
-const String changePasswordMutation = r'''
-mutation ChangePassword($currentPassword: String!, $newPassword: String!) {
-  changePassword(currentPassword: $currentPassword, newPassword: $newPassword) {
-    success
-    message
-  }
-}
-''';
-
-const String forgotPasswordMutation = r'''
-mutation ForgotPassword($email: String!) {
-  forgotPassword(email: $email) {
-    success
-    message
-  }
-}
-''';
-
-const String resetPasswordMutation = r'''
-mutation ResetPassword($token: String!, $newPassword: String!) {
-  resetPassword(token: $token, newPassword: $newPassword) {
-    success
-    message
-  }
-}
-''';
-
-// Email verification
-const String verifyEmailMutation = r'''
-mutation VerifyEmail($token: String!) {
-  verifyEmail(token: $token) {
-    success
-    message
-  }
-}
-''';
-
-const String resendVerificationMutation = r'''
-mutation ResendVerification($email: String!) {
-  resendVerification(email: $email) {
-    success
-    message
-  }
+// Email validation query
+const String isEmailTakenQuery = r'''
+query IsEmailTaken($email: String!) {
+  isEmailTaken(email: $email)
 }
 ''';

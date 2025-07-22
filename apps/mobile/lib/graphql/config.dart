@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+/// Initialise le client GraphQL sans token (auth anonyme ou publique)
 ValueNotifier<GraphQLClient> initGraphQLClient() {
   final HttpLink httpLink = HttpLink('http://localhost:4000/graphql');
 
   final AuthLink authLink = AuthLink(
-    getToken: () async {
-      // TODO: Implement token retrieval from secure storage
-      // For now, return null - will be updated when implementing secure storage
-      return null;
-    },
+    getToken: () async => null, // à implémenter plus tard
   );
 
   final Link link = authLink.concat(httpLink);
 
   return ValueNotifier(
     GraphQLClient(
-      cache: GraphQLCache(store: HiveStore()),
       link: link,
+      cache: GraphQLCache(store: HiveStore()),
     ),
   );
 }
 
-// Helper function to create GraphQL client with token
+/// Crée un client GraphQL avec un token (utilisé après login)
 GraphQLClient createGraphQLClientWithToken(String? token) {
   final HttpLink httpLink = HttpLink('http://localhost:4000/graphql');
 
@@ -33,7 +30,7 @@ GraphQLClient createGraphQLClientWithToken(String? token) {
   final Link link = authLink.concat(httpLink);
 
   return GraphQLClient(
-    cache: GraphQLCache(store: HiveStore()),
     link: link,
+    cache: GraphQLCache(store: HiveStore()),
   );
 }

@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:safe_driving/core/constants/colors.dart';
 import 'package:safe_driving/shared/widgets/colors/colors_widget.dart';
+import 'package:safe_driving/shared/widgets/snackbar.dart';
 
 class AuthWidget extends StatefulWidget {
   final bool isLogin;
   final bool isForgotPassword;
   final VoidCallback? onForgotPassword;
-  final VoidCallback? onSignIn;
-  final VoidCallback? onSignUp;
-  final VoidCallback? onResetPassword;
+  final Function(String email, String password)? onSignIn;
+final Function(String firstName, String lastName, String email, String password)? onSignUp;
+  final Function(String email)? onResetPassword;
   final VoidCallback? onGoogleSignIn;
   final VoidCallback? onFacebookSignIn;
   final VoidCallback? onNavigateToLogin;
@@ -44,7 +45,6 @@ class AuthWidgetState extends State<AuthWidget> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   
   @override
@@ -53,7 +53,6 @@ class AuthWidgetState extends State<AuthWidget> {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
-    _userNameController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -255,16 +254,19 @@ class AuthWidgetState extends State<AuthWidget> {
       ],
     );
   }
-
-//bouron retour vers login
+//bouton retour vers login
   Widget _buildBackToLoginButton() {
     return GestureDetector(
-      onTap: widget.onSignIn,
+      onTap: () {
+        widget.onNavigateToLogin?.call();
+      },
       child: Row(
         children: [
           Icon(Icons.arrow_back, color: AppColors.buttonWithoutBackGround),
           GestureDetector(
-            onTap: widget.onSignIn,
+            onTap: () {
+              widget.onNavigateToLogin?.call();
+            },
             child: Text(
               "Back to login",
               style: TextStyle(color: AppColors.buttonWithoutBackGround),
@@ -341,6 +343,7 @@ class AuthWidgetState extends State<AuthWidget> {
               : null,
         ),
         obscureText: obscureText && !isVisible,
+        controller: controller,
       ),
     );
   }
@@ -351,24 +354,24 @@ class AuthWidgetState extends State<AuthWidget> {
         if (!widget.isForgotPassword) ...[
           _buildInputField(
             hint: widget.isLogin ? "Email or Username" : "First Name",
-            icon: widget.isLogin ? Icons.person : Icons.person_outline,
+            icon: widget.isLogin ? Icons.person_outline : Icons.badge_outlined,
             controller: widget.isLogin ? _emailController : _firstNameController
           ),
           if (!widget.isLogin)
             _buildInputField(
               hint: "Last Name",
-              icon: Icons.person_outline,
+              icon: Icons.badge_outlined,
               controller: _lastNameController
             ),
           if (!widget.isLogin)
             _buildInputField(
               hint: "Email",
-              icon: Icons.email,
+              icon: Icons.email_outlined,
               controller: _emailController
             ),
           _buildInputField(
             hint: "Password",
-            icon: Icons.lock,
+            icon: Icons.lock_outlined,
             obscureText: true,
             isPassword: true,
             controller: _passwordController
@@ -376,7 +379,7 @@ class AuthWidgetState extends State<AuthWidget> {
           if (!widget.isLogin)
             _buildInputField(
               hint: "Confirm Password",
-              icon: Icons.lock,
+              icon: Icons.lock_outlined,
               obscureText: true,
               isConfirmPassword: true,
               controller: _confirmPasswordController
@@ -388,7 +391,8 @@ class AuthWidgetState extends State<AuthWidget> {
         if (widget.isForgotPassword)
           _buildInputField(
             hint: "Email",
-            icon: Icons.email,
+            icon: Icons.email_outlined,
+            controller: _emailController,
           ),
       ],
     );
@@ -422,19 +426,8 @@ class AuthWidgetState extends State<AuthWidget> {
   }
 //configuration des boutons d'actions
   Widget _buildActionButton() {
-    final Map<bool, Map<String, dynamic>> buttonConfigs = {
-      true: {'text': "Sign In", 'action': widget.onSignIn},
-      false: {
-        'text': widget.isForgotPassword ? "Reset Password" : "Sign Up",
-        'action': widget.isForgotPassword ? widget.onResetPassword : widget.onSignUp,
-      },
-    };
-
-    final config = buttonConfigs[widget.isLogin] ?? 
-        buttonConfigs[false]!;
-
     return ElevatedButton(
-      onPressed: config['action'],
+      onPressed: () => _handleButtonPress(),
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.fillButtonBackgorund,
         shape: RoundedRectangleBorder(
@@ -442,7 +435,11 @@ class AuthWidgetState extends State<AuthWidget> {
         ),
       ),
       child: Text(
-        config['text'],
+        widget.isForgotPassword 
+            ? "Reset Password" 
+            : widget.isLogin 
+                ? "Sign In" 
+                : "Sign Up",
         style: const TextStyle(
           fontFamily: 'Inder',
           color: AppColors.titleColor,
@@ -450,6 +447,74 @@ class AuthWidgetState extends State<AuthWidget> {
         ),
       ),
     );
+  }
+  
+  void _handleButtonPress() {
+    if (widget.isForgotPassword) {
+      // Validation pour réinitialisation du mot de passe
+      if (_emailController.text.trim().isEmpty) {
+        _showErrorSnackBar("Veuillez saisir votre adresse email");
+        return;
+      }
+      if (!_isValidEmail(_emailController.text.trim())) {
+        _showErrorSnackBar("Veuillez saisir une adresse email valide");
+        return;
+      }
+      widget.onResetPassword?.call(_emailController.text.trim());
+    } else if (widget.isLogin) {
+      // Validation pour connexion
+      if (_emailController.text.trim().isEmpty) {
+        _showErrorSnackBar("Veuillez saisir votre email ou nom d'utilisateur");
+        return;
+      }
+      if (_passwordController.text.trim().isEmpty) {
+        _showErrorSnackBar("Veuillez saisir votre mot de passe");
+        return;
+      }
+      widget.onSignIn?.call(_emailController.text.trim(), _passwordController.text.trim());
+    } else {
+      // Validation pour inscription
+      if (_firstNameController.text.trim().isEmpty) {
+        _showErrorSnackBar("Veuillez saisir votre prénom");
+        return;
+      }
+      if (_lastNameController.text.trim().isEmpty) {
+        _showErrorSnackBar("Veuillez saisir votre nom de famille");
+        return;
+      }
+      if (_emailController.text.trim().isEmpty) {
+        _showErrorSnackBar("Veuillez saisir votre adresse email");
+        return;
+      }
+      if (!_isValidEmail(_emailController.text.trim())) {
+        _showErrorSnackBar("Veuillez saisir une adresse email valide");
+        return;
+      }
+      if (_passwordController.text.trim().isEmpty) {
+        _showErrorSnackBar("Veuillez saisir un mot de passe");
+        return;
+      }
+      if (_passwordController.text.trim().length < 8) {
+        _showErrorSnackBar("Le mot de passe doit contenir au moins 8 caractères");
+        return;
+      }
+      if (_confirmPasswordController.text.trim().isEmpty) {
+        _showErrorSnackBar("Veuillez confirmer votre mot de passe");
+        return;
+      }
+      if (_passwordController.text.trim() != _confirmPasswordController.text.trim()) {
+        _showErrorSnackBar("Les mots de passe ne correspondent pas");
+        return;
+      }
+      
+      // Appel de la fonction d'inscription avec les données validées
+      widget.onSignUp?.call(
+        _firstNameController.text.trim(),
+        _lastNameController.text.trim(),
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+      );
+    }
   }
 //lien de navigation
   Widget _buildNavigationLink() {
@@ -498,5 +563,16 @@ class AuthWidgetState extends State<AuthWidget> {
         ),
       ],
     );
+  }
+
+  // Méthode pour valider l'email
+  bool _isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    return emailRegex.hasMatch(email);
+  }
+
+  // Méthode pour afficher les erreurs
+  void _showErrorSnackBar(String message) {
+    SnackbarHelper.showError(context, message);
   }
 }

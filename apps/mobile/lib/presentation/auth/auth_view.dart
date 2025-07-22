@@ -1,118 +1,139 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/shared/widgets/auth/auth_widget.dart';
+import 'package:safe_driving/models/auth/auth_model.dart';
+import 'package:safe_driving/shared/state_management/state.dart';
+import 'package:safe_driving/shared/widgets/snackbar/snackbar_helper.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({super.key});
 
   @override
-  AuthViewState createState() => AuthViewState();
+  State<AuthView> createState() => _AuthViewState();
 }
 
-class AuthViewState extends State<AuthView> {
-  final PageController _pageController = PageController();
+class _AuthViewState extends State<AuthView> {
   int _currentIndex = 0;
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
+  void _navigateTo(int index) {
+    if (mounted) {
+      setState(() => _currentIndex = index);
+    }
   }
-//NB: c'est pour les tests
-  void _navigateToPage(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-    _pageController.animateToPage(
-      index,
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+
+  void _navigateToLogin() => _navigateTo(0);
+  void _navigateToRegister() => _navigateTo(1);
+  void _navigateToForgotPassword() => _navigateTo(2);
+
+  Future<void> _handleSignIn(String email, String password) async {
+    final auth = context.authVM;
+
+    final success = await auth.login(email, password);
+
+    if (!mounted) return;
+
+    if (success) {
+      SnackbarHelper.showSuccess(context, 'Connexion réussie !');
+      // affichage du next screen
+    } else {
+      SnackbarHelper.showError(
+        context,
+        auth.errorMessage ?? 'Email ou mot de passe invalide',
+      );
+    }
+  }
+
+  Future<void> _handleSignUp(
+    String firstName,
+    String lastName,
+    String email,
+    String password,
+  ) async {
+    final auth = context.authVM;
+
+    final input = RegisterInput(
+      email: email,
+      firstName: firstName,
+      lastName: lastName.isNotEmpty ? lastName : null,
+      password: password,
     );
+
+    final success = await auth.register(input);
+
+    if (!mounted) return;
+
+    if (success) {
+      SnackbarHelper.showSuccess(
+        context,
+        'Inscription réussie ! Vous pouvez maintenant vous connecter.',
+      );
+      _navigateToLogin();
+    } else {
+      SnackbarHelper.showError(
+        context,
+        auth.errorMessage ?? 'Erreur lors de l\'inscription',
+      );
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        children: [
-          // Login Page
-          AuthWidget(
-            isLogin: true,
-            isForgotPassword: false,
-            onForgotPassword: navigateToForgotPassword,
-            onSignIn: _handleSignIn,
-            onGoogleSignIn: _handleGoogleSignIn,
-            onFacebookSignIn: _handleFacebookSignIn,
-            onNavigateToRegister: navigateToRegister,
-          ),
-          // Register Page
-          AuthWidget(
-            isLogin: false,
-            isForgotPassword: false,
-            onForgotPassword: navigateToForgotPassword,
-            onSignUp: _handleSignUp,
-            onGoogleSignIn: _handleGoogleSignIn,
-            onFacebookSignIn: _handleFacebookSignIn,
-            onNavigateToLogin: navigateToLogin,
-          ),
-          // Forgot Password Page
-          AuthWidget(
-            isLogin: false,
-            isForgotPassword: true,
-            onResetPassword: _handleResetPassword,
-            onSignIn: navigateToLogin,
-            onSignUp: navigateToRegister,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Méthodes pour la navigation programmatique (slide)
-  void navigateToLogin() {
-    _navigateToPage(0);
-  }
-
-  void navigateToRegister() {
-    _navigateToPage(1);
-  }
-
-  void navigateToForgotPassword() {
-    _navigateToPage(2);
-  }
-
-  // Méthodes de gestion des actions d'authentification (A voir après...)
-  void _handleSignIn() {
-
-    print('Sign In clicked');
-
-  }
-
-  void _handleSignUp() {
-    print('Sign Up clicked');
-  }
-
-  void _handleResetPassword() {
-    print('Reset Password clicked');
-    // Exemple : Afficher un message de confirmation
+  void _handleResetPassword(String email) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Un lien de réinitialisation a été envoyé à votre email'),
-        backgroundColor: Colors.green,
+      const SnackBar(
+        content: Text('Mbola tsy vita lol, miandry server'),
+        backgroundColor: Colors.orange,
       ),
     );
   }
 
   void _handleGoogleSignIn() {
-    print('Google Sign In clicked');
+    if (!mounted) return;
+    SnackbarHelper.showInfo(context, 'Connexion Google non encore implémentée');
   }
 
   void _handleFacebookSignIn() {
-    print('Facebook Sign In clicked');
+    if (!mounted) return;
+    SnackbarHelper.showInfo(context, 'Connexion Facebook non encore implémentée');
+  }
+
+  Widget _buildAuthWidget() {
+    switch (_currentIndex) {
+      case 0:
+        return AuthWidget(
+          isLogin: true,
+          isForgotPassword: false,
+          onForgotPassword: _navigateToForgotPassword,
+          onSignIn: _handleSignIn,
+          onGoogleSignIn: _handleGoogleSignIn,
+          onFacebookSignIn: _handleFacebookSignIn,
+          onNavigateToRegister: _navigateToRegister,
+        );
+      case 1:
+        return AuthWidget(
+          isLogin: false,
+          isForgotPassword: false,
+          onForgotPassword: _navigateToForgotPassword,
+          onSignUp: _handleSignUp,
+          onGoogleSignIn: _handleGoogleSignIn,
+          onFacebookSignIn: _handleFacebookSignIn,
+          onNavigateToLogin: _navigateToLogin,
+        );
+      case 2:
+        return AuthWidget(
+          isLogin: false,
+          isForgotPassword: true,
+          onResetPassword: _handleResetPassword,
+          onSignIn: (_, __) => _navigateToLogin(),
+          onSignUp: (_, __, ___, ____) => _navigateToRegister(),
+        );
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _buildAuthWidget(),
+    );
   }
 }

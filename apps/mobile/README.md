@@ -5,13 +5,22 @@ Ce module contient les vues de **connexion**, **inscription** et **mot de passe 
 
 ---
 
+## Attendu
+
+- La configuration de la base est correcte (`.env`, URL, identifiants…)
+- Le serveur peut exécuter des requêtes de lecture/écriture
+- Le client Flutter pourra ultérieurement interagir avec la base via API GraphQL
+- Les fonctionnalités `login/register` sont fonctionnelles
+
+---
+
 ## 1. Préparation
 
 - Création de la structure du fichier dans `views/` :
   - `auth_view.dart`
 - Mise en place de la **navigation** entre les vues :
-  - Connexion <> Inscription
-  - Connexion <> Mot de passe oublié
+  - Connexion ↔ Inscription
+  - Connexion ↔ Mot de passe oublié
 
 ---
 
@@ -19,49 +28,48 @@ Ce module contient les vues de **connexion**, **inscription** et **mot de passe 
 
 ### Écran de Connexion
 
-- Champ e-mail
-- Champ mot de passe
-- Bouton "sign in"
-- Lien vers inscription et mot de passe oublié
+- Champ e-mail  
+- Champ mot de passe  
+- Bouton **Sign in**  
+- Lien vers **Inscription** et **Mot de passe oublié**
 
 ### Écran d’Inscription
 
-- Champ nom, e-mail, mot de passe
-- Bouton "sign up"
-- Lien vers l’écran de connexion
+- Champ **Nom**, **E-mail**, **Mot de passe**  
+- Bouton **Sign up**  
+- Lien vers l’écran de **Connexion**
 
 ### Écran Mot de Passe Oublié
 
-- Champ e-mail
-- Bouton "Reset password"
+- Champ **E-mail**  
+- Bouton **Reset password**
 
 ---
 
 ## Widgets Réutilisables
 
-- **`color.dart`** : Définition des couleurs de l’application
-- **`auth_widgets.dart`** : Champs de texte personnalisés, boutons d’action, messages d’erreur, etc.
+- `color.dart` : Définition des couleurs de l’application
+- `auth_widgets.dart` : Champs de texte personnalisés, boutons d’action, messages d’erreur, etc.
+- `snackbar.dart` : pour les snakbar
 
 ---
 
 ## Stack Technique
 
-- Flutter
+- Flutter  
 - Dart
 
 ---
 
 ## À venir
 
-- Validation des champs
-- Gestion des erreurs
+- Menu interactive
 
 ---
 
 ## Structure du dossier
 
-```
-lib/
+```lib/
 ├── auth/
 │ ├── auth_view.dart
 │ 
@@ -75,6 +83,7 @@ lib/
 ## Lancement
 
 - flutter run
+- pnpm start:dev
 
 ## Auteur
 

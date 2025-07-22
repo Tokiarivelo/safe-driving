@@ -7,69 +7,51 @@ class UserService {
 
   UserService(this._client);
 
-  // Authentication methods
+  // Authentification
   Future<AuthResponse> login(String email, String password) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: gql(loginMutation),
-        variables: {
-          'email': email,
-          'password': password,
-        },
-      ),
+    final data = await _mutate(
+      document: loginMutation,
+      variables: {'data': {'email': email, 'password': password}},
+      key: 'login',
     );
 
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
+    final token = _extractToken(data['tokens']);
+    if (token == null) throw Exception('No access token received.');
 
-    return AuthResponse.fromJson(result.data!['login']);
+    return AuthResponse(
+      token: token,
+      user: User.fromJson(data['user']),
+    );
   }
 
-  Future<AuthResponse> register(CreateUserInput input) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: gql(registerMutation),
-        variables: {'input': input.toJson()},
-      ),
+  Future<AuthResponse> register(RegisterInput input) async {
+    final data = await _mutate(
+      document: registerMutation,
+      variables: {'data': input.toJson()},
+      key: 'register',
     );
 
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
+    final token = _extractToken(data['tokens']);
+    if (token == null) throw Exception('No access token received.');
 
-    return AuthResponse.fromJson(result.data!['register']);
+    return AuthResponse(
+      token: token,
+      user: User.fromJson(data['user']),
+    );
   }
 
-  // User queries
+  // Utilisateurs
   Future<User> getUser(String id) async {
-    final result = await _client.query(
-      QueryOptions(
-        document: gql(getUserQuery),
-        variables: {'id': id},
-      ),
-    );
-
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
-
-    return User.fromJson(result.data!['user']);
+    final data = await _query(getUserQuery, variables: {'id': id});
+    return User.fromJson(data['user']);
   }
 
   Future<User> getCurrentUser() async {
-    final result = await _client.query(
-      QueryOptions(
-        document: gql(getCurrentUserQuery),
-        fetchPolicy: FetchPolicy.networkOnly,
-      ),
+    final data = await _query(
+      getCurrentUserQuery,
+      fetchPolicy: FetchPolicy.networkOnly,
     );
-
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
-
-    return User.fromJson(result.data!['me']);
+    return User.fromJson(data['me']);
   }
 
   Future<List<User>> getUsers({
@@ -77,176 +59,114 @@ class UserService {
     int? skip,
     Map<String, dynamic>? where,
   }) async {
-    final result = await _client.query(
-      QueryOptions(
-        document: gql(getUsersQuery),
-        variables: {
-          'take': take,
-          'skip': skip,
-          'where': where,
-        },
-      ),
+    final data = await _query(
+      getUsersQuery,
+      variables: {'take': take, 'skip': skip, 'where': where},
     );
 
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
-
-    final usersData = result.data!['users'] as List;
-    return usersData.map((user) => User.fromJson(user)).toList();
+    final users = data['users'] as List;
+    return users.map((u) => User.fromJson(u)).toList();
   }
 
-  // User mutations
   Future<User> createUser(CreateUserInput input) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: gql(createUserMutation),
-        variables: {'input': input.toJson()},
-      ),
+    final data = await _mutate(
+      document: createUserMutation,
+      variables: {'input': input.toJson()},
+      key: 'createUser',
     );
-
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
-
-    return User.fromJson(result.data!['createUser']);
+    return User.fromJson(data);
   }
 
   Future<User> updateUser(String id, UpdateUserInput input) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: gql(updateUserMutation),
-        variables: {
-          'id': id,
-          'input': input.toJson(),
-        },
-      ),
+    final data = await _mutate(
+      document: updateUserMutation,
+      variables: {'id': id, 'input': input.toJson()},
+      key: 'updateUser',
     );
-
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
-
-    return User.fromJson(result.data!['updateUser']);
+    return User.fromJson(data);
   }
 
   Future<String> deleteUser(String id) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: gql(deleteUserMutation),
-        variables: {'id': id},
-      ),
+    final data = await _mutate(
+      document: deleteUserMutation,
+      variables: {'id': id},
+      key: 'deleteUser',
     );
-
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
-
-    return result.data!['deleteUser']['id'];
+    return data['id'];
   }
 
-  // Role operations
+  // Rôles
   Future<List<Role>> getRoles() async {
+    final data = await _query(getRolesQuery);
+    final roles = data['roles'] as List;
+    return roles.map((r) => Role.fromJson(r)).toList();
+  }
+
+  // Email validation
+  Future<bool> isEmailTaken(String email) async {
+    final data = await _query(
+      isEmailTakenQuery,
+      variables: {'email': email},
+    );
+    return data['isEmailTaken'] ?? false;
+  }
+
+  // Utils
+  Future<Map<String, dynamic>> _query(
+    String document, {
+    Map<String, dynamic>? variables,
+    FetchPolicy? fetchPolicy,
+  }) async {
     final result = await _client.query(
       QueryOptions(
-        document: gql(getRolesQuery),
+        document: gql(document),
+        variables: variables ?? {},
+        fetchPolicy: fetchPolicy,
       ),
     );
-
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
-
-    final rolesData = result.data!['roles'] as List;
-    return rolesData.map((role) => Role.fromJson(role)).toList();
+    _handleException(result.exception);
+    return result.data!;
   }
 
-  // Password operations
-  Future<Map<String, dynamic>> changePassword(
-    String currentPassword,
-    String newPassword,
-  ) async {
+  Future<dynamic> _mutate({
+    required String document,
+    Map<String, dynamic>? variables,
+    required String key,
+  }) async {
     final result = await _client.mutate(
       MutationOptions(
-        document: gql(changePasswordMutation),
-        variables: {
-          'currentPassword': currentPassword,
-          'newPassword': newPassword,
-        },
+        document: gql(document),
+        variables: variables ?? {},
       ),
     );
-
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
-
-    return result.data!['changePassword'];
+    _handleException(result.exception);
+    return result.data![key];
   }
 
-  Future<Map<String, dynamic>> forgotPassword(String email) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: gql(forgotPasswordMutation),
-        variables: {'email': email},
-      ),
-    );
-
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
+  void _handleException(OperationException? exception) {
+    if (exception != null) {
+      throw Exception(exception.toString());
     }
-
-    return result.data!['forgotPassword'];
   }
 
-  Future<Map<String, dynamic>> resetPassword(
-    String token,
-    String newPassword,
-  ) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: gql(resetPasswordMutation),
-        variables: {
-          'token': token,
-          'newPassword': newPassword,
-        },
-      ),
-    );
-
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
+  String? _extractToken(dynamic tokensData) {
+    if (tokensData is List && tokensData.isNotEmpty) {
+      return tokensData.first['token'];
+    } else if (tokensData is String) {
+      return tokensData;
     }
-
-    return result.data!['resetPassword'];
+    return null;
   }
+}
 
-  // Email verification
-  Future<Map<String, dynamic>> verifyEmail(String token) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: gql(verifyEmailMutation),
-        variables: {'token': token},
-      ),
-    );
+class SessionService {
+  String? _token;
 
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
+  String? get token => _token;
 
-    return result.data!['verifyEmail'];
-  }
+  void saveToken(String token) => _token = token;
 
-  Future<Map<String, dynamic>> resendVerification(String email) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: gql(resendVerificationMutation),
-        variables: {'email': email},
-      ),
-    );
+  void clear() => _token = null;
 
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
-
-    return result.data!['resendVerification'];
-  }
+  bool get isAuthenticated => _token != null;
 }

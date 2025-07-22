@@ -60,7 +60,6 @@ class User {
   final String firstName;
   final String? lastName;
   final String? phone;
-  final String username;
   final bool isVerified;
   final List<Role> roles;
   final List<UserImage> images;
@@ -73,7 +72,6 @@ class User {
     required this.firstName,
     this.lastName,
     this.phone,
-    required this.username,
     required this.isVerified,
     required this.roles,
     required this.images,
@@ -88,7 +86,6 @@ class User {
       firstName: json['firstName'],
       lastName: json['lastName'],
       phone: json['phone'],
-      username: json['username'],
       isVerified: json['isVerified'] ?? false,
       roles: (json['Role'] as List<dynamic>? ?? [])
           .map((role) => Role.fromJson(role))
@@ -108,7 +105,6 @@ class User {
       'firstName': firstName,
       'lastName': lastName,
       'phone': phone,
-      'username': username,
       'isVerified': isVerified,
       'Role': roles.map((role) => role.toJson()).toList(),
       'images': images.map((image) => image.toJson()).toList(),
@@ -168,7 +164,6 @@ class CreateUserInput {
   final String firstName;
   final String? lastName;
   final String? phone;
-  final String username;
   final String password;
   final List<String>? roleIds;
 
@@ -177,7 +172,6 @@ class CreateUserInput {
     required this.firstName,
     this.lastName,
     this.phone,
-    required this.username,
     required this.password,
     this.roleIds,
   });
@@ -188,10 +182,37 @@ class CreateUserInput {
       'firstName': firstName,
       'lastName': lastName,
       'phone': phone,
-      'username': username,
       'password': password,
       'roleIds': roleIds,
     };
+  }
+}
+
+// RegisterInput for registration 
+class RegisterInput {
+  final String email;
+  final String firstName;
+  final String password;
+  final String? lastName;
+  final String? phone;
+
+  RegisterInput({
+    required this.email,
+    required this.firstName,
+    required this.password,
+    this.lastName,
+    this.phone,
+  });
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {
+      'email': email,
+      'firstName': firstName,
+      'password': password,
+    };
+    if (lastName != null) data['lastName'] = lastName;
+    if (phone != null) data['phone'] = phone;
+    return data;
   }
 }
 
@@ -199,14 +220,12 @@ class UpdateUserInput {
   final String? firstName;
   final String? lastName;
   final String? phone;
-  final String? username;
   final List<String>? roleIds;
 
   UpdateUserInput({
     this.firstName,
     this.lastName,
     this.phone,
-    this.username,
     this.roleIds,
   });
 
@@ -215,7 +234,6 @@ class UpdateUserInput {
     if (firstName != null) data['firstName'] = firstName;
     if (lastName != null) data['lastName'] = lastName;
     if (phone != null) data['phone'] = phone;
-    if (username != null) data['username'] = username;
     if (roleIds != null) data['roleIds'] = roleIds;
     return data;
   }

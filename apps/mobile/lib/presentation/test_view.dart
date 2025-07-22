@@ -15,7 +15,7 @@ class TestViewState extends State<TestView> {
       width: double.infinity,
       height: double.infinity,
         decoration: ColorsWidget.background,
-        child: Center(child: Text("data")),
+        child: Center(child: Text("Tongasoa ianao",style: TextStyle(color: Colors.white),)),
     );
   }
 }
