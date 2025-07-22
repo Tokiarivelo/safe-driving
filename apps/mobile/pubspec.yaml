@@ -29,6 +29,7 @@ flutter:
   # Configuration pour la génération automatique des fichiers de localisation
   generate: true
   assets:
+    - .env
     - assets/img/social/google.png
     - assets/img/social/facebook.png
     - assets/logo/logo.svg

@@ -201,8 +201,14 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             width: double.infinity,
             decoration: BoxDecoration(
               color: AppColors.secondBackgroundColor,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [BoxShadow(color: AppColors.blur, blurRadius: 6)],
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
+              ),
+              border: Border(
+                top: BorderSide(color: AppColors.blur, width: 1),
+              ),
+              boxShadow: [BoxShadow(color: AppColors.blur, blurRadius: 15)],
             ),
             padding: const EdgeInsets.all(16),
             child: _buildStepContent(step),
@@ -270,18 +276,22 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
 
       case 2:
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Bienvenue chez Safe Driving !',
               style: TextStyle(
-                color: AppColors.fillButtonBackgorund,
+                color: AppColors.buttonWithoutBackGround,
+                fontWeight: FontWeight.w800,
                 fontSize: 18,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Merci d’avoir rejoint notre communauté ! Laissez-nous vous guider pour personnaliser votre expérience.',
-              style: TextStyle(color: AppColors.fillButtonBackgorund),
+              style: TextStyle(
+                color: AppColors.buttonWithoutBackGround.withAlpha(190),
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -292,6 +302,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                   style: OutlinedButton.styleFrom(
                     backgroundColor: AppColors.secondBackgroundColor,
                     side: BorderSide(color: AppColors.buttonWithoutBackGround),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                   onPressed: () => setState(() => _currentStep = 3),
                   child: Text(
@@ -302,6 +315,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.fillButtonBackgorund,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                   onPressed: () => setState(() => _currentStep = 3),
                   child: const Text(
@@ -322,35 +338,46 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               'Où êtes-vous ?',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w800,
                 color: AppColors.buttonWithoutBackGround,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Pour vous proposer les véhicules les plus proches, autorisez l’accès à votre position. C’est rapide et sécurisé.',
-              style: TextStyle(color: AppColors.fillButtonBackgorund),
+              'Pour vous proposer les véhicules les plus proches, autorisez l\'accès à votre position. C\'est rapide et sécurisé.',
+              style: TextStyle(color: AppColors.buttonWithoutBackGround.withAlpha(190)),
             ),
             const SizedBox(height: 16),
-            RadioListTile<bool>(
-              title: const Text('Plus tard'),
-              value: false,
-              groupValue: _gpsEnabled,
-              activeColor: AppColors.buttonWithoutBackGround,
-              onChanged: (v) => setState(() => _gpsEnabled = v!),
-            ),
-            RadioListTile<bool>(
-              title: const Text('Activer'),
-              value: true,
-              groupValue: _gpsEnabled,
-              activeColor: AppColors.buttonWithoutBackGround,
-              onChanged: (v) => setState(() => _gpsEnabled = v!),
+            Row(
+              children: [
+                Expanded(
+                  child: RadioListTile<bool>(
+                    title: const Text('Plus tard'),
+                    value: false,
+                    groupValue: _gpsEnabled,
+                    activeColor: AppColors.buttonWithoutBackGround,
+                    onChanged: (v) => setState(() => _gpsEnabled = v!),
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile<bool>(
+                    title: const Text('Activer'),
+                    value: true,
+                    groupValue: _gpsEnabled,
+                    activeColor: AppColors.buttonWithoutBackGround,
+                    onChanged: (v) => setState(() => _gpsEnabled = v!),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.fillButtonBackgorund,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
                 onPressed: () => setState(() => _currentStep = 4),
                 child: const Text(
@@ -370,35 +397,46 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               'Restez informé',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w800,
                 color: AppColors.buttonWithoutBackGround,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Choisissez de recevoir des alertes en temps réel sur l’arrivée de votre chauffeur et l’état de votre trajet.',
-              style: TextStyle(color: AppColors.fillButtonBackgorund),
+              'Choisissez de recevoir des alertes en temps réel sur l\'arrivée de votre chauffeur et l\'état de votre trajet.',
+              style: TextStyle(color: AppColors.buttonWithoutBackGround.withAlpha(190)),
             ),
             const SizedBox(height: 16),
-            RadioListTile<bool>(
-              title: const Text('Plus tard'),
-              value: false,
-              groupValue: _notifEnabled,
-              activeColor: AppColors.buttonWithoutBackGround,
-              onChanged: (v) => setState(() => _notifEnabled = v!),
-            ),
-            RadioListTile<bool>(
-              title: const Text('Activer'),
-              value: true,
-              groupValue: _notifEnabled,
-              activeColor: AppColors.buttonWithoutBackGround,
-              onChanged: (v) => setState(() => _notifEnabled = v!),
+            Row(
+              children: [
+                Expanded(
+                  child: RadioListTile<bool>(
+                    title: const Text('Plus tard'),
+                    value: false,
+                    groupValue: _notifEnabled,
+                    activeColor: AppColors.buttonWithoutBackGround,
+                    onChanged: (v) => setState(() => _notifEnabled = v!),
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile<bool>(
+                    title: const Text('Activer'),
+                    value: true,
+                    groupValue: _notifEnabled,
+                    activeColor: AppColors.buttonWithoutBackGround,
+                    onChanged: (v) => setState(() => _notifEnabled = v!),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.fillButtonBackgorund,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
                 onPressed: () => setState(() => _currentStep = 5),
                 child: const Text(
@@ -418,14 +456,14 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               'Faites-le à votre façon',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w800,
                 color: AppColors.buttonWithoutBackGround,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Sélectionnez vos modes de transport favoris et activez le thème sombre si vous préférez une expérience plus douce pour les yeux.',
-              style: TextStyle(color: AppColors.fillButtonBackgorund),
+              style: TextStyle(color: AppColors.buttonWithoutBackGround.withAlpha(190)),
             ),
             const SizedBox(height: 16),
             Text(
@@ -490,6 +528,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                   style: OutlinedButton.styleFrom(
                     backgroundColor: AppColors.secondBackgroundColor,
                     side: BorderSide(color: AppColors.buttonWithoutBackGround),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                   onPressed: () => setState(() => _currentStep = 6),
                   child: Text(
@@ -500,6 +541,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.fillButtonBackgorund,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                   onPressed: () => setState(() => _currentStep = 6),
                   child: const Text(
@@ -520,14 +564,14 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               'Tout est prêt !',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w800,
                 color: AppColors.buttonWithoutBackGround,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Voilà un résumé de vos choix. Vous pouvez toujours les modifier plus tard dans les paramètres. Prêt·e à démarrer ?',
-              style: TextStyle(color: AppColors.fillButtonBackgorund),
+              style: TextStyle(color: AppColors.buttonWithoutBackGround.withAlpha(190)),
             ),
             const SizedBox(height: 16),
             SwitchListTile(
@@ -559,6 +603,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                   style: OutlinedButton.styleFrom(
                     backgroundColor: AppColors.secondBackgroundColor,
                     side: BorderSide(color: AppColors.buttonWithoutBackGround),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                   onPressed: () => setState(() => _currentStep = 1),
                   child: Text(
@@ -569,6 +616,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.fillButtonBackgorund,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                   onPressed: () {
                     //finale
