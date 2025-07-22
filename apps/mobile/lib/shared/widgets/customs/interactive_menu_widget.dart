@@ -12,6 +12,9 @@ class InteractiveMenuWidget extends StatefulWidget {
 class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   int _currentStep = 1;
 
+  // États d'expansion pour chaque tile
+  final Map<int, bool> _expandedTiles = {};
+
   // États pour les steps
   bool _gpsEnabled = false;
   bool _notifEnabled = false;
@@ -20,7 +23,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
 
   final List<_StepInfo> _steps = [
     _StepInfo(title: 'Bienvenue', icon: null, emoji: '👋'),
-    _StepInfo(title: 'GPS', icon: Icons.gps_fixed),
+    _StepInfo(title: 'GPS', icon: Icons.location_on),
     _StepInfo(title: 'Notifications', icon: Icons.notifications),
     _StepInfo(title: 'Préférence', icon: Icons.settings),
     _StepInfo(title: 'Récapitulatif', icon: Icons.recent_actors),
@@ -71,7 +74,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
           child: Row(
             children: [
               _buildProgressCircle(),
-              const SizedBox(width: 1),
+              const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   _getStepTitle(_currentStep),
@@ -86,25 +89,25 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         Expanded(
           child: _currentStep == 1
               // Step 1 : carte blanche
-              ? Padding(
-                  padding: const EdgeInsets.only(bottom: 100),
-                  child: Center(
-                    child: Container(
-                      width: 300,
-                      constraints: const BoxConstraints(
-                        maxHeight: 135, // Limiter du hauteur
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 30),
+                      child: Container(
+                        width: 330,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.secondBackgroundColor,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(color: AppColors.blur, blurRadius: 15),
+                          ],
+                        ),
+                        child: _buildStepContent(1),
                       ),
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: AppColors.secondBackgroundColor,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(color: AppColors.blur, blurRadius: 10),
-                        ],
-                      ),
-                      child: _buildStepContent(1),
                     ),
-                  ),
+                  ],
                 )
               // Steps 2–6 : ExpansionTiles
               : ListView.builder(
@@ -144,7 +147,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   //Les expansions
   Widget _buildExpansionTile(int step) {
     final info = _steps[step - 2];
-    final isExpanded = _currentStep == step;
+    final isExpanded = _expandedTiles[step] ?? (_currentStep == step);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -162,7 +165,12 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         ),
         initiallyExpanded: isExpanded,
         onExpansionChanged: (open) {
-          if (open) setState(() => _currentStep = step);
+          setState(() {
+            _expandedTiles[step] = open;
+            if (open) {
+              _currentStep = step;
+            }
+          });
         },
         tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         title: Row(
@@ -188,6 +196,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               style: TextStyle(
                 color: AppColors.light,
                 fontWeight: FontWeight.normal,
+                fontSize: 16,
               ),
             ),
           ],
@@ -205,9 +214,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 bottomLeft: Radius.circular(12),
                 bottomRight: Radius.circular(12),
               ),
-              border: Border(
-                top: BorderSide(color: AppColors.blur, width: 1),
-              ),
+              border: Border(top: BorderSide(color: AppColors.blur, width: 1)),
               boxShadow: [BoxShadow(color: AppColors.blur, blurRadius: 15)],
             ),
             padding: const EdgeInsets.all(16),
@@ -232,7 +239,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            const SizedBox(height: 30),
+                    const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -345,7 +352,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             const SizedBox(height: 8),
             Text(
               'Pour vous proposer les véhicules les plus proches, autorisez l\'accès à votre position. C\'est rapide et sécurisé.',
-              style: TextStyle(color: AppColors.buttonWithoutBackGround.withAlpha(190)),
+              style: TextStyle(
+                color: AppColors.buttonWithoutBackGround.withAlpha(190),
+              ),
             ),
             const SizedBox(height: 16),
             Row(
@@ -404,7 +413,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             const SizedBox(height: 8),
             Text(
               'Choisissez de recevoir des alertes en temps réel sur l\'arrivée de votre chauffeur et l\'état de votre trajet.',
-              style: TextStyle(color: AppColors.buttonWithoutBackGround.withAlpha(190)),
+              style: TextStyle(
+                color: AppColors.buttonWithoutBackGround.withAlpha(190),
+              ),
             ),
             const SizedBox(height: 16),
             Row(
@@ -463,7 +474,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             const SizedBox(height: 8),
             Text(
               'Sélectionnez vos modes de transport favoris et activez le thème sombre si vous préférez une expérience plus douce pour les yeux.',
-              style: TextStyle(color: AppColors.buttonWithoutBackGround.withAlpha(190)),
+              style: TextStyle(
+                color: AppColors.buttonWithoutBackGround.withAlpha(190),
+              ),
             ),
             const SizedBox(height: 16),
             Text(
@@ -491,34 +504,46 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               style: TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
             const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              children: ['Voiture', 'Moto', 'TukTuk'].map((mode) {
-                final sel = _selectedTransports.contains(mode);
-                return FilterChip(
-                  avatar: Icon(
-                    mode == 'Voiture'
-                        ? Icons.directions_car
-                        : mode == 'Moto'
-                        ? Icons.motorcycle
-                        : Icons.electric_rickshaw,
-                    size: 18,
-                  ),
-                  label: Text(mode),
-                  selected: sel,
-                  onSelected: (on) {
-                    setState(() {
-                      if (on) {
-                        _selectedTransports.add(mode);
-                      } else {
-                        _selectedTransports.remove(mode);
-                      }
-                    });
-                  },
-                  selectedColor: AppColors.fillButtonBackgorund,
-                  checkmarkColor: AppColors.light,
-                );
-              }).toList(),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.fillButtonBackgorund.withOpacity(0.3),
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.all(8),
+              child: Wrap(
+                spacing: 8,
+                children: ['Voiture', 'Moto', 'TukTuk', 'Vélo'].map((mode) {
+                  final sel = _selectedTransports.contains(mode);
+                  return FilterChip(
+                    avatar: Icon(
+                      mode == 'Voiture'
+                          ? Icons.directions_car
+                          : mode == 'Moto'
+                          ? Icons.motorcycle
+                          : mode == 'TukTuk'
+                          ? Icons.electric_rickshaw
+                          : Icons.pedal_bike,
+                      size: 18,
+                    ),
+                    label: Text(mode),
+                    selected: sel,
+                    onSelected: (on) {
+                      setState(() {
+                        if (on) {
+                          _selectedTransports.add(mode);
+                        } else {
+                          _selectedTransports.remove(mode);
+                        }
+                      });
+                    },
+                    selectedColor: AppColors.fillButtonBackgorund,
+                    checkmarkColor: AppColors.light,
+                  );
+                }).toList(),
+              ),
             ),
             const SizedBox(height: 24),
             Row(
@@ -571,29 +596,118 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             const SizedBox(height: 8),
             Text(
               'Voilà un résumé de vos choix. Vous pouvez toujours les modifier plus tard dans les paramètres. Prêt·e à démarrer ?',
-              style: TextStyle(color: AppColors.buttonWithoutBackGround.withAlpha(190)),
+              style: TextStyle(
+                color: AppColors.buttonWithoutBackGround.withAlpha(190),
+              ),
             ),
             const SizedBox(height: 16),
-            SwitchListTile(
-              title: const Text('GPS'),
-              value: _gpsEnabled,
-              activeColor: AppColors.progress,
-              onChanged: (v) => setState(() => _gpsEnabled = v),
+            Row(
+              children: [
+                Switch(
+                  value: _gpsEnabled,
+                  activeColor: AppColors.progress,
+                  onChanged: (v) => setState(() => _gpsEnabled = v),
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  'GPS',
+                  style: TextStyle(color: AppColors.buttonWithoutBackGround),
+                ),
+              ],
             ),
-            SwitchListTile(
-              title: const Text('Notifications'),
-              value: _notifEnabled,
-              activeColor: AppColors.progress,
-              onChanged: (v) => setState(() => _notifEnabled = v),
+            Row(
+              children: [
+                Switch(
+                  value: _notifEnabled,
+                  activeColor: AppColors.progress,
+                  onChanged: (v) => setState(() => _notifEnabled = v),
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  'Notifications',
+                  style: TextStyle(color: AppColors.buttonWithoutBackGround),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             Text(
               'Thème : $_selectedTheme',
               style: TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
-            Text(
-              'Transport : ${_selectedTransports.join(', ')}',
-              style: TextStyle(color: AppColors.buttonWithoutBackGround),
+            const SizedBox(height: 8),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.fillButtonBackgorund.withOpacity(0.3),
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Transport :',
+                    style: TextStyle(color: AppColors.buttonWithoutBackGround),
+                  ),
+                  const SizedBox(height: 8),
+                  if (_selectedTransports.isNotEmpty)
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: _selectedTransports.map((transport) {
+                        return Chip(
+                          avatar: Icon(
+                            transport == 'Voiture'
+                                ? Icons.directions_car
+                                : transport == 'Moto'
+                                ? Icons.motorcycle
+                                : transport == 'TukTuk'
+                                ? Icons.electric_rickshaw
+                                : Icons.pedal_bike,
+                            size: 16,
+                            color: AppColors.buttonWithoutBackGround,
+                          ),
+                          label: Text(
+                            transport,
+                            style: TextStyle(
+                              color: AppColors.buttonWithoutBackGround,
+                              fontSize: 12,
+                            ),
+                          ),
+                          deleteIcon: Icon(
+                            Icons.close,
+                            size: 18,
+                            color: AppColors.buttonWithoutBackGround,
+                          ),
+                          onDeleted: () {
+                            setState(() {
+                              _selectedTransports.remove(transport);
+                            });
+                          },
+                          backgroundColor: AppColors.secondBackgroundColor,
+                          side: BorderSide(
+                            color: AppColors.fillButtonBackgorund.withOpacity(
+                              0.5,
+                            ),
+                            width: 1,
+                          ),
+                        );
+                      }).toList(),
+                    )
+                  else
+                    Text(
+                      'Aucun transport sélectionné',
+                      style: TextStyle(
+                        color: AppColors.buttonWithoutBackGround.withOpacity(
+                          0.6,
+                        ),
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                ],
+              ),
             ),
             const SizedBox(height: 24),
             Row(
@@ -621,7 +735,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     ),
                   ),
                   onPressed: () {
-                    //finale
+                    //finale (vers homeview)
                   },
                   child: const Text(
                     'Valider',

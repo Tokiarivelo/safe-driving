@@ -103,6 +103,38 @@ Cette commande démarrera :
 
 ---
 
+## Application Mobile (Flutter)
+
+### Prérequis
+
+- Flutter SDK (version recommandée : 3.0+)
+- Dart SDK
+- Android Studio / VS Code
+- Un émulateur Android ou iOS
+
+### Installation
+
+```bash
+# Naviguer vers le dossier mobile
+cd apps/mobile
+
+# Installer les dépendances
+flutter pub get
+
+# Lancer l'application
+flutter run
+```
+
+### Fonctionnalités principales
+
+- Interface d'onboarding interactive
+- Gestion des rôles utilisateur
+- Configuration GPS et notifications
+- Personnalisation des préférences
+- Sélection des modes de transport
+
+---
+
 ## 1. Installation
 
 À la racine du dépôt :
