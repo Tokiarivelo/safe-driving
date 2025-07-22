@@ -7,10 +7,11 @@ Ce module contient les vues de **connexion**, **inscription** et **mot de passe 
 
 ## Attendu
 
-- La configuration de la base est correcte (`.env`, URL, identifiants…)
+- La configuration de la base correcte (`.env`, URL, identifiants…)
 - Le serveur peut exécuter des requêtes de lecture/écriture
-- Le client Flutter pourra ultérieurement interagir avec la base via API GraphQL
+- Le client Flutter peut interagir avec la base via API GraphQL
 - Les fonctionnalités `login/register` sont fonctionnelles
+- Integration verification intelligent des input/ amelioration UI/UX
 
 ---
 
@@ -28,20 +29,20 @@ Ce module contient les vues de **connexion**, **inscription** et **mot de passe 
 
 ### Écran de Connexion
 
-- Champ e-mail  
-- Champ mot de passe  
-- Bouton **Sign in**  
+- Champ e-mail
+- Champ mot de passe
+- Bouton **Sign in**
 - Lien vers **Inscription** et **Mot de passe oublié**
 
 ### Écran d’Inscription
 
-- Champ **Nom**, **E-mail**, **Mot de passe**  
-- Bouton **Sign up**  
+- Champ **Nom**, **E-mail**, **Mot de passe**
+- Bouton **Sign up**
 - Lien vers l’écran de **Connexion**
 
 ### Écran Mot de Passe Oublié
 
-- Champ **E-mail**  
+- Champ **E-mail**
 - Bouton **Reset password**
 
 ---
@@ -51,12 +52,13 @@ Ce module contient les vues de **connexion**, **inscription** et **mot de passe 
 - `color.dart` : Définition des couleurs de l’application
 - `auth_widgets.dart` : Champs de texte personnalisés, boutons d’action, messages d’erreur, etc.
 - `snackbar.dart` : pour les snakbar
+- `validator.dart` : pour les validations des input
 
 ---
 
 ## Stack Technique
 
-- Flutter  
+- Flutter
 - Dart
 
 ---
@@ -72,8 +74,8 @@ Ce module contient les vues de **connexion**, **inscription** et **mot de passe 
 ```lib/
 ├── auth/
 │ ├── auth_view.dart
-│ 
-│ 
+│
+│
 ├── widgets/
 │ ├── auth_widget.dart
 │ └── color.dart

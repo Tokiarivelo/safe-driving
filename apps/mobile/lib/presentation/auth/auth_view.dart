@@ -122,6 +122,7 @@ class _AuthViewState extends State<AuthView> {
           isLogin: false,
           isForgotPassword: true,
           onResetPassword: _handleResetPassword,
+          onNavigateToLogin: _navigateToLogin,
           onSignIn: (_, __) => _navigateToLogin(),
           onSignUp: (_, __, ___, ____) => _navigateToRegister(),
         );

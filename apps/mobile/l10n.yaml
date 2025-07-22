@@ -1,0 +1,35 @@
+# Configuration pour la génération automatique des fichiers de localisation
+# Ce fichier définit les paramètres pour l'internationalisation de l'application
+
+# Répertoire où se trouvent les fichiers de traduction ARB
+arb-dir: lib/l10n
+
+# Fichier de modèle principal (langue par défaut)
+template-arb-file: app_en.arb
+
+# Répertoire de sortie pour les fichiers générés
+output-dir: lib/generated
+
+# Nom de la classe générée pour les localisations
+output-class: AppLocalizations
+
+# Nom du fichier généré
+output-localization-file: app_localizations.dart
+
+# Nom du fichier de délégation généré
+output-localization-delegate-file: app_localizations_delegate.dart
+
+# Préfixe pour les fichiers de sortie
+output-file-prefix: app_
+
+# Utiliser les messages déférés (améliore les performances)
+use-deferred-loading: false
+
+# Format de sortie préféré
+preferred-supported-locales: ['en', 'fr']
+
+# Générer les méthodes nullables
+nullable-getter: true
+
+# Génération des paramètres synthétiques
+synthetic-package: false

@@ -1,0 +1,77 @@
+{
+  "@@locale": "fr",
+  "@@last_modified": "2025-07-18T08:57:16Z",
+  
+  "appTitle": "Safe Driving",
+  "login": "Connexion",
+  "register": "S'inscrire",
+  "email": "Email",
+  "password": "Mot de passe",
+  "confirmPassword": "Confirmer le mot de passe",
+  "forgotPassword": "Mot de passe oublié ?",
+  "loginWithGoogle": "Se connecter avec Google",
+  "loginWithFacebook": "Se connecter avec Facebook",
+  
+  "home": "Accueil",
+  "profile": "Profil",
+  "settings": "Paramètres",
+  "logout": "Déconnexion",
+  
+  "safeDriving": "Safe Driving",
+  "startTrip": "Démarrer le voyage",
+  "endTrip": "Terminer le voyage",
+  "speed": "Vitesse",
+  "speedLimit": "Limite de vitesse",
+  "distance": "Distance",
+  "duration": "Durée",
+  
+  "invalidEmail": "Adresse email invalide",
+  "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+  "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+  "networkError": "Erreur de connexion réseau",
+  
+  "cancel": "Annuler",
+  "confirm": "Confirmer",
+  "save": "Enregistrer",
+  "loading": "Chargement...",
+  "welcome": "Bienvenue",
+  "language": "Langue",
+  
+  "authForgotPasswordTitle": "🔒 Mot de passe oublié ?",
+  "authForgotPasswordSubtitle": "Pas de panique, ça arrive à tout le monde. Entrez votre adresse e-mail dans le formulaire et nous vous enverrons un lien pour réinitialiser votre mot de passe en toute sécurité.",
+  
+  "authRegisterTitle": "🚀 Prêt à rejoindre Safe Driving ?",
+  "authRegisterSubtitle": "Explorez la ville comme jamais auparavant.",
+  "authRegisterSubSubtitle": "Créez votre compte et laissez notre assistant intelligent vous guider pour une expérience fluide, rapide et sécurisée.",
+  
+  "authLoginTitle": "👋 Bienvenue sur Safe Driving",
+  "authLoginSubtitle": "Voyagez l'esprit léger.",
+  "authLoginSubSubtitle": "Connectez-vous pour réserver votre transport en un clin d'œil et suivre votre course en temps réel.",
+  
+  "emailOrUsername": "Email ou nom d'utilisateur",
+  "firstName": "Prénom",
+  "lastName": "Nom de famille",
+  
+  "orContinueWith": "- ou continuer avec -",
+  "orSignUpWith": "- ou s'inscrire avec -",
+  
+  "backToLogin": "Retour à la connexion",
+  "resetPassword": "Réinitialiser le mot de passe",
+  "signIn": "Se connecter",
+  "signUp": "S'inscrire",
+  
+  "noAccountYet": "Pas encore de compte ? ",
+  "alreadyHaveAccount": "Vous avez déjà un compte ? ",
+  "registerAction": "S'inscrire",
+  "loginAction": "Se connecter",
+  
+  "pleaseEnterEmail": "Veuillez saisir votre adresse email",
+  "pleaseEnterValidEmail": "Veuillez saisir une adresse email valide",
+  "pleaseEnterEmailOrUsername": "Veuillez saisir votre email ou nom d'utilisateur",
+  "pleaseEnterPassword": "Veuillez saisir votre mot de passe",
+  "pleaseEnterFirstName": "Veuillez saisir votre prénom",
+  "pleaseEnterLastName": "Veuillez saisir votre nom de famille",
+  "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+  "pleaseConfirmPassword": "Veuillez confirmer votre mot de passe",
+  "passwordsDoNotMatchError": "Les mots de passe ne correspondent pas"
+}
