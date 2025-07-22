@@ -1,5 +1,5 @@
 import React from 'react';
-import { clsx } from 'clsx'; 
+import { cn } from '@/lib/utils';
 
 interface Step {
   id: string;
@@ -19,7 +19,7 @@ export const StepListCard: React.FC<Props> = ({ steps }) => {
         {steps.map((step) => (
             <div
             key={step.id}
-            className={clsx( 
+            className={cn( 
                 'w-full flex items-center gap-2 px-4 py-3 rounded-2xl border transition-all duration-300 ease-in-out cursor-pointer',
                 step.current
                 ? 'border-white bg-white/10 text-white font-semibold shadow-lg scale-[1.03]'
