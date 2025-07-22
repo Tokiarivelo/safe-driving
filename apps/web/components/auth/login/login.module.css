@@ -1,0 +1,95 @@
+@reference '../../../app/global.css';
+/*===========deux partie card===========*/
+.auth_txt1 {
+  @apply w-full h-3/4 p-4 m-auto text-auth-color-bg-white text-center overflow-hidden sm:py-15 sm:p-4 lg:m-18;
+}
+.auth_txt2 {
+  @apply mb-8 text-2xl sm:mb-1 sm:text-xl lg:text-2xl;
+}
+/*.auth_txt3 {
+  @apply text-md mb-7  opacity-90 sm:mb-1;
+}*/
+.auth_txt4 {
+  @apply text-sm mb-1 opacity-80 leading-relaxed sm:mb-1;
+}
+.auth_txt5 {
+  @apply text-sm mb-2 opacity-80 hidden sm:block;
+}
+.auth_txt6 {
+  @apply text-sm mb-8 opacity-80 hidden sm:block;
+}
+.auth_txt7 {
+  @apply w-full flex items-center h-[150px] justify-center sm:h-1/3;
+}
+.auth_txt8 {
+  @apply h-23 w-auto sm:h-25;
+}
+.auth_txt9 {
+  @apply w-full h-3/2 px-6;
+}
+.auth_txt10 {
+  @apply space-y-2;
+}
+.auth_txt11 {
+  @apply h-5 w-5 text-auth-color-icon;
+}
+.auth_txt12 {
+  @apply text-xs text-red-500;
+}
+.auth_txt13 {
+  @apply h-5 w-5 text-auth-color-icon;
+}
+.auth_txt14 {
+  @apply cursor-pointer;
+}
+.auth_txt15 {
+  @apply h-5 w-5 text-auth-color-icon hover:text-auth-color-icon;
+}
+.auth_txt16 {
+  @apply h-5 w-5 text-auth-color-icon hover:text-auth-color-icon;
+}
+.auth_txt17 {
+  @apply text-xs text-red-500;
+}
+.auth_txt18 {
+  @apply text-right mb-4;
+}
+.auth_txt19 {
+  @apply text-sm underline font-semibold text-auth-color-text-custom-magenta hover:text-auth-color-button;
+}
+.auth_txt20 {
+  @apply flex items-center justify-center;
+}
+.auth_txt21 {
+  @apply animate-spin -ml-1 mr-3 h-5 w-5 text-auth-text-light;
+}
+.auth_txt22 {
+  @apply opacity-25;
+}
+.auth_txt23 {
+  @apply opacity-75;
+}
+.auth_txt24 {
+  @apply text-center;
+}
+.auth_txt25 {
+  @apply text-sm text-auth-color-text-custom-magenta mb-4 mt-2;
+}
+.auth_txt26 {
+  @apply flex justify-center space-x-4;
+}
+.auth_txt27 {
+  @apply flex space-x-4;
+}
+.auth_txt28 {
+  @apply h-8 w-8;
+}
+.auth_txt29 {
+  @apply w-full text-left;
+}
+.auth_txt30 {
+  @apply text-xs text-auth-color-text-custom-magenta mt-6;
+}
+.auth_txt31 {
+  @apply font-bold underline text-auth-color-text-custom-magenta hover:text-auth-color-button;
+}
