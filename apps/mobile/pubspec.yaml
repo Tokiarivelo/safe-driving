@@ -1,5 +1,5 @@
 name: safe_driving
-description: "A new Flutter project."
+description: 'A new Flutter project.'
 publish_to: 'none'
 version: 0.1.0
 
@@ -9,8 +9,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Paquet pour la localisation et l'internationalisation
+  flutter_localizations:
+    sdk: flutter
+  # Paquet pour les outils d'internationalisation
+  intl: ^0.20.2
   flutter_svg: ^2.2.0
+  graphql_flutter: ^5.2.0
   provider: ^6.1.5
+  flutter_dotenv: ^5.2.1
+  gql_build: ^0.11.0+1
 
 dev_dependencies:
   flutter_test:
@@ -19,7 +27,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  # Configuration pour la génération automatique des fichiers de localisation
+  generate: true
   assets:
+    - .env
     - assets/img/social/google.png
     - assets/img/social/facebook.png
     - assets/logo/logo.svg
@@ -29,5 +40,3 @@ flutter:
       fonts:
         - asset: assets/fonts/Inder/Inder-Regular.ttf
           weight: 700
-
-

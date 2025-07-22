@@ -14,12 +14,12 @@ async function main() {
     });
   }
 
-  console.log('✅ Roles seeded.');
+  console.log(' Roles seeded.');
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Error while seeding roles:', e);
+    console.error(' Error while seeding roles:', e);
     process.exit(1);
   })
   .finally(() => {

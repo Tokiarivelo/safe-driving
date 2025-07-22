@@ -1,0 +1,523 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2025-07-18T08:57:16Z",
+  
+  "appTitle": "Safe Driving",
+  "@appTitle": {
+    "description": "Titre de l'application affiché dans la barre d'applications"
+  },
+  "login": "Login",
+  "@login": {
+    "description": "Bouton ou titre de connexion"
+  },
+  
+  "register": "Register",
+  "@register": {
+    "description": "Bouton ou titre d'inscription"
+  },
+  
+  "email": "Email",
+  "@email": {
+    "description": "Libellé du champ email"
+  },
+  
+  "password": "Password",
+  "@password": {
+    "description": "Libellé du champ mot de passe"
+  },
+  
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Libellé du champ de confirmation de mot de passe"
+  },
+  
+  "forgotPassword": "Forgot Password?",
+  "@forgotPassword": {
+    "description": "Lien pour récupérer le mot de passe oublié"
+  },
+  
+  "loginWithGoogle": "Login with Google",
+  "@loginWithGoogle": {
+    "description": "Bouton de connexion avec Google"
+  },
+  
+  "loginWithFacebook": "Login with Facebook",
+  "@loginWithFacebook": {
+    "description": "Bouton de connexion avec Facebook"
+  },
+  
+  "home": "Home",
+  "@home": {
+    "description": "Onglet ou page d'accueil"
+  },
+  
+  "profile": "Profile",
+  "@profile": {
+    "description": "Page de profil utilisateur"
+  },
+  
+  "settings": "Settings",
+  "@settings": {
+    "description": "Page des paramètres"
+  },
+  
+  "logout": "Logout",
+  "@logout": {
+    "description": "Bouton de déconnexion"
+  },
+  
+  "safeDriving": "Safe Driving",
+  "@safeDriving": {
+    "description": "Titre principal de l'application"
+  },
+  
+  "startTrip": "Start Trip",
+  "@startTrip": {
+    "description": "Bouton pour démarrer un voyage"
+  },
+  
+  "endTrip": "End Trip",
+  "@endTrip": {
+    "description": "Bouton pour terminer un voyage"
+  },
+  
+  "speed": "Speed",
+  "@speed": {
+    "description": "Indicateur de vitesse"
+  },
+  
+  "speedLimit": "Speed Limit",
+  "@speedLimit": {
+    "description": "Limite de vitesse"
+  },
+  
+  "distance": "Distance",
+  "@distance": {
+    "description": "Distance parcourue"
+  },
+  
+  "duration": "Duration",
+  "@duration": {
+    "description": "Durée du voyage"
+  },
+  
+  "invalidEmail": "Invalid email address",
+  "@invalidEmail": {
+    "description": "Message d'erreur pour email invalide"
+  },
+  
+  "passwordTooShort": "Password must be at least 8 characters",
+  "@passwordTooShort": {
+    "description": "Message d'erreur pour mot de passe trop court"
+  },
+  
+  "passwordsDoNotMatch": "Passwords do not match",
+  "@passwordsDoNotMatch": {
+    "description": "Message d'erreur quand les mots de passe ne correspondent pas"
+  },
+  
+  "networkError": "Network connection error",
+  "@networkError": {
+    "description": "Message d'erreur de connexion réseau"
+  },
+  
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Bouton d'annulation"
+  },
+  
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Bouton de confirmation"
+  },
+  
+  "save": "Save",
+  "@save": {
+    "description": "Bouton de sauvegarde"
+  },
+  
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Indicateur de chargement"
+  },
+  
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "Message de bienvenue"
+  },
+  
+  "language": "Language",
+  "@language": {
+    "description": "Sélecteur de langue"
+  },
+  
+  "authForgotPasswordTitle": "🔒 Forgot Password?",
+  "@authForgotPasswordTitle": {
+    "description": "Titre de la page mot de passe oublié"
+  },
+  
+  "authForgotPasswordSubtitle": "Don't panic, it happens to everyone. Enter your email address in the form and we'll send you a link to reset your password securely.",
+  "@authForgotPasswordSubtitle": {
+    "description": "Sous-titre de la page mot de passe oublié"
+  },
+  
+  "authRegisterTitle": "🚀 Ready to join Safe Driving?",
+  "@authRegisterTitle": {
+    "description": "Titre de la page d'inscription"
+  },
+  
+  "authRegisterSubtitle": "Explore the city like never before.",
+  "@authRegisterSubtitle": {
+    "description": "Sous-titre de la page d'inscription"
+  },
+  
+  "authRegisterSubSubtitle": "Create your account and let our intelligent assistant guide you for a smooth, fast, and secure experience.",
+  "@authRegisterSubSubtitle": {
+    "description": "Sous-sous-titre de la page d'inscription"
+  },
+  
+  "authLoginTitle": "👋 Welcome to Safe Driving",
+  "@authLoginTitle": {
+    "description": "Titre de la page de connexion"
+  },
+  
+  "authLoginSubtitle": "Travel with peace of mind.",
+  "@authLoginSubtitle": {
+    "description": "Sous-titre de la page de connexion"
+  },
+  
+  "authLoginSubSubtitle": "Sign in to book your transport in a flash and track your ride in real time.",
+  "@authLoginSubSubtitle": {
+    "description": "Sous-sous-titre de la page de connexion"
+  },
+  
+  "emailOrUsername": "Email or Username",
+  "@emailOrUsername": {
+    "description": "Champ email ou nom d'utilisateur"
+  },
+  
+  "firstName": "First Name",
+  "@firstName": {
+    "description": "Champ prénom"
+  },
+  
+  "lastName": "Last Name",
+  "@lastName": {
+    "description": "Champ nom de famille"
+  },
+  
+  "orContinueWith": "- or continue with -",
+  "@orContinueWith": {
+    "description": "Séparateur pour les options de connexion sociale"
+  },
+  
+  "orSignUpWith": "- or sign up with -",
+  "@orSignUpWith": {
+    "description": "Séparateur pour les options d'inscription sociale"
+  },
+  
+  "backToLogin": "Back to login",
+  "@backToLogin": {
+    "description": "Lien retour vers la page de connexion"
+  },
+  
+  "resetPassword": "Reset Password",
+  "@resetPassword": {
+    "description": "Bouton réinitialiser le mot de passe"
+  },
+  
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Bouton de connexion"
+  },
+  
+  "signUp": "Sign Up",
+  "@signUp": {
+    "description": "Bouton d'inscription"
+  },
+  
+  "noAccountYet": "No account yet? ",
+  "@noAccountYet": {
+    "description": "Texte pour aller vers l'inscription"
+  },
+  
+  "alreadyHaveAccount": "Already have an account? ",
+  "@alreadyHaveAccount": {
+    "description": "Texte pour aller vers la connexion"
+  },
+  
+  "registerAction": "Register",
+  "@registerAction": {
+    "description": "Lien vers l'inscription"
+  },
+  
+  "loginAction": "Login",
+  "@loginAction": {
+    "description": "Lien vers la connexion"
+  },
+  
+  "pleaseEnterEmail": "Please enter your email address",
+  "@pleaseEnterEmail": {
+    "description": "Erreur email requis"
+  },
+  
+  "pleaseEnterValidEmail": "Please enter a valid email address",
+  "@pleaseEnterValidEmail": {
+    "description": "Erreur email invalide"
+  },
+  
+  "pleaseEnterEmailOrUsername": "Please enter your email or username",
+  "@pleaseEnterEmailOrUsername": {
+    "description": "Erreur email/nom d'utilisateur requis"
+  },
+  
+  "pleaseEnterPassword": "Please enter your password",
+  "@pleaseEnterPassword": {
+    "description": "Erreur mot de passe requis"
+  },
+  
+  "pleaseEnterFirstName": "Please enter your first name",
+  "@pleaseEnterFirstName": {
+    "description": "Erreur prénom requis"
+  },
+  
+  "pleaseEnterLastName": "Please enter your last name",
+  "@pleaseEnterLastName": {
+    "description": "Erreur nom de famille requis"
+  },
+  
+  "passwordMinLength": "Password must be at least 8 characters long",
+  "@passwordMinLength": {
+    "description": "Erreur longueur mot de passe"
+  },
+  
+  "pleaseConfirmPassword": "Please confirm your password",
+  "@pleaseConfirmPassword": {
+    "description": "Erreur confirmation mot de passe requise"
+  },
+  
+  "passwordsDoNotMatchError": "Passwords do not match",
+  "@passwordsDoNotMatchError": {
+    "description": "Erreur mots de passe différents"
+  },
+
+  "onboardingRole": "Role",
+  "@onboardingRole": {
+    "description": "Titre de l'étape de sélection du rôle"
+  },
+
+  "onboardingWelcome": "Welcome",
+  "@onboardingWelcome": {
+    "description": "Titre de l'étape de bienvenue"
+  },
+
+  "onboardingGps": "GPS",
+  "@onboardingGps": {
+    "description": "Titre de l'étape GPS"
+  },
+
+  "onboardingNotifications": "Notifications",
+  "@onboardingNotifications": {
+    "description": "Titre de l'étape notifications"
+  },
+
+  "onboardingPreferences": "Preferences",
+  "@onboardingPreferences": {
+    "description": "Titre de l'étape préférences"
+  },
+
+  "onboardingSummary": "Summary",
+  "@onboardingSummary": {
+    "description": "Titre de l'étape récapitulatif"
+  },
+
+  "stepRoleTitle": "You are…?",
+  "@stepRoleTitle": {
+    "description": "Titre de l'étape de sélection du rôle"
+  },
+
+  "stepRoleUser": "I am a user",
+  "@stepRoleUser": {
+    "description": "Bouton utilisateur"
+  },
+
+  "stepRoleDriver": "I am a driver",
+  "@stepRoleDriver": {
+    "description": "Bouton chauffeur"
+  },
+
+  "stepWelcomeTitle": "Welcome to Safe Driving!",
+  "@stepWelcomeTitle": {
+    "description": "Titre de bienvenue"
+  },
+
+  "stepWelcomeSubtitle": "Thank you for joining our community! Let us guide you to customize your experience.",
+  "@stepWelcomeSubtitle": {
+    "description": "Sous-titre de bienvenue"
+  },
+
+  "stepWelcomeLater": "Later",
+  "@stepWelcomeLater": {
+    "description": "Bouton plus tard bienvenue"
+  },
+
+  "stepWelcomeStart": "Get Started",
+  "@stepWelcomeStart": {
+    "description": "Bouton démarrer"
+  },
+
+  "stepGpsTitle": "Where are you?",
+  "@stepGpsTitle": {
+    "description": "Titre étape GPS"
+  },
+
+  "stepGpsSubtitle": "To offer you the closest vehicles, allow access to your location. It's quick and secure.",
+  "@stepGpsSubtitle": {
+    "description": "Sous-titre étape GPS"
+  },
+
+  "stepGpsLater": "Later",
+  "@stepGpsLater": {
+    "description": "Bouton plus tard GPS"
+  },
+
+  "stepGpsEnable": "Enable",
+  "@stepGpsEnable": {
+    "description": "Bouton activer GPS"
+  },
+
+  "stepNotificationsTitle": "Stay informed",
+  "@stepNotificationsTitle": {
+    "description": "Titre étape notifications"
+  },
+
+  "stepNotificationsSubtitle": "Choose to receive real-time alerts about your driver's arrival and trip status.",
+  "@stepNotificationsSubtitle": {
+    "description": "Sous-titre étape notifications"
+  },
+
+  "stepNotificationsLater": "Later",
+  "@stepNotificationsLater": {
+    "description": "Bouton plus tard notifications"
+  },
+
+  "stepNotificationsEnable": "Enable",
+  "@stepNotificationsEnable": {
+    "description": "Bouton activer notifications"
+  },
+
+  "stepPreferencesTitle": "Make it your way",
+  "@stepPreferencesTitle": {
+    "description": "Titre étape préférences"
+  },
+
+  "stepPreferencesSubtitle": "Select your favorite transport modes and enable dark theme if you prefer a gentler experience for your eyes.",
+  "@stepPreferencesSubtitle": {
+    "description": "Sous-titre étape préférences"
+  },
+
+  "stepPreferencesTheme": "Theme",
+  "@stepPreferencesTheme": {
+    "description": "Label thème"
+  },
+
+  "stepPreferencesThemeLight": "Light",
+  "@stepPreferencesThemeLight": {
+    "description": "Thème clair"
+  },
+
+  "stepPreferencesThemeDark": "Dark",
+  "@stepPreferencesThemeDark": {
+    "description": "Thème sombre"
+  },
+
+  "stepPreferencesTransport": "Transport type",
+  "@stepPreferencesTransport": {
+    "description": "Label type de transport"
+  },
+
+  "stepPreferencesTransportCar": "Car",
+  "@stepPreferencesTransportCar": {
+    "description": "Voiture"
+  },
+
+  "stepPreferencesTransportMoto": "Motorbike",
+  "@stepPreferencesTransportMoto": {
+    "description": "Moto"
+  },
+
+  "stepPreferencesTransportTukTuk": "TukTuk",
+  "@stepPreferencesTransportTukTuk": {
+    "description": "TukTuk"
+  },
+
+  "stepPreferencesTransportBike": "Bike",
+  "@stepPreferencesTransportBike": {
+    "description": "Vélo"
+  },
+
+  "stepPreferencesLater": "Later",
+  "@stepPreferencesLater": {
+    "description": "Bouton plus tard préférences"
+  },
+
+  "stepPreferencesValidate": "Validate",
+  "@stepPreferencesValidate": {
+    "description": "Bouton valider préférences"
+  },
+
+  "stepSummaryTitle": "All set!",
+  "@stepSummaryTitle": {
+    "description": "Titre étape récapitulatif"
+  },
+
+  "stepSummarySubtitle": "Here's a summary of your choices. You can always modify them later in settings. Ready to get started?",
+  "@stepSummarySubtitle": {
+    "description": "Sous-titre étape récapitulatif"
+  },
+
+  "stepSummaryGps": "GPS",
+  "@stepSummaryGps": {
+    "description": "Label GPS récapitulatif"
+  },
+
+  "stepSummaryNotifications": "Notifications",
+  "@stepSummaryNotifications": {
+    "description": "Label notifications récapitulatif"
+  },
+
+  "stepSummaryTheme": "Theme: {theme}",
+  "@stepSummaryTheme": {
+    "description": "Label thème récapitulatif",
+    "placeholders": {
+      "theme": {
+        "type": "String"
+      }
+    }
+  },
+
+  "stepSummaryTransports": "Transport(s):",
+  "@stepSummaryTransports": {
+    "description": "Label transports récapitulatif"
+  },
+
+  "stepSummaryNoTransports": "No transport selected",
+  "@stepSummaryNoTransports": {
+    "description": "Texte aucun transport sélectionné"
+  },
+
+  "stepSummaryCancel": "Cancel",
+  "@stepSummaryCancel": {
+    "description": "Bouton annuler récapitulatif"
+  },
+
+  "stepSummaryValidate": "Validate",
+  "@stepSummaryValidate": {
+    "description": "Bouton valider récapitulatif"
+  },
+
+  "next": "Next",
+  "@next": {
+    "description": "Bouton suivant"
+  }
+}
