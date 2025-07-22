@@ -19,7 +19,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   final List<String> _selectedTransports = [];
 
   final List<_StepInfo> _steps = [
-    _StepInfo(title: '👋 Bienvenue', icon: null),
+    _StepInfo(title: 'Bienvenue', icon: null, emoji: '👋'),
     _StepInfo(title: 'GPS', icon: Icons.gps_fixed),
     _StepInfo(title: 'Notifications', icon: Icons.notifications),
     _StepInfo(title: 'Préférence', icon: Icons.settings),
@@ -92,7 +92,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     child: Container(
                       width: 300,
                       constraints: const BoxConstraints(
-                        maxHeight: 130, // Limiter du hauteur
+                        maxHeight: 135, // Limiter du hauteur
                       ),
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -151,14 +151,14 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
       child: ExpansionTile(
         key: Key('step_$step'),
         backgroundColor: AppColors.transparent,
-        collapsedBackgroundColor: AppColors.secondBackgroundColor,
+        collapsedBackgroundColor: AppColors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: AppColors.light.withAlpha(100)),
+          side: BorderSide(color: AppColors.light),
         ),
         collapsedShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: AppColors.light.withAlpha(100)),
+          side: BorderSide(color: AppColors.light),
         ),
         initiallyExpanded: isExpanded,
         onExpansionChanged: (open) {
@@ -167,13 +167,27 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         title: Row(
           children: [
-            Icon(info.icon, color: AppColors.light),
+            if (info.emoji != null)
+              Transform.translate(
+                offset: const Offset(-4, 0),
+                child: Container(
+                  width: 24,
+                  height: 30,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    info.emoji!,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ),
+              )
+            else if (info.icon != null)
+              Icon(info.icon, color: AppColors.light, size: 24),
             const SizedBox(width: 8),
             Text(
               info.title,
               style: TextStyle(
-                color: AppColors.buttonWithoutBackGround,
-                fontWeight: FontWeight.bold,
+                color: AppColors.light,
+                fontWeight: FontWeight.normal,
               ),
             ),
           ],
@@ -193,7 +207,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             padding: const EdgeInsets.all(16),
             child: _buildStepContent(step),
           ),
-        ], // ← children toujours en dernier
+        ],
       ),
     );
   }
@@ -212,7 +226,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -221,6 +235,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.fillButtonBackgorund,
                       padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
                     onPressed: _nextStep,
                     child: const Text(
@@ -229,12 +246,15 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 50),
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.fillButtonBackgorund,
                       padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
                     onPressed: () {},
                     child: const Text(
@@ -572,5 +592,6 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
 class _StepInfo {
   final String title;
   final IconData? icon;
-  _StepInfo({required this.title, this.icon});
+  final String? emoji;
+  _StepInfo({required this.title, this.icon, this.emoji});
 }
