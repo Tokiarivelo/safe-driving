@@ -35,9 +35,29 @@ class AuthWidget extends StatefulWidget {
   AuthWidgetState createState() => AuthWidgetState();
 }
 
+
 class AuthWidgetState extends State<AuthWidget> {
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  
+  @override
+  void dispose() {
+    // N'oubliez pas de disposer les contrôleurs
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _userNameController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -261,6 +281,7 @@ class AuthWidgetState extends State<AuthWidget> {
     bool obscureText = false,
     bool isPassword = false,
     bool isConfirmPassword = false,
+    TextEditingController? controller,
   }) {
     bool isVisible = isPassword 
         ? _isPasswordVisible 
@@ -271,6 +292,7 @@ class AuthWidgetState extends State<AuthWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
+        
         style: const TextStyle(fontSize: 10),
         decoration: InputDecoration(
           filled: true,
@@ -330,22 +352,26 @@ class AuthWidgetState extends State<AuthWidget> {
           _buildInputField(
             hint: widget.isLogin ? "Email or Username" : "First Name",
             icon: widget.isLogin ? Icons.person : Icons.person_outline,
+            controller: widget.isLogin ? _emailController : _firstNameController
           ),
           if (!widget.isLogin)
             _buildInputField(
               hint: "Last Name",
               icon: Icons.person_outline,
+              controller: _lastNameController
             ),
           if (!widget.isLogin)
             _buildInputField(
               hint: "Email",
               icon: Icons.email,
+              controller: _emailController
             ),
           _buildInputField(
             hint: "Password",
             icon: Icons.lock,
             obscureText: true,
             isPassword: true,
+            controller: _passwordController
           ),
           if (!widget.isLogin)
             _buildInputField(
@@ -353,6 +379,7 @@ class AuthWidgetState extends State<AuthWidget> {
               icon: Icons.lock,
               obscureText: true,
               isConfirmPassword: true,
+              controller: _confirmPasswordController
             ),
           const SizedBox(height: 5),
           if (widget.isLogin)
