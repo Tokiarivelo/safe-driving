@@ -92,8 +92,3 @@ volumes:
   pgadmin_data:
   minio_data:
   safe_driving_data:
-    driver: local
-    driver_opts:
-      type: none
-      device: ./volumes/safe_driving_data
-      o: bind
