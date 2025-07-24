@@ -1,4 +1,4 @@
-@reference '../global.css';
+@reference '../../global.css';
 
 .auth_container {
   @apply auth-background min-h-screen w-full flex items-center justify-center;

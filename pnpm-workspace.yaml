@@ -10,6 +10,7 @@ onlyBuiltDependencies:
   - '@swc/core'
   - '@tailwindcss/oxide'
   - bcrypt
+  - core-js
   - prisma
   - protobufjs
   - sharp
