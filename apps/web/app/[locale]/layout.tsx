@@ -1,7 +1,9 @@
 import ApolloWrapper from '@/lib/apollo/apollo-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { SessionProvider } from 'next-auth/react';
-import './global.css';
+import { type Locale } from '@/lib/i18n';
+import { ClientI18nProvider } from './client-i18n-provider';
+import '../global.css';
 
 export const metadata = {
   title: {
@@ -19,14 +21,24 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+
   return (
-    <html lang="fr">
+    <html lang={locale}>
       <body>
         <main>
-          <SessionProvider refetchOnWindowFocus={false}>
-            <ApolloWrapper>{children}</ApolloWrapper>
-          </SessionProvider>
+          <ClientI18nProvider locale={locale}>
+            <SessionProvider refetchOnWindowFocus={false}>
+              <ApolloWrapper>{children}</ApolloWrapper>
+            </SessionProvider>
+          </ClientI18nProvider>
           <Toaster position="top-right" richColors closeButton />
         </main>
       </body>

@@ -133,15 +133,33 @@ export const Login = () => {
               <div className={style.auth_txt26}>
                 <div className={style.auth_txt27}>
                   <button className={styles.auth_button_google}>
-                    <img src="./login/google.svg" alt="" className={style.auth_txt28} />
+                    <Image
+                      src="/login/google.svg"
+                      alt=""
+                      width={24}
+                      height={24}
+                      className={style.auth_txt28}
+                    />
                   </button>
 
                   <button className={styles.auth_button_google}>
-                    <img src="./login/apple.svg" alt="" className={style.auth_txt28} />
+                    <Image
+                      src="/login/apple.svg"
+                      alt=""
+                      width={24}
+                      height={24}
+                      className={style.auth_txt28}
+                    />
                   </button>
 
                   <button className={styles.auth_button_google}>
-                    <img src="./login/facebook.svg" alt="" className={style.auth_txt28} />
+                    <Image
+                      src="/login/facebook.svg"
+                      alt=""
+                      width={24}
+                      height={24}
+                      className={style.auth_txt28}
+                    />
                   </button>
                 </div>
               </div>

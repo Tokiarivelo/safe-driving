@@ -1,14 +1,11 @@
 // app/middleware.ts
 import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { match } from '@formatjs/intl-localematcher';
-import Negotiator from 'negotiator';
+import { getLocale, supportedLocales } from './lib/getLocale';
 
 let headers = { 'accept-language': 'en-US,en;q=0.5' };
 
 const PUBLIC_FILE = /\.(.*)$/;
-const SUPPORTED_LOCALES = ['en-US', 'en', 'fr', 'es'];
-const DEFAULT_LOCALE = 'fr';
 
 export const config = {
   // On capture toutes les requêtes et on filtre ensuite en code
@@ -28,12 +25,8 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
 
   const localeInPath = segments[1];
 
-  if (!SUPPORTED_LOCALES.includes(localeInPath)) {
-    const acceptLang = req.headers.get('accept-language') ?? '';
-
-    const negotiator = new Negotiator({ headers: { 'accept-language': acceptLang } });
-    const userLanguages = negotiator.languages();
-    const detectedLocale = match(userLanguages, SUPPORTED_LOCALES, DEFAULT_LOCALE);
+  if (!supportedLocales.includes(localeInPath)) {
+    const detectedLocale = getLocale(req);
 
     const url = req.nextUrl.clone();
     url.pathname = `/${detectedLocale}${pathname}`;
