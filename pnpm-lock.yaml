@@ -500,6 +500,13 @@ importers:
       '@types/mapbox__polyline':
         specifier: ^1.0.5
         version: 1.0.5
+        version: 4.1.11
+      '@types/apollo-upload-client':
+        specifier: ^18.0.0
+        version: 18.0.0(@types/react@19.1.4)(graphql-ws@6.0.5(graphql@16.11.0)(ws@8.18.2))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(subscriptions-transport-ws@0.11.0(graphql@16.11.0))
+      '@types/i18next-fs-backend':
+        specifier: ^1.2.0
+        version: 1.2.0
       '@types/node':
         specifier: ^20.17.47
         version: 20.19.11
