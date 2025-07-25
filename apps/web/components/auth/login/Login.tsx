@@ -8,15 +8,21 @@ import { Button } from '@/components/ui/button';
 import { EyeIcon, EyeOffIcon, LockKeyhole, UserRound } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 export const Login = () => {
   const { form, loading, showPassword, login, handleShowPassword } = useLogin();
+  const { t, ready } = useTranslation('login');
+
+  if (!ready) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <div className={styles.auth_card_un_container}>
         <div className={style.auth_txt1}>
-          <h1 className={style.auth_txt2}>👋Bienvenue sur Safe Driving</h1>
+          <h1 className={style.auth_txt2}>{t('title')}</h1>
           <p className="text-md mb-7 opacity-90 sm:mb-1">Voyagez l'esprit léger.</p>
           <p className={style.auth_txt4}>
             Connectez-vous pour réserver votre transport en un clin d'œil et suivre votre course en
