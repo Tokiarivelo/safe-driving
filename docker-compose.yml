@@ -62,11 +62,26 @@ services:
       - postgis
 
   libretranslate:
-    image: libretranslate/libretranslate
+    image: libretranslate/libretranslate:latest
     container_name: libretranslate
     restart: unless-stopped
     ports:
       - "5000:5000"
+    environment:
+      - LT_DEBUG=true
+      - LT_LOAD_ONLY=fr,en
+      - LT_DISABLE_WEB_UI=false
+      - ARGOS_DEBUG=1
+      - ARGOS_TRANSLATE_DATA_DIR=/app/data  # Répertoire personnalisé
+    volumes:
+      - libretranslate_data:/app/data  # Montage vers le répertoire personnalisé
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+
 
   safe-driving-minio-db:
     image: minio/minio:latest
@@ -92,3 +107,4 @@ volumes:
   pgadmin_data:
   minio_data:
   safe_driving_data:
+  libretranslate_data:
