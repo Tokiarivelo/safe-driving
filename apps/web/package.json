@@ -8,7 +8,8 @@
     "build": "next build",
     "lint": "next lint",
     "i18n:extract": "i18next",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate": "graphql-codegen --config codegen.yml",
+    "translate": "translate-locales"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
@@ -27,7 +28,6 @@
     "@types/negotiator": "^0.6.4",
     "@types/swiper": "^6.0.0",
     "apollo-upload-client": "^18.0.1",
-    "axios": "^1.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fast-glob": "^3.3.3",

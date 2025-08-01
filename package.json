@@ -5,6 +5,7 @@
     "web:dev": "pnpm --filter web dev",
     "web:dev:wt": "pnpm --filter web dev:wt",
     "web:generate": "pnpm --filter web generate",
+    "web:translate": "pnpm --filter web translate",
     "web:build": "pnpm --filter web build",
     "graphql:dev": "pnpm --filter graphql-server start:dev",
     "graphql:build": "pnpm --filter graphql-server build",
