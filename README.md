@@ -227,7 +227,35 @@ pnpm web:build
 
 ---
 
-## 4. Récapitulatif des scripts
+## 4. Lancement de latranslation
+
+### 4.1 Lancement du docker
+
+```bash
+# Mode développement (watch)
+docker compose up -d libretranslate
+
+# pour voir les logs du libre translate
+docker compose logs -f libretranslate
+```
+
+### 4.2 Mise à jour de l'env du web pour pointer vers libre-translate locale
+
+```bash
+LIBRE_URL=http://localhost:5000/translate
+```
+
+### 4.3 Lancement des translations
+
+```bash
+# si c'est dans la raçine du projet
+pnpm web:translate
+
+# si c'est dans apps/web
+pnpm translate
+```
+
+## 5. Récapitulatif des scripts
 
 | Contexte   | Commande                                 | Description                        |
 | ---------- | ---------------------------------------- | ---------------------------------- |
@@ -236,6 +264,7 @@ pnpm web:build
 |            | `pnpm web:dev:wt`                        | Dev Next.js (sans turbopack)       |
 |            | `pnpm web:generate`                      | GraphQL Codegen                    |
 |            | `pnpm web:build`                         | Build Next.js                      |
+|            | `pnpm web:translate`                     | Lancer la translation de textes    |
 |            | `pnpm graphql:dev`                       | Dev NestJS (+ Prisma, GraphQL)     |
 |            | `pnpm graphql:build`                     | Build NestJS                       |
 |            | `pnpm graphql:start:prod`                | Lancement prod NestJS              |
