@@ -13,5 +13,13 @@ export class RegisterInput {
 
   @Field()
   @IsString()
-  firstName!: string;
+  username: string;
+
+  @Field()
+  @IsString()
+  lastName: string;
+
+  @Field()
+  @IsString()
+  firstName: string;
 }

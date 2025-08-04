@@ -91,7 +91,7 @@ services:
       # Optional legacy ports (not required when using edge)
       - "4510-4559:4510-4559"   # Legacy S3 port,Legacy Elasticsearch port, Legacy SES port
     environment:
-      - SERVICES=s3,es,ses       # Enable S3, Elasticsearch, SES services
+      - SERVICES=s3,logs,cloudformation,sts,iam
       - DEBUG=1                  # Enable debug logs
       - DATA_DIR=/tmp/localstack/data
       - AWS_DEFAULT_REGION=us-east-1
@@ -100,9 +100,48 @@ services:
       # Optional: specify Elasticsearch version
       - DEFAULT_REGION=us-east-1
       - LOCALSTACK_DISABLE_TMP_FOLDER_CLEAR=1
+      - LAMBDA_EXECUTOR=docker
     volumes:
       - "./localstack_data:/var/lib/localstack" # Mounts the local directory to the container
       - "/var/run/docker.sock:/var/run/docker.sock" # Mounts the docker socket
+      - "./localstack-init:/etc/localstack/init/ready.d"
+
+  # Elasticsearch
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:latest
+    environment:
+      - node.name=elasticsearch
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - app-network
+
+  # Kibana (optionnel, pour l'interface Elasticsearch)
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - app-network
 
       
 volumes:
@@ -112,3 +151,4 @@ volumes:
   libretranslate_data:
   localstack_data:
     driver: local
+  elasticsearch-data:
