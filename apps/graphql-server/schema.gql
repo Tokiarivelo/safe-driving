@@ -7,6 +7,10 @@ input BoolFilter {
   not: NestedBoolFilter
 }
 
+input ClientRegistrationInput {
+  id: String!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -23,7 +27,200 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
+input DateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
+type DriverIDCards {
+  id: String!
+  recto_url: String
+  user: User!
+  userId: String!
+  verso_url: String
+}
+
+type DriverIDCardsCountAggregate {
+  _all: Int!
+  id: Int!
+  recto_url: Int!
+  userId: Int!
+  verso_url: Int!
+}
+
+input DriverIDCardsCreateManyUserInput {
+  id: String
+  recto_url: String
+  verso_url: String
+}
+
+input DriverIDCardsCreateManyUserInputEnvelope {
+  data: [DriverIDCardsCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input DriverIDCardsCreateNestedManyWithoutUserInput {
+  connect: [DriverIDCardsWhereUniqueInput!]
+  connectOrCreate: [DriverIDCardsCreateOrConnectWithoutUserInput!]
+  create: [DriverIDCardsCreateWithoutUserInput!]
+  createMany: DriverIDCardsCreateManyUserInputEnvelope
+}
+
+input DriverIDCardsCreateOrConnectWithoutUserInput {
+  create: DriverIDCardsCreateWithoutUserInput!
+  where: DriverIDCardsWhereUniqueInput!
+}
+
+input DriverIDCardsCreateWithoutUserInput {
+  id: String
+  recto_url: String
+  verso_url: String
+}
+
+input DriverIDCardsListRelationFilter {
+  every: DriverIDCardsWhereInput
+  none: DriverIDCardsWhereInput
+  some: DriverIDCardsWhereInput
+}
+
+type DriverIDCardsMaxAggregate {
+  id: String
+  recto_url: String
+  userId: String
+  verso_url: String
+}
+
+type DriverIDCardsMinAggregate {
+  id: String
+  recto_url: String
+  userId: String
+  verso_url: String
+}
+
+input DriverIDCardsOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input DriverIDCardsWhereInput {
+  AND: [DriverIDCardsWhereInput!]
+  NOT: [DriverIDCardsWhereInput!]
+  OR: [DriverIDCardsWhereInput!]
+  id: StringFilter
+  recto_url: StringNullableFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+  verso_url: StringNullableFilter
+}
+
+input DriverIDCardsWhereUniqueInput {
+  AND: [DriverIDCardsWhereInput!]
+  NOT: [DriverIDCardsWhereInput!]
+  OR: [DriverIDCardsWhereInput!]
+  id: String
+  recto_url: StringNullableFilter
+  user: UserScalarRelationFilter
+  userId: String
+  verso_url: StringNullableFilter
+}
+
+type DriverLicense {
+  id: String!
+  url: String
+  user: User!
+  userId: String!
+}
+
+type DriverLicenseCountAggregate {
+  _all: Int!
+  id: Int!
+  url: Int!
+  userId: Int!
+}
+
+input DriverLicenseCreateManyUserInput {
+  id: String
+  url: String
+}
+
+input DriverLicenseCreateManyUserInputEnvelope {
+  data: [DriverLicenseCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input DriverLicenseCreateNestedManyWithoutUserInput {
+  connect: [DriverLicenseWhereUniqueInput!]
+  connectOrCreate: [DriverLicenseCreateOrConnectWithoutUserInput!]
+  create: [DriverLicenseCreateWithoutUserInput!]
+  createMany: DriverLicenseCreateManyUserInputEnvelope
+}
+
+input DriverLicenseCreateOrConnectWithoutUserInput {
+  create: DriverLicenseCreateWithoutUserInput!
+  where: DriverLicenseWhereUniqueInput!
+}
+
+input DriverLicenseCreateWithoutUserInput {
+  id: String
+  url: String
+}
+
+input DriverLicenseListRelationFilter {
+  every: DriverLicenseWhereInput
+  none: DriverLicenseWhereInput
+  some: DriverLicenseWhereInput
+}
+
+type DriverLicenseMaxAggregate {
+  id: String
+  url: String
+  userId: String
+}
+
+type DriverLicenseMinAggregate {
+  id: String
+  url: String
+  userId: String
+}
+
+input DriverLicenseOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input DriverLicenseWhereInput {
+  AND: [DriverLicenseWhereInput!]
+  NOT: [DriverLicenseWhereInput!]
+  OR: [DriverLicenseWhereInput!]
+  id: StringFilter
+  url: StringNullableFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input DriverLicenseWhereUniqueInput {
+  AND: [DriverLicenseWhereInput!]
+  NOT: [DriverLicenseWhereInput!]
+  OR: [DriverLicenseWhereInput!]
+  id: String
+  url: StringNullableFilter
+  user: UserScalarRelationFilter
+  userId: String
+}
+
+input DriverRegistrationInput {
+  driverLicenseImage: Upload!
+  idCardImages: Upload!
+  vehicle: VehicleInput!
+}
+
 type DriverVehicle {
+  DriverVehicleImg: [DriverVehicleImg!]
+  _count: DriverVehicleCount!
   brand: String
   id: String!
   model: String
@@ -37,6 +234,10 @@ type DriverVehicle {
 
 type DriverVehicleAvgAggregate {
   place: Float
+}
+
+type DriverVehicleCount {
+  DriverVehicleImg: Int!
 }
 
 type DriverVehicleCountAggregate {
@@ -77,12 +278,100 @@ input DriverVehicleCreateOrConnectWithoutUserInput {
 }
 
 input DriverVehicleCreateWithoutUserInput {
+  DriverVehicleImg: DriverVehicleImgCreateNestedManyWithoutVehicleInput
   brand: String
   id: String
   model: String
   place: Int!
   registrationNumber: String
   type: VehicleTypeCreateNestedOneWithoutVehiclesInput!
+}
+
+type DriverVehicleImg {
+  category: String
+  id: String!
+  url: String
+  vehicle: DriverVehicle!
+  vehicleId: String!
+}
+
+type DriverVehicleImgCountAggregate {
+  _all: Int!
+  category: Int!
+  id: Int!
+  url: Int!
+  vehicleId: Int!
+}
+
+input DriverVehicleImgCreateManyVehicleInput {
+  category: String
+  id: String
+  url: String
+}
+
+input DriverVehicleImgCreateManyVehicleInputEnvelope {
+  data: [DriverVehicleImgCreateManyVehicleInput!]!
+  skipDuplicates: Boolean
+}
+
+input DriverVehicleImgCreateNestedManyWithoutVehicleInput {
+  connect: [DriverVehicleImgWhereUniqueInput!]
+  connectOrCreate: [DriverVehicleImgCreateOrConnectWithoutVehicleInput!]
+  create: [DriverVehicleImgCreateWithoutVehicleInput!]
+  createMany: DriverVehicleImgCreateManyVehicleInputEnvelope
+}
+
+input DriverVehicleImgCreateOrConnectWithoutVehicleInput {
+  create: DriverVehicleImgCreateWithoutVehicleInput!
+  where: DriverVehicleImgWhereUniqueInput!
+}
+
+input DriverVehicleImgCreateWithoutVehicleInput {
+  category: String
+  id: String
+  url: String
+}
+
+input DriverVehicleImgListRelationFilter {
+  every: DriverVehicleImgWhereInput
+  none: DriverVehicleImgWhereInput
+  some: DriverVehicleImgWhereInput
+}
+
+type DriverVehicleImgMaxAggregate {
+  category: String
+  id: String
+  url: String
+  vehicleId: String
+}
+
+type DriverVehicleImgMinAggregate {
+  category: String
+  id: String
+  url: String
+  vehicleId: String
+}
+
+input DriverVehicleImgWhereInput {
+  AND: [DriverVehicleImgWhereInput!]
+  NOT: [DriverVehicleImgWhereInput!]
+  OR: [DriverVehicleImgWhereInput!]
+  category: StringNullableFilter
+  id: StringFilter
+  url: StringNullableFilter
+  vehicle: DriverVehicleScalarRelationFilter
+  vehicleId: StringFilter
+}
+
+input DriverVehicleImgWhereUniqueInput {
+  AND: [DriverVehicleImgWhereInput!]
+  NOT: [DriverVehicleImgWhereInput!]
+  OR: [DriverVehicleImgWhereInput!]
+  category: StringNullableFilter
+  id: String
+  url: StringNullableFilter
+  vehicle: DriverVehicleScalarRelationFilter
+  vehicleId: StringFilter
 }
 
 input DriverVehicleListRelationFilter {
@@ -115,12 +404,18 @@ input DriverVehicleOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
+input DriverVehicleScalarRelationFilter {
+  is: DriverVehicleWhereInput
+  isNot: DriverVehicleWhereInput
+}
+
 type DriverVehicleSumAggregate {
   place: Int
 }
 
 input DriverVehicleWhereInput {
   AND: [DriverVehicleWhereInput!]
+  DriverVehicleImg: DriverVehicleImgListRelationFilter
   NOT: [DriverVehicleWhereInput!]
   OR: [DriverVehicleWhereInput!]
   brand: StringNullableFilter
@@ -136,6 +431,7 @@ input DriverVehicleWhereInput {
 
 input DriverVehicleWhereUniqueInput {
   AND: [DriverVehicleWhereInput!]
+  DriverVehicleImg: DriverVehicleImgListRelationFilter
   NOT: [DriverVehicleWhereInput!]
   OR: [DriverVehicleWhereInput!]
   brand: StringNullableFilter
@@ -149,9 +445,9 @@ input DriverVehicleWhereUniqueInput {
   vehicleTypeId: StringFilter
 }
 
-input FileCategoryInput {
-  category: String!
-  files: [Upload!]!
+type ForgotPasswordOutput {
+  email: String!
+  resetLink: String!
 }
 
 input IntFilter {
@@ -176,11 +472,12 @@ type LoginOutput {
 }
 
 type Mutation {
-  createUser(input: UserCreateInput!): User!
+  createUser(input: UserRegistrationInput!): User!
+  forgotPassword(email: String!): ForgotPasswordOutput!
   login(data: LoginInput!): LoginOutput
   logout: Boolean!
   register(data: RegisterInput!): User!
-  uploadFilesByCategory(categories: [FileCategoryInput!]!): [[String!]!]!
+  resetPassword(newPassword: String!, sessionToken: String!): Boolean!
 }
 
 input NestedBoolFilter {
@@ -196,6 +493,17 @@ input NestedDateTimeFilter {
   lt: DateTime
   lte: DateTime
   not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
   notIn: [DateTime!]
 }
 
@@ -358,7 +666,6 @@ input RegisterInput {
   email: String!
   firstName: String!
   password: String!
-  username: String!
 }
 
 type Role {
@@ -476,6 +783,8 @@ input StringNullableFilter {
 scalar Upload
 
 type User {
+  DriverIDCards: [DriverIDCards!]
+  DriverLicense: [DriverLicense!]
   Role: [Role!]
   _count: UserCount!
   createdAt: DateTime!
@@ -488,12 +797,14 @@ type User {
   password: String!
   phone: String
   tokens: [RefreshToken!]
-  updatedAt: DateTime!
-  username: String!
+  updatedAt: DateTime
+  username: String
   vehicles: [DriverVehicle!]
 }
 
 type UserCount {
+  DriverIDCards: Int!
+  DriverLicense: Int!
   Role: Int!
   images: Int!
   tokens: Int!
@@ -515,6 +826,8 @@ type UserCountAggregate {
 }
 
 input UserCreateInput {
+  DriverIDCards: DriverIDCardsCreateNestedManyWithoutUserInput
+  DriverLicense: DriverLicenseCreateNestedManyWithoutUserInput
   Role: RoleCreateNestedManyWithoutUsersInput
   createdAt: DateTime
   email: String!
@@ -527,7 +840,7 @@ input UserCreateInput {
   phone: String
   tokens: RefreshTokenCreateNestedManyWithoutUserInput
   updatedAt: DateTime
-  username: String!
+  username: String
   vehicles: DriverVehicleCreateNestedManyWithoutUserInput
 }
 
@@ -655,6 +968,8 @@ type UserMinAggregate {
 }
 
 input UserOrderByWithRelationInput {
+  DriverIDCards: DriverIDCardsOrderByRelationAggregateInput
+  DriverLicense: DriverLicenseOrderByRelationAggregateInput
   Role: RoleOrderByRelationAggregateInput
   createdAt: SortOrder
   email: SortOrder
@@ -666,9 +981,15 @@ input UserOrderByWithRelationInput {
   password: SortOrder
   phone: SortOrderInput
   tokens: RefreshTokenOrderByRelationAggregateInput
-  updatedAt: SortOrder
-  username: SortOrder
+  updatedAt: SortOrderInput
+  username: SortOrderInput
   vehicles: DriverVehicleOrderByRelationAggregateInput
+}
+
+input UserRegistrationInput {
+  client: ClientRegistrationInput!
+  driver: DriverRegistrationInput!
+  user: UserCreateInput!
 }
 
 enum UserScalarFieldEnum {
@@ -691,6 +1012,8 @@ input UserScalarRelationFilter {
 
 input UserWhereInput {
   AND: [UserWhereInput!]
+  DriverIDCards: DriverIDCardsListRelationFilter
+  DriverLicense: DriverLicenseListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   Role: RoleListRelationFilter
@@ -704,13 +1027,15 @@ input UserWhereInput {
   password: StringFilter
   phone: StringNullableFilter
   tokens: RefreshTokenListRelationFilter
-  updatedAt: DateTimeFilter
-  username: StringFilter
+  updatedAt: DateTimeNullableFilter
+  username: StringNullableFilter
   vehicles: DriverVehicleListRelationFilter
 }
 
 input UserWhereUniqueInput {
   AND: [UserWhereInput!]
+  DriverIDCards: DriverIDCardsListRelationFilter
+  DriverLicense: DriverLicenseListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   Role: RoleListRelationFilter
@@ -724,9 +1049,20 @@ input UserWhereUniqueInput {
   password: StringFilter
   phone: StringNullableFilter
   tokens: RefreshTokenListRelationFilter
-  updatedAt: DateTimeFilter
+  updatedAt: DateTimeNullableFilter
   username: String
   vehicles: DriverVehicleListRelationFilter
+}
+
+input VehicleInput {
+  assuranceImages: [Upload!]!
+  brand: String!
+  model: String!
+  place: Int!
+  registrationImages: [Upload!]!
+  registrationNumber: String!
+  vehicleImages: [Upload!]!
+  vehicleType: String!
 }
 
 type VehicleType {

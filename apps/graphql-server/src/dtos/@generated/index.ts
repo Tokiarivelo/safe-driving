@@ -3665,6 +3665,52 @@ export class DateTimeFilter {
 }
 
 @InputType()
+export class DateTimeNullableFilter {
+    @Field(() => Date, {nullable:true})
+    equals?: Date | string;
+    @Field(() => [Date], {nullable:true})
+    in?: Array<Date> | Array<string>;
+    @Field(() => [Date], {nullable:true})
+    notIn?: Array<Date> | Array<string>;
+    @Field(() => Date, {nullable:true})
+    lt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    lte?: Date | string;
+    @Field(() => Date, {nullable:true})
+    gt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    gte?: Date | string;
+    @Field(() => NestedDateTimeNullableFilter, {nullable:true})
+    not?: InstanceType<typeof NestedDateTimeNullableFilter>;
+}
+
+@InputType()
+export class DateTimeNullableWithAggregatesFilter {
+    @Field(() => Date, {nullable:true})
+    equals?: Date | string;
+    @Field(() => [Date], {nullable:true})
+    in?: Array<Date> | Array<string>;
+    @Field(() => [Date], {nullable:true})
+    notIn?: Array<Date> | Array<string>;
+    @Field(() => Date, {nullable:true})
+    lt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    lte?: Date | string;
+    @Field(() => Date, {nullable:true})
+    gt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    gte?: Date | string;
+    @Field(() => NestedDateTimeNullableWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedDateTimeNullableWithAggregatesFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedDateTimeNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedDateTimeNullableFilter>;
+    @Field(() => NestedDateTimeNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedDateTimeNullableFilter>;
+}
+
+@InputType()
 export class DateTimeWithAggregatesFilter {
     @Field(() => Date, {nullable:true})
     equals?: Date | string;
@@ -3892,6 +3938,52 @@ export class NestedDateTimeFilter {
     gte?: Date | string;
     @Field(() => NestedDateTimeFilter, {nullable:true})
     not?: InstanceType<typeof NestedDateTimeFilter>;
+}
+
+@InputType()
+export class NestedDateTimeNullableFilter {
+    @Field(() => Date, {nullable:true})
+    equals?: Date | string;
+    @Field(() => [Date], {nullable:true})
+    in?: Array<Date> | Array<string>;
+    @Field(() => [Date], {nullable:true})
+    notIn?: Array<Date> | Array<string>;
+    @Field(() => Date, {nullable:true})
+    lt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    lte?: Date | string;
+    @Field(() => Date, {nullable:true})
+    gt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    gte?: Date | string;
+    @Field(() => NestedDateTimeNullableFilter, {nullable:true})
+    not?: InstanceType<typeof NestedDateTimeNullableFilter>;
+}
+
+@InputType()
+export class NestedDateTimeNullableWithAggregatesFilter {
+    @Field(() => Date, {nullable:true})
+    equals?: Date | string;
+    @Field(() => [Date], {nullable:true})
+    in?: Array<Date> | Array<string>;
+    @Field(() => [Date], {nullable:true})
+    notIn?: Array<Date> | Array<string>;
+    @Field(() => Date, {nullable:true})
+    lt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    lte?: Date | string;
+    @Field(() => Date, {nullable:true})
+    gt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    gte?: Date | string;
+    @Field(() => NestedDateTimeNullableWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedDateTimeNullableWithAggregatesFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedDateTimeNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedDateTimeNullableFilter>;
+    @Field(() => NestedDateTimeNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedDateTimeNullableFilter>;
 }
 
 @InputType()
@@ -4124,6 +4216,12 @@ export class NestedStringWithAggregatesFilter {
     _min?: InstanceType<typeof NestedStringFilter>;
     @Field(() => NestedStringFilter, {nullable:true})
     _max?: InstanceType<typeof NestedStringFilter>;
+}
+
+@InputType()
+export class NullableDateTimeFieldUpdateOperationsInput {
+    @Field(() => Date, {nullable:true})
+    set?: Date | string;
 }
 
 @InputType()
@@ -6021,8 +6119,8 @@ export class UserCreateManyInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6183,8 +6281,8 @@ export class UserCreateWithoutDriverIDCardsInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6217,8 +6315,8 @@ export class UserCreateWithoutDriverLicenseInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6251,8 +6349,8 @@ export class UserCreateWithoutImagesInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6285,8 +6383,8 @@ export class UserCreateWithoutRoleInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6319,8 +6417,8 @@ export class UserCreateWithoutTokensInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6353,8 +6451,8 @@ export class UserCreateWithoutVehiclesInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6387,8 +6485,8 @@ export class UserCreateInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6446,16 +6544,16 @@ export class UserGroupBy {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:false})
     isVerified!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    updatedAt!: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
     @Field(() => UserCountAggregate, {nullable:true})
     _count?: InstanceType<typeof UserCountAggregate>;
     @Field(() => UserMinAggregate, {nullable:true})
@@ -6636,16 +6734,16 @@ export class UserOrderByWithAggregationInput {
     lastName?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     phone?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrder, {nullable:true})
-    username?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    username?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     password?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     isVerified?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => UserCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof UserCountOrderByAggregateInput>;
     @Field(() => UserMaxOrderByAggregateInput, {nullable:true})
@@ -6666,16 +6764,16 @@ export class UserOrderByWithRelationInput {
     lastName?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     phone?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrder, {nullable:true})
-    username?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    username?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     password?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     isVerified?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => RefreshTokenOrderByRelationAggregateInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenOrderByRelationAggregateInput>;
     @Field(() => UserImageOrderByRelationAggregateInput, {nullable:true})
@@ -6716,16 +6814,16 @@ export class UserScalarWhereWithAggregatesInput {
     lastName?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     phone?: InstanceType<typeof StringNullableWithAggregatesFilter>;
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    username?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    username?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     password?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => BoolWithAggregatesFilter, {nullable:true})
     isVerified?: InstanceType<typeof BoolWithAggregatesFilter>;
     @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
-    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
 }
 
 @InputType()
@@ -6746,16 +6844,16 @@ export class UserScalarWhereInput {
     lastName?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     phone?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    username?: InstanceType<typeof StringFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    username?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringFilter, {nullable:true})
     password?: InstanceType<typeof StringFilter>;
     @Field(() => BoolFilter, {nullable:true})
     isVerified?: InstanceType<typeof BoolFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
 }
 
 @InputType()
@@ -6783,8 +6881,8 @@ export class UserUncheckedCreateWithoutDriverIDCardsInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6817,8 +6915,8 @@ export class UserUncheckedCreateWithoutDriverLicenseInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6851,8 +6949,8 @@ export class UserUncheckedCreateWithoutImagesInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6885,8 +6983,8 @@ export class UserUncheckedCreateWithoutRoleInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6919,8 +7017,8 @@ export class UserUncheckedCreateWithoutTokensInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6953,8 +7051,8 @@ export class UserUncheckedCreateWithoutVehiclesInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -6987,8 +7085,8 @@ export class UserUncheckedCreateInput {
     lastName?: string;
     @Field(() => String, {nullable:true})
     phone?: string;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {nullable:true})
@@ -7057,16 +7155,16 @@ export class UserUncheckedUpdateManyWithoutRoleInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -7081,16 +7179,16 @@ export class UserUncheckedUpdateManyInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -7105,16 +7203,16 @@ export class UserUncheckedUpdateWithoutDriverIDCardsInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -7139,16 +7237,16 @@ export class UserUncheckedUpdateWithoutDriverLicenseInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -7173,16 +7271,16 @@ export class UserUncheckedUpdateWithoutImagesInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
@@ -7207,16 +7305,16 @@ export class UserUncheckedUpdateWithoutRoleInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -7241,16 +7339,16 @@ export class UserUncheckedUpdateWithoutTokensInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     images?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
@@ -7275,16 +7373,16 @@ export class UserUncheckedUpdateWithoutVehiclesInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -7309,16 +7407,16 @@ export class UserUncheckedUpdateInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -7345,16 +7443,16 @@ export class UserUpdateManyMutationInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -7568,16 +7666,16 @@ export class UserUpdateWithoutDriverIDCardsInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -7602,16 +7700,16 @@ export class UserUpdateWithoutDriverLicenseInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -7636,16 +7734,16 @@ export class UserUpdateWithoutImagesInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
@@ -7670,16 +7768,16 @@ export class UserUpdateWithoutRoleInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -7704,16 +7802,16 @@ export class UserUpdateWithoutTokensInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
     images?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
@@ -7738,16 +7836,16 @@ export class UserUpdateWithoutVehiclesInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -7772,16 +7870,16 @@ export class UserUpdateInput {
     lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -7900,8 +7998,8 @@ export class UserWhereUniqueInput {
     isVerified?: InstanceType<typeof BoolFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => RefreshTokenListRelationFilter, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenListRelationFilter>;
     @Field(() => UserImageListRelationFilter, {nullable:true})
@@ -7934,16 +8032,16 @@ export class UserWhereInput {
     lastName?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     phone?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    username?: InstanceType<typeof StringFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    username?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringFilter, {nullable:true})
     password?: InstanceType<typeof StringFilter>;
     @Field(() => BoolFilter, {nullable:true})
     isVerified?: InstanceType<typeof BoolFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => RefreshTokenListRelationFilter, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenListRelationFilter>;
     @Field(() => UserImageListRelationFilter, {nullable:true})
@@ -7970,16 +8068,16 @@ export class User {
     lastName!: string | null;
     @Field(() => String, {nullable:true})
     phone!: string | null;
-    @Field(() => String, {nullable:false})
-    username!: string;
+    @Field(() => String, {nullable:true})
+    username!: string | null;
     @Field(() => String, {nullable:false})
     password!: string;
     @Field(() => Boolean, {defaultValue:false,nullable:false})
     isVerified!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:false})
-    updatedAt!: Date;
+    @Field(() => Date, {nullable:true})
+    updatedAt!: Date | null;
     @Field(() => [RefreshToken], {nullable:true})
     tokens?: Array<RefreshToken>;
     @Field(() => [UserImage], {nullable:true})

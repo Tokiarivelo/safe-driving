@@ -45,4 +45,24 @@ export class AuthService {
   async register(dto: RegisterInput) {
     return this.usersService.create({ ...dto });
   }
+
+  async forgotPassword(email: string) {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) {
+      throw new UnauthorizedException('User not found.');
+    }
+
+    // Logic to generate reset link and send email would go here
+    const resetLink = `https://example.com/reset-password?token=${user.id}`;
+    return { resetLink, email: user.email };
+  }
+
+  async resetPassword(sessionToken: string, newPassword: string) {
+    const userId = sessionToken; // Assuming sessionToken is the user ID for simplicity
+    return this.usersService.update(userId, {
+      password: {
+        set: newPassword,
+      },
+    });
+  }
 }

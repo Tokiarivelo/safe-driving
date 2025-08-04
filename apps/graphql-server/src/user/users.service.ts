@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { UserCreateInput } from '../dtos/@generated';
+import { UserCreateInput, UserUpdateInput } from '../dtos/@generated';
 import { User } from '../dtos/@generated';
 import { FindManyUserArgs } from 'src/dtos/@generated';
 import { DeleteOneUserArgs } from 'src/dtos/@generated';
@@ -23,6 +23,26 @@ export class UsersService {
     const hash = await bcrypt.hash(input.password, SALT_ROUNDS);
 
     const user = await this.prisma.user.create({
+      data: {
+        email: input.email,
+        firstName: input.firstName,
+        lastName: input.lastName,
+        phone: input.phone,
+        password: hash,
+        Role: input.Role,
+      },
+    });
+
+    return user;
+  }
+
+  async update(id: string, input: UserUpdateInput): Promise<User> {
+    const hash = input.password?.set
+      ? await bcrypt.hash(input.password.set, SALT_ROUNDS)
+      : undefined;
+
+    const user = await this.prisma.user.update({
+      where: { id },
       data: {
         email: input.email,
         firstName: input.firstName,

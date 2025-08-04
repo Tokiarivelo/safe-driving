@@ -13,9 +13,5 @@ export class RegisterInput {
 
   @Field()
   @IsString()
-  username!: string;
-
-  @Field()
-  @IsString()
   firstName!: string;
 }
