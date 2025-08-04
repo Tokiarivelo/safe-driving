@@ -665,9 +665,9 @@ input RefreshTokenWhereUniqueInput {
 input RegisterInput {
   email: String!
   firstName: String!
-  lastName: String!
+  lastName: String
   password: String!
-  username: String!
+  username: String
 }
 
 type Role {

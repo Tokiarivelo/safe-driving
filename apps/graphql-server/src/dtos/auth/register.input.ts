@@ -11,15 +11,15 @@ export class RegisterInput {
   @IsString()
   password!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
-  username: string;
+  username?: string;
+
+  @Field({ nullable: true })
+  @IsString()
+  lastName?: string;
 
   @Field()
   @IsString()
-  lastName: string;
-
-  @Field()
-  @IsString()
-  firstName: string;
+  firstName!: string;
 }
