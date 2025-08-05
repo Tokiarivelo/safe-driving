@@ -108,3 +108,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# localstack
+.localstack
+localstack_data
