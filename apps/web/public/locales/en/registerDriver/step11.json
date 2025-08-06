@@ -1,0 +1,27 @@
+{
+    "step13": {
+      "stepName": "Récapitulatif",
+      "title": "Tout est prêt !",
+      "subtitle": "Vérifiez vos informations et vos choix avant de valider. Vous pourrez toujours revenir modifier vos préférences plus tard.",
+      "summary": {
+        "personal_info": {
+          "title": "Infos personnelles",
+          "items": ["Nom", "E-mail", "Téléphone", "Photos uploadées"]
+        },
+        "vehicle": {
+          "title": "Véhicule",
+          "items": ["Type", "Marque", "Modèle", "Immatriculation", "Nombre de places", "Photos uploadées"]
+        },
+        "gps_notifications": {
+          "title": "GPS & Notifications",
+          "items": ["GPS", "Notifications"]
+        },
+        "preferences": {
+          "title": "Préférences",
+          "items": ["Thème", "Langue"]
+        }
+      },
+      "button": "Valider"
+    }
+  }
+  

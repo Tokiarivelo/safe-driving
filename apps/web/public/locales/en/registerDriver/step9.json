@@ -1,0 +1,16 @@
+{
+    "step9": {
+      "stepName": "Préférence",
+      "title": "Personnalisez votre expérience",
+      "subtitle": "Réglez votre thème (clair/sombre), ajustez le volume des alertes et choisissez la langue de l'application.",
+      "theme": {
+        "light": "Clair",
+        "dark": "Sombre"
+      },
+      "language": {
+        "french": "Français",
+        "english": "Anglais"
+      }
+    }
+  }
+  

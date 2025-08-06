@@ -16,7 +16,15 @@ const CardFormContainer = ({
 }: CardFormContainerProps) => {
   return (
     <div className={cn(
-      "bg-white rounded-xl shadow-md p-8 w-full max-w-4xl mx-auto",
+      // Background adaptatif selon le thème
+      "bg-white dark:bg-card",
+      // Bordures et ombres
+      "rounded-xl shadow-md dark:shadow-lg dark:shadow-black/20",
+      "border-0 dark:border dark:border-border",
+      // Espacement et dimensions
+      "p-8 w-full max-w-4xl mx-auto",
+      // Transition fluide
+      "transition-colors duration-300",
       className
     )}>
       {title && (

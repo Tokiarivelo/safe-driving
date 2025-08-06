@@ -1,0 +1,26 @@
+{
+    "step2": {
+      "stepName": "Infos personnelles",
+      "title": "Quelques détails sur vous",
+      "subtitle": "Renseignez vos coordonnées pour que nous puissions vous contacter et valider votre identité",
+      "form": {
+        "name": {
+          "label": "Nom complet",
+          "placeholder": "John Doe"
+        },
+        "email": {
+          "label": "E-mail",
+          "placeholder": "example@email.com"
+        },
+        "phone": {
+          "label": "Téléphone",
+          "placeholder": "+261..."
+        }
+      },
+      "buttons": {
+        "later": "Plus tard",
+        "validate": "Valider"
+      }
+    }
+  }
+  

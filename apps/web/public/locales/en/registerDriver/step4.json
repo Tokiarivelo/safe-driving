@@ -1,0 +1,34 @@
+{
+    "step4": {
+      "stepName": "Infos du véhicule",
+      "title": "Dites-nous en plus sur votre véhicule",
+      "subtitle": "Pour mieux vous identifier et garantir la sécurité de vos passagers, renseignez les caractéristiques de votre voiture.",
+      "form": {
+        "brand": {
+          "label": "Marque",
+          "placeholder": "ex: Peugeot"
+        },
+        "model": {
+          "label": "Modèle",
+          "placeholder": "ex: 404"
+        },
+        "plate": {
+          "label": "Numéro d'immatriculation",
+          "placeholder": "ex: AB-123-CD"
+        },
+        "seats": {
+          "label": "Nombre de places",
+          "placeholder": "ex: 4"
+        },
+        "type": {
+          "label": "Type de véhicule",
+          "placeholder": "ex: Voiture"
+        }
+      },
+      "buttons": {
+        "later": "Plus tard",
+        "validate": "Valider"
+      }
+    }
+  }
+  

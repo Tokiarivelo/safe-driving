@@ -1,21 +1,18 @@
 import * as React from 'react';
-
 import { cn } from '@/lib/utils';
 
-function ShadcnInput({ className, type, ...props }: React.ComponentProps<'input'>) {
-  return <input type={type} data-slot="input" className={cn(className)} {...props} />;
-}
-
-type CustomProps = {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  labelClassName?: string;
   startOrnerIcon?: React.ReactNode;
   endOrnerIcon?: React.ReactNode;
   inputClassname?: string;
-};
+}
 
 export type ShadcnInputProps = React.ComponentProps<'input'> & CustomProps;
 
 const Input = ({
-  className = 'mb-1 border border-[#E33486] text-auth-color-text-custom-magenta text-sm rounded w-full p-2.5 bg-auth-color-input',
+  className = 'mb-1 border border-[#E33486] text-gray-900 text-sm rounded w-full p-2.5 bg-auth-color-input',
   inputClassname,
   startOrnerIcon,
   endOrnerIcon,
