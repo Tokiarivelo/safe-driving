@@ -262,7 +262,8 @@ pnpm translate
 | **Racine** | `pnpm install`                           | Installe tout                      |
 |            | `pnpm web:dev`                           | Dev Next.js (turbopack)            |
 |            | `pnpm web:dev:wt`                        | Dev Next.js (sans turbopack)       |
-|            | `pnpm web:generate`                      | GraphQL Codegen                    |
+|            | `
+`                      | GraphQL Codegen                    |
 |            | `pnpm web:build`                         | Build Next.js                      |
 |            | `pnpm web:translate`                     | Lancer la translation de textes    |
 |            | `pnpm graphql:dev`                       | Dev NestJS (+ Prisma, GraphQL)     |

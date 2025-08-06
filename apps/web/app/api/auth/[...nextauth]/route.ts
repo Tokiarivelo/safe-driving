@@ -18,7 +18,7 @@ const { handlers } = NextAuth({
         // 1. Créez un client Apollo pointant vers votre backend NestJS
         const client = new ApolloClient({
           link: new HttpLink({
-            uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+            uri: process.env.NEXT_PUBLIC_GRAPHQL_API_URL,
             fetch,
           }),
           cache: new InMemoryCache(),
@@ -38,6 +38,8 @@ const { handlers } = NextAuth({
               },
             },
           });
+
+          console.log('data')
 
           if (data?.login?.token && data.login.user) {
             // 3. Retournez un "user" enrichi de votre token
@@ -80,7 +82,7 @@ const { handlers } = NextAuth({
     },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+      const isOnDashboard = nextUrl.pathname.startsWith('/pickrole');
 
       if (isOnDashboard) {
         // Si page /dashboard/* et pas loggé → reject
@@ -88,16 +90,14 @@ const { handlers } = NextAuth({
       }
       if (isLoggedIn && nextUrl.pathname === '/login') {
         // Si déjà loggé et arrive sur /login → renvoi /dashboard
-        return Response.redirect(new URL('/dashboard', nextUrl));
+        return Response.redirect(new URL('/pickrole', nextUrl));
       }
       // Dans tous les autres cas, laisse faire
       return true;
     },
   },
-
   pages: {
     signIn: '/login',
   },
 });
-
 export const { GET, POST } = handlers;

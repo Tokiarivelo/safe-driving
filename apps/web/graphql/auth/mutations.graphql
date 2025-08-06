@@ -1,3 +1,12 @@
+mutation RegisterUser($data: RegisterInput!) {
+  register(data: $data) {
+    id
+    firstName
+    lastName
+    email
+  }
+}
+
 mutation Login($data: LoginInput!) {
   login(data: $data) {
     token
@@ -6,16 +15,17 @@ mutation Login($data: LoginInput!) {
       email
       firstName
       lastName
-      phone
-      username
     }
   }
 }
 
-mutation Register($data: RegisterInput!) {
-  register(data: $data) {
-    id
-    firstName
-    username
+mutation ResetPassword($newPassword: String!, $sessionToken: String!) {
+  resetPassword(newPassword: $newPassword, sessionToken: $sessionToken)
+}
+
+mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email) {
+    resetLink
+    email
   }
 }

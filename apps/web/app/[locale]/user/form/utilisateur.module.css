@@ -1,0 +1,20 @@
+@reference '../../../global.css';
+
+.auth_container {
+  @apply auth-background min-h-screen w-full flex items-center justify-center;
+}
+.auth_card_fond_container {
+  @apply rounded-tl-sm rounded-tr-sm  w-[370px] sm:rounded-sm sm:h-[611px] sm:w-[633px] md:w-[750px] lg:max-w-4xl lg:w-full;
+}
+.auth_card_container {
+  @apply rounded-tl-sm rounded-tr-sm shadow-auth-card overflow-hidden sm:rounded-sm sm:h-[550px] sm:flex sm:justify-between sm:w-[633px] md:w-[750px] lg:max-w-4xl lg:w-full;
+}
+.auth_card_un_container {
+  @apply w-full bg-auth-color-bg-white rounded-tl-sm h-[250px]  sm:h-screen  items-center md:w-[55%] sm:w-[50%] lg:w-[62%];
+}
+.auth_card_deux_container {
+  @apply w-full px-1 pt-2  rounded-tr-md auth-card-bg-gradient rounded-br-md min-h-[550px]  sm:min-h-screen sm:w-[50%] md:w-[45%] lg:w-[38%];
+}
+.auth_toprole {
+  @apply w-full h-17 flex justify-between pl-13;
+}

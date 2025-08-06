@@ -8,8 +8,8 @@ export class UserRegistrationInput {
   @Field(() => UserCreateInput)
   user: UserCreateInput;
 
-  @Field(() => ClientRegistrationInput)
-  client: ClientRegistrationInput;
+  // @Field(() => ClientRegistrationInput)
+  // client: ClientRegistrationInput;
 
   @Field(() => DriverRegistrationInput)
   driver: DriverRegistrationInput;

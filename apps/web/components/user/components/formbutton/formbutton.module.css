@@ -1,0 +1,17 @@
+/* @reference '../../../app/global.css';
+
+.text_btn {
+  @apply space-y-2 ;
+}
+ .text_btn1 {
+  @apply text-3xl ;
+}
+.text_btn2 {
+  @apply text-2xl font-medium text-auth-color-bg-white  ;
+}
+.text_btn3 {
+  @apply flex items-center ;
+}
+.text_btn4 {
+  @apply w-10 h-10 flex items-center justify-center;
+}  */

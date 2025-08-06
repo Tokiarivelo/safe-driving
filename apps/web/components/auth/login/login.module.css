@@ -28,13 +28,13 @@
   @apply w-full h-3/2 px-6;
 }
 .auth_txt10 {
-  @apply space-y-2;
+  @apply space-y-3;
 }
 .auth_txt11 {
   @apply h-5 w-5 text-auth-color-icon;
 }
 .auth_txt12 {
-  @apply text-xs text-red-500;
+  @apply absolute mt-10 text-[9px] text-red-500;
 }
 .auth_txt13 {
   @apply h-5 w-5 text-auth-color-icon;
@@ -49,7 +49,7 @@
   @apply h-5 w-5 text-auth-color-icon hover:text-auth-color-icon;
 }
 .auth_txt17 {
-  @apply text-xs text-red-500;
+  @apply absolute mt-10 text-[9px] text-red-500;
 }
 .auth_txt18 {
   @apply text-right mb-4;

@@ -1,4 +1,4 @@
-mutation createUser($input: UserCreateInput!) {
+mutation createUser($input: UserRegistrationInput!) {
   createUser(input: $input) {
     ...userFragment
   }

@@ -1,7 +1,9 @@
+'use client';
+
 import { useForm } from 'react-hook-form';
 import { LoginFormValues, loginSchema } from './login.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner'; // 👈 import direct
+import { toast } from 'sonner';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
@@ -34,24 +36,24 @@ export const useLogin = () => {
 
       const { email, password } = dataLogin;
       const res = await signIn('credentials', {
-        redirect: false, // on gère la redirection nous-mêmes
+        redirect: false,
         email,
         password,
-        callbackUrl: '/dashboard', // où renvoyer en cas de succès
+        callbackUrl: '/pickrole',
       });
 
       setLoading(false);
 
       if (res?.error) {
         setError(res.error);
-        return toast.error('Erreur lors de la connexion');
+        return toast.error('"Adresse e-mail ou mot de passe incorrect."');
       }
 
       toast.success(`Connexion réussie 🎉`, {
         description: `Bienvenue! Redirection en cours...`,
       });
 
-      router.push((res?.url as string) || '/dashboard');
+      router.push((res?.url as string) || '/pickrole');
       return res;
     } catch (error) {
       if (error instanceof Error) {

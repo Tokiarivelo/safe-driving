@@ -52,7 +52,7 @@ export class UsersResolver {
     const hasDriverRole = user.Role.some((role) => role.name === 'DRIVER');
 
     if (hasUserRole) {
-      const client = input.client;
+      // const client = input.client;
     }
     if (hasDriverRole) {
       await this.usersService.createDriver(input.driver, user.id);

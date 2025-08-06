@@ -1,73 +1,96 @@
+'use client';
 import { useForm } from 'react-hook-form';
-import { LoginFormValues, loginSchema } from './login.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner'; // 👈 import direct
+import { z } from 'zod';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import { useRegisterUserMutation } from '@/graphql/generated/graphql';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { SignUpFormValues, signupSchema } from './signup.schema';
 
-export const useLogin = () => {
+export const useRegister = () => {
+  const [mutationRegister, { loading, error }] = useRegisterUserMutation();
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswords, setShowPasswords] = useState(false);
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<SignUpFormValues>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
+  // Fonction pour capitaliser le texte en temps réel
+  const capitalizeText = (text: string) => {
+    return text
+      .toLowerCase()
+      .split(/(\s+|-)/)
+      .map(part => {
+        if (part.match(/\s+|-/)) return part; // Garde les espaces et traits d'union
+        return part.charAt(0).toUpperCase() + part.slice(1);
+      })
+      .join('');
   };
 
-  const login = async (dataLogin: LoginFormValues) => {
+  const handleShowPassword = () => setShowPassword(!showPassword);
+  const handleShowPasswords = () => setShowPasswords(!showPasswords);
+
+  const register = async (values: SignUpFormValues) => {
     try {
-      setLoading(true);
-      if (!dataLogin.email || !dataLogin.password) {
-        setLoading(false);
-        return toast.error('Email et mot de passe requis');
-      }
+      const { confirmPassword, ...dataInput } = values;
 
-      const { email, password } = dataLogin;
-      const res = await signIn('credentials', {
-        redirect: false, // on gère la redirection nous-mêmes
-        email,
-        password,
-        callbackUrl: '/dashboard', // où renvoyer en cas de succès
+      console.log('Register function called', dataInput);
+
+      const { data, errors } = await mutationRegister({
+        variables: {
+          data: { ...dataInput },
+          // data: {...dataInput, username: dataInput.email},
+        },
       });
 
-      setLoading(false);
-
-      if (res?.error) {
-        setError(res.error);
-        return toast.error('Erreur lors de la connexion');
+      if (errors) {
+        return toast.error('Erreur lors de la création du compte', {
+          description: errors.map(err => err.message).join(', '),
+        });
       }
 
-      toast.success(`Connexion réussie 🎉`, {
-        description: `Bienvenue! Redirection en cours...`,
+      const user = data?.register?.id;
+      if (!user) {
+        return toast.error('Erreur lors de la création du compte', {
+          description: 'Aucune donnée utilisateur retournée',
+        });
+      }
+
+      toast.success(`Inscription réussie 🎉`, {
+        description: `Votre inscription a été enregistrée ! Redirection en cours...`,
       });
 
-      router.push((res?.url as string) || '/dashboard');
-      return res;
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error('Une erreur est survenue');
-      }
-      throw error;
+      router.replace('/login');
+      return data;
+    } catch (err) {
+      toast.error('Erreur lors de la création du compte', {
+        description: 'Une erreur inattendue est survenue',
+      });
+      console.error(err);
     }
   };
+
   return {
-    login,
-    handleShowPassword,
-    loading,
     form,
-    error,
+    loading,
     showPassword,
+    showPasswords,
+    register,
+    handleShowPassword,
+    handleShowPasswords,
+    capitalizeText, // Nouvelle fonction exportée
+    error,
   };
 };
+
+export default useRegister;
