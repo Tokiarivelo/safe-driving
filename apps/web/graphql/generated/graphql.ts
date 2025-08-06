@@ -35,9 +35,458 @@ export type DateTimeFilter = {
   notIn?: InputMaybe<Array<Scalars['DateTime']['input']>>;
 };
 
-export type FileUploadResult = {
-  __typename?: 'FileUploadResult';
-  url: Scalars['String']['output'];
+export type DateTimeNullableFilter = {
+  equals?: InputMaybe<Scalars['DateTime']['input']>;
+  gt?: InputMaybe<Scalars['DateTime']['input']>;
+  gte?: InputMaybe<Scalars['DateTime']['input']>;
+  in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  lt?: InputMaybe<Scalars['DateTime']['input']>;
+  lte?: InputMaybe<Scalars['DateTime']['input']>;
+  not?: InputMaybe<NestedDateTimeNullableFilter>;
+  notIn?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+};
+
+export type DriverIdCards = {
+  __typename?: 'DriverIDCards';
+  id: Scalars['String']['output'];
+  recto_url?: Maybe<Scalars['String']['output']>;
+  user: User;
+  userId: Scalars['String']['output'];
+  verso_url?: Maybe<Scalars['String']['output']>;
+};
+
+export type DriverIdCardsCountAggregate = {
+  __typename?: 'DriverIDCardsCountAggregate';
+  _all: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  recto_url: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+  verso_url: Scalars['Int']['output'];
+};
+
+export type DriverIdCardsCreateManyUserInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  recto_url?: InputMaybe<Scalars['String']['input']>;
+  verso_url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type DriverIdCardsCreateManyUserInputEnvelope = {
+  data: Array<DriverIdCardsCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type DriverIdCardsCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<DriverIdCardsWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<DriverIdCardsCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<DriverIdCardsCreateWithoutUserInput>>;
+  createMany?: InputMaybe<DriverIdCardsCreateManyUserInputEnvelope>;
+};
+
+export type DriverIdCardsCreateOrConnectWithoutUserInput = {
+  create: DriverIdCardsCreateWithoutUserInput;
+  where: DriverIdCardsWhereUniqueInput;
+};
+
+export type DriverIdCardsCreateWithoutUserInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  recto_url?: InputMaybe<Scalars['String']['input']>;
+  verso_url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type DriverIdCardsListRelationFilter = {
+  every?: InputMaybe<DriverIdCardsWhereInput>;
+  none?: InputMaybe<DriverIdCardsWhereInput>;
+  some?: InputMaybe<DriverIdCardsWhereInput>;
+};
+
+export type DriverIdCardsMaxAggregate = {
+  __typename?: 'DriverIDCardsMaxAggregate';
+  id?: Maybe<Scalars['String']['output']>;
+  recto_url?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+  verso_url?: Maybe<Scalars['String']['output']>;
+};
+
+export type DriverIdCardsMinAggregate = {
+  __typename?: 'DriverIDCardsMinAggregate';
+  id?: Maybe<Scalars['String']['output']>;
+  recto_url?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+  verso_url?: Maybe<Scalars['String']['output']>;
+};
+
+export type DriverIdCardsOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type DriverIdCardsWhereInput = {
+  AND?: InputMaybe<Array<DriverIdCardsWhereInput>>;
+  NOT?: InputMaybe<Array<DriverIdCardsWhereInput>>;
+  OR?: InputMaybe<Array<DriverIdCardsWhereInput>>;
+  id?: InputMaybe<StringFilter>;
+  recto_url?: InputMaybe<StringNullableFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+  verso_url?: InputMaybe<StringNullableFilter>;
+};
+
+export type DriverIdCardsWhereUniqueInput = {
+  AND?: InputMaybe<Array<DriverIdCardsWhereInput>>;
+  NOT?: InputMaybe<Array<DriverIdCardsWhereInput>>;
+  OR?: InputMaybe<Array<DriverIdCardsWhereInput>>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  recto_url?: InputMaybe<StringNullableFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+  verso_url?: InputMaybe<StringNullableFilter>;
+};
+
+export type DriverLicense = {
+  __typename?: 'DriverLicense';
+  id: Scalars['String']['output'];
+  url?: Maybe<Scalars['String']['output']>;
+  user: User;
+  userId: Scalars['String']['output'];
+};
+
+export type DriverLicenseCountAggregate = {
+  __typename?: 'DriverLicenseCountAggregate';
+  _all: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  url: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+};
+
+export type DriverLicenseCreateManyUserInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type DriverLicenseCreateManyUserInputEnvelope = {
+  data: Array<DriverLicenseCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type DriverLicenseCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<DriverLicenseWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<DriverLicenseCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<DriverLicenseCreateWithoutUserInput>>;
+  createMany?: InputMaybe<DriverLicenseCreateManyUserInputEnvelope>;
+};
+
+export type DriverLicenseCreateOrConnectWithoutUserInput = {
+  create: DriverLicenseCreateWithoutUserInput;
+  where: DriverLicenseWhereUniqueInput;
+};
+
+export type DriverLicenseCreateWithoutUserInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type DriverLicenseListRelationFilter = {
+  every?: InputMaybe<DriverLicenseWhereInput>;
+  none?: InputMaybe<DriverLicenseWhereInput>;
+  some?: InputMaybe<DriverLicenseWhereInput>;
+};
+
+export type DriverLicenseMaxAggregate = {
+  __typename?: 'DriverLicenseMaxAggregate';
+  id?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type DriverLicenseMinAggregate = {
+  __typename?: 'DriverLicenseMinAggregate';
+  id?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type DriverLicenseOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type DriverLicenseWhereInput = {
+  AND?: InputMaybe<Array<DriverLicenseWhereInput>>;
+  NOT?: InputMaybe<Array<DriverLicenseWhereInput>>;
+  OR?: InputMaybe<Array<DriverLicenseWhereInput>>;
+  id?: InputMaybe<StringFilter>;
+  url?: InputMaybe<StringNullableFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type DriverLicenseWhereUniqueInput = {
+  AND?: InputMaybe<Array<DriverLicenseWhereInput>>;
+  NOT?: InputMaybe<Array<DriverLicenseWhereInput>>;
+  OR?: InputMaybe<Array<DriverLicenseWhereInput>>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<StringNullableFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type DriverRegistrationInput = {
+  driverLicenseImage: Scalars['Upload']['input'];
+  idCardImages: Scalars['Upload']['input'];
+  vehicle: VehicleInput;
+};
+
+export type DriverVehicle = {
+  __typename?: 'DriverVehicle';
+  DriverVehicleImg?: Maybe<Array<DriverVehicleImg>>;
+  _count: DriverVehicleCount;
+  brand?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  model?: Maybe<Scalars['String']['output']>;
+  place: Scalars['Int']['output'];
+  registrationNumber?: Maybe<Scalars['String']['output']>;
+  type: VehicleType;
+  user: User;
+  userId: Scalars['String']['output'];
+  vehicleTypeId: Scalars['String']['output'];
+};
+
+export type DriverVehicleAvgAggregate = {
+  __typename?: 'DriverVehicleAvgAggregate';
+  place?: Maybe<Scalars['Float']['output']>;
+};
+
+export type DriverVehicleCount = {
+  __typename?: 'DriverVehicleCount';
+  DriverVehicleImg: Scalars['Int']['output'];
+};
+
+export type DriverVehicleCountAggregate = {
+  __typename?: 'DriverVehicleCountAggregate';
+  _all: Scalars['Int']['output'];
+  brand: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  model: Scalars['Int']['output'];
+  place: Scalars['Int']['output'];
+  registrationNumber: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+  vehicleTypeId: Scalars['Int']['output'];
+};
+
+export type DriverVehicleCreateManyUserInput = {
+  brand?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  model?: InputMaybe<Scalars['String']['input']>;
+  place: Scalars['Int']['input'];
+  registrationNumber?: InputMaybe<Scalars['String']['input']>;
+  vehicleTypeId: Scalars['String']['input'];
+};
+
+export type DriverVehicleCreateManyUserInputEnvelope = {
+  data: Array<DriverVehicleCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type DriverVehicleCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<DriverVehicleWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<DriverVehicleCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<DriverVehicleCreateWithoutUserInput>>;
+  createMany?: InputMaybe<DriverVehicleCreateManyUserInputEnvelope>;
+};
+
+export type DriverVehicleCreateOrConnectWithoutUserInput = {
+  create: DriverVehicleCreateWithoutUserInput;
+  where: DriverVehicleWhereUniqueInput;
+};
+
+export type DriverVehicleCreateWithoutUserInput = {
+  DriverVehicleImg?: InputMaybe<DriverVehicleImgCreateNestedManyWithoutVehicleInput>;
+  brand?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  model?: InputMaybe<Scalars['String']['input']>;
+  place: Scalars['Int']['input'];
+  registrationNumber?: InputMaybe<Scalars['String']['input']>;
+  type: VehicleTypeCreateNestedOneWithoutVehiclesInput;
+};
+
+export type DriverVehicleImg = {
+  __typename?: 'DriverVehicleImg';
+  category?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  url?: Maybe<Scalars['String']['output']>;
+  vehicle: DriverVehicle;
+  vehicleId: Scalars['String']['output'];
+};
+
+export type DriverVehicleImgCountAggregate = {
+  __typename?: 'DriverVehicleImgCountAggregate';
+  _all: Scalars['Int']['output'];
+  category: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  url: Scalars['Int']['output'];
+  vehicleId: Scalars['Int']['output'];
+};
+
+export type DriverVehicleImgCreateManyVehicleInput = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type DriverVehicleImgCreateManyVehicleInputEnvelope = {
+  data: Array<DriverVehicleImgCreateManyVehicleInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type DriverVehicleImgCreateNestedManyWithoutVehicleInput = {
+  connect?: InputMaybe<Array<DriverVehicleImgWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<DriverVehicleImgCreateOrConnectWithoutVehicleInput>>;
+  create?: InputMaybe<Array<DriverVehicleImgCreateWithoutVehicleInput>>;
+  createMany?: InputMaybe<DriverVehicleImgCreateManyVehicleInputEnvelope>;
+};
+
+export type DriverVehicleImgCreateOrConnectWithoutVehicleInput = {
+  create: DriverVehicleImgCreateWithoutVehicleInput;
+  where: DriverVehicleImgWhereUniqueInput;
+};
+
+export type DriverVehicleImgCreateWithoutVehicleInput = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type DriverVehicleImgListRelationFilter = {
+  every?: InputMaybe<DriverVehicleImgWhereInput>;
+  none?: InputMaybe<DriverVehicleImgWhereInput>;
+  some?: InputMaybe<DriverVehicleImgWhereInput>;
+};
+
+export type DriverVehicleImgMaxAggregate = {
+  __typename?: 'DriverVehicleImgMaxAggregate';
+  category?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+  vehicleId?: Maybe<Scalars['String']['output']>;
+};
+
+export type DriverVehicleImgMinAggregate = {
+  __typename?: 'DriverVehicleImgMinAggregate';
+  category?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+  vehicleId?: Maybe<Scalars['String']['output']>;
+};
+
+export type DriverVehicleImgWhereInput = {
+  AND?: InputMaybe<Array<DriverVehicleImgWhereInput>>;
+  NOT?: InputMaybe<Array<DriverVehicleImgWhereInput>>;
+  OR?: InputMaybe<Array<DriverVehicleImgWhereInput>>;
+  category?: InputMaybe<StringNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  url?: InputMaybe<StringNullableFilter>;
+  vehicle?: InputMaybe<DriverVehicleScalarRelationFilter>;
+  vehicleId?: InputMaybe<StringFilter>;
+};
+
+export type DriverVehicleImgWhereUniqueInput = {
+  AND?: InputMaybe<Array<DriverVehicleImgWhereInput>>;
+  NOT?: InputMaybe<Array<DriverVehicleImgWhereInput>>;
+  OR?: InputMaybe<Array<DriverVehicleImgWhereInput>>;
+  category?: InputMaybe<StringNullableFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<StringNullableFilter>;
+  vehicle?: InputMaybe<DriverVehicleScalarRelationFilter>;
+  vehicleId?: InputMaybe<StringFilter>;
+};
+
+export type DriverVehicleListRelationFilter = {
+  every?: InputMaybe<DriverVehicleWhereInput>;
+  none?: InputMaybe<DriverVehicleWhereInput>;
+  some?: InputMaybe<DriverVehicleWhereInput>;
+};
+
+export type DriverVehicleMaxAggregate = {
+  __typename?: 'DriverVehicleMaxAggregate';
+  brand?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  model?: Maybe<Scalars['String']['output']>;
+  place?: Maybe<Scalars['Int']['output']>;
+  registrationNumber?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+  vehicleTypeId?: Maybe<Scalars['String']['output']>;
+};
+
+export type DriverVehicleMinAggregate = {
+  __typename?: 'DriverVehicleMinAggregate';
+  brand?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  model?: Maybe<Scalars['String']['output']>;
+  place?: Maybe<Scalars['Int']['output']>;
+  registrationNumber?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+  vehicleTypeId?: Maybe<Scalars['String']['output']>;
+};
+
+export type DriverVehicleOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type DriverVehicleScalarRelationFilter = {
+  is?: InputMaybe<DriverVehicleWhereInput>;
+  isNot?: InputMaybe<DriverVehicleWhereInput>;
+};
+
+export type DriverVehicleSumAggregate = {
+  __typename?: 'DriverVehicleSumAggregate';
+  place?: Maybe<Scalars['Int']['output']>;
+};
+
+export type DriverVehicleWhereInput = {
+  AND?: InputMaybe<Array<DriverVehicleWhereInput>>;
+  DriverVehicleImg?: InputMaybe<DriverVehicleImgListRelationFilter>;
+  NOT?: InputMaybe<Array<DriverVehicleWhereInput>>;
+  OR?: InputMaybe<Array<DriverVehicleWhereInput>>;
+  brand?: InputMaybe<StringNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  model?: InputMaybe<StringNullableFilter>;
+  place?: InputMaybe<IntFilter>;
+  registrationNumber?: InputMaybe<StringNullableFilter>;
+  type?: InputMaybe<VehicleTypeScalarRelationFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+  vehicleTypeId?: InputMaybe<StringFilter>;
+};
+
+export type DriverVehicleWhereUniqueInput = {
+  AND?: InputMaybe<Array<DriverVehicleWhereInput>>;
+  DriverVehicleImg?: InputMaybe<DriverVehicleImgListRelationFilter>;
+  NOT?: InputMaybe<Array<DriverVehicleWhereInput>>;
+  OR?: InputMaybe<Array<DriverVehicleWhereInput>>;
+  brand?: InputMaybe<StringNullableFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  model?: InputMaybe<StringNullableFilter>;
+  place?: InputMaybe<IntFilter>;
+  registrationNumber?: InputMaybe<StringNullableFilter>;
+  type?: InputMaybe<VehicleTypeScalarRelationFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+  vehicleTypeId?: InputMaybe<StringFilter>;
+};
+
+export type ForgotPasswordOutput = {
+  __typename?: 'ForgotPasswordOutput';
+  email: Scalars['String']['output'];
+  resetLink: Scalars['String']['output'];
+};
+
+export type IntFilter = {
+  equals?: InputMaybe<Scalars['Int']['input']>;
+  gt?: InputMaybe<Scalars['Int']['input']>;
+  gte?: InputMaybe<Scalars['Int']['input']>;
+  in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  lt?: InputMaybe<Scalars['Int']['input']>;
+  lte?: InputMaybe<Scalars['Int']['input']>;
+  not?: InputMaybe<NestedIntFilter>;
+  notIn?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type LoginInput = {
@@ -54,15 +503,21 @@ export type LoginOutput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createUser: User;
+  forgotPassword: ForgotPasswordOutput;
   login?: Maybe<LoginOutput>;
   logout: Scalars['Boolean']['output'];
   register: User;
-  uploadFile: FileUploadResult;
+  resetPassword: Scalars['Boolean']['output'];
 };
 
 
 export type MutationCreateUserArgs = {
-  input: UserCreateInput;
+  input: UserRegistrationInput;
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String']['input'];
 };
 
 
@@ -76,9 +531,9 @@ export type MutationRegisterArgs = {
 };
 
 
-export type MutationUploadFileArgs = {
-  file: Scalars['Upload']['input'];
-  path?: InputMaybe<Scalars['String']['input']>;
+export type MutationResetPasswordArgs = {
+  newPassword: Scalars['String']['input'];
+  sessionToken: Scalars['String']['input'];
 };
 
 export type NestedBoolFilter = {
@@ -95,6 +550,28 @@ export type NestedDateTimeFilter = {
   lte?: InputMaybe<Scalars['DateTime']['input']>;
   not?: InputMaybe<NestedDateTimeFilter>;
   notIn?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+};
+
+export type NestedDateTimeNullableFilter = {
+  equals?: InputMaybe<Scalars['DateTime']['input']>;
+  gt?: InputMaybe<Scalars['DateTime']['input']>;
+  gte?: InputMaybe<Scalars['DateTime']['input']>;
+  in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  lt?: InputMaybe<Scalars['DateTime']['input']>;
+  lte?: InputMaybe<Scalars['DateTime']['input']>;
+  not?: InputMaybe<NestedDateTimeNullableFilter>;
+  notIn?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+};
+
+export type NestedIntFilter = {
+  equals?: InputMaybe<Scalars['Int']['input']>;
+  gt?: InputMaybe<Scalars['Int']['input']>;
+  gte?: InputMaybe<Scalars['Int']['input']>;
+  in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  lt?: InputMaybe<Scalars['Int']['input']>;
+  lte?: InputMaybe<Scalars['Int']['input']>;
+  not?: InputMaybe<NestedIntFilter>;
+  notIn?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type NestedStringFilter = {
@@ -274,8 +751,9 @@ export type RefreshTokenWhereUniqueInput = {
 export type RegisterInput = {
   email: Scalars['String']['input'];
   firstName: Scalars['String']['input'];
+  lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
-  username: Scalars['String']['input'];
+  username?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Role = {
@@ -396,6 +874,8 @@ export type StringNullableFilter = {
 
 export type User = {
   __typename?: 'User';
+  DriverIDCards?: Maybe<Array<DriverIdCards>>;
+  DriverLicense?: Maybe<Array<DriverLicense>>;
   Role?: Maybe<Array<Role>>;
   _count: UserCount;
   createdAt: Scalars['DateTime']['output'];
@@ -408,15 +888,19 @@ export type User = {
   password: Scalars['String']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   tokens?: Maybe<Array<RefreshToken>>;
-  updatedAt: Scalars['DateTime']['output'];
-  username: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  username?: Maybe<Scalars['String']['output']>;
+  vehicles?: Maybe<Array<DriverVehicle>>;
 };
 
 export type UserCount = {
   __typename?: 'UserCount';
+  DriverIDCards: Scalars['Int']['output'];
+  DriverLicense: Scalars['Int']['output'];
   Role: Scalars['Int']['output'];
   images: Scalars['Int']['output'];
   tokens: Scalars['Int']['output'];
+  vehicles: Scalars['Int']['output'];
 };
 
 export type UserCountAggregate = {
@@ -435,6 +919,8 @@ export type UserCountAggregate = {
 };
 
 export type UserCreateInput = {
+  DriverIDCards?: InputMaybe<DriverIdCardsCreateNestedManyWithoutUserInput>;
+  DriverLicense?: InputMaybe<DriverLicenseCreateNestedManyWithoutUserInput>;
   Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email: Scalars['String']['input'];
@@ -447,7 +933,8 @@ export type UserCreateInput = {
   phone?: InputMaybe<Scalars['String']['input']>;
   tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  username: Scalars['String']['input'];
+  username?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
 };
 
 export type UserImage = {
@@ -580,6 +1067,8 @@ export type UserMinAggregate = {
 };
 
 export type UserOrderByWithRelationInput = {
+  DriverIDCards?: InputMaybe<DriverIdCardsOrderByRelationAggregateInput>;
+  DriverLicense?: InputMaybe<DriverLicenseOrderByRelationAggregateInput>;
   Role?: InputMaybe<RoleOrderByRelationAggregateInput>;
   createdAt?: InputMaybe<SortOrder>;
   email?: InputMaybe<SortOrder>;
@@ -591,8 +1080,14 @@ export type UserOrderByWithRelationInput = {
   password?: InputMaybe<SortOrder>;
   phone?: InputMaybe<SortOrderInput>;
   tokens?: InputMaybe<RefreshTokenOrderByRelationAggregateInput>;
-  updatedAt?: InputMaybe<SortOrder>;
-  username?: InputMaybe<SortOrder>;
+  updatedAt?: InputMaybe<SortOrderInput>;
+  username?: InputMaybe<SortOrderInput>;
+  vehicles?: InputMaybe<DriverVehicleOrderByRelationAggregateInput>;
+};
+
+export type UserRegistrationInput = {
+  driver: DriverRegistrationInput;
+  user: UserCreateInput;
 };
 
 export enum UserScalarFieldEnum {
@@ -615,6 +1110,8 @@ export type UserScalarRelationFilter = {
 
 export type UserWhereInput = {
   AND?: InputMaybe<Array<UserWhereInput>>;
+  DriverIDCards?: InputMaybe<DriverIdCardsListRelationFilter>;
+  DriverLicense?: InputMaybe<DriverLicenseListRelationFilter>;
   NOT?: InputMaybe<Array<UserWhereInput>>;
   OR?: InputMaybe<Array<UserWhereInput>>;
   Role?: InputMaybe<RoleListRelationFilter>;
@@ -628,12 +1125,15 @@ export type UserWhereInput = {
   password?: InputMaybe<StringFilter>;
   phone?: InputMaybe<StringNullableFilter>;
   tokens?: InputMaybe<RefreshTokenListRelationFilter>;
-  updatedAt?: InputMaybe<DateTimeFilter>;
-  username?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeNullableFilter>;
+  username?: InputMaybe<StringNullableFilter>;
+  vehicles?: InputMaybe<DriverVehicleListRelationFilter>;
 };
 
 export type UserWhereUniqueInput = {
   AND?: InputMaybe<Array<UserWhereInput>>;
+  DriverIDCards?: InputMaybe<DriverIdCardsListRelationFilter>;
+  DriverLicense?: InputMaybe<DriverLicenseListRelationFilter>;
   NOT?: InputMaybe<Array<UserWhereInput>>;
   OR?: InputMaybe<Array<UserWhereInput>>;
   Role?: InputMaybe<RoleListRelationFilter>;
@@ -647,46 +1147,144 @@ export type UserWhereUniqueInput = {
   password?: InputMaybe<StringFilter>;
   phone?: InputMaybe<StringNullableFilter>;
   tokens?: InputMaybe<RefreshTokenListRelationFilter>;
-  updatedAt?: InputMaybe<DateTimeFilter>;
+  updatedAt?: InputMaybe<DateTimeNullableFilter>;
   username?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<DriverVehicleListRelationFilter>;
 };
+
+export type VehicleInput = {
+  assuranceImages: Array<Scalars['Upload']['input']>;
+  brand: Scalars['String']['input'];
+  model: Scalars['String']['input'];
+  place: Scalars['Int']['input'];
+  registrationImages: Array<Scalars['Upload']['input']>;
+  registrationNumber: Scalars['String']['input'];
+  vehicleImages: Array<Scalars['Upload']['input']>;
+  vehicleType: Scalars['String']['input'];
+};
+
+export type VehicleType = {
+  __typename?: 'VehicleType';
+  _count: VehicleTypeCount;
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  vehicles?: Maybe<Array<DriverVehicle>>;
+};
+
+export type VehicleTypeCount = {
+  __typename?: 'VehicleTypeCount';
+  vehicles: Scalars['Int']['output'];
+};
+
+export type VehicleTypeCountAggregate = {
+  __typename?: 'VehicleTypeCountAggregate';
+  _all: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  name: Scalars['Int']['output'];
+};
+
+export type VehicleTypeCreateNestedOneWithoutVehiclesInput = {
+  connect?: InputMaybe<VehicleTypeWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<VehicleTypeCreateOrConnectWithoutVehiclesInput>;
+  create?: InputMaybe<VehicleTypeCreateWithoutVehiclesInput>;
+};
+
+export type VehicleTypeCreateOrConnectWithoutVehiclesInput = {
+  create: VehicleTypeCreateWithoutVehiclesInput;
+  where: VehicleTypeWhereUniqueInput;
+};
+
+export type VehicleTypeCreateWithoutVehiclesInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+};
+
+export type VehicleTypeMaxAggregate = {
+  __typename?: 'VehicleTypeMaxAggregate';
+  id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+export type VehicleTypeMinAggregate = {
+  __typename?: 'VehicleTypeMinAggregate';
+  id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+export type VehicleTypeScalarRelationFilter = {
+  is?: InputMaybe<VehicleTypeWhereInput>;
+  isNot?: InputMaybe<VehicleTypeWhereInput>;
+};
+
+export type VehicleTypeWhereInput = {
+  AND?: InputMaybe<Array<VehicleTypeWhereInput>>;
+  NOT?: InputMaybe<Array<VehicleTypeWhereInput>>;
+  OR?: InputMaybe<Array<VehicleTypeWhereInput>>;
+  id?: InputMaybe<StringFilter>;
+  name?: InputMaybe<StringFilter>;
+  vehicles?: InputMaybe<DriverVehicleListRelationFilter>;
+};
+
+export type VehicleTypeWhereUniqueInput = {
+  AND?: InputMaybe<Array<VehicleTypeWhereInput>>;
+  NOT?: InputMaybe<Array<VehicleTypeWhereInput>>;
+  OR?: InputMaybe<Array<VehicleTypeWhereInput>>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<DriverVehicleListRelationFilter>;
+};
+
+export type RegisterUserMutationVariables = Exact<{
+  data: RegisterInput;
+}>;
+
+
+export type RegisterUserMutation = { __typename?: 'Mutation', register: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string } };
 
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginOutput', token?: string | null, user?: { __typename?: 'User', id: string, email: string, firstName: string, lastName?: string | null, phone?: string | null, username: string } | null } | null };
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginOutput', token?: string | null, user?: { __typename?: 'User', id: string, email: string, firstName: string, lastName?: string | null } | null } | null };
 
-export type RegisterMutationVariables = Exact<{
-  data: RegisterInput;
+export type ResetPasswordMutationVariables = Exact<{
+  newPassword: Scalars['String']['input'];
+  sessionToken: Scalars['String']['input'];
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'User', id: string, firstName: string, username: string } };
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: boolean };
+
+export type ForgotPasswordMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: { __typename?: 'ForgotPasswordOutput', resetLink: string, email: string } };
 
 export type ImageFragment = { __typename?: 'UserImage', id: string, url: string, type: string };
 
-export type UserFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username: string, images?: Array<{ __typename?: 'UserImage', id: string, url: string, type: string }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null };
+export type UserFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, images?: Array<{ __typename?: 'UserImage', id: string, url: string, type: string }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null };
 
 export type CreateUserMutationVariables = Exact<{
-  input: UserCreateInput;
+  input: UserRegistrationInput;
 }>;
 
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username: string, images?: Array<{ __typename?: 'UserImage', id: string, url: string, type: string }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, images?: Array<{ __typename?: 'UserImage', id: string, url: string, type: string }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username: string, images?: Array<{ __typename?: 'UserImage', id: string, url: string, type: string }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
+export type GetUserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, images?: Array<{ __typename?: 'UserImage', id: string, url: string, type: string }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username: string, images?: Array<{ __typename?: 'UserImage', id: string, url: string, type: string }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, images?: Array<{ __typename?: 'UserImage', id: string, url: string, type: string }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
 
 export const ImageFragmentDoc = gql`
     fragment Image on UserImage {
@@ -712,6 +1310,42 @@ export const UserFragmentFragmentDoc = gql`
   }
 }
     ${ImageFragmentDoc}`;
+export const RegisterUserDocument = gql`
+    mutation RegisterUser($data: RegisterInput!) {
+  register(data: $data) {
+    id
+    firstName
+    lastName
+    email
+  }
+}
+    `;
+export type RegisterUserMutationFn = Apollo.MutationFunction<RegisterUserMutation, RegisterUserMutationVariables>;
+
+/**
+ * __useRegisterUserMutation__
+ *
+ * To run a mutation, you first call `useRegisterUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerUserMutation, { data, loading, error }] = useRegisterUserMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useRegisterUserMutation(baseOptions?: Apollo.MutationHookOptions<RegisterUserMutation, RegisterUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterUserMutation, RegisterUserMutationVariables>(RegisterUserDocument, options);
+      }
+export type RegisterUserMutationHookResult = ReturnType<typeof useRegisterUserMutation>;
+export type RegisterUserMutationResult = Apollo.MutationResult<RegisterUserMutation>;
+export type RegisterUserMutationOptions = Apollo.BaseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($data: LoginInput!) {
   login(data: $data) {
@@ -721,8 +1355,6 @@ export const LoginDocument = gql`
       email
       firstName
       lastName
-      phone
-      username
     }
   }
 }
@@ -753,43 +1385,74 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
-export const RegisterDocument = gql`
-    mutation Register($data: RegisterInput!) {
-  register(data: $data) {
-    id
-    firstName
-    username
-  }
+export const ResetPasswordDocument = gql`
+    mutation ResetPassword($newPassword: String!, $sessionToken: String!) {
+  resetPassword(newPassword: $newPassword, sessionToken: $sessionToken)
 }
     `;
-export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+export type ResetPasswordMutationFn = Apollo.MutationFunction<ResetPasswordMutation, ResetPasswordMutationVariables>;
 
 /**
- * __useRegisterMutation__
+ * __useResetPasswordMutation__
  *
- * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useResetPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResetPasswordMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ * const [resetPasswordMutation, { data, loading, error }] = useResetPasswordMutation({
  *   variables: {
- *      data: // value for 'data'
+ *      newPassword: // value for 'newPassword'
+ *      sessionToken: // value for 'sessionToken'
  *   },
  * });
  */
-export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+export function useResetPasswordMutation(baseOptions?: Apollo.MutationHookOptions<ResetPasswordMutation, ResetPasswordMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+        return Apollo.useMutation<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument, options);
       }
-export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
-export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
-export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export type ResetPasswordMutationHookResult = ReturnType<typeof useResetPasswordMutation>;
+export type ResetPasswordMutationResult = Apollo.MutationResult<ResetPasswordMutation>;
+export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<ResetPasswordMutation, ResetPasswordMutationVariables>;
+export const ForgotPasswordDocument = gql`
+    mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email) {
+    resetLink
+    email
+  }
+}
+    `;
+export type ForgotPasswordMutationFn = Apollo.MutationFunction<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
+
+/**
+ * __useForgotPasswordMutation__
+ *
+ * To run a mutation, you first call `useForgotPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useForgotPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [forgotPasswordMutation, { data, loading, error }] = useForgotPasswordMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useForgotPasswordMutation(baseOptions?: Apollo.MutationHookOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument, options);
+      }
+export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswordMutation>;
+export type ForgotPasswordMutationResult = Apollo.MutationResult<ForgotPasswordMutation>;
+export type ForgotPasswordMutationOptions = Apollo.BaseMutationOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
 export const CreateUserDocument = gql`
-    mutation createUser($input: UserCreateInput!) {
+    mutation createUser($input: UserRegistrationInput!) {
   createUser(input: $input) {
     ...userFragment
   }

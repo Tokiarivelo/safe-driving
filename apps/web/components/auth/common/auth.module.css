@@ -4,14 +4,20 @@
   @apply w-full rounded-tl-sm auth-card-bg-gradient h-[250px]  sm:h-[550px] flex items-center md:w-[55%] sm:w-[50%] lg:w-[62%];
 }
 .auth_card_deux_container {
-  @apply w-full bg-auth-color-bg-white rounded-tr-md rounded-br-md min-h-[550px]  sm:min-h-[550px] sm:w-[50%] md:w-[45%] lg:w-[38%];
+   @apply w-full bg-auth-color-bg-white rounded-tr-md rounded-br-md min-h-[550px]  sm:min-h-[550px] sm:w-[50%] md:w-[45%] lg:w-[38%]; 
 }
 .auth_button_Sign {
-  @apply rounded-sm border hidden border-white text-auth-text-light px-25 py-1.5 hover:bg-auth-color-bg-white hover:text-orange-500 transition-all duration-300 font-medium sm:block sm:m-auto;
+  @apply rounded-sm border hidden border-white text-auth-text-light py-1.5 w-[260px] hover:bg-auth-color-bg-white hover:text-orange-500 transition-all duration-300 font-medium sm:block sm:m-auto;
 }
 .auth_button_connecter {
   @apply w-full h-10 bg-auth-color-button rounded-sm text-auth-text-light hover:bg-auth-btn-hover;
 }
 .auth_button_google {
-  @apply border border-auth-primary w-10 h-10 bg-auth-color-bg-white rounded-sm hover:rounded-full transition-colors duration-200  flex items-center justify-center;
+  @apply border border-auth-primary w-10 h-10 bg-auth-color-bg-white rounded-sm hover:rounded-full transition-colors duration-200  flex items-center justify-center hover:shadow-auth-cards;
+}
+.auth_londing_left {
+  @apply w-full h-[250px] sm:h-[550px] flex justify-center items-center ;
+}
+.auth_londing_ringt {
+  @apply w-full h-[550px] flex justify-center items-center ;
 }

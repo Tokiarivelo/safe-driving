@@ -1,0 +1,125 @@
+@reference '../../../app/global.css';
+/*===========deux partie card===========*/
+.auth_signup1 {
+  @apply w-full text-auth-color-bg-white h-3/4 overflow-hidden text-center sm:p-4 sm:pt-11;
+}
+.auth_signup2 {
+  @apply text-2xl  mb-2 pt-5 sm:text-lg lg:text-2xl;
+}
+/*.auth_signup3 {
+  @apply text-md px-10 mb-3 opacity-90 ;
+}
+.auth_signup4 {
+  @apply text-sm mb-1 px-5 opacity-80 leading-relaxed sm:px-2 sm:text-md lg:px-20;
+}*/
+.auth_signup5 {
+  @apply text-sm mb-2 opacity-80 hidden sm:block;
+}
+/*.auth_signup6 {
+  @apply text-sm mb-8 opacity-80 hidden sm:block sm:text-md sm:mb-4 lg:px-20;
+}*/
+.auth_signup7 {
+  @apply w-full min-h-[600px] bg-auth-color-bg-white rounded-tr-md rounded-br-md sm:w-[50%] md:w-[45%] lg:w-[38%];
+}
+.auth_signup8 {
+  @apply w-full h-[125px] flex  items-center justify-center;
+}
+.auth_signup9 {
+  @apply h-20 w-auto;
+}
+.auth_signup10 {
+  @apply w-full h-3/2  px-6;
+}
+.auth_signup11 {
+  @apply space-y-3;
+}
+.auth_signup12 {
+  @apply h-5 w-5 text-auth-color-icon;
+}
+.auth_signup13 {
+  @apply absolute mt-10 text-[9px] text-red-500;
+}
+.auth_signup14 {
+  @apply h-5 w-5 text-auth-color-icon;
+}
+
+.auth_signup15 {
+  @apply absolute mt-10 text-[9px] text-red-500;
+}
+.auth_signup16 {
+  @apply h-5 w-5 text-auth-color-icon;
+}
+.auth_signup17 {
+  @apply absolute mt-10 text-[9px] text-red-500;
+}
+.auth_signup18 {
+  @apply h-5 w-5 text-auth-color-icon;
+}
+.auth_signup19 {
+  @apply cursor-pointer;
+}
+.auth_signup20 {
+  @apply h-5 w-5 text-auth-color-icon hover:text-auth-color-icon;
+}
+.auth_signup21 {
+  @apply h-5 w-5 text-auth-color-icon hover:text-auth-color-icon;
+}
+.auth_signup22 {
+  @apply absolute mt-10 text-[9px] text-red-500;
+}
+.auth_signup23 {
+  @apply h-5 w-5 text-auth-color-icon;
+}
+.auth_signup24 {
+  @apply cursor-pointer;
+}
+.auth_signup25 {
+  @apply h-5 w-5 text-auth-color-icon hover:text-auth-color-icon;
+}
+.auth_signup26 {
+  @apply h-5 w-5 text-auth-color-icon hover:text-auth-color-icon;
+}
+.auth_signup27 {
+  @apply absolute mt-10 text-[9px] text-red-500;
+}
+.auth_signup28 {
+  @apply flex items-center justify-center;
+}
+/*.auth_signup29 {
+  @apply animate-spin -ml-1 mr-3 h-5 w-5  text-auth-color-text-white;
+}*/
+.auth_signup30 {
+  @apply opacity-25;
+}
+.auth_signup31 {
+  @apply opacity-75;
+}
+.auth_signup32 {
+  @apply text-center;
+}
+.auth_signup33 {
+  @apply text-sm text-auth-color-text-custom-magenta mb-4 mt-2;
+}
+.auth_signup34 {
+  @apply flex justify-center space-x-4;
+}
+.auth_signup35 {
+  @apply flex space-x-4;
+}
+.auth_signup36 {
+  @apply h-8 w-8;
+}
+.auth_signup37 {
+  @apply w-full text-left;
+}
+.auth_signup38 {
+  @apply text-xs text-auth-color-text-custom-magenta mt-6 sm:hidden;
+}
+.auth_signup39 {
+  @apply font-bold underline text-auth-color-text-custom-magenta hover:text-auth-color-button sm:hidden;
+}
+.auth_signup40 {
+  @apply animate-spin -ml-1 mr-3 h-5 w-5 text-white;
+}
+
+

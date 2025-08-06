@@ -19,7 +19,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: process.env.FRONTEND_URL || '*',
+    origin:  '*',
     credentials: true,
   });
 
@@ -46,11 +46,6 @@ async function bootstrap() {
   );
 
   app.use(graphqlUploadExpress({ maxFileSize: 10_000_000 }));
-
-  app.enableCors({
-    origin: '*',
-    credentials: true,
-  });
 }
 
 bootstrap();
