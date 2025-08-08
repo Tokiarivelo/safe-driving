@@ -25,9 +25,7 @@ export const useIdentityUploadAction = () => {
         idCardBack: data.idCardBack.name,
         license: data.license?.name
       });
-
-      toast.success('Documents prêts pour envoi');
-      router.push('/driver/register/next-step');
+      router.push('/vehiculeInfo');
     } catch (error) {
       toast.error('Erreur lors du traitement');
     }
