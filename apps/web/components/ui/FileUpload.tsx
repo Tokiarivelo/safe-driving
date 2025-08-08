@@ -1,50 +1,77 @@
-"use client"
+'use client';
 
-import React from "react"
-import { UploadCloud } from "lucide-react"
-import { cn } from "@/lib/utils"
+import React from 'react';
+import { UploadCloud, X } from 'lucide-react';
+import { Button } from './button';
+import { cn } from '@/lib/utils';
 
-interface FileUploadProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  onUpload: (files: FileList | null) => void
-  title?: string
-  description?: string
-  className?: string
+interface FileUploadProps {
+  onUpload: (file: File) => void;
+  onRemove?: () => void;
+  className?: string;
+  accept?: string;
+  error?: string;
+  file?: File;
 }
 
-const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
-  ({ className, title, description, onUpload, accept, multiple = false, ...props }, ref) => {
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      onUpload(e.target.files)
+export const FileUpload = ({
+  onUpload,
+  onRemove,
+  className = '',
+  accept = 'image/*,.pdf',
+  error,
+  file
+}: FileUploadProps) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      onUpload(e.target.files[0]);
+      e.target.value = '';
     }
+  };
 
-    return (
-      <div className="space-y-2">
-        {title && <h4 className="font-medium">{title}</h4>}
-        <label
-          className={cn(
-            "relative border border-[#E33486] bg-auth-color-input rounded-xl w-full h-[150px] flex flex-col items-center justify-center text-center cursor-pointer hover:opacity-90 transition",
-            className
-          )}
-        >
-          <UploadCloud className="text-green-500 w-8 h-8 mb-2" />
-          <div className="text-sm text-auth-color-placeholder font-normal">
-            {description || "Glissez un fichier ou cliquez pour télécharger"}
+  return (
+    <div className={cn("space-y-2", className)}>
+      {!file ? (
+        <>
+          <label
+            htmlFor="single-file-upload"
+            className="relative border-2 border-dashed border-[#E33486] bg-auth-color-input rounded-xl w-full h-[150px] flex flex-col items-center justify-center text-center cursor-pointer"
+          >
+            <UploadCloud className="text-[#E33486] w-8 h-8 mb-2" />
+            <div className="text-sm text-auth-color-placeholder font-normal">
+              Glissez un fichier ou cliquez pour télécharger
+            </div>
+            <input
+              id="single-file-upload"
+              type="file"
+              accept={accept}
+              onChange={handleChange}
+              className="hidden"
+            />
+          </label>
+          {error && <p className="text-xs text-destructive mt-1">{error}</p>}
+        </>
+      ) : (
+        <>
+          <div className="flex items-center justify-between p-3 bg-auth-color-input rounded-lg">
+            <span
+              className="text-sm text-auth-color-placeholder truncate max-w-[80%]"
+              title={file.name}
+            >
+              {file.name}
+            </span>
+            <button
+              type="button"
+              onClick={onRemove}
+              className="text-gray-400 hover:text-red-500 transition-colors"
+              aria-label="Supprimer le fichier"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
-          <input
-            {...props}
-            type="file"
-            accept={accept}
-            multiple={multiple}
-            ref={ref}
-            onChange={handleChange}
-            className="hidden"
-          />
-        </label>
-      </div>
-    )
-  }
-)
-
-FileUpload.displayName = "FileUpload"
-
-export { FileUpload }
+          {error && <p className="text-xs text-destructive mt-1">{error}</p>}
+        </>
+      )}
+    </div>
+  );
+};
