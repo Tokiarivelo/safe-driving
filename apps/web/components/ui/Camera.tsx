@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 
 type PhotoCaptureProps = {
-  onCapture?: (image: string) => void; // <- ✅ Ajout de la prop
+  onCapture?: (image: string) => void; 
 };
 
 export default function PhotoCapture({ onCapture }: PhotoCaptureProps) {
@@ -44,7 +44,6 @@ export default function PhotoCapture({ onCapture }: PhotoCaptureProps) {
         const dataUrl = canvas.toDataURL('image/jpeg');
         setPhoto(dataUrl);
 
-        // ✅ Appelle la fonction onCapture si elle est fournie
         if (onCapture) onCapture(dataUrl);
 
         stopCamera();
@@ -57,7 +56,6 @@ export default function PhotoCapture({ onCapture }: PhotoCaptureProps) {
     startCamera();
   };
 
-  // Arrêt caméra si le composant est démonté
   useEffect(() => {
     return () => stopCamera();
   }, []);
