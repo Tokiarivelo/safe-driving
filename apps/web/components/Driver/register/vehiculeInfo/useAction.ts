@@ -22,7 +22,6 @@ export const useVehicleInfoAction = (
 
   const handleSubmit = async (data: VehicleInfoFormValues) => {
     try {
-      // Simuler un traitement
       await new Promise(resolve => setTimeout(resolve, 500));
       
       console.log('Données véhicule:', data);

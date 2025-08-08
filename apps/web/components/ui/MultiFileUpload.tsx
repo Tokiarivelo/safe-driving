@@ -6,12 +6,15 @@ import { cn } from '@/lib/utils';
 
 interface MultiFileUploadProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onUpload: (files: File[]) => void;
+  files: File[];
   title?: string;
   description?: string;
   className?: string;
   buttonText?: string;
   addMoreText?: string;
-  files?: File[];
+  error?: string;
+  maxFiles?: number;
+  uniqueId: string; 
 }
 
 const MultiFileUpload = React.forwardRef<HTMLInputElement, MultiFileUploadProps>(
@@ -22,19 +25,26 @@ const MultiFileUpload = React.forwardRef<HTMLInputElement, MultiFileUploadProps>
     onUpload, 
     buttonText, 
     addMoreText, 
+    files = [],
     id,
+    uniqueId,
     accept, 
     multiple = false,
-    files = [],
+    maxFiles,
+    error,
     ...props 
   }, ref) => {
+    const inputId = id || `file-upload-${uniqueId}`;
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const newFiles = event.target.files;
       if (newFiles && newFiles.length > 0) {
-        const updatedFiles = multiple ? [...files, ...Array.from(newFiles)] : Array.from(newFiles);
+        let updatedFiles = [...files, ...Array.from(newFiles)];
+        if (maxFiles) {
+          updatedFiles = updatedFiles.slice(0, maxFiles);
+        }
         onUpload(updatedFiles);
-        // Reset input value to allow selecting same files again
-        if (event.target) event.target.value = '';
+        event.target.value = '';
       }
     };
 
@@ -44,25 +54,30 @@ const MultiFileUpload = React.forwardRef<HTMLInputElement, MultiFileUploadProps>
     };
 
     return (
-      <div className="space-y-2">
-        {title && <h4 className="font-medium">{title}</h4>}
+      <div className={cn("space-y-2", className)}>
+        {title && <h4 className="font-medium text-auth-color-text-custom-magenta">{title}</h4>}
         
         <label
-          htmlFor={id || 'file-upload'}
+          htmlFor={inputId}
           className={cn(
             "relative border-2 border-dashed border-[#E33486] bg-auth-color-input rounded-xl w-full h-[150px] flex flex-col items-center justify-center text-center cursor-pointer",
-            className
+            error && "border-destructive"
           )}
         >
-          <UploadCloud className="text-green-500 w-8 h-8 mb-2" />
+          <UploadCloud className="text-[#E33486] w-8 h-8 mb-2" />
           <div className="text-sm text-auth-color-placeholder font-normal">
             {description || buttonText || "Glissez un fichier ou cliquez pour télécharger"}
           </div>
+          {maxFiles && (
+            <p className="text-xs text-auth-color-placeholder mt-2">
+              Maximum {maxFiles} fichiers
+            </p>
+          )}
         </label>
 
         <input
           ref={ref}
-          id={id || 'file-upload'}
+          id={inputId}
           type="file"
           accept={accept}
           multiple={multiple}
@@ -74,8 +89,14 @@ const MultiFileUpload = React.forwardRef<HTMLInputElement, MultiFileUploadProps>
         {files.length > 0 && (
           <div className="w-full mt-4 space-y-2">
             {files.map((file, index) => (
-              <div key={`${file.name}-${index}`} className="flex items-center justify-between p-3 bg-auth-color-input rounded-lg">
-                <span className="text-sm text-auth-color-placeholder truncate max-w-[80%]">
+              <div 
+                key={`${uniqueId}-${index}-${file.name}-${file.size}-${file.lastModified}`}
+                className="flex items-center justify-between p-3 bg-auth-color-input rounded-lg"
+              >
+                <span 
+                  className="text-sm text-auth-color-placeholder truncate max-w-[80%]"
+                  title={file.name}
+                >
                   {file.name}
                 </span>
                 <button 
@@ -83,16 +104,17 @@ const MultiFileUpload = React.forwardRef<HTMLInputElement, MultiFileUploadProps>
                   onClick={() => handleRemove(index)}
                   className="text-gray-400 hover:text-red-500 transition-colors"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             ))}
           </div>
         )}
 
-        {addMoreText && files.length > 0 && (
-          <p className="text-xs text-auth-color-placeholder mt-2">{addMoreText}</p>
+        {addMoreText && files.length > 0 && files.length < (maxFiles || Infinity) && (
+          <p className="text-xs text-auth-color-placeholder mt-1">{addMoreText}</p>
         )}
+        {error && <p className="text-xs text-destructive mt-1">{error}</p>}
       </div>
     );
   }

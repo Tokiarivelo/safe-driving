@@ -83,7 +83,7 @@
 
 .uploadSmall {
   width: 100%; 
-  max-width: 240px; /* largeur réduite */
+  max-width: 240px;
 }
 
 .uploadBlock {
@@ -92,7 +92,7 @@
   align-items: flex-start;
   gap: 0.5rem;
   min-width: 160px;
-  max-width: 240px; /* largeur réduite */
+  max-width: 240px; 
 }
 
 
