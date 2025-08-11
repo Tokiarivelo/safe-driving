@@ -1,5 +1,6 @@
 'use client';
 import React, { useRef, useState, useEffect } from 'react';
+import styles from '../Driver/register/selfieVerif/selfieVerif.module.css'; 
 
 type PhotoCaptureProps = {
   onCapture?: (image: string) => void; 
@@ -61,26 +62,40 @@ export default function PhotoCapture({ onCapture }: PhotoCaptureProps) {
   }, []);
 
   return (
-    <div>
+    <div className={styles.contentContainer}>
       {!photo && (
         <>
           <div>
-            <video ref={videoRef} style={{ width: '100%', maxWidth: 400 }} />
+            <video ref={videoRef} style={{ width: '100%', maxWidth: 400, borderRadius: '0.5rem' }} />
           </div>
-          {!streaming ? (
-            <button onClick={startCamera}>Démarrer la caméra</button>
-          ) : (
-            <button onClick={capturePhoto}>Prendre une photo</button>
-          )}
+          <div className={styles.buttonContainer}>
+            {!streaming ? (
+              <button className={styles.buttonOutline} onClick={startCamera}>
+                Démarrer la caméra
+              </button>
+            ) : (
+              <button className={styles.buttonPrimary} onClick={capturePhoto}>
+                Prendre une photo
+              </button>
+            )}
+          </div>
         </>
       )}
 
       {photo && (
         <>
           <div>
-            <img src={photo} alt="Aperçu" style={{ width: '100%', maxWidth: 400 }} />
+            <img
+              src={photo}
+              alt="Aperçu"
+              style={{ width: '100%', maxWidth: 400, borderRadius: '0.5rem' }}
+            />
           </div>
-          <button onClick={retakePhoto}>Reprendre une autre photo</button>
+          <div className={styles.buttonContainer}>
+            <button className={styles.buttonOutline} onClick={retakePhoto}>
+              Reprendre une photo
+            </button>
+          </div>
         </>
       )}
 
