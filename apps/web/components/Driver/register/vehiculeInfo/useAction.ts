@@ -26,7 +26,7 @@ export const useVehicleInfoAction = (
       
       console.log('Données véhicule:', data);
       toast.success('Informations enregistrées');
-      router.push('/driver/register/next-step');
+      router.push('/vehiculeUpload');
     } catch (error) {
       toast.error('Erreur lors de l\'enregistrement');
     }

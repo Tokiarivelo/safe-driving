@@ -4,5 +4,9 @@
       "options": {
         "later": "Plus tard",
         "enable": "Activer"
+      },
+      "buttons":{
+        "later" :"Plus tard",
+        "validate": "valider"
       }
 }  
