@@ -34,6 +34,119 @@ input DateTimeNullableFilter {
   notIn: [DateTime!]
 }
 
+type Documets {
+  createdAt: DateTime!
+  id: String!
+  type: String
+  uniqueId: String!
+  url: String
+  user: User!
+  userId: String!
+}
+
+type DocumetsCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  id: Int!
+  type: Int!
+  uniqueId: Int!
+  url: Int!
+  userId: Int!
+}
+
+input DocumetsCreateManyUserInput {
+  createdAt: DateTime
+  id: String
+  type: String
+  uniqueId: String!
+  url: String
+}
+
+input DocumetsCreateManyUserInputEnvelope {
+  data: [DocumetsCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input DocumetsCreateNestedManyWithoutUserInput {
+  connect: [DocumetsWhereUniqueInput!]
+  connectOrCreate: [DocumetsCreateOrConnectWithoutUserInput!]
+  create: [DocumetsCreateWithoutUserInput!]
+  createMany: DocumetsCreateManyUserInputEnvelope
+}
+
+input DocumetsCreateOrConnectWithoutUserInput {
+  create: DocumetsCreateWithoutUserInput!
+  where: DocumetsWhereUniqueInput!
+}
+
+input DocumetsCreateWithoutUserInput {
+  createdAt: DateTime
+  id: String
+  type: String
+  uniqueId: String!
+  url: String
+}
+
+input DocumetsListRelationFilter {
+  every: DocumetsWhereInput
+  none: DocumetsWhereInput
+  some: DocumetsWhereInput
+}
+
+type DocumetsMaxAggregate {
+  createdAt: DateTime
+  id: String
+  type: String
+  uniqueId: String
+  url: String
+  userId: String
+}
+
+type DocumetsMinAggregate {
+  createdAt: DateTime
+  id: String
+  type: String
+  uniqueId: String
+  url: String
+  userId: String
+}
+
+input DocumetsOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input DocumetsUniqueIdUserIdCompoundUniqueInput {
+  uniqueId: String!
+  userId: String!
+}
+
+input DocumetsWhereInput {
+  AND: [DocumetsWhereInput!]
+  NOT: [DocumetsWhereInput!]
+  OR: [DocumetsWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  type: StringNullableFilter
+  uniqueId: StringFilter
+  url: StringNullableFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input DocumetsWhereUniqueInput {
+  AND: [DocumetsWhereInput!]
+  NOT: [DocumetsWhereInput!]
+  OR: [DocumetsWhereInput!]
+  createdAt: DateTimeFilter
+  id: String
+  type: StringNullableFilter
+  uniqueId: StringFilter
+  uniqueId_userId: DocumetsUniqueIdUserIdCompoundUniqueInput
+  url: StringNullableFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
 type DriverIDCards {
   id: String!
   recto_url: String
@@ -247,6 +360,20 @@ type DriverVehicleCountAggregate {
   vehicleTypeId: Int!
 }
 
+input DriverVehicleCreateManyTypeInput {
+  brand: String
+  id: String
+  model: String
+  place: Int!
+  registrationNumber: String
+  userId: String!
+}
+
+input DriverVehicleCreateManyTypeInputEnvelope {
+  data: [DriverVehicleCreateManyTypeInput!]!
+  skipDuplicates: Boolean
+}
+
 input DriverVehicleCreateManyUserInput {
   brand: String
   id: String
@@ -261,6 +388,13 @@ input DriverVehicleCreateManyUserInputEnvelope {
   skipDuplicates: Boolean
 }
 
+input DriverVehicleCreateNestedManyWithoutTypeInput {
+  connect: [DriverVehicleWhereUniqueInput!]
+  connectOrCreate: [DriverVehicleCreateOrConnectWithoutTypeInput!]
+  create: [DriverVehicleCreateWithoutTypeInput!]
+  createMany: DriverVehicleCreateManyTypeInputEnvelope
+}
+
 input DriverVehicleCreateNestedManyWithoutUserInput {
   connect: [DriverVehicleWhereUniqueInput!]
   connectOrCreate: [DriverVehicleCreateOrConnectWithoutUserInput!]
@@ -268,9 +402,24 @@ input DriverVehicleCreateNestedManyWithoutUserInput {
   createMany: DriverVehicleCreateManyUserInputEnvelope
 }
 
+input DriverVehicleCreateOrConnectWithoutTypeInput {
+  create: DriverVehicleCreateWithoutTypeInput!
+  where: DriverVehicleWhereUniqueInput!
+}
+
 input DriverVehicleCreateOrConnectWithoutUserInput {
   create: DriverVehicleCreateWithoutUserInput!
   where: DriverVehicleWhereUniqueInput!
+}
+
+input DriverVehicleCreateWithoutTypeInput {
+  DriverVehicleImg: DriverVehicleImgCreateNestedManyWithoutVehicleInput
+  brand: String
+  id: String
+  model: String
+  place: Int!
+  registrationNumber: String
+  user: UserCreateNestedOneWithoutVehiclesInput!
 }
 
 input DriverVehicleCreateWithoutUserInput {
@@ -441,6 +590,10 @@ input DriverVehicleWhereUniqueInput {
   vehicleTypeId: StringFilter
 }
 
+type FileUploadResult {
+  url: String!
+}
+
 type ForgotPasswordOutput {
   email: String!
   resetLink: String!
@@ -474,6 +627,7 @@ type Mutation {
   logout: Boolean!
   register(data: RegisterInput!): User!
   resetPassword(newPassword: String!, sessionToken: String!): Boolean!
+  uploadFile(file: Upload!, path: String): FileUploadResult!
 }
 
 input NestedBoolFilter {
@@ -549,6 +703,8 @@ enum NullsOrder {
 
 type Query {
   me: User!
+  s3EnsureBucket(bucket: String!): String!
+  s3List(bucket: String!): [String!]!
   user(id: String!): User!
   users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
   usersForAdmin(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
@@ -781,9 +937,11 @@ input StringNullableFilter {
 scalar Upload
 
 type User {
+  Documets: [Documets!]
   DriverIDCards: [DriverIDCards!]
   DriverLicense: [DriverLicense!]
   Role: [Role!]
+  UserPreference: UserPreference
   _count: UserCount!
   createdAt: DateTime!
   email: String!
@@ -801,6 +959,7 @@ type User {
 }
 
 type UserCount {
+  Documets: Int!
   DriverIDCards: Int!
   DriverLicense: Int!
   Role: Int!
@@ -824,6 +983,50 @@ type UserCountAggregate {
 }
 
 input UserCreateInput {
+  Documets: DocumetsCreateNestedManyWithoutUserInput
+  DriverIDCards: DriverIDCardsCreateNestedManyWithoutUserInput
+  DriverLicense: DriverLicenseCreateNestedManyWithoutUserInput
+  Role: RoleCreateNestedManyWithoutUsersInput
+  UserPreference: UserPreferenceCreateNestedOneWithoutUserInput
+  createdAt: DateTime
+  email: String!
+  firstName: String!
+  id: String
+  images: UserImageCreateNestedManyWithoutUserInput
+  isVerified: Boolean
+  lastName: String
+  password: String!
+  phone: String
+  tokens: RefreshTokenCreateNestedManyWithoutUserInput
+  updatedAt: DateTime
+  username: String
+  vehicles: DriverVehicleCreateNestedManyWithoutUserInput
+}
+
+input UserCreateNestedOneWithoutUserPreferenceInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutUserPreferenceInput
+  create: UserCreateWithoutUserPreferenceInput
+}
+
+input UserCreateNestedOneWithoutVehiclesInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutVehiclesInput
+  create: UserCreateWithoutVehiclesInput
+}
+
+input UserCreateOrConnectWithoutUserPreferenceInput {
+  create: UserCreateWithoutUserPreferenceInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutVehiclesInput {
+  create: UserCreateWithoutVehiclesInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateWithoutUserPreferenceInput {
+  Documets: DocumetsCreateNestedManyWithoutUserInput
   DriverIDCards: DriverIDCardsCreateNestedManyWithoutUserInput
   DriverLicense: DriverLicenseCreateNestedManyWithoutUserInput
   Role: RoleCreateNestedManyWithoutUsersInput
@@ -840,6 +1043,26 @@ input UserCreateInput {
   updatedAt: DateTime
   username: String
   vehicles: DriverVehicleCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutVehiclesInput {
+  Documets: DocumetsCreateNestedManyWithoutUserInput
+  DriverIDCards: DriverIDCardsCreateNestedManyWithoutUserInput
+  DriverLicense: DriverLicenseCreateNestedManyWithoutUserInput
+  Role: RoleCreateNestedManyWithoutUsersInput
+  UserPreference: UserPreferenceCreateNestedOneWithoutUserInput
+  createdAt: DateTime
+  email: String!
+  firstName: String!
+  id: String
+  images: UserImageCreateNestedManyWithoutUserInput
+  isVerified: Boolean
+  lastName: String
+  password: String!
+  phone: String
+  tokens: RefreshTokenCreateNestedManyWithoutUserInput
+  updatedAt: DateTime
+  username: String
 }
 
 type UserImage {
@@ -966,9 +1189,11 @@ type UserMinAggregate {
 }
 
 input UserOrderByWithRelationInput {
+  Documets: DocumetsOrderByRelationAggregateInput
   DriverIDCards: DriverIDCardsOrderByRelationAggregateInput
   DriverLicense: DriverLicenseOrderByRelationAggregateInput
   Role: RoleOrderByRelationAggregateInput
+  UserPreference: UserPreferenceOrderByWithRelationInput
   createdAt: SortOrder
   email: SortOrder
   firstName: SortOrder
@@ -982,6 +1207,152 @@ input UserOrderByWithRelationInput {
   updatedAt: SortOrderInput
   username: SortOrderInput
   vehicles: DriverVehicleOrderByRelationAggregateInput
+}
+
+type UserPreference {
+  _count: UserPreferenceCount!
+  activateLocation: Boolean!
+  activateNotifications: Boolean!
+  createdAt: DateTime!
+  id: String!
+  language: String
+  preferedVehicules: [VehicleType!]
+  theme: String
+  updatedAt: DateTime
+  user: User!
+  userId: String!
+}
+
+type UserPreferenceCount {
+  preferedVehicules: Int!
+}
+
+type UserPreferenceCountAggregate {
+  _all: Int!
+  activateLocation: Int!
+  activateNotifications: Int!
+  createdAt: Int!
+  id: Int!
+  language: Int!
+  theme: Int!
+  updatedAt: Int!
+  userId: Int!
+}
+
+input UserPreferenceCreateNestedOneWithoutPreferedVehiculesInput {
+  connect: UserPreferenceWhereUniqueInput
+  connectOrCreate: UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput
+  create: UserPreferenceCreateWithoutPreferedVehiculesInput
+}
+
+input UserPreferenceCreateNestedOneWithoutUserInput {
+  connect: UserPreferenceWhereUniqueInput
+  connectOrCreate: UserPreferenceCreateOrConnectWithoutUserInput
+  create: UserPreferenceCreateWithoutUserInput
+}
+
+input UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput {
+  create: UserPreferenceCreateWithoutPreferedVehiculesInput!
+  where: UserPreferenceWhereUniqueInput!
+}
+
+input UserPreferenceCreateOrConnectWithoutUserInput {
+  create: UserPreferenceCreateWithoutUserInput!
+  where: UserPreferenceWhereUniqueInput!
+}
+
+input UserPreferenceCreateWithoutPreferedVehiculesInput {
+  activateLocation: Boolean
+  activateNotifications: Boolean
+  createdAt: DateTime
+  id: String
+  language: String
+  theme: String
+  updatedAt: DateTime
+  user: UserCreateNestedOneWithoutUserPreferenceInput!
+}
+
+input UserPreferenceCreateWithoutUserInput {
+  activateLocation: Boolean
+  activateNotifications: Boolean
+  createdAt: DateTime
+  id: String
+  language: String
+  preferedVehicules: VehicleTypeCreateNestedManyWithoutUserPreferenceInput
+  theme: String
+  updatedAt: DateTime
+}
+
+type UserPreferenceMaxAggregate {
+  activateLocation: Boolean
+  activateNotifications: Boolean
+  createdAt: DateTime
+  id: String
+  language: String
+  theme: String
+  updatedAt: DateTime
+  userId: String
+}
+
+type UserPreferenceMinAggregate {
+  activateLocation: Boolean
+  activateNotifications: Boolean
+  createdAt: DateTime
+  id: String
+  language: String
+  theme: String
+  updatedAt: DateTime
+  userId: String
+}
+
+input UserPreferenceNullableScalarRelationFilter {
+  is: UserPreferenceWhereInput
+  isNot: UserPreferenceWhereInput
+}
+
+input UserPreferenceOrderByWithRelationInput {
+  activateLocation: SortOrder
+  activateNotifications: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  language: SortOrderInput
+  preferedVehicules: VehicleTypeOrderByRelationAggregateInput
+  theme: SortOrderInput
+  updatedAt: SortOrderInput
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+input UserPreferenceWhereInput {
+  AND: [UserPreferenceWhereInput!]
+  NOT: [UserPreferenceWhereInput!]
+  OR: [UserPreferenceWhereInput!]
+  activateLocation: BoolFilter
+  activateNotifications: BoolFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  language: StringNullableFilter
+  preferedVehicules: VehicleTypeListRelationFilter
+  theme: StringNullableFilter
+  updatedAt: DateTimeNullableFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input UserPreferenceWhereUniqueInput {
+  AND: [UserPreferenceWhereInput!]
+  NOT: [UserPreferenceWhereInput!]
+  OR: [UserPreferenceWhereInput!]
+  activateLocation: BoolFilter
+  activateNotifications: BoolFilter
+  createdAt: DateTimeFilter
+  id: String
+  language: StringNullableFilter
+  preferedVehicules: VehicleTypeListRelationFilter
+  theme: StringNullableFilter
+  updatedAt: DateTimeNullableFilter
+  user: UserScalarRelationFilter
+  userId: String
 }
 
 input UserRegistrationInput {
@@ -1009,11 +1380,13 @@ input UserScalarRelationFilter {
 
 input UserWhereInput {
   AND: [UserWhereInput!]
+  Documets: DocumetsListRelationFilter
   DriverIDCards: DriverIDCardsListRelationFilter
   DriverLicense: DriverLicenseListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   Role: RoleListRelationFilter
+  UserPreference: UserPreferenceNullableScalarRelationFilter
   createdAt: DateTimeFilter
   email: StringFilter
   firstName: StringFilter
@@ -1031,11 +1404,13 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   AND: [UserWhereInput!]
+  Documets: DocumetsListRelationFilter
   DriverIDCards: DriverIDCardsListRelationFilter
   DriverLicense: DriverLicenseListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   Role: RoleListRelationFilter
+  UserPreference: UserPreferenceNullableScalarRelationFilter
   createdAt: DateTimeFilter
   email: String
   firstName: StringFilter
@@ -1063,9 +1438,11 @@ input VehicleInput {
 }
 
 type VehicleType {
+  UserPreference: UserPreference
   _count: VehicleTypeCount!
   id: String!
   name: String!
+  userPreferenceId: String
   vehicles: [DriverVehicle!]
 }
 
@@ -1077,6 +1454,24 @@ type VehicleTypeCountAggregate {
   _all: Int!
   id: Int!
   name: Int!
+  userPreferenceId: Int!
+}
+
+input VehicleTypeCreateManyUserPreferenceInput {
+  id: String
+  name: String!
+}
+
+input VehicleTypeCreateManyUserPreferenceInputEnvelope {
+  data: [VehicleTypeCreateManyUserPreferenceInput!]!
+  skipDuplicates: Boolean
+}
+
+input VehicleTypeCreateNestedManyWithoutUserPreferenceInput {
+  connect: [VehicleTypeWhereUniqueInput!]
+  connectOrCreate: [VehicleTypeCreateOrConnectWithoutUserPreferenceInput!]
+  create: [VehicleTypeCreateWithoutUserPreferenceInput!]
+  createMany: VehicleTypeCreateManyUserPreferenceInputEnvelope
 }
 
 input VehicleTypeCreateNestedOneWithoutVehiclesInput {
@@ -1085,24 +1480,48 @@ input VehicleTypeCreateNestedOneWithoutVehiclesInput {
   create: VehicleTypeCreateWithoutVehiclesInput
 }
 
+input VehicleTypeCreateOrConnectWithoutUserPreferenceInput {
+  create: VehicleTypeCreateWithoutUserPreferenceInput!
+  where: VehicleTypeWhereUniqueInput!
+}
+
 input VehicleTypeCreateOrConnectWithoutVehiclesInput {
   create: VehicleTypeCreateWithoutVehiclesInput!
   where: VehicleTypeWhereUniqueInput!
 }
 
-input VehicleTypeCreateWithoutVehiclesInput {
+input VehicleTypeCreateWithoutUserPreferenceInput {
   id: String
   name: String!
+  vehicles: DriverVehicleCreateNestedManyWithoutTypeInput
+}
+
+input VehicleTypeCreateWithoutVehiclesInput {
+  UserPreference: UserPreferenceCreateNestedOneWithoutPreferedVehiculesInput
+  id: String
+  name: String!
+}
+
+input VehicleTypeListRelationFilter {
+  every: VehicleTypeWhereInput
+  none: VehicleTypeWhereInput
+  some: VehicleTypeWhereInput
 }
 
 type VehicleTypeMaxAggregate {
   id: String
   name: String
+  userPreferenceId: String
 }
 
 type VehicleTypeMinAggregate {
   id: String
   name: String
+  userPreferenceId: String
+}
+
+input VehicleTypeOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input VehicleTypeScalarRelationFilter {
@@ -1114,8 +1533,10 @@ input VehicleTypeWhereInput {
   AND: [VehicleTypeWhereInput!]
   NOT: [VehicleTypeWhereInput!]
   OR: [VehicleTypeWhereInput!]
+  UserPreference: UserPreferenceNullableScalarRelationFilter
   id: StringFilter
   name: StringFilter
+  userPreferenceId: StringNullableFilter
   vehicles: DriverVehicleListRelationFilter
 }
 
@@ -1123,7 +1544,9 @@ input VehicleTypeWhereUniqueInput {
   AND: [VehicleTypeWhereInput!]
   NOT: [VehicleTypeWhereInput!]
   OR: [VehicleTypeWhereInput!]
+  UserPreference: UserPreferenceNullableScalarRelationFilter
   id: String
   name: String
+  userPreferenceId: StringNullableFilter
   vehicles: DriverVehicleListRelationFilter
 }

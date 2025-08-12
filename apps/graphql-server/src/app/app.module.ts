@@ -7,6 +7,8 @@ import { AuthModule } from 'src/auth/auth.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { PrismaModule } from 'src/prisma-module/prisma.module';
 import { SeedModule } from 'src/seed/seed.module';
+import { S3Module } from 'src/s3/s3.module';
+import { UploadModule } from 'src/upload/upload.module';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { SeedModule } from 'src/seed/seed.module';
     SeedModule,
     UsersModule,
     AuthModule,
+    S3Module,
+    UploadModule,
   ],
 })
 export class AppModule {}

@@ -49,6 +49,24 @@ model User {
   vehicles      DriverVehicle[]
   DriverIDCards DriverIDCards[]
   DriverLicense DriverLicense[]
+
+  UserPreference UserPreference?
+  Documets       Documets[]
+}
+
+model UserPreference {
+  id                    String        @id @default(uuid())
+  userId                String        @unique
+  activateLocation      Boolean       @default(false)
+  activateNotifications Boolean       @default(false)
+  user                  User          @relation(fields: [userId], references: [id], map: "UserPreference_userId_relation")
+  language              String?       @default("fr")
+  theme                 String?       @default("light")
+  preferedVehicules     VehicleType[]
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime?     @updatedAt
+
+  @@index([userId], map: "UserPreference_userId_fkey")
 }
 
 model RefreshToken {
@@ -73,9 +91,11 @@ model UserImage {
 }
 
 model VehicleType {
-  id       String          @id @default(uuid())
-  name     String          @unique
-  vehicles DriverVehicle[]
+  id               String          @id @default(uuid())
+  name             String          @unique
+  vehicles         DriverVehicle[]
+  UserPreference   UserPreference? @relation(fields: [userPreferenceId], references: [id])
+  userPreferenceId String?
 }
 
 model DriverVehicle {
@@ -91,6 +111,19 @@ model DriverVehicle {
   DriverVehicleImg   DriverVehicleImg[]
 
   @@index([userId], map: "DriverVehicle_userId_fkey")
+}
+
+model Documets {
+  id        String   @id @default(uuid())
+  uniqueId  String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Documets_userId_relation")
+  url       String?
+  type      String?
+  createdAt DateTime @default(now())
+
+  @@unique([uniqueId, userId], map: "Documets_uniqueId_userId_key")
+  @@index([userId], map: "Documets_userId_fkey")
 }
 
 model DriverIDCards {
