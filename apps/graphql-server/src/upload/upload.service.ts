@@ -61,4 +61,8 @@ export class UploadService {
       });
     });
   }
+
+  async deleteObject(key: string): Promise<void> {
+    await this.s3Service.deleteObject(key);
+  }
 }

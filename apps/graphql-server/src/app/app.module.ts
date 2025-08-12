@@ -9,6 +9,9 @@ import { PrismaModule } from 'src/prisma-module/prisma.module';
 import { SeedModule } from 'src/seed/seed.module';
 import { S3Module } from 'src/s3/s3.module';
 import { UploadModule } from 'src/upload/upload.module';
+import { UserPreferenceModule } from 'src/preference/preference.module';
+import { DriverVehicle } from 'src/dtos/@generated';
+import { VehicleTypeModule } from 'src/vehicle-type/vehicle-type.module';
 
 @Module({
   imports: [
@@ -33,6 +36,9 @@ import { UploadModule } from 'src/upload/upload.module';
     AuthModule,
     S3Module,
     UploadModule,
+    UserPreferenceModule,
+    DriverVehicle,
+    VehicleTypeModule,
   ],
 })
 export class AppModule {}

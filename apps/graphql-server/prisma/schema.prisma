@@ -32,26 +32,30 @@ model Role {
   users User[] @relation("UserRoles")
 }
 
+enum ImageType {
+  USER
+  PROFILE
+  VEHICULE
+}
+
 model User {
-  id            String          @id @default(uuid())
-  email         String          @unique
-  firstName     String
-  lastName      String?
-  phone         String?
-  username      String?         @unique
-  password      String
-  isVerified    Boolean         @default(false)
-  tokens        RefreshToken[]
-  images        UserImage[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime?       @updatedAt
-  Role          Role[]          @relation("UserRoles")
-  vehicles      DriverVehicle[]
-  DriverIDCards DriverIDCards[]
-  DriverLicense DriverLicense[]
+  id         String          @id @default(uuid())
+  email      String          @unique
+  firstName  String
+  lastName   String?
+  phone      String?
+  username   String?         @unique
+  password   String
+  isVerified Boolean         @default(false)
+  tokens     RefreshToken[]
+  images     Image[]
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime?       @updatedAt
+  Role       Role[]          @relation("UserRoles")
+  vehicles   DriverVehicle[]
 
   UserPreference UserPreference?
-  Documets       Documets[]
+  Documents      Document[] // Documents liés à l'utilisateur, pas aux véhicules
 }
 
 model UserPreference {
@@ -59,10 +63,10 @@ model UserPreference {
   userId                String        @unique
   activateLocation      Boolean       @default(false)
   activateNotifications Boolean       @default(false)
-  user                  User          @relation(fields: [userId], references: [id], map: "UserPreference_userId_relation")
   language              String?       @default("fr")
   theme                 String?       @default("light")
-  preferedVehicules     VehicleType[]
+  user                  User          @relation(fields: [userId], references: [id], map: "UserPreference_userId_relation")
+  preferedVehicules     VehicleType[] @relation("UserPreferencePreferedVehicules")
   createdAt             DateTime      @default(now())
   updatedAt             DateTime?     @updatedAt
 
@@ -80,22 +84,47 @@ model RefreshToken {
   @@index([userId], map: "RefreshToken_userId_fkey")
 }
 
-model UserImage {
-  id     String @id @default(uuid())
-  url    String
-  type   String
-  userId String
-  user   User   @relation(fields: [userId], references: [id], map: "UserImage_userId_relation")
+model Image {
+  id              String         @id @default(uuid())
+  url             String
+  type            ImageType
+  name            String?
+  userId          String
+  user            User           @relation(fields: [userId], references: [id], map: "Image_userId_relation")
+  DriverVehicle   DriverVehicle? @relation(fields: [driverVehicleId], references: [id])
+  driverVehicleId String?
 
-  @@index([userId], map: "UserImage_userId_fkey")
+  @@index([userId], map: "Image_userId_fkey")
+}
+
+model DriverVehicleImg {
+  id        String        @id @default(uuid())
+  vehicleId String
+  vehicle   DriverVehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade, map: "DriverVehicle_vehicleId_relation")
+  category  String?
+  url       String?
+}
+
+model Document {
+  id              String         @id @default(uuid())
+  uniqueId        String
+  userId          String
+  url             String?
+  type            String?
+  createdAt       DateTime       @default(now())
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Documets_userId_relation")
+  DriverVehicle   DriverVehicle? @relation(fields: [driverVehicleId], references: [id])
+  driverVehicleId String?
+
+  @@unique([uniqueId, userId], map: "Documets_uniqueId_userId_key")
+  @@index([userId], map: "Documets_userId_fkey")
 }
 
 model VehicleType {
-  id               String          @id @default(uuid())
-  name             String          @unique
-  vehicles         DriverVehicle[]
-  UserPreference   UserPreference? @relation(fields: [userPreferenceId], references: [id])
-  userPreferenceId String?
+  id             String           @id @default(uuid())
+  name           String           @unique
+  vehicles       DriverVehicle[]
+  UserPreference UserPreference[] @relation("UserPreferencePreferedVehicules")
 }
 
 model DriverVehicle {
@@ -108,43 +137,9 @@ model DriverVehicle {
   place              Int
   vehicleTypeId      String
   type               VehicleType        @relation(fields: [vehicleTypeId], references: [id])
+  images             Image[]
+  documents          Document[] // Documents liés à ce véhicule
   DriverVehicleImg   DriverVehicleImg[]
 
   @@index([userId], map: "DriverVehicle_userId_fkey")
-}
-
-model Documets {
-  id        String   @id @default(uuid())
-  uniqueId  String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Documets_userId_relation")
-  url       String?
-  type      String?
-  createdAt DateTime @default(now())
-
-  @@unique([uniqueId, userId], map: "Documets_uniqueId_userId_key")
-  @@index([userId], map: "Documets_userId_fkey")
-}
-
-model DriverIDCards {
-  id        String  @id @default(uuid())
-  userId    String  @unique
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "DriverIDCards_userId_relation")
-  recto_url String?
-  verso_url String?
-}
-
-model DriverLicense {
-  id     String  @id @default(uuid())
-  userId String  @unique
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "DriverLicense_userId_relation")
-  url    String?
-}
-
-model DriverVehicleImg {
-  id        String        @id @default(uuid())
-  vehicleId String
-  vehicle   DriverVehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade, map: "DriverVehicle_vehicleId_relation")
-  category  String?
-  url       String?
 }
