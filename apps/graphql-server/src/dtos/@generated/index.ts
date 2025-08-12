@@ -80,6 +80,12 @@ export enum NullsOrder {
     last = "last"
 }
 
+export enum ImageType {
+    USER = "USER",
+    PROFILE = "PROFILE",
+    VEHICULE = "VEHICULE"
+}
+
 export enum DriverVehicleImgScalarFieldEnum {
     id = "id",
     vehicleId = "vehicleId",
@@ -124,6 +130,7 @@ registerEnumType(DriverIDCardsScalarFieldEnum, { name: 'DriverIDCardsScalarField
 registerEnumType(DriverLicenseScalarFieldEnum, { name: 'DriverLicenseScalarFieldEnum', description: undefined })
 registerEnumType(DriverVehicleScalarFieldEnum, { name: 'DriverVehicleScalarFieldEnum', description: undefined })
 registerEnumType(DriverVehicleImgScalarFieldEnum, { name: 'DriverVehicleImgScalarFieldEnum', description: undefined })
+registerEnumType(ImageType, { name: 'ImageType', description: undefined })
 registerEnumType(NullsOrder, { name: 'NullsOrder', description: undefined })
 registerEnumType(QueryMode, { name: 'QueryMode', description: undefined })
 registerEnumType(SortOrder, { name: 'SortOrder', description: undefined })
@@ -4659,6 +4666,42 @@ export class DeleteOneDriverIdCardsArgs {
     where!: InstanceType<typeof DriverIDCardsWhereUniqueInput>;
 }
 
+@InputType()
+export class EnumImageTypeFieldUpdateOperationsInput {
+    @Field(() => ImageType, {nullable:true})
+    set?: `${ImageType}`;
+}
+
+@InputType()
+export class EnumImageTypeFilter {
+    @Field(() => ImageType, {nullable:true})
+    equals?: `${ImageType}`;
+    @Field(() => [ImageType], {nullable:true})
+    in?: Array<`${ImageType}`>;
+    @Field(() => [ImageType], {nullable:true})
+    notIn?: Array<`${ImageType}`>;
+    @Field(() => NestedEnumImageTypeFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumImageTypeFilter>;
+}
+
+@InputType()
+export class EnumImageTypeWithAggregatesFilter {
+    @Field(() => ImageType, {nullable:true})
+    equals?: `${ImageType}`;
+    @Field(() => [ImageType], {nullable:true})
+    in?: Array<`${ImageType}`>;
+    @Field(() => [ImageType], {nullable:true})
+    notIn?: Array<`${ImageType}`>;
+    @Field(() => NestedEnumImageTypeWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumImageTypeWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumImageTypeFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumImageTypeFilter>;
+    @Field(() => NestedEnumImageTypeFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumImageTypeFilter>;
+}
+
 @ArgsType()
 export class FindFirstDriverIdCardsOrThrowArgs {
     @Field(() => DriverIDCardsWhereInput, {nullable:true})
@@ -4917,6 +4960,36 @@ export class NestedDateTimeWithAggregatesFilter {
     _min?: InstanceType<typeof NestedDateTimeFilter>;
     @Field(() => NestedDateTimeFilter, {nullable:true})
     _max?: InstanceType<typeof NestedDateTimeFilter>;
+}
+
+@InputType()
+export class NestedEnumImageTypeFilter {
+    @Field(() => ImageType, {nullable:true})
+    equals?: `${ImageType}`;
+    @Field(() => [ImageType], {nullable:true})
+    in?: Array<`${ImageType}`>;
+    @Field(() => [ImageType], {nullable:true})
+    notIn?: Array<`${ImageType}`>;
+    @Field(() => NestedEnumImageTypeFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumImageTypeFilter>;
+}
+
+@InputType()
+export class NestedEnumImageTypeWithAggregatesFilter {
+    @Field(() => ImageType, {nullable:true})
+    equals?: `${ImageType}`;
+    @Field(() => [ImageType], {nullable:true})
+    in?: Array<`${ImageType}`>;
+    @Field(() => [ImageType], {nullable:true})
+    notIn?: Array<`${ImageType}`>;
+    @Field(() => NestedEnumImageTypeWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumImageTypeWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumImageTypeFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumImageTypeFilter>;
+    @Field(() => NestedEnumImageTypeFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumImageTypeFilter>;
 }
 
 @InputType()
@@ -9783,8 +9856,8 @@ export class UserImageCreateManyUserInput {
     id?: string;
     @Field(() => String, {nullable:false})
     url!: string;
-    @Field(() => String, {nullable:false})
-    type!: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
 }
 
 @InputType()
@@ -9793,8 +9866,8 @@ export class UserImageCreateManyInput {
     id?: string;
     @Field(() => String, {nullable:false})
     url!: string;
-    @Field(() => String, {nullable:false})
-    type!: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     userId!: string;
 }
@@ -9831,8 +9904,8 @@ export class UserImageCreateWithoutUserInput {
     id?: string;
     @Field(() => String, {nullable:false})
     url!: string;
-    @Field(() => String, {nullable:false})
-    type!: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
 }
 
 @InputType()
@@ -9841,8 +9914,8 @@ export class UserImageCreateInput {
     id?: string;
     @Field(() => String, {nullable:false})
     url!: string;
-    @Field(() => String, {nullable:false})
-    type!: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserCreateNestedOneWithoutImagesInput, {nullable:false})
     user!: InstanceType<typeof UserCreateNestedOneWithoutImagesInput>;
 }
@@ -9876,8 +9949,8 @@ export class UserImageGroupBy {
     id!: string;
     @Field(() => String, {nullable:false})
     url!: string;
-    @Field(() => String, {nullable:false})
-    type!: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     userId!: string;
     @Field(() => UserImageCountAggregate, {nullable:true})
@@ -9916,8 +9989,8 @@ export class UserImageMaxAggregate {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
+    @Field(() => ImageType, {nullable:true})
+    type?: `${ImageType}`;
     @Field(() => String, {nullable:true})
     userId?: string;
 }
@@ -9952,8 +10025,8 @@ export class UserImageMinAggregate {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
+    @Field(() => ImageType, {nullable:true})
+    type?: `${ImageType}`;
     @Field(() => String, {nullable:true})
     userId?: string;
 }
@@ -10020,8 +10093,8 @@ export class UserImageScalarWhereWithAggregatesInput {
     id?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     url?: InstanceType<typeof StringWithAggregatesFilter>;
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    type?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => EnumImageTypeWithAggregatesFilter, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     userId?: InstanceType<typeof StringWithAggregatesFilter>;
 }
@@ -10038,8 +10111,8 @@ export class UserImageScalarWhereInput {
     id?: InstanceType<typeof StringFilter>;
     @Field(() => StringFilter, {nullable:true})
     url?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    type?: InstanceType<typeof StringFilter>;
+    @Field(() => EnumImageTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFilter>;
     @Field(() => StringFilter, {nullable:true})
     userId?: InstanceType<typeof StringFilter>;
 }
@@ -10066,8 +10139,8 @@ export class UserImageUncheckedCreateWithoutUserInput {
     id?: string;
     @Field(() => String, {nullable:false})
     url!: string;
-    @Field(() => String, {nullable:false})
-    type!: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
 }
 
 @InputType()
@@ -10076,8 +10149,8 @@ export class UserImageUncheckedCreateInput {
     id?: string;
     @Field(() => String, {nullable:false})
     url!: string;
-    @Field(() => String, {nullable:false})
-    type!: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     userId!: string;
 }
@@ -10125,8 +10198,8 @@ export class UserImageUncheckedUpdateManyWithoutUserInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -10135,8 +10208,8 @@ export class UserImageUncheckedUpdateManyInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
 }
@@ -10147,8 +10220,8 @@ export class UserImageUncheckedUpdateWithoutUserInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -10157,8 +10230,8 @@ export class UserImageUncheckedUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
 }
@@ -10169,8 +10242,8 @@ export class UserImageUpdateManyMutationInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -10236,8 +10309,8 @@ export class UserImageUpdateWithoutUserInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -10246,8 +10319,8 @@ export class UserImageUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserUpdateOneRequiredWithoutImagesNestedInput, {nullable:true})
     user?: InstanceType<typeof UserUpdateOneRequiredWithoutImagesNestedInput>;
 }
@@ -10277,8 +10350,8 @@ export class UserImageWhereUniqueInput {
     NOT?: Array<UserImageWhereInput>;
     @Field(() => StringFilter, {nullable:true})
     url?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    type?: InstanceType<typeof StringFilter>;
+    @Field(() => EnumImageTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFilter>;
     @Field(() => StringFilter, {nullable:true})
     userId?: InstanceType<typeof StringFilter>;
     @Field(() => UserScalarRelationFilter, {nullable:true})
@@ -10297,8 +10370,8 @@ export class UserImageWhereInput {
     id?: InstanceType<typeof StringFilter>;
     @Field(() => StringFilter, {nullable:true})
     url?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    type?: InstanceType<typeof StringFilter>;
+    @Field(() => EnumImageTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFilter>;
     @Field(() => StringFilter, {nullable:true})
     userId?: InstanceType<typeof StringFilter>;
     @Field(() => UserScalarRelationFilter, {nullable:true})
@@ -10311,8 +10384,8 @@ export class UserImage {
     id!: string;
     @Field(() => String, {nullable:false})
     url!: string;
-    @Field(() => String, {nullable:false})
-    type!: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     userId!: string;
     @Field(() => User, {nullable:false})

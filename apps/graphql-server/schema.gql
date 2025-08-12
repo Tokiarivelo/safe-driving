@@ -590,6 +590,13 @@ input DriverVehicleWhereUniqueInput {
   vehicleTypeId: StringFilter
 }
 
+input EnumImageTypeFilter {
+  equals: ImageType
+  in: [ImageType!]
+  not: NestedEnumImageTypeFilter
+  notIn: [ImageType!]
+}
+
 type FileUploadResult {
   url: String!
 }
@@ -597,6 +604,12 @@ type FileUploadResult {
 type ForgotPasswordOutput {
   email: String!
   resetLink: String!
+}
+
+enum ImageType {
+  PROFILE
+  USER
+  VEHICULE
 }
 
 input IntFilter {
@@ -655,6 +668,13 @@ input NestedDateTimeNullableFilter {
   lte: DateTime
   not: NestedDateTimeNullableFilter
   notIn: [DateTime!]
+}
+
+input NestedEnumImageTypeFilter {
+  equals: ImageType
+  in: [ImageType!]
+  not: NestedEnumImageTypeFilter
+  notIn: [ImageType!]
 }
 
 input NestedIntFilter {
@@ -1067,7 +1087,7 @@ input UserCreateWithoutVehiclesInput {
 
 type UserImage {
   id: String!
-  type: String!
+  type: ImageType!
   url: String!
   user: User!
   userId: String!
@@ -1083,7 +1103,7 @@ type UserImageCountAggregate {
 
 input UserImageCreateManyUserInput {
   id: String
-  type: String!
+  type: ImageType!
   url: String!
 }
 
@@ -1106,7 +1126,7 @@ input UserImageCreateOrConnectWithoutUserInput {
 
 input UserImageCreateWithoutUserInput {
   id: String
-  type: String!
+  type: ImageType!
   url: String!
 }
 
@@ -1118,14 +1138,14 @@ input UserImageListRelationFilter {
 
 type UserImageMaxAggregate {
   id: String
-  type: String
+  type: ImageType
   url: String
   userId: String
 }
 
 type UserImageMinAggregate {
   id: String
-  type: String
+  type: ImageType
   url: String
   userId: String
 }
@@ -1139,7 +1159,7 @@ input UserImageWhereInput {
   NOT: [UserImageWhereInput!]
   OR: [UserImageWhereInput!]
   id: StringFilter
-  type: StringFilter
+  type: EnumImageTypeFilter
   url: StringFilter
   user: UserScalarRelationFilter
   userId: StringFilter
@@ -1150,7 +1170,7 @@ input UserImageWhereUniqueInput {
   NOT: [UserImageWhereInput!]
   OR: [UserImageWhereInput!]
   id: String
-  type: StringFilter
+  type: EnumImageTypeFilter
   url: StringFilter
   user: UserScalarRelationFilter
   userId: StringFilter

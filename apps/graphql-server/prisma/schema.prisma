@@ -32,6 +32,12 @@ model Role {
   users User[] @relation("UserRoles")
 }
 
+enum ImageType {
+  USER
+  PROFILE
+  VEHICULE
+}
+
 model User {
   id            String          @id @default(uuid())
   email         String          @unique
@@ -59,9 +65,9 @@ model UserPreference {
   userId                String        @unique
   activateLocation      Boolean       @default(false)
   activateNotifications Boolean       @default(false)
-  user                  User          @relation(fields: [userId], references: [id], map: "UserPreference_userId_relation")
   language              String?       @default("fr")
   theme                 String?       @default("light")
+  user                  User          @relation(fields: [userId], references: [id], map: "UserPreference_userId_relation")
   preferedVehicules     VehicleType[]
   createdAt             DateTime      @default(now())
   updatedAt             DateTime?     @updatedAt
@@ -81,11 +87,11 @@ model RefreshToken {
 }
 
 model UserImage {
-  id     String @id @default(uuid())
+  id     String    @id @default(uuid())
   url    String
-  type   String
+  type   ImageType
   userId String
-  user   User   @relation(fields: [userId], references: [id], map: "UserImage_userId_relation")
+  user   User      @relation(fields: [userId], references: [id], map: "UserImage_userId_relation")
 
   @@index([userId], map: "UserImage_userId_fkey")
 }
@@ -117,10 +123,10 @@ model Documets {
   id        String   @id @default(uuid())
   uniqueId  String
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Documets_userId_relation")
   url       String?
   type      String?
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Documets_userId_relation")
 
   @@unique([uniqueId, userId], map: "Documets_uniqueId_userId_key")
   @@index([userId], map: "Documets_userId_fkey")
