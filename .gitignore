@@ -111,4 +111,4 @@ app.*.map.json
 
 # localstack
 .localstack
-# localstack_data
+localstack_data
