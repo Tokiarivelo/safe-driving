@@ -7,7 +7,10 @@ import {
   ListObjectsV2Command,
   HeadBucketCommand,
   CreateBucketCommand,
+  DeleteObjectCommand,
+  HeadObjectCommand,
 } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 @Injectable()
 export class S3Service {
@@ -113,5 +116,38 @@ export class S3Service {
   async ensureBucket(bucket: string): Promise<void> {
     this.bucket = bucket;
     await this.ensureBucketExists();
+  }
+
+  async getPresignedPut(key: string, contentType: string, expiresIn = 300) {
+    const cmd = new PutObjectCommand({
+      Bucket: this.bucket,
+      Key: key,
+      ContentType: contentType,
+    });
+    const url = await getSignedUrl(this.client, cmd, { expiresIn });
+    return { url, key, expiresIn };
+  }
+
+  async deleteObject(key: string) {
+    await this.client.send(
+      new DeleteObjectCommand({ Bucket: this.bucket, Key: key }),
+    );
+  }
+
+  async headObjectExists(key: string) {
+    try {
+      await this.client.send(
+        new HeadObjectCommand({ Bucket: this.bucket, Key: key }),
+      );
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  // utilitaires : makeKey(userId, type, originalName)
+  makeKey(userId: string, uniqueId: string, originalName: string) {
+    const safeName = encodeURIComponent(originalName);
+    return `users/${userId}/${uniqueId}-${Date.now()}-${safeName}`;
   }
 }

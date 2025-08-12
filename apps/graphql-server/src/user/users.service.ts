@@ -6,18 +6,10 @@ import { FindManyUserArgs } from 'src/dtos/@generated';
 import { DeleteOneUserArgs } from 'src/dtos/@generated';
 import { PrismaService } from 'src/prisma-module/prisma.service';
 import { SALT_ROUNDS } from 'src/auth/constants';
-import { DriverRegistrationInput } from '../dtos/user/driver-registration.input';
-import { StorageService } from '../storage/storage.service';
-import { FileUpload } from 'graphql-upload-ts';
-import { VehicleService } from '../vehicle/vehicle.service';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly storageService: StorageService,
-    private readonly vehicleService: VehicleService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(input: UserCreateInput): Promise<User> {
     const hash = await bcrypt.hash(input.password, SALT_ROUNDS);
@@ -93,7 +85,12 @@ export class UsersService {
   async findById(id: string): Promise<User> {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      include: { Role: true },
+      include: {
+        Role: true,
+        UserPreference: {
+          include: { preferedVehicules: true },
+        },
+      },
     });
     if (!user) throw new NotFoundException(`User ${id} not found`);
     return user;
@@ -107,50 +104,5 @@ export class UsersService {
     if (!user)
       throw new NotFoundException(`User ${JSON.stringify(where)} not found`);
     return user;
-  }
-
-  async createDriver(driver: DriverRegistrationInput, id: string) {
-    const car = this.vehicleService.createVehicle(driver.vehicle, id);
-
-    await this.createIDCards(driver.idCardImages, id);
-
-    await this.createLicense(driver.driverLicenseImage, id);
-
-    return car;
-  }
-
-  private async createIDCards(idCardImages: Promise<FileUpload>[], id: string) {
-    const urls: string[] = [];
-    for (const img of idCardImages) {
-      const url = await this.storageService.uploadToMinIO(
-        await img,
-        id + '/id-cards',
-      );
-      urls.push(url);
-    }
-    await this.prisma.driverIDCards.create({
-      data: {
-        userId: id,
-        recto_url: urls[0],
-        verso_url: urls[1],
-      },
-    });
-  }
-
-  private async createLicense(
-    driverLicenseImage: Promise<FileUpload>,
-    id: string,
-  ) {
-    const url = await this.storageService.uploadToMinIO(
-      await driverLicenseImage,
-      id + '/license',
-    );
-
-    this.prisma.driverLicense.create({
-      data: {
-        userId: id,
-        url: url,
-      },
-    });
   }
 }
