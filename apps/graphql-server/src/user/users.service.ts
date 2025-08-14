@@ -88,7 +88,7 @@ export class UsersService {
       include: {
         Role: true,
         UserPreference: {
-          include: { preferedVehicules: true },
+          include: { preferedvelicles: true },
         },
       },
     });

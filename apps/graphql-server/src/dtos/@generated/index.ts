@@ -5,12 +5,29 @@ import { Type } from 'class-transformer';
 import { Int } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 import { InputType } from '@nestjs/graphql';
-import { registerEnumType } from '@nestjs/graphql';
 import { Float } from '@nestjs/graphql';
+import { registerEnumType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-type-json';
 
 export enum VehicleTypeScalarFieldEnum {
     id = "id",
     name = "name"
+}
+
+export enum VehicleImageScalarFieldEnum {
+    id = "id",
+    driverVehicleId = "driverVehicleId",
+    fileId = "fileId",
+    createdAt = "createdAt",
+    updatedAt = "updatedAt"
+}
+
+export enum VehicleDocumentScalarFieldEnum {
+    id = "id",
+    driverVehicleId = "driverVehicleId",
+    fileId = "fileId",
+    createdAt = "createdAt",
+    updatedAt = "updatedAt"
 }
 
 export enum UserPreferenceScalarFieldEnum {
@@ -18,8 +35,28 @@ export enum UserPreferenceScalarFieldEnum {
     userId = "userId",
     activateLocation = "activateLocation",
     activateNotifications = "activateNotifications",
+    activateSmsNotifications = "activateSmsNotifications",
+    activateEmailNotifications = "activateEmailNotifications",
     language = "language",
     theme = "theme",
+    cguAccepted = "cguAccepted",
+    privacyPolicyAccepted = "privacyPolicyAccepted",
+    createdAt = "createdAt",
+    updatedAt = "updatedAt"
+}
+
+export enum UserImageScalarFieldEnum {
+    id = "id",
+    userId = "userId",
+    fileId = "fileId",
+    createdAt = "createdAt",
+    updatedAt = "updatedAt"
+}
+
+export enum UserDocumentScalarFieldEnum {
+    id = "id",
+    userId = "userId",
+    fileId = "fileId",
     createdAt = "createdAt",
     updatedAt = "updatedAt"
 }
@@ -72,26 +109,38 @@ export enum NullsOrder {
     last = "last"
 }
 
+export enum NullableJsonNullValueInput {
+    DbNull = "DbNull",
+    JsonNull = "JsonNull"
+}
+
+export enum JsonNullValueFilter {
+    DbNull = "DbNull",
+    JsonNull = "JsonNull",
+    AnyNull = "AnyNull"
+}
+
 export enum ImageType {
     USER = "USER",
     PROFILE = "PROFILE",
-    VEHICULE = "VEHICULE"
+    VEHICLE = "VEHICLE",
+    LANDING = "LANDING"
 }
 
-export enum ImageScalarFieldEnum {
+export enum FileScalarFieldEnum {
     id = "id",
     url = "url",
     type = "type",
+    key = "key",
+    originalName = "originalName",
+    contentType = "contentType",
+    size = "size",
+    etag = "etag",
+    status = "status",
+    meta = "meta",
     name = "name",
     userId = "userId",
     driverVehicleId = "driverVehicleId"
-}
-
-export enum DriverVehicleImgScalarFieldEnum {
-    id = "id",
-    vehicleId = "vehicleId",
-    category = "category",
-    url = "url"
 }
 
 export enum DriverVehicleScalarFieldEnum {
@@ -104,21 +153,11 @@ export enum DriverVehicleScalarFieldEnum {
     vehicleTypeId = "vehicleTypeId"
 }
 
-export enum DocumentScalarFieldEnum {
-    id = "id",
-    uniqueId = "uniqueId",
-    userId = "userId",
-    url = "url",
-    type = "type",
-    createdAt = "createdAt",
-    driverVehicleId = "driverVehicleId"
-}
-
-registerEnumType(DocumentScalarFieldEnum, { name: 'DocumentScalarFieldEnum', description: undefined })
 registerEnumType(DriverVehicleScalarFieldEnum, { name: 'DriverVehicleScalarFieldEnum', description: undefined })
-registerEnumType(DriverVehicleImgScalarFieldEnum, { name: 'DriverVehicleImgScalarFieldEnum', description: undefined })
-registerEnumType(ImageScalarFieldEnum, { name: 'ImageScalarFieldEnum', description: undefined })
+registerEnumType(FileScalarFieldEnum, { name: 'FileScalarFieldEnum', description: undefined })
 registerEnumType(ImageType, { name: 'ImageType', description: undefined })
+registerEnumType(JsonNullValueFilter, { name: 'JsonNullValueFilter', description: undefined })
+registerEnumType(NullableJsonNullValueInput, { name: 'NullableJsonNullValueInput', description: undefined })
 registerEnumType(NullsOrder, { name: 'NullsOrder', description: undefined })
 registerEnumType(QueryMode, { name: 'QueryMode', description: undefined })
 registerEnumType(SortOrder, { name: 'SortOrder', description: undefined })
@@ -126,1212 +165,12 @@ registerEnumType(TransactionIsolationLevel, { name: 'TransactionIsolationLevel',
 registerEnumType(RefreshTokenScalarFieldEnum, { name: 'RefreshTokenScalarFieldEnum', description: undefined })
 registerEnumType(RoleScalarFieldEnum, { name: 'RoleScalarFieldEnum', description: undefined })
 registerEnumType(UserScalarFieldEnum, { name: 'UserScalarFieldEnum', description: undefined })
+registerEnumType(UserDocumentScalarFieldEnum, { name: 'UserDocumentScalarFieldEnum', description: undefined })
+registerEnumType(UserImageScalarFieldEnum, { name: 'UserImageScalarFieldEnum', description: undefined })
 registerEnumType(UserPreferenceScalarFieldEnum, { name: 'UserPreferenceScalarFieldEnum', description: undefined })
+registerEnumType(VehicleDocumentScalarFieldEnum, { name: 'VehicleDocumentScalarFieldEnum', description: undefined })
+registerEnumType(VehicleImageScalarFieldEnum, { name: 'VehicleImageScalarFieldEnum', description: undefined })
 registerEnumType(VehicleTypeScalarFieldEnum, { name: 'VehicleTypeScalarFieldEnum', description: undefined })
-
-@ObjectType()
-export class AggregateDocument {
-    @Field(() => DocumentCountAggregate, {nullable:true})
-    _count?: InstanceType<typeof DocumentCountAggregate>;
-    @Field(() => DocumentMinAggregate, {nullable:true})
-    _min?: InstanceType<typeof DocumentMinAggregate>;
-    @Field(() => DocumentMaxAggregate, {nullable:true})
-    _max?: InstanceType<typeof DocumentMaxAggregate>;
-}
-
-@ArgsType()
-export class CreateManyDocumentArgs {
-    @Field(() => [DocumentCreateManyInput], {nullable:false})
-    @Type(() => DocumentCreateManyInput)
-    data!: Array<DocumentCreateManyInput>;
-    @Field(() => Boolean, {nullable:true})
-    skipDuplicates?: boolean;
-}
-
-@ArgsType()
-export class CreateOneDocumentArgs {
-    @Field(() => DocumentCreateInput, {nullable:false})
-    @Type(() => DocumentCreateInput)
-    data!: InstanceType<typeof DocumentCreateInput>;
-}
-
-@ArgsType()
-export class DeleteManyDocumentArgs {
-    @Field(() => DocumentWhereInput, {nullable:true})
-    @Type(() => DocumentWhereInput)
-    where?: InstanceType<typeof DocumentWhereInput>;
-    @Field(() => Int, {nullable:true})
-    limit?: number;
-}
-
-@ArgsType()
-export class DeleteOneDocumentArgs {
-    @Field(() => DocumentWhereUniqueInput, {nullable:false})
-    @Type(() => DocumentWhereUniqueInput)
-    where!: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-}
-
-@ArgsType()
-export class DocumentAggregateArgs {
-    @Field(() => DocumentWhereInput, {nullable:true})
-    @Type(() => DocumentWhereInput)
-    where?: InstanceType<typeof DocumentWhereInput>;
-    @Field(() => [DocumentOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<DocumentOrderByWithRelationInput>;
-    @Field(() => DocumentWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => DocumentCountAggregateInput, {nullable:true})
-    _count?: InstanceType<typeof DocumentCountAggregateInput>;
-    @Field(() => DocumentMinAggregateInput, {nullable:true})
-    _min?: InstanceType<typeof DocumentMinAggregateInput>;
-    @Field(() => DocumentMaxAggregateInput, {nullable:true})
-    _max?: InstanceType<typeof DocumentMaxAggregateInput>;
-}
-
-@InputType()
-export class DocumentCountAggregateInput {
-    @Field(() => Boolean, {nullable:true})
-    id?: true;
-    @Field(() => Boolean, {nullable:true})
-    uniqueId?: true;
-    @Field(() => Boolean, {nullable:true})
-    userId?: true;
-    @Field(() => Boolean, {nullable:true})
-    url?: true;
-    @Field(() => Boolean, {nullable:true})
-    type?: true;
-    @Field(() => Boolean, {nullable:true})
-    createdAt?: true;
-    @Field(() => Boolean, {nullable:true})
-    driverVehicleId?: true;
-    @Field(() => Boolean, {nullable:true})
-    _all?: true;
-}
-
-@ObjectType()
-export class DocumentCountAggregate {
-    @Field(() => Int, {nullable:false})
-    id!: number;
-    @Field(() => Int, {nullable:false})
-    uniqueId!: number;
-    @Field(() => Int, {nullable:false})
-    userId!: number;
-    @Field(() => Int, {nullable:false})
-    url!: number;
-    @Field(() => Int, {nullable:false})
-    type!: number;
-    @Field(() => Int, {nullable:false})
-    createdAt!: number;
-    @Field(() => Int, {nullable:false})
-    driverVehicleId!: number;
-    @Field(() => Int, {nullable:false})
-    _all!: number;
-}
-
-@InputType()
-export class DocumentCountOrderByAggregateInput {
-    @Field(() => SortOrder, {nullable:true})
-    id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    uniqueId?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    userId?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    type?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    createdAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    driverVehicleId?: `${SortOrder}`;
-}
-
-@InputType()
-export class DocumentCreateManyDriverVehicleInputEnvelope {
-    @Field(() => [DocumentCreateManyDriverVehicleInput], {nullable:false})
-    @Type(() => DocumentCreateManyDriverVehicleInput)
-    data!: Array<DocumentCreateManyDriverVehicleInput>;
-    @Field(() => Boolean, {nullable:true})
-    skipDuplicates?: boolean;
-}
-
-@InputType()
-export class DocumentCreateManyDriverVehicleInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-}
-
-@InputType()
-export class DocumentCreateManyUserInputEnvelope {
-    @Field(() => [DocumentCreateManyUserInput], {nullable:false})
-    @Type(() => DocumentCreateManyUserInput)
-    data!: Array<DocumentCreateManyUserInput>;
-    @Field(() => Boolean, {nullable:true})
-    skipDuplicates?: boolean;
-}
-
-@InputType()
-export class DocumentCreateManyUserInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => String, {nullable:true})
-    driverVehicleId?: string;
-}
-
-@InputType()
-export class DocumentCreateManyInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => String, {nullable:true})
-    driverVehicleId?: string;
-}
-
-@InputType()
-export class DocumentCreateNestedManyWithoutDriverVehicleInput {
-    @Field(() => [DocumentCreateWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentCreateWithoutDriverVehicleInput)
-    create?: Array<DocumentCreateWithoutDriverVehicleInput>;
-    @Field(() => [DocumentCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentCreateOrConnectWithoutDriverVehicleInput)
-    connectOrCreate?: Array<DocumentCreateOrConnectWithoutDriverVehicleInput>;
-    @Field(() => DocumentCreateManyDriverVehicleInputEnvelope, {nullable:true})
-    @Type(() => DocumentCreateManyDriverVehicleInputEnvelope)
-    createMany?: InstanceType<typeof DocumentCreateManyDriverVehicleInputEnvelope>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-}
-
-@InputType()
-export class DocumentCreateNestedManyWithoutUserInput {
-    @Field(() => [DocumentCreateWithoutUserInput], {nullable:true})
-    @Type(() => DocumentCreateWithoutUserInput)
-    create?: Array<DocumentCreateWithoutUserInput>;
-    @Field(() => [DocumentCreateOrConnectWithoutUserInput], {nullable:true})
-    @Type(() => DocumentCreateOrConnectWithoutUserInput)
-    connectOrCreate?: Array<DocumentCreateOrConnectWithoutUserInput>;
-    @Field(() => DocumentCreateManyUserInputEnvelope, {nullable:true})
-    @Type(() => DocumentCreateManyUserInputEnvelope)
-    createMany?: InstanceType<typeof DocumentCreateManyUserInputEnvelope>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-}
-
-@InputType()
-export class DocumentCreateOrConnectWithoutDriverVehicleInput {
-    @Field(() => DocumentWhereUniqueInput, {nullable:false})
-    @Type(() => DocumentWhereUniqueInput)
-    where!: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-    @Field(() => DocumentCreateWithoutDriverVehicleInput, {nullable:false})
-    @Type(() => DocumentCreateWithoutDriverVehicleInput)
-    create!: InstanceType<typeof DocumentCreateWithoutDriverVehicleInput>;
-}
-
-@InputType()
-export class DocumentCreateOrConnectWithoutUserInput {
-    @Field(() => DocumentWhereUniqueInput, {nullable:false})
-    @Type(() => DocumentWhereUniqueInput)
-    where!: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-    @Field(() => DocumentCreateWithoutUserInput, {nullable:false})
-    @Type(() => DocumentCreateWithoutUserInput)
-    create!: InstanceType<typeof DocumentCreateWithoutUserInput>;
-}
-
-@InputType()
-export class DocumentCreateWithoutDriverVehicleInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => UserCreateNestedOneWithoutDocumentsInput, {nullable:false})
-    user!: InstanceType<typeof UserCreateNestedOneWithoutDocumentsInput>;
-}
-
-@InputType()
-export class DocumentCreateWithoutUserInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => DriverVehicleCreateNestedOneWithoutDocumentsInput, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleCreateNestedOneWithoutDocumentsInput>;
-}
-
-@InputType()
-export class DocumentCreateInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => UserCreateNestedOneWithoutDocumentsInput, {nullable:false})
-    user!: InstanceType<typeof UserCreateNestedOneWithoutDocumentsInput>;
-    @Field(() => DriverVehicleCreateNestedOneWithoutDocumentsInput, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleCreateNestedOneWithoutDocumentsInput>;
-}
-
-@ArgsType()
-export class DocumentGroupByArgs {
-    @Field(() => DocumentWhereInput, {nullable:true})
-    @Type(() => DocumentWhereInput)
-    where?: InstanceType<typeof DocumentWhereInput>;
-    @Field(() => [DocumentOrderByWithAggregationInput], {nullable:true})
-    orderBy?: Array<DocumentOrderByWithAggregationInput>;
-    @Field(() => [DocumentScalarFieldEnum], {nullable:false})
-    by!: Array<`${DocumentScalarFieldEnum}`>;
-    @Field(() => DocumentScalarWhereWithAggregatesInput, {nullable:true})
-    having?: InstanceType<typeof DocumentScalarWhereWithAggregatesInput>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => DocumentCountAggregateInput, {nullable:true})
-    _count?: InstanceType<typeof DocumentCountAggregateInput>;
-    @Field(() => DocumentMinAggregateInput, {nullable:true})
-    _min?: InstanceType<typeof DocumentMinAggregateInput>;
-    @Field(() => DocumentMaxAggregateInput, {nullable:true})
-    _max?: InstanceType<typeof DocumentMaxAggregateInput>;
-}
-
-@ObjectType()
-export class DocumentGroupBy {
-    @Field(() => String, {nullable:false})
-    id!: string;
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:false})
-    createdAt!: Date | string;
-    @Field(() => String, {nullable:true})
-    driverVehicleId?: string;
-    @Field(() => DocumentCountAggregate, {nullable:true})
-    _count?: InstanceType<typeof DocumentCountAggregate>;
-    @Field(() => DocumentMinAggregate, {nullable:true})
-    _min?: InstanceType<typeof DocumentMinAggregate>;
-    @Field(() => DocumentMaxAggregate, {nullable:true})
-    _max?: InstanceType<typeof DocumentMaxAggregate>;
-}
-
-@InputType()
-export class DocumentListRelationFilter {
-    @Field(() => DocumentWhereInput, {nullable:true})
-    every?: InstanceType<typeof DocumentWhereInput>;
-    @Field(() => DocumentWhereInput, {nullable:true})
-    some?: InstanceType<typeof DocumentWhereInput>;
-    @Field(() => DocumentWhereInput, {nullable:true})
-    none?: InstanceType<typeof DocumentWhereInput>;
-}
-
-@InputType()
-export class DocumentMaxAggregateInput {
-    @Field(() => Boolean, {nullable:true})
-    id?: true;
-    @Field(() => Boolean, {nullable:true})
-    uniqueId?: true;
-    @Field(() => Boolean, {nullable:true})
-    userId?: true;
-    @Field(() => Boolean, {nullable:true})
-    url?: true;
-    @Field(() => Boolean, {nullable:true})
-    type?: true;
-    @Field(() => Boolean, {nullable:true})
-    createdAt?: true;
-    @Field(() => Boolean, {nullable:true})
-    driverVehicleId?: true;
-}
-
-@ObjectType()
-export class DocumentMaxAggregate {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:true})
-    uniqueId?: string;
-    @Field(() => String, {nullable:true})
-    userId?: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => String, {nullable:true})
-    driverVehicleId?: string;
-}
-
-@InputType()
-export class DocumentMaxOrderByAggregateInput {
-    @Field(() => SortOrder, {nullable:true})
-    id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    uniqueId?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    userId?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    type?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    createdAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    driverVehicleId?: `${SortOrder}`;
-}
-
-@InputType()
-export class DocumentMinAggregateInput {
-    @Field(() => Boolean, {nullable:true})
-    id?: true;
-    @Field(() => Boolean, {nullable:true})
-    uniqueId?: true;
-    @Field(() => Boolean, {nullable:true})
-    userId?: true;
-    @Field(() => Boolean, {nullable:true})
-    url?: true;
-    @Field(() => Boolean, {nullable:true})
-    type?: true;
-    @Field(() => Boolean, {nullable:true})
-    createdAt?: true;
-    @Field(() => Boolean, {nullable:true})
-    driverVehicleId?: true;
-}
-
-@ObjectType()
-export class DocumentMinAggregate {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:true})
-    uniqueId?: string;
-    @Field(() => String, {nullable:true})
-    userId?: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => String, {nullable:true})
-    driverVehicleId?: string;
-}
-
-@InputType()
-export class DocumentMinOrderByAggregateInput {
-    @Field(() => SortOrder, {nullable:true})
-    id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    uniqueId?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    userId?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    type?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    createdAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    driverVehicleId?: `${SortOrder}`;
-}
-
-@InputType()
-export class DocumentOrderByRelationAggregateInput {
-    @Field(() => SortOrder, {nullable:true})
-    _count?: `${SortOrder}`;
-}
-
-@InputType()
-export class DocumentOrderByWithAggregationInput {
-    @Field(() => SortOrder, {nullable:true})
-    id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    uniqueId?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    userId?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    url?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrderInput, {nullable:true})
-    type?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrder, {nullable:true})
-    createdAt?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    driverVehicleId?: InstanceType<typeof SortOrderInput>;
-    @Field(() => DocumentCountOrderByAggregateInput, {nullable:true})
-    _count?: InstanceType<typeof DocumentCountOrderByAggregateInput>;
-    @Field(() => DocumentMaxOrderByAggregateInput, {nullable:true})
-    _max?: InstanceType<typeof DocumentMaxOrderByAggregateInput>;
-    @Field(() => DocumentMinOrderByAggregateInput, {nullable:true})
-    _min?: InstanceType<typeof DocumentMinOrderByAggregateInput>;
-}
-
-@InputType()
-export class DocumentOrderByWithRelationInput {
-    @Field(() => SortOrder, {nullable:true})
-    id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    uniqueId?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    userId?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    url?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrderInput, {nullable:true})
-    type?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrder, {nullable:true})
-    createdAt?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    driverVehicleId?: InstanceType<typeof SortOrderInput>;
-    @Field(() => UserOrderByWithRelationInput, {nullable:true})
-    user?: InstanceType<typeof UserOrderByWithRelationInput>;
-    @Field(() => DriverVehicleOrderByWithRelationInput, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleOrderByWithRelationInput>;
-}
-
-@InputType()
-export class DocumentScalarWhereWithAggregatesInput {
-    @Field(() => [DocumentScalarWhereWithAggregatesInput], {nullable:true})
-    AND?: Array<DocumentScalarWhereWithAggregatesInput>;
-    @Field(() => [DocumentScalarWhereWithAggregatesInput], {nullable:true})
-    OR?: Array<DocumentScalarWhereWithAggregatesInput>;
-    @Field(() => [DocumentScalarWhereWithAggregatesInput], {nullable:true})
-    NOT?: Array<DocumentScalarWhereWithAggregatesInput>;
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    id?: InstanceType<typeof StringWithAggregatesFilter>;
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    uniqueId?: InstanceType<typeof StringWithAggregatesFilter>;
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    userId?: InstanceType<typeof StringWithAggregatesFilter>;
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    url?: InstanceType<typeof StringNullableWithAggregatesFilter>;
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    type?: InstanceType<typeof StringNullableWithAggregatesFilter>;
-    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    driverVehicleId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
-}
-
-@InputType()
-export class DocumentScalarWhereInput {
-    @Field(() => [DocumentScalarWhereInput], {nullable:true})
-    AND?: Array<DocumentScalarWhereInput>;
-    @Field(() => [DocumentScalarWhereInput], {nullable:true})
-    OR?: Array<DocumentScalarWhereInput>;
-    @Field(() => [DocumentScalarWhereInput], {nullable:true})
-    NOT?: Array<DocumentScalarWhereInput>;
-    @Field(() => StringFilter, {nullable:true})
-    id?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    userId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    url?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    type?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    driverVehicleId?: InstanceType<typeof StringNullableFilter>;
-}
-
-@InputType()
-export class DocumentUncheckedCreateNestedManyWithoutDriverVehicleInput {
-    @Field(() => [DocumentCreateWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentCreateWithoutDriverVehicleInput)
-    create?: Array<DocumentCreateWithoutDriverVehicleInput>;
-    @Field(() => [DocumentCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentCreateOrConnectWithoutDriverVehicleInput)
-    connectOrCreate?: Array<DocumentCreateOrConnectWithoutDriverVehicleInput>;
-    @Field(() => DocumentCreateManyDriverVehicleInputEnvelope, {nullable:true})
-    @Type(() => DocumentCreateManyDriverVehicleInputEnvelope)
-    createMany?: InstanceType<typeof DocumentCreateManyDriverVehicleInputEnvelope>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-}
-
-@InputType()
-export class DocumentUncheckedCreateNestedManyWithoutUserInput {
-    @Field(() => [DocumentCreateWithoutUserInput], {nullable:true})
-    @Type(() => DocumentCreateWithoutUserInput)
-    create?: Array<DocumentCreateWithoutUserInput>;
-    @Field(() => [DocumentCreateOrConnectWithoutUserInput], {nullable:true})
-    @Type(() => DocumentCreateOrConnectWithoutUserInput)
-    connectOrCreate?: Array<DocumentCreateOrConnectWithoutUserInput>;
-    @Field(() => DocumentCreateManyUserInputEnvelope, {nullable:true})
-    @Type(() => DocumentCreateManyUserInputEnvelope)
-    createMany?: InstanceType<typeof DocumentCreateManyUserInputEnvelope>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-}
-
-@InputType()
-export class DocumentUncheckedCreateWithoutDriverVehicleInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-}
-
-@InputType()
-export class DocumentUncheckedCreateWithoutUserInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => String, {nullable:true})
-    driverVehicleId?: string;
-}
-
-@InputType()
-export class DocumentUncheckedCreateInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => String, {nullable:true})
-    type?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => String, {nullable:true})
-    driverVehicleId?: string;
-}
-
-@InputType()
-export class DocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput {
-    @Field(() => [DocumentCreateWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentCreateWithoutDriverVehicleInput)
-    create?: Array<DocumentCreateWithoutDriverVehicleInput>;
-    @Field(() => [DocumentCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentCreateOrConnectWithoutDriverVehicleInput)
-    connectOrCreate?: Array<DocumentCreateOrConnectWithoutDriverVehicleInput>;
-    @Field(() => [DocumentUpsertWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentUpsertWithWhereUniqueWithoutDriverVehicleInput)
-    upsert?: Array<DocumentUpsertWithWhereUniqueWithoutDriverVehicleInput>;
-    @Field(() => DocumentCreateManyDriverVehicleInputEnvelope, {nullable:true})
-    @Type(() => DocumentCreateManyDriverVehicleInputEnvelope)
-    createMany?: InstanceType<typeof DocumentCreateManyDriverVehicleInputEnvelope>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentUpdateWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentUpdateWithWhereUniqueWithoutDriverVehicleInput)
-    update?: Array<DocumentUpdateWithWhereUniqueWithoutDriverVehicleInput>;
-    @Field(() => [DocumentUpdateManyWithWhereWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentUpdateManyWithWhereWithoutDriverVehicleInput)
-    updateMany?: Array<DocumentUpdateManyWithWhereWithoutDriverVehicleInput>;
-    @Field(() => [DocumentScalarWhereInput], {nullable:true})
-    @Type(() => DocumentScalarWhereInput)
-    deleteMany?: Array<DocumentScalarWhereInput>;
-}
-
-@InputType()
-export class DocumentUncheckedUpdateManyWithoutDriverVehicleInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DocumentUncheckedUpdateManyWithoutUserNestedInput {
-    @Field(() => [DocumentCreateWithoutUserInput], {nullable:true})
-    @Type(() => DocumentCreateWithoutUserInput)
-    create?: Array<DocumentCreateWithoutUserInput>;
-    @Field(() => [DocumentCreateOrConnectWithoutUserInput], {nullable:true})
-    @Type(() => DocumentCreateOrConnectWithoutUserInput)
-    connectOrCreate?: Array<DocumentCreateOrConnectWithoutUserInput>;
-    @Field(() => [DocumentUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
-    @Type(() => DocumentUpsertWithWhereUniqueWithoutUserInput)
-    upsert?: Array<DocumentUpsertWithWhereUniqueWithoutUserInput>;
-    @Field(() => DocumentCreateManyUserInputEnvelope, {nullable:true})
-    @Type(() => DocumentCreateManyUserInputEnvelope)
-    createMany?: InstanceType<typeof DocumentCreateManyUserInputEnvelope>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
-    @Type(() => DocumentUpdateWithWhereUniqueWithoutUserInput)
-    update?: Array<DocumentUpdateWithWhereUniqueWithoutUserInput>;
-    @Field(() => [DocumentUpdateManyWithWhereWithoutUserInput], {nullable:true})
-    @Type(() => DocumentUpdateManyWithWhereWithoutUserInput)
-    updateMany?: Array<DocumentUpdateManyWithWhereWithoutUserInput>;
-    @Field(() => [DocumentScalarWhereInput], {nullable:true})
-    @Type(() => DocumentScalarWhereInput)
-    deleteMany?: Array<DocumentScalarWhereInput>;
-}
-
-@InputType()
-export class DocumentUncheckedUpdateManyWithoutUserInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DocumentUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DocumentUncheckedUpdateWithoutDriverVehicleInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DocumentUncheckedUpdateWithoutUserInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DocumentUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DocumentUniqueIdUserIdCompoundUniqueInput {
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-}
-
-@InputType()
-export class DocumentUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DocumentUpdateManyWithWhereWithoutDriverVehicleInput {
-    @Field(() => DocumentScalarWhereInput, {nullable:false})
-    @Type(() => DocumentScalarWhereInput)
-    where!: InstanceType<typeof DocumentScalarWhereInput>;
-    @Field(() => DocumentUpdateManyMutationInput, {nullable:false})
-    @Type(() => DocumentUpdateManyMutationInput)
-    data!: InstanceType<typeof DocumentUpdateManyMutationInput>;
-}
-
-@InputType()
-export class DocumentUpdateManyWithWhereWithoutUserInput {
-    @Field(() => DocumentScalarWhereInput, {nullable:false})
-    @Type(() => DocumentScalarWhereInput)
-    where!: InstanceType<typeof DocumentScalarWhereInput>;
-    @Field(() => DocumentUpdateManyMutationInput, {nullable:false})
-    @Type(() => DocumentUpdateManyMutationInput)
-    data!: InstanceType<typeof DocumentUpdateManyMutationInput>;
-}
-
-@InputType()
-export class DocumentUpdateManyWithoutDriverVehicleNestedInput {
-    @Field(() => [DocumentCreateWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentCreateWithoutDriverVehicleInput)
-    create?: Array<DocumentCreateWithoutDriverVehicleInput>;
-    @Field(() => [DocumentCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentCreateOrConnectWithoutDriverVehicleInput)
-    connectOrCreate?: Array<DocumentCreateOrConnectWithoutDriverVehicleInput>;
-    @Field(() => [DocumentUpsertWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentUpsertWithWhereUniqueWithoutDriverVehicleInput)
-    upsert?: Array<DocumentUpsertWithWhereUniqueWithoutDriverVehicleInput>;
-    @Field(() => DocumentCreateManyDriverVehicleInputEnvelope, {nullable:true})
-    @Type(() => DocumentCreateManyDriverVehicleInputEnvelope)
-    createMany?: InstanceType<typeof DocumentCreateManyDriverVehicleInputEnvelope>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentUpdateWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentUpdateWithWhereUniqueWithoutDriverVehicleInput)
-    update?: Array<DocumentUpdateWithWhereUniqueWithoutDriverVehicleInput>;
-    @Field(() => [DocumentUpdateManyWithWhereWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => DocumentUpdateManyWithWhereWithoutDriverVehicleInput)
-    updateMany?: Array<DocumentUpdateManyWithWhereWithoutDriverVehicleInput>;
-    @Field(() => [DocumentScalarWhereInput], {nullable:true})
-    @Type(() => DocumentScalarWhereInput)
-    deleteMany?: Array<DocumentScalarWhereInput>;
-}
-
-@InputType()
-export class DocumentUpdateManyWithoutUserNestedInput {
-    @Field(() => [DocumentCreateWithoutUserInput], {nullable:true})
-    @Type(() => DocumentCreateWithoutUserInput)
-    create?: Array<DocumentCreateWithoutUserInput>;
-    @Field(() => [DocumentCreateOrConnectWithoutUserInput], {nullable:true})
-    @Type(() => DocumentCreateOrConnectWithoutUserInput)
-    connectOrCreate?: Array<DocumentCreateOrConnectWithoutUserInput>;
-    @Field(() => [DocumentUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
-    @Type(() => DocumentUpsertWithWhereUniqueWithoutUserInput)
-    upsert?: Array<DocumentUpsertWithWhereUniqueWithoutUserInput>;
-    @Field(() => DocumentCreateManyUserInputEnvelope, {nullable:true})
-    @Type(() => DocumentCreateManyUserInputEnvelope)
-    createMany?: InstanceType<typeof DocumentCreateManyUserInputEnvelope>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentWhereUniqueInput], {nullable:true})
-    @Type(() => DocumentWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>>;
-    @Field(() => [DocumentUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
-    @Type(() => DocumentUpdateWithWhereUniqueWithoutUserInput)
-    update?: Array<DocumentUpdateWithWhereUniqueWithoutUserInput>;
-    @Field(() => [DocumentUpdateManyWithWhereWithoutUserInput], {nullable:true})
-    @Type(() => DocumentUpdateManyWithWhereWithoutUserInput)
-    updateMany?: Array<DocumentUpdateManyWithWhereWithoutUserInput>;
-    @Field(() => [DocumentScalarWhereInput], {nullable:true})
-    @Type(() => DocumentScalarWhereInput)
-    deleteMany?: Array<DocumentScalarWhereInput>;
-}
-
-@InputType()
-export class DocumentUpdateWithWhereUniqueWithoutDriverVehicleInput {
-    @Field(() => DocumentWhereUniqueInput, {nullable:false})
-    @Type(() => DocumentWhereUniqueInput)
-    where!: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-    @Field(() => DocumentUpdateWithoutDriverVehicleInput, {nullable:false})
-    @Type(() => DocumentUpdateWithoutDriverVehicleInput)
-    data!: InstanceType<typeof DocumentUpdateWithoutDriverVehicleInput>;
-}
-
-@InputType()
-export class DocumentUpdateWithWhereUniqueWithoutUserInput {
-    @Field(() => DocumentWhereUniqueInput, {nullable:false})
-    @Type(() => DocumentWhereUniqueInput)
-    where!: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-    @Field(() => DocumentUpdateWithoutUserInput, {nullable:false})
-    @Type(() => DocumentUpdateWithoutUserInput)
-    data!: InstanceType<typeof DocumentUpdateWithoutUserInput>;
-}
-
-@InputType()
-export class DocumentUpdateWithoutDriverVehicleInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => UserUpdateOneRequiredWithoutDocumentsNestedInput, {nullable:true})
-    user?: InstanceType<typeof UserUpdateOneRequiredWithoutDocumentsNestedInput>;
-}
-
-@InputType()
-export class DocumentUpdateWithoutUserInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DriverVehicleUpdateOneWithoutDocumentsNestedInput, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleUpdateOneWithoutDocumentsNestedInput>;
-}
-
-@InputType()
-export class DocumentUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => UserUpdateOneRequiredWithoutDocumentsNestedInput, {nullable:true})
-    user?: InstanceType<typeof UserUpdateOneRequiredWithoutDocumentsNestedInput>;
-    @Field(() => DriverVehicleUpdateOneWithoutDocumentsNestedInput, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleUpdateOneWithoutDocumentsNestedInput>;
-}
-
-@InputType()
-export class DocumentUpsertWithWhereUniqueWithoutDriverVehicleInput {
-    @Field(() => DocumentWhereUniqueInput, {nullable:false})
-    @Type(() => DocumentWhereUniqueInput)
-    where!: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-    @Field(() => DocumentUpdateWithoutDriverVehicleInput, {nullable:false})
-    @Type(() => DocumentUpdateWithoutDriverVehicleInput)
-    update!: InstanceType<typeof DocumentUpdateWithoutDriverVehicleInput>;
-    @Field(() => DocumentCreateWithoutDriverVehicleInput, {nullable:false})
-    @Type(() => DocumentCreateWithoutDriverVehicleInput)
-    create!: InstanceType<typeof DocumentCreateWithoutDriverVehicleInput>;
-}
-
-@InputType()
-export class DocumentUpsertWithWhereUniqueWithoutUserInput {
-    @Field(() => DocumentWhereUniqueInput, {nullable:false})
-    @Type(() => DocumentWhereUniqueInput)
-    where!: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-    @Field(() => DocumentUpdateWithoutUserInput, {nullable:false})
-    @Type(() => DocumentUpdateWithoutUserInput)
-    update!: InstanceType<typeof DocumentUpdateWithoutUserInput>;
-    @Field(() => DocumentCreateWithoutUserInput, {nullable:false})
-    @Type(() => DocumentCreateWithoutUserInput)
-    create!: InstanceType<typeof DocumentCreateWithoutUserInput>;
-}
-
-@InputType()
-export class DocumentWhereUniqueInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => DocumentUniqueIdUserIdCompoundUniqueInput, {nullable:true})
-    uniqueId_userId?: InstanceType<typeof DocumentUniqueIdUserIdCompoundUniqueInput>;
-    @Field(() => [DocumentWhereInput], {nullable:true})
-    AND?: Array<DocumentWhereInput>;
-    @Field(() => [DocumentWhereInput], {nullable:true})
-    OR?: Array<DocumentWhereInput>;
-    @Field(() => [DocumentWhereInput], {nullable:true})
-    NOT?: Array<DocumentWhereInput>;
-    @Field(() => StringFilter, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    userId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    url?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    type?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    driverVehicleId?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => UserScalarRelationFilter, {nullable:true})
-    user?: InstanceType<typeof UserScalarRelationFilter>;
-    @Field(() => DriverVehicleNullableScalarRelationFilter, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleNullableScalarRelationFilter>;
-}
-
-@InputType()
-export class DocumentWhereInput {
-    @Field(() => [DocumentWhereInput], {nullable:true})
-    AND?: Array<DocumentWhereInput>;
-    @Field(() => [DocumentWhereInput], {nullable:true})
-    OR?: Array<DocumentWhereInput>;
-    @Field(() => [DocumentWhereInput], {nullable:true})
-    NOT?: Array<DocumentWhereInput>;
-    @Field(() => StringFilter, {nullable:true})
-    id?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    uniqueId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    userId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    url?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    type?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    driverVehicleId?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => UserScalarRelationFilter, {nullable:true})
-    user?: InstanceType<typeof UserScalarRelationFilter>;
-    @Field(() => DriverVehicleNullableScalarRelationFilter, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleNullableScalarRelationFilter>;
-}
-
-@ObjectType()
-export class Document {
-    @Field(() => String, {nullable:false})
-    id!: string;
-    @Field(() => String, {nullable:false})
-    uniqueId!: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-    @Field(() => String, {nullable:true})
-    url!: string | null;
-    @Field(() => String, {nullable:true})
-    type!: string | null;
-    @Field(() => Date, {nullable:false})
-    createdAt!: Date;
-    @Field(() => String, {nullable:true})
-    driverVehicleId!: string | null;
-    @Field(() => User, {nullable:false})
-    user?: InstanceType<typeof User>;
-    @Field(() => DriverVehicle, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicle> | null;
-}
-
-@ArgsType()
-export class FindFirstDocumentOrThrowArgs {
-    @Field(() => DocumentWhereInput, {nullable:true})
-    @Type(() => DocumentWhereInput)
-    where?: InstanceType<typeof DocumentWhereInput>;
-    @Field(() => [DocumentOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<DocumentOrderByWithRelationInput>;
-    @Field(() => DocumentWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => [DocumentScalarFieldEnum], {nullable:true})
-    distinct?: Array<`${DocumentScalarFieldEnum}`>;
-}
-
-@ArgsType()
-export class FindFirstDocumentArgs {
-    @Field(() => DocumentWhereInput, {nullable:true})
-    @Type(() => DocumentWhereInput)
-    where?: InstanceType<typeof DocumentWhereInput>;
-    @Field(() => [DocumentOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<DocumentOrderByWithRelationInput>;
-    @Field(() => DocumentWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => [DocumentScalarFieldEnum], {nullable:true})
-    distinct?: Array<`${DocumentScalarFieldEnum}`>;
-}
-
-@ArgsType()
-export class FindManyDocumentArgs {
-    @Field(() => DocumentWhereInput, {nullable:true})
-    @Type(() => DocumentWhereInput)
-    where?: InstanceType<typeof DocumentWhereInput>;
-    @Field(() => [DocumentOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<DocumentOrderByWithRelationInput>;
-    @Field(() => DocumentWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => [DocumentScalarFieldEnum], {nullable:true})
-    distinct?: Array<`${DocumentScalarFieldEnum}`>;
-}
-
-@ArgsType()
-export class FindUniqueDocumentOrThrowArgs {
-    @Field(() => DocumentWhereUniqueInput, {nullable:false})
-    @Type(() => DocumentWhereUniqueInput)
-    where!: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-}
-
-@ArgsType()
-export class FindUniqueDocumentArgs {
-    @Field(() => DocumentWhereUniqueInput, {nullable:false})
-    @Type(() => DocumentWhereUniqueInput)
-    where!: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-}
-
-@ArgsType()
-export class UpdateManyDocumentArgs {
-    @Field(() => DocumentUpdateManyMutationInput, {nullable:false})
-    @Type(() => DocumentUpdateManyMutationInput)
-    data!: InstanceType<typeof DocumentUpdateManyMutationInput>;
-    @Field(() => DocumentWhereInput, {nullable:true})
-    @Type(() => DocumentWhereInput)
-    where?: InstanceType<typeof DocumentWhereInput>;
-    @Field(() => Int, {nullable:true})
-    limit?: number;
-}
-
-@ArgsType()
-export class UpdateOneDocumentArgs {
-    @Field(() => DocumentUpdateInput, {nullable:false})
-    @Type(() => DocumentUpdateInput)
-    data!: InstanceType<typeof DocumentUpdateInput>;
-    @Field(() => DocumentWhereUniqueInput, {nullable:false})
-    @Type(() => DocumentWhereUniqueInput)
-    where!: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-}
-
-@ArgsType()
-export class UpsertOneDocumentArgs {
-    @Field(() => DocumentWhereUniqueInput, {nullable:false})
-    @Type(() => DocumentWhereUniqueInput)
-    where!: Prisma.AtLeast<DocumentWhereUniqueInput, 'id' | 'uniqueId_userId'>;
-    @Field(() => DocumentCreateInput, {nullable:false})
-    @Type(() => DocumentCreateInput)
-    create!: InstanceType<typeof DocumentCreateInput>;
-    @Field(() => DocumentUpdateInput, {nullable:false})
-    @Type(() => DocumentUpdateInput)
-    update!: InstanceType<typeof DocumentUpdateInput>;
-}
 
 @ObjectType()
 export class AggregateDriverVehicle {
@@ -1483,11 +322,9 @@ export class DriverVehicleCountOrderByAggregateInput {
 @ObjectType()
 export class DriverVehicleCount {
     @Field(() => Int, {nullable:false})
-    images?: number;
+    VehicleImage?: number;
     @Field(() => Int, {nullable:false})
-    documents?: number;
-    @Field(() => Int, {nullable:false})
-    DriverVehicleImg?: number;
+    VehicleDocument?: number;
 }
 
 @InputType()
@@ -1591,72 +428,29 @@ export class DriverVehicleCreateNestedManyWithoutUserInput {
 }
 
 @InputType()
-export class DriverVehicleCreateNestedOneWithoutDocumentsInput {
-    @Field(() => DriverVehicleCreateWithoutDocumentsInput, {nullable:true})
-    @Type(() => DriverVehicleCreateWithoutDocumentsInput)
-    create?: InstanceType<typeof DriverVehicleCreateWithoutDocumentsInput>;
-    @Field(() => DriverVehicleCreateOrConnectWithoutDocumentsInput, {nullable:true})
-    @Type(() => DriverVehicleCreateOrConnectWithoutDocumentsInput)
-    connectOrCreate?: InstanceType<typeof DriverVehicleCreateOrConnectWithoutDocumentsInput>;
+export class DriverVehicleCreateNestedOneWithoutVehicleDocumentInput {
+    @Field(() => DriverVehicleCreateWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => DriverVehicleCreateWithoutVehicleDocumentInput)
+    create?: InstanceType<typeof DriverVehicleCreateWithoutVehicleDocumentInput>;
+    @Field(() => DriverVehicleCreateOrConnectWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => DriverVehicleCreateOrConnectWithoutVehicleDocumentInput)
+    connectOrCreate?: InstanceType<typeof DriverVehicleCreateOrConnectWithoutVehicleDocumentInput>;
     @Field(() => DriverVehicleWhereUniqueInput, {nullable:true})
     @Type(() => DriverVehicleWhereUniqueInput)
     connect?: Prisma.AtLeast<DriverVehicleWhereUniqueInput, 'id'>;
 }
 
 @InputType()
-export class DriverVehicleCreateNestedOneWithoutDriverVehicleImgInput {
-    @Field(() => DriverVehicleCreateWithoutDriverVehicleImgInput, {nullable:true})
-    @Type(() => DriverVehicleCreateWithoutDriverVehicleImgInput)
-    create?: InstanceType<typeof DriverVehicleCreateWithoutDriverVehicleImgInput>;
-    @Field(() => DriverVehicleCreateOrConnectWithoutDriverVehicleImgInput, {nullable:true})
-    @Type(() => DriverVehicleCreateOrConnectWithoutDriverVehicleImgInput)
-    connectOrCreate?: InstanceType<typeof DriverVehicleCreateOrConnectWithoutDriverVehicleImgInput>;
+export class DriverVehicleCreateNestedOneWithoutVehicleImageInput {
+    @Field(() => DriverVehicleCreateWithoutVehicleImageInput, {nullable:true})
+    @Type(() => DriverVehicleCreateWithoutVehicleImageInput)
+    create?: InstanceType<typeof DriverVehicleCreateWithoutVehicleImageInput>;
+    @Field(() => DriverVehicleCreateOrConnectWithoutVehicleImageInput, {nullable:true})
+    @Type(() => DriverVehicleCreateOrConnectWithoutVehicleImageInput)
+    connectOrCreate?: InstanceType<typeof DriverVehicleCreateOrConnectWithoutVehicleImageInput>;
     @Field(() => DriverVehicleWhereUniqueInput, {nullable:true})
     @Type(() => DriverVehicleWhereUniqueInput)
     connect?: Prisma.AtLeast<DriverVehicleWhereUniqueInput, 'id'>;
-}
-
-@InputType()
-export class DriverVehicleCreateNestedOneWithoutImagesInput {
-    @Field(() => DriverVehicleCreateWithoutImagesInput, {nullable:true})
-    @Type(() => DriverVehicleCreateWithoutImagesInput)
-    create?: InstanceType<typeof DriverVehicleCreateWithoutImagesInput>;
-    @Field(() => DriverVehicleCreateOrConnectWithoutImagesInput, {nullable:true})
-    @Type(() => DriverVehicleCreateOrConnectWithoutImagesInput)
-    connectOrCreate?: InstanceType<typeof DriverVehicleCreateOrConnectWithoutImagesInput>;
-    @Field(() => DriverVehicleWhereUniqueInput, {nullable:true})
-    @Type(() => DriverVehicleWhereUniqueInput)
-    connect?: Prisma.AtLeast<DriverVehicleWhereUniqueInput, 'id'>;
-}
-
-@InputType()
-export class DriverVehicleCreateOrConnectWithoutDocumentsInput {
-    @Field(() => DriverVehicleWhereUniqueInput, {nullable:false})
-    @Type(() => DriverVehicleWhereUniqueInput)
-    where!: Prisma.AtLeast<DriverVehicleWhereUniqueInput, 'id'>;
-    @Field(() => DriverVehicleCreateWithoutDocumentsInput, {nullable:false})
-    @Type(() => DriverVehicleCreateWithoutDocumentsInput)
-    create!: InstanceType<typeof DriverVehicleCreateWithoutDocumentsInput>;
-}
-
-@InputType()
-export class DriverVehicleCreateOrConnectWithoutDriverVehicleImgInput {
-    @Field(() => DriverVehicleWhereUniqueInput, {nullable:false})
-    @Type(() => DriverVehicleWhereUniqueInput)
-    where!: Prisma.AtLeast<DriverVehicleWhereUniqueInput, 'id'>;
-    @Field(() => DriverVehicleCreateWithoutDriverVehicleImgInput, {nullable:false})
-    @Type(() => DriverVehicleCreateWithoutDriverVehicleImgInput)
-    create!: InstanceType<typeof DriverVehicleCreateWithoutDriverVehicleImgInput>;
-}
-
-@InputType()
-export class DriverVehicleCreateOrConnectWithoutImagesInput {
-    @Field(() => DriverVehicleWhereUniqueInput, {nullable:false})
-    @Type(() => DriverVehicleWhereUniqueInput)
-    where!: Prisma.AtLeast<DriverVehicleWhereUniqueInput, 'id'>;
-    @Field(() => DriverVehicleCreateWithoutImagesInput, {nullable:false})
-    @Type(() => DriverVehicleCreateWithoutImagesInput)
-    create!: InstanceType<typeof DriverVehicleCreateWithoutImagesInput>;
 }
 
 @InputType()
@@ -1680,69 +474,23 @@ export class DriverVehicleCreateOrConnectWithoutUserInput {
 }
 
 @InputType()
-export class DriverVehicleCreateWithoutDocumentsInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:true})
-    brand?: string;
-    @Field(() => String, {nullable:true})
-    model?: string;
-    @Field(() => String, {nullable:true})
-    registrationNumber?: string;
-    @Field(() => Int, {nullable:false})
-    place!: number;
-    @Field(() => UserCreateNestedOneWithoutVehiclesInput, {nullable:false})
-    user!: InstanceType<typeof UserCreateNestedOneWithoutVehiclesInput>;
-    @Field(() => VehicleTypeCreateNestedOneWithoutVehiclesInput, {nullable:false})
-    type!: InstanceType<typeof VehicleTypeCreateNestedOneWithoutVehiclesInput>;
-    @Field(() => ImageCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    images?: InstanceType<typeof ImageCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DriverVehicleImgCreateNestedManyWithoutVehicleInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgCreateNestedManyWithoutVehicleInput>;
+export class DriverVehicleCreateOrConnectWithoutVehicleDocumentInput {
+    @Field(() => DriverVehicleWhereUniqueInput, {nullable:false})
+    @Type(() => DriverVehicleWhereUniqueInput)
+    where!: Prisma.AtLeast<DriverVehicleWhereUniqueInput, 'id'>;
+    @Field(() => DriverVehicleCreateWithoutVehicleDocumentInput, {nullable:false})
+    @Type(() => DriverVehicleCreateWithoutVehicleDocumentInput)
+    create!: InstanceType<typeof DriverVehicleCreateWithoutVehicleDocumentInput>;
 }
 
 @InputType()
-export class DriverVehicleCreateWithoutDriverVehicleImgInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:true})
-    brand?: string;
-    @Field(() => String, {nullable:true})
-    model?: string;
-    @Field(() => String, {nullable:true})
-    registrationNumber?: string;
-    @Field(() => Int, {nullable:false})
-    place!: number;
-    @Field(() => UserCreateNestedOneWithoutVehiclesInput, {nullable:false})
-    user!: InstanceType<typeof UserCreateNestedOneWithoutVehiclesInput>;
-    @Field(() => VehicleTypeCreateNestedOneWithoutVehiclesInput, {nullable:false})
-    type!: InstanceType<typeof VehicleTypeCreateNestedOneWithoutVehiclesInput>;
-    @Field(() => ImageCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    images?: InstanceType<typeof ImageCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DocumentCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentCreateNestedManyWithoutDriverVehicleInput>;
-}
-
-@InputType()
-export class DriverVehicleCreateWithoutImagesInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:true})
-    brand?: string;
-    @Field(() => String, {nullable:true})
-    model?: string;
-    @Field(() => String, {nullable:true})
-    registrationNumber?: string;
-    @Field(() => Int, {nullable:false})
-    place!: number;
-    @Field(() => UserCreateNestedOneWithoutVehiclesInput, {nullable:false})
-    user!: InstanceType<typeof UserCreateNestedOneWithoutVehiclesInput>;
-    @Field(() => VehicleTypeCreateNestedOneWithoutVehiclesInput, {nullable:false})
-    type!: InstanceType<typeof VehicleTypeCreateNestedOneWithoutVehiclesInput>;
-    @Field(() => DocumentCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DriverVehicleImgCreateNestedManyWithoutVehicleInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgCreateNestedManyWithoutVehicleInput>;
+export class DriverVehicleCreateOrConnectWithoutVehicleImageInput {
+    @Field(() => DriverVehicleWhereUniqueInput, {nullable:false})
+    @Type(() => DriverVehicleWhereUniqueInput)
+    where!: Prisma.AtLeast<DriverVehicleWhereUniqueInput, 'id'>;
+    @Field(() => DriverVehicleCreateWithoutVehicleImageInput, {nullable:false})
+    @Type(() => DriverVehicleCreateWithoutVehicleImageInput)
+    create!: InstanceType<typeof DriverVehicleCreateWithoutVehicleImageInput>;
 }
 
 @InputType()
@@ -1759,12 +507,10 @@ export class DriverVehicleCreateWithoutTypeInput {
     place!: number;
     @Field(() => UserCreateNestedOneWithoutVehiclesInput, {nullable:false})
     user!: InstanceType<typeof UserCreateNestedOneWithoutVehiclesInput>;
-    @Field(() => ImageCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    images?: InstanceType<typeof ImageCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DocumentCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DriverVehicleImgCreateNestedManyWithoutVehicleInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgCreateNestedManyWithoutVehicleInput>;
+    @Field(() => VehicleImageCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageCreateNestedManyWithoutDriverVehicleInput>;
+    @Field(() => VehicleDocumentCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentCreateNestedManyWithoutDriverVehicleInput>;
 }
 
 @InputType()
@@ -1781,12 +527,50 @@ export class DriverVehicleCreateWithoutUserInput {
     place!: number;
     @Field(() => VehicleTypeCreateNestedOneWithoutVehiclesInput, {nullable:false})
     type!: InstanceType<typeof VehicleTypeCreateNestedOneWithoutVehiclesInput>;
-    @Field(() => ImageCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    images?: InstanceType<typeof ImageCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DocumentCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DriverVehicleImgCreateNestedManyWithoutVehicleInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgCreateNestedManyWithoutVehicleInput>;
+    @Field(() => VehicleImageCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageCreateNestedManyWithoutDriverVehicleInput>;
+    @Field(() => VehicleDocumentCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentCreateNestedManyWithoutDriverVehicleInput>;
+}
+
+@InputType()
+export class DriverVehicleCreateWithoutVehicleDocumentInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    brand?: string;
+    @Field(() => String, {nullable:true})
+    model?: string;
+    @Field(() => String, {nullable:true})
+    registrationNumber?: string;
+    @Field(() => Int, {nullable:false})
+    place!: number;
+    @Field(() => UserCreateNestedOneWithoutVehiclesInput, {nullable:false})
+    user!: InstanceType<typeof UserCreateNestedOneWithoutVehiclesInput>;
+    @Field(() => VehicleTypeCreateNestedOneWithoutVehiclesInput, {nullable:false})
+    type!: InstanceType<typeof VehicleTypeCreateNestedOneWithoutVehiclesInput>;
+    @Field(() => VehicleImageCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageCreateNestedManyWithoutDriverVehicleInput>;
+}
+
+@InputType()
+export class DriverVehicleCreateWithoutVehicleImageInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    brand?: string;
+    @Field(() => String, {nullable:true})
+    model?: string;
+    @Field(() => String, {nullable:true})
+    registrationNumber?: string;
+    @Field(() => Int, {nullable:false})
+    place!: number;
+    @Field(() => UserCreateNestedOneWithoutVehiclesInput, {nullable:false})
+    user!: InstanceType<typeof UserCreateNestedOneWithoutVehiclesInput>;
+    @Field(() => VehicleTypeCreateNestedOneWithoutVehiclesInput, {nullable:false})
+    type!: InstanceType<typeof VehicleTypeCreateNestedOneWithoutVehiclesInput>;
+    @Field(() => VehicleDocumentCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentCreateNestedManyWithoutDriverVehicleInput>;
 }
 
 @InputType()
@@ -1805,12 +589,10 @@ export class DriverVehicleCreateInput {
     user!: InstanceType<typeof UserCreateNestedOneWithoutVehiclesInput>;
     @Field(() => VehicleTypeCreateNestedOneWithoutVehiclesInput, {nullable:false})
     type!: InstanceType<typeof VehicleTypeCreateNestedOneWithoutVehiclesInput>;
-    @Field(() => ImageCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    images?: InstanceType<typeof ImageCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DocumentCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DriverVehicleImgCreateNestedManyWithoutVehicleInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgCreateNestedManyWithoutVehicleInput>;
+    @Field(() => VehicleImageCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageCreateNestedManyWithoutDriverVehicleInput>;
+    @Field(() => VehicleDocumentCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentCreateNestedManyWithoutDriverVehicleInput>;
 }
 
 @ArgsType()
@@ -2048,20 +830,10 @@ export class DriverVehicleOrderByWithRelationInput {
     user?: InstanceType<typeof UserOrderByWithRelationInput>;
     @Field(() => VehicleTypeOrderByWithRelationInput, {nullable:true})
     type?: InstanceType<typeof VehicleTypeOrderByWithRelationInput>;
-    @Field(() => ImageOrderByRelationAggregateInput, {nullable:true})
-    images?: InstanceType<typeof ImageOrderByRelationAggregateInput>;
-    @Field(() => DocumentOrderByRelationAggregateInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentOrderByRelationAggregateInput>;
-    @Field(() => DriverVehicleImgOrderByRelationAggregateInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgOrderByRelationAggregateInput>;
-}
-
-@InputType()
-export class DriverVehicleScalarRelationFilter {
-    @Field(() => DriverVehicleWhereInput, {nullable:true})
-    is?: InstanceType<typeof DriverVehicleWhereInput>;
-    @Field(() => DriverVehicleWhereInput, {nullable:true})
-    isNot?: InstanceType<typeof DriverVehicleWhereInput>;
+    @Field(() => VehicleImageOrderByRelationAggregateInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageOrderByRelationAggregateInput>;
+    @Field(() => VehicleDocumentOrderByRelationAggregateInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentOrderByRelationAggregateInput>;
 }
 
 @InputType()
@@ -2163,72 +935,6 @@ export class DriverVehicleUncheckedCreateNestedManyWithoutUserInput {
 }
 
 @InputType()
-export class DriverVehicleUncheckedCreateWithoutDocumentsInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-    @Field(() => String, {nullable:true})
-    brand?: string;
-    @Field(() => String, {nullable:true})
-    model?: string;
-    @Field(() => String, {nullable:true})
-    registrationNumber?: string;
-    @Field(() => Int, {nullable:false})
-    place!: number;
-    @Field(() => String, {nullable:false})
-    vehicleTypeId!: string;
-    @Field(() => ImageUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DriverVehicleImgUncheckedCreateNestedManyWithoutVehicleInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUncheckedCreateNestedManyWithoutVehicleInput>;
-}
-
-@InputType()
-export class DriverVehicleUncheckedCreateWithoutDriverVehicleImgInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-    @Field(() => String, {nullable:true})
-    brand?: string;
-    @Field(() => String, {nullable:true})
-    model?: string;
-    @Field(() => String, {nullable:true})
-    registrationNumber?: string;
-    @Field(() => Int, {nullable:false})
-    place!: number;
-    @Field(() => String, {nullable:false})
-    vehicleTypeId!: string;
-    @Field(() => ImageUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DocumentUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUncheckedCreateNestedManyWithoutDriverVehicleInput>;
-}
-
-@InputType()
-export class DriverVehicleUncheckedCreateWithoutImagesInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-    @Field(() => String, {nullable:true})
-    brand?: string;
-    @Field(() => String, {nullable:true})
-    model?: string;
-    @Field(() => String, {nullable:true})
-    registrationNumber?: string;
-    @Field(() => Int, {nullable:false})
-    place!: number;
-    @Field(() => String, {nullable:false})
-    vehicleTypeId!: string;
-    @Field(() => DocumentUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUncheckedCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DriverVehicleImgUncheckedCreateNestedManyWithoutVehicleInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUncheckedCreateNestedManyWithoutVehicleInput>;
-}
-
-@InputType()
 export class DriverVehicleUncheckedCreateWithoutTypeInput {
     @Field(() => String, {nullable:true})
     id?: string;
@@ -2242,12 +948,10 @@ export class DriverVehicleUncheckedCreateWithoutTypeInput {
     registrationNumber?: string;
     @Field(() => Int, {nullable:false})
     place!: number;
-    @Field(() => ImageUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DocumentUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUncheckedCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DriverVehicleImgUncheckedCreateNestedManyWithoutVehicleInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUncheckedCreateNestedManyWithoutVehicleInput>;
+    @Field(() => VehicleImageUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedCreateNestedManyWithoutDriverVehicleInput>;
+    @Field(() => VehicleDocumentUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedCreateNestedManyWithoutDriverVehicleInput>;
 }
 
 @InputType()
@@ -2264,12 +968,50 @@ export class DriverVehicleUncheckedCreateWithoutUserInput {
     place!: number;
     @Field(() => String, {nullable:false})
     vehicleTypeId!: string;
-    @Field(() => ImageUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DocumentUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUncheckedCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DriverVehicleImgUncheckedCreateNestedManyWithoutVehicleInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUncheckedCreateNestedManyWithoutVehicleInput>;
+    @Field(() => VehicleImageUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedCreateNestedManyWithoutDriverVehicleInput>;
+    @Field(() => VehicleDocumentUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedCreateNestedManyWithoutDriverVehicleInput>;
+}
+
+@InputType()
+export class DriverVehicleUncheckedCreateWithoutVehicleDocumentInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    brand?: string;
+    @Field(() => String, {nullable:true})
+    model?: string;
+    @Field(() => String, {nullable:true})
+    registrationNumber?: string;
+    @Field(() => Int, {nullable:false})
+    place!: number;
+    @Field(() => String, {nullable:false})
+    vehicleTypeId!: string;
+    @Field(() => VehicleImageUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedCreateNestedManyWithoutDriverVehicleInput>;
+}
+
+@InputType()
+export class DriverVehicleUncheckedCreateWithoutVehicleImageInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    brand?: string;
+    @Field(() => String, {nullable:true})
+    model?: string;
+    @Field(() => String, {nullable:true})
+    registrationNumber?: string;
+    @Field(() => Int, {nullable:false})
+    place!: number;
+    @Field(() => String, {nullable:false})
+    vehicleTypeId!: string;
+    @Field(() => VehicleDocumentUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedCreateNestedManyWithoutDriverVehicleInput>;
 }
 
 @InputType()
@@ -2288,12 +1030,10 @@ export class DriverVehicleUncheckedCreateInput {
     place!: number;
     @Field(() => String, {nullable:false})
     vehicleTypeId!: string;
-    @Field(() => ImageUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DocumentUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUncheckedCreateNestedManyWithoutDriverVehicleInput>;
-    @Field(() => DriverVehicleImgUncheckedCreateNestedManyWithoutVehicleInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUncheckedCreateNestedManyWithoutVehicleInput>;
+    @Field(() => VehicleImageUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedCreateNestedManyWithoutDriverVehicleInput>;
+    @Field(() => VehicleDocumentUncheckedCreateNestedManyWithoutDriverVehicleInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedCreateNestedManyWithoutDriverVehicleInput>;
 }
 
 @InputType()
@@ -2421,72 +1161,6 @@ export class DriverVehicleUncheckedUpdateManyInput {
 }
 
 @InputType()
-export class DriverVehicleUncheckedUpdateWithoutDocumentsInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    brand?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    model?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    vehicleTypeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => ImageUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DriverVehicleImgUncheckedUpdateManyWithoutVehicleNestedInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUncheckedUpdateManyWithoutVehicleNestedInput>;
-}
-
-@InputType()
-export class DriverVehicleUncheckedUpdateWithoutDriverVehicleImgInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    brand?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    model?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    vehicleTypeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => ImageUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
-}
-
-@InputType()
-export class DriverVehicleUncheckedUpdateWithoutImagesInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    brand?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    model?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    vehicleTypeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => DocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DriverVehicleImgUncheckedUpdateManyWithoutVehicleNestedInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUncheckedUpdateManyWithoutVehicleNestedInput>;
-}
-
-@InputType()
 export class DriverVehicleUncheckedUpdateWithoutTypeInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -2500,12 +1174,10 @@ export class DriverVehicleUncheckedUpdateWithoutTypeInput {
     registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
     place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => ImageUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DriverVehicleImgUncheckedUpdateManyWithoutVehicleNestedInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUncheckedUpdateManyWithoutVehicleNestedInput>;
+    @Field(() => VehicleImageUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
+    @Field(() => VehicleDocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
 }
 
 @InputType()
@@ -2522,12 +1194,50 @@ export class DriverVehicleUncheckedUpdateWithoutUserInput {
     place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     vehicleTypeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => ImageUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DriverVehicleImgUncheckedUpdateManyWithoutVehicleNestedInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUncheckedUpdateManyWithoutVehicleNestedInput>;
+    @Field(() => VehicleImageUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
+    @Field(() => VehicleDocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
+}
+
+@InputType()
+export class DriverVehicleUncheckedUpdateWithoutVehicleDocumentInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    brand?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    model?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    vehicleTypeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => VehicleImageUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
+}
+
+@InputType()
+export class DriverVehicleUncheckedUpdateWithoutVehicleImageInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    brand?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    model?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    vehicleTypeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => VehicleDocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
 }
 
 @InputType()
@@ -2546,12 +1256,10 @@ export class DriverVehicleUncheckedUpdateInput {
     place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     vehicleTypeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => ImageUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DriverVehicleImgUncheckedUpdateManyWithoutVehicleNestedInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUncheckedUpdateManyWithoutVehicleNestedInput>;
+    @Field(() => VehicleImageUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
+    @Field(() => VehicleDocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput>;
 }
 
 @InputType()
@@ -2663,35 +1371,16 @@ export class DriverVehicleUpdateManyWithoutUserNestedInput {
 }
 
 @InputType()
-export class DriverVehicleUpdateOneRequiredWithoutDriverVehicleImgNestedInput {
-    @Field(() => DriverVehicleCreateWithoutDriverVehicleImgInput, {nullable:true})
-    @Type(() => DriverVehicleCreateWithoutDriverVehicleImgInput)
-    create?: InstanceType<typeof DriverVehicleCreateWithoutDriverVehicleImgInput>;
-    @Field(() => DriverVehicleCreateOrConnectWithoutDriverVehicleImgInput, {nullable:true})
-    @Type(() => DriverVehicleCreateOrConnectWithoutDriverVehicleImgInput)
-    connectOrCreate?: InstanceType<typeof DriverVehicleCreateOrConnectWithoutDriverVehicleImgInput>;
-    @Field(() => DriverVehicleUpsertWithoutDriverVehicleImgInput, {nullable:true})
-    @Type(() => DriverVehicleUpsertWithoutDriverVehicleImgInput)
-    upsert?: InstanceType<typeof DriverVehicleUpsertWithoutDriverVehicleImgInput>;
-    @Field(() => DriverVehicleWhereUniqueInput, {nullable:true})
-    @Type(() => DriverVehicleWhereUniqueInput)
-    connect?: Prisma.AtLeast<DriverVehicleWhereUniqueInput, 'id'>;
-    @Field(() => DriverVehicleUpdateToOneWithWhereWithoutDriverVehicleImgInput, {nullable:true})
-    @Type(() => DriverVehicleUpdateToOneWithWhereWithoutDriverVehicleImgInput)
-    update?: InstanceType<typeof DriverVehicleUpdateToOneWithWhereWithoutDriverVehicleImgInput>;
-}
-
-@InputType()
-export class DriverVehicleUpdateOneWithoutDocumentsNestedInput {
-    @Field(() => DriverVehicleCreateWithoutDocumentsInput, {nullable:true})
-    @Type(() => DriverVehicleCreateWithoutDocumentsInput)
-    create?: InstanceType<typeof DriverVehicleCreateWithoutDocumentsInput>;
-    @Field(() => DriverVehicleCreateOrConnectWithoutDocumentsInput, {nullable:true})
-    @Type(() => DriverVehicleCreateOrConnectWithoutDocumentsInput)
-    connectOrCreate?: InstanceType<typeof DriverVehicleCreateOrConnectWithoutDocumentsInput>;
-    @Field(() => DriverVehicleUpsertWithoutDocumentsInput, {nullable:true})
-    @Type(() => DriverVehicleUpsertWithoutDocumentsInput)
-    upsert?: InstanceType<typeof DriverVehicleUpsertWithoutDocumentsInput>;
+export class DriverVehicleUpdateOneWithoutVehicleDocumentNestedInput {
+    @Field(() => DriverVehicleCreateWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => DriverVehicleCreateWithoutVehicleDocumentInput)
+    create?: InstanceType<typeof DriverVehicleCreateWithoutVehicleDocumentInput>;
+    @Field(() => DriverVehicleCreateOrConnectWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => DriverVehicleCreateOrConnectWithoutVehicleDocumentInput)
+    connectOrCreate?: InstanceType<typeof DriverVehicleCreateOrConnectWithoutVehicleDocumentInput>;
+    @Field(() => DriverVehicleUpsertWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => DriverVehicleUpsertWithoutVehicleDocumentInput)
+    upsert?: InstanceType<typeof DriverVehicleUpsertWithoutVehicleDocumentInput>;
     @Field(() => DriverVehicleWhereInput, {nullable:true})
     @Type(() => DriverVehicleWhereInput)
     disconnect?: InstanceType<typeof DriverVehicleWhereInput>;
@@ -2701,22 +1390,22 @@ export class DriverVehicleUpdateOneWithoutDocumentsNestedInput {
     @Field(() => DriverVehicleWhereUniqueInput, {nullable:true})
     @Type(() => DriverVehicleWhereUniqueInput)
     connect?: Prisma.AtLeast<DriverVehicleWhereUniqueInput, 'id'>;
-    @Field(() => DriverVehicleUpdateToOneWithWhereWithoutDocumentsInput, {nullable:true})
-    @Type(() => DriverVehicleUpdateToOneWithWhereWithoutDocumentsInput)
-    update?: InstanceType<typeof DriverVehicleUpdateToOneWithWhereWithoutDocumentsInput>;
+    @Field(() => DriverVehicleUpdateToOneWithWhereWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => DriverVehicleUpdateToOneWithWhereWithoutVehicleDocumentInput)
+    update?: InstanceType<typeof DriverVehicleUpdateToOneWithWhereWithoutVehicleDocumentInput>;
 }
 
 @InputType()
-export class DriverVehicleUpdateOneWithoutImagesNestedInput {
-    @Field(() => DriverVehicleCreateWithoutImagesInput, {nullable:true})
-    @Type(() => DriverVehicleCreateWithoutImagesInput)
-    create?: InstanceType<typeof DriverVehicleCreateWithoutImagesInput>;
-    @Field(() => DriverVehicleCreateOrConnectWithoutImagesInput, {nullable:true})
-    @Type(() => DriverVehicleCreateOrConnectWithoutImagesInput)
-    connectOrCreate?: InstanceType<typeof DriverVehicleCreateOrConnectWithoutImagesInput>;
-    @Field(() => DriverVehicleUpsertWithoutImagesInput, {nullable:true})
-    @Type(() => DriverVehicleUpsertWithoutImagesInput)
-    upsert?: InstanceType<typeof DriverVehicleUpsertWithoutImagesInput>;
+export class DriverVehicleUpdateOneWithoutVehicleImageNestedInput {
+    @Field(() => DriverVehicleCreateWithoutVehicleImageInput, {nullable:true})
+    @Type(() => DriverVehicleCreateWithoutVehicleImageInput)
+    create?: InstanceType<typeof DriverVehicleCreateWithoutVehicleImageInput>;
+    @Field(() => DriverVehicleCreateOrConnectWithoutVehicleImageInput, {nullable:true})
+    @Type(() => DriverVehicleCreateOrConnectWithoutVehicleImageInput)
+    connectOrCreate?: InstanceType<typeof DriverVehicleCreateOrConnectWithoutVehicleImageInput>;
+    @Field(() => DriverVehicleUpsertWithoutVehicleImageInput, {nullable:true})
+    @Type(() => DriverVehicleUpsertWithoutVehicleImageInput)
+    upsert?: InstanceType<typeof DriverVehicleUpsertWithoutVehicleImageInput>;
     @Field(() => DriverVehicleWhereInput, {nullable:true})
     @Type(() => DriverVehicleWhereInput)
     disconnect?: InstanceType<typeof DriverVehicleWhereInput>;
@@ -2726,39 +1415,29 @@ export class DriverVehicleUpdateOneWithoutImagesNestedInput {
     @Field(() => DriverVehicleWhereUniqueInput, {nullable:true})
     @Type(() => DriverVehicleWhereUniqueInput)
     connect?: Prisma.AtLeast<DriverVehicleWhereUniqueInput, 'id'>;
-    @Field(() => DriverVehicleUpdateToOneWithWhereWithoutImagesInput, {nullable:true})
-    @Type(() => DriverVehicleUpdateToOneWithWhereWithoutImagesInput)
-    update?: InstanceType<typeof DriverVehicleUpdateToOneWithWhereWithoutImagesInput>;
+    @Field(() => DriverVehicleUpdateToOneWithWhereWithoutVehicleImageInput, {nullable:true})
+    @Type(() => DriverVehicleUpdateToOneWithWhereWithoutVehicleImageInput)
+    update?: InstanceType<typeof DriverVehicleUpdateToOneWithWhereWithoutVehicleImageInput>;
 }
 
 @InputType()
-export class DriverVehicleUpdateToOneWithWhereWithoutDocumentsInput {
+export class DriverVehicleUpdateToOneWithWhereWithoutVehicleDocumentInput {
     @Field(() => DriverVehicleWhereInput, {nullable:true})
     @Type(() => DriverVehicleWhereInput)
     where?: InstanceType<typeof DriverVehicleWhereInput>;
-    @Field(() => DriverVehicleUpdateWithoutDocumentsInput, {nullable:false})
-    @Type(() => DriverVehicleUpdateWithoutDocumentsInput)
-    data!: InstanceType<typeof DriverVehicleUpdateWithoutDocumentsInput>;
+    @Field(() => DriverVehicleUpdateWithoutVehicleDocumentInput, {nullable:false})
+    @Type(() => DriverVehicleUpdateWithoutVehicleDocumentInput)
+    data!: InstanceType<typeof DriverVehicleUpdateWithoutVehicleDocumentInput>;
 }
 
 @InputType()
-export class DriverVehicleUpdateToOneWithWhereWithoutDriverVehicleImgInput {
+export class DriverVehicleUpdateToOneWithWhereWithoutVehicleImageInput {
     @Field(() => DriverVehicleWhereInput, {nullable:true})
     @Type(() => DriverVehicleWhereInput)
     where?: InstanceType<typeof DriverVehicleWhereInput>;
-    @Field(() => DriverVehicleUpdateWithoutDriverVehicleImgInput, {nullable:false})
-    @Type(() => DriverVehicleUpdateWithoutDriverVehicleImgInput)
-    data!: InstanceType<typeof DriverVehicleUpdateWithoutDriverVehicleImgInput>;
-}
-
-@InputType()
-export class DriverVehicleUpdateToOneWithWhereWithoutImagesInput {
-    @Field(() => DriverVehicleWhereInput, {nullable:true})
-    @Type(() => DriverVehicleWhereInput)
-    where?: InstanceType<typeof DriverVehicleWhereInput>;
-    @Field(() => DriverVehicleUpdateWithoutImagesInput, {nullable:false})
-    @Type(() => DriverVehicleUpdateWithoutImagesInput)
-    data!: InstanceType<typeof DriverVehicleUpdateWithoutImagesInput>;
+    @Field(() => DriverVehicleUpdateWithoutVehicleImageInput, {nullable:false})
+    @Type(() => DriverVehicleUpdateWithoutVehicleImageInput)
+    data!: InstanceType<typeof DriverVehicleUpdateWithoutVehicleImageInput>;
 }
 
 @InputType()
@@ -2782,72 +1461,6 @@ export class DriverVehicleUpdateWithWhereUniqueWithoutUserInput {
 }
 
 @InputType()
-export class DriverVehicleUpdateWithoutDocumentsInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    brand?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    model?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => UserUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
-    user?: InstanceType<typeof UserUpdateOneRequiredWithoutVehiclesNestedInput>;
-    @Field(() => VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
-    type?: InstanceType<typeof VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput>;
-    @Field(() => ImageUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DriverVehicleImgUpdateManyWithoutVehicleNestedInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUpdateManyWithoutVehicleNestedInput>;
-}
-
-@InputType()
-export class DriverVehicleUpdateWithoutDriverVehicleImgInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    brand?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    model?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => UserUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
-    user?: InstanceType<typeof UserUpdateOneRequiredWithoutVehiclesNestedInput>;
-    @Field(() => VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
-    type?: InstanceType<typeof VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput>;
-    @Field(() => ImageUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DocumentUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUpdateManyWithoutDriverVehicleNestedInput>;
-}
-
-@InputType()
-export class DriverVehicleUpdateWithoutImagesInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    brand?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    model?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => UserUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
-    user?: InstanceType<typeof UserUpdateOneRequiredWithoutVehiclesNestedInput>;
-    @Field(() => VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
-    type?: InstanceType<typeof VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput>;
-    @Field(() => DocumentUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DriverVehicleImgUpdateManyWithoutVehicleNestedInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUpdateManyWithoutVehicleNestedInput>;
-}
-
-@InputType()
 export class DriverVehicleUpdateWithoutTypeInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -2861,12 +1474,10 @@ export class DriverVehicleUpdateWithoutTypeInput {
     place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => UserUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
     user?: InstanceType<typeof UserUpdateOneRequiredWithoutVehiclesNestedInput>;
-    @Field(() => ImageUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DocumentUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DriverVehicleImgUpdateManyWithoutVehicleNestedInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUpdateManyWithoutVehicleNestedInput>;
+    @Field(() => VehicleImageUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUpdateManyWithoutDriverVehicleNestedInput>;
+    @Field(() => VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput>;
 }
 
 @InputType()
@@ -2883,12 +1494,50 @@ export class DriverVehicleUpdateWithoutUserInput {
     place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
     type?: InstanceType<typeof VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput>;
-    @Field(() => ImageUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DocumentUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DriverVehicleImgUpdateManyWithoutVehicleNestedInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUpdateManyWithoutVehicleNestedInput>;
+    @Field(() => VehicleImageUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUpdateManyWithoutDriverVehicleNestedInput>;
+    @Field(() => VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput>;
+}
+
+@InputType()
+export class DriverVehicleUpdateWithoutVehicleDocumentInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    brand?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    model?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => UserUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
+    user?: InstanceType<typeof UserUpdateOneRequiredWithoutVehiclesNestedInput>;
+    @Field(() => VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
+    type?: InstanceType<typeof VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput>;
+    @Field(() => VehicleImageUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUpdateManyWithoutDriverVehicleNestedInput>;
+}
+
+@InputType()
+export class DriverVehicleUpdateWithoutVehicleImageInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    brand?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    model?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    place?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => UserUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
+    user?: InstanceType<typeof UserUpdateOneRequiredWithoutVehiclesNestedInput>;
+    @Field(() => VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
+    type?: InstanceType<typeof VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput>;
+    @Field(() => VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput>;
 }
 
 @InputType()
@@ -2907,12 +1556,10 @@ export class DriverVehicleUpdateInput {
     user?: InstanceType<typeof UserUpdateOneRequiredWithoutVehiclesNestedInput>;
     @Field(() => VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput, {nullable:true})
     type?: InstanceType<typeof VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput>;
-    @Field(() => ImageUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DocumentUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
-    documents?: InstanceType<typeof DocumentUpdateManyWithoutDriverVehicleNestedInput>;
-    @Field(() => DriverVehicleImgUpdateManyWithoutVehicleNestedInput, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgUpdateManyWithoutVehicleNestedInput>;
+    @Field(() => VehicleImageUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUpdateManyWithoutDriverVehicleNestedInput>;
+    @Field(() => VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput>;
 }
 
 @InputType()
@@ -2942,39 +1589,26 @@ export class DriverVehicleUpsertWithWhereUniqueWithoutUserInput {
 }
 
 @InputType()
-export class DriverVehicleUpsertWithoutDocumentsInput {
-    @Field(() => DriverVehicleUpdateWithoutDocumentsInput, {nullable:false})
-    @Type(() => DriverVehicleUpdateWithoutDocumentsInput)
-    update!: InstanceType<typeof DriverVehicleUpdateWithoutDocumentsInput>;
-    @Field(() => DriverVehicleCreateWithoutDocumentsInput, {nullable:false})
-    @Type(() => DriverVehicleCreateWithoutDocumentsInput)
-    create!: InstanceType<typeof DriverVehicleCreateWithoutDocumentsInput>;
+export class DriverVehicleUpsertWithoutVehicleDocumentInput {
+    @Field(() => DriverVehicleUpdateWithoutVehicleDocumentInput, {nullable:false})
+    @Type(() => DriverVehicleUpdateWithoutVehicleDocumentInput)
+    update!: InstanceType<typeof DriverVehicleUpdateWithoutVehicleDocumentInput>;
+    @Field(() => DriverVehicleCreateWithoutVehicleDocumentInput, {nullable:false})
+    @Type(() => DriverVehicleCreateWithoutVehicleDocumentInput)
+    create!: InstanceType<typeof DriverVehicleCreateWithoutVehicleDocumentInput>;
     @Field(() => DriverVehicleWhereInput, {nullable:true})
     @Type(() => DriverVehicleWhereInput)
     where?: InstanceType<typeof DriverVehicleWhereInput>;
 }
 
 @InputType()
-export class DriverVehicleUpsertWithoutDriverVehicleImgInput {
-    @Field(() => DriverVehicleUpdateWithoutDriverVehicleImgInput, {nullable:false})
-    @Type(() => DriverVehicleUpdateWithoutDriverVehicleImgInput)
-    update!: InstanceType<typeof DriverVehicleUpdateWithoutDriverVehicleImgInput>;
-    @Field(() => DriverVehicleCreateWithoutDriverVehicleImgInput, {nullable:false})
-    @Type(() => DriverVehicleCreateWithoutDriverVehicleImgInput)
-    create!: InstanceType<typeof DriverVehicleCreateWithoutDriverVehicleImgInput>;
-    @Field(() => DriverVehicleWhereInput, {nullable:true})
-    @Type(() => DriverVehicleWhereInput)
-    where?: InstanceType<typeof DriverVehicleWhereInput>;
-}
-
-@InputType()
-export class DriverVehicleUpsertWithoutImagesInput {
-    @Field(() => DriverVehicleUpdateWithoutImagesInput, {nullable:false})
-    @Type(() => DriverVehicleUpdateWithoutImagesInput)
-    update!: InstanceType<typeof DriverVehicleUpdateWithoutImagesInput>;
-    @Field(() => DriverVehicleCreateWithoutImagesInput, {nullable:false})
-    @Type(() => DriverVehicleCreateWithoutImagesInput)
-    create!: InstanceType<typeof DriverVehicleCreateWithoutImagesInput>;
+export class DriverVehicleUpsertWithoutVehicleImageInput {
+    @Field(() => DriverVehicleUpdateWithoutVehicleImageInput, {nullable:false})
+    @Type(() => DriverVehicleUpdateWithoutVehicleImageInput)
+    update!: InstanceType<typeof DriverVehicleUpdateWithoutVehicleImageInput>;
+    @Field(() => DriverVehicleCreateWithoutVehicleImageInput, {nullable:false})
+    @Type(() => DriverVehicleCreateWithoutVehicleImageInput)
+    create!: InstanceType<typeof DriverVehicleCreateWithoutVehicleImageInput>;
     @Field(() => DriverVehicleWhereInput, {nullable:true})
     @Type(() => DriverVehicleWhereInput)
     where?: InstanceType<typeof DriverVehicleWhereInput>;
@@ -3006,12 +1640,10 @@ export class DriverVehicleWhereUniqueInput {
     user?: InstanceType<typeof UserScalarRelationFilter>;
     @Field(() => VehicleTypeScalarRelationFilter, {nullable:true})
     type?: InstanceType<typeof VehicleTypeScalarRelationFilter>;
-    @Field(() => ImageListRelationFilter, {nullable:true})
-    images?: InstanceType<typeof ImageListRelationFilter>;
-    @Field(() => DocumentListRelationFilter, {nullable:true})
-    documents?: InstanceType<typeof DocumentListRelationFilter>;
-    @Field(() => DriverVehicleImgListRelationFilter, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgListRelationFilter>;
+    @Field(() => VehicleImageListRelationFilter, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageListRelationFilter>;
+    @Field(() => VehicleDocumentListRelationFilter, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentListRelationFilter>;
 }
 
 @InputType()
@@ -3040,12 +1672,10 @@ export class DriverVehicleWhereInput {
     user?: InstanceType<typeof UserScalarRelationFilter>;
     @Field(() => VehicleTypeScalarRelationFilter, {nullable:true})
     type?: InstanceType<typeof VehicleTypeScalarRelationFilter>;
-    @Field(() => ImageListRelationFilter, {nullable:true})
-    images?: InstanceType<typeof ImageListRelationFilter>;
-    @Field(() => DocumentListRelationFilter, {nullable:true})
-    documents?: InstanceType<typeof DocumentListRelationFilter>;
-    @Field(() => DriverVehicleImgListRelationFilter, {nullable:true})
-    DriverVehicleImg?: InstanceType<typeof DriverVehicleImgListRelationFilter>;
+    @Field(() => VehicleImageListRelationFilter, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageListRelationFilter>;
+    @Field(() => VehicleDocumentListRelationFilter, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentListRelationFilter>;
 }
 
 @ObjectType()
@@ -3068,12 +1698,10 @@ export class DriverVehicle {
     user?: InstanceType<typeof User>;
     @Field(() => VehicleType, {nullable:false})
     type?: InstanceType<typeof VehicleType>;
-    @Field(() => [Image], {nullable:true})
-    images?: Array<Image>;
-    @Field(() => [Document], {nullable:true})
-    documents?: Array<Document>;
-    @Field(() => [DriverVehicleImg], {nullable:true})
-    DriverVehicleImg?: Array<DriverVehicleImg>;
+    @Field(() => [VehicleImage], {nullable:true})
+    VehicleImage?: Array<VehicleImage>;
+    @Field(() => [VehicleDocument], {nullable:true})
+    VehicleDocument?: Array<VehicleDocument>;
     @Field(() => DriverVehicleCount, {nullable:false})
     _count?: InstanceType<typeof DriverVehicleCount>;
 }
@@ -3179,895 +1807,116 @@ export class UpsertOneDriverVehicleArgs {
 }
 
 @ObjectType()
-export class AggregateDriverVehicleImg {
-    @Field(() => DriverVehicleImgCountAggregate, {nullable:true})
-    _count?: InstanceType<typeof DriverVehicleImgCountAggregate>;
-    @Field(() => DriverVehicleImgMinAggregate, {nullable:true})
-    _min?: InstanceType<typeof DriverVehicleImgMinAggregate>;
-    @Field(() => DriverVehicleImgMaxAggregate, {nullable:true})
-    _max?: InstanceType<typeof DriverVehicleImgMaxAggregate>;
+export class AggregateFile {
+    @Field(() => FileCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof FileCountAggregate>;
+    @Field(() => FileAvgAggregate, {nullable:true})
+    _avg?: InstanceType<typeof FileAvgAggregate>;
+    @Field(() => FileSumAggregate, {nullable:true})
+    _sum?: InstanceType<typeof FileSumAggregate>;
+    @Field(() => FileMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof FileMinAggregate>;
+    @Field(() => FileMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof FileMaxAggregate>;
 }
 
 @ArgsType()
-export class CreateManyDriverVehicleImgArgs {
-    @Field(() => [DriverVehicleImgCreateManyInput], {nullable:false})
-    @Type(() => DriverVehicleImgCreateManyInput)
-    data!: Array<DriverVehicleImgCreateManyInput>;
+export class CreateManyFileArgs {
+    @Field(() => [FileCreateManyInput], {nullable:false})
+    @Type(() => FileCreateManyInput)
+    data!: Array<FileCreateManyInput>;
     @Field(() => Boolean, {nullable:true})
     skipDuplicates?: boolean;
 }
 
 @ArgsType()
-export class CreateOneDriverVehicleImgArgs {
-    @Field(() => DriverVehicleImgCreateInput, {nullable:false})
-    @Type(() => DriverVehicleImgCreateInput)
-    data!: InstanceType<typeof DriverVehicleImgCreateInput>;
+export class CreateOneFileArgs {
+    @Field(() => FileCreateInput, {nullable:false})
+    @Type(() => FileCreateInput)
+    data!: InstanceType<typeof FileCreateInput>;
 }
 
 @ArgsType()
-export class DeleteManyDriverVehicleImgArgs {
-    @Field(() => DriverVehicleImgWhereInput, {nullable:true})
-    @Type(() => DriverVehicleImgWhereInput)
-    where?: InstanceType<typeof DriverVehicleImgWhereInput>;
+export class DeleteManyFileArgs {
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
     @Field(() => Int, {nullable:true})
     limit?: number;
 }
 
 @ArgsType()
-export class DeleteOneDriverVehicleImgArgs {
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:false})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    where!: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
+export class DeleteOneFileArgs {
+    @Field(() => FileWhereUniqueInput, {nullable:false})
+    @Type(() => FileWhereUniqueInput)
+    where!: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
 }
 
 @ArgsType()
-export class DriverVehicleImgAggregateArgs {
-    @Field(() => DriverVehicleImgWhereInput, {nullable:true})
-    @Type(() => DriverVehicleImgWhereInput)
-    where?: InstanceType<typeof DriverVehicleImgWhereInput>;
-    @Field(() => [DriverVehicleImgOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<DriverVehicleImgOrderByWithRelationInput>;
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
+export class FileAggregateArgs {
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+    @Field(() => [FileOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FileOrderByWithRelationInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
     @Field(() => Int, {nullable:true})
     take?: number;
     @Field(() => Int, {nullable:true})
     skip?: number;
-    @Field(() => DriverVehicleImgCountAggregateInput, {nullable:true})
-    _count?: InstanceType<typeof DriverVehicleImgCountAggregateInput>;
-    @Field(() => DriverVehicleImgMinAggregateInput, {nullable:true})
-    _min?: InstanceType<typeof DriverVehicleImgMinAggregateInput>;
-    @Field(() => DriverVehicleImgMaxAggregateInput, {nullable:true})
-    _max?: InstanceType<typeof DriverVehicleImgMaxAggregateInput>;
+    @Field(() => FileCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FileCountAggregateInput>;
+    @Field(() => FileAvgAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof FileAvgAggregateInput>;
+    @Field(() => FileSumAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof FileSumAggregateInput>;
+    @Field(() => FileMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FileMinAggregateInput>;
+    @Field(() => FileMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FileMaxAggregateInput>;
 }
 
 @InputType()
-export class DriverVehicleImgCountAggregateInput {
+export class FileAvgAggregateInput {
     @Field(() => Boolean, {nullable:true})
-    id?: true;
-    @Field(() => Boolean, {nullable:true})
-    vehicleId?: true;
-    @Field(() => Boolean, {nullable:true})
-    category?: true;
-    @Field(() => Boolean, {nullable:true})
-    url?: true;
-    @Field(() => Boolean, {nullable:true})
-    _all?: true;
+    size?: true;
 }
 
 @ObjectType()
-export class DriverVehicleImgCountAggregate {
-    @Field(() => Int, {nullable:false})
-    id!: number;
-    @Field(() => Int, {nullable:false})
-    vehicleId!: number;
-    @Field(() => Int, {nullable:false})
-    category!: number;
-    @Field(() => Int, {nullable:false})
-    url!: number;
-    @Field(() => Int, {nullable:false})
-    _all!: number;
+export class FileAvgAggregate {
+    @Field(() => Float, {nullable:true})
+    size?: number;
 }
 
 @InputType()
-export class DriverVehicleImgCountOrderByAggregateInput {
+export class FileAvgOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
-    id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    vehicleId?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    category?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
+    size?: `${SortOrder}`;
 }
 
 @InputType()
-export class DriverVehicleImgCreateManyVehicleInputEnvelope {
-    @Field(() => [DriverVehicleImgCreateManyVehicleInput], {nullable:false})
-    @Type(() => DriverVehicleImgCreateManyVehicleInput)
-    data!: Array<DriverVehicleImgCreateManyVehicleInput>;
-    @Field(() => Boolean, {nullable:true})
-    skipDuplicates?: boolean;
-}
-
-@InputType()
-export class DriverVehicleImgCreateManyVehicleInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:true})
-    category?: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-}
-
-@InputType()
-export class DriverVehicleImgCreateManyInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    vehicleId!: string;
-    @Field(() => String, {nullable:true})
-    category?: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-}
-
-@InputType()
-export class DriverVehicleImgCreateNestedManyWithoutVehicleInput {
-    @Field(() => [DriverVehicleImgCreateWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgCreateWithoutVehicleInput)
-    create?: Array<DriverVehicleImgCreateWithoutVehicleInput>;
-    @Field(() => [DriverVehicleImgCreateOrConnectWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgCreateOrConnectWithoutVehicleInput)
-    connectOrCreate?: Array<DriverVehicleImgCreateOrConnectWithoutVehicleInput>;
-    @Field(() => DriverVehicleImgCreateManyVehicleInputEnvelope, {nullable:true})
-    @Type(() => DriverVehicleImgCreateManyVehicleInputEnvelope)
-    createMany?: InstanceType<typeof DriverVehicleImgCreateManyVehicleInputEnvelope>;
-    @Field(() => [DriverVehicleImgWhereUniqueInput], {nullable:true})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>>;
-}
-
-@InputType()
-export class DriverVehicleImgCreateOrConnectWithoutVehicleInput {
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:false})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    where!: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
-    @Field(() => DriverVehicleImgCreateWithoutVehicleInput, {nullable:false})
-    @Type(() => DriverVehicleImgCreateWithoutVehicleInput)
-    create!: InstanceType<typeof DriverVehicleImgCreateWithoutVehicleInput>;
-}
-
-@InputType()
-export class DriverVehicleImgCreateWithoutVehicleInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:true})
-    category?: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-}
-
-@InputType()
-export class DriverVehicleImgCreateInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:true})
-    category?: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => DriverVehicleCreateNestedOneWithoutDriverVehicleImgInput, {nullable:false})
-    vehicle!: InstanceType<typeof DriverVehicleCreateNestedOneWithoutDriverVehicleImgInput>;
-}
-
-@ArgsType()
-export class DriverVehicleImgGroupByArgs {
-    @Field(() => DriverVehicleImgWhereInput, {nullable:true})
-    @Type(() => DriverVehicleImgWhereInput)
-    where?: InstanceType<typeof DriverVehicleImgWhereInput>;
-    @Field(() => [DriverVehicleImgOrderByWithAggregationInput], {nullable:true})
-    orderBy?: Array<DriverVehicleImgOrderByWithAggregationInput>;
-    @Field(() => [DriverVehicleImgScalarFieldEnum], {nullable:false})
-    by!: Array<`${DriverVehicleImgScalarFieldEnum}`>;
-    @Field(() => DriverVehicleImgScalarWhereWithAggregatesInput, {nullable:true})
-    having?: InstanceType<typeof DriverVehicleImgScalarWhereWithAggregatesInput>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => DriverVehicleImgCountAggregateInput, {nullable:true})
-    _count?: InstanceType<typeof DriverVehicleImgCountAggregateInput>;
-    @Field(() => DriverVehicleImgMinAggregateInput, {nullable:true})
-    _min?: InstanceType<typeof DriverVehicleImgMinAggregateInput>;
-    @Field(() => DriverVehicleImgMaxAggregateInput, {nullable:true})
-    _max?: InstanceType<typeof DriverVehicleImgMaxAggregateInput>;
-}
-
-@ObjectType()
-export class DriverVehicleImgGroupBy {
-    @Field(() => String, {nullable:false})
-    id!: string;
-    @Field(() => String, {nullable:false})
-    vehicleId!: string;
-    @Field(() => String, {nullable:true})
-    category?: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-    @Field(() => DriverVehicleImgCountAggregate, {nullable:true})
-    _count?: InstanceType<typeof DriverVehicleImgCountAggregate>;
-    @Field(() => DriverVehicleImgMinAggregate, {nullable:true})
-    _min?: InstanceType<typeof DriverVehicleImgMinAggregate>;
-    @Field(() => DriverVehicleImgMaxAggregate, {nullable:true})
-    _max?: InstanceType<typeof DriverVehicleImgMaxAggregate>;
-}
-
-@InputType()
-export class DriverVehicleImgListRelationFilter {
-    @Field(() => DriverVehicleImgWhereInput, {nullable:true})
-    every?: InstanceType<typeof DriverVehicleImgWhereInput>;
-    @Field(() => DriverVehicleImgWhereInput, {nullable:true})
-    some?: InstanceType<typeof DriverVehicleImgWhereInput>;
-    @Field(() => DriverVehicleImgWhereInput, {nullable:true})
-    none?: InstanceType<typeof DriverVehicleImgWhereInput>;
-}
-
-@InputType()
-export class DriverVehicleImgMaxAggregateInput {
-    @Field(() => Boolean, {nullable:true})
-    id?: true;
-    @Field(() => Boolean, {nullable:true})
-    vehicleId?: true;
-    @Field(() => Boolean, {nullable:true})
-    category?: true;
-    @Field(() => Boolean, {nullable:true})
-    url?: true;
-}
-
-@ObjectType()
-export class DriverVehicleImgMaxAggregate {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:true})
-    vehicleId?: string;
-    @Field(() => String, {nullable:true})
-    category?: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-}
-
-@InputType()
-export class DriverVehicleImgMaxOrderByAggregateInput {
-    @Field(() => SortOrder, {nullable:true})
-    id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    vehicleId?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    category?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
-}
-
-@InputType()
-export class DriverVehicleImgMinAggregateInput {
-    @Field(() => Boolean, {nullable:true})
-    id?: true;
-    @Field(() => Boolean, {nullable:true})
-    vehicleId?: true;
-    @Field(() => Boolean, {nullable:true})
-    category?: true;
-    @Field(() => Boolean, {nullable:true})
-    url?: true;
-}
-
-@ObjectType()
-export class DriverVehicleImgMinAggregate {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:true})
-    vehicleId?: string;
-    @Field(() => String, {nullable:true})
-    category?: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-}
-
-@InputType()
-export class DriverVehicleImgMinOrderByAggregateInput {
-    @Field(() => SortOrder, {nullable:true})
-    id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    vehicleId?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    category?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
-}
-
-@InputType()
-export class DriverVehicleImgOrderByRelationAggregateInput {
-    @Field(() => SortOrder, {nullable:true})
-    _count?: `${SortOrder}`;
-}
-
-@InputType()
-export class DriverVehicleImgOrderByWithAggregationInput {
-    @Field(() => SortOrder, {nullable:true})
-    id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    vehicleId?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    category?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrderInput, {nullable:true})
-    url?: InstanceType<typeof SortOrderInput>;
-    @Field(() => DriverVehicleImgCountOrderByAggregateInput, {nullable:true})
-    _count?: InstanceType<typeof DriverVehicleImgCountOrderByAggregateInput>;
-    @Field(() => DriverVehicleImgMaxOrderByAggregateInput, {nullable:true})
-    _max?: InstanceType<typeof DriverVehicleImgMaxOrderByAggregateInput>;
-    @Field(() => DriverVehicleImgMinOrderByAggregateInput, {nullable:true})
-    _min?: InstanceType<typeof DriverVehicleImgMinOrderByAggregateInput>;
-}
-
-@InputType()
-export class DriverVehicleImgOrderByWithRelationInput {
-    @Field(() => SortOrder, {nullable:true})
-    id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    vehicleId?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    category?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrderInput, {nullable:true})
-    url?: InstanceType<typeof SortOrderInput>;
-    @Field(() => DriverVehicleOrderByWithRelationInput, {nullable:true})
-    vehicle?: InstanceType<typeof DriverVehicleOrderByWithRelationInput>;
-}
-
-@InputType()
-export class DriverVehicleImgScalarWhereWithAggregatesInput {
-    @Field(() => [DriverVehicleImgScalarWhereWithAggregatesInput], {nullable:true})
-    AND?: Array<DriverVehicleImgScalarWhereWithAggregatesInput>;
-    @Field(() => [DriverVehicleImgScalarWhereWithAggregatesInput], {nullable:true})
-    OR?: Array<DriverVehicleImgScalarWhereWithAggregatesInput>;
-    @Field(() => [DriverVehicleImgScalarWhereWithAggregatesInput], {nullable:true})
-    NOT?: Array<DriverVehicleImgScalarWhereWithAggregatesInput>;
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    id?: InstanceType<typeof StringWithAggregatesFilter>;
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    vehicleId?: InstanceType<typeof StringWithAggregatesFilter>;
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    category?: InstanceType<typeof StringNullableWithAggregatesFilter>;
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    url?: InstanceType<typeof StringNullableWithAggregatesFilter>;
-}
-
-@InputType()
-export class DriverVehicleImgScalarWhereInput {
-    @Field(() => [DriverVehicleImgScalarWhereInput], {nullable:true})
-    AND?: Array<DriverVehicleImgScalarWhereInput>;
-    @Field(() => [DriverVehicleImgScalarWhereInput], {nullable:true})
-    OR?: Array<DriverVehicleImgScalarWhereInput>;
-    @Field(() => [DriverVehicleImgScalarWhereInput], {nullable:true})
-    NOT?: Array<DriverVehicleImgScalarWhereInput>;
-    @Field(() => StringFilter, {nullable:true})
-    id?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    vehicleId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    category?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    url?: InstanceType<typeof StringNullableFilter>;
-}
-
-@InputType()
-export class DriverVehicleImgUncheckedCreateNestedManyWithoutVehicleInput {
-    @Field(() => [DriverVehicleImgCreateWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgCreateWithoutVehicleInput)
-    create?: Array<DriverVehicleImgCreateWithoutVehicleInput>;
-    @Field(() => [DriverVehicleImgCreateOrConnectWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgCreateOrConnectWithoutVehicleInput)
-    connectOrCreate?: Array<DriverVehicleImgCreateOrConnectWithoutVehicleInput>;
-    @Field(() => DriverVehicleImgCreateManyVehicleInputEnvelope, {nullable:true})
-    @Type(() => DriverVehicleImgCreateManyVehicleInputEnvelope)
-    createMany?: InstanceType<typeof DriverVehicleImgCreateManyVehicleInputEnvelope>;
-    @Field(() => [DriverVehicleImgWhereUniqueInput], {nullable:true})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>>;
-}
-
-@InputType()
-export class DriverVehicleImgUncheckedCreateWithoutVehicleInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:true})
-    category?: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-}
-
-@InputType()
-export class DriverVehicleImgUncheckedCreateInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    vehicleId!: string;
-    @Field(() => String, {nullable:true})
-    category?: string;
-    @Field(() => String, {nullable:true})
-    url?: string;
-}
-
-@InputType()
-export class DriverVehicleImgUncheckedUpdateManyWithoutVehicleNestedInput {
-    @Field(() => [DriverVehicleImgCreateWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgCreateWithoutVehicleInput)
-    create?: Array<DriverVehicleImgCreateWithoutVehicleInput>;
-    @Field(() => [DriverVehicleImgCreateOrConnectWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgCreateOrConnectWithoutVehicleInput)
-    connectOrCreate?: Array<DriverVehicleImgCreateOrConnectWithoutVehicleInput>;
-    @Field(() => [DriverVehicleImgUpsertWithWhereUniqueWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgUpsertWithWhereUniqueWithoutVehicleInput)
-    upsert?: Array<DriverVehicleImgUpsertWithWhereUniqueWithoutVehicleInput>;
-    @Field(() => DriverVehicleImgCreateManyVehicleInputEnvelope, {nullable:true})
-    @Type(() => DriverVehicleImgCreateManyVehicleInputEnvelope)
-    createMany?: InstanceType<typeof DriverVehicleImgCreateManyVehicleInputEnvelope>;
-    @Field(() => [DriverVehicleImgWhereUniqueInput], {nullable:true})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>>;
-    @Field(() => [DriverVehicleImgWhereUniqueInput], {nullable:true})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>>;
-    @Field(() => [DriverVehicleImgWhereUniqueInput], {nullable:true})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>>;
-    @Field(() => [DriverVehicleImgWhereUniqueInput], {nullable:true})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>>;
-    @Field(() => [DriverVehicleImgUpdateWithWhereUniqueWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgUpdateWithWhereUniqueWithoutVehicleInput)
-    update?: Array<DriverVehicleImgUpdateWithWhereUniqueWithoutVehicleInput>;
-    @Field(() => [DriverVehicleImgUpdateManyWithWhereWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgUpdateManyWithWhereWithoutVehicleInput)
-    updateMany?: Array<DriverVehicleImgUpdateManyWithWhereWithoutVehicleInput>;
-    @Field(() => [DriverVehicleImgScalarWhereInput], {nullable:true})
-    @Type(() => DriverVehicleImgScalarWhereInput)
-    deleteMany?: Array<DriverVehicleImgScalarWhereInput>;
-}
-
-@InputType()
-export class DriverVehicleImgUncheckedUpdateManyWithoutVehicleInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DriverVehicleImgUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    vehicleId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DriverVehicleImgUncheckedUpdateWithoutVehicleInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DriverVehicleImgUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    vehicleId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DriverVehicleImgUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DriverVehicleImgUpdateManyWithWhereWithoutVehicleInput {
-    @Field(() => DriverVehicleImgScalarWhereInput, {nullable:false})
-    @Type(() => DriverVehicleImgScalarWhereInput)
-    where!: InstanceType<typeof DriverVehicleImgScalarWhereInput>;
-    @Field(() => DriverVehicleImgUpdateManyMutationInput, {nullable:false})
-    @Type(() => DriverVehicleImgUpdateManyMutationInput)
-    data!: InstanceType<typeof DriverVehicleImgUpdateManyMutationInput>;
-}
-
-@InputType()
-export class DriverVehicleImgUpdateManyWithoutVehicleNestedInput {
-    @Field(() => [DriverVehicleImgCreateWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgCreateWithoutVehicleInput)
-    create?: Array<DriverVehicleImgCreateWithoutVehicleInput>;
-    @Field(() => [DriverVehicleImgCreateOrConnectWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgCreateOrConnectWithoutVehicleInput)
-    connectOrCreate?: Array<DriverVehicleImgCreateOrConnectWithoutVehicleInput>;
-    @Field(() => [DriverVehicleImgUpsertWithWhereUniqueWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgUpsertWithWhereUniqueWithoutVehicleInput)
-    upsert?: Array<DriverVehicleImgUpsertWithWhereUniqueWithoutVehicleInput>;
-    @Field(() => DriverVehicleImgCreateManyVehicleInputEnvelope, {nullable:true})
-    @Type(() => DriverVehicleImgCreateManyVehicleInputEnvelope)
-    createMany?: InstanceType<typeof DriverVehicleImgCreateManyVehicleInputEnvelope>;
-    @Field(() => [DriverVehicleImgWhereUniqueInput], {nullable:true})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>>;
-    @Field(() => [DriverVehicleImgWhereUniqueInput], {nullable:true})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>>;
-    @Field(() => [DriverVehicleImgWhereUniqueInput], {nullable:true})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>>;
-    @Field(() => [DriverVehicleImgWhereUniqueInput], {nullable:true})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>>;
-    @Field(() => [DriverVehicleImgUpdateWithWhereUniqueWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgUpdateWithWhereUniqueWithoutVehicleInput)
-    update?: Array<DriverVehicleImgUpdateWithWhereUniqueWithoutVehicleInput>;
-    @Field(() => [DriverVehicleImgUpdateManyWithWhereWithoutVehicleInput], {nullable:true})
-    @Type(() => DriverVehicleImgUpdateManyWithWhereWithoutVehicleInput)
-    updateMany?: Array<DriverVehicleImgUpdateManyWithWhereWithoutVehicleInput>;
-    @Field(() => [DriverVehicleImgScalarWhereInput], {nullable:true})
-    @Type(() => DriverVehicleImgScalarWhereInput)
-    deleteMany?: Array<DriverVehicleImgScalarWhereInput>;
-}
-
-@InputType()
-export class DriverVehicleImgUpdateWithWhereUniqueWithoutVehicleInput {
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:false})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    where!: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
-    @Field(() => DriverVehicleImgUpdateWithoutVehicleInput, {nullable:false})
-    @Type(() => DriverVehicleImgUpdateWithoutVehicleInput)
-    data!: InstanceType<typeof DriverVehicleImgUpdateWithoutVehicleInput>;
-}
-
-@InputType()
-export class DriverVehicleImgUpdateWithoutVehicleInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class DriverVehicleImgUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DriverVehicleUpdateOneRequiredWithoutDriverVehicleImgNestedInput, {nullable:true})
-    vehicle?: InstanceType<typeof DriverVehicleUpdateOneRequiredWithoutDriverVehicleImgNestedInput>;
-}
-
-@InputType()
-export class DriverVehicleImgUpsertWithWhereUniqueWithoutVehicleInput {
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:false})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    where!: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
-    @Field(() => DriverVehicleImgUpdateWithoutVehicleInput, {nullable:false})
-    @Type(() => DriverVehicleImgUpdateWithoutVehicleInput)
-    update!: InstanceType<typeof DriverVehicleImgUpdateWithoutVehicleInput>;
-    @Field(() => DriverVehicleImgCreateWithoutVehicleInput, {nullable:false})
-    @Type(() => DriverVehicleImgCreateWithoutVehicleInput)
-    create!: InstanceType<typeof DriverVehicleImgCreateWithoutVehicleInput>;
-}
-
-@InputType()
-export class DriverVehicleImgWhereUniqueInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => [DriverVehicleImgWhereInput], {nullable:true})
-    AND?: Array<DriverVehicleImgWhereInput>;
-    @Field(() => [DriverVehicleImgWhereInput], {nullable:true})
-    OR?: Array<DriverVehicleImgWhereInput>;
-    @Field(() => [DriverVehicleImgWhereInput], {nullable:true})
-    NOT?: Array<DriverVehicleImgWhereInput>;
-    @Field(() => StringFilter, {nullable:true})
-    vehicleId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    category?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    url?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => DriverVehicleScalarRelationFilter, {nullable:true})
-    vehicle?: InstanceType<typeof DriverVehicleScalarRelationFilter>;
-}
-
-@InputType()
-export class DriverVehicleImgWhereInput {
-    @Field(() => [DriverVehicleImgWhereInput], {nullable:true})
-    AND?: Array<DriverVehicleImgWhereInput>;
-    @Field(() => [DriverVehicleImgWhereInput], {nullable:true})
-    OR?: Array<DriverVehicleImgWhereInput>;
-    @Field(() => [DriverVehicleImgWhereInput], {nullable:true})
-    NOT?: Array<DriverVehicleImgWhereInput>;
-    @Field(() => StringFilter, {nullable:true})
-    id?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    vehicleId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    category?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    url?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => DriverVehicleScalarRelationFilter, {nullable:true})
-    vehicle?: InstanceType<typeof DriverVehicleScalarRelationFilter>;
-}
-
-@ObjectType()
-export class DriverVehicleImg {
-    @Field(() => String, {nullable:false})
-    id!: string;
-    @Field(() => String, {nullable:false})
-    vehicleId!: string;
-    @Field(() => String, {nullable:true})
-    category!: string | null;
-    @Field(() => String, {nullable:true})
-    url!: string | null;
-    @Field(() => DriverVehicle, {nullable:false})
-    vehicle?: InstanceType<typeof DriverVehicle>;
-}
-
-@ArgsType()
-export class FindFirstDriverVehicleImgOrThrowArgs {
-    @Field(() => DriverVehicleImgWhereInput, {nullable:true})
-    @Type(() => DriverVehicleImgWhereInput)
-    where?: InstanceType<typeof DriverVehicleImgWhereInput>;
-    @Field(() => [DriverVehicleImgOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<DriverVehicleImgOrderByWithRelationInput>;
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => [DriverVehicleImgScalarFieldEnum], {nullable:true})
-    distinct?: Array<`${DriverVehicleImgScalarFieldEnum}`>;
-}
-
-@ArgsType()
-export class FindFirstDriverVehicleImgArgs {
-    @Field(() => DriverVehicleImgWhereInput, {nullable:true})
-    @Type(() => DriverVehicleImgWhereInput)
-    where?: InstanceType<typeof DriverVehicleImgWhereInput>;
-    @Field(() => [DriverVehicleImgOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<DriverVehicleImgOrderByWithRelationInput>;
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => [DriverVehicleImgScalarFieldEnum], {nullable:true})
-    distinct?: Array<`${DriverVehicleImgScalarFieldEnum}`>;
-}
-
-@ArgsType()
-export class FindManyDriverVehicleImgArgs {
-    @Field(() => DriverVehicleImgWhereInput, {nullable:true})
-    @Type(() => DriverVehicleImgWhereInput)
-    where?: InstanceType<typeof DriverVehicleImgWhereInput>;
-    @Field(() => [DriverVehicleImgOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<DriverVehicleImgOrderByWithRelationInput>;
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => [DriverVehicleImgScalarFieldEnum], {nullable:true})
-    distinct?: Array<`${DriverVehicleImgScalarFieldEnum}`>;
-}
-
-@ArgsType()
-export class FindUniqueDriverVehicleImgOrThrowArgs {
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:false})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    where!: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
-}
-
-@ArgsType()
-export class FindUniqueDriverVehicleImgArgs {
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:false})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    where!: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
-}
-
-@ArgsType()
-export class UpdateManyDriverVehicleImgArgs {
-    @Field(() => DriverVehicleImgUpdateManyMutationInput, {nullable:false})
-    @Type(() => DriverVehicleImgUpdateManyMutationInput)
-    data!: InstanceType<typeof DriverVehicleImgUpdateManyMutationInput>;
-    @Field(() => DriverVehicleImgWhereInput, {nullable:true})
-    @Type(() => DriverVehicleImgWhereInput)
-    where?: InstanceType<typeof DriverVehicleImgWhereInput>;
-    @Field(() => Int, {nullable:true})
-    limit?: number;
-}
-
-@ArgsType()
-export class UpdateOneDriverVehicleImgArgs {
-    @Field(() => DriverVehicleImgUpdateInput, {nullable:false})
-    @Type(() => DriverVehicleImgUpdateInput)
-    data!: InstanceType<typeof DriverVehicleImgUpdateInput>;
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:false})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    where!: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
-}
-
-@ArgsType()
-export class UpsertOneDriverVehicleImgArgs {
-    @Field(() => DriverVehicleImgWhereUniqueInput, {nullable:false})
-    @Type(() => DriverVehicleImgWhereUniqueInput)
-    where!: Prisma.AtLeast<DriverVehicleImgWhereUniqueInput, 'id'>;
-    @Field(() => DriverVehicleImgCreateInput, {nullable:false})
-    @Type(() => DriverVehicleImgCreateInput)
-    create!: InstanceType<typeof DriverVehicleImgCreateInput>;
-    @Field(() => DriverVehicleImgUpdateInput, {nullable:false})
-    @Type(() => DriverVehicleImgUpdateInput)
-    update!: InstanceType<typeof DriverVehicleImgUpdateInput>;
-}
-
-@ObjectType()
-export class AggregateImage {
-    @Field(() => ImageCountAggregate, {nullable:true})
-    _count?: InstanceType<typeof ImageCountAggregate>;
-    @Field(() => ImageMinAggregate, {nullable:true})
-    _min?: InstanceType<typeof ImageMinAggregate>;
-    @Field(() => ImageMaxAggregate, {nullable:true})
-    _max?: InstanceType<typeof ImageMaxAggregate>;
-}
-
-@ArgsType()
-export class CreateManyImageArgs {
-    @Field(() => [ImageCreateManyInput], {nullable:false})
-    @Type(() => ImageCreateManyInput)
-    data!: Array<ImageCreateManyInput>;
-    @Field(() => Boolean, {nullable:true})
-    skipDuplicates?: boolean;
-}
-
-@ArgsType()
-export class CreateOneImageArgs {
-    @Field(() => ImageCreateInput, {nullable:false})
-    @Type(() => ImageCreateInput)
-    data!: InstanceType<typeof ImageCreateInput>;
-}
-
-@ArgsType()
-export class DeleteManyImageArgs {
-    @Field(() => ImageWhereInput, {nullable:true})
-    @Type(() => ImageWhereInput)
-    where?: InstanceType<typeof ImageWhereInput>;
-    @Field(() => Int, {nullable:true})
-    limit?: number;
-}
-
-@ArgsType()
-export class DeleteOneImageArgs {
-    @Field(() => ImageWhereUniqueInput, {nullable:false})
-    @Type(() => ImageWhereUniqueInput)
-    where!: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-}
-
-@ArgsType()
-export class FindFirstImageOrThrowArgs {
-    @Field(() => ImageWhereInput, {nullable:true})
-    @Type(() => ImageWhereInput)
-    where?: InstanceType<typeof ImageWhereInput>;
-    @Field(() => [ImageOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<ImageOrderByWithRelationInput>;
-    @Field(() => ImageWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => [ImageScalarFieldEnum], {nullable:true})
-    distinct?: Array<`${ImageScalarFieldEnum}`>;
-}
-
-@ArgsType()
-export class FindFirstImageArgs {
-    @Field(() => ImageWhereInput, {nullable:true})
-    @Type(() => ImageWhereInput)
-    where?: InstanceType<typeof ImageWhereInput>;
-    @Field(() => [ImageOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<ImageOrderByWithRelationInput>;
-    @Field(() => ImageWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => [ImageScalarFieldEnum], {nullable:true})
-    distinct?: Array<`${ImageScalarFieldEnum}`>;
-}
-
-@ArgsType()
-export class FindManyImageArgs {
-    @Field(() => ImageWhereInput, {nullable:true})
-    @Type(() => ImageWhereInput)
-    where?: InstanceType<typeof ImageWhereInput>;
-    @Field(() => [ImageOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<ImageOrderByWithRelationInput>;
-    @Field(() => ImageWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => [ImageScalarFieldEnum], {nullable:true})
-    distinct?: Array<`${ImageScalarFieldEnum}`>;
-}
-
-@ArgsType()
-export class FindUniqueImageOrThrowArgs {
-    @Field(() => ImageWhereUniqueInput, {nullable:false})
-    @Type(() => ImageWhereUniqueInput)
-    where!: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-}
-
-@ArgsType()
-export class FindUniqueImageArgs {
-    @Field(() => ImageWhereUniqueInput, {nullable:false})
-    @Type(() => ImageWhereUniqueInput)
-    where!: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-}
-
-@ArgsType()
-export class ImageAggregateArgs {
-    @Field(() => ImageWhereInput, {nullable:true})
-    @Type(() => ImageWhereInput)
-    where?: InstanceType<typeof ImageWhereInput>;
-    @Field(() => [ImageOrderByWithRelationInput], {nullable:true})
-    orderBy?: Array<ImageOrderByWithRelationInput>;
-    @Field(() => ImageWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-    @Field(() => Int, {nullable:true})
-    take?: number;
-    @Field(() => Int, {nullable:true})
-    skip?: number;
-    @Field(() => ImageCountAggregateInput, {nullable:true})
-    _count?: InstanceType<typeof ImageCountAggregateInput>;
-    @Field(() => ImageMinAggregateInput, {nullable:true})
-    _min?: InstanceType<typeof ImageMinAggregateInput>;
-    @Field(() => ImageMaxAggregateInput, {nullable:true})
-    _max?: InstanceType<typeof ImageMaxAggregateInput>;
-}
-
-@InputType()
-export class ImageCountAggregateInput {
+export class FileCountAggregateInput {
     @Field(() => Boolean, {nullable:true})
     id?: true;
     @Field(() => Boolean, {nullable:true})
     url?: true;
     @Field(() => Boolean, {nullable:true})
     type?: true;
+    @Field(() => Boolean, {nullable:true})
+    key?: true;
+    @Field(() => Boolean, {nullable:true})
+    originalName?: true;
+    @Field(() => Boolean, {nullable:true})
+    contentType?: true;
+    @Field(() => Boolean, {nullable:true})
+    size?: true;
+    @Field(() => Boolean, {nullable:true})
+    etag?: true;
+    @Field(() => Boolean, {nullable:true})
+    status?: true;
+    @Field(() => Boolean, {nullable:true})
+    meta?: true;
     @Field(() => Boolean, {nullable:true})
     name?: true;
     @Field(() => Boolean, {nullable:true})
@@ -4079,13 +1928,27 @@ export class ImageCountAggregateInput {
 }
 
 @ObjectType()
-export class ImageCountAggregate {
+export class FileCountAggregate {
     @Field(() => Int, {nullable:false})
     id!: number;
     @Field(() => Int, {nullable:false})
     url!: number;
     @Field(() => Int, {nullable:false})
     type!: number;
+    @Field(() => Int, {nullable:false})
+    key!: number;
+    @Field(() => Int, {nullable:false})
+    originalName!: number;
+    @Field(() => Int, {nullable:false})
+    contentType!: number;
+    @Field(() => Int, {nullable:false})
+    size!: number;
+    @Field(() => Int, {nullable:false})
+    etag!: number;
+    @Field(() => Int, {nullable:false})
+    status!: number;
+    @Field(() => Int, {nullable:false})
+    meta!: number;
     @Field(() => Int, {nullable:false})
     name!: number;
     @Field(() => Int, {nullable:false})
@@ -4097,13 +1960,27 @@ export class ImageCountAggregate {
 }
 
 @InputType()
-export class ImageCountOrderByAggregateInput {
+export class FileCountOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     url?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    key?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    originalName?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    contentType?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    size?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    etag?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    meta?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     name?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -4112,60 +1989,40 @@ export class ImageCountOrderByAggregateInput {
     driverVehicleId?: `${SortOrder}`;
 }
 
-@InputType()
-export class ImageCreateManyDriverVehicleInputEnvelope {
-    @Field(() => [ImageCreateManyDriverVehicleInput], {nullable:false})
-    @Type(() => ImageCreateManyDriverVehicleInput)
-    data!: Array<ImageCreateManyDriverVehicleInput>;
-    @Field(() => Boolean, {nullable:true})
-    skipDuplicates?: boolean;
+@ObjectType()
+export class FileCount {
+    @Field(() => Int, {nullable:false})
+    UserImage?: number;
+    @Field(() => Int, {nullable:false})
+    UserDocument?: number;
+    @Field(() => Int, {nullable:false})
+    VehicleImage?: number;
+    @Field(() => Int, {nullable:false})
+    VehicleDocument?: number;
 }
 
 @InputType()
-export class ImageCreateManyDriverVehicleInput {
+export class FileCreateManyInput {
     @Field(() => String, {nullable:true})
     id?: string;
-    @Field(() => String, {nullable:false})
-    url!: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
     @Field(() => ImageType, {nullable:false})
     type!: `${ImageType}`;
-    @Field(() => String, {nullable:true})
-    name?: string;
     @Field(() => String, {nullable:false})
-    userId!: string;
-}
-
-@InputType()
-export class ImageCreateManyUserInputEnvelope {
-    @Field(() => [ImageCreateManyUserInput], {nullable:false})
-    @Type(() => ImageCreateManyUserInput)
-    data!: Array<ImageCreateManyUserInput>;
-    @Field(() => Boolean, {nullable:true})
-    skipDuplicates?: boolean;
-}
-
-@InputType()
-export class ImageCreateManyUserInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
+    key!: string;
     @Field(() => String, {nullable:false})
-    url!: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
+    originalName!: string;
     @Field(() => String, {nullable:true})
-    name?: string;
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
     @Field(() => String, {nullable:true})
-    driverVehicleId?: string;
-}
-
-@InputType()
-export class ImageCreateManyInput {
+    etag?: string;
     @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    url!: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
+    status?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
     @Field(() => String, {nullable:true})
     name?: string;
     @Field(() => String, {nullable:false})
@@ -4175,164 +2032,366 @@ export class ImageCreateManyInput {
 }
 
 @InputType()
-export class ImageCreateNestedManyWithoutDriverVehicleInput {
-    @Field(() => [ImageCreateWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageCreateWithoutDriverVehicleInput)
-    create?: Array<ImageCreateWithoutDriverVehicleInput>;
-    @Field(() => [ImageCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageCreateOrConnectWithoutDriverVehicleInput)
-    connectOrCreate?: Array<ImageCreateOrConnectWithoutDriverVehicleInput>;
-    @Field(() => ImageCreateManyDriverVehicleInputEnvelope, {nullable:true})
-    @Type(() => ImageCreateManyDriverVehicleInputEnvelope)
-    createMany?: InstanceType<typeof ImageCreateManyDriverVehicleInputEnvelope>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
+export class FileCreateNestedOneWithoutUserDocumentInput {
+    @Field(() => FileCreateWithoutUserDocumentInput, {nullable:true})
+    @Type(() => FileCreateWithoutUserDocumentInput)
+    create?: InstanceType<typeof FileCreateWithoutUserDocumentInput>;
+    @Field(() => FileCreateOrConnectWithoutUserDocumentInput, {nullable:true})
+    @Type(() => FileCreateOrConnectWithoutUserDocumentInput)
+    connectOrCreate?: InstanceType<typeof FileCreateOrConnectWithoutUserDocumentInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    @Type(() => FileWhereUniqueInput)
+    connect?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
 }
 
 @InputType()
-export class ImageCreateNestedManyWithoutUserInput {
-    @Field(() => [ImageCreateWithoutUserInput], {nullable:true})
-    @Type(() => ImageCreateWithoutUserInput)
-    create?: Array<ImageCreateWithoutUserInput>;
-    @Field(() => [ImageCreateOrConnectWithoutUserInput], {nullable:true})
-    @Type(() => ImageCreateOrConnectWithoutUserInput)
-    connectOrCreate?: Array<ImageCreateOrConnectWithoutUserInput>;
-    @Field(() => ImageCreateManyUserInputEnvelope, {nullable:true})
-    @Type(() => ImageCreateManyUserInputEnvelope)
-    createMany?: InstanceType<typeof ImageCreateManyUserInputEnvelope>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
+export class FileCreateNestedOneWithoutUserImageInput {
+    @Field(() => FileCreateWithoutUserImageInput, {nullable:true})
+    @Type(() => FileCreateWithoutUserImageInput)
+    create?: InstanceType<typeof FileCreateWithoutUserImageInput>;
+    @Field(() => FileCreateOrConnectWithoutUserImageInput, {nullable:true})
+    @Type(() => FileCreateOrConnectWithoutUserImageInput)
+    connectOrCreate?: InstanceType<typeof FileCreateOrConnectWithoutUserImageInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    @Type(() => FileWhereUniqueInput)
+    connect?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
 }
 
 @InputType()
-export class ImageCreateOrConnectWithoutDriverVehicleInput {
-    @Field(() => ImageWhereUniqueInput, {nullable:false})
-    @Type(() => ImageWhereUniqueInput)
-    where!: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-    @Field(() => ImageCreateWithoutDriverVehicleInput, {nullable:false})
-    @Type(() => ImageCreateWithoutDriverVehicleInput)
-    create!: InstanceType<typeof ImageCreateWithoutDriverVehicleInput>;
+export class FileCreateNestedOneWithoutVehicleDocumentInput {
+    @Field(() => FileCreateWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => FileCreateWithoutVehicleDocumentInput)
+    create?: InstanceType<typeof FileCreateWithoutVehicleDocumentInput>;
+    @Field(() => FileCreateOrConnectWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => FileCreateOrConnectWithoutVehicleDocumentInput)
+    connectOrCreate?: InstanceType<typeof FileCreateOrConnectWithoutVehicleDocumentInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    @Type(() => FileWhereUniqueInput)
+    connect?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
 }
 
 @InputType()
-export class ImageCreateOrConnectWithoutUserInput {
-    @Field(() => ImageWhereUniqueInput, {nullable:false})
-    @Type(() => ImageWhereUniqueInput)
-    where!: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-    @Field(() => ImageCreateWithoutUserInput, {nullable:false})
-    @Type(() => ImageCreateWithoutUserInput)
-    create!: InstanceType<typeof ImageCreateWithoutUserInput>;
+export class FileCreateNestedOneWithoutVehicleImageInput {
+    @Field(() => FileCreateWithoutVehicleImageInput, {nullable:true})
+    @Type(() => FileCreateWithoutVehicleImageInput)
+    create?: InstanceType<typeof FileCreateWithoutVehicleImageInput>;
+    @Field(() => FileCreateOrConnectWithoutVehicleImageInput, {nullable:true})
+    @Type(() => FileCreateOrConnectWithoutVehicleImageInput)
+    connectOrCreate?: InstanceType<typeof FileCreateOrConnectWithoutVehicleImageInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    @Type(() => FileWhereUniqueInput)
+    connect?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
 }
 
 @InputType()
-export class ImageCreateWithoutDriverVehicleInput {
+export class FileCreateOrConnectWithoutUserDocumentInput {
+    @Field(() => FileWhereUniqueInput, {nullable:false})
+    @Type(() => FileWhereUniqueInput)
+    where!: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => FileCreateWithoutUserDocumentInput, {nullable:false})
+    @Type(() => FileCreateWithoutUserDocumentInput)
+    create!: InstanceType<typeof FileCreateWithoutUserDocumentInput>;
+}
+
+@InputType()
+export class FileCreateOrConnectWithoutUserImageInput {
+    @Field(() => FileWhereUniqueInput, {nullable:false})
+    @Type(() => FileWhereUniqueInput)
+    where!: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => FileCreateWithoutUserImageInput, {nullable:false})
+    @Type(() => FileCreateWithoutUserImageInput)
+    create!: InstanceType<typeof FileCreateWithoutUserImageInput>;
+}
+
+@InputType()
+export class FileCreateOrConnectWithoutVehicleDocumentInput {
+    @Field(() => FileWhereUniqueInput, {nullable:false})
+    @Type(() => FileWhereUniqueInput)
+    where!: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => FileCreateWithoutVehicleDocumentInput, {nullable:false})
+    @Type(() => FileCreateWithoutVehicleDocumentInput)
+    create!: InstanceType<typeof FileCreateWithoutVehicleDocumentInput>;
+}
+
+@InputType()
+export class FileCreateOrConnectWithoutVehicleImageInput {
+    @Field(() => FileWhereUniqueInput, {nullable:false})
+    @Type(() => FileWhereUniqueInput)
+    where!: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => FileCreateWithoutVehicleImageInput, {nullable:false})
+    @Type(() => FileCreateWithoutVehicleImageInput)
+    create!: InstanceType<typeof FileCreateWithoutVehicleImageInput>;
+}
+
+@InputType()
+export class FileCreateWithoutUserDocumentInput {
     @Field(() => String, {nullable:true})
     id?: string;
-    @Field(() => String, {nullable:false})
-    url!: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
     @Field(() => ImageType, {nullable:false})
     type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
     @Field(() => String, {nullable:true})
     name?: string;
-    @Field(() => UserCreateNestedOneWithoutImagesInput, {nullable:false})
-    user!: InstanceType<typeof UserCreateNestedOneWithoutImagesInput>;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => UserImageCreateNestedManyWithoutFileInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleImageCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleDocumentCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentCreateNestedManyWithoutFileInput>;
 }
 
 @InputType()
-export class ImageCreateWithoutUserInput {
+export class FileCreateWithoutUserImageInput {
     @Field(() => String, {nullable:true})
     id?: string;
-    @Field(() => String, {nullable:false})
-    url!: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
     @Field(() => ImageType, {nullable:false})
     type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
     @Field(() => String, {nullable:true})
     name?: string;
-    @Field(() => DriverVehicleCreateNestedOneWithoutImagesInput, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleCreateNestedOneWithoutImagesInput>;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => UserDocumentCreateNestedManyWithoutFileInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleImageCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleDocumentCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentCreateNestedManyWithoutFileInput>;
 }
 
 @InputType()
-export class ImageCreateInput {
+export class FileCreateWithoutVehicleDocumentInput {
     @Field(() => String, {nullable:true})
     id?: string;
-    @Field(() => String, {nullable:false})
-    url!: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
     @Field(() => ImageType, {nullable:false})
     type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
     @Field(() => String, {nullable:true})
     name?: string;
-    @Field(() => UserCreateNestedOneWithoutImagesInput, {nullable:false})
-    user!: InstanceType<typeof UserCreateNestedOneWithoutImagesInput>;
-    @Field(() => DriverVehicleCreateNestedOneWithoutImagesInput, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleCreateNestedOneWithoutImagesInput>;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => UserImageCreateNestedManyWithoutFileInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutFileInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutFileInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleImageCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageCreateNestedManyWithoutFileInput>;
+}
+
+@InputType()
+export class FileCreateWithoutVehicleImageInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => UserImageCreateNestedManyWithoutFileInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutFileInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutFileInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleDocumentCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentCreateNestedManyWithoutFileInput>;
+}
+
+@InputType()
+export class FileCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => UserImageCreateNestedManyWithoutFileInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutFileInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutFileInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleImageCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleDocumentCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentCreateNestedManyWithoutFileInput>;
 }
 
 @ArgsType()
-export class ImageGroupByArgs {
-    @Field(() => ImageWhereInput, {nullable:true})
-    @Type(() => ImageWhereInput)
-    where?: InstanceType<typeof ImageWhereInput>;
-    @Field(() => [ImageOrderByWithAggregationInput], {nullable:true})
-    orderBy?: Array<ImageOrderByWithAggregationInput>;
-    @Field(() => [ImageScalarFieldEnum], {nullable:false})
-    by!: Array<`${ImageScalarFieldEnum}`>;
-    @Field(() => ImageScalarWhereWithAggregatesInput, {nullable:true})
-    having?: InstanceType<typeof ImageScalarWhereWithAggregatesInput>;
+export class FileGroupByArgs {
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+    @Field(() => [FileOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<FileOrderByWithAggregationInput>;
+    @Field(() => [FileScalarFieldEnum], {nullable:false})
+    by!: Array<`${FileScalarFieldEnum}`>;
+    @Field(() => FileScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof FileScalarWhereWithAggregatesInput>;
     @Field(() => Int, {nullable:true})
     take?: number;
     @Field(() => Int, {nullable:true})
     skip?: number;
-    @Field(() => ImageCountAggregateInput, {nullable:true})
-    _count?: InstanceType<typeof ImageCountAggregateInput>;
-    @Field(() => ImageMinAggregateInput, {nullable:true})
-    _min?: InstanceType<typeof ImageMinAggregateInput>;
-    @Field(() => ImageMaxAggregateInput, {nullable:true})
-    _max?: InstanceType<typeof ImageMaxAggregateInput>;
+    @Field(() => FileCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FileCountAggregateInput>;
+    @Field(() => FileAvgAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof FileAvgAggregateInput>;
+    @Field(() => FileSumAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof FileSumAggregateInput>;
+    @Field(() => FileMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FileMinAggregateInput>;
+    @Field(() => FileMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FileMaxAggregateInput>;
 }
 
 @ObjectType()
-export class ImageGroupBy {
+export class FileGroupBy {
     @Field(() => String, {nullable:false})
     id!: string;
-    @Field(() => String, {nullable:false})
-    url!: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
     @Field(() => ImageType, {nullable:false})
     type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:false})
+    status!: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
     @Field(() => String, {nullable:true})
     name?: string;
     @Field(() => String, {nullable:false})
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
-    @Field(() => ImageCountAggregate, {nullable:true})
-    _count?: InstanceType<typeof ImageCountAggregate>;
-    @Field(() => ImageMinAggregate, {nullable:true})
-    _min?: InstanceType<typeof ImageMinAggregate>;
-    @Field(() => ImageMaxAggregate, {nullable:true})
-    _max?: InstanceType<typeof ImageMaxAggregate>;
+    @Field(() => FileCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof FileCountAggregate>;
+    @Field(() => FileAvgAggregate, {nullable:true})
+    _avg?: InstanceType<typeof FileAvgAggregate>;
+    @Field(() => FileSumAggregate, {nullable:true})
+    _sum?: InstanceType<typeof FileSumAggregate>;
+    @Field(() => FileMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof FileMinAggregate>;
+    @Field(() => FileMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof FileMaxAggregate>;
 }
 
 @InputType()
-export class ImageListRelationFilter {
-    @Field(() => ImageWhereInput, {nullable:true})
-    every?: InstanceType<typeof ImageWhereInput>;
-    @Field(() => ImageWhereInput, {nullable:true})
-    some?: InstanceType<typeof ImageWhereInput>;
-    @Field(() => ImageWhereInput, {nullable:true})
-    none?: InstanceType<typeof ImageWhereInput>;
-}
-
-@InputType()
-export class ImageMaxAggregateInput {
+export class FileMaxAggregateInput {
     @Field(() => Boolean, {nullable:true})
     id?: true;
     @Field(() => Boolean, {nullable:true})
     url?: true;
     @Field(() => Boolean, {nullable:true})
     type?: true;
+    @Field(() => Boolean, {nullable:true})
+    key?: true;
+    @Field(() => Boolean, {nullable:true})
+    originalName?: true;
+    @Field(() => Boolean, {nullable:true})
+    contentType?: true;
+    @Field(() => Boolean, {nullable:true})
+    size?: true;
+    @Field(() => Boolean, {nullable:true})
+    etag?: true;
+    @Field(() => Boolean, {nullable:true})
+    status?: true;
     @Field(() => Boolean, {nullable:true})
     name?: true;
     @Field(() => Boolean, {nullable:true})
@@ -4342,13 +2401,25 @@ export class ImageMaxAggregateInput {
 }
 
 @ObjectType()
-export class ImageMaxAggregate {
+export class FileMaxAggregate {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
     @Field(() => ImageType, {nullable:true})
     type?: `${ImageType}`;
+    @Field(() => String, {nullable:true})
+    key?: string;
+    @Field(() => String, {nullable:true})
+    originalName?: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
     @Field(() => String, {nullable:true})
     name?: string;
     @Field(() => String, {nullable:true})
@@ -4358,13 +2429,25 @@ export class ImageMaxAggregate {
 }
 
 @InputType()
-export class ImageMaxOrderByAggregateInput {
+export class FileMaxOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     url?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    key?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    originalName?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    contentType?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    size?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    etag?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     name?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -4374,13 +2457,25 @@ export class ImageMaxOrderByAggregateInput {
 }
 
 @InputType()
-export class ImageMinAggregateInput {
+export class FileMinAggregateInput {
     @Field(() => Boolean, {nullable:true})
     id?: true;
     @Field(() => Boolean, {nullable:true})
     url?: true;
     @Field(() => Boolean, {nullable:true})
     type?: true;
+    @Field(() => Boolean, {nullable:true})
+    key?: true;
+    @Field(() => Boolean, {nullable:true})
+    originalName?: true;
+    @Field(() => Boolean, {nullable:true})
+    contentType?: true;
+    @Field(() => Boolean, {nullable:true})
+    size?: true;
+    @Field(() => Boolean, {nullable:true})
+    etag?: true;
+    @Field(() => Boolean, {nullable:true})
+    status?: true;
     @Field(() => Boolean, {nullable:true})
     name?: true;
     @Field(() => Boolean, {nullable:true})
@@ -4390,13 +2485,25 @@ export class ImageMinAggregateInput {
 }
 
 @ObjectType()
-export class ImageMinAggregate {
+export class FileMinAggregate {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
     @Field(() => ImageType, {nullable:true})
     type?: `${ImageType}`;
+    @Field(() => String, {nullable:true})
+    key?: string;
+    @Field(() => String, {nullable:true})
+    originalName?: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
     @Field(() => String, {nullable:true})
     name?: string;
     @Field(() => String, {nullable:true})
@@ -4406,13 +2513,25 @@ export class ImageMinAggregate {
 }
 
 @InputType()
-export class ImageMinOrderByAggregateInput {
+export class FileMinOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     url?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    key?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    originalName?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    contentType?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    size?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    etag?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     name?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -4422,67 +2541,119 @@ export class ImageMinOrderByAggregateInput {
 }
 
 @InputType()
-export class ImageOrderByRelationAggregateInput {
-    @Field(() => SortOrder, {nullable:true})
-    _count?: `${SortOrder}`;
-}
-
-@InputType()
-export class ImageOrderByWithAggregationInput {
+export class FileOrderByWithAggregationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    url?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    key?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    originalName?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    contentType?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    size?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    etag?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    meta?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     name?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     userId?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof SortOrderInput>;
-    @Field(() => ImageCountOrderByAggregateInput, {nullable:true})
-    _count?: InstanceType<typeof ImageCountOrderByAggregateInput>;
-    @Field(() => ImageMaxOrderByAggregateInput, {nullable:true})
-    _max?: InstanceType<typeof ImageMaxOrderByAggregateInput>;
-    @Field(() => ImageMinOrderByAggregateInput, {nullable:true})
-    _min?: InstanceType<typeof ImageMinOrderByAggregateInput>;
+    @Field(() => FileCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FileCountOrderByAggregateInput>;
+    @Field(() => FileAvgOrderByAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof FileAvgOrderByAggregateInput>;
+    @Field(() => FileMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FileMaxOrderByAggregateInput>;
+    @Field(() => FileMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FileMinOrderByAggregateInput>;
+    @Field(() => FileSumOrderByAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof FileSumOrderByAggregateInput>;
 }
 
 @InputType()
-export class ImageOrderByWithRelationInput {
+export class FileOrderByWithRelationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    url?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    key?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    originalName?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    contentType?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    size?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    etag?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    meta?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     name?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     userId?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof SortOrderInput>;
-    @Field(() => UserOrderByWithRelationInput, {nullable:true})
-    user?: InstanceType<typeof UserOrderByWithRelationInput>;
-    @Field(() => DriverVehicleOrderByWithRelationInput, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleOrderByWithRelationInput>;
+    @Field(() => UserImageOrderByRelationAggregateInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageOrderByRelationAggregateInput>;
+    @Field(() => UserDocumentOrderByRelationAggregateInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentOrderByRelationAggregateInput>;
+    @Field(() => VehicleImageOrderByRelationAggregateInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageOrderByRelationAggregateInput>;
+    @Field(() => VehicleDocumentOrderByRelationAggregateInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentOrderByRelationAggregateInput>;
 }
 
 @InputType()
-export class ImageScalarWhereWithAggregatesInput {
-    @Field(() => [ImageScalarWhereWithAggregatesInput], {nullable:true})
-    AND?: Array<ImageScalarWhereWithAggregatesInput>;
-    @Field(() => [ImageScalarWhereWithAggregatesInput], {nullable:true})
-    OR?: Array<ImageScalarWhereWithAggregatesInput>;
-    @Field(() => [ImageScalarWhereWithAggregatesInput], {nullable:true})
-    NOT?: Array<ImageScalarWhereWithAggregatesInput>;
+export class FileScalarRelationFilter {
+    @Field(() => FileWhereInput, {nullable:true})
+    is?: InstanceType<typeof FileWhereInput>;
+    @Field(() => FileWhereInput, {nullable:true})
+    isNot?: InstanceType<typeof FileWhereInput>;
+}
+
+@InputType()
+export class FileScalarWhereWithAggregatesInput {
+    @Field(() => [FileScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<FileScalarWhereWithAggregatesInput>;
+    @Field(() => [FileScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<FileScalarWhereWithAggregatesInput>;
+    @Field(() => [FileScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<FileScalarWhereWithAggregatesInput>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     id?: InstanceType<typeof StringWithAggregatesFilter>;
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    url?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    url?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => EnumImageTypeWithAggregatesFilter, {nullable:true})
     type?: InstanceType<typeof EnumImageTypeWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    key?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    originalName?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    contentType?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => IntNullableWithAggregatesFilter, {nullable:true})
+    size?: InstanceType<typeof IntNullableWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    etag?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    status?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => JsonNullableWithAggregatesFilter, {nullable:true})
+    meta?: InstanceType<typeof JsonNullableWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     name?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
@@ -4492,566 +2663,1023 @@ export class ImageScalarWhereWithAggregatesInput {
 }
 
 @InputType()
-export class ImageScalarWhereInput {
-    @Field(() => [ImageScalarWhereInput], {nullable:true})
-    AND?: Array<ImageScalarWhereInput>;
-    @Field(() => [ImageScalarWhereInput], {nullable:true})
-    OR?: Array<ImageScalarWhereInput>;
-    @Field(() => [ImageScalarWhereInput], {nullable:true})
-    NOT?: Array<ImageScalarWhereInput>;
-    @Field(() => StringFilter, {nullable:true})
-    id?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    url?: InstanceType<typeof StringFilter>;
-    @Field(() => EnumImageTypeFilter, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    name?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    userId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    driverVehicleId?: InstanceType<typeof StringNullableFilter>;
-}
-
-@InputType()
-export class ImageUncheckedCreateNestedManyWithoutDriverVehicleInput {
-    @Field(() => [ImageCreateWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageCreateWithoutDriverVehicleInput)
-    create?: Array<ImageCreateWithoutDriverVehicleInput>;
-    @Field(() => [ImageCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageCreateOrConnectWithoutDriverVehicleInput)
-    connectOrCreate?: Array<ImageCreateOrConnectWithoutDriverVehicleInput>;
-    @Field(() => ImageCreateManyDriverVehicleInputEnvelope, {nullable:true})
-    @Type(() => ImageCreateManyDriverVehicleInputEnvelope)
-    createMany?: InstanceType<typeof ImageCreateManyDriverVehicleInputEnvelope>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-}
-
-@InputType()
-export class ImageUncheckedCreateNestedManyWithoutUserInput {
-    @Field(() => [ImageCreateWithoutUserInput], {nullable:true})
-    @Type(() => ImageCreateWithoutUserInput)
-    create?: Array<ImageCreateWithoutUserInput>;
-    @Field(() => [ImageCreateOrConnectWithoutUserInput], {nullable:true})
-    @Type(() => ImageCreateOrConnectWithoutUserInput)
-    connectOrCreate?: Array<ImageCreateOrConnectWithoutUserInput>;
-    @Field(() => ImageCreateManyUserInputEnvelope, {nullable:true})
-    @Type(() => ImageCreateManyUserInputEnvelope)
-    createMany?: InstanceType<typeof ImageCreateManyUserInputEnvelope>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-}
-
-@InputType()
-export class ImageUncheckedCreateWithoutDriverVehicleInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    url!: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
-    @Field(() => String, {nullable:true})
-    name?: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-}
-
-@InputType()
-export class ImageUncheckedCreateWithoutUserInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    url!: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
-    @Field(() => String, {nullable:true})
-    name?: string;
-    @Field(() => String, {nullable:true})
-    driverVehicleId?: string;
-}
-
-@InputType()
-export class ImageUncheckedCreateInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    url!: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
-    @Field(() => String, {nullable:true})
-    name?: string;
-    @Field(() => String, {nullable:false})
-    userId!: string;
-    @Field(() => String, {nullable:true})
-    driverVehicleId?: string;
-}
-
-@InputType()
-export class ImageUncheckedUpdateManyWithoutDriverVehicleNestedInput {
-    @Field(() => [ImageCreateWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageCreateWithoutDriverVehicleInput)
-    create?: Array<ImageCreateWithoutDriverVehicleInput>;
-    @Field(() => [ImageCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageCreateOrConnectWithoutDriverVehicleInput)
-    connectOrCreate?: Array<ImageCreateOrConnectWithoutDriverVehicleInput>;
-    @Field(() => [ImageUpsertWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageUpsertWithWhereUniqueWithoutDriverVehicleInput)
-    upsert?: Array<ImageUpsertWithWhereUniqueWithoutDriverVehicleInput>;
-    @Field(() => ImageCreateManyDriverVehicleInputEnvelope, {nullable:true})
-    @Type(() => ImageCreateManyDriverVehicleInputEnvelope)
-    createMany?: InstanceType<typeof ImageCreateManyDriverVehicleInputEnvelope>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageUpdateWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageUpdateWithWhereUniqueWithoutDriverVehicleInput)
-    update?: Array<ImageUpdateWithWhereUniqueWithoutDriverVehicleInput>;
-    @Field(() => [ImageUpdateManyWithWhereWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageUpdateManyWithWhereWithoutDriverVehicleInput)
-    updateMany?: Array<ImageUpdateManyWithWhereWithoutDriverVehicleInput>;
-    @Field(() => [ImageScalarWhereInput], {nullable:true})
-    @Type(() => ImageScalarWhereInput)
-    deleteMany?: Array<ImageScalarWhereInput>;
-}
-
-@InputType()
-export class ImageUncheckedUpdateManyWithoutDriverVehicleInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class ImageUncheckedUpdateManyWithoutUserNestedInput {
-    @Field(() => [ImageCreateWithoutUserInput], {nullable:true})
-    @Type(() => ImageCreateWithoutUserInput)
-    create?: Array<ImageCreateWithoutUserInput>;
-    @Field(() => [ImageCreateOrConnectWithoutUserInput], {nullable:true})
-    @Type(() => ImageCreateOrConnectWithoutUserInput)
-    connectOrCreate?: Array<ImageCreateOrConnectWithoutUserInput>;
-    @Field(() => [ImageUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
-    @Type(() => ImageUpsertWithWhereUniqueWithoutUserInput)
-    upsert?: Array<ImageUpsertWithWhereUniqueWithoutUserInput>;
-    @Field(() => ImageCreateManyUserInputEnvelope, {nullable:true})
-    @Type(() => ImageCreateManyUserInputEnvelope)
-    createMany?: InstanceType<typeof ImageCreateManyUserInputEnvelope>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
-    @Type(() => ImageUpdateWithWhereUniqueWithoutUserInput)
-    update?: Array<ImageUpdateWithWhereUniqueWithoutUserInput>;
-    @Field(() => [ImageUpdateManyWithWhereWithoutUserInput], {nullable:true})
-    @Type(() => ImageUpdateManyWithWhereWithoutUserInput)
-    updateMany?: Array<ImageUpdateManyWithWhereWithoutUserInput>;
-    @Field(() => [ImageScalarWhereInput], {nullable:true})
-    @Type(() => ImageScalarWhereInput)
-    deleteMany?: Array<ImageScalarWhereInput>;
-}
-
-@InputType()
-export class ImageUncheckedUpdateManyWithoutUserInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class ImageUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class ImageUncheckedUpdateWithoutDriverVehicleInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class ImageUncheckedUpdateWithoutUserInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class ImageUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class ImageUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class ImageUpdateManyWithWhereWithoutDriverVehicleInput {
-    @Field(() => ImageScalarWhereInput, {nullable:false})
-    @Type(() => ImageScalarWhereInput)
-    where!: InstanceType<typeof ImageScalarWhereInput>;
-    @Field(() => ImageUpdateManyMutationInput, {nullable:false})
-    @Type(() => ImageUpdateManyMutationInput)
-    data!: InstanceType<typeof ImageUpdateManyMutationInput>;
-}
-
-@InputType()
-export class ImageUpdateManyWithWhereWithoutUserInput {
-    @Field(() => ImageScalarWhereInput, {nullable:false})
-    @Type(() => ImageScalarWhereInput)
-    where!: InstanceType<typeof ImageScalarWhereInput>;
-    @Field(() => ImageUpdateManyMutationInput, {nullable:false})
-    @Type(() => ImageUpdateManyMutationInput)
-    data!: InstanceType<typeof ImageUpdateManyMutationInput>;
-}
-
-@InputType()
-export class ImageUpdateManyWithoutDriverVehicleNestedInput {
-    @Field(() => [ImageCreateWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageCreateWithoutDriverVehicleInput)
-    create?: Array<ImageCreateWithoutDriverVehicleInput>;
-    @Field(() => [ImageCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageCreateOrConnectWithoutDriverVehicleInput)
-    connectOrCreate?: Array<ImageCreateOrConnectWithoutDriverVehicleInput>;
-    @Field(() => [ImageUpsertWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageUpsertWithWhereUniqueWithoutDriverVehicleInput)
-    upsert?: Array<ImageUpsertWithWhereUniqueWithoutDriverVehicleInput>;
-    @Field(() => ImageCreateManyDriverVehicleInputEnvelope, {nullable:true})
-    @Type(() => ImageCreateManyDriverVehicleInputEnvelope)
-    createMany?: InstanceType<typeof ImageCreateManyDriverVehicleInputEnvelope>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageUpdateWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageUpdateWithWhereUniqueWithoutDriverVehicleInput)
-    update?: Array<ImageUpdateWithWhereUniqueWithoutDriverVehicleInput>;
-    @Field(() => [ImageUpdateManyWithWhereWithoutDriverVehicleInput], {nullable:true})
-    @Type(() => ImageUpdateManyWithWhereWithoutDriverVehicleInput)
-    updateMany?: Array<ImageUpdateManyWithWhereWithoutDriverVehicleInput>;
-    @Field(() => [ImageScalarWhereInput], {nullable:true})
-    @Type(() => ImageScalarWhereInput)
-    deleteMany?: Array<ImageScalarWhereInput>;
-}
-
-@InputType()
-export class ImageUpdateManyWithoutUserNestedInput {
-    @Field(() => [ImageCreateWithoutUserInput], {nullable:true})
-    @Type(() => ImageCreateWithoutUserInput)
-    create?: Array<ImageCreateWithoutUserInput>;
-    @Field(() => [ImageCreateOrConnectWithoutUserInput], {nullable:true})
-    @Type(() => ImageCreateOrConnectWithoutUserInput)
-    connectOrCreate?: Array<ImageCreateOrConnectWithoutUserInput>;
-    @Field(() => [ImageUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
-    @Type(() => ImageUpsertWithWhereUniqueWithoutUserInput)
-    upsert?: Array<ImageUpsertWithWhereUniqueWithoutUserInput>;
-    @Field(() => ImageCreateManyUserInputEnvelope, {nullable:true})
-    @Type(() => ImageCreateManyUserInputEnvelope)
-    createMany?: InstanceType<typeof ImageCreateManyUserInputEnvelope>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageWhereUniqueInput], {nullable:true})
-    @Type(() => ImageWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<ImageWhereUniqueInput, 'id'>>;
-    @Field(() => [ImageUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
-    @Type(() => ImageUpdateWithWhereUniqueWithoutUserInput)
-    update?: Array<ImageUpdateWithWhereUniqueWithoutUserInput>;
-    @Field(() => [ImageUpdateManyWithWhereWithoutUserInput], {nullable:true})
-    @Type(() => ImageUpdateManyWithWhereWithoutUserInput)
-    updateMany?: Array<ImageUpdateManyWithWhereWithoutUserInput>;
-    @Field(() => [ImageScalarWhereInput], {nullable:true})
-    @Type(() => ImageScalarWhereInput)
-    deleteMany?: Array<ImageScalarWhereInput>;
-}
-
-@InputType()
-export class ImageUpdateWithWhereUniqueWithoutDriverVehicleInput {
-    @Field(() => ImageWhereUniqueInput, {nullable:false})
-    @Type(() => ImageWhereUniqueInput)
-    where!: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-    @Field(() => ImageUpdateWithoutDriverVehicleInput, {nullable:false})
-    @Type(() => ImageUpdateWithoutDriverVehicleInput)
-    data!: InstanceType<typeof ImageUpdateWithoutDriverVehicleInput>;
-}
-
-@InputType()
-export class ImageUpdateWithWhereUniqueWithoutUserInput {
-    @Field(() => ImageWhereUniqueInput, {nullable:false})
-    @Type(() => ImageWhereUniqueInput)
-    where!: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-    @Field(() => ImageUpdateWithoutUserInput, {nullable:false})
-    @Type(() => ImageUpdateWithoutUserInput)
-    data!: InstanceType<typeof ImageUpdateWithoutUserInput>;
-}
-
-@InputType()
-export class ImageUpdateWithoutDriverVehicleInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => UserUpdateOneRequiredWithoutImagesNestedInput, {nullable:true})
-    user?: InstanceType<typeof UserUpdateOneRequiredWithoutImagesNestedInput>;
-}
-
-@InputType()
-export class ImageUpdateWithoutUserInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => DriverVehicleUpdateOneWithoutImagesNestedInput, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleUpdateOneWithoutImagesNestedInput>;
-}
-
-@InputType()
-export class ImageUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => UserUpdateOneRequiredWithoutImagesNestedInput, {nullable:true})
-    user?: InstanceType<typeof UserUpdateOneRequiredWithoutImagesNestedInput>;
-    @Field(() => DriverVehicleUpdateOneWithoutImagesNestedInput, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleUpdateOneWithoutImagesNestedInput>;
-}
-
-@InputType()
-export class ImageUpsertWithWhereUniqueWithoutDriverVehicleInput {
-    @Field(() => ImageWhereUniqueInput, {nullable:false})
-    @Type(() => ImageWhereUniqueInput)
-    where!: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-    @Field(() => ImageUpdateWithoutDriverVehicleInput, {nullable:false})
-    @Type(() => ImageUpdateWithoutDriverVehicleInput)
-    update!: InstanceType<typeof ImageUpdateWithoutDriverVehicleInput>;
-    @Field(() => ImageCreateWithoutDriverVehicleInput, {nullable:false})
-    @Type(() => ImageCreateWithoutDriverVehicleInput)
-    create!: InstanceType<typeof ImageCreateWithoutDriverVehicleInput>;
-}
-
-@InputType()
-export class ImageUpsertWithWhereUniqueWithoutUserInput {
-    @Field(() => ImageWhereUniqueInput, {nullable:false})
-    @Type(() => ImageWhereUniqueInput)
-    where!: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-    @Field(() => ImageUpdateWithoutUserInput, {nullable:false})
-    @Type(() => ImageUpdateWithoutUserInput)
-    update!: InstanceType<typeof ImageUpdateWithoutUserInput>;
-    @Field(() => ImageCreateWithoutUserInput, {nullable:false})
-    @Type(() => ImageCreateWithoutUserInput)
-    create!: InstanceType<typeof ImageCreateWithoutUserInput>;
-}
-
-@InputType()
-export class ImageWhereUniqueInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => [ImageWhereInput], {nullable:true})
-    AND?: Array<ImageWhereInput>;
-    @Field(() => [ImageWhereInput], {nullable:true})
-    OR?: Array<ImageWhereInput>;
-    @Field(() => [ImageWhereInput], {nullable:true})
-    NOT?: Array<ImageWhereInput>;
-    @Field(() => StringFilter, {nullable:true})
-    url?: InstanceType<typeof StringFilter>;
-    @Field(() => EnumImageTypeFilter, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    name?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    userId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    driverVehicleId?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => UserScalarRelationFilter, {nullable:true})
-    user?: InstanceType<typeof UserScalarRelationFilter>;
-    @Field(() => DriverVehicleNullableScalarRelationFilter, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleNullableScalarRelationFilter>;
-}
-
-@InputType()
-export class ImageWhereInput {
-    @Field(() => [ImageWhereInput], {nullable:true})
-    AND?: Array<ImageWhereInput>;
-    @Field(() => [ImageWhereInput], {nullable:true})
-    OR?: Array<ImageWhereInput>;
-    @Field(() => [ImageWhereInput], {nullable:true})
-    NOT?: Array<ImageWhereInput>;
-    @Field(() => StringFilter, {nullable:true})
-    id?: InstanceType<typeof StringFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    url?: InstanceType<typeof StringFilter>;
-    @Field(() => EnumImageTypeFilter, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    name?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => StringFilter, {nullable:true})
-    userId?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    driverVehicleId?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => UserScalarRelationFilter, {nullable:true})
-    user?: InstanceType<typeof UserScalarRelationFilter>;
-    @Field(() => DriverVehicleNullableScalarRelationFilter, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicleNullableScalarRelationFilter>;
+export class FileSumAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    size?: true;
 }
 
 @ObjectType()
-export class Image {
-    @Field(() => String, {nullable:false})
-    id!: string;
-    @Field(() => String, {nullable:false})
-    url!: string;
+export class FileSumAggregate {
+    @Field(() => Int, {nullable:true})
+    size?: number;
+}
+
+@InputType()
+export class FileSumOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    size?: `${SortOrder}`;
+}
+
+@InputType()
+export class FileUncheckedCreateWithoutUserDocumentInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
     @Field(() => ImageType, {nullable:false})
     type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedCreateNestedManyWithoutFileInput>;
+}
+
+@InputType()
+export class FileUncheckedCreateWithoutUserImageInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedCreateNestedManyWithoutFileInput>;
+}
+
+@InputType()
+export class FileUncheckedCreateWithoutVehicleDocumentInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutFileInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedCreateNestedManyWithoutFileInput>;
+}
+
+@InputType()
+export class FileUncheckedCreateWithoutVehicleImageInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutFileInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedCreateNestedManyWithoutFileInput>;
+}
+
+@InputType()
+export class FileUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    url?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType?: string;
+    @Field(() => Int, {nullable:true})
+    size?: number;
+    @Field(() => String, {nullable:true})
+    etag?: string;
+    @Field(() => String, {nullable:true})
+    status?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutFileInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedCreateNestedManyWithoutFileInput>;
+    @Field(() => VehicleDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedCreateNestedManyWithoutFileInput>;
+}
+
+@InputType()
+export class FileUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FileUncheckedUpdateWithoutUserDocumentInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedUpdateManyWithoutFileNestedInput>;
+}
+
+@InputType()
+export class FileUncheckedUpdateWithoutUserImageInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedUpdateManyWithoutFileNestedInput>;
+}
+
+@InputType()
+export class FileUncheckedUpdateWithoutVehicleDocumentInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutFileNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedUpdateManyWithoutFileNestedInput>;
+}
+
+@InputType()
+export class FileUncheckedUpdateWithoutVehicleImageInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutFileNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedUpdateManyWithoutFileNestedInput>;
+}
+
+@InputType()
+export class FileUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutFileNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUncheckedUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUncheckedUpdateManyWithoutFileNestedInput>;
+}
+
+@InputType()
+export class FileUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FileUpdateOneRequiredWithoutUserDocumentNestedInput {
+    @Field(() => FileCreateWithoutUserDocumentInput, {nullable:true})
+    @Type(() => FileCreateWithoutUserDocumentInput)
+    create?: InstanceType<typeof FileCreateWithoutUserDocumentInput>;
+    @Field(() => FileCreateOrConnectWithoutUserDocumentInput, {nullable:true})
+    @Type(() => FileCreateOrConnectWithoutUserDocumentInput)
+    connectOrCreate?: InstanceType<typeof FileCreateOrConnectWithoutUserDocumentInput>;
+    @Field(() => FileUpsertWithoutUserDocumentInput, {nullable:true})
+    @Type(() => FileUpsertWithoutUserDocumentInput)
+    upsert?: InstanceType<typeof FileUpsertWithoutUserDocumentInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    @Type(() => FileWhereUniqueInput)
+    connect?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => FileUpdateToOneWithWhereWithoutUserDocumentInput, {nullable:true})
+    @Type(() => FileUpdateToOneWithWhereWithoutUserDocumentInput)
+    update?: InstanceType<typeof FileUpdateToOneWithWhereWithoutUserDocumentInput>;
+}
+
+@InputType()
+export class FileUpdateOneRequiredWithoutUserImageNestedInput {
+    @Field(() => FileCreateWithoutUserImageInput, {nullable:true})
+    @Type(() => FileCreateWithoutUserImageInput)
+    create?: InstanceType<typeof FileCreateWithoutUserImageInput>;
+    @Field(() => FileCreateOrConnectWithoutUserImageInput, {nullable:true})
+    @Type(() => FileCreateOrConnectWithoutUserImageInput)
+    connectOrCreate?: InstanceType<typeof FileCreateOrConnectWithoutUserImageInput>;
+    @Field(() => FileUpsertWithoutUserImageInput, {nullable:true})
+    @Type(() => FileUpsertWithoutUserImageInput)
+    upsert?: InstanceType<typeof FileUpsertWithoutUserImageInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    @Type(() => FileWhereUniqueInput)
+    connect?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => FileUpdateToOneWithWhereWithoutUserImageInput, {nullable:true})
+    @Type(() => FileUpdateToOneWithWhereWithoutUserImageInput)
+    update?: InstanceType<typeof FileUpdateToOneWithWhereWithoutUserImageInput>;
+}
+
+@InputType()
+export class FileUpdateOneRequiredWithoutVehicleDocumentNestedInput {
+    @Field(() => FileCreateWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => FileCreateWithoutVehicleDocumentInput)
+    create?: InstanceType<typeof FileCreateWithoutVehicleDocumentInput>;
+    @Field(() => FileCreateOrConnectWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => FileCreateOrConnectWithoutVehicleDocumentInput)
+    connectOrCreate?: InstanceType<typeof FileCreateOrConnectWithoutVehicleDocumentInput>;
+    @Field(() => FileUpsertWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => FileUpsertWithoutVehicleDocumentInput)
+    upsert?: InstanceType<typeof FileUpsertWithoutVehicleDocumentInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    @Type(() => FileWhereUniqueInput)
+    connect?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => FileUpdateToOneWithWhereWithoutVehicleDocumentInput, {nullable:true})
+    @Type(() => FileUpdateToOneWithWhereWithoutVehicleDocumentInput)
+    update?: InstanceType<typeof FileUpdateToOneWithWhereWithoutVehicleDocumentInput>;
+}
+
+@InputType()
+export class FileUpdateOneRequiredWithoutVehicleImageNestedInput {
+    @Field(() => FileCreateWithoutVehicleImageInput, {nullable:true})
+    @Type(() => FileCreateWithoutVehicleImageInput)
+    create?: InstanceType<typeof FileCreateWithoutVehicleImageInput>;
+    @Field(() => FileCreateOrConnectWithoutVehicleImageInput, {nullable:true})
+    @Type(() => FileCreateOrConnectWithoutVehicleImageInput)
+    connectOrCreate?: InstanceType<typeof FileCreateOrConnectWithoutVehicleImageInput>;
+    @Field(() => FileUpsertWithoutVehicleImageInput, {nullable:true})
+    @Type(() => FileUpsertWithoutVehicleImageInput)
+    upsert?: InstanceType<typeof FileUpsertWithoutVehicleImageInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    @Type(() => FileWhereUniqueInput)
+    connect?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => FileUpdateToOneWithWhereWithoutVehicleImageInput, {nullable:true})
+    @Type(() => FileUpdateToOneWithWhereWithoutVehicleImageInput)
+    update?: InstanceType<typeof FileUpdateToOneWithWhereWithoutVehicleImageInput>;
+}
+
+@InputType()
+export class FileUpdateToOneWithWhereWithoutUserDocumentInput {
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+    @Field(() => FileUpdateWithoutUserDocumentInput, {nullable:false})
+    @Type(() => FileUpdateWithoutUserDocumentInput)
+    data!: InstanceType<typeof FileUpdateWithoutUserDocumentInput>;
+}
+
+@InputType()
+export class FileUpdateToOneWithWhereWithoutUserImageInput {
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+    @Field(() => FileUpdateWithoutUserImageInput, {nullable:false})
+    @Type(() => FileUpdateWithoutUserImageInput)
+    data!: InstanceType<typeof FileUpdateWithoutUserImageInput>;
+}
+
+@InputType()
+export class FileUpdateToOneWithWhereWithoutVehicleDocumentInput {
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+    @Field(() => FileUpdateWithoutVehicleDocumentInput, {nullable:false})
+    @Type(() => FileUpdateWithoutVehicleDocumentInput)
+    data!: InstanceType<typeof FileUpdateWithoutVehicleDocumentInput>;
+}
+
+@InputType()
+export class FileUpdateToOneWithWhereWithoutVehicleImageInput {
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+    @Field(() => FileUpdateWithoutVehicleImageInput, {nullable:false})
+    @Type(() => FileUpdateWithoutVehicleImageInput)
+    data!: InstanceType<typeof FileUpdateWithoutVehicleImageInput>;
+}
+
+@InputType()
+export class FileUpdateWithoutUserDocumentInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => UserImageUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleImageUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUpdateManyWithoutFileNestedInput>;
+}
+
+@InputType()
+export class FileUpdateWithoutUserImageInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => UserDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleImageUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUpdateManyWithoutFileNestedInput>;
+}
+
+@InputType()
+export class FileUpdateWithoutVehicleDocumentInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => UserImageUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutFileNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleImageUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUpdateManyWithoutFileNestedInput>;
+}
+
+@InputType()
+export class FileUpdateWithoutVehicleImageInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => UserImageUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutFileNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUpdateManyWithoutFileNestedInput>;
+}
+
+@InputType()
+export class FileUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contentType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    size?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    etag?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => UserImageUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutFileNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleImageUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageUpdateManyWithoutFileNestedInput>;
+    @Field(() => VehicleDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentUpdateManyWithoutFileNestedInput>;
+}
+
+@InputType()
+export class FileUpsertWithoutUserDocumentInput {
+    @Field(() => FileUpdateWithoutUserDocumentInput, {nullable:false})
+    @Type(() => FileUpdateWithoutUserDocumentInput)
+    update!: InstanceType<typeof FileUpdateWithoutUserDocumentInput>;
+    @Field(() => FileCreateWithoutUserDocumentInput, {nullable:false})
+    @Type(() => FileCreateWithoutUserDocumentInput)
+    create!: InstanceType<typeof FileCreateWithoutUserDocumentInput>;
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+}
+
+@InputType()
+export class FileUpsertWithoutUserImageInput {
+    @Field(() => FileUpdateWithoutUserImageInput, {nullable:false})
+    @Type(() => FileUpdateWithoutUserImageInput)
+    update!: InstanceType<typeof FileUpdateWithoutUserImageInput>;
+    @Field(() => FileCreateWithoutUserImageInput, {nullable:false})
+    @Type(() => FileCreateWithoutUserImageInput)
+    create!: InstanceType<typeof FileCreateWithoutUserImageInput>;
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+}
+
+@InputType()
+export class FileUpsertWithoutVehicleDocumentInput {
+    @Field(() => FileUpdateWithoutVehicleDocumentInput, {nullable:false})
+    @Type(() => FileUpdateWithoutVehicleDocumentInput)
+    update!: InstanceType<typeof FileUpdateWithoutVehicleDocumentInput>;
+    @Field(() => FileCreateWithoutVehicleDocumentInput, {nullable:false})
+    @Type(() => FileCreateWithoutVehicleDocumentInput)
+    create!: InstanceType<typeof FileCreateWithoutVehicleDocumentInput>;
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+}
+
+@InputType()
+export class FileUpsertWithoutVehicleImageInput {
+    @Field(() => FileUpdateWithoutVehicleImageInput, {nullable:false})
+    @Type(() => FileUpdateWithoutVehicleImageInput)
+    update!: InstanceType<typeof FileUpdateWithoutVehicleImageInput>;
+    @Field(() => FileCreateWithoutVehicleImageInput, {nullable:false})
+    @Type(() => FileCreateWithoutVehicleImageInput)
+    create!: InstanceType<typeof FileCreateWithoutVehicleImageInput>;
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+}
+
+@InputType()
+export class FileWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    key?: string;
+    @Field(() => [FileWhereInput], {nullable:true})
+    AND?: Array<FileWhereInput>;
+    @Field(() => [FileWhereInput], {nullable:true})
+    OR?: Array<FileWhereInput>;
+    @Field(() => [FileWhereInput], {nullable:true})
+    NOT?: Array<FileWhereInput>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    url?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => EnumImageTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    originalName?: InstanceType<typeof StringFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    contentType?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => IntNullableFilter, {nullable:true})
+    size?: InstanceType<typeof IntNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    etag?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    status?: InstanceType<typeof StringFilter>;
+    @Field(() => JsonNullableFilter, {nullable:true})
+    meta?: InstanceType<typeof JsonNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    name?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => UserImageListRelationFilter, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageListRelationFilter>;
+    @Field(() => UserDocumentListRelationFilter, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentListRelationFilter>;
+    @Field(() => VehicleImageListRelationFilter, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageListRelationFilter>;
+    @Field(() => VehicleDocumentListRelationFilter, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentListRelationFilter>;
+}
+
+@InputType()
+export class FileWhereInput {
+    @Field(() => [FileWhereInput], {nullable:true})
+    AND?: Array<FileWhereInput>;
+    @Field(() => [FileWhereInput], {nullable:true})
+    OR?: Array<FileWhereInput>;
+    @Field(() => [FileWhereInput], {nullable:true})
+    NOT?: Array<FileWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    url?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => EnumImageTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    key?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    originalName?: InstanceType<typeof StringFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    contentType?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => IntNullableFilter, {nullable:true})
+    size?: InstanceType<typeof IntNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    etag?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    status?: InstanceType<typeof StringFilter>;
+    @Field(() => JsonNullableFilter, {nullable:true})
+    meta?: InstanceType<typeof JsonNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    name?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => UserImageListRelationFilter, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageListRelationFilter>;
+    @Field(() => UserDocumentListRelationFilter, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentListRelationFilter>;
+    @Field(() => VehicleImageListRelationFilter, {nullable:true})
+    VehicleImage?: InstanceType<typeof VehicleImageListRelationFilter>;
+    @Field(() => VehicleDocumentListRelationFilter, {nullable:true})
+    VehicleDocument?: InstanceType<typeof VehicleDocumentListRelationFilter>;
+}
+
+@ObjectType()
+export class File {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:true})
+    url!: string | null;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
+    @Field(() => String, {nullable:false})
+    key!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
+    @Field(() => String, {nullable:true})
+    contentType!: string | null;
+    @Field(() => Int, {nullable:true})
+    size!: number | null;
+    @Field(() => String, {nullable:true})
+    etag!: string | null;
+    @Field(() => String, {defaultValue:'pending',nullable:false})
+    status!: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    meta!: any | null;
     @Field(() => String, {nullable:true})
     name!: string | null;
     @Field(() => String, {nullable:false})
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId!: string | null;
-    @Field(() => User, {nullable:false})
-    user?: InstanceType<typeof User>;
-    @Field(() => DriverVehicle, {nullable:true})
-    DriverVehicle?: InstanceType<typeof DriverVehicle> | null;
+    @Field(() => [UserImage], {nullable:true})
+    UserImage?: Array<UserImage>;
+    @Field(() => [UserDocument], {nullable:true})
+    UserDocument?: Array<UserDocument>;
+    @Field(() => [VehicleImage], {nullable:true})
+    VehicleImage?: Array<VehicleImage>;
+    @Field(() => [VehicleDocument], {nullable:true})
+    VehicleDocument?: Array<VehicleDocument>;
+    @Field(() => FileCount, {nullable:false})
+    _count?: InstanceType<typeof FileCount>;
 }
 
 @ArgsType()
-export class UpdateManyImageArgs {
-    @Field(() => ImageUpdateManyMutationInput, {nullable:false})
-    @Type(() => ImageUpdateManyMutationInput)
-    data!: InstanceType<typeof ImageUpdateManyMutationInput>;
-    @Field(() => ImageWhereInput, {nullable:true})
-    @Type(() => ImageWhereInput)
-    where?: InstanceType<typeof ImageWhereInput>;
+export class FindFirstFileOrThrowArgs {
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+    @Field(() => [FileOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FileOrderByWithRelationInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FileScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${FileScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstFileArgs {
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+    @Field(() => [FileOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FileOrderByWithRelationInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FileScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${FileScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManyFileArgs {
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
+    @Field(() => [FileOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FileOrderByWithRelationInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FileScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${FileScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueFileOrThrowArgs {
+    @Field(() => FileWhereUniqueInput, {nullable:false})
+    @Type(() => FileWhereUniqueInput)
+    where!: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+}
+
+@ArgsType()
+export class FindUniqueFileArgs {
+    @Field(() => FileWhereUniqueInput, {nullable:false})
+    @Type(() => FileWhereUniqueInput)
+    where!: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+}
+
+@ArgsType()
+export class UpdateManyFileArgs {
+    @Field(() => FileUpdateManyMutationInput, {nullable:false})
+    @Type(() => FileUpdateManyMutationInput)
+    data!: InstanceType<typeof FileUpdateManyMutationInput>;
+    @Field(() => FileWhereInput, {nullable:true})
+    @Type(() => FileWhereInput)
+    where?: InstanceType<typeof FileWhereInput>;
     @Field(() => Int, {nullable:true})
     limit?: number;
 }
 
 @ArgsType()
-export class UpdateOneImageArgs {
-    @Field(() => ImageUpdateInput, {nullable:false})
-    @Type(() => ImageUpdateInput)
-    data!: InstanceType<typeof ImageUpdateInput>;
-    @Field(() => ImageWhereUniqueInput, {nullable:false})
-    @Type(() => ImageWhereUniqueInput)
-    where!: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
+export class UpdateOneFileArgs {
+    @Field(() => FileUpdateInput, {nullable:false})
+    @Type(() => FileUpdateInput)
+    data!: InstanceType<typeof FileUpdateInput>;
+    @Field(() => FileWhereUniqueInput, {nullable:false})
+    @Type(() => FileWhereUniqueInput)
+    where!: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
 }
 
 @ArgsType()
-export class UpsertOneImageArgs {
-    @Field(() => ImageWhereUniqueInput, {nullable:false})
-    @Type(() => ImageWhereUniqueInput)
-    where!: Prisma.AtLeast<ImageWhereUniqueInput, 'id'>;
-    @Field(() => ImageCreateInput, {nullable:false})
-    @Type(() => ImageCreateInput)
-    create!: InstanceType<typeof ImageCreateInput>;
-    @Field(() => ImageUpdateInput, {nullable:false})
-    @Type(() => ImageUpdateInput)
-    update!: InstanceType<typeof ImageUpdateInput>;
+export class UpsertOneFileArgs {
+    @Field(() => FileWhereUniqueInput, {nullable:false})
+    @Type(() => FileWhereUniqueInput)
+    where!: Prisma.AtLeast<FileWhereUniqueInput, 'id' | 'key'>;
+    @Field(() => FileCreateInput, {nullable:false})
+    @Type(() => FileCreateInput)
+    create!: InstanceType<typeof FileCreateInput>;
+    @Field(() => FileUpdateInput, {nullable:false})
+    @Type(() => FileUpdateInput)
+    update!: InstanceType<typeof FileUpdateInput>;
 }
 
 @ObjectType()
@@ -5257,6 +3885,56 @@ export class IntFilter {
 }
 
 @InputType()
+export class IntNullableFilter {
+    @Field(() => Int, {nullable:true})
+    equals?: number;
+    @Field(() => [Int], {nullable:true})
+    in?: Array<number>;
+    @Field(() => [Int], {nullable:true})
+    notIn?: Array<number>;
+    @Field(() => Int, {nullable:true})
+    lt?: number;
+    @Field(() => Int, {nullable:true})
+    lte?: number;
+    @Field(() => Int, {nullable:true})
+    gt?: number;
+    @Field(() => Int, {nullable:true})
+    gte?: number;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    not?: InstanceType<typeof NestedIntNullableFilter>;
+}
+
+@InputType()
+export class IntNullableWithAggregatesFilter {
+    @Field(() => Int, {nullable:true})
+    equals?: number;
+    @Field(() => [Int], {nullable:true})
+    in?: Array<number>;
+    @Field(() => [Int], {nullable:true})
+    notIn?: Array<number>;
+    @Field(() => Int, {nullable:true})
+    lt?: number;
+    @Field(() => Int, {nullable:true})
+    lte?: number;
+    @Field(() => Int, {nullable:true})
+    gt?: number;
+    @Field(() => Int, {nullable:true})
+    gte?: number;
+    @Field(() => NestedIntNullableWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedIntNullableWithAggregatesFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedFloatNullableFilter, {nullable:true})
+    _avg?: InstanceType<typeof NestedFloatNullableFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _sum?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedIntNullableFilter>;
+}
+
+@InputType()
 export class IntWithAggregatesFilter {
     @Field(() => Int, {nullable:true})
     equals?: number;
@@ -5284,6 +3962,76 @@ export class IntWithAggregatesFilter {
     _min?: InstanceType<typeof NestedIntFilter>;
     @Field(() => NestedIntFilter, {nullable:true})
     _max?: InstanceType<typeof NestedIntFilter>;
+}
+
+@InputType()
+export class JsonNullableFilter {
+    @Field(() => GraphQLJSON, {nullable:true})
+    equals?: any;
+    @Field(() => [String], {nullable:true})
+    path?: Array<string>;
+    @Field(() => QueryMode, {nullable:true})
+    mode?: `${QueryMode}`;
+    @Field(() => String, {nullable:true})
+    string_contains?: string;
+    @Field(() => String, {nullable:true})
+    string_starts_with?: string;
+    @Field(() => String, {nullable:true})
+    string_ends_with?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    array_starts_with?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    array_ends_with?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    array_contains?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    lt?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    lte?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    gt?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    gte?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    not?: any;
+}
+
+@InputType()
+export class JsonNullableWithAggregatesFilter {
+    @Field(() => GraphQLJSON, {nullable:true})
+    equals?: any;
+    @Field(() => [String], {nullable:true})
+    path?: Array<string>;
+    @Field(() => QueryMode, {nullable:true})
+    mode?: `${QueryMode}`;
+    @Field(() => String, {nullable:true})
+    string_contains?: string;
+    @Field(() => String, {nullable:true})
+    string_starts_with?: string;
+    @Field(() => String, {nullable:true})
+    string_ends_with?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    array_starts_with?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    array_ends_with?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    array_contains?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    lt?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    lte?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    gt?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    gte?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    not?: any;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedJsonNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedJsonNullableFilter>;
+    @Field(() => NestedJsonNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedJsonNullableFilter>;
 }
 
 @InputType()
@@ -5451,6 +4199,26 @@ export class NestedFloatFilter {
 }
 
 @InputType()
+export class NestedFloatNullableFilter {
+    @Field(() => Float, {nullable:true})
+    equals?: number;
+    @Field(() => [Float], {nullable:true})
+    in?: Array<number>;
+    @Field(() => [Float], {nullable:true})
+    notIn?: Array<number>;
+    @Field(() => Float, {nullable:true})
+    lt?: number;
+    @Field(() => Float, {nullable:true})
+    lte?: number;
+    @Field(() => Float, {nullable:true})
+    gt?: number;
+    @Field(() => Float, {nullable:true})
+    gte?: number;
+    @Field(() => NestedFloatNullableFilter, {nullable:true})
+    not?: InstanceType<typeof NestedFloatNullableFilter>;
+}
+
+@InputType()
 export class NestedIntFilter {
     @Field(() => Int, {nullable:true})
     equals?: number;
@@ -5491,6 +4259,36 @@ export class NestedIntNullableFilter {
 }
 
 @InputType()
+export class NestedIntNullableWithAggregatesFilter {
+    @Field(() => Int, {nullable:true})
+    equals?: number;
+    @Field(() => [Int], {nullable:true})
+    in?: Array<number>;
+    @Field(() => [Int], {nullable:true})
+    notIn?: Array<number>;
+    @Field(() => Int, {nullable:true})
+    lt?: number;
+    @Field(() => Int, {nullable:true})
+    lte?: number;
+    @Field(() => Int, {nullable:true})
+    gt?: number;
+    @Field(() => Int, {nullable:true})
+    gte?: number;
+    @Field(() => NestedIntNullableWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedIntNullableWithAggregatesFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedFloatNullableFilter, {nullable:true})
+    _avg?: InstanceType<typeof NestedFloatNullableFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _sum?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedIntNullableFilter>;
+}
+
+@InputType()
 export class NestedIntWithAggregatesFilter {
     @Field(() => Int, {nullable:true})
     equals?: number;
@@ -5518,6 +4316,38 @@ export class NestedIntWithAggregatesFilter {
     _min?: InstanceType<typeof NestedIntFilter>;
     @Field(() => NestedIntFilter, {nullable:true})
     _max?: InstanceType<typeof NestedIntFilter>;
+}
+
+@InputType()
+export class NestedJsonNullableFilter {
+    @Field(() => GraphQLJSON, {nullable:true})
+    equals?: any;
+    @Field(() => [String], {nullable:true})
+    path?: Array<string>;
+    @Field(() => QueryMode, {nullable:true})
+    mode?: `${QueryMode}`;
+    @Field(() => String, {nullable:true})
+    string_contains?: string;
+    @Field(() => String, {nullable:true})
+    string_starts_with?: string;
+    @Field(() => String, {nullable:true})
+    string_ends_with?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    array_starts_with?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    array_ends_with?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    array_contains?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    lt?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    lte?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    gt?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    gte?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    not?: any;
 }
 
 @InputType()
@@ -5640,6 +4470,20 @@ export class NestedStringWithAggregatesFilter {
 export class NullableDateTimeFieldUpdateOperationsInput {
     @Field(() => Date, {nullable:true})
     set?: Date | string;
+}
+
+@InputType()
+export class NullableIntFieldUpdateOperationsInput {
+    @Field(() => Int, {nullable:true})
+    set?: number;
+    @Field(() => Int, {nullable:true})
+    increment?: number;
+    @Field(() => Int, {nullable:true})
+    decrement?: number;
+    @Field(() => Int, {nullable:true})
+    multiply?: number;
+    @Field(() => Int, {nullable:true})
+    divide?: number;
 }
 
 @InputType()
@@ -7479,13 +6323,13 @@ export class UserCount {
     @Field(() => Int, {nullable:false})
     tokens?: number;
     @Field(() => Int, {nullable:false})
-    images?: number;
-    @Field(() => Int, {nullable:false})
     Role?: number;
     @Field(() => Int, {nullable:false})
     vehicles?: number;
     @Field(() => Int, {nullable:false})
-    Documents?: number;
+    UserImage?: number;
+    @Field(() => Int, {nullable:false})
+    UserDocument?: number;
 }
 
 @InputType()
@@ -7526,32 +6370,6 @@ export class UserCreateNestedManyWithoutRoleInput {
 }
 
 @InputType()
-export class UserCreateNestedOneWithoutDocumentsInput {
-    @Field(() => UserCreateWithoutDocumentsInput, {nullable:true})
-    @Type(() => UserCreateWithoutDocumentsInput)
-    create?: InstanceType<typeof UserCreateWithoutDocumentsInput>;
-    @Field(() => UserCreateOrConnectWithoutDocumentsInput, {nullable:true})
-    @Type(() => UserCreateOrConnectWithoutDocumentsInput)
-    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutDocumentsInput>;
-    @Field(() => UserWhereUniqueInput, {nullable:true})
-    @Type(() => UserWhereUniqueInput)
-    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
-}
-
-@InputType()
-export class UserCreateNestedOneWithoutImagesInput {
-    @Field(() => UserCreateWithoutImagesInput, {nullable:true})
-    @Type(() => UserCreateWithoutImagesInput)
-    create?: InstanceType<typeof UserCreateWithoutImagesInput>;
-    @Field(() => UserCreateOrConnectWithoutImagesInput, {nullable:true})
-    @Type(() => UserCreateOrConnectWithoutImagesInput)
-    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutImagesInput>;
-    @Field(() => UserWhereUniqueInput, {nullable:true})
-    @Type(() => UserWhereUniqueInput)
-    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
-}
-
-@InputType()
 export class UserCreateNestedOneWithoutTokensInput {
     @Field(() => UserCreateWithoutTokensInput, {nullable:true})
     @Type(() => UserCreateWithoutTokensInput)
@@ -7559,6 +6377,32 @@ export class UserCreateNestedOneWithoutTokensInput {
     @Field(() => UserCreateOrConnectWithoutTokensInput, {nullable:true})
     @Type(() => UserCreateOrConnectWithoutTokensInput)
     connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutTokensInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+}
+
+@InputType()
+export class UserCreateNestedOneWithoutUserDocumentInput {
+    @Field(() => UserCreateWithoutUserDocumentInput, {nullable:true})
+    @Type(() => UserCreateWithoutUserDocumentInput)
+    create?: InstanceType<typeof UserCreateWithoutUserDocumentInput>;
+    @Field(() => UserCreateOrConnectWithoutUserDocumentInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutUserDocumentInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutUserDocumentInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+}
+
+@InputType()
+export class UserCreateNestedOneWithoutUserImageInput {
+    @Field(() => UserCreateWithoutUserImageInput, {nullable:true})
+    @Type(() => UserCreateWithoutUserImageInput)
+    create?: InstanceType<typeof UserCreateWithoutUserImageInput>;
+    @Field(() => UserCreateOrConnectWithoutUserImageInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutUserImageInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutUserImageInput>;
     @Field(() => UserWhereUniqueInput, {nullable:true})
     @Type(() => UserWhereUniqueInput)
     connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
@@ -7591,26 +6435,6 @@ export class UserCreateNestedOneWithoutVehiclesInput {
 }
 
 @InputType()
-export class UserCreateOrConnectWithoutDocumentsInput {
-    @Field(() => UserWhereUniqueInput, {nullable:false})
-    @Type(() => UserWhereUniqueInput)
-    where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
-    @Field(() => UserCreateWithoutDocumentsInput, {nullable:false})
-    @Type(() => UserCreateWithoutDocumentsInput)
-    create!: InstanceType<typeof UserCreateWithoutDocumentsInput>;
-}
-
-@InputType()
-export class UserCreateOrConnectWithoutImagesInput {
-    @Field(() => UserWhereUniqueInput, {nullable:false})
-    @Type(() => UserWhereUniqueInput)
-    where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
-    @Field(() => UserCreateWithoutImagesInput, {nullable:false})
-    @Type(() => UserCreateWithoutImagesInput)
-    create!: InstanceType<typeof UserCreateWithoutImagesInput>;
-}
-
-@InputType()
 export class UserCreateOrConnectWithoutRoleInput {
     @Field(() => UserWhereUniqueInput, {nullable:false})
     @Type(() => UserWhereUniqueInput)
@@ -7631,6 +6455,26 @@ export class UserCreateOrConnectWithoutTokensInput {
 }
 
 @InputType()
+export class UserCreateOrConnectWithoutUserDocumentInput {
+    @Field(() => UserWhereUniqueInput, {nullable:false})
+    @Type(() => UserWhereUniqueInput)
+    where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserCreateWithoutUserDocumentInput, {nullable:false})
+    @Type(() => UserCreateWithoutUserDocumentInput)
+    create!: InstanceType<typeof UserCreateWithoutUserDocumentInput>;
+}
+
+@InputType()
+export class UserCreateOrConnectWithoutUserImageInput {
+    @Field(() => UserWhereUniqueInput, {nullable:false})
+    @Type(() => UserWhereUniqueInput)
+    where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserCreateWithoutUserImageInput, {nullable:false})
+    @Type(() => UserCreateWithoutUserImageInput)
+    create!: InstanceType<typeof UserCreateWithoutUserImageInput>;
+}
+
+@InputType()
 export class UserCreateOrConnectWithoutUserPreferenceInput {
     @Field(() => UserWhereUniqueInput, {nullable:false})
     @Type(() => UserWhereUniqueInput)
@@ -7648,74 +6492,6 @@ export class UserCreateOrConnectWithoutVehiclesInput {
     @Field(() => UserCreateWithoutVehiclesInput, {nullable:false})
     @Type(() => UserCreateWithoutVehiclesInput)
     create!: InstanceType<typeof UserCreateWithoutVehiclesInput>;
-}
-
-@InputType()
-export class UserCreateWithoutDocumentsInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    email!: string;
-    @Field(() => String, {nullable:false})
-    firstName!: string;
-    @Field(() => String, {nullable:true})
-    lastName?: string;
-    @Field(() => String, {nullable:true})
-    phone?: string;
-    @Field(() => String, {nullable:true})
-    username?: string;
-    @Field(() => String, {nullable:false})
-    password!: string;
-    @Field(() => Boolean, {nullable:true})
-    isVerified?: boolean;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
-    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
-    tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
-    @Field(() => ImageCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageCreateNestedManyWithoutUserInput>;
-    @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
-    Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
-    @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
-    vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
-    @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
-}
-
-@InputType()
-export class UserCreateWithoutImagesInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    email!: string;
-    @Field(() => String, {nullable:false})
-    firstName!: string;
-    @Field(() => String, {nullable:true})
-    lastName?: string;
-    @Field(() => String, {nullable:true})
-    phone?: string;
-    @Field(() => String, {nullable:true})
-    username?: string;
-    @Field(() => String, {nullable:false})
-    password!: string;
-    @Field(() => Boolean, {nullable:true})
-    isVerified?: boolean;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
-    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
-    tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
-    @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
-    Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
-    @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
-    vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
-    @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
-    @Field(() => DocumentCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -7742,14 +6518,14 @@ export class UserCreateWithoutRoleInput {
     updatedAt?: Date | string;
     @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
-    @Field(() => ImageCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageCreateNestedManyWithoutUserInput>;
     @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
     @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
-    @Field(() => DocumentCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentCreateNestedManyWithoutUserInput>;
+    @Field(() => UserImageCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -7774,16 +6550,84 @@ export class UserCreateWithoutTokensInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
-    @Field(() => ImageCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageCreateNestedManyWithoutUserInput>;
     @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
     Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
     @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
     @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
-    @Field(() => DocumentCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentCreateNestedManyWithoutUserInput>;
+    @Field(() => UserImageCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserCreateWithoutUserDocumentInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
+    vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
+    @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserCreateWithoutUserImageInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
+    vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
+    @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -7810,14 +6654,14 @@ export class UserCreateWithoutUserPreferenceInput {
     updatedAt?: Date | string;
     @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
-    @Field(() => ImageCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageCreateNestedManyWithoutUserInput>;
     @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
     Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
     @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
-    @Field(() => DocumentCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentCreateNestedManyWithoutUserInput>;
+    @Field(() => UserImageCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -7844,14 +6688,14 @@ export class UserCreateWithoutVehiclesInput {
     updatedAt?: Date | string;
     @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
-    @Field(() => ImageCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageCreateNestedManyWithoutUserInput>;
     @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
     Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
     @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
-    @Field(() => DocumentCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentCreateNestedManyWithoutUserInput>;
+    @Field(() => UserImageCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -7878,16 +6722,16 @@ export class UserCreateInput {
     updatedAt?: Date | string;
     @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
-    @Field(() => ImageCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageCreateNestedManyWithoutUserInput>;
     @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
     Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
     @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
     @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
-    @Field(() => DocumentCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentCreateNestedManyWithoutUserInput>;
+    @Field(() => UserImageCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutUserInput>;
 }
 
 @ArgsType()
@@ -8157,16 +7001,16 @@ export class UserOrderByWithRelationInput {
     updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => RefreshTokenOrderByRelationAggregateInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenOrderByRelationAggregateInput>;
-    @Field(() => ImageOrderByRelationAggregateInput, {nullable:true})
-    images?: InstanceType<typeof ImageOrderByRelationAggregateInput>;
     @Field(() => RoleOrderByRelationAggregateInput, {nullable:true})
     Role?: InstanceType<typeof RoleOrderByRelationAggregateInput>;
     @Field(() => DriverVehicleOrderByRelationAggregateInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleOrderByRelationAggregateInput>;
     @Field(() => UserPreferenceOrderByWithRelationInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceOrderByWithRelationInput>;
-    @Field(() => DocumentOrderByRelationAggregateInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentOrderByRelationAggregateInput>;
+    @Field(() => UserImageOrderByRelationAggregateInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageOrderByRelationAggregateInput>;
+    @Field(() => UserDocumentOrderByRelationAggregateInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentOrderByRelationAggregateInput>;
 }
 
 @InputType()
@@ -8251,74 +7095,6 @@ export class UserUncheckedCreateNestedManyWithoutRoleInput {
 }
 
 @InputType()
-export class UserUncheckedCreateWithoutDocumentsInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    email!: string;
-    @Field(() => String, {nullable:false})
-    firstName!: string;
-    @Field(() => String, {nullable:true})
-    lastName?: string;
-    @Field(() => String, {nullable:true})
-    phone?: string;
-    @Field(() => String, {nullable:true})
-    username?: string;
-    @Field(() => String, {nullable:false})
-    password!: string;
-    @Field(() => Boolean, {nullable:true})
-    isVerified?: boolean;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
-    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
-    @Field(() => ImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedCreateNestedManyWithoutUserInput>;
-    @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
-    Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
-    @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
-    @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
-}
-
-@InputType()
-export class UserUncheckedCreateWithoutImagesInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => String, {nullable:false})
-    email!: string;
-    @Field(() => String, {nullable:false})
-    firstName!: string;
-    @Field(() => String, {nullable:true})
-    lastName?: string;
-    @Field(() => String, {nullable:true})
-    phone?: string;
-    @Field(() => String, {nullable:true})
-    username?: string;
-    @Field(() => String, {nullable:false})
-    password!: string;
-    @Field(() => Boolean, {nullable:true})
-    isVerified?: boolean;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
-    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
-    @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
-    Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
-    @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
-    @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
-    @Field(() => DocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedCreateNestedManyWithoutUserInput>;
-}
-
-@InputType()
 export class UserUncheckedCreateWithoutRoleInput {
     @Field(() => String, {nullable:true})
     id?: string;
@@ -8342,14 +7118,14 @@ export class UserUncheckedCreateWithoutRoleInput {
     updatedAt?: Date | string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
-    @Field(() => ImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
-    @Field(() => DocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -8374,16 +7150,84 @@ export class UserUncheckedCreateWithoutTokensInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
-    @Field(() => ImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
     Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
     @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
-    @Field(() => DocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserUncheckedCreateWithoutUserDocumentInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserUncheckedCreateWithoutUserImageInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -8410,14 +7254,14 @@ export class UserUncheckedCreateWithoutUserPreferenceInput {
     updatedAt?: Date | string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
-    @Field(() => ImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
     Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
     @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
-    @Field(() => DocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -8444,14 +7288,14 @@ export class UserUncheckedCreateWithoutVehiclesInput {
     updatedAt?: Date | string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
-    @Field(() => ImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
     Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
     @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
-    @Field(() => DocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -8478,16 +7322,16 @@ export class UserUncheckedCreateInput {
     updatedAt?: Date | string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
-    @Field(() => ImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
     Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
     @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
-    @Field(() => DocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -8573,74 +7417,6 @@ export class UserUncheckedUpdateManyInput {
 }
 
 @InputType()
-export class UserUncheckedUpdateWithoutDocumentsInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
-    @Field(() => ImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedUpdateManyWithoutUserNestedInput>;
-    @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
-    Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
-    @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
-    @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
-}
-
-@InputType()
-export class UserUncheckedUpdateWithoutImagesInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
-    @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
-    Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
-    @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
-    @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
-    @Field(() => DocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedUpdateManyWithoutUserNestedInput>;
-}
-
-@InputType()
 export class UserUncheckedUpdateWithoutRoleInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -8664,14 +7440,14 @@ export class UserUncheckedUpdateWithoutRoleInput {
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
-    @Field(() => ImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
-    @Field(() => DocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -8696,16 +7472,84 @@ export class UserUncheckedUpdateWithoutTokensInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => ImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
     Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
     @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
-    @Field(() => DocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserUncheckedUpdateWithoutUserDocumentInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserUncheckedUpdateWithoutUserImageInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -8732,14 +7576,14 @@ export class UserUncheckedUpdateWithoutUserPreferenceInput {
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
-    @Field(() => ImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
     Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
     @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
-    @Field(() => DocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -8766,14 +7610,14 @@ export class UserUncheckedUpdateWithoutVehiclesInput {
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
-    @Field(() => ImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
     Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
     @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
-    @Field(() => DocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -8800,16 +7644,16 @@ export class UserUncheckedUpdateInput {
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
-    @Field(() => ImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
     Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
     @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
-    @Field(() => DocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -8881,44 +7725,6 @@ export class UserUpdateManyWithoutRoleNestedInput {
 }
 
 @InputType()
-export class UserUpdateOneRequiredWithoutDocumentsNestedInput {
-    @Field(() => UserCreateWithoutDocumentsInput, {nullable:true})
-    @Type(() => UserCreateWithoutDocumentsInput)
-    create?: InstanceType<typeof UserCreateWithoutDocumentsInput>;
-    @Field(() => UserCreateOrConnectWithoutDocumentsInput, {nullable:true})
-    @Type(() => UserCreateOrConnectWithoutDocumentsInput)
-    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutDocumentsInput>;
-    @Field(() => UserUpsertWithoutDocumentsInput, {nullable:true})
-    @Type(() => UserUpsertWithoutDocumentsInput)
-    upsert?: InstanceType<typeof UserUpsertWithoutDocumentsInput>;
-    @Field(() => UserWhereUniqueInput, {nullable:true})
-    @Type(() => UserWhereUniqueInput)
-    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
-    @Field(() => UserUpdateToOneWithWhereWithoutDocumentsInput, {nullable:true})
-    @Type(() => UserUpdateToOneWithWhereWithoutDocumentsInput)
-    update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutDocumentsInput>;
-}
-
-@InputType()
-export class UserUpdateOneRequiredWithoutImagesNestedInput {
-    @Field(() => UserCreateWithoutImagesInput, {nullable:true})
-    @Type(() => UserCreateWithoutImagesInput)
-    create?: InstanceType<typeof UserCreateWithoutImagesInput>;
-    @Field(() => UserCreateOrConnectWithoutImagesInput, {nullable:true})
-    @Type(() => UserCreateOrConnectWithoutImagesInput)
-    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutImagesInput>;
-    @Field(() => UserUpsertWithoutImagesInput, {nullable:true})
-    @Type(() => UserUpsertWithoutImagesInput)
-    upsert?: InstanceType<typeof UserUpsertWithoutImagesInput>;
-    @Field(() => UserWhereUniqueInput, {nullable:true})
-    @Type(() => UserWhereUniqueInput)
-    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
-    @Field(() => UserUpdateToOneWithWhereWithoutImagesInput, {nullable:true})
-    @Type(() => UserUpdateToOneWithWhereWithoutImagesInput)
-    update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutImagesInput>;
-}
-
-@InputType()
 export class UserUpdateOneRequiredWithoutTokensNestedInput {
     @Field(() => UserCreateWithoutTokensInput, {nullable:true})
     @Type(() => UserCreateWithoutTokensInput)
@@ -8935,6 +7741,44 @@ export class UserUpdateOneRequiredWithoutTokensNestedInput {
     @Field(() => UserUpdateToOneWithWhereWithoutTokensInput, {nullable:true})
     @Type(() => UserUpdateToOneWithWhereWithoutTokensInput)
     update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutTokensInput>;
+}
+
+@InputType()
+export class UserUpdateOneRequiredWithoutUserDocumentNestedInput {
+    @Field(() => UserCreateWithoutUserDocumentInput, {nullable:true})
+    @Type(() => UserCreateWithoutUserDocumentInput)
+    create?: InstanceType<typeof UserCreateWithoutUserDocumentInput>;
+    @Field(() => UserCreateOrConnectWithoutUserDocumentInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutUserDocumentInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutUserDocumentInput>;
+    @Field(() => UserUpsertWithoutUserDocumentInput, {nullable:true})
+    @Type(() => UserUpsertWithoutUserDocumentInput)
+    upsert?: InstanceType<typeof UserUpsertWithoutUserDocumentInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserUpdateToOneWithWhereWithoutUserDocumentInput, {nullable:true})
+    @Type(() => UserUpdateToOneWithWhereWithoutUserDocumentInput)
+    update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutUserDocumentInput>;
+}
+
+@InputType()
+export class UserUpdateOneRequiredWithoutUserImageNestedInput {
+    @Field(() => UserCreateWithoutUserImageInput, {nullable:true})
+    @Type(() => UserCreateWithoutUserImageInput)
+    create?: InstanceType<typeof UserCreateWithoutUserImageInput>;
+    @Field(() => UserCreateOrConnectWithoutUserImageInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutUserImageInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutUserImageInput>;
+    @Field(() => UserUpsertWithoutUserImageInput, {nullable:true})
+    @Type(() => UserUpsertWithoutUserImageInput)
+    upsert?: InstanceType<typeof UserUpsertWithoutUserImageInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserUpdateToOneWithWhereWithoutUserImageInput, {nullable:true})
+    @Type(() => UserUpdateToOneWithWhereWithoutUserImageInput)
+    update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutUserImageInput>;
 }
 
 @InputType()
@@ -8976,26 +7820,6 @@ export class UserUpdateOneRequiredWithoutVehiclesNestedInput {
 }
 
 @InputType()
-export class UserUpdateToOneWithWhereWithoutDocumentsInput {
-    @Field(() => UserWhereInput, {nullable:true})
-    @Type(() => UserWhereInput)
-    where?: InstanceType<typeof UserWhereInput>;
-    @Field(() => UserUpdateWithoutDocumentsInput, {nullable:false})
-    @Type(() => UserUpdateWithoutDocumentsInput)
-    data!: InstanceType<typeof UserUpdateWithoutDocumentsInput>;
-}
-
-@InputType()
-export class UserUpdateToOneWithWhereWithoutImagesInput {
-    @Field(() => UserWhereInput, {nullable:true})
-    @Type(() => UserWhereInput)
-    where?: InstanceType<typeof UserWhereInput>;
-    @Field(() => UserUpdateWithoutImagesInput, {nullable:false})
-    @Type(() => UserUpdateWithoutImagesInput)
-    data!: InstanceType<typeof UserUpdateWithoutImagesInput>;
-}
-
-@InputType()
 export class UserUpdateToOneWithWhereWithoutTokensInput {
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
@@ -9003,6 +7827,26 @@ export class UserUpdateToOneWithWhereWithoutTokensInput {
     @Field(() => UserUpdateWithoutTokensInput, {nullable:false})
     @Type(() => UserUpdateWithoutTokensInput)
     data!: InstanceType<typeof UserUpdateWithoutTokensInput>;
+}
+
+@InputType()
+export class UserUpdateToOneWithWhereWithoutUserDocumentInput {
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserUpdateWithoutUserDocumentInput, {nullable:false})
+    @Type(() => UserUpdateWithoutUserDocumentInput)
+    data!: InstanceType<typeof UserUpdateWithoutUserDocumentInput>;
+}
+
+@InputType()
+export class UserUpdateToOneWithWhereWithoutUserImageInput {
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserUpdateWithoutUserImageInput, {nullable:false})
+    @Type(() => UserUpdateWithoutUserImageInput)
+    data!: InstanceType<typeof UserUpdateWithoutUserImageInput>;
 }
 
 @InputType()
@@ -9036,74 +7880,6 @@ export class UserUpdateWithWhereUniqueWithoutRoleInput {
 }
 
 @InputType()
-export class UserUpdateWithoutDocumentsInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
-    tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
-    @Field(() => ImageUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUpdateManyWithoutUserNestedInput>;
-    @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
-    Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
-    @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
-    vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
-    @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
-}
-
-@InputType()
-export class UserUpdateWithoutImagesInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
-    tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
-    @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
-    Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
-    @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
-    vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
-    @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
-    @Field(() => DocumentUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUpdateManyWithoutUserNestedInput>;
-}
-
-@InputType()
 export class UserUpdateWithoutRoleInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -9127,14 +7903,14 @@ export class UserUpdateWithoutRoleInput {
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
-    @Field(() => ImageUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUpdateManyWithoutUserNestedInput>;
     @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
     @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
-    @Field(() => DocumentUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -9159,16 +7935,84 @@ export class UserUpdateWithoutTokensInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => ImageUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
     Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
     @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
     @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
-    @Field(() => DocumentUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserUpdateWithoutUserDocumentInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
+    vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserUpdateWithoutUserImageInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
+    vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -9195,14 +8039,14 @@ export class UserUpdateWithoutUserPreferenceInput {
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
-    @Field(() => ImageUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
     Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
     @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
-    @Field(() => DocumentUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -9229,14 +8073,14 @@ export class UserUpdateWithoutVehiclesInput {
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
-    @Field(() => ImageUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
     Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
     @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
-    @Field(() => DocumentUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -9263,16 +8107,16 @@ export class UserUpdateInput {
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
-    @Field(() => ImageUpdateManyWithoutUserNestedInput, {nullable:true})
-    images?: InstanceType<typeof ImageUpdateManyWithoutUserNestedInput>;
     @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
     Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
     @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
     @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
-    @Field(() => DocumentUpdateManyWithoutUserNestedInput, {nullable:true})
-    Documents?: InstanceType<typeof DocumentUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -9289,32 +8133,6 @@ export class UserUpsertWithWhereUniqueWithoutRoleInput {
 }
 
 @InputType()
-export class UserUpsertWithoutDocumentsInput {
-    @Field(() => UserUpdateWithoutDocumentsInput, {nullable:false})
-    @Type(() => UserUpdateWithoutDocumentsInput)
-    update!: InstanceType<typeof UserUpdateWithoutDocumentsInput>;
-    @Field(() => UserCreateWithoutDocumentsInput, {nullable:false})
-    @Type(() => UserCreateWithoutDocumentsInput)
-    create!: InstanceType<typeof UserCreateWithoutDocumentsInput>;
-    @Field(() => UserWhereInput, {nullable:true})
-    @Type(() => UserWhereInput)
-    where?: InstanceType<typeof UserWhereInput>;
-}
-
-@InputType()
-export class UserUpsertWithoutImagesInput {
-    @Field(() => UserUpdateWithoutImagesInput, {nullable:false})
-    @Type(() => UserUpdateWithoutImagesInput)
-    update!: InstanceType<typeof UserUpdateWithoutImagesInput>;
-    @Field(() => UserCreateWithoutImagesInput, {nullable:false})
-    @Type(() => UserCreateWithoutImagesInput)
-    create!: InstanceType<typeof UserCreateWithoutImagesInput>;
-    @Field(() => UserWhereInput, {nullable:true})
-    @Type(() => UserWhereInput)
-    where?: InstanceType<typeof UserWhereInput>;
-}
-
-@InputType()
 export class UserUpsertWithoutTokensInput {
     @Field(() => UserUpdateWithoutTokensInput, {nullable:false})
     @Type(() => UserUpdateWithoutTokensInput)
@@ -9322,6 +8140,32 @@ export class UserUpsertWithoutTokensInput {
     @Field(() => UserCreateWithoutTokensInput, {nullable:false})
     @Type(() => UserCreateWithoutTokensInput)
     create!: InstanceType<typeof UserCreateWithoutTokensInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+}
+
+@InputType()
+export class UserUpsertWithoutUserDocumentInput {
+    @Field(() => UserUpdateWithoutUserDocumentInput, {nullable:false})
+    @Type(() => UserUpdateWithoutUserDocumentInput)
+    update!: InstanceType<typeof UserUpdateWithoutUserDocumentInput>;
+    @Field(() => UserCreateWithoutUserDocumentInput, {nullable:false})
+    @Type(() => UserCreateWithoutUserDocumentInput)
+    create!: InstanceType<typeof UserCreateWithoutUserDocumentInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+}
+
+@InputType()
+export class UserUpsertWithoutUserImageInput {
+    @Field(() => UserUpdateWithoutUserImageInput, {nullable:false})
+    @Type(() => UserUpdateWithoutUserImageInput)
+    update!: InstanceType<typeof UserUpdateWithoutUserImageInput>;
+    @Field(() => UserCreateWithoutUserImageInput, {nullable:false})
+    @Type(() => UserCreateWithoutUserImageInput)
+    create!: InstanceType<typeof UserCreateWithoutUserImageInput>;
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
     where?: InstanceType<typeof UserWhereInput>;
@@ -9383,16 +8227,16 @@ export class UserWhereUniqueInput {
     updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => RefreshTokenListRelationFilter, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenListRelationFilter>;
-    @Field(() => ImageListRelationFilter, {nullable:true})
-    images?: InstanceType<typeof ImageListRelationFilter>;
     @Field(() => RoleListRelationFilter, {nullable:true})
     Role?: InstanceType<typeof RoleListRelationFilter>;
     @Field(() => DriverVehicleListRelationFilter, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleListRelationFilter>;
     @Field(() => UserPreferenceNullableScalarRelationFilter, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceNullableScalarRelationFilter>;
-    @Field(() => DocumentListRelationFilter, {nullable:true})
-    Documents?: InstanceType<typeof DocumentListRelationFilter>;
+    @Field(() => UserImageListRelationFilter, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageListRelationFilter>;
+    @Field(() => UserDocumentListRelationFilter, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentListRelationFilter>;
 }
 
 @InputType()
@@ -9425,16 +8269,16 @@ export class UserWhereInput {
     updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => RefreshTokenListRelationFilter, {nullable:true})
     tokens?: InstanceType<typeof RefreshTokenListRelationFilter>;
-    @Field(() => ImageListRelationFilter, {nullable:true})
-    images?: InstanceType<typeof ImageListRelationFilter>;
     @Field(() => RoleListRelationFilter, {nullable:true})
     Role?: InstanceType<typeof RoleListRelationFilter>;
     @Field(() => DriverVehicleListRelationFilter, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleListRelationFilter>;
     @Field(() => UserPreferenceNullableScalarRelationFilter, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreferenceNullableScalarRelationFilter>;
-    @Field(() => DocumentListRelationFilter, {nullable:true})
-    Documents?: InstanceType<typeof DocumentListRelationFilter>;
+    @Field(() => UserImageListRelationFilter, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageListRelationFilter>;
+    @Field(() => UserDocumentListRelationFilter, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentListRelationFilter>;
 }
 
 @ObjectType()
@@ -9461,18 +8305,2118 @@ export class User {
     updatedAt!: Date | null;
     @Field(() => [RefreshToken], {nullable:true})
     tokens?: Array<RefreshToken>;
-    @Field(() => [Image], {nullable:true})
-    images?: Array<Image>;
     @Field(() => [Role], {nullable:true})
     Role?: Array<Role>;
     @Field(() => [DriverVehicle], {nullable:true})
     vehicles?: Array<DriverVehicle>;
     @Field(() => UserPreference, {nullable:true})
     UserPreference?: InstanceType<typeof UserPreference> | null;
-    @Field(() => [Document], {nullable:true})
-    Documents?: Array<Document>;
+    @Field(() => [UserImage], {nullable:true})
+    UserImage?: Array<UserImage>;
+    @Field(() => [UserDocument], {nullable:true})
+    UserDocument?: Array<UserDocument>;
     @Field(() => UserCount, {nullable:false})
     _count?: InstanceType<typeof UserCount>;
+}
+
+@ObjectType()
+export class AggregateUserDocument {
+    @Field(() => UserDocumentCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof UserDocumentCountAggregate>;
+    @Field(() => UserDocumentMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof UserDocumentMinAggregate>;
+    @Field(() => UserDocumentMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof UserDocumentMaxAggregate>;
+}
+
+@ArgsType()
+export class CreateManyUserDocumentArgs {
+    @Field(() => [UserDocumentCreateManyInput], {nullable:false})
+    @Type(() => UserDocumentCreateManyInput)
+    data!: Array<UserDocumentCreateManyInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@ArgsType()
+export class CreateOneUserDocumentArgs {
+    @Field(() => UserDocumentCreateInput, {nullable:false})
+    @Type(() => UserDocumentCreateInput)
+    data!: InstanceType<typeof UserDocumentCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManyUserDocumentArgs {
+    @Field(() => UserDocumentWhereInput, {nullable:true})
+    @Type(() => UserDocumentWhereInput)
+    where?: InstanceType<typeof UserDocumentWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class DeleteOneUserDocumentArgs {
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => UserDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindFirstUserDocumentOrThrowArgs {
+    @Field(() => UserDocumentWhereInput, {nullable:true})
+    @Type(() => UserDocumentWhereInput)
+    where?: InstanceType<typeof UserDocumentWhereInput>;
+    @Field(() => [UserDocumentOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<UserDocumentOrderByWithRelationInput>;
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [UserDocumentScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${UserDocumentScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstUserDocumentArgs {
+    @Field(() => UserDocumentWhereInput, {nullable:true})
+    @Type(() => UserDocumentWhereInput)
+    where?: InstanceType<typeof UserDocumentWhereInput>;
+    @Field(() => [UserDocumentOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<UserDocumentOrderByWithRelationInput>;
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [UserDocumentScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${UserDocumentScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManyUserDocumentArgs {
+    @Field(() => UserDocumentWhereInput, {nullable:true})
+    @Type(() => UserDocumentWhereInput)
+    where?: InstanceType<typeof UserDocumentWhereInput>;
+    @Field(() => [UserDocumentOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<UserDocumentOrderByWithRelationInput>;
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [UserDocumentScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${UserDocumentScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueUserDocumentOrThrowArgs {
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => UserDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindUniqueUserDocumentArgs {
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => UserDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpdateManyUserDocumentArgs {
+    @Field(() => UserDocumentUpdateManyMutationInput, {nullable:false})
+    @Type(() => UserDocumentUpdateManyMutationInput)
+    data!: InstanceType<typeof UserDocumentUpdateManyMutationInput>;
+    @Field(() => UserDocumentWhereInput, {nullable:true})
+    @Type(() => UserDocumentWhereInput)
+    where?: InstanceType<typeof UserDocumentWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class UpdateOneUserDocumentArgs {
+    @Field(() => UserDocumentUpdateInput, {nullable:false})
+    @Type(() => UserDocumentUpdateInput)
+    data!: InstanceType<typeof UserDocumentUpdateInput>;
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => UserDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpsertOneUserDocumentArgs {
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => UserDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+    @Field(() => UserDocumentCreateInput, {nullable:false})
+    @Type(() => UserDocumentCreateInput)
+    create!: InstanceType<typeof UserDocumentCreateInput>;
+    @Field(() => UserDocumentUpdateInput, {nullable:false})
+    @Type(() => UserDocumentUpdateInput)
+    update!: InstanceType<typeof UserDocumentUpdateInput>;
+}
+
+@ArgsType()
+export class UserDocumentAggregateArgs {
+    @Field(() => UserDocumentWhereInput, {nullable:true})
+    @Type(() => UserDocumentWhereInput)
+    where?: InstanceType<typeof UserDocumentWhereInput>;
+    @Field(() => [UserDocumentOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<UserDocumentOrderByWithRelationInput>;
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => UserDocumentCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof UserDocumentCountAggregateInput>;
+    @Field(() => UserDocumentMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof UserDocumentMinAggregateInput>;
+    @Field(() => UserDocumentMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof UserDocumentMaxAggregateInput>;
+}
+
+@InputType()
+export class UserDocumentCountAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    _all?: true;
+}
+
+@ObjectType()
+export class UserDocumentCountAggregate {
+    @Field(() => Int, {nullable:false})
+    id!: number;
+    @Field(() => Int, {nullable:false})
+    userId!: number;
+    @Field(() => Int, {nullable:false})
+    fileId!: number;
+    @Field(() => Int, {nullable:false})
+    createdAt!: number;
+    @Field(() => Int, {nullable:false})
+    updatedAt!: number;
+    @Field(() => Int, {nullable:false})
+    _all!: number;
+}
+
+@InputType()
+export class UserDocumentCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class UserDocumentCreateManyFileInputEnvelope {
+    @Field(() => [UserDocumentCreateManyFileInput], {nullable:false})
+    @Type(() => UserDocumentCreateManyFileInput)
+    data!: Array<UserDocumentCreateManyFileInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class UserDocumentCreateManyFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserDocumentCreateManyUserInputEnvelope {
+    @Field(() => [UserDocumentCreateManyUserInput], {nullable:false})
+    @Type(() => UserDocumentCreateManyUserInput)
+    data!: Array<UserDocumentCreateManyUserInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class UserDocumentCreateManyUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserDocumentCreateManyInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserDocumentCreateNestedManyWithoutFileInput {
+    @Field(() => [UserDocumentCreateWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentCreateWithoutFileInput)
+    create?: Array<UserDocumentCreateWithoutFileInput>;
+    @Field(() => [UserDocumentCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<UserDocumentCreateOrConnectWithoutFileInput>;
+    @Field(() => UserDocumentCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => UserDocumentCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof UserDocumentCreateManyFileInputEnvelope>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class UserDocumentCreateNestedManyWithoutUserInput {
+    @Field(() => [UserDocumentCreateWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentCreateWithoutUserInput)
+    create?: Array<UserDocumentCreateWithoutUserInput>;
+    @Field(() => [UserDocumentCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<UserDocumentCreateOrConnectWithoutUserInput>;
+    @Field(() => UserDocumentCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => UserDocumentCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof UserDocumentCreateManyUserInputEnvelope>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class UserDocumentCreateOrConnectWithoutFileInput {
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => UserDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+    @Field(() => UserDocumentCreateWithoutFileInput, {nullable:false})
+    @Type(() => UserDocumentCreateWithoutFileInput)
+    create!: InstanceType<typeof UserDocumentCreateWithoutFileInput>;
+}
+
+@InputType()
+export class UserDocumentCreateOrConnectWithoutUserInput {
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => UserDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+    @Field(() => UserDocumentCreateWithoutUserInput, {nullable:false})
+    @Type(() => UserDocumentCreateWithoutUserInput)
+    create!: InstanceType<typeof UserDocumentCreateWithoutUserInput>;
+}
+
+@InputType()
+export class UserDocumentCreateWithoutFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserCreateNestedOneWithoutUserDocumentInput, {nullable:false})
+    User!: InstanceType<typeof UserCreateNestedOneWithoutUserDocumentInput>;
+}
+
+@InputType()
+export class UserDocumentCreateWithoutUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => FileCreateNestedOneWithoutUserDocumentInput, {nullable:false})
+    file!: InstanceType<typeof FileCreateNestedOneWithoutUserDocumentInput>;
+}
+
+@InputType()
+export class UserDocumentCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => FileCreateNestedOneWithoutUserDocumentInput, {nullable:false})
+    file!: InstanceType<typeof FileCreateNestedOneWithoutUserDocumentInput>;
+    @Field(() => UserCreateNestedOneWithoutUserDocumentInput, {nullable:false})
+    User!: InstanceType<typeof UserCreateNestedOneWithoutUserDocumentInput>;
+}
+
+@ArgsType()
+export class UserDocumentGroupByArgs {
+    @Field(() => UserDocumentWhereInput, {nullable:true})
+    @Type(() => UserDocumentWhereInput)
+    where?: InstanceType<typeof UserDocumentWhereInput>;
+    @Field(() => [UserDocumentOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<UserDocumentOrderByWithAggregationInput>;
+    @Field(() => [UserDocumentScalarFieldEnum], {nullable:false})
+    by!: Array<`${UserDocumentScalarFieldEnum}`>;
+    @Field(() => UserDocumentScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof UserDocumentScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => UserDocumentCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof UserDocumentCountAggregateInput>;
+    @Field(() => UserDocumentMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof UserDocumentMinAggregateInput>;
+    @Field(() => UserDocumentMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof UserDocumentMaxAggregateInput>;
+}
+
+@ObjectType()
+export class UserDocumentGroupBy {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserDocumentCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof UserDocumentCountAggregate>;
+    @Field(() => UserDocumentMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof UserDocumentMinAggregate>;
+    @Field(() => UserDocumentMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof UserDocumentMaxAggregate>;
+}
+
+@InputType()
+export class UserDocumentListRelationFilter {
+    @Field(() => UserDocumentWhereInput, {nullable:true})
+    every?: InstanceType<typeof UserDocumentWhereInput>;
+    @Field(() => UserDocumentWhereInput, {nullable:true})
+    some?: InstanceType<typeof UserDocumentWhereInput>;
+    @Field(() => UserDocumentWhereInput, {nullable:true})
+    none?: InstanceType<typeof UserDocumentWhereInput>;
+}
+
+@InputType()
+export class UserDocumentMaxAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class UserDocumentMaxAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => String, {nullable:true})
+    fileId?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserDocumentMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class UserDocumentMinAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class UserDocumentMinAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => String, {nullable:true})
+    fileId?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserDocumentMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class UserDocumentOrderByRelationAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    _count?: `${SortOrder}`;
+}
+
+@InputType()
+export class UserDocumentOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => UserDocumentCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof UserDocumentCountOrderByAggregateInput>;
+    @Field(() => UserDocumentMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof UserDocumentMaxOrderByAggregateInput>;
+    @Field(() => UserDocumentMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof UserDocumentMinOrderByAggregateInput>;
+}
+
+@InputType()
+export class UserDocumentOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => FileOrderByWithRelationInput, {nullable:true})
+    file?: InstanceType<typeof FileOrderByWithRelationInput>;
+    @Field(() => UserOrderByWithRelationInput, {nullable:true})
+    User?: InstanceType<typeof UserOrderByWithRelationInput>;
+}
+
+@InputType()
+export class UserDocumentScalarWhereWithAggregatesInput {
+    @Field(() => [UserDocumentScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<UserDocumentScalarWhereWithAggregatesInput>;
+    @Field(() => [UserDocumentScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<UserDocumentScalarWhereWithAggregatesInput>;
+    @Field(() => [UserDocumentScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<UserDocumentScalarWhereWithAggregatesInput>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    userId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
+}
+
+@InputType()
+export class UserDocumentScalarWhereInput {
+    @Field(() => [UserDocumentScalarWhereInput], {nullable:true})
+    AND?: Array<UserDocumentScalarWhereInput>;
+    @Field(() => [UserDocumentScalarWhereInput], {nullable:true})
+    OR?: Array<UserDocumentScalarWhereInput>;
+    @Field(() => [UserDocumentScalarWhereInput], {nullable:true})
+    NOT?: Array<UserDocumentScalarWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+}
+
+@InputType()
+export class UserDocumentUncheckedCreateNestedManyWithoutFileInput {
+    @Field(() => [UserDocumentCreateWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentCreateWithoutFileInput)
+    create?: Array<UserDocumentCreateWithoutFileInput>;
+    @Field(() => [UserDocumentCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<UserDocumentCreateOrConnectWithoutFileInput>;
+    @Field(() => UserDocumentCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => UserDocumentCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof UserDocumentCreateManyFileInputEnvelope>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class UserDocumentUncheckedCreateNestedManyWithoutUserInput {
+    @Field(() => [UserDocumentCreateWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentCreateWithoutUserInput)
+    create?: Array<UserDocumentCreateWithoutUserInput>;
+    @Field(() => [UserDocumentCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<UserDocumentCreateOrConnectWithoutUserInput>;
+    @Field(() => UserDocumentCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => UserDocumentCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof UserDocumentCreateManyUserInputEnvelope>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class UserDocumentUncheckedCreateWithoutFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserDocumentUncheckedCreateWithoutUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserDocumentUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserDocumentUncheckedUpdateManyWithoutFileNestedInput {
+    @Field(() => [UserDocumentCreateWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentCreateWithoutFileInput)
+    create?: Array<UserDocumentCreateWithoutFileInput>;
+    @Field(() => [UserDocumentCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<UserDocumentCreateOrConnectWithoutFileInput>;
+    @Field(() => [UserDocumentUpsertWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentUpsertWithWhereUniqueWithoutFileInput)
+    upsert?: Array<UserDocumentUpsertWithWhereUniqueWithoutFileInput>;
+    @Field(() => UserDocumentCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => UserDocumentCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof UserDocumentCreateManyFileInputEnvelope>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentUpdateWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentUpdateWithWhereUniqueWithoutFileInput)
+    update?: Array<UserDocumentUpdateWithWhereUniqueWithoutFileInput>;
+    @Field(() => [UserDocumentUpdateManyWithWhereWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentUpdateManyWithWhereWithoutFileInput)
+    updateMany?: Array<UserDocumentUpdateManyWithWhereWithoutFileInput>;
+    @Field(() => [UserDocumentScalarWhereInput], {nullable:true})
+    @Type(() => UserDocumentScalarWhereInput)
+    deleteMany?: Array<UserDocumentScalarWhereInput>;
+}
+
+@InputType()
+export class UserDocumentUncheckedUpdateManyWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserDocumentUncheckedUpdateManyWithoutUserNestedInput {
+    @Field(() => [UserDocumentCreateWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentCreateWithoutUserInput)
+    create?: Array<UserDocumentCreateWithoutUserInput>;
+    @Field(() => [UserDocumentCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<UserDocumentCreateOrConnectWithoutUserInput>;
+    @Field(() => [UserDocumentUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<UserDocumentUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => UserDocumentCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => UserDocumentCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof UserDocumentCreateManyUserInputEnvelope>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<UserDocumentUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [UserDocumentUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<UserDocumentUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [UserDocumentScalarWhereInput], {nullable:true})
+    @Type(() => UserDocumentScalarWhereInput)
+    deleteMany?: Array<UserDocumentScalarWhereInput>;
+}
+
+@InputType()
+export class UserDocumentUncheckedUpdateManyWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserDocumentUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserDocumentUncheckedUpdateWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserDocumentUncheckedUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserDocumentUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserDocumentUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserDocumentUpdateManyWithWhereWithoutFileInput {
+    @Field(() => UserDocumentScalarWhereInput, {nullable:false})
+    @Type(() => UserDocumentScalarWhereInput)
+    where!: InstanceType<typeof UserDocumentScalarWhereInput>;
+    @Field(() => UserDocumentUpdateManyMutationInput, {nullable:false})
+    @Type(() => UserDocumentUpdateManyMutationInput)
+    data!: InstanceType<typeof UserDocumentUpdateManyMutationInput>;
+}
+
+@InputType()
+export class UserDocumentUpdateManyWithWhereWithoutUserInput {
+    @Field(() => UserDocumentScalarWhereInput, {nullable:false})
+    @Type(() => UserDocumentScalarWhereInput)
+    where!: InstanceType<typeof UserDocumentScalarWhereInput>;
+    @Field(() => UserDocumentUpdateManyMutationInput, {nullable:false})
+    @Type(() => UserDocumentUpdateManyMutationInput)
+    data!: InstanceType<typeof UserDocumentUpdateManyMutationInput>;
+}
+
+@InputType()
+export class UserDocumentUpdateManyWithoutFileNestedInput {
+    @Field(() => [UserDocumentCreateWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentCreateWithoutFileInput)
+    create?: Array<UserDocumentCreateWithoutFileInput>;
+    @Field(() => [UserDocumentCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<UserDocumentCreateOrConnectWithoutFileInput>;
+    @Field(() => [UserDocumentUpsertWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentUpsertWithWhereUniqueWithoutFileInput)
+    upsert?: Array<UserDocumentUpsertWithWhereUniqueWithoutFileInput>;
+    @Field(() => UserDocumentCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => UserDocumentCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof UserDocumentCreateManyFileInputEnvelope>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentUpdateWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentUpdateWithWhereUniqueWithoutFileInput)
+    update?: Array<UserDocumentUpdateWithWhereUniqueWithoutFileInput>;
+    @Field(() => [UserDocumentUpdateManyWithWhereWithoutFileInput], {nullable:true})
+    @Type(() => UserDocumentUpdateManyWithWhereWithoutFileInput)
+    updateMany?: Array<UserDocumentUpdateManyWithWhereWithoutFileInput>;
+    @Field(() => [UserDocumentScalarWhereInput], {nullable:true})
+    @Type(() => UserDocumentScalarWhereInput)
+    deleteMany?: Array<UserDocumentScalarWhereInput>;
+}
+
+@InputType()
+export class UserDocumentUpdateManyWithoutUserNestedInput {
+    @Field(() => [UserDocumentCreateWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentCreateWithoutUserInput)
+    create?: Array<UserDocumentCreateWithoutUserInput>;
+    @Field(() => [UserDocumentCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<UserDocumentCreateOrConnectWithoutUserInput>;
+    @Field(() => [UserDocumentUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<UserDocumentUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => UserDocumentCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => UserDocumentCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof UserDocumentCreateManyUserInputEnvelope>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => UserDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [UserDocumentUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<UserDocumentUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [UserDocumentUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => UserDocumentUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<UserDocumentUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [UserDocumentScalarWhereInput], {nullable:true})
+    @Type(() => UserDocumentScalarWhereInput)
+    deleteMany?: Array<UserDocumentScalarWhereInput>;
+}
+
+@InputType()
+export class UserDocumentUpdateWithWhereUniqueWithoutFileInput {
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => UserDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+    @Field(() => UserDocumentUpdateWithoutFileInput, {nullable:false})
+    @Type(() => UserDocumentUpdateWithoutFileInput)
+    data!: InstanceType<typeof UserDocumentUpdateWithoutFileInput>;
+}
+
+@InputType()
+export class UserDocumentUpdateWithWhereUniqueWithoutUserInput {
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => UserDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+    @Field(() => UserDocumentUpdateWithoutUserInput, {nullable:false})
+    @Type(() => UserDocumentUpdateWithoutUserInput)
+    data!: InstanceType<typeof UserDocumentUpdateWithoutUserInput>;
+}
+
+@InputType()
+export class UserDocumentUpdateWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => UserUpdateOneRequiredWithoutUserDocumentNestedInput, {nullable:true})
+    User?: InstanceType<typeof UserUpdateOneRequiredWithoutUserDocumentNestedInput>;
+}
+
+@InputType()
+export class UserDocumentUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneRequiredWithoutUserDocumentNestedInput, {nullable:true})
+    file?: InstanceType<typeof FileUpdateOneRequiredWithoutUserDocumentNestedInput>;
+}
+
+@InputType()
+export class UserDocumentUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneRequiredWithoutUserDocumentNestedInput, {nullable:true})
+    file?: InstanceType<typeof FileUpdateOneRequiredWithoutUserDocumentNestedInput>;
+    @Field(() => UserUpdateOneRequiredWithoutUserDocumentNestedInput, {nullable:true})
+    User?: InstanceType<typeof UserUpdateOneRequiredWithoutUserDocumentNestedInput>;
+}
+
+@InputType()
+export class UserDocumentUpsertWithWhereUniqueWithoutFileInput {
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => UserDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+    @Field(() => UserDocumentUpdateWithoutFileInput, {nullable:false})
+    @Type(() => UserDocumentUpdateWithoutFileInput)
+    update!: InstanceType<typeof UserDocumentUpdateWithoutFileInput>;
+    @Field(() => UserDocumentCreateWithoutFileInput, {nullable:false})
+    @Type(() => UserDocumentCreateWithoutFileInput)
+    create!: InstanceType<typeof UserDocumentCreateWithoutFileInput>;
+}
+
+@InputType()
+export class UserDocumentUpsertWithWhereUniqueWithoutUserInput {
+    @Field(() => UserDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => UserDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<UserDocumentWhereUniqueInput, 'id'>;
+    @Field(() => UserDocumentUpdateWithoutUserInput, {nullable:false})
+    @Type(() => UserDocumentUpdateWithoutUserInput)
+    update!: InstanceType<typeof UserDocumentUpdateWithoutUserInput>;
+    @Field(() => UserDocumentCreateWithoutUserInput, {nullable:false})
+    @Type(() => UserDocumentCreateWithoutUserInput)
+    create!: InstanceType<typeof UserDocumentCreateWithoutUserInput>;
+}
+
+@InputType()
+export class UserDocumentWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => [UserDocumentWhereInput], {nullable:true})
+    AND?: Array<UserDocumentWhereInput>;
+    @Field(() => [UserDocumentWhereInput], {nullable:true})
+    OR?: Array<UserDocumentWhereInput>;
+    @Field(() => [UserDocumentWhereInput], {nullable:true})
+    NOT?: Array<UserDocumentWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => FileScalarRelationFilter, {nullable:true})
+    file?: InstanceType<typeof FileScalarRelationFilter>;
+    @Field(() => UserScalarRelationFilter, {nullable:true})
+    User?: InstanceType<typeof UserScalarRelationFilter>;
+}
+
+@InputType()
+export class UserDocumentWhereInput {
+    @Field(() => [UserDocumentWhereInput], {nullable:true})
+    AND?: Array<UserDocumentWhereInput>;
+    @Field(() => [UserDocumentWhereInput], {nullable:true})
+    OR?: Array<UserDocumentWhereInput>;
+    @Field(() => [UserDocumentWhereInput], {nullable:true})
+    NOT?: Array<UserDocumentWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => FileScalarRelationFilter, {nullable:true})
+    file?: InstanceType<typeof FileScalarRelationFilter>;
+    @Field(() => UserScalarRelationFilter, {nullable:true})
+    User?: InstanceType<typeof UserScalarRelationFilter>;
+}
+
+@ObjectType()
+export class UserDocument {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
+    @Field(() => Date, {nullable:true})
+    updatedAt!: Date | null;
+    @Field(() => File, {nullable:false})
+    file?: InstanceType<typeof File>;
+    @Field(() => User, {nullable:false})
+    User?: InstanceType<typeof User>;
+}
+
+@ObjectType()
+export class AggregateUserImage {
+    @Field(() => UserImageCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof UserImageCountAggregate>;
+    @Field(() => UserImageMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof UserImageMinAggregate>;
+    @Field(() => UserImageMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof UserImageMaxAggregate>;
+}
+
+@ArgsType()
+export class CreateManyUserImageArgs {
+    @Field(() => [UserImageCreateManyInput], {nullable:false})
+    @Type(() => UserImageCreateManyInput)
+    data!: Array<UserImageCreateManyInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@ArgsType()
+export class CreateOneUserImageArgs {
+    @Field(() => UserImageCreateInput, {nullable:false})
+    @Type(() => UserImageCreateInput)
+    data!: InstanceType<typeof UserImageCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManyUserImageArgs {
+    @Field(() => UserImageWhereInput, {nullable:true})
+    @Type(() => UserImageWhereInput)
+    where?: InstanceType<typeof UserImageWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class DeleteOneUserImageArgs {
+    @Field(() => UserImageWhereUniqueInput, {nullable:false})
+    @Type(() => UserImageWhereUniqueInput)
+    where!: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindFirstUserImageOrThrowArgs {
+    @Field(() => UserImageWhereInput, {nullable:true})
+    @Type(() => UserImageWhereInput)
+    where?: InstanceType<typeof UserImageWhereInput>;
+    @Field(() => [UserImageOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<UserImageOrderByWithRelationInput>;
+    @Field(() => UserImageWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [UserImageScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${UserImageScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstUserImageArgs {
+    @Field(() => UserImageWhereInput, {nullable:true})
+    @Type(() => UserImageWhereInput)
+    where?: InstanceType<typeof UserImageWhereInput>;
+    @Field(() => [UserImageOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<UserImageOrderByWithRelationInput>;
+    @Field(() => UserImageWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [UserImageScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${UserImageScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManyUserImageArgs {
+    @Field(() => UserImageWhereInput, {nullable:true})
+    @Type(() => UserImageWhereInput)
+    where?: InstanceType<typeof UserImageWhereInput>;
+    @Field(() => [UserImageOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<UserImageOrderByWithRelationInput>;
+    @Field(() => UserImageWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [UserImageScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${UserImageScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueUserImageOrThrowArgs {
+    @Field(() => UserImageWhereUniqueInput, {nullable:false})
+    @Type(() => UserImageWhereUniqueInput)
+    where!: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindUniqueUserImageArgs {
+    @Field(() => UserImageWhereUniqueInput, {nullable:false})
+    @Type(() => UserImageWhereUniqueInput)
+    where!: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpdateManyUserImageArgs {
+    @Field(() => UserImageUpdateManyMutationInput, {nullable:false})
+    @Type(() => UserImageUpdateManyMutationInput)
+    data!: InstanceType<typeof UserImageUpdateManyMutationInput>;
+    @Field(() => UserImageWhereInput, {nullable:true})
+    @Type(() => UserImageWhereInput)
+    where?: InstanceType<typeof UserImageWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class UpdateOneUserImageArgs {
+    @Field(() => UserImageUpdateInput, {nullable:false})
+    @Type(() => UserImageUpdateInput)
+    data!: InstanceType<typeof UserImageUpdateInput>;
+    @Field(() => UserImageWhereUniqueInput, {nullable:false})
+    @Type(() => UserImageWhereUniqueInput)
+    where!: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpsertOneUserImageArgs {
+    @Field(() => UserImageWhereUniqueInput, {nullable:false})
+    @Type(() => UserImageWhereUniqueInput)
+    where!: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+    @Field(() => UserImageCreateInput, {nullable:false})
+    @Type(() => UserImageCreateInput)
+    create!: InstanceType<typeof UserImageCreateInput>;
+    @Field(() => UserImageUpdateInput, {nullable:false})
+    @Type(() => UserImageUpdateInput)
+    update!: InstanceType<typeof UserImageUpdateInput>;
+}
+
+@ArgsType()
+export class UserImageAggregateArgs {
+    @Field(() => UserImageWhereInput, {nullable:true})
+    @Type(() => UserImageWhereInput)
+    where?: InstanceType<typeof UserImageWhereInput>;
+    @Field(() => [UserImageOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<UserImageOrderByWithRelationInput>;
+    @Field(() => UserImageWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => UserImageCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof UserImageCountAggregateInput>;
+    @Field(() => UserImageMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof UserImageMinAggregateInput>;
+    @Field(() => UserImageMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof UserImageMaxAggregateInput>;
+}
+
+@InputType()
+export class UserImageCountAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    _all?: true;
+}
+
+@ObjectType()
+export class UserImageCountAggregate {
+    @Field(() => Int, {nullable:false})
+    id!: number;
+    @Field(() => Int, {nullable:false})
+    userId!: number;
+    @Field(() => Int, {nullable:false})
+    fileId!: number;
+    @Field(() => Int, {nullable:false})
+    createdAt!: number;
+    @Field(() => Int, {nullable:false})
+    updatedAt!: number;
+    @Field(() => Int, {nullable:false})
+    _all!: number;
+}
+
+@InputType()
+export class UserImageCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class UserImageCreateManyFileInputEnvelope {
+    @Field(() => [UserImageCreateManyFileInput], {nullable:false})
+    @Type(() => UserImageCreateManyFileInput)
+    data!: Array<UserImageCreateManyFileInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class UserImageCreateManyFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserImageCreateManyUserInputEnvelope {
+    @Field(() => [UserImageCreateManyUserInput], {nullable:false})
+    @Type(() => UserImageCreateManyUserInput)
+    data!: Array<UserImageCreateManyUserInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class UserImageCreateManyUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserImageCreateManyInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserImageCreateNestedManyWithoutFileInput {
+    @Field(() => [UserImageCreateWithoutFileInput], {nullable:true})
+    @Type(() => UserImageCreateWithoutFileInput)
+    create?: Array<UserImageCreateWithoutFileInput>;
+    @Field(() => [UserImageCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => UserImageCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<UserImageCreateOrConnectWithoutFileInput>;
+    @Field(() => UserImageCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => UserImageCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof UserImageCreateManyFileInputEnvelope>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class UserImageCreateNestedManyWithoutUserInput {
+    @Field(() => [UserImageCreateWithoutUserInput], {nullable:true})
+    @Type(() => UserImageCreateWithoutUserInput)
+    create?: Array<UserImageCreateWithoutUserInput>;
+    @Field(() => [UserImageCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => UserImageCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<UserImageCreateOrConnectWithoutUserInput>;
+    @Field(() => UserImageCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => UserImageCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof UserImageCreateManyUserInputEnvelope>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class UserImageCreateOrConnectWithoutFileInput {
+    @Field(() => UserImageWhereUniqueInput, {nullable:false})
+    @Type(() => UserImageWhereUniqueInput)
+    where!: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+    @Field(() => UserImageCreateWithoutFileInput, {nullable:false})
+    @Type(() => UserImageCreateWithoutFileInput)
+    create!: InstanceType<typeof UserImageCreateWithoutFileInput>;
+}
+
+@InputType()
+export class UserImageCreateOrConnectWithoutUserInput {
+    @Field(() => UserImageWhereUniqueInput, {nullable:false})
+    @Type(() => UserImageWhereUniqueInput)
+    where!: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+    @Field(() => UserImageCreateWithoutUserInput, {nullable:false})
+    @Type(() => UserImageCreateWithoutUserInput)
+    create!: InstanceType<typeof UserImageCreateWithoutUserInput>;
+}
+
+@InputType()
+export class UserImageCreateWithoutFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserCreateNestedOneWithoutUserImageInput, {nullable:false})
+    User!: InstanceType<typeof UserCreateNestedOneWithoutUserImageInput>;
+}
+
+@InputType()
+export class UserImageCreateWithoutUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => FileCreateNestedOneWithoutUserImageInput, {nullable:false})
+    file!: InstanceType<typeof FileCreateNestedOneWithoutUserImageInput>;
+}
+
+@InputType()
+export class UserImageCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => FileCreateNestedOneWithoutUserImageInput, {nullable:false})
+    file!: InstanceType<typeof FileCreateNestedOneWithoutUserImageInput>;
+    @Field(() => UserCreateNestedOneWithoutUserImageInput, {nullable:false})
+    User!: InstanceType<typeof UserCreateNestedOneWithoutUserImageInput>;
+}
+
+@ArgsType()
+export class UserImageGroupByArgs {
+    @Field(() => UserImageWhereInput, {nullable:true})
+    @Type(() => UserImageWhereInput)
+    where?: InstanceType<typeof UserImageWhereInput>;
+    @Field(() => [UserImageOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<UserImageOrderByWithAggregationInput>;
+    @Field(() => [UserImageScalarFieldEnum], {nullable:false})
+    by!: Array<`${UserImageScalarFieldEnum}`>;
+    @Field(() => UserImageScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof UserImageScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => UserImageCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof UserImageCountAggregateInput>;
+    @Field(() => UserImageMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof UserImageMinAggregateInput>;
+    @Field(() => UserImageMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof UserImageMaxAggregateInput>;
+}
+
+@ObjectType()
+export class UserImageGroupBy {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserImageCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof UserImageCountAggregate>;
+    @Field(() => UserImageMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof UserImageMinAggregate>;
+    @Field(() => UserImageMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof UserImageMaxAggregate>;
+}
+
+@InputType()
+export class UserImageListRelationFilter {
+    @Field(() => UserImageWhereInput, {nullable:true})
+    every?: InstanceType<typeof UserImageWhereInput>;
+    @Field(() => UserImageWhereInput, {nullable:true})
+    some?: InstanceType<typeof UserImageWhereInput>;
+    @Field(() => UserImageWhereInput, {nullable:true})
+    none?: InstanceType<typeof UserImageWhereInput>;
+}
+
+@InputType()
+export class UserImageMaxAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class UserImageMaxAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => String, {nullable:true})
+    fileId?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserImageMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class UserImageMinAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class UserImageMinAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => String, {nullable:true})
+    fileId?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserImageMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class UserImageOrderByRelationAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    _count?: `${SortOrder}`;
+}
+
+@InputType()
+export class UserImageOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => UserImageCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof UserImageCountOrderByAggregateInput>;
+    @Field(() => UserImageMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof UserImageMaxOrderByAggregateInput>;
+    @Field(() => UserImageMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof UserImageMinOrderByAggregateInput>;
+}
+
+@InputType()
+export class UserImageOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => FileOrderByWithRelationInput, {nullable:true})
+    file?: InstanceType<typeof FileOrderByWithRelationInput>;
+    @Field(() => UserOrderByWithRelationInput, {nullable:true})
+    User?: InstanceType<typeof UserOrderByWithRelationInput>;
+}
+
+@InputType()
+export class UserImageScalarWhereWithAggregatesInput {
+    @Field(() => [UserImageScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<UserImageScalarWhereWithAggregatesInput>;
+    @Field(() => [UserImageScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<UserImageScalarWhereWithAggregatesInput>;
+    @Field(() => [UserImageScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<UserImageScalarWhereWithAggregatesInput>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    userId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
+}
+
+@InputType()
+export class UserImageScalarWhereInput {
+    @Field(() => [UserImageScalarWhereInput], {nullable:true})
+    AND?: Array<UserImageScalarWhereInput>;
+    @Field(() => [UserImageScalarWhereInput], {nullable:true})
+    OR?: Array<UserImageScalarWhereInput>;
+    @Field(() => [UserImageScalarWhereInput], {nullable:true})
+    NOT?: Array<UserImageScalarWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+}
+
+@InputType()
+export class UserImageUncheckedCreateNestedManyWithoutFileInput {
+    @Field(() => [UserImageCreateWithoutFileInput], {nullable:true})
+    @Type(() => UserImageCreateWithoutFileInput)
+    create?: Array<UserImageCreateWithoutFileInput>;
+    @Field(() => [UserImageCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => UserImageCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<UserImageCreateOrConnectWithoutFileInput>;
+    @Field(() => UserImageCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => UserImageCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof UserImageCreateManyFileInputEnvelope>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class UserImageUncheckedCreateNestedManyWithoutUserInput {
+    @Field(() => [UserImageCreateWithoutUserInput], {nullable:true})
+    @Type(() => UserImageCreateWithoutUserInput)
+    create?: Array<UserImageCreateWithoutUserInput>;
+    @Field(() => [UserImageCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => UserImageCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<UserImageCreateOrConnectWithoutUserInput>;
+    @Field(() => UserImageCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => UserImageCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof UserImageCreateManyUserInputEnvelope>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class UserImageUncheckedCreateWithoutFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserImageUncheckedCreateWithoutUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserImageUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class UserImageUncheckedUpdateManyWithoutFileNestedInput {
+    @Field(() => [UserImageCreateWithoutFileInput], {nullable:true})
+    @Type(() => UserImageCreateWithoutFileInput)
+    create?: Array<UserImageCreateWithoutFileInput>;
+    @Field(() => [UserImageCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => UserImageCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<UserImageCreateOrConnectWithoutFileInput>;
+    @Field(() => [UserImageUpsertWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => UserImageUpsertWithWhereUniqueWithoutFileInput)
+    upsert?: Array<UserImageUpsertWithWhereUniqueWithoutFileInput>;
+    @Field(() => UserImageCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => UserImageCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof UserImageCreateManyFileInputEnvelope>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageUpdateWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => UserImageUpdateWithWhereUniqueWithoutFileInput)
+    update?: Array<UserImageUpdateWithWhereUniqueWithoutFileInput>;
+    @Field(() => [UserImageUpdateManyWithWhereWithoutFileInput], {nullable:true})
+    @Type(() => UserImageUpdateManyWithWhereWithoutFileInput)
+    updateMany?: Array<UserImageUpdateManyWithWhereWithoutFileInput>;
+    @Field(() => [UserImageScalarWhereInput], {nullable:true})
+    @Type(() => UserImageScalarWhereInput)
+    deleteMany?: Array<UserImageScalarWhereInput>;
+}
+
+@InputType()
+export class UserImageUncheckedUpdateManyWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserImageUncheckedUpdateManyWithoutUserNestedInput {
+    @Field(() => [UserImageCreateWithoutUserInput], {nullable:true})
+    @Type(() => UserImageCreateWithoutUserInput)
+    create?: Array<UserImageCreateWithoutUserInput>;
+    @Field(() => [UserImageCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => UserImageCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<UserImageCreateOrConnectWithoutUserInput>;
+    @Field(() => [UserImageUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => UserImageUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<UserImageUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => UserImageCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => UserImageCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof UserImageCreateManyUserInputEnvelope>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => UserImageUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<UserImageUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [UserImageUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => UserImageUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<UserImageUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [UserImageScalarWhereInput], {nullable:true})
+    @Type(() => UserImageScalarWhereInput)
+    deleteMany?: Array<UserImageScalarWhereInput>;
+}
+
+@InputType()
+export class UserImageUncheckedUpdateManyWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserImageUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserImageUncheckedUpdateWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserImageUncheckedUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserImageUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserImageUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class UserImageUpdateManyWithWhereWithoutFileInput {
+    @Field(() => UserImageScalarWhereInput, {nullable:false})
+    @Type(() => UserImageScalarWhereInput)
+    where!: InstanceType<typeof UserImageScalarWhereInput>;
+    @Field(() => UserImageUpdateManyMutationInput, {nullable:false})
+    @Type(() => UserImageUpdateManyMutationInput)
+    data!: InstanceType<typeof UserImageUpdateManyMutationInput>;
+}
+
+@InputType()
+export class UserImageUpdateManyWithWhereWithoutUserInput {
+    @Field(() => UserImageScalarWhereInput, {nullable:false})
+    @Type(() => UserImageScalarWhereInput)
+    where!: InstanceType<typeof UserImageScalarWhereInput>;
+    @Field(() => UserImageUpdateManyMutationInput, {nullable:false})
+    @Type(() => UserImageUpdateManyMutationInput)
+    data!: InstanceType<typeof UserImageUpdateManyMutationInput>;
+}
+
+@InputType()
+export class UserImageUpdateManyWithoutFileNestedInput {
+    @Field(() => [UserImageCreateWithoutFileInput], {nullable:true})
+    @Type(() => UserImageCreateWithoutFileInput)
+    create?: Array<UserImageCreateWithoutFileInput>;
+    @Field(() => [UserImageCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => UserImageCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<UserImageCreateOrConnectWithoutFileInput>;
+    @Field(() => [UserImageUpsertWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => UserImageUpsertWithWhereUniqueWithoutFileInput)
+    upsert?: Array<UserImageUpsertWithWhereUniqueWithoutFileInput>;
+    @Field(() => UserImageCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => UserImageCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof UserImageCreateManyFileInputEnvelope>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageUpdateWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => UserImageUpdateWithWhereUniqueWithoutFileInput)
+    update?: Array<UserImageUpdateWithWhereUniqueWithoutFileInput>;
+    @Field(() => [UserImageUpdateManyWithWhereWithoutFileInput], {nullable:true})
+    @Type(() => UserImageUpdateManyWithWhereWithoutFileInput)
+    updateMany?: Array<UserImageUpdateManyWithWhereWithoutFileInput>;
+    @Field(() => [UserImageScalarWhereInput], {nullable:true})
+    @Type(() => UserImageScalarWhereInput)
+    deleteMany?: Array<UserImageScalarWhereInput>;
+}
+
+@InputType()
+export class UserImageUpdateManyWithoutUserNestedInput {
+    @Field(() => [UserImageCreateWithoutUserInput], {nullable:true})
+    @Type(() => UserImageCreateWithoutUserInput)
+    create?: Array<UserImageCreateWithoutUserInput>;
+    @Field(() => [UserImageCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => UserImageCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<UserImageCreateOrConnectWithoutUserInput>;
+    @Field(() => [UserImageUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => UserImageUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<UserImageUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => UserImageCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => UserImageCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof UserImageCreateManyUserInputEnvelope>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageWhereUniqueInput], {nullable:true})
+    @Type(() => UserImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>>;
+    @Field(() => [UserImageUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => UserImageUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<UserImageUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [UserImageUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => UserImageUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<UserImageUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [UserImageScalarWhereInput], {nullable:true})
+    @Type(() => UserImageScalarWhereInput)
+    deleteMany?: Array<UserImageScalarWhereInput>;
+}
+
+@InputType()
+export class UserImageUpdateWithWhereUniqueWithoutFileInput {
+    @Field(() => UserImageWhereUniqueInput, {nullable:false})
+    @Type(() => UserImageWhereUniqueInput)
+    where!: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+    @Field(() => UserImageUpdateWithoutFileInput, {nullable:false})
+    @Type(() => UserImageUpdateWithoutFileInput)
+    data!: InstanceType<typeof UserImageUpdateWithoutFileInput>;
+}
+
+@InputType()
+export class UserImageUpdateWithWhereUniqueWithoutUserInput {
+    @Field(() => UserImageWhereUniqueInput, {nullable:false})
+    @Type(() => UserImageWhereUniqueInput)
+    where!: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+    @Field(() => UserImageUpdateWithoutUserInput, {nullable:false})
+    @Type(() => UserImageUpdateWithoutUserInput)
+    data!: InstanceType<typeof UserImageUpdateWithoutUserInput>;
+}
+
+@InputType()
+export class UserImageUpdateWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => UserUpdateOneRequiredWithoutUserImageNestedInput, {nullable:true})
+    User?: InstanceType<typeof UserUpdateOneRequiredWithoutUserImageNestedInput>;
+}
+
+@InputType()
+export class UserImageUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneRequiredWithoutUserImageNestedInput, {nullable:true})
+    file?: InstanceType<typeof FileUpdateOneRequiredWithoutUserImageNestedInput>;
+}
+
+@InputType()
+export class UserImageUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneRequiredWithoutUserImageNestedInput, {nullable:true})
+    file?: InstanceType<typeof FileUpdateOneRequiredWithoutUserImageNestedInput>;
+    @Field(() => UserUpdateOneRequiredWithoutUserImageNestedInput, {nullable:true})
+    User?: InstanceType<typeof UserUpdateOneRequiredWithoutUserImageNestedInput>;
+}
+
+@InputType()
+export class UserImageUpsertWithWhereUniqueWithoutFileInput {
+    @Field(() => UserImageWhereUniqueInput, {nullable:false})
+    @Type(() => UserImageWhereUniqueInput)
+    where!: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+    @Field(() => UserImageUpdateWithoutFileInput, {nullable:false})
+    @Type(() => UserImageUpdateWithoutFileInput)
+    update!: InstanceType<typeof UserImageUpdateWithoutFileInput>;
+    @Field(() => UserImageCreateWithoutFileInput, {nullable:false})
+    @Type(() => UserImageCreateWithoutFileInput)
+    create!: InstanceType<typeof UserImageCreateWithoutFileInput>;
+}
+
+@InputType()
+export class UserImageUpsertWithWhereUniqueWithoutUserInput {
+    @Field(() => UserImageWhereUniqueInput, {nullable:false})
+    @Type(() => UserImageWhereUniqueInput)
+    where!: Prisma.AtLeast<UserImageWhereUniqueInput, 'id'>;
+    @Field(() => UserImageUpdateWithoutUserInput, {nullable:false})
+    @Type(() => UserImageUpdateWithoutUserInput)
+    update!: InstanceType<typeof UserImageUpdateWithoutUserInput>;
+    @Field(() => UserImageCreateWithoutUserInput, {nullable:false})
+    @Type(() => UserImageCreateWithoutUserInput)
+    create!: InstanceType<typeof UserImageCreateWithoutUserInput>;
+}
+
+@InputType()
+export class UserImageWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => [UserImageWhereInput], {nullable:true})
+    AND?: Array<UserImageWhereInput>;
+    @Field(() => [UserImageWhereInput], {nullable:true})
+    OR?: Array<UserImageWhereInput>;
+    @Field(() => [UserImageWhereInput], {nullable:true})
+    NOT?: Array<UserImageWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => FileScalarRelationFilter, {nullable:true})
+    file?: InstanceType<typeof FileScalarRelationFilter>;
+    @Field(() => UserScalarRelationFilter, {nullable:true})
+    User?: InstanceType<typeof UserScalarRelationFilter>;
+}
+
+@InputType()
+export class UserImageWhereInput {
+    @Field(() => [UserImageWhereInput], {nullable:true})
+    AND?: Array<UserImageWhereInput>;
+    @Field(() => [UserImageWhereInput], {nullable:true})
+    OR?: Array<UserImageWhereInput>;
+    @Field(() => [UserImageWhereInput], {nullable:true})
+    NOT?: Array<UserImageWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => FileScalarRelationFilter, {nullable:true})
+    file?: InstanceType<typeof FileScalarRelationFilter>;
+    @Field(() => UserScalarRelationFilter, {nullable:true})
+    User?: InstanceType<typeof UserScalarRelationFilter>;
+}
+
+@ObjectType()
+export class UserImage {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
+    @Field(() => Date, {nullable:true})
+    updatedAt!: Date | null;
+    @Field(() => File, {nullable:false})
+    file?: InstanceType<typeof File>;
+    @Field(() => User, {nullable:false})
+    User?: InstanceType<typeof User>;
 }
 
 @ObjectType()
@@ -9649,9 +10593,17 @@ export class UserPreferenceCountAggregateInput {
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: true;
     @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: true;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: true;
+    @Field(() => Boolean, {nullable:true})
     language?: true;
     @Field(() => Boolean, {nullable:true})
     theme?: true;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: true;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: true;
     @Field(() => Boolean, {nullable:true})
     createdAt?: true;
     @Field(() => Boolean, {nullable:true})
@@ -9671,9 +10623,17 @@ export class UserPreferenceCountAggregate {
     @Field(() => Int, {nullable:false})
     activateNotifications!: number;
     @Field(() => Int, {nullable:false})
+    activateSmsNotifications!: number;
+    @Field(() => Int, {nullable:false})
+    activateEmailNotifications!: number;
+    @Field(() => Int, {nullable:false})
     language!: number;
     @Field(() => Int, {nullable:false})
     theme!: number;
+    @Field(() => Int, {nullable:false})
+    cguAccepted!: number;
+    @Field(() => Int, {nullable:false})
+    privacyPolicyAccepted!: number;
     @Field(() => Int, {nullable:false})
     createdAt!: number;
     @Field(() => Int, {nullable:false})
@@ -9693,9 +10653,17 @@ export class UserPreferenceCountOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     activateNotifications?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
+    activateSmsNotifications?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    activateEmailNotifications?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
     language?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     theme?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    cguAccepted?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    privacyPolicyAccepted?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -9705,7 +10673,7 @@ export class UserPreferenceCountOrderByAggregateInput {
 @ObjectType()
 export class UserPreferenceCount {
     @Field(() => Int, {nullable:false})
-    preferedVehicules?: number;
+    preferedvelicles?: number;
 }
 
 @InputType()
@@ -9718,10 +10686,18 @@ export class UserPreferenceCreateManyInput {
     activateLocation?: boolean;
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: boolean;
     @Field(() => String, {nullable:true})
     language?: string;
     @Field(() => String, {nullable:true})
     theme?: string;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: boolean;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -9729,13 +10705,13 @@ export class UserPreferenceCreateManyInput {
 }
 
 @InputType()
-export class UserPreferenceCreateNestedManyWithoutPreferedVehiculesInput {
-    @Field(() => [UserPreferenceCreateWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceCreateWithoutPreferedVehiculesInput)
-    create?: Array<UserPreferenceCreateWithoutPreferedVehiculesInput>;
-    @Field(() => [UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput)
-    connectOrCreate?: Array<UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput>;
+export class UserPreferenceCreateNestedManyWithoutPreferedveliclesInput {
+    @Field(() => [UserPreferenceCreateWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceCreateWithoutPreferedveliclesInput)
+    create?: Array<UserPreferenceCreateWithoutPreferedveliclesInput>;
+    @Field(() => [UserPreferenceCreateOrConnectWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceCreateOrConnectWithoutPreferedveliclesInput)
+    connectOrCreate?: Array<UserPreferenceCreateOrConnectWithoutPreferedveliclesInput>;
     @Field(() => [UserPreferenceWhereUniqueInput], {nullable:true})
     @Type(() => UserPreferenceWhereUniqueInput)
     connect?: Array<Prisma.AtLeast<UserPreferenceWhereUniqueInput, 'id' | 'userId'>>;
@@ -9755,13 +10731,13 @@ export class UserPreferenceCreateNestedOneWithoutUserInput {
 }
 
 @InputType()
-export class UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput {
+export class UserPreferenceCreateOrConnectWithoutPreferedveliclesInput {
     @Field(() => UserPreferenceWhereUniqueInput, {nullable:false})
     @Type(() => UserPreferenceWhereUniqueInput)
     where!: Prisma.AtLeast<UserPreferenceWhereUniqueInput, 'id' | 'userId'>;
-    @Field(() => UserPreferenceCreateWithoutPreferedVehiculesInput, {nullable:false})
-    @Type(() => UserPreferenceCreateWithoutPreferedVehiculesInput)
-    create!: InstanceType<typeof UserPreferenceCreateWithoutPreferedVehiculesInput>;
+    @Field(() => UserPreferenceCreateWithoutPreferedveliclesInput, {nullable:false})
+    @Type(() => UserPreferenceCreateWithoutPreferedveliclesInput)
+    create!: InstanceType<typeof UserPreferenceCreateWithoutPreferedveliclesInput>;
 }
 
 @InputType()
@@ -9775,17 +10751,25 @@ export class UserPreferenceCreateOrConnectWithoutUserInput {
 }
 
 @InputType()
-export class UserPreferenceCreateWithoutPreferedVehiculesInput {
+export class UserPreferenceCreateWithoutPreferedveliclesInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => Boolean, {nullable:true})
     activateLocation?: boolean;
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: boolean;
     @Field(() => String, {nullable:true})
     language?: string;
     @Field(() => String, {nullable:true})
     theme?: string;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: boolean;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -9802,16 +10786,24 @@ export class UserPreferenceCreateWithoutUserInput {
     activateLocation?: boolean;
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: boolean;
     @Field(() => String, {nullable:true})
     language?: string;
     @Field(() => String, {nullable:true})
     theme?: string;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: boolean;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
     @Field(() => VehicleTypeCreateNestedManyWithoutUserPreferenceInput, {nullable:true})
-    preferedVehicules?: InstanceType<typeof VehicleTypeCreateNestedManyWithoutUserPreferenceInput>;
+    preferedvelicles?: InstanceType<typeof VehicleTypeCreateNestedManyWithoutUserPreferenceInput>;
 }
 
 @InputType()
@@ -9822,10 +10814,18 @@ export class UserPreferenceCreateInput {
     activateLocation?: boolean;
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: boolean;
     @Field(() => String, {nullable:true})
     language?: string;
     @Field(() => String, {nullable:true})
     theme?: string;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: boolean;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -9833,7 +10833,7 @@ export class UserPreferenceCreateInput {
     @Field(() => UserCreateNestedOneWithoutUserPreferenceInput, {nullable:false})
     user!: InstanceType<typeof UserCreateNestedOneWithoutUserPreferenceInput>;
     @Field(() => VehicleTypeCreateNestedManyWithoutUserPreferenceInput, {nullable:true})
-    preferedVehicules?: InstanceType<typeof VehicleTypeCreateNestedManyWithoutUserPreferenceInput>;
+    preferedvelicles?: InstanceType<typeof VehicleTypeCreateNestedManyWithoutUserPreferenceInput>;
 }
 
 @ArgsType()
@@ -9869,10 +10869,18 @@ export class UserPreferenceGroupBy {
     activateLocation!: boolean;
     @Field(() => Boolean, {nullable:false})
     activateNotifications!: boolean;
+    @Field(() => Boolean, {nullable:false})
+    activateSmsNotifications!: boolean;
+    @Field(() => Boolean, {nullable:false})
+    activateEmailNotifications!: boolean;
     @Field(() => String, {nullable:true})
     language?: string;
     @Field(() => String, {nullable:true})
     theme?: string;
+    @Field(() => Boolean, {nullable:false})
+    cguAccepted!: boolean;
+    @Field(() => Boolean, {nullable:false})
+    privacyPolicyAccepted!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
     @Field(() => Date, {nullable:true})
@@ -9906,9 +10914,17 @@ export class UserPreferenceMaxAggregateInput {
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: true;
     @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: true;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: true;
+    @Field(() => Boolean, {nullable:true})
     language?: true;
     @Field(() => Boolean, {nullable:true})
     theme?: true;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: true;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: true;
     @Field(() => Boolean, {nullable:true})
     createdAt?: true;
     @Field(() => Boolean, {nullable:true})
@@ -9925,10 +10941,18 @@ export class UserPreferenceMaxAggregate {
     activateLocation?: boolean;
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: boolean;
     @Field(() => String, {nullable:true})
     language?: string;
     @Field(() => String, {nullable:true})
     theme?: string;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: boolean;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -9946,9 +10970,17 @@ export class UserPreferenceMaxOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     activateNotifications?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
+    activateSmsNotifications?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    activateEmailNotifications?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
     language?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     theme?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    cguAccepted?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    privacyPolicyAccepted?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -9966,9 +10998,17 @@ export class UserPreferenceMinAggregateInput {
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: true;
     @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: true;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: true;
+    @Field(() => Boolean, {nullable:true})
     language?: true;
     @Field(() => Boolean, {nullable:true})
     theme?: true;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: true;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: true;
     @Field(() => Boolean, {nullable:true})
     createdAt?: true;
     @Field(() => Boolean, {nullable:true})
@@ -9985,10 +11025,18 @@ export class UserPreferenceMinAggregate {
     activateLocation?: boolean;
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: boolean;
     @Field(() => String, {nullable:true})
     language?: string;
     @Field(() => String, {nullable:true})
     theme?: string;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: boolean;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -10006,9 +11054,17 @@ export class UserPreferenceMinOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     activateNotifications?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
+    activateSmsNotifications?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    activateEmailNotifications?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
     language?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     theme?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    cguAccepted?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    privacyPolicyAccepted?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -10039,10 +11095,18 @@ export class UserPreferenceOrderByWithAggregationInput {
     activateLocation?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     activateNotifications?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    activateSmsNotifications?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    activateEmailNotifications?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     language?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     theme?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    cguAccepted?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    privacyPolicyAccepted?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
@@ -10065,10 +11129,18 @@ export class UserPreferenceOrderByWithRelationInput {
     activateLocation?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     activateNotifications?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    activateSmsNotifications?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    activateEmailNotifications?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     language?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     theme?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    cguAccepted?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    privacyPolicyAccepted?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
@@ -10076,7 +11148,7 @@ export class UserPreferenceOrderByWithRelationInput {
     @Field(() => UserOrderByWithRelationInput, {nullable:true})
     user?: InstanceType<typeof UserOrderByWithRelationInput>;
     @Field(() => VehicleTypeOrderByRelationAggregateInput, {nullable:true})
-    preferedVehicules?: InstanceType<typeof VehicleTypeOrderByRelationAggregateInput>;
+    preferedvelicles?: InstanceType<typeof VehicleTypeOrderByRelationAggregateInput>;
 }
 
 @InputType()
@@ -10095,10 +11167,18 @@ export class UserPreferenceScalarWhereWithAggregatesInput {
     activateLocation?: InstanceType<typeof BoolWithAggregatesFilter>;
     @Field(() => BoolWithAggregatesFilter, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     language?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     theme?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolWithAggregatesFilter>;
     @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
     @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
@@ -10121,10 +11201,18 @@ export class UserPreferenceScalarWhereInput {
     activateLocation?: InstanceType<typeof BoolFilter>;
     @Field(() => BoolFilter, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     language?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     theme?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
@@ -10132,13 +11220,13 @@ export class UserPreferenceScalarWhereInput {
 }
 
 @InputType()
-export class UserPreferenceUncheckedCreateNestedManyWithoutPreferedVehiculesInput {
-    @Field(() => [UserPreferenceCreateWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceCreateWithoutPreferedVehiculesInput)
-    create?: Array<UserPreferenceCreateWithoutPreferedVehiculesInput>;
-    @Field(() => [UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput)
-    connectOrCreate?: Array<UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput>;
+export class UserPreferenceUncheckedCreateNestedManyWithoutPreferedveliclesInput {
+    @Field(() => [UserPreferenceCreateWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceCreateWithoutPreferedveliclesInput)
+    create?: Array<UserPreferenceCreateWithoutPreferedveliclesInput>;
+    @Field(() => [UserPreferenceCreateOrConnectWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceCreateOrConnectWithoutPreferedveliclesInput)
+    connectOrCreate?: Array<UserPreferenceCreateOrConnectWithoutPreferedveliclesInput>;
     @Field(() => [UserPreferenceWhereUniqueInput], {nullable:true})
     @Type(() => UserPreferenceWhereUniqueInput)
     connect?: Array<Prisma.AtLeast<UserPreferenceWhereUniqueInput, 'id' | 'userId'>>;
@@ -10158,7 +11246,7 @@ export class UserPreferenceUncheckedCreateNestedOneWithoutUserInput {
 }
 
 @InputType()
-export class UserPreferenceUncheckedCreateWithoutPreferedVehiculesInput {
+export class UserPreferenceUncheckedCreateWithoutPreferedveliclesInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => String, {nullable:false})
@@ -10167,10 +11255,18 @@ export class UserPreferenceUncheckedCreateWithoutPreferedVehiculesInput {
     activateLocation?: boolean;
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: boolean;
     @Field(() => String, {nullable:true})
     language?: string;
     @Field(() => String, {nullable:true})
     theme?: string;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: boolean;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -10185,16 +11281,24 @@ export class UserPreferenceUncheckedCreateWithoutUserInput {
     activateLocation?: boolean;
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: boolean;
     @Field(() => String, {nullable:true})
     language?: string;
     @Field(() => String, {nullable:true})
     theme?: string;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: boolean;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
     @Field(() => VehicleTypeUncheckedCreateNestedManyWithoutUserPreferenceInput, {nullable:true})
-    preferedVehicules?: InstanceType<typeof VehicleTypeUncheckedCreateNestedManyWithoutUserPreferenceInput>;
+    preferedvelicles?: InstanceType<typeof VehicleTypeUncheckedCreateNestedManyWithoutUserPreferenceInput>;
 }
 
 @InputType()
@@ -10207,29 +11311,37 @@ export class UserPreferenceUncheckedCreateInput {
     activateLocation?: boolean;
     @Field(() => Boolean, {nullable:true})
     activateNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateSmsNotifications?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    activateEmailNotifications?: boolean;
     @Field(() => String, {nullable:true})
     language?: string;
     @Field(() => String, {nullable:true})
     theme?: string;
+    @Field(() => Boolean, {nullable:true})
+    cguAccepted?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    privacyPolicyAccepted?: boolean;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
     @Field(() => VehicleTypeUncheckedCreateNestedManyWithoutUserPreferenceInput, {nullable:true})
-    preferedVehicules?: InstanceType<typeof VehicleTypeUncheckedCreateNestedManyWithoutUserPreferenceInput>;
+    preferedvelicles?: InstanceType<typeof VehicleTypeUncheckedCreateNestedManyWithoutUserPreferenceInput>;
 }
 
 @InputType()
-export class UserPreferenceUncheckedUpdateManyWithoutPreferedVehiculesNestedInput {
-    @Field(() => [UserPreferenceCreateWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceCreateWithoutPreferedVehiculesInput)
-    create?: Array<UserPreferenceCreateWithoutPreferedVehiculesInput>;
-    @Field(() => [UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput)
-    connectOrCreate?: Array<UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput>;
-    @Field(() => [UserPreferenceUpsertWithWhereUniqueWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceUpsertWithWhereUniqueWithoutPreferedVehiculesInput)
-    upsert?: Array<UserPreferenceUpsertWithWhereUniqueWithoutPreferedVehiculesInput>;
+export class UserPreferenceUncheckedUpdateManyWithoutPreferedveliclesNestedInput {
+    @Field(() => [UserPreferenceCreateWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceCreateWithoutPreferedveliclesInput)
+    create?: Array<UserPreferenceCreateWithoutPreferedveliclesInput>;
+    @Field(() => [UserPreferenceCreateOrConnectWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceCreateOrConnectWithoutPreferedveliclesInput)
+    connectOrCreate?: Array<UserPreferenceCreateOrConnectWithoutPreferedveliclesInput>;
+    @Field(() => [UserPreferenceUpsertWithWhereUniqueWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceUpsertWithWhereUniqueWithoutPreferedveliclesInput)
+    upsert?: Array<UserPreferenceUpsertWithWhereUniqueWithoutPreferedveliclesInput>;
     @Field(() => [UserPreferenceWhereUniqueInput], {nullable:true})
     @Type(() => UserPreferenceWhereUniqueInput)
     set?: Array<Prisma.AtLeast<UserPreferenceWhereUniqueInput, 'id' | 'userId'>>;
@@ -10242,19 +11354,19 @@ export class UserPreferenceUncheckedUpdateManyWithoutPreferedVehiculesNestedInpu
     @Field(() => [UserPreferenceWhereUniqueInput], {nullable:true})
     @Type(() => UserPreferenceWhereUniqueInput)
     connect?: Array<Prisma.AtLeast<UserPreferenceWhereUniqueInput, 'id' | 'userId'>>;
-    @Field(() => [UserPreferenceUpdateWithWhereUniqueWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceUpdateWithWhereUniqueWithoutPreferedVehiculesInput)
-    update?: Array<UserPreferenceUpdateWithWhereUniqueWithoutPreferedVehiculesInput>;
-    @Field(() => [UserPreferenceUpdateManyWithWhereWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceUpdateManyWithWhereWithoutPreferedVehiculesInput)
-    updateMany?: Array<UserPreferenceUpdateManyWithWhereWithoutPreferedVehiculesInput>;
+    @Field(() => [UserPreferenceUpdateWithWhereUniqueWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceUpdateWithWhereUniqueWithoutPreferedveliclesInput)
+    update?: Array<UserPreferenceUpdateWithWhereUniqueWithoutPreferedveliclesInput>;
+    @Field(() => [UserPreferenceUpdateManyWithWhereWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceUpdateManyWithWhereWithoutPreferedveliclesInput)
+    updateMany?: Array<UserPreferenceUpdateManyWithWhereWithoutPreferedveliclesInput>;
     @Field(() => [UserPreferenceScalarWhereInput], {nullable:true})
     @Type(() => UserPreferenceScalarWhereInput)
     deleteMany?: Array<UserPreferenceScalarWhereInput>;
 }
 
 @InputType()
-export class UserPreferenceUncheckedUpdateManyWithoutPreferedVehiculesInput {
+export class UserPreferenceUncheckedUpdateManyWithoutPreferedveliclesInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -10263,10 +11375,18 @@ export class UserPreferenceUncheckedUpdateManyWithoutPreferedVehiculesInput {
     activateLocation?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     language?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     theme?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -10283,10 +11403,18 @@ export class UserPreferenceUncheckedUpdateManyInput {
     activateLocation?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     language?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     theme?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -10319,7 +11447,7 @@ export class UserPreferenceUncheckedUpdateOneWithoutUserNestedInput {
 }
 
 @InputType()
-export class UserPreferenceUncheckedUpdateWithoutPreferedVehiculesInput {
+export class UserPreferenceUncheckedUpdateWithoutPreferedveliclesInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -10328,10 +11456,18 @@ export class UserPreferenceUncheckedUpdateWithoutPreferedVehiculesInput {
     activateLocation?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     language?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     theme?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -10346,16 +11482,24 @@ export class UserPreferenceUncheckedUpdateWithoutUserInput {
     activateLocation?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     language?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     theme?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => VehicleTypeUncheckedUpdateManyWithoutUserPreferenceNestedInput, {nullable:true})
-    preferedVehicules?: InstanceType<typeof VehicleTypeUncheckedUpdateManyWithoutUserPreferenceNestedInput>;
+    preferedvelicles?: InstanceType<typeof VehicleTypeUncheckedUpdateManyWithoutUserPreferenceNestedInput>;
 }
 
 @InputType()
@@ -10368,16 +11512,24 @@ export class UserPreferenceUncheckedUpdateInput {
     activateLocation?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     language?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     theme?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => VehicleTypeUncheckedUpdateManyWithoutUserPreferenceNestedInput, {nullable:true})
-    preferedVehicules?: InstanceType<typeof VehicleTypeUncheckedUpdateManyWithoutUserPreferenceNestedInput>;
+    preferedvelicles?: InstanceType<typeof VehicleTypeUncheckedUpdateManyWithoutUserPreferenceNestedInput>;
 }
 
 @InputType()
@@ -10388,10 +11540,18 @@ export class UserPreferenceUpdateManyMutationInput {
     activateLocation?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     language?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     theme?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -10399,7 +11559,7 @@ export class UserPreferenceUpdateManyMutationInput {
 }
 
 @InputType()
-export class UserPreferenceUpdateManyWithWhereWithoutPreferedVehiculesInput {
+export class UserPreferenceUpdateManyWithWhereWithoutPreferedveliclesInput {
     @Field(() => UserPreferenceScalarWhereInput, {nullable:false})
     @Type(() => UserPreferenceScalarWhereInput)
     where!: InstanceType<typeof UserPreferenceScalarWhereInput>;
@@ -10409,16 +11569,16 @@ export class UserPreferenceUpdateManyWithWhereWithoutPreferedVehiculesInput {
 }
 
 @InputType()
-export class UserPreferenceUpdateManyWithoutPreferedVehiculesNestedInput {
-    @Field(() => [UserPreferenceCreateWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceCreateWithoutPreferedVehiculesInput)
-    create?: Array<UserPreferenceCreateWithoutPreferedVehiculesInput>;
-    @Field(() => [UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput)
-    connectOrCreate?: Array<UserPreferenceCreateOrConnectWithoutPreferedVehiculesInput>;
-    @Field(() => [UserPreferenceUpsertWithWhereUniqueWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceUpsertWithWhereUniqueWithoutPreferedVehiculesInput)
-    upsert?: Array<UserPreferenceUpsertWithWhereUniqueWithoutPreferedVehiculesInput>;
+export class UserPreferenceUpdateManyWithoutPreferedveliclesNestedInput {
+    @Field(() => [UserPreferenceCreateWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceCreateWithoutPreferedveliclesInput)
+    create?: Array<UserPreferenceCreateWithoutPreferedveliclesInput>;
+    @Field(() => [UserPreferenceCreateOrConnectWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceCreateOrConnectWithoutPreferedveliclesInput)
+    connectOrCreate?: Array<UserPreferenceCreateOrConnectWithoutPreferedveliclesInput>;
+    @Field(() => [UserPreferenceUpsertWithWhereUniqueWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceUpsertWithWhereUniqueWithoutPreferedveliclesInput)
+    upsert?: Array<UserPreferenceUpsertWithWhereUniqueWithoutPreferedveliclesInput>;
     @Field(() => [UserPreferenceWhereUniqueInput], {nullable:true})
     @Type(() => UserPreferenceWhereUniqueInput)
     set?: Array<Prisma.AtLeast<UserPreferenceWhereUniqueInput, 'id' | 'userId'>>;
@@ -10431,12 +11591,12 @@ export class UserPreferenceUpdateManyWithoutPreferedVehiculesNestedInput {
     @Field(() => [UserPreferenceWhereUniqueInput], {nullable:true})
     @Type(() => UserPreferenceWhereUniqueInput)
     connect?: Array<Prisma.AtLeast<UserPreferenceWhereUniqueInput, 'id' | 'userId'>>;
-    @Field(() => [UserPreferenceUpdateWithWhereUniqueWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceUpdateWithWhereUniqueWithoutPreferedVehiculesInput)
-    update?: Array<UserPreferenceUpdateWithWhereUniqueWithoutPreferedVehiculesInput>;
-    @Field(() => [UserPreferenceUpdateManyWithWhereWithoutPreferedVehiculesInput], {nullable:true})
-    @Type(() => UserPreferenceUpdateManyWithWhereWithoutPreferedVehiculesInput)
-    updateMany?: Array<UserPreferenceUpdateManyWithWhereWithoutPreferedVehiculesInput>;
+    @Field(() => [UserPreferenceUpdateWithWhereUniqueWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceUpdateWithWhereUniqueWithoutPreferedveliclesInput)
+    update?: Array<UserPreferenceUpdateWithWhereUniqueWithoutPreferedveliclesInput>;
+    @Field(() => [UserPreferenceUpdateManyWithWhereWithoutPreferedveliclesInput], {nullable:true})
+    @Type(() => UserPreferenceUpdateManyWithWhereWithoutPreferedveliclesInput)
+    updateMany?: Array<UserPreferenceUpdateManyWithWhereWithoutPreferedveliclesInput>;
     @Field(() => [UserPreferenceScalarWhereInput], {nullable:true})
     @Type(() => UserPreferenceScalarWhereInput)
     deleteMany?: Array<UserPreferenceScalarWhereInput>;
@@ -10478,27 +11638,35 @@ export class UserPreferenceUpdateToOneWithWhereWithoutUserInput {
 }
 
 @InputType()
-export class UserPreferenceUpdateWithWhereUniqueWithoutPreferedVehiculesInput {
+export class UserPreferenceUpdateWithWhereUniqueWithoutPreferedveliclesInput {
     @Field(() => UserPreferenceWhereUniqueInput, {nullable:false})
     @Type(() => UserPreferenceWhereUniqueInput)
     where!: Prisma.AtLeast<UserPreferenceWhereUniqueInput, 'id' | 'userId'>;
-    @Field(() => UserPreferenceUpdateWithoutPreferedVehiculesInput, {nullable:false})
-    @Type(() => UserPreferenceUpdateWithoutPreferedVehiculesInput)
-    data!: InstanceType<typeof UserPreferenceUpdateWithoutPreferedVehiculesInput>;
+    @Field(() => UserPreferenceUpdateWithoutPreferedveliclesInput, {nullable:false})
+    @Type(() => UserPreferenceUpdateWithoutPreferedveliclesInput)
+    data!: InstanceType<typeof UserPreferenceUpdateWithoutPreferedveliclesInput>;
 }
 
 @InputType()
-export class UserPreferenceUpdateWithoutPreferedVehiculesInput {
+export class UserPreferenceUpdateWithoutPreferedveliclesInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     activateLocation?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     language?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     theme?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -10515,16 +11683,24 @@ export class UserPreferenceUpdateWithoutUserInput {
     activateLocation?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     language?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     theme?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => VehicleTypeUpdateManyWithoutUserPreferenceNestedInput, {nullable:true})
-    preferedVehicules?: InstanceType<typeof VehicleTypeUpdateManyWithoutUserPreferenceNestedInput>;
+    preferedvelicles?: InstanceType<typeof VehicleTypeUpdateManyWithoutUserPreferenceNestedInput>;
 }
 
 @InputType()
@@ -10535,10 +11711,18 @@ export class UserPreferenceUpdateInput {
     activateLocation?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     language?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     theme?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -10546,20 +11730,20 @@ export class UserPreferenceUpdateInput {
     @Field(() => UserUpdateOneRequiredWithoutUserPreferenceNestedInput, {nullable:true})
     user?: InstanceType<typeof UserUpdateOneRequiredWithoutUserPreferenceNestedInput>;
     @Field(() => VehicleTypeUpdateManyWithoutUserPreferenceNestedInput, {nullable:true})
-    preferedVehicules?: InstanceType<typeof VehicleTypeUpdateManyWithoutUserPreferenceNestedInput>;
+    preferedvelicles?: InstanceType<typeof VehicleTypeUpdateManyWithoutUserPreferenceNestedInput>;
 }
 
 @InputType()
-export class UserPreferenceUpsertWithWhereUniqueWithoutPreferedVehiculesInput {
+export class UserPreferenceUpsertWithWhereUniqueWithoutPreferedveliclesInput {
     @Field(() => UserPreferenceWhereUniqueInput, {nullable:false})
     @Type(() => UserPreferenceWhereUniqueInput)
     where!: Prisma.AtLeast<UserPreferenceWhereUniqueInput, 'id' | 'userId'>;
-    @Field(() => UserPreferenceUpdateWithoutPreferedVehiculesInput, {nullable:false})
-    @Type(() => UserPreferenceUpdateWithoutPreferedVehiculesInput)
-    update!: InstanceType<typeof UserPreferenceUpdateWithoutPreferedVehiculesInput>;
-    @Field(() => UserPreferenceCreateWithoutPreferedVehiculesInput, {nullable:false})
-    @Type(() => UserPreferenceCreateWithoutPreferedVehiculesInput)
-    create!: InstanceType<typeof UserPreferenceCreateWithoutPreferedVehiculesInput>;
+    @Field(() => UserPreferenceUpdateWithoutPreferedveliclesInput, {nullable:false})
+    @Type(() => UserPreferenceUpdateWithoutPreferedveliclesInput)
+    update!: InstanceType<typeof UserPreferenceUpdateWithoutPreferedveliclesInput>;
+    @Field(() => UserPreferenceCreateWithoutPreferedveliclesInput, {nullable:false})
+    @Type(() => UserPreferenceCreateWithoutPreferedveliclesInput)
+    create!: InstanceType<typeof UserPreferenceCreateWithoutPreferedveliclesInput>;
 }
 
 @InputType()
@@ -10591,10 +11775,18 @@ export class UserPreferenceWhereUniqueInput {
     activateLocation?: InstanceType<typeof BoolFilter>;
     @Field(() => BoolFilter, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     language?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     theme?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
@@ -10602,7 +11794,7 @@ export class UserPreferenceWhereUniqueInput {
     @Field(() => UserScalarRelationFilter, {nullable:true})
     user?: InstanceType<typeof UserScalarRelationFilter>;
     @Field(() => VehicleTypeListRelationFilter, {nullable:true})
-    preferedVehicules?: InstanceType<typeof VehicleTypeListRelationFilter>;
+    preferedvelicles?: InstanceType<typeof VehicleTypeListRelationFilter>;
 }
 
 @InputType()
@@ -10621,10 +11813,18 @@ export class UserPreferenceWhereInput {
     activateLocation?: InstanceType<typeof BoolFilter>;
     @Field(() => BoolFilter, {nullable:true})
     activateNotifications?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    activateSmsNotifications?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    activateEmailNotifications?: InstanceType<typeof BoolFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     language?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     theme?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    cguAccepted?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    privacyPolicyAccepted?: InstanceType<typeof BoolFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
@@ -10632,7 +11832,7 @@ export class UserPreferenceWhereInput {
     @Field(() => UserScalarRelationFilter, {nullable:true})
     user?: InstanceType<typeof UserScalarRelationFilter>;
     @Field(() => VehicleTypeListRelationFilter, {nullable:true})
-    preferedVehicules?: InstanceType<typeof VehicleTypeListRelationFilter>;
+    preferedvelicles?: InstanceType<typeof VehicleTypeListRelationFilter>;
 }
 
 @ObjectType()
@@ -10645,10 +11845,18 @@ export class UserPreference {
     activateLocation!: boolean;
     @Field(() => Boolean, {defaultValue:false,nullable:false})
     activateNotifications!: boolean;
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
+    activateSmsNotifications!: boolean;
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
+    activateEmailNotifications!: boolean;
     @Field(() => String, {defaultValue:'fr',nullable:true})
     language!: string | null;
     @Field(() => String, {defaultValue:'light',nullable:true})
     theme!: string | null;
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
+    cguAccepted!: boolean;
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
+    privacyPolicyAccepted!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
     @Field(() => Date, {nullable:true})
@@ -10656,9 +11864,2109 @@ export class UserPreference {
     @Field(() => User, {nullable:false})
     user?: InstanceType<typeof User>;
     @Field(() => [VehicleType], {nullable:true})
-    preferedVehicules?: Array<VehicleType>;
+    preferedvelicles?: Array<VehicleType>;
     @Field(() => UserPreferenceCount, {nullable:false})
     _count?: InstanceType<typeof UserPreferenceCount>;
+}
+
+@ObjectType()
+export class AggregateVehicleDocument {
+    @Field(() => VehicleDocumentCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof VehicleDocumentCountAggregate>;
+    @Field(() => VehicleDocumentMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof VehicleDocumentMinAggregate>;
+    @Field(() => VehicleDocumentMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof VehicleDocumentMaxAggregate>;
+}
+
+@ArgsType()
+export class CreateManyVehicleDocumentArgs {
+    @Field(() => [VehicleDocumentCreateManyInput], {nullable:false})
+    @Type(() => VehicleDocumentCreateManyInput)
+    data!: Array<VehicleDocumentCreateManyInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@ArgsType()
+export class CreateOneVehicleDocumentArgs {
+    @Field(() => VehicleDocumentCreateInput, {nullable:false})
+    @Type(() => VehicleDocumentCreateInput)
+    data!: InstanceType<typeof VehicleDocumentCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManyVehicleDocumentArgs {
+    @Field(() => VehicleDocumentWhereInput, {nullable:true})
+    @Type(() => VehicleDocumentWhereInput)
+    where?: InstanceType<typeof VehicleDocumentWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class DeleteOneVehicleDocumentArgs {
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindFirstVehicleDocumentOrThrowArgs {
+    @Field(() => VehicleDocumentWhereInput, {nullable:true})
+    @Type(() => VehicleDocumentWhereInput)
+    where?: InstanceType<typeof VehicleDocumentWhereInput>;
+    @Field(() => [VehicleDocumentOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<VehicleDocumentOrderByWithRelationInput>;
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [VehicleDocumentScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${VehicleDocumentScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstVehicleDocumentArgs {
+    @Field(() => VehicleDocumentWhereInput, {nullable:true})
+    @Type(() => VehicleDocumentWhereInput)
+    where?: InstanceType<typeof VehicleDocumentWhereInput>;
+    @Field(() => [VehicleDocumentOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<VehicleDocumentOrderByWithRelationInput>;
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [VehicleDocumentScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${VehicleDocumentScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManyVehicleDocumentArgs {
+    @Field(() => VehicleDocumentWhereInput, {nullable:true})
+    @Type(() => VehicleDocumentWhereInput)
+    where?: InstanceType<typeof VehicleDocumentWhereInput>;
+    @Field(() => [VehicleDocumentOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<VehicleDocumentOrderByWithRelationInput>;
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [VehicleDocumentScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${VehicleDocumentScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueVehicleDocumentOrThrowArgs {
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindUniqueVehicleDocumentArgs {
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpdateManyVehicleDocumentArgs {
+    @Field(() => VehicleDocumentUpdateManyMutationInput, {nullable:false})
+    @Type(() => VehicleDocumentUpdateManyMutationInput)
+    data!: InstanceType<typeof VehicleDocumentUpdateManyMutationInput>;
+    @Field(() => VehicleDocumentWhereInput, {nullable:true})
+    @Type(() => VehicleDocumentWhereInput)
+    where?: InstanceType<typeof VehicleDocumentWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class UpdateOneVehicleDocumentArgs {
+    @Field(() => VehicleDocumentUpdateInput, {nullable:false})
+    @Type(() => VehicleDocumentUpdateInput)
+    data!: InstanceType<typeof VehicleDocumentUpdateInput>;
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpsertOneVehicleDocumentArgs {
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+    @Field(() => VehicleDocumentCreateInput, {nullable:false})
+    @Type(() => VehicleDocumentCreateInput)
+    create!: InstanceType<typeof VehicleDocumentCreateInput>;
+    @Field(() => VehicleDocumentUpdateInput, {nullable:false})
+    @Type(() => VehicleDocumentUpdateInput)
+    update!: InstanceType<typeof VehicleDocumentUpdateInput>;
+}
+
+@ArgsType()
+export class VehicleDocumentAggregateArgs {
+    @Field(() => VehicleDocumentWhereInput, {nullable:true})
+    @Type(() => VehicleDocumentWhereInput)
+    where?: InstanceType<typeof VehicleDocumentWhereInput>;
+    @Field(() => [VehicleDocumentOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<VehicleDocumentOrderByWithRelationInput>;
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => VehicleDocumentCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof VehicleDocumentCountAggregateInput>;
+    @Field(() => VehicleDocumentMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof VehicleDocumentMinAggregateInput>;
+    @Field(() => VehicleDocumentMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof VehicleDocumentMaxAggregateInput>;
+}
+
+@InputType()
+export class VehicleDocumentCountAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverVehicleId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    _all?: true;
+}
+
+@ObjectType()
+export class VehicleDocumentCountAggregate {
+    @Field(() => Int, {nullable:false})
+    id!: number;
+    @Field(() => Int, {nullable:false})
+    driverVehicleId!: number;
+    @Field(() => Int, {nullable:false})
+    fileId!: number;
+    @Field(() => Int, {nullable:false})
+    createdAt!: number;
+    @Field(() => Int, {nullable:false})
+    updatedAt!: number;
+    @Field(() => Int, {nullable:false})
+    _all!: number;
+}
+
+@InputType()
+export class VehicleDocumentCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class VehicleDocumentCreateManyDriverVehicleInputEnvelope {
+    @Field(() => [VehicleDocumentCreateManyDriverVehicleInput], {nullable:false})
+    @Type(() => VehicleDocumentCreateManyDriverVehicleInput)
+    data!: Array<VehicleDocumentCreateManyDriverVehicleInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class VehicleDocumentCreateManyDriverVehicleInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleDocumentCreateManyFileInputEnvelope {
+    @Field(() => [VehicleDocumentCreateManyFileInput], {nullable:false})
+    @Type(() => VehicleDocumentCreateManyFileInput)
+    data!: Array<VehicleDocumentCreateManyFileInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class VehicleDocumentCreateManyFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleDocumentCreateManyInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleDocumentCreateNestedManyWithoutDriverVehicleInput {
+    @Field(() => [VehicleDocumentCreateWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateWithoutDriverVehicleInput)
+    create?: Array<VehicleDocumentCreateWithoutDriverVehicleInput>;
+    @Field(() => [VehicleDocumentCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateOrConnectWithoutDriverVehicleInput)
+    connectOrCreate?: Array<VehicleDocumentCreateOrConnectWithoutDriverVehicleInput>;
+    @Field(() => VehicleDocumentCreateManyDriverVehicleInputEnvelope, {nullable:true})
+    @Type(() => VehicleDocumentCreateManyDriverVehicleInputEnvelope)
+    createMany?: InstanceType<typeof VehicleDocumentCreateManyDriverVehicleInputEnvelope>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class VehicleDocumentCreateNestedManyWithoutFileInput {
+    @Field(() => [VehicleDocumentCreateWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateWithoutFileInput)
+    create?: Array<VehicleDocumentCreateWithoutFileInput>;
+    @Field(() => [VehicleDocumentCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<VehicleDocumentCreateOrConnectWithoutFileInput>;
+    @Field(() => VehicleDocumentCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => VehicleDocumentCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof VehicleDocumentCreateManyFileInputEnvelope>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class VehicleDocumentCreateOrConnectWithoutDriverVehicleInput {
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+    @Field(() => VehicleDocumentCreateWithoutDriverVehicleInput, {nullable:false})
+    @Type(() => VehicleDocumentCreateWithoutDriverVehicleInput)
+    create!: InstanceType<typeof VehicleDocumentCreateWithoutDriverVehicleInput>;
+}
+
+@InputType()
+export class VehicleDocumentCreateOrConnectWithoutFileInput {
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+    @Field(() => VehicleDocumentCreateWithoutFileInput, {nullable:false})
+    @Type(() => VehicleDocumentCreateWithoutFileInput)
+    create!: InstanceType<typeof VehicleDocumentCreateWithoutFileInput>;
+}
+
+@InputType()
+export class VehicleDocumentCreateWithoutDriverVehicleInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => FileCreateNestedOneWithoutVehicleDocumentInput, {nullable:false})
+    file!: InstanceType<typeof FileCreateNestedOneWithoutVehicleDocumentInput>;
+}
+
+@InputType()
+export class VehicleDocumentCreateWithoutFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => DriverVehicleCreateNestedOneWithoutVehicleDocumentInput, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleCreateNestedOneWithoutVehicleDocumentInput>;
+}
+
+@InputType()
+export class VehicleDocumentCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => FileCreateNestedOneWithoutVehicleDocumentInput, {nullable:false})
+    file!: InstanceType<typeof FileCreateNestedOneWithoutVehicleDocumentInput>;
+    @Field(() => DriverVehicleCreateNestedOneWithoutVehicleDocumentInput, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleCreateNestedOneWithoutVehicleDocumentInput>;
+}
+
+@ArgsType()
+export class VehicleDocumentGroupByArgs {
+    @Field(() => VehicleDocumentWhereInput, {nullable:true})
+    @Type(() => VehicleDocumentWhereInput)
+    where?: InstanceType<typeof VehicleDocumentWhereInput>;
+    @Field(() => [VehicleDocumentOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<VehicleDocumentOrderByWithAggregationInput>;
+    @Field(() => [VehicleDocumentScalarFieldEnum], {nullable:false})
+    by!: Array<`${VehicleDocumentScalarFieldEnum}`>;
+    @Field(() => VehicleDocumentScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof VehicleDocumentScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => VehicleDocumentCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof VehicleDocumentCountAggregateInput>;
+    @Field(() => VehicleDocumentMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof VehicleDocumentMinAggregateInput>;
+    @Field(() => VehicleDocumentMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof VehicleDocumentMaxAggregateInput>;
+}
+
+@ObjectType()
+export class VehicleDocumentGroupBy {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => VehicleDocumentCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof VehicleDocumentCountAggregate>;
+    @Field(() => VehicleDocumentMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof VehicleDocumentMinAggregate>;
+    @Field(() => VehicleDocumentMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof VehicleDocumentMaxAggregate>;
+}
+
+@InputType()
+export class VehicleDocumentListRelationFilter {
+    @Field(() => VehicleDocumentWhereInput, {nullable:true})
+    every?: InstanceType<typeof VehicleDocumentWhereInput>;
+    @Field(() => VehicleDocumentWhereInput, {nullable:true})
+    some?: InstanceType<typeof VehicleDocumentWhereInput>;
+    @Field(() => VehicleDocumentWhereInput, {nullable:true})
+    none?: InstanceType<typeof VehicleDocumentWhereInput>;
+}
+
+@InputType()
+export class VehicleDocumentMaxAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverVehicleId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class VehicleDocumentMaxAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => String, {nullable:true})
+    fileId?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleDocumentMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class VehicleDocumentMinAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverVehicleId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class VehicleDocumentMinAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => String, {nullable:true})
+    fileId?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleDocumentMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class VehicleDocumentOrderByRelationAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    _count?: `${SortOrder}`;
+}
+
+@InputType()
+export class VehicleDocumentOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => VehicleDocumentCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof VehicleDocumentCountOrderByAggregateInput>;
+    @Field(() => VehicleDocumentMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof VehicleDocumentMaxOrderByAggregateInput>;
+    @Field(() => VehicleDocumentMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof VehicleDocumentMinOrderByAggregateInput>;
+}
+
+@InputType()
+export class VehicleDocumentOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => FileOrderByWithRelationInput, {nullable:true})
+    file?: InstanceType<typeof FileOrderByWithRelationInput>;
+    @Field(() => DriverVehicleOrderByWithRelationInput, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleOrderByWithRelationInput>;
+}
+
+@InputType()
+export class VehicleDocumentScalarWhereWithAggregatesInput {
+    @Field(() => [VehicleDocumentScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<VehicleDocumentScalarWhereWithAggregatesInput>;
+    @Field(() => [VehicleDocumentScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<VehicleDocumentScalarWhereWithAggregatesInput>;
+    @Field(() => [VehicleDocumentScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<VehicleDocumentScalarWhereWithAggregatesInput>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
+}
+
+@InputType()
+export class VehicleDocumentScalarWhereInput {
+    @Field(() => [VehicleDocumentScalarWhereInput], {nullable:true})
+    AND?: Array<VehicleDocumentScalarWhereInput>;
+    @Field(() => [VehicleDocumentScalarWhereInput], {nullable:true})
+    OR?: Array<VehicleDocumentScalarWhereInput>;
+    @Field(() => [VehicleDocumentScalarWhereInput], {nullable:true})
+    NOT?: Array<VehicleDocumentScalarWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedCreateNestedManyWithoutDriverVehicleInput {
+    @Field(() => [VehicleDocumentCreateWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateWithoutDriverVehicleInput)
+    create?: Array<VehicleDocumentCreateWithoutDriverVehicleInput>;
+    @Field(() => [VehicleDocumentCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateOrConnectWithoutDriverVehicleInput)
+    connectOrCreate?: Array<VehicleDocumentCreateOrConnectWithoutDriverVehicleInput>;
+    @Field(() => VehicleDocumentCreateManyDriverVehicleInputEnvelope, {nullable:true})
+    @Type(() => VehicleDocumentCreateManyDriverVehicleInputEnvelope)
+    createMany?: InstanceType<typeof VehicleDocumentCreateManyDriverVehicleInputEnvelope>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedCreateNestedManyWithoutFileInput {
+    @Field(() => [VehicleDocumentCreateWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateWithoutFileInput)
+    create?: Array<VehicleDocumentCreateWithoutFileInput>;
+    @Field(() => [VehicleDocumentCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<VehicleDocumentCreateOrConnectWithoutFileInput>;
+    @Field(() => VehicleDocumentCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => VehicleDocumentCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof VehicleDocumentCreateManyFileInputEnvelope>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedCreateWithoutDriverVehicleInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedCreateWithoutFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedUpdateManyWithoutDriverVehicleNestedInput {
+    @Field(() => [VehicleDocumentCreateWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateWithoutDriverVehicleInput)
+    create?: Array<VehicleDocumentCreateWithoutDriverVehicleInput>;
+    @Field(() => [VehicleDocumentCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateOrConnectWithoutDriverVehicleInput)
+    connectOrCreate?: Array<VehicleDocumentCreateOrConnectWithoutDriverVehicleInput>;
+    @Field(() => [VehicleDocumentUpsertWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentUpsertWithWhereUniqueWithoutDriverVehicleInput)
+    upsert?: Array<VehicleDocumentUpsertWithWhereUniqueWithoutDriverVehicleInput>;
+    @Field(() => VehicleDocumentCreateManyDriverVehicleInputEnvelope, {nullable:true})
+    @Type(() => VehicleDocumentCreateManyDriverVehicleInputEnvelope)
+    createMany?: InstanceType<typeof VehicleDocumentCreateManyDriverVehicleInputEnvelope>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentUpdateWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentUpdateWithWhereUniqueWithoutDriverVehicleInput)
+    update?: Array<VehicleDocumentUpdateWithWhereUniqueWithoutDriverVehicleInput>;
+    @Field(() => [VehicleDocumentUpdateManyWithWhereWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentUpdateManyWithWhereWithoutDriverVehicleInput)
+    updateMany?: Array<VehicleDocumentUpdateManyWithWhereWithoutDriverVehicleInput>;
+    @Field(() => [VehicleDocumentScalarWhereInput], {nullable:true})
+    @Type(() => VehicleDocumentScalarWhereInput)
+    deleteMany?: Array<VehicleDocumentScalarWhereInput>;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedUpdateManyWithoutDriverVehicleInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedUpdateManyWithoutFileNestedInput {
+    @Field(() => [VehicleDocumentCreateWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateWithoutFileInput)
+    create?: Array<VehicleDocumentCreateWithoutFileInput>;
+    @Field(() => [VehicleDocumentCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<VehicleDocumentCreateOrConnectWithoutFileInput>;
+    @Field(() => [VehicleDocumentUpsertWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentUpsertWithWhereUniqueWithoutFileInput)
+    upsert?: Array<VehicleDocumentUpsertWithWhereUniqueWithoutFileInput>;
+    @Field(() => VehicleDocumentCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => VehicleDocumentCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof VehicleDocumentCreateManyFileInputEnvelope>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentUpdateWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentUpdateWithWhereUniqueWithoutFileInput)
+    update?: Array<VehicleDocumentUpdateWithWhereUniqueWithoutFileInput>;
+    @Field(() => [VehicleDocumentUpdateManyWithWhereWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentUpdateManyWithWhereWithoutFileInput)
+    updateMany?: Array<VehicleDocumentUpdateManyWithWhereWithoutFileInput>;
+    @Field(() => [VehicleDocumentScalarWhereInput], {nullable:true})
+    @Type(() => VehicleDocumentScalarWhereInput)
+    deleteMany?: Array<VehicleDocumentScalarWhereInput>;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedUpdateManyWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedUpdateWithoutDriverVehicleInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedUpdateWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleDocumentUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpdateManyWithWhereWithoutDriverVehicleInput {
+    @Field(() => VehicleDocumentScalarWhereInput, {nullable:false})
+    @Type(() => VehicleDocumentScalarWhereInput)
+    where!: InstanceType<typeof VehicleDocumentScalarWhereInput>;
+    @Field(() => VehicleDocumentUpdateManyMutationInput, {nullable:false})
+    @Type(() => VehicleDocumentUpdateManyMutationInput)
+    data!: InstanceType<typeof VehicleDocumentUpdateManyMutationInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpdateManyWithWhereWithoutFileInput {
+    @Field(() => VehicleDocumentScalarWhereInput, {nullable:false})
+    @Type(() => VehicleDocumentScalarWhereInput)
+    where!: InstanceType<typeof VehicleDocumentScalarWhereInput>;
+    @Field(() => VehicleDocumentUpdateManyMutationInput, {nullable:false})
+    @Type(() => VehicleDocumentUpdateManyMutationInput)
+    data!: InstanceType<typeof VehicleDocumentUpdateManyMutationInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput {
+    @Field(() => [VehicleDocumentCreateWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateWithoutDriverVehicleInput)
+    create?: Array<VehicleDocumentCreateWithoutDriverVehicleInput>;
+    @Field(() => [VehicleDocumentCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateOrConnectWithoutDriverVehicleInput)
+    connectOrCreate?: Array<VehicleDocumentCreateOrConnectWithoutDriverVehicleInput>;
+    @Field(() => [VehicleDocumentUpsertWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentUpsertWithWhereUniqueWithoutDriverVehicleInput)
+    upsert?: Array<VehicleDocumentUpsertWithWhereUniqueWithoutDriverVehicleInput>;
+    @Field(() => VehicleDocumentCreateManyDriverVehicleInputEnvelope, {nullable:true})
+    @Type(() => VehicleDocumentCreateManyDriverVehicleInputEnvelope)
+    createMany?: InstanceType<typeof VehicleDocumentCreateManyDriverVehicleInputEnvelope>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentUpdateWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentUpdateWithWhereUniqueWithoutDriverVehicleInput)
+    update?: Array<VehicleDocumentUpdateWithWhereUniqueWithoutDriverVehicleInput>;
+    @Field(() => [VehicleDocumentUpdateManyWithWhereWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleDocumentUpdateManyWithWhereWithoutDriverVehicleInput)
+    updateMany?: Array<VehicleDocumentUpdateManyWithWhereWithoutDriverVehicleInput>;
+    @Field(() => [VehicleDocumentScalarWhereInput], {nullable:true})
+    @Type(() => VehicleDocumentScalarWhereInput)
+    deleteMany?: Array<VehicleDocumentScalarWhereInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpdateManyWithoutFileNestedInput {
+    @Field(() => [VehicleDocumentCreateWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateWithoutFileInput)
+    create?: Array<VehicleDocumentCreateWithoutFileInput>;
+    @Field(() => [VehicleDocumentCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<VehicleDocumentCreateOrConnectWithoutFileInput>;
+    @Field(() => [VehicleDocumentUpsertWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentUpsertWithWhereUniqueWithoutFileInput)
+    upsert?: Array<VehicleDocumentUpsertWithWhereUniqueWithoutFileInput>;
+    @Field(() => VehicleDocumentCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => VehicleDocumentCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof VehicleDocumentCreateManyFileInputEnvelope>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleDocumentUpdateWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentUpdateWithWhereUniqueWithoutFileInput)
+    update?: Array<VehicleDocumentUpdateWithWhereUniqueWithoutFileInput>;
+    @Field(() => [VehicleDocumentUpdateManyWithWhereWithoutFileInput], {nullable:true})
+    @Type(() => VehicleDocumentUpdateManyWithWhereWithoutFileInput)
+    updateMany?: Array<VehicleDocumentUpdateManyWithWhereWithoutFileInput>;
+    @Field(() => [VehicleDocumentScalarWhereInput], {nullable:true})
+    @Type(() => VehicleDocumentScalarWhereInput)
+    deleteMany?: Array<VehicleDocumentScalarWhereInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpdateWithWhereUniqueWithoutDriverVehicleInput {
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+    @Field(() => VehicleDocumentUpdateWithoutDriverVehicleInput, {nullable:false})
+    @Type(() => VehicleDocumentUpdateWithoutDriverVehicleInput)
+    data!: InstanceType<typeof VehicleDocumentUpdateWithoutDriverVehicleInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpdateWithWhereUniqueWithoutFileInput {
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+    @Field(() => VehicleDocumentUpdateWithoutFileInput, {nullable:false})
+    @Type(() => VehicleDocumentUpdateWithoutFileInput)
+    data!: InstanceType<typeof VehicleDocumentUpdateWithoutFileInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpdateWithoutDriverVehicleInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneRequiredWithoutVehicleDocumentNestedInput, {nullable:true})
+    file?: InstanceType<typeof FileUpdateOneRequiredWithoutVehicleDocumentNestedInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpdateWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DriverVehicleUpdateOneWithoutVehicleDocumentNestedInput, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleUpdateOneWithoutVehicleDocumentNestedInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneRequiredWithoutVehicleDocumentNestedInput, {nullable:true})
+    file?: InstanceType<typeof FileUpdateOneRequiredWithoutVehicleDocumentNestedInput>;
+    @Field(() => DriverVehicleUpdateOneWithoutVehicleDocumentNestedInput, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleUpdateOneWithoutVehicleDocumentNestedInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpsertWithWhereUniqueWithoutDriverVehicleInput {
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+    @Field(() => VehicleDocumentUpdateWithoutDriverVehicleInput, {nullable:false})
+    @Type(() => VehicleDocumentUpdateWithoutDriverVehicleInput)
+    update!: InstanceType<typeof VehicleDocumentUpdateWithoutDriverVehicleInput>;
+    @Field(() => VehicleDocumentCreateWithoutDriverVehicleInput, {nullable:false})
+    @Type(() => VehicleDocumentCreateWithoutDriverVehicleInput)
+    create!: InstanceType<typeof VehicleDocumentCreateWithoutDriverVehicleInput>;
+}
+
+@InputType()
+export class VehicleDocumentUpsertWithWhereUniqueWithoutFileInput {
+    @Field(() => VehicleDocumentWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleDocumentWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleDocumentWhereUniqueInput, 'id'>;
+    @Field(() => VehicleDocumentUpdateWithoutFileInput, {nullable:false})
+    @Type(() => VehicleDocumentUpdateWithoutFileInput)
+    update!: InstanceType<typeof VehicleDocumentUpdateWithoutFileInput>;
+    @Field(() => VehicleDocumentCreateWithoutFileInput, {nullable:false})
+    @Type(() => VehicleDocumentCreateWithoutFileInput)
+    create!: InstanceType<typeof VehicleDocumentCreateWithoutFileInput>;
+}
+
+@InputType()
+export class VehicleDocumentWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => [VehicleDocumentWhereInput], {nullable:true})
+    AND?: Array<VehicleDocumentWhereInput>;
+    @Field(() => [VehicleDocumentWhereInput], {nullable:true})
+    OR?: Array<VehicleDocumentWhereInput>;
+    @Field(() => [VehicleDocumentWhereInput], {nullable:true})
+    NOT?: Array<VehicleDocumentWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => FileScalarRelationFilter, {nullable:true})
+    file?: InstanceType<typeof FileScalarRelationFilter>;
+    @Field(() => DriverVehicleNullableScalarRelationFilter, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleNullableScalarRelationFilter>;
+}
+
+@InputType()
+export class VehicleDocumentWhereInput {
+    @Field(() => [VehicleDocumentWhereInput], {nullable:true})
+    AND?: Array<VehicleDocumentWhereInput>;
+    @Field(() => [VehicleDocumentWhereInput], {nullable:true})
+    OR?: Array<VehicleDocumentWhereInput>;
+    @Field(() => [VehicleDocumentWhereInput], {nullable:true})
+    NOT?: Array<VehicleDocumentWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => FileScalarRelationFilter, {nullable:true})
+    file?: InstanceType<typeof FileScalarRelationFilter>;
+    @Field(() => DriverVehicleNullableScalarRelationFilter, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleNullableScalarRelationFilter>;
+}
+
+@ObjectType()
+export class VehicleDocument {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
+    @Field(() => Date, {nullable:true})
+    updatedAt!: Date | null;
+    @Field(() => File, {nullable:false})
+    file?: InstanceType<typeof File>;
+    @Field(() => DriverVehicle, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicle> | null;
+}
+
+@ObjectType()
+export class AggregateVehicleImage {
+    @Field(() => VehicleImageCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof VehicleImageCountAggregate>;
+    @Field(() => VehicleImageMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof VehicleImageMinAggregate>;
+    @Field(() => VehicleImageMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof VehicleImageMaxAggregate>;
+}
+
+@ArgsType()
+export class CreateManyVehicleImageArgs {
+    @Field(() => [VehicleImageCreateManyInput], {nullable:false})
+    @Type(() => VehicleImageCreateManyInput)
+    data!: Array<VehicleImageCreateManyInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@ArgsType()
+export class CreateOneVehicleImageArgs {
+    @Field(() => VehicleImageCreateInput, {nullable:false})
+    @Type(() => VehicleImageCreateInput)
+    data!: InstanceType<typeof VehicleImageCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManyVehicleImageArgs {
+    @Field(() => VehicleImageWhereInput, {nullable:true})
+    @Type(() => VehicleImageWhereInput)
+    where?: InstanceType<typeof VehicleImageWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class DeleteOneVehicleImageArgs {
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleImageWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindFirstVehicleImageOrThrowArgs {
+    @Field(() => VehicleImageWhereInput, {nullable:true})
+    @Type(() => VehicleImageWhereInput)
+    where?: InstanceType<typeof VehicleImageWhereInput>;
+    @Field(() => [VehicleImageOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<VehicleImageOrderByWithRelationInput>;
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [VehicleImageScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${VehicleImageScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstVehicleImageArgs {
+    @Field(() => VehicleImageWhereInput, {nullable:true})
+    @Type(() => VehicleImageWhereInput)
+    where?: InstanceType<typeof VehicleImageWhereInput>;
+    @Field(() => [VehicleImageOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<VehicleImageOrderByWithRelationInput>;
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [VehicleImageScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${VehicleImageScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManyVehicleImageArgs {
+    @Field(() => VehicleImageWhereInput, {nullable:true})
+    @Type(() => VehicleImageWhereInput)
+    where?: InstanceType<typeof VehicleImageWhereInput>;
+    @Field(() => [VehicleImageOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<VehicleImageOrderByWithRelationInput>;
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [VehicleImageScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${VehicleImageScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueVehicleImageOrThrowArgs {
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleImageWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindUniqueVehicleImageArgs {
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleImageWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpdateManyVehicleImageArgs {
+    @Field(() => VehicleImageUpdateManyMutationInput, {nullable:false})
+    @Type(() => VehicleImageUpdateManyMutationInput)
+    data!: InstanceType<typeof VehicleImageUpdateManyMutationInput>;
+    @Field(() => VehicleImageWhereInput, {nullable:true})
+    @Type(() => VehicleImageWhereInput)
+    where?: InstanceType<typeof VehicleImageWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class UpdateOneVehicleImageArgs {
+    @Field(() => VehicleImageUpdateInput, {nullable:false})
+    @Type(() => VehicleImageUpdateInput)
+    data!: InstanceType<typeof VehicleImageUpdateInput>;
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleImageWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpsertOneVehicleImageArgs {
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleImageWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+    @Field(() => VehicleImageCreateInput, {nullable:false})
+    @Type(() => VehicleImageCreateInput)
+    create!: InstanceType<typeof VehicleImageCreateInput>;
+    @Field(() => VehicleImageUpdateInput, {nullable:false})
+    @Type(() => VehicleImageUpdateInput)
+    update!: InstanceType<typeof VehicleImageUpdateInput>;
+}
+
+@ArgsType()
+export class VehicleImageAggregateArgs {
+    @Field(() => VehicleImageWhereInput, {nullable:true})
+    @Type(() => VehicleImageWhereInput)
+    where?: InstanceType<typeof VehicleImageWhereInput>;
+    @Field(() => [VehicleImageOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<VehicleImageOrderByWithRelationInput>;
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => VehicleImageCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof VehicleImageCountAggregateInput>;
+    @Field(() => VehicleImageMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof VehicleImageMinAggregateInput>;
+    @Field(() => VehicleImageMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof VehicleImageMaxAggregateInput>;
+}
+
+@InputType()
+export class VehicleImageCountAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverVehicleId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    _all?: true;
+}
+
+@ObjectType()
+export class VehicleImageCountAggregate {
+    @Field(() => Int, {nullable:false})
+    id!: number;
+    @Field(() => Int, {nullable:false})
+    driverVehicleId!: number;
+    @Field(() => Int, {nullable:false})
+    fileId!: number;
+    @Field(() => Int, {nullable:false})
+    createdAt!: number;
+    @Field(() => Int, {nullable:false})
+    updatedAt!: number;
+    @Field(() => Int, {nullable:false})
+    _all!: number;
+}
+
+@InputType()
+export class VehicleImageCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class VehicleImageCreateManyDriverVehicleInputEnvelope {
+    @Field(() => [VehicleImageCreateManyDriverVehicleInput], {nullable:false})
+    @Type(() => VehicleImageCreateManyDriverVehicleInput)
+    data!: Array<VehicleImageCreateManyDriverVehicleInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class VehicleImageCreateManyDriverVehicleInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleImageCreateManyFileInputEnvelope {
+    @Field(() => [VehicleImageCreateManyFileInput], {nullable:false})
+    @Type(() => VehicleImageCreateManyFileInput)
+    data!: Array<VehicleImageCreateManyFileInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class VehicleImageCreateManyFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleImageCreateManyInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleImageCreateNestedManyWithoutDriverVehicleInput {
+    @Field(() => [VehicleImageCreateWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageCreateWithoutDriverVehicleInput)
+    create?: Array<VehicleImageCreateWithoutDriverVehicleInput>;
+    @Field(() => [VehicleImageCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageCreateOrConnectWithoutDriverVehicleInput)
+    connectOrCreate?: Array<VehicleImageCreateOrConnectWithoutDriverVehicleInput>;
+    @Field(() => VehicleImageCreateManyDriverVehicleInputEnvelope, {nullable:true})
+    @Type(() => VehicleImageCreateManyDriverVehicleInputEnvelope)
+    createMany?: InstanceType<typeof VehicleImageCreateManyDriverVehicleInputEnvelope>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class VehicleImageCreateNestedManyWithoutFileInput {
+    @Field(() => [VehicleImageCreateWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageCreateWithoutFileInput)
+    create?: Array<VehicleImageCreateWithoutFileInput>;
+    @Field(() => [VehicleImageCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<VehicleImageCreateOrConnectWithoutFileInput>;
+    @Field(() => VehicleImageCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => VehicleImageCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof VehicleImageCreateManyFileInputEnvelope>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class VehicleImageCreateOrConnectWithoutDriverVehicleInput {
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleImageWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+    @Field(() => VehicleImageCreateWithoutDriverVehicleInput, {nullable:false})
+    @Type(() => VehicleImageCreateWithoutDriverVehicleInput)
+    create!: InstanceType<typeof VehicleImageCreateWithoutDriverVehicleInput>;
+}
+
+@InputType()
+export class VehicleImageCreateOrConnectWithoutFileInput {
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleImageWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+    @Field(() => VehicleImageCreateWithoutFileInput, {nullable:false})
+    @Type(() => VehicleImageCreateWithoutFileInput)
+    create!: InstanceType<typeof VehicleImageCreateWithoutFileInput>;
+}
+
+@InputType()
+export class VehicleImageCreateWithoutDriverVehicleInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => FileCreateNestedOneWithoutVehicleImageInput, {nullable:false})
+    file!: InstanceType<typeof FileCreateNestedOneWithoutVehicleImageInput>;
+}
+
+@InputType()
+export class VehicleImageCreateWithoutFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => DriverVehicleCreateNestedOneWithoutVehicleImageInput, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleCreateNestedOneWithoutVehicleImageInput>;
+}
+
+@InputType()
+export class VehicleImageCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => FileCreateNestedOneWithoutVehicleImageInput, {nullable:false})
+    file!: InstanceType<typeof FileCreateNestedOneWithoutVehicleImageInput>;
+    @Field(() => DriverVehicleCreateNestedOneWithoutVehicleImageInput, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleCreateNestedOneWithoutVehicleImageInput>;
+}
+
+@ArgsType()
+export class VehicleImageGroupByArgs {
+    @Field(() => VehicleImageWhereInput, {nullable:true})
+    @Type(() => VehicleImageWhereInput)
+    where?: InstanceType<typeof VehicleImageWhereInput>;
+    @Field(() => [VehicleImageOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<VehicleImageOrderByWithAggregationInput>;
+    @Field(() => [VehicleImageScalarFieldEnum], {nullable:false})
+    by!: Array<`${VehicleImageScalarFieldEnum}`>;
+    @Field(() => VehicleImageScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof VehicleImageScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => VehicleImageCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof VehicleImageCountAggregateInput>;
+    @Field(() => VehicleImageMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof VehicleImageMinAggregateInput>;
+    @Field(() => VehicleImageMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof VehicleImageMaxAggregateInput>;
+}
+
+@ObjectType()
+export class VehicleImageGroupBy {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => VehicleImageCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof VehicleImageCountAggregate>;
+    @Field(() => VehicleImageMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof VehicleImageMinAggregate>;
+    @Field(() => VehicleImageMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof VehicleImageMaxAggregate>;
+}
+
+@InputType()
+export class VehicleImageListRelationFilter {
+    @Field(() => VehicleImageWhereInput, {nullable:true})
+    every?: InstanceType<typeof VehicleImageWhereInput>;
+    @Field(() => VehicleImageWhereInput, {nullable:true})
+    some?: InstanceType<typeof VehicleImageWhereInput>;
+    @Field(() => VehicleImageWhereInput, {nullable:true})
+    none?: InstanceType<typeof VehicleImageWhereInput>;
+}
+
+@InputType()
+export class VehicleImageMaxAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverVehicleId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class VehicleImageMaxAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => String, {nullable:true})
+    fileId?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleImageMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class VehicleImageMinAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverVehicleId?: true;
+    @Field(() => Boolean, {nullable:true})
+    fileId?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class VehicleImageMinAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    driverVehicleId?: string;
+    @Field(() => String, {nullable:true})
+    fileId?: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleImageMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class VehicleImageOrderByRelationAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    _count?: `${SortOrder}`;
+}
+
+@InputType()
+export class VehicleImageOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => VehicleImageCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof VehicleImageCountOrderByAggregateInput>;
+    @Field(() => VehicleImageMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof VehicleImageMaxOrderByAggregateInput>;
+    @Field(() => VehicleImageMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof VehicleImageMinOrderByAggregateInput>;
+}
+
+@InputType()
+export class VehicleImageOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    fileId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => FileOrderByWithRelationInput, {nullable:true})
+    file?: InstanceType<typeof FileOrderByWithRelationInput>;
+    @Field(() => DriverVehicleOrderByWithRelationInput, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleOrderByWithRelationInput>;
+}
+
+@InputType()
+export class VehicleImageScalarWhereWithAggregatesInput {
+    @Field(() => [VehicleImageScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<VehicleImageScalarWhereWithAggregatesInput>;
+    @Field(() => [VehicleImageScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<VehicleImageScalarWhereWithAggregatesInput>;
+    @Field(() => [VehicleImageScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<VehicleImageScalarWhereWithAggregatesInput>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
+}
+
+@InputType()
+export class VehicleImageScalarWhereInput {
+    @Field(() => [VehicleImageScalarWhereInput], {nullable:true})
+    AND?: Array<VehicleImageScalarWhereInput>;
+    @Field(() => [VehicleImageScalarWhereInput], {nullable:true})
+    OR?: Array<VehicleImageScalarWhereInput>;
+    @Field(() => [VehicleImageScalarWhereInput], {nullable:true})
+    NOT?: Array<VehicleImageScalarWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+}
+
+@InputType()
+export class VehicleImageUncheckedCreateNestedManyWithoutDriverVehicleInput {
+    @Field(() => [VehicleImageCreateWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageCreateWithoutDriverVehicleInput)
+    create?: Array<VehicleImageCreateWithoutDriverVehicleInput>;
+    @Field(() => [VehicleImageCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageCreateOrConnectWithoutDriverVehicleInput)
+    connectOrCreate?: Array<VehicleImageCreateOrConnectWithoutDriverVehicleInput>;
+    @Field(() => VehicleImageCreateManyDriverVehicleInputEnvelope, {nullable:true})
+    @Type(() => VehicleImageCreateManyDriverVehicleInputEnvelope)
+    createMany?: InstanceType<typeof VehicleImageCreateManyDriverVehicleInputEnvelope>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class VehicleImageUncheckedCreateNestedManyWithoutFileInput {
+    @Field(() => [VehicleImageCreateWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageCreateWithoutFileInput)
+    create?: Array<VehicleImageCreateWithoutFileInput>;
+    @Field(() => [VehicleImageCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<VehicleImageCreateOrConnectWithoutFileInput>;
+    @Field(() => VehicleImageCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => VehicleImageCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof VehicleImageCreateManyFileInputEnvelope>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class VehicleImageUncheckedCreateWithoutDriverVehicleInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleImageUncheckedCreateWithoutFileInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleImageUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class VehicleImageUncheckedUpdateManyWithoutDriverVehicleNestedInput {
+    @Field(() => [VehicleImageCreateWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageCreateWithoutDriverVehicleInput)
+    create?: Array<VehicleImageCreateWithoutDriverVehicleInput>;
+    @Field(() => [VehicleImageCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageCreateOrConnectWithoutDriverVehicleInput)
+    connectOrCreate?: Array<VehicleImageCreateOrConnectWithoutDriverVehicleInput>;
+    @Field(() => [VehicleImageUpsertWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageUpsertWithWhereUniqueWithoutDriverVehicleInput)
+    upsert?: Array<VehicleImageUpsertWithWhereUniqueWithoutDriverVehicleInput>;
+    @Field(() => VehicleImageCreateManyDriverVehicleInputEnvelope, {nullable:true})
+    @Type(() => VehicleImageCreateManyDriverVehicleInputEnvelope)
+    createMany?: InstanceType<typeof VehicleImageCreateManyDriverVehicleInputEnvelope>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageUpdateWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageUpdateWithWhereUniqueWithoutDriverVehicleInput)
+    update?: Array<VehicleImageUpdateWithWhereUniqueWithoutDriverVehicleInput>;
+    @Field(() => [VehicleImageUpdateManyWithWhereWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageUpdateManyWithWhereWithoutDriverVehicleInput)
+    updateMany?: Array<VehicleImageUpdateManyWithWhereWithoutDriverVehicleInput>;
+    @Field(() => [VehicleImageScalarWhereInput], {nullable:true})
+    @Type(() => VehicleImageScalarWhereInput)
+    deleteMany?: Array<VehicleImageScalarWhereInput>;
+}
+
+@InputType()
+export class VehicleImageUncheckedUpdateManyWithoutDriverVehicleInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleImageUncheckedUpdateManyWithoutFileNestedInput {
+    @Field(() => [VehicleImageCreateWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageCreateWithoutFileInput)
+    create?: Array<VehicleImageCreateWithoutFileInput>;
+    @Field(() => [VehicleImageCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<VehicleImageCreateOrConnectWithoutFileInput>;
+    @Field(() => [VehicleImageUpsertWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageUpsertWithWhereUniqueWithoutFileInput)
+    upsert?: Array<VehicleImageUpsertWithWhereUniqueWithoutFileInput>;
+    @Field(() => VehicleImageCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => VehicleImageCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof VehicleImageCreateManyFileInputEnvelope>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageUpdateWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageUpdateWithWhereUniqueWithoutFileInput)
+    update?: Array<VehicleImageUpdateWithWhereUniqueWithoutFileInput>;
+    @Field(() => [VehicleImageUpdateManyWithWhereWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageUpdateManyWithWhereWithoutFileInput)
+    updateMany?: Array<VehicleImageUpdateManyWithWhereWithoutFileInput>;
+    @Field(() => [VehicleImageScalarWhereInput], {nullable:true})
+    @Type(() => VehicleImageScalarWhereInput)
+    deleteMany?: Array<VehicleImageScalarWhereInput>;
+}
+
+@InputType()
+export class VehicleImageUncheckedUpdateManyWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleImageUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleImageUncheckedUpdateWithoutDriverVehicleInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleImageUncheckedUpdateWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleImageUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    fileId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleImageUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class VehicleImageUpdateManyWithWhereWithoutDriverVehicleInput {
+    @Field(() => VehicleImageScalarWhereInput, {nullable:false})
+    @Type(() => VehicleImageScalarWhereInput)
+    where!: InstanceType<typeof VehicleImageScalarWhereInput>;
+    @Field(() => VehicleImageUpdateManyMutationInput, {nullable:false})
+    @Type(() => VehicleImageUpdateManyMutationInput)
+    data!: InstanceType<typeof VehicleImageUpdateManyMutationInput>;
+}
+
+@InputType()
+export class VehicleImageUpdateManyWithWhereWithoutFileInput {
+    @Field(() => VehicleImageScalarWhereInput, {nullable:false})
+    @Type(() => VehicleImageScalarWhereInput)
+    where!: InstanceType<typeof VehicleImageScalarWhereInput>;
+    @Field(() => VehicleImageUpdateManyMutationInput, {nullable:false})
+    @Type(() => VehicleImageUpdateManyMutationInput)
+    data!: InstanceType<typeof VehicleImageUpdateManyMutationInput>;
+}
+
+@InputType()
+export class VehicleImageUpdateManyWithoutDriverVehicleNestedInput {
+    @Field(() => [VehicleImageCreateWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageCreateWithoutDriverVehicleInput)
+    create?: Array<VehicleImageCreateWithoutDriverVehicleInput>;
+    @Field(() => [VehicleImageCreateOrConnectWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageCreateOrConnectWithoutDriverVehicleInput)
+    connectOrCreate?: Array<VehicleImageCreateOrConnectWithoutDriverVehicleInput>;
+    @Field(() => [VehicleImageUpsertWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageUpsertWithWhereUniqueWithoutDriverVehicleInput)
+    upsert?: Array<VehicleImageUpsertWithWhereUniqueWithoutDriverVehicleInput>;
+    @Field(() => VehicleImageCreateManyDriverVehicleInputEnvelope, {nullable:true})
+    @Type(() => VehicleImageCreateManyDriverVehicleInputEnvelope)
+    createMany?: InstanceType<typeof VehicleImageCreateManyDriverVehicleInputEnvelope>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageUpdateWithWhereUniqueWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageUpdateWithWhereUniqueWithoutDriverVehicleInput)
+    update?: Array<VehicleImageUpdateWithWhereUniqueWithoutDriverVehicleInput>;
+    @Field(() => [VehicleImageUpdateManyWithWhereWithoutDriverVehicleInput], {nullable:true})
+    @Type(() => VehicleImageUpdateManyWithWhereWithoutDriverVehicleInput)
+    updateMany?: Array<VehicleImageUpdateManyWithWhereWithoutDriverVehicleInput>;
+    @Field(() => [VehicleImageScalarWhereInput], {nullable:true})
+    @Type(() => VehicleImageScalarWhereInput)
+    deleteMany?: Array<VehicleImageScalarWhereInput>;
+}
+
+@InputType()
+export class VehicleImageUpdateManyWithoutFileNestedInput {
+    @Field(() => [VehicleImageCreateWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageCreateWithoutFileInput)
+    create?: Array<VehicleImageCreateWithoutFileInput>;
+    @Field(() => [VehicleImageCreateOrConnectWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageCreateOrConnectWithoutFileInput)
+    connectOrCreate?: Array<VehicleImageCreateOrConnectWithoutFileInput>;
+    @Field(() => [VehicleImageUpsertWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageUpsertWithWhereUniqueWithoutFileInput)
+    upsert?: Array<VehicleImageUpsertWithWhereUniqueWithoutFileInput>;
+    @Field(() => VehicleImageCreateManyFileInputEnvelope, {nullable:true})
+    @Type(() => VehicleImageCreateManyFileInputEnvelope)
+    createMany?: InstanceType<typeof VehicleImageCreateManyFileInputEnvelope>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageWhereUniqueInput], {nullable:true})
+    @Type(() => VehicleImageWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>>;
+    @Field(() => [VehicleImageUpdateWithWhereUniqueWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageUpdateWithWhereUniqueWithoutFileInput)
+    update?: Array<VehicleImageUpdateWithWhereUniqueWithoutFileInput>;
+    @Field(() => [VehicleImageUpdateManyWithWhereWithoutFileInput], {nullable:true})
+    @Type(() => VehicleImageUpdateManyWithWhereWithoutFileInput)
+    updateMany?: Array<VehicleImageUpdateManyWithWhereWithoutFileInput>;
+    @Field(() => [VehicleImageScalarWhereInput], {nullable:true})
+    @Type(() => VehicleImageScalarWhereInput)
+    deleteMany?: Array<VehicleImageScalarWhereInput>;
+}
+
+@InputType()
+export class VehicleImageUpdateWithWhereUniqueWithoutDriverVehicleInput {
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleImageWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+    @Field(() => VehicleImageUpdateWithoutDriverVehicleInput, {nullable:false})
+    @Type(() => VehicleImageUpdateWithoutDriverVehicleInput)
+    data!: InstanceType<typeof VehicleImageUpdateWithoutDriverVehicleInput>;
+}
+
+@InputType()
+export class VehicleImageUpdateWithWhereUniqueWithoutFileInput {
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleImageWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+    @Field(() => VehicleImageUpdateWithoutFileInput, {nullable:false})
+    @Type(() => VehicleImageUpdateWithoutFileInput)
+    data!: InstanceType<typeof VehicleImageUpdateWithoutFileInput>;
+}
+
+@InputType()
+export class VehicleImageUpdateWithoutDriverVehicleInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneRequiredWithoutVehicleImageNestedInput, {nullable:true})
+    file?: InstanceType<typeof FileUpdateOneRequiredWithoutVehicleImageNestedInput>;
+}
+
+@InputType()
+export class VehicleImageUpdateWithoutFileInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DriverVehicleUpdateOneWithoutVehicleImageNestedInput, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleUpdateOneWithoutVehicleImageNestedInput>;
+}
+
+@InputType()
+export class VehicleImageUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneRequiredWithoutVehicleImageNestedInput, {nullable:true})
+    file?: InstanceType<typeof FileUpdateOneRequiredWithoutVehicleImageNestedInput>;
+    @Field(() => DriverVehicleUpdateOneWithoutVehicleImageNestedInput, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleUpdateOneWithoutVehicleImageNestedInput>;
+}
+
+@InputType()
+export class VehicleImageUpsertWithWhereUniqueWithoutDriverVehicleInput {
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleImageWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+    @Field(() => VehicleImageUpdateWithoutDriverVehicleInput, {nullable:false})
+    @Type(() => VehicleImageUpdateWithoutDriverVehicleInput)
+    update!: InstanceType<typeof VehicleImageUpdateWithoutDriverVehicleInput>;
+    @Field(() => VehicleImageCreateWithoutDriverVehicleInput, {nullable:false})
+    @Type(() => VehicleImageCreateWithoutDriverVehicleInput)
+    create!: InstanceType<typeof VehicleImageCreateWithoutDriverVehicleInput>;
+}
+
+@InputType()
+export class VehicleImageUpsertWithWhereUniqueWithoutFileInput {
+    @Field(() => VehicleImageWhereUniqueInput, {nullable:false})
+    @Type(() => VehicleImageWhereUniqueInput)
+    where!: Prisma.AtLeast<VehicleImageWhereUniqueInput, 'id'>;
+    @Field(() => VehicleImageUpdateWithoutFileInput, {nullable:false})
+    @Type(() => VehicleImageUpdateWithoutFileInput)
+    update!: InstanceType<typeof VehicleImageUpdateWithoutFileInput>;
+    @Field(() => VehicleImageCreateWithoutFileInput, {nullable:false})
+    @Type(() => VehicleImageCreateWithoutFileInput)
+    create!: InstanceType<typeof VehicleImageCreateWithoutFileInput>;
+}
+
+@InputType()
+export class VehicleImageWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => [VehicleImageWhereInput], {nullable:true})
+    AND?: Array<VehicleImageWhereInput>;
+    @Field(() => [VehicleImageWhereInput], {nullable:true})
+    OR?: Array<VehicleImageWhereInput>;
+    @Field(() => [VehicleImageWhereInput], {nullable:true})
+    NOT?: Array<VehicleImageWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => FileScalarRelationFilter, {nullable:true})
+    file?: InstanceType<typeof FileScalarRelationFilter>;
+    @Field(() => DriverVehicleNullableScalarRelationFilter, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleNullableScalarRelationFilter>;
+}
+
+@InputType()
+export class VehicleImageWhereInput {
+    @Field(() => [VehicleImageWhereInput], {nullable:true})
+    AND?: Array<VehicleImageWhereInput>;
+    @Field(() => [VehicleImageWhereInput], {nullable:true})
+    OR?: Array<VehicleImageWhereInput>;
+    @Field(() => [VehicleImageWhereInput], {nullable:true})
+    NOT?: Array<VehicleImageWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    driverVehicleId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    fileId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => FileScalarRelationFilter, {nullable:true})
+    file?: InstanceType<typeof FileScalarRelationFilter>;
+    @Field(() => DriverVehicleNullableScalarRelationFilter, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicleNullableScalarRelationFilter>;
+}
+
+@ObjectType()
+export class VehicleImage {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    driverVehicleId!: string;
+    @Field(() => String, {nullable:false})
+    fileId!: string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
+    @Field(() => Date, {nullable:true})
+    updatedAt!: Date | null;
+    @Field(() => File, {nullable:false})
+    file?: InstanceType<typeof File>;
+    @Field(() => DriverVehicle, {nullable:true})
+    DriverVehicle?: InstanceType<typeof DriverVehicle> | null;
 }
 
 @ObjectType()
@@ -10930,8 +14238,8 @@ export class VehicleTypeCreateWithoutVehiclesInput {
     id?: string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => UserPreferenceCreateNestedManyWithoutPreferedVehiculesInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedManyWithoutPreferedVehiculesInput>;
+    @Field(() => UserPreferenceCreateNestedManyWithoutPreferedveliclesInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedManyWithoutPreferedveliclesInput>;
 }
 
 @InputType()
@@ -10942,8 +14250,8 @@ export class VehicleTypeCreateInput {
     name!: string;
     @Field(() => DriverVehicleCreateNestedManyWithoutTypeInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutTypeInput>;
-    @Field(() => UserPreferenceCreateNestedManyWithoutPreferedVehiculesInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedManyWithoutPreferedVehiculesInput>;
+    @Field(() => UserPreferenceCreateNestedManyWithoutPreferedveliclesInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedManyWithoutPreferedveliclesInput>;
 }
 
 @ArgsType()
@@ -11138,8 +14446,8 @@ export class VehicleTypeUncheckedCreateWithoutVehiclesInput {
     id?: string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => UserPreferenceUncheckedCreateNestedManyWithoutPreferedVehiculesInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedManyWithoutPreferedVehiculesInput>;
+    @Field(() => UserPreferenceUncheckedCreateNestedManyWithoutPreferedveliclesInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedManyWithoutPreferedveliclesInput>;
 }
 
 @InputType()
@@ -11150,8 +14458,8 @@ export class VehicleTypeUncheckedCreateInput {
     name!: string;
     @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutTypeInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutTypeInput>;
-    @Field(() => UserPreferenceUncheckedCreateNestedManyWithoutPreferedVehiculesInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedManyWithoutPreferedVehiculesInput>;
+    @Field(() => UserPreferenceUncheckedCreateNestedManyWithoutPreferedveliclesInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedManyWithoutPreferedveliclesInput>;
 }
 
 @InputType()
@@ -11220,8 +14528,8 @@ export class VehicleTypeUncheckedUpdateWithoutVehiclesInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => UserPreferenceUncheckedUpdateManyWithoutPreferedVehiculesNestedInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateManyWithoutPreferedVehiculesNestedInput>;
+    @Field(() => UserPreferenceUncheckedUpdateManyWithoutPreferedveliclesNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateManyWithoutPreferedveliclesNestedInput>;
 }
 
 @InputType()
@@ -11232,8 +14540,8 @@ export class VehicleTypeUncheckedUpdateInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => DriverVehicleUncheckedUpdateManyWithoutTypeNestedInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutTypeNestedInput>;
-    @Field(() => UserPreferenceUncheckedUpdateManyWithoutPreferedVehiculesNestedInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateManyWithoutPreferedVehiculesNestedInput>;
+    @Field(() => UserPreferenceUncheckedUpdateManyWithoutPreferedveliclesNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateManyWithoutPreferedveliclesNestedInput>;
 }
 
 @InputType()
@@ -11343,8 +14651,8 @@ export class VehicleTypeUpdateWithoutVehiclesInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => UserPreferenceUpdateManyWithoutPreferedVehiculesNestedInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUpdateManyWithoutPreferedVehiculesNestedInput>;
+    @Field(() => UserPreferenceUpdateManyWithoutPreferedveliclesNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUpdateManyWithoutPreferedveliclesNestedInput>;
 }
 
 @InputType()
@@ -11355,8 +14663,8 @@ export class VehicleTypeUpdateInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => DriverVehicleUpdateManyWithoutTypeNestedInput, {nullable:true})
     vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutTypeNestedInput>;
-    @Field(() => UserPreferenceUpdateManyWithoutPreferedVehiculesNestedInput, {nullable:true})
-    UserPreference?: InstanceType<typeof UserPreferenceUpdateManyWithoutPreferedVehiculesNestedInput>;
+    @Field(() => UserPreferenceUpdateManyWithoutPreferedveliclesNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUpdateManyWithoutPreferedveliclesNestedInput>;
 }
 
 @InputType()

@@ -16,7 +16,15 @@ export class UserPreferenceUpsertInput {
   createdAt?: Date | string;
   @Field(() => Date, { nullable: true })
   updatedAt?: Date | string;
+  @Field(() => Boolean, { nullable: true })
+  activateSmsNotifications?: boolean;
+  @Field(() => Boolean, { nullable: true })
+  activateEmailNotifications?: boolean;
+  @Field(() => Boolean, { nullable: true })
+  cguAccepted?: boolean;
+  @Field(() => Boolean, { nullable: true })
+  privacyPolicyAccepted?: boolean;
 
   @Field(() => [String], { nullable: true })
-  vehicleTypeIds?: string[]; // Assuming this is a list of vehicle type IDs
+  preferedVehicleTypeIds?: string[]; // Assuming this is a list of vehicle type IDs
 }

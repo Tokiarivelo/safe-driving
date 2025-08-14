@@ -1,5 +1,10 @@
 // s3.service.ts
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   S3Client,
@@ -11,6 +16,14 @@ import {
   HeadObjectCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { v4 as uuidv4 } from 'uuid';
+import {
+  CompleteUploadOutput,
+  PresignedUrl,
+} from 'src/dtos/upload/upload.output';
+import { FileMetaInput } from 'src/dtos/upload/upload.input';
+import { PrismaService } from 'src/prisma-module/prisma.service';
+import { ImageType } from 'src/dtos/@generated';
 
 @Injectable()
 export class S3Service {
@@ -19,8 +32,12 @@ export class S3Service {
   private bucket: string;
   private endpoint: string;
   private bucketEnsured = false;
+  private presignExpires = 300; // 5 minutes
 
-  constructor(private readonly config: ConfigService) {
+  constructor(
+    private readonly config: ConfigService,
+    private readonly prisma: PrismaService,
+  ) {
     const endpoint =
       this.config.get<string>('S3_ENDPOINT') || 'http://localhost:4566';
     this.bucket = this.config.get<string>('S3_BUCKET') || 'safe-driving';
@@ -85,7 +102,7 @@ export class S3Service {
     const cleanPath = path.replace(/^\/+|\/+$/g, '');
     const key =
       (cleanPath ? `${cleanPath}/` : '') +
-      `${Date.now()}-${crypto.randomUUID()}-${file.originalname}`;
+      `${Date.now()}-${uuidv4()}-${file.originalname}`;
 
     await this.ensureBucketExists();
 
@@ -106,32 +123,201 @@ export class S3Service {
     return publicUrl;
   }
 
-  async list(bucket: string) {
-    const resp = await this.client.send(
-      new ListObjectsV2Command({ Bucket: bucket }),
-    );
-    return resp.Contents || [];
-  }
-
   async ensureBucket(bucket: string): Promise<void> {
     this.bucket = bucket;
     await this.ensureBucketExists();
   }
 
-  async getPresignedPut(key: string, contentType: string, expiresIn = 300) {
+  // génère une key unique ( recommande stocker cette key en DB )
+  makeKey(
+    userId: string,
+    originalName: string,
+    type: ImageType,
+    uniqueId?: string,
+  ) {
+    const uid = uniqueId ?? uuidv4();
+    const safe = encodeURIComponent(originalName).slice(0, 120);
+    return `users/${userId}/${type}/${uid}-${Date.now()}-${safe}`;
+  }
+
+  async createPresignedUrl(
+    key: string,
+    contentType: string,
+    expiresIn = this.presignExpires,
+  ): Promise<string> {
     const cmd = new PutObjectCommand({
       Bucket: this.bucket,
       Key: key,
       ContentType: contentType,
     });
     const url = await getSignedUrl(this.client, cmd, { expiresIn });
-    return { url, key, expiresIn };
+    return url;
+  }
+
+  // génération batch : input = [{ originalName, contentType, uniqueId? }]
+  async createBatchPresignedUrls(
+    userId: string,
+    type: ImageType,
+    files: FileMetaInput[],
+  ): Promise<PresignedUrl[]> {
+    if (!files || files.length === 0)
+      throw new BadRequestException('files is required');
+
+    // Optionnel : vérifier quota ici (ex: limit 10 fichiers)
+    if (files.length > 20)
+      throw new BadRequestException('Too many files at once (max 20)');
+
+    const results = await Promise.all(
+      files.map(async (f) => {
+        const key = this.makeKey(userId, f.originalName, type, f.uniqueId);
+        const putCmd = new PutObjectCommand({
+          Bucket: this.bucket,
+          Key: key,
+          ContentType: f.contentType,
+        });
+        const url = await this.createPresignedUrl(key, f.contentType);
+
+        // create DB record (pending)
+        await this.prisma.file.create({
+          data: {
+            key,
+            userId: userId,
+            originalName: f.originalName,
+            contentType: f.contentType,
+            status: 'pending',
+            type,
+          },
+        });
+
+        return { url, key, expiresIn: this.presignExpires };
+      }),
+    );
+
+    return results; // array of { url, key, expiresIn }
+  }
+
+  async completeUpload(
+    userId: string,
+    key: string,
+    type: ImageType,
+  ): Promise<CompleteUploadOutput> {
+    // Basic authorization check: the key must belong to the user prefix
+    if (!key.startsWith(`users/${userId}/`)) {
+      throw new ForbiddenException('Key does not belong to user');
+    }
+
+    // HeadObject to get size/etag
+    const head = await this.client.send(
+      new HeadObjectCommand({ Bucket: this.bucket, Key: key }),
+    );
+
+    // Update DB: status uploaded, size, etag, uploadedAt
+    const updated = await this.prisma.file.updateMany({
+      where: { key, userId },
+      data: {
+        status: 'uploaded',
+        size: head.ContentLength ? Number(head.ContentLength) : undefined,
+        etag: head.ETag,
+        contentType: head.ContentType,
+      },
+    });
+
+    // ensure at least one record updated
+    if (updated.count === 0) {
+      // no DB record found — you may decide to create one instead
+      // create fallback (optional)
+      await this.prisma.file.create({
+        data: {
+          key,
+          type,
+          userId,
+          originalName: key.split('/').pop() || key,
+          contentType: head.ContentType || 'application/octet-stream',
+          status: 'uploaded',
+          size: head.ContentLength ? Number(head.ContentLength) : undefined,
+          etag: head.ETag,
+        },
+      });
+    }
+
+    return {
+      key,
+      size: head.ContentLength ? Number(head.ContentLength) : null,
+      etag: head.ETag || null,
+      contentType: head.ContentType || null,
+    };
+  }
+
+  async completeUploadBulk(userId: string, keys: string[], type: ImageType) {
+    if (!Array.isArray(keys) || keys.length === 0)
+      throw new BadRequestException('keys required');
+    // limiter le nombre pour éviter abus
+    if (keys.length > 50) throw new BadRequestException('Too many keys');
+
+    const responses = await Promise.all(
+      keys.map(async (key) => {
+        if (!key.startsWith(`users/${userId}/`)) {
+          // Ne pas révéler trop d'infos; retourne une erreur simple pour la clé
+          return { key, error: 'forbidden' } as any;
+        }
+        try {
+          const head = await this.client.send(
+            new HeadObjectCommand({ Bucket: this.bucket, Key: key }),
+          );
+          // mettre à jour l'enregistrement (ou en créer un si absent)
+          const updated = await this.prisma.file.updateMany({
+            where: { key, userId },
+            data: {
+              status: 'uploaded',
+              size: head.ContentLength ? Number(head.ContentLength) : undefined,
+              etag: head.ETag,
+
+              contentType: head.ContentType,
+            },
+          });
+          if (updated.count === 0) {
+            // fallback : créer
+            await this.prisma.file.create({
+              data: {
+                key,
+                userId,
+                type,
+                originalName: key.split('/').pop() || key,
+                contentType: head.ContentType || 'application/octet-stream',
+                status: 'uploaded',
+                size: head.ContentLength
+                  ? Number(head.ContentLength)
+                  : undefined,
+                etag: head.ETag,
+              },
+            });
+          }
+
+          return {
+            key,
+            size: head.ContentLength ? Number(head.ContentLength) : null,
+            etag: head.ETag || null,
+            contentType: head.ContentType || null,
+          };
+        } catch (err) {
+          this.logger.warn(
+            `completeUpload failed for ${key}: ${err?.message || err}`,
+          );
+          return { key, error: err?.message || 'headobject_failed' } as any;
+        }
+      }),
+    );
+
+    return responses;
   }
 
   async deleteObject(key: string) {
-    await this.client.send(
-      new DeleteObjectCommand({ Bucket: this.bucket, Key: key }),
-    );
+    return await this.client
+      .send(new DeleteObjectCommand({ Bucket: this.bucket, Key: key }))
+      .then(() => {
+        this.logger.log(`Object ${key} deleted successfully.`);
+        return true;
+      });
   }
 
   async headObjectExists(key: string) {
@@ -145,9 +331,11 @@ export class S3Service {
     }
   }
 
-  // utilitaires : makeKey(userId, type, originalName)
-  makeKey(userId: string, uniqueId: string, originalName: string) {
-    const safeName = encodeURIComponent(originalName);
-    return `users/${userId}/${uniqueId}-${Date.now()}-${safeName}`;
+  // liste les objets dans le bucket
+  async listObjects(bucket: string) {
+    // await this.ensureBucketExists();
+    const command = new ListObjectsV2Command({ Bucket: bucket });
+    const response = await this.client.send(command);
+    return response.Contents || [];
   }
 }

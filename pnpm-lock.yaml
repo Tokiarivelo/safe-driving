@@ -131,6 +131,9 @@ importers:
       ts-morph:
         specifier: ^25.0.1
         version: 25.0.1
+      uuid:
+        specifier: ^11.1.0
+        version: 11.1.0
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.1

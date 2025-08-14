@@ -53,7 +53,7 @@ export class UserPreferenceService {
     userId: string,
     dto: UserPreferenceUpsertInput,
   ): Promise<UserPreference> {
-    const { vehicleTypeIds, ...rest } = dto;
+    const { preferedVehicleTypeIds, ...rest } = dto;
 
     const data = this.sanitizeInput(rest);
 
@@ -61,14 +61,17 @@ export class UserPreferenceService {
     const relationUpdate: any = {};
     const relationCreate: any = {};
 
-    if (Array.isArray(vehicleTypeIds) && vehicleTypeIds.length > 0) {
+    if (
+      Array.isArray(preferedVehicleTypeIds) &&
+      preferedVehicleTypeIds.length > 0
+    ) {
       // Remplace complètement la liste par les ids fournis
-      relationUpdate.preferedVehicules = {
-        set: vehicleTypeIds.map((id) => ({ id })),
+      relationUpdate.preferedvelicles = {
+        set: preferedVehicleTypeIds.map((id) => ({ id })),
       };
       // Pour la création initiale on connecte (ou on set).
-      relationCreate.preferedVehicules = {
-        connect: vehicleTypeIds.map((id) => ({ id })),
+      relationCreate.preferedvelicles = {
+        connect: preferedVehicleTypeIds.map((id) => ({ id })),
       };
     }
     // Si ni vehicleTypeIds ni vehicleTypeNames -> on ne touche pas à la relation
@@ -84,7 +87,7 @@ export class UserPreferenceService {
         user: { connect: { id: userId } },
         ...relationCreate,
       },
-      include: { preferedVehicules: true }, // retourne la liste mise à jour
+      include: { preferedvelicles: true }, // retourne la liste mise à jour
     });
 
     return result;
@@ -95,8 +98,6 @@ export class UserPreferenceService {
     const userPreference = await this.prisma.userPreference.findUnique({
       where: { userId },
     });
-
-    console.log('userPreference :>> ', userPreference);
 
     return userPreference;
   }

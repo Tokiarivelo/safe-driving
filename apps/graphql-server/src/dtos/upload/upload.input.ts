@@ -2,8 +2,11 @@ import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class UploadedFileRefInput {
-  @Field() uniqueId: string;
-  @Field() url: string;
-  @Field() type: string; // 'image' | 'document'
-  @Field({ nullable: true }) name?: string;
+  @Field() key: string;
+}
+@InputType()
+export class FileMetaInput {
+  @Field({ nullable: true }) uniqueId?: string;
+  @Field() contentType: string;
+  @Field() originalName: string;
 }

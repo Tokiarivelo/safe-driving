@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { S3Service } from './s3.service';
-import { S3Resolver } from './s3.resolver';
+import { PrismaService } from 'src/prisma-module/prisma.service';
 
 @Module({
-  providers: [S3Service, S3Resolver],
+  providers: [S3Service, PrismaService],
   exports: [S3Service],
 })
 export class S3Module {}

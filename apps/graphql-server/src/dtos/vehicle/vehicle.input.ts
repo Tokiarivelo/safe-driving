@@ -33,8 +33,8 @@ export class UpdateDriverVehicleInput {
 
   // uniqueIds des fichiers DB à supprimer (images/documents)
   @Field(() => [String], { nullable: true })
-  deleteDocumentsUniqueIds?: string[];
+  deleteDocumentsByKeys?: string[];
   // uniqueIds des fichiers DB à supprimer (images/documents)
   @Field(() => [String], { nullable: true })
-  deleteImagessUniqueIds?: string[];
+  deleteImagesByKeys?: string[];
 }

@@ -84,8 +84,8 @@ services:
 
   # LocalStack with S3, Elasticsearch, SES (e-mail)
   localstack:
-    image: localstack/localstack:latest
-    container_name: localstack
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: gresau/localstack-persist
     ports:
       - "4566:4566"   # Edge port for all services
       # Optional legacy ports (not required when using edge)
@@ -93,18 +93,49 @@ services:
     environment:
       - SERVICES=s3,logs,es
       - DEBUG=1                  # Enable debug logs
-      - DATA_DIR=/tmp/localstack/data
+        # Configuration AWS
       - AWS_DEFAULT_REGION=us-east-1
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
-      # Optional: specify Elasticsearch version
       - DEFAULT_REGION=us-east-1
+      
+      # Configuration S3
+      - S3_SKIP_SIGNATURE_VALIDATION=1
+      
+      # Configuration de persistance (CRITIQUE)
+      - PERSISTENCE=1
+      - LOCALSTACK_VOLUME_DIR=/var/lib/localstack
+      - LOCALSTACK_PERSISTENCE_DIR=/var/lib/localstack
+      
+      # Éviter la suppression des données temporaires
       - LOCALSTACK_DISABLE_TMP_FOLDER_CLEAR=1
+      
+      # Configuration Lambda
       - LAMBDA_EXECUTOR=docker
+      
+      # Configuration Elasticsearch
+      - ES_JAVA_OPTS="-Xms512m -Xmx512m"
+      
+      # IMPORTANT: Désactiver l'auto-suppression
+      - CLEAR_TMP_FOLDER=0
+      - SKIP_INFRA_DOWNLOADS=0
     volumes:
-      - "./localstack_data:/var/lib/localstack" # Mounts the local directory to the container
-      - "/var/run/docker.sock:/var/run/docker.sock" # Mounts the docker socket
+      - "./my-localstack-data:/persisted-data"
+       # Volume de persistance principal
+      - "./localstack_data:/var/lib/localstack"
+      # Socket Docker
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      # Scripts d'initialisation
       - "./localstack-init:/etc/localstack/init/ready.d"
+      # Volume temporaire (optionnel mais recommandé)
+      - "./localstack_tmp:/tmp/localstack"
+      
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   # Elasticsearch
   # elasticsearch:

@@ -44,28 +44,22 @@ export class VehicleService {
       // Insert images/documents
       if (uploadDocuments) {
         for (const f of uploadDocuments) {
-          if (f.type === 'image') {
-            await tx.image.create({
-              data: {
-                url: f.url,
-                type: 'VEHICULE', // ou ImageType enum
-                name: f.name,
-                userId,
-                driverVehicleId: vehicle.id,
+          await tx.vehicleDocument.create({
+            data: {
+              file: {
+                connect: { key: f.key },
               },
-            });
-          }
+            },
+          });
         }
 
         if (uploadImages) {
           for (const f of uploadImages) {
-            await tx.document.create({
+            await tx.vehicleImage.create({
               data: {
-                uniqueId: f.uniqueId,
-                url: f.url,
-                type: f.type,
-                userId,
-                driverVehicleId: vehicle.id,
+                file: {
+                  connect: { key: f.key },
+                },
               },
             });
           }
@@ -73,7 +67,14 @@ export class VehicleService {
       }
       return tx.driverVehicle.findUnique({
         where: { id: vehicle.id },
-        include: { images: true, documents: true },
+        include: {
+          VehicleDocument: {
+            include: { file: true },
+          },
+          VehicleImage: {
+            include: { file: true },
+          },
+        },
       });
     });
   }
@@ -99,64 +100,75 @@ export class VehicleService {
       // add new uploadedFiles
       if (input.uploadDocuments?.length) {
         for (const f of input.uploadDocuments) {
-          if (f.type === 'image') {
-            await tx.image.create({
-              data: {
-                id: f.uniqueId,
-                url: f.url,
-                type: 'VEHICULE',
-                userId,
-                driverVehicleId: vehicleId,
+          await tx.vehicleDocument.create({
+            data: {
+              file: {
+                connect: { key: f.key },
               },
-            });
-          }
+            },
+          });
         }
       }
       if (input.uploadImages?.length) {
         for (const f of input.uploadImages) {
-          await tx.document.create({
+          await tx.vehicleImage.create({
             data: {
-              id: f.uniqueId,
-              uniqueId: f.uniqueId,
-              url: f.url,
-              type: f.type,
-              userId,
-              driverVehicleId: vehicleId,
+              file: {
+                connect: { key: f.key },
+              },
             },
           });
         }
       }
 
       // deleteFiles: array of uniqueIds to remove
-      if (input.deleteImagessUniqueIds?.length) {
-        for (const uniqueId of input.deleteImagessUniqueIds) {
+      if (input.deleteImagesByKeys?.length) {
+        for (const key of input.deleteImagesByKeys) {
           // find in images
-          const img = await tx.image.findUnique({ where: { id: uniqueId } });
+          const img = await tx.vehicleImage.findFirst({
+            where: {
+              file: { key },
+            },
+          });
           if (img) {
             // delete S3 then record
-            const key = img.url.split('/').pop(); // assuming url is like 'https://bucket.s3.amazonaws.com/path/to/file.jpg'
             await this.uploadService.deleteObject(key);
-            await tx.image.delete({ where: { id: uniqueId } });
+            await tx.vehicleImage.delete({
+              where: { id: img.id },
+              include: { file: true },
+            });
             continue;
           }
         }
       }
-      if (input.deleteDocumentsUniqueIds?.length) {
-        for (const uniqueId of input.deleteDocumentsUniqueIds) {
+      if (input.deleteDocumentsByKeys?.length) {
+        for (const key of input.deleteDocumentsByKeys) {
           // find in documents
-          const doc = await tx.document.findUnique({ where: { id: uniqueId } });
+          const doc = await tx.vehicleDocument.findFirst({
+            where: {
+              file: { key },
+            },
+          });
           if (doc) {
-            // delete S3 then record
-            const key = doc.url.split('/').pop(); // assuming url is like 'https://bucket.s3.amazonaws.com/path/to/file.jpg'
             await this.uploadService.deleteObject(key);
-            await tx.document.delete({ where: { id: uniqueId } });
+            await tx.vehicleDocument.delete({
+              where: { id: key },
+              include: { file: true },
+            });
           }
         }
       }
 
       return tx.driverVehicle.findUnique({
         where: { id: vehicleId },
-        include: { images: true, documents: true },
+        include: {
+          VehicleImage: {
+            include: { file: true },
+          },
+          VehicleDocument: {
+            include: { file: true },
+          },
+        },
       });
     });
   }
