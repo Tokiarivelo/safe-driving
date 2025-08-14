@@ -1,11 +1,8 @@
 {
-    "step6": {
-      "stepName": "Selfie de Vérification",
-      "title": "Confirmez votre identité en photo",
-      "subtitle": "Prenez un selfie en temps réel pour finaliser la vérification et renforcer la sécurité de la communauté.",
-      "buttons": {
-        "later": "Plus tard",
-        "validate": "Valider"
-      }
-    }
+  "title": "Confirm your identity with a photo",
+  "subtitle": "Take a real-time selfie to complete verification and enhance community safety.",
+  "buttons": {
+    "later": "Later",
+    "validate": "Submit"
   }
+}

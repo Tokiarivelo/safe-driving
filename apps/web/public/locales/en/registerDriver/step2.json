@@ -1,26 +1,22 @@
 {
-    "step2": {
-      "stepName": "Infos personnelles",
-      "title": "Quelques détails sur vous",
-      "subtitle": "Renseignez vos coordonnées pour que nous puissions vous contacter et valider votre identité",
-      "form": {
-        "name": {
-          "label": "Nom complet",
-          "placeholder": "John Doe"
-        },
-        "email": {
-          "label": "E-mail",
-          "placeholder": "example@email.com"
-        },
-        "phone": {
-          "label": "Téléphone",
-          "placeholder": "+261..."
-        }
-      },
-      "buttons": {
-        "later": "Plus tard",
-        "validate": "Valider"
-      }
+  "title": "A few details about you",
+  "subtitle": "Enter your contact information so we can reach you and verify your identity",
+  "form": {
+    "name": {
+      "label": "Full name",
+      "placeholder": "John Doe"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "example@email.com"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "+261..."
     }
+  },
+  "buttons": {
+    "later": "Later",
+    "validate": "Submit"
   }
-  
+}

@@ -1,0 +1,83 @@
+.contentContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+  
+  .textContainer {
+    width: 100%;
+    max-width: 32rem;
+    text-align: center;
+    margin-bottom: 0.1rem; 
+  }
+  
+  .title {
+    font-size: 1.875rem;
+    font-weight: 300;
+    color: var(--color-auth-color-text-custom-magenta);
+    margin-bottom: 1rem;
+  }
+  
+  .subtitle {
+    font-size: 1.125rem;
+    color: var(--color-auth-color-text-custom-magenta);
+  }
+  
+  .formContainer {
+    margin-top: 2rem;
+  }
+  
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 28rem;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .buttonPrimary {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.125rem;
+    background-color: var(--color-auth-color-button);
+    color: var(--color-auth-color-bg-white);
+    border-radius: 0.375rem;
+    transition: background 0.2s ease;
+  }
+  
+  
+  .buttonPrimary:hover {
+    background-color: var(--color-auth-btn-hover);
+  }
+  
+  .buttonOutline {
+    width: 50%;
+    padding: 1rem 0;
+    font-size: 1.125rem;
+    border: 2px solid var(--color-auth-color-button);
+    color: var(--color-auth-color-button);
+    border-radius: 0.375rem;
+    background-color: var(--color-auth-color-bg-white);
+    transition: all 0.2s ease;
+  }
+  
+  .buttonOutline:hover {
+    background-color: var(--color-auth-color-button);
+    color: var(--color-auth-color-bg-white);
+  }
+  
+  .sidebar {
+    width: 20rem;
+    background: var(--auth-background);
+    border-top-right-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+    padding: 1rem;
+    color: var(--color-auth-text-light);
+  
+    /* Dark mode */
+    background-color: var(--color-auth-dark-card);
+    border-left: 1px solid var(--color-auth-dark-border);
+  }

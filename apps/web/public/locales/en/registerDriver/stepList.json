@@ -1,0 +1,15 @@
+{
+    "step1": "Welcome",
+    "step2": "Personal Information",
+    "step3": "Upload ID Documents",
+    "step4": "Vehicle Information",
+    "step5": "Upload Vehicle Documents",
+    "step6": "Verification Selfie",
+    "step7": "GPS",
+    "step8": "Notifications",
+    "step9": "Preferences",
+    "step10": "Summary",
+    "progressionRole": "Role",
+    "progressionInfo": "Information"
+  }
+  

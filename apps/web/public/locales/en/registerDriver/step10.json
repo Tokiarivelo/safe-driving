@@ -1,12 +1,9 @@
 {
-    "step10": {
-      "title": "Un dernier point avant de démarrer",
-      "subtitle": "Merci de lire et d'accepter nos Conditions Générales d'Utilisation et notre Politique de Confidentialité.",
-      "terms": {
-        "cgu": "J'accepte les CGU",
-        "privacy": "J'accepte la Politique de Confidentialité"
-      },
-      "button": "Valider"
-    }
-  }
-  
+  "title": "One last step before starting",
+  "subtitle": "Please read and accept our Terms of Use and Privacy Policy.",
+  "terms": {
+    "cgu": "I accept the Terms of Use",
+    "privacy": "I accept the Privacy Policy"
+  },
+  "button": "Submit"
+}

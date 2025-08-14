@@ -67,7 +67,7 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
       localStorage.setItem('preferred-language', languageCode);
       localStorage.setItem('preferred-theme', data.theme.light ? 'light' : 'dark');
       
-      router.push('/next-step');
+      router.push('/terms');
     } finally {
       setIsSubmitting(false);
     }

@@ -1,30 +1,26 @@
 {
-    "step3": {
-      "stepName": "Upload pièces d'identités",
-      "title": "Vérification d'identité",
-      "subtitle": "Téléchargez votre permis de conduire et votre carte d'identité pour vous assurer une inscription rapide et fiable.",
-      "id_card": {
-        "front": {
-          "title": "Carte d'identité",
-          "subtitle": "Recto",
-          "upload_text": "Glissez un fichier pour le téléverser",
-          "button": "Choisir un fichier"
-        },
-        "back": {
-          "subtitle": "Verso",
-          "upload_text": "Glissez un fichier pour le téléverser",
-          "button": "Choisir un fichier"
-        },
-        "license": {
-          "title": "Permis de conduire",
-          "upload_text": "Glissez un fichier pour le téléverser",
-          "button": "Choisir un fichier"
-        }
-      },
-      "buttons": {
-        "later": "Plus tard",
-        "validate": "Valider"
-      }
+  "title": "Identity Verification",
+  "subtitle": "Upload your driver's license and ID card to ensure a quick and reliable registration.",
+  "id_card": {
+    "front": {
+      "title": "ID Card",
+      "subtitle": "Front",
+      "upload_text": "Drag a file to upload",
+      "button": "Choose a file"
+    },
+    "back": {
+      "subtitle": "Back",
+      "upload_text": "Drag a file to upload",
+      "button": "Choose a file"
+    },
+    "license": {
+      "title": "Driver's License",
+      "upload_text": "Drag a file to upload",
+      "button": "Choose a file"
     }
+  },
+  "buttons": {
+    "later": "Later",
+    "validate": "Submit"
   }
-  
+}

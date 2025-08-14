@@ -1,17 +1,12 @@
 {
-    "step8": {
-      "stepName": "Notifications",
-      "title": "Restez informé",
-      "subtitle": "Choisissez comment vous souhaitez être alerté(e) des nouvelles missions : push, SMS ou e-mail.",
-      "notifications": {
-        "sms": "SMS",
-        "push": "Push notification mobile",
-        "email": "E-mail"
-      },
-      "buttons": {
-        "later": "Plus tard",
-        "validate": "Valider"
-      }
-    }
+  "title": "Stay informed",
+  "subtitle": "Choose how you would like to be notified about new tasks: push or email.",
+  "notifications": {
+    "push": "Mobile push notification",
+    "email": "Email"
+  },
+  "buttons": {
+    "later": "Later",
+    "validate": "Submit"
   }
-  
+}

@@ -1,16 +1,16 @@
 {
   "title": "Customize your experience",
-  "subtitle": "Set your theme (light/dark) and choose the application language.",
+  "subtitle": "Set your theme (light/dark) and choose the app language.",
   "theme": {
     "light": "Light",
     "dark": "Dark"
   },
   "language": {
-    "french": "French",
-    "english": "English"
+    "french": "🇫🇷 French",
+    "english": "🇺🇸 English"
   },
   "buttons": {
-    "later": "Plus tard",
-    "validate": "Valider"
-  }  
+    "later": "Later",
+    "validate": "Submit"
+  }
 }

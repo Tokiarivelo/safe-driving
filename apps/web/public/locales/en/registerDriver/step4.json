@@ -1,34 +1,30 @@
 {
-    "step4": {
-      "stepName": "Infos du véhicule",
-      "title": "Dites-nous en plus sur votre véhicule",
-      "subtitle": "Pour mieux vous identifier et garantir la sécurité de vos passagers, renseignez les caractéristiques de votre voiture.",
-      "form": {
-        "brand": {
-          "label": "Marque",
-          "placeholder": "ex: Peugeot"
-        },
-        "model": {
-          "label": "Modèle",
-          "placeholder": "ex: 404"
-        },
-        "plate": {
-          "label": "Numéro d'immatriculation",
-          "placeholder": "ex: AB-123-CD"
-        },
-        "seats": {
-          "label": "Nombre de places",
-          "placeholder": "ex: 4"
-        },
-        "type": {
-          "label": "Type de véhicule",
-          "placeholder": "ex: Voiture"
-        }
-      },
-      "buttons": {
-        "later": "Plus tard",
-        "validate": "Valider"
-      }
+  "title": "Tell us more about your vehicle",
+  "subtitle": "To better identify you and ensure the safety of your passengers, please provide your car's details.",
+  "form": {
+    "brand": {
+      "label": "Brand",
+      "placeholder": "e.g., Peugeot"
+    },
+    "model": {
+      "label": "Model",
+      "placeholder": "e.g., 404"
+    },
+    "plate": {
+      "label": "License plate number",
+      "placeholder": "e.g., AB-123-CD"
+    },
+    "seats": {
+      "label": "Number of seats",
+      "placeholder": "e.g., 4"
+    },
+    "type": {
+      "label": "Vehicle type",
+      "placeholder": "e.g., Car"
     }
+  },
+  "buttons": {
+    "later": "Later",
+    "validate": "Submit"
   }
-  
+}
