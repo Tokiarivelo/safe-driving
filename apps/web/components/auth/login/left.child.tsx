@@ -7,7 +7,7 @@ import styles from '../common/auth.module.css';
 import style from './login.module.css';
 
 export const LeftChild = () => {
-  const { t, ready } = useTranslation('login');
+  const { t, ready } = useTranslation('auth/login');
 
   if (!ready) return null;
 

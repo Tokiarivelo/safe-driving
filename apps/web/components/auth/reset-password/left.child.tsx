@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import style from './resetpass.module.css';
 import { useTranslation } from 'react-i18next';
 function LeftChild() {
-  const { t, ready } = useTranslation('reset-password');
+  const { t, ready } = useTranslation('auth/reset-password');
 
   if (!ready) return null;
 

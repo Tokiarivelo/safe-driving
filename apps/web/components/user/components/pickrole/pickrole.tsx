@@ -22,7 +22,7 @@ export const PickRole = () => {
 
       <div className=" w-ful h-50  flex items-center justify-center gap-40">
         <Link
-          href="/user/form/bjr"
+          href="/user/form/name/bjr"
           className="w-50 border-2 border-pink-600 flex text-center justify-center rounded-lg p-[2px] hover:border-pink-700 hover:p-[2px] transition-all duration-200 transform hover:scale-105"
         >
           <div className=" text-center w-50 bg-pink-600 py-2 text-white font-medium rounded-lg hover:to-pink-700 ">

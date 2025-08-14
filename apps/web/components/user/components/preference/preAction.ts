@@ -1,7 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { LoginFormValues, loginSchema } from './login.schema';
+import { LoginFormValues, loginSchema } from './koto.shema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { useState } from 'react';

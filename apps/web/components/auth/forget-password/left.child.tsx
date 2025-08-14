@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import style from './show.module.css';
 import { useTranslation } from 'react-i18next';
 function LeftChild() {
-  const { t, ready } = useTranslation('forget-password');
+  const { t, ready } = useTranslation('auth/forget-password');
   if (!ready) return null;
   return (
       <div className={style.auth_show1}>

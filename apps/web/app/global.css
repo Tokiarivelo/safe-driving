@@ -52,6 +52,7 @@
 
   --auth-background: linear-gradient(135deg, #c02aa8 0%, #c02aa8 15%, #ee6984 60%, #fe7f78 100%);
   --auth-gradient-card: linear-gradient(135deg, #ea3a7e 14%, #ff7746 64%);
+  --auth-gradients-card: linear-gradient(135deg, #e91e63 0%, #ff6b35 100%);
   --auth-color-bg: #fff;
   --auth-color-bg: ;
   --auth-color-green: #22c55e;
@@ -112,6 +113,7 @@
 
   --auth-background: linear-gradient(135deg, #c02aa8 0%, #c02aa8 15%, #ee6984 60%, #fe7f78 100%);
   --auth-gradient-card: linear-gradient(135deg, #ea3a7e 14%, #ff7746 64%);
+  --auth-gradients-card: linear-gradient(135deg, #e91e63 0%, #ff6b35 100%);
   --auth-color-bg: #fff;
   --auth-color-text: #333;
   --auth-color-text-light: #fff;
@@ -176,7 +178,7 @@
   --color-auth-color-input: var(--auth-color-input);
   --color-auth-color-placeholder: var(--auth-color-placeholder);
   --color-auth-hover: var(--auth-color-btn-bg);
-  --color-auth-colors-green: var(  --auth-color-green);
+  --color-auth-colorx-green: var(--auth-color-green);
 }
 /* =========== Auth card ======== */
 @utility auth-background {
@@ -185,7 +187,9 @@
 @utility auth-card-bg-gradient {
   background: var(--auth-gradient-card);
 }
-
+@utility auth-card-bgs-gradient {
+  background: var(--auth-gradients-card);
+}
 /* =============== End =============== */
 .spinner {
   --d: 20.6px;
@@ -212,7 +216,7 @@
   border: 1px solid #E5E7EB;
   border-radius: 13px;
   transform: rotate(0deg);
-  height: 65px;
+   /* height: 65px;  */
 }
 .tag:hover::before {
   content: '';
@@ -249,7 +253,7 @@
   border-right: 1px solid #c4c0c0;
   border-radius:13px;
   transform: rotate(0deg);
-  height: 65px;
+  /* height: 65px; */
 }
 .tog:hover::before {
   content: '';
@@ -286,7 +290,7 @@
   border-right: 1px solid #c4c0c0;
   border-radius:13px;
   transform: rotate(0deg);
-  height: 65px;
+  /* height: 65px; */
 }
 .teg:hover::before {
   content: '';
@@ -323,7 +327,7 @@
   border-right: 1px solid #c4c0c0;
   border-radius:13px;
   transform: rotate(0deg);
-  height: 65px;
+  /* height: 65px; */
 }
 .tig:hover::before {
   content: '';
@@ -350,4 +354,16 @@
   border-left: 13px solid transparent;
   border-right: 13px solid transparent;
   border-bottom: 13px solid #f14f6a;
+}
+/*================================*/
+@keyframes spin-y {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+.animate-spin-y {
+  animation: spin-y 3s linear infinite;
+  display: inline-block;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }

@@ -1,8 +1,10 @@
 'use client';
-import styles from './pickrole.module.css';
+
+
+import styles from './codeqr.module.css';
 import { motion } from 'framer-motion';
 import { useSelectedLayoutSegment } from 'next/navigation';
-import TopRolex from '../../../components/user/components/toprolex/toprolex';
+import TopRoles from '../../../../../components/user/components/toproles/toproles';
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const segment = useSelectedLayoutSegment();
   return (
@@ -14,7 +16,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         transition={{ duration: 1 }}
       >
         <div className={styles.auth_toprole}>
-            <TopRolex />
+            <TopRoles />
         </div>
         <div className={styles.auth_card_container}>
             {children}

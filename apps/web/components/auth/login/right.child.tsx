@@ -14,7 +14,7 @@ import { motion } from 'framer-motion';
 
 export const RightChild = () => {
   const { form, loading, showPassword, login, handleShowPassword } = useLogin();
-  const { t, ready } = useTranslation('login');
+  const { t, ready } = useTranslation('auth/login');
 
   if (!ready) return null; // Ensure translations are ready before rendering
 

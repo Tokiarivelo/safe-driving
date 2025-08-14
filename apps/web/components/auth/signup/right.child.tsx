@@ -23,7 +23,7 @@ function RightChild() {
     handleShowPasswords,
     capitalizeText,
   } = useRegister();
-  const { t, ready } = useTranslation('signup');
+  const { t, ready } = useTranslation('auth/signup');
   if (!ready) return null;
   return (
     <>

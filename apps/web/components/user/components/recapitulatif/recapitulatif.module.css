@@ -1,0 +1,20 @@
+@reference '../../../../app/global.css';
+
+.auth_not7 {
+  @apply flex items-center space-x-2;
+}
+.auth_not8 {
+  @apply text-pink-500;
+}
+.auth_not9 {
+  @apply flex items-center space-x-2;
+}
+.auth_not10 {
+  @apply text-pink-500;
+}
+.auth_bjr7 {
+  @apply px-12 py-[6px] rounded-md border-1 text-auth-color-button border-pink-600 transition-all duration-200 hover:bg-auth-hover hover:text-auth-color-bg-white sm:py-[6px] sm:w-65 md:w-[332px] lg:w-45 lg:mt-3;
+}
+.auth_bjr8 {
+  @apply px-12 py-[6px] mb-2 bg-auth-color-button mt-3 text-auth-color-bg-white rounded-md hover:bg-auth-hover sm:w-full lg:w-42;
+}

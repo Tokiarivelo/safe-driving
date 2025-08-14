@@ -4,5 +4,5 @@
   @apply auth-background min-h-screen w-full flex items-center justify-center;
 }
 .auth_card_container {
-  @apply rounded-tl-sm rounded-tr-sm  bg-auth-color-bg-white w-[370px] shadow-auth-card overflow-hidden sm:rounded-sm sm:h-[550px] sm:flex sm:justify-between sm:w-[633px] md:w-[750px] lg:max-w-4xl lg:w-full;
+  @apply sm:rounded-tl-sm sm:rounded-tr-sm h-screen  bg-auth-color-bg-white w-full shadow-auth-card overflow-hidden sm:rounded-sm sm:h-[550px] sm:flex sm:justify-between sm:w-[633px] md:w-[750px] lg:max-w-4xl lg:w-full;
 }

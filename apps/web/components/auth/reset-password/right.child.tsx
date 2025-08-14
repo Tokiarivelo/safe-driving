@@ -28,7 +28,7 @@ function RightChild() {
     handleShowPassword,
     handleShowConfirmPassword,
   } = useResetPassword();
-  const { t, ready } = useTranslation('reset-password');
+  const { t, ready } = useTranslation('auth/reset-password');
 
   if (!ready) return null;
   return (

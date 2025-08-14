@@ -2,12 +2,25 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import RadioGroup from '@/components/ui/radiogroup';
+import { Radio, RadioGroup } from '@/components/ui/radiogroup';
+import { useState } from 'react';
+import styles from './gps.module.css';
+import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 export const Gps = () => {
   const router = useRouter();
+  const [size, setSize] = useState('medium');
+  const { t, ready } = useTranslation('user/gps');
+
+  if (!ready) return null;
   return (
     <>
-      <div className="w-full h-20 flex sm:h-23 ">
+      <motion.div
+        className={styles.auth_gps1}
+        initial={{ opacity: 0, filter: 'brightness(50%)' }}
+        animate={{ opacity: 1, filter: 'brightness(100%)' }}
+        transition={{ duration: 2 }}
+      >
         <Image
           src={'/logo.svg'}
           alt="photo"
@@ -15,32 +28,64 @@ export const Gps = () => {
           height={100}
           priority={true}
           blurDataURL=""
-          className="h-15 w-auto mt-2 ml-6 sm:h-20"
+          className={styles.auth_gps2}
         />
-      </div>
+      </motion.div>
 
-      <div className="w-full h-26 text-center sm:h-50 md:px-10 md:mt-2">
-        <h2 className="text-xl font-semibold text-[#822072] mb-2 sm:mb-10 sm:text-xl md:text-2xl">
-          Où êtes-vous ?
-        </h2>
-        <p className="text-[#B15C8B] leading-relaxed sm:mb-8">
-          Pour vous proposer les véhicules les plus proches, autorisez l'accès <br />à votre
-          position. C'est rapide et sécurisé.
-        </p>
+      <div className={styles.auth_gps3}>
+        <motion.h2
+          className={styles.auth_gps4}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {t('title')}
+        </motion.h2>
+        <motion.p
+          className={styles.auth_gps5}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          {t('title1')} <br />
+          {t('title2')}
+        </motion.p>
       </div>
-      <div className="w-full h-15 space-x-25 flex items-center justify-center">
-        <RadioGroup
-          id="active"
-          name="drone2"
-          label="Plus tard"
-          className="w-4 h-4 transition-colors bg-white border-2 rounded-full appearance-none cursor-pointer focus-visible:outline-none peer border-pink-500 checked:border-pink-500 checked:bg-pink-200 checked:hover:border-pink-500 focus:outline-none checked:focus:border-pink-500 checked:focus:bg-pink-200 disabled:cursor-not-allowed disabled:border-slate-100 disabled:bg-slate-50"
-        />
-        <RadioGroup
-          id="active"
-          name="drone2"
-          label="Active"
-          className="w-4 h-4 transition-colors bg-white border-2 rounded-full appearance-none cursor-pointer focus-visible:outline-none peer border-pink-500 checked:border-pink-500 checked:bg-pink-200 checked:hover:border-pink-500 focus:outline-none checked:focus:border-pink-500 checked:focus:bg-pink-200 disabled:cursor-not-allowed disabled:border-slate-100 disabled:bg-slate-50"
-        />
+      <div className={styles.auth_gps6}>
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className={styles.auth_gps7}
+        >
+          <Radio
+            name="size"
+            value="Plustard"
+            id="Plustard"
+            checked={size === 'Plustard'}
+            onChange={e => setSize(e.target.value)}
+          />
+          <label htmlFor="Plustard" className={styles.auth_gps8}>
+            {t('title3')}
+          </label>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className={styles.auth_gps9}
+        >
+          <Radio
+            name="Actuve"
+            value="Actuve"
+            id="Actuve"
+            checked={size === 'Actuve'}
+            onChange={e => setSize(e.target.value)}
+          />
+          <label htmlFor="Actuve" className={styles.auth_gps10}>
+            {t('title4')}
+          </label>
+        </motion.div>
       </div>
     </>
   );
