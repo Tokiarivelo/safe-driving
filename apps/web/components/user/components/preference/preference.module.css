@@ -4,13 +4,13 @@
   @apply flex items-center space-x-2;
 }
 .auth_not8 {
-  @apply text-pink-500;
+  @apply text-auth-color-button;
 }
 .auth_not9 {
   @apply flex items-center space-x-2;
 }
 .auth_not10 {
-  @apply text-pink-500;
+  @apply text-auth-color-button;
 }
 .auth_bjr7 {
   @apply px-12 py-[6px] rounded-md border-1 text-auth-color-button border-pink-600 transition-all duration-200 hover:bg-auth-hover hover:text-auth-color-bg-white sm:py-[6px] sm:w-69 md:w-[333px] lg:w-45 lg:mt-3;
@@ -18,3 +18,85 @@
 .auth_bjr8 {
   @apply px-12 py-[6px]  bg-auth-color-button sm:mt-3 text-auth-color-bg-white rounded-md hover:bg-auth-hover sm:w-full lg:w-42;
 }
+.auth_pref3 {
+  @apply w-full h-20 text-center sm:h-26 md:px-8;
+}
+
+.auth_pref4 {
+  @apply text-lg font-semibold text-auth-color-text-custom-magenta mb-2 sm:mb-1 lg:mb-5 sm:text-lg lg:text-xl;
+}
+
+.auth_pref5 {
+  @apply text-[12px] text-auth-color-placeholder leading-relaxed sm:text-sm lg:text-[16px];
+}
+
+.auth_pref6 {
+  @apply px-20 sm:px-5 md:px-10 lg:px-25;
+}
+
+.auth_pref7 {
+  @apply w-full sm:h-2 lg:h-10;
+}
+
+.auth_pref8 {
+  @apply w-full h-5 flex items-center;
+}
+
+.auth_pref9 {
+  @apply text-sm font-medium text-auth-color-placeholder lg:ml-10;
+}
+
+.auth_pref10 {
+  @apply w-full space-x-[100%] px-16 h-8 flex items-center justify-center sm:space-x-35 md:space-x-48 lg:space-x-34;
+}
+
+.auth_pref11 {
+  @apply w-full h-40 lg:px-10;
+}
+
+.auth_pref12 {
+  @apply flex flex-col space-y-1;
+}
+
+.auth_pref13 {
+  @apply mb-2 text-auth-color-placeholder text-sm font-medium;
+}
+.auth_pref14 {
+  @apply mb-2;
+}
+.auth_pref15 {
+  @apply space-y-1;
+}
+.auth_pref16 {
+  @apply block text-sm font-medium text-auth-color-placeholder;
+}
+.auth_pref17 {
+  @apply w-full border border-pink-500 bg-auth-color-input rounded-sm px-3 py-5 flex items-center gap-2 transition-colors;
+}
+.auth_pref18 {
+  @apply flex items-center gap-2;
+}
+.auth_pref19 {
+  @apply h-4 w-6 rounded-sm object-cover;
+}
+.auth_pref20 {
+  @apply truncate text-auth-color-placeholder;
+}
+.auth_pref21 {
+  @apply max-h-[250px] overflow-y-auto;
+}
+ .auth_pref22 {
+  @apply hover:bg-[#fae7db] focus:bg-[#fadbf0] cursor-pointer;
+}
+.auth_pref23 {
+  @apply flex items-center gap-2;
+}
+.auth_pref24 {
+  @apply h-4 w-6 rounded-sm object-cover;
+}
+.auth_pref25 {
+  @apply truncate text-auth-color-placeholder;
+}
+.auth_pref26 {
+  @apply flex px-40 h-5 space-x-[100%]  sm:block w-full lg:flex sm:px-5 md:px-10 sm:space-x-25 justify-center items-center mt-2;
+} 

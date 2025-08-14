@@ -1,11 +1,5 @@
 @reference '../../../../app/global.css';
 
-.auth_gps1 {
-  @apply hidden sm:block sm:w-full sm:h-20 sm:not-first:h-23;
-}
-.auth_gps2 {
-  @apply h-15 w-auto mt-2 ml-6 sm:h-20;
-}
 .auth_gps3 {
   @apply w-full h-15 text-center sm:h-50 md:px-10 md:mt-2;
 }

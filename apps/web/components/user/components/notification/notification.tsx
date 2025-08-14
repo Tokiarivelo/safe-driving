@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Radio, RadioGroup } from '@/components/ui/radiogroup';
 import styles from './notification.module.css';
@@ -15,22 +14,6 @@ export const Notification = () => {
   if (!ready) return null;
   return (
     <>
-      <motion.div
-        className={styles.auth_not1}
-        initial={{ opacity: 0, filter: 'brightness(50%)' }}
-        animate={{ opacity: 1, filter: 'brightness(100%)' }}
-        transition={{ duration: 2 }}
-      >
-        <Image
-          src={'/logo.svg'}
-          alt="photo"
-          width={100}
-          height={100}
-          priority={true}
-          blurDataURL=""
-          className={styles.auth_not2}
-        />
-      </motion.div>
       <div className={styles.auth_not3}>
         <motion.h2
           className={styles.auth_not4}

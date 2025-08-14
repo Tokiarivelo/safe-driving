@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import styles from './bjr.module.css';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -13,22 +12,6 @@ export const Bjr = () => {
   if (!ready) return null;
   return (
     <>
-      <motion.div
-        className={styles.auth_bjr1}
-        initial={{ opacity: 0, filter: 'brightness(50%)' }}
-        animate={{ opacity: 1, filter: 'brightness(100%)' }}
-        transition={{ duration: 2 }}
-      >
-        <Image
-          src={'/logo.svg'}
-          alt="photo"
-          width={100}
-          height={100}
-          priority={true}
-          blurDataURL=""
-          className={styles.auth_bjr2}
-        />
-      </motion.div>
       <div className={styles.auth_bjr3}>
         <motion.h1
           className={styles.auth_bjr4}

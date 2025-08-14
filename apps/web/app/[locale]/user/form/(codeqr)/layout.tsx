@@ -1,10 +1,9 @@
 'use client';
 
-
 import styles from './codeqr.module.css';
 import { motion } from 'framer-motion';
 import { useSelectedLayoutSegment } from 'next/navigation';
-import TopRoles from '../../../../../components/user/components/toproles/toproles';
+import TopRoles from '../../../../../components/user/components/toprolegreen/toproles';
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const segment = useSelectedLayoutSegment();
   return (
@@ -16,11 +15,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         transition={{ duration: 1 }}
       >
         <div className={styles.auth_toprole}>
-            <TopRoles />
+          <TopRoles />
         </div>
-        <div className={styles.auth_card_container}>
-            {children}
-        </div>
+        <div className={styles.auth_card_container}>{children}</div>
       </motion.div>
     </div>
   );

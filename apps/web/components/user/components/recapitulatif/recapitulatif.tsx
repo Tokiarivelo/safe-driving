@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import styles from './recapitulatif.module.css';
 import { useRouter } from 'next/navigation';
 import { Radio, RadioGroup } from '@/components/ui/radiogroup';
@@ -18,43 +17,29 @@ import {
 } from '@/components/ui/select';
 import { MultiSelect } from '@/components/ui/multi-select';
 import {
-  Code2, // React
-  Palette, // Vue
-  Settings, // Angular
-  Zap, // Svelte
-  Monitor, // Next.js
+  CableCar,
+  Car,
+  Bike,
 } from 'lucide-react';
 
-// Options pour MultiSelect
 const options = [
   {
-    value: 'react',
-    label: 'React',
-    icon: <Code2 size={14} className="text-white" />,
+    value: 'moto',
+    label: 'moto',
+    icon: <Bike size={14} className="text-white" />,
   },
   {
-    value: 'vue',
-    label: 'Vue.js',
-    icon: <Palette size={14} className="text-white" />,
+    value: 'voiture',
+    label: 'voiture',
+    icon: <Car size={14} className="text-white" />,
   },
   {
-    value: 'angular',
-    label: 'Angular',
-    icon: <Settings size={14} className="text-white" />,
-  },
-  {
-    value: 'svelte',
-    label: 'Svelte',
-    icon: <Zap size={14} className="text-white" />,
-  },
-  {
-    value: 'nextjs',
-    label: 'Next.js',
-    icon: <Monitor size={14} className="text-white" />,
+    value: 'telipherique',
+    label: 'telipherique',
+    icon: <CableCar size={14} className="text-white" />,
   },
 ];
 
-// Array ny languages miaraka amin'ny sary
 const languages = [
   {
     code: 'fr',
@@ -120,7 +105,7 @@ const languages = [
 
 // Default language - jerena amin'ny current lang value
 const getDefaultLanguage = (langCode: string) => {
-  return languages.find((lang) => lang.code === langCode) || languages[0];
+  return languages.find(lang => lang.code === langCode) || languages[0];
 };
 
 export default function Notification() {
@@ -137,7 +122,7 @@ export default function Notification() {
   });
 
   const handleToggle = (key: keyof typeof toggles) => {
-    setToggles((prev) => ({ ...prev, [key]: !prev[key] }));
+    setToggles(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   const handleChange = (value: string) => {
@@ -149,51 +134,31 @@ export default function Notification() {
   // Get current language info
   const currentLanguage = getDefaultLanguage(lang);
 
-  if (!ready) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <p className="text-pink-500">Miandry ny fandikana...</p>
-      </div>
-    );
-  }
+  if (!ready) return null;
 
   return (
     <>
-      {/* Header Logo */}
-      <div className="w-full h-20 flex sm:h-23">
-        <Image
-          src={'/logo.svg'}
-          alt="logo"
-          width={100}
-          height={100}
-          priority={true}
-          blurDataURL=""
-          className="h-15 w-auto mt-2 ml-6 sm:h-20"
-        />
-      </div>
-
       {/* Title Section */}
-      <div className="w-full h-26 text-center sm:h-26 md:px-8">
-        <h2 className="font-semibold text-[#822072] mb-2 sm:mb-1 lg:mb-5 sm:text-lg lg:text-xl">
-          Faites-le à votre façon
-        </h2>
-        <p className="text-[#B15C8B] leading-relaxed sm:text-sm lg:text-[16px]">
-          Sélectionnez vos modes de transport favoris et activez le thème <br className="sm:hidden" />
+      <div className={styles.auth_reca3}>
+        <h2 className={styles.auth_reca4}>Faites-le à votre façon</h2>
+        <p className={styles.auth_reca5}>
+          Sélectionnez vos modes de transport favoris et activez le thème
+          <br className={styles.auth_reca6} />
           sombre si vous préférez une expérience plus douce pour les yeux.
         </p>
       </div>
 
       {/* Main Content */}
-      <div className="sm:px-7 md:px-10 lg:px-25">
-        <div className="w-full flex flex-col gap-3 lg:pl-10">
-            <ToggleSwitch isOn={toggles.toggle1} onToggle={() => handleToggle('toggle1')} />
-            <ToggleSwitch isOn={toggles.toggle2} onToggle={() => handleToggle('toggle2')} />
-        </div>      
-        {/* Theme Section */}
-        <div className="w-full h-5 flex items-center">
-          <h3 className="text-sm font-medium text-[#B15C8B] lg:ml-10">Thème</h3>
+      <div className={styles.auth_reca7}>
+        <div className={styles.auth_reca8}>
+          <ToggleSwitch isOn={toggles.toggle1} onToggle={() => handleToggle('toggle1')} />
+          <ToggleSwitch isOn={toggles.toggle2} onToggle={() => handleToggle('toggle2')} />
         </div>
-        <div className="w-full h-8 flex items-center justify-center sm:space-x-30 md:space-x-48 lg:space-x-34">
+        {/* Theme Section */}
+        <div className={styles.auth_reca9}>
+          <h3 className={styles.auth_reca10}>Thème</h3>
+        </div>
+        <div className={styles.auth_reca11}>
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -205,7 +170,7 @@ export default function Notification() {
               value="claire"
               id="claire"
               checked={size === 'claire'}
-              onChange={(e) => setSize(e.target.value)}
+              onChange={e => setSize(e.target.value)}
             />
             <label htmlFor="claire" className={styles.auth_not8}>
               claire
@@ -222,7 +187,7 @@ export default function Notification() {
               value="Actuve"
               id="Actuve"
               checked={size === 'Actuve'}
-              onChange={(e) => setSize(e.target.value)}
+              onChange={e => setSize(e.target.value)}
             />
             <label htmlFor="Actuve" className={styles.auth_not10}>
               sombre
@@ -231,60 +196,56 @@ export default function Notification() {
         </div>
 
         {/* Form Section */}
-        <div className="w-full h-40 lg:px-10">
+        <div className={styles.auth_reca12}>
           <form>
             {/* Transport Type */}
-            <div className="flex flex-col space-y-1">
-              <label className="mb-2 text-[#b15c8b] text-sm font-medium">Type de transport</label>
+            <div className={styles.auth_reca13}>
+              <label className={styles.auth_reca14}>Type de transport</label>
               <MultiSelect
                 options={options}
                 value={selectedValues}
                 onValueChange={setSelectedValues}
                 placeholder="types de transport"
-                className="mb-2"
+                className={styles.auth_reca15}
               />
             </div>
 
             {/* Language Selection with Scrollable Dropdown */}
-            <div className="space-y-1">
-              <label htmlFor="lang-select" className="block text-sm font-medium text-[#b15c8b]">
+            <div className={styles.auth_reca16}>
+              <label htmlFor="lang-select" className={styles.auth_reca17}>
                 Langue
               </label>
               <Select value={lang} onValueChange={handleChange}>
-                <SelectTrigger
-                  id="lang-select"
-                  size="default"
-                  className="w-full border border-pink-400 bg-[#fadbf0] rounded-sm px-3 py-5 flex items-center gap-2 hover:bg-[#f5d0e8] transition-colors"
-                >
+                <SelectTrigger id="lang-select" size="default" className={styles.auth_reca18}>
                   <SelectValue>
-                    <div className="flex items-center gap-2">
+                    <div className={styles.auth_reca19}>
                       <img
                         src={currentLanguage.flag}
                         alt={currentLanguage.alt}
-                        className="h-4 w-6 rounded-sm object-cover"
+                        className={styles.auth_reca20}
                         loading="lazy"
                       />
-                      <span className="truncate text-[#b15c8b]">{currentLanguage.name}</span>
+                      <span className={styles.auth_reca21}>{currentLanguage.name}</span>
                     </div>
                   </SelectValue>
                 </SelectTrigger>
 
                 {/* Scrollable Content avec max height */}
-                <SelectContent className="max-h-[250px] overflow-y-auto">
-                  {languages.map((language) => (
+                <SelectContent className={styles.auth_reca22}>
+                  {languages.map(language => (
                     <SelectItem
                       key={language.code}
                       value={language.code}
-                      className="hover:bg-[#fadbf0] focus:bg-[#fadbf0] cursor-pointer"
+                      className={styles.auth_reca23}
                     >
-                      <div className="flex items-center gap-2">
+                      <div className={styles.auth_reca24}>
                         <img
                           src={language.flag}
                           alt={language.alt}
-                          className="h-4 w-6 rounded-sm object-cover"
+                          className={styles.auth_reca25}
                           loading="lazy"
                         />
-                        <span className="truncate text-[#b15c8b]">{language.name}</span>
+                        <span className={styles.auth_reca26}>{language.name}</span>
                       </div>
                     </SelectItem>
                   ))}
@@ -296,7 +257,7 @@ export default function Notification() {
       </div>
 
       {/* Action Buttons */}
-      <div className="w-full h-10 lg:flex sm:px-7 md:px-10 space-x-25 justify-center items-center mt-2">
+      <div className={styles.auth_reca27}>
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -313,7 +274,7 @@ export default function Notification() {
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={ { duration: 0.5,  delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
         >
           <Button
             type="button"

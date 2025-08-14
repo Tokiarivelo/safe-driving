@@ -10,11 +10,17 @@
   @apply rounded-tl-sm rounded-tr-sm shadow-auth-card overflow-hidden sm:rounded-sm sm:h-[550px] sm:flex sm:justify-between sm:w-[633px] md:w-[750px] lg:max-w-4xl lg:w-full;
 }
 .auth_card_un_container {
-  @apply hidden w-full bg-auth-color-bg-white overflow-y-scroll pb-4 rounded-tl-sm h-screen sm:h-screen sm:block items-center md:w-[55%] sm:w-[50%] lg:w-[62%];
+  @apply hidden w-full bg-auth-color-bg-white overflow-auto pb-4 rounded-tl-sm h-screen sm:h-screen sm:block items-center md:w-[55%] sm:w-[50%] lg:w-[62%];
 }
 .auth_card_deux_container {
-  @apply w-full sm:px-1 sm:pt-2 overflow-y-auto scroll-smooth pb-4 bg-amber-50  sm:rounded-tr-md auth-card-bg-gradient sm:rounded-br-md h-screen  sm:min-h-screen sm:w-[50%] md:w-[45%] lg:w-[38%];
+  @apply overflow-y-scroll sm:overflow-y-visible w-full sm:px-1 sm:pt-2 pb-4 bg-amber-50  sm:rounded-tr-md auth-card-bg-gradient sm:rounded-br-md h-screen  sm:min-h-screen sm:w-[50%] md:w-[45%] lg:w-[38%];
 }
 .auth_toprole {
   @apply hidden w-full h-17 justify-between pl-13 sm:block;
+}
+.auth_image {
+  @apply hidden sm:block sm:w-full sm:h-20  sm:not-first:sm:h-23 ;
+}
+.auth_image2 {
+  @apply h-15 w-auto mt-2 ml-6 sm:h-20;
 }

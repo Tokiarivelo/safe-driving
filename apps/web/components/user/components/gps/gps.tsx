@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Radio, RadioGroup } from '@/components/ui/radiogroup';
 import { useState } from 'react';
@@ -15,23 +14,6 @@ export const Gps = () => {
   if (!ready) return null;
   return (
     <>
-      <motion.div
-        className={styles.auth_gps1}
-        initial={{ opacity: 0, filter: 'brightness(50%)' }}
-        animate={{ opacity: 1, filter: 'brightness(100%)' }}
-        transition={{ duration: 2 }}
-      >
-        <Image
-          src={'/logo.svg'}
-          alt="photo"
-          width={100}
-          height={100}
-          priority={true}
-          blurDataURL=""
-          className={styles.auth_gps2}
-        />
-      </motion.div>
-
       <div className={styles.auth_gps3}>
         <motion.h2
           className={styles.auth_gps4}

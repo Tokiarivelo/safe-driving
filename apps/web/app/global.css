@@ -52,7 +52,7 @@
 
   --auth-background: linear-gradient(135deg, #c02aa8 0%, #c02aa8 15%, #ee6984 60%, #fe7f78 100%);
   --auth-gradient-card: linear-gradient(135deg, #ea3a7e 14%, #ff7746 64%);
-  --auth-gradients-card: linear-gradient(135deg, #e91e63 0%, #ff6b35 100%);
+  --auth-gradient-but-card: linear-gradient(135deg, #e91e63 0%, #ff6b35 100%);
   --auth-color-bg: #fff;
   --auth-color-bg: ;
   --auth-color-green: #22c55e;
@@ -113,7 +113,7 @@
 
   --auth-background: linear-gradient(135deg, #c02aa8 0%, #c02aa8 15%, #ee6984 60%, #fe7f78 100%);
   --auth-gradient-card: linear-gradient(135deg, #ea3a7e 14%, #ff7746 64%);
-  --auth-gradients-card: linear-gradient(135deg, #e91e63 0%, #ff6b35 100%);
+  --auth-gradient-but-card: linear-gradient(135deg, #e91e63 0%, #ff6b35 100%);
   --auth-color-bg: #fff;
   --auth-color-text: #333;
   --auth-color-text-light: #fff;
@@ -188,7 +188,7 @@
   background: var(--auth-gradient-card);
 }
 @utility auth-card-bgs-gradient {
-  background: var(--auth-gradients-card);
+  background: var(--auth-gradient-but-card);
 }
 /* =============== End =============== */
 .spinner {
@@ -230,6 +230,7 @@
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
   border-bottom: 15px solid #ffffff;
+  cursor: pointer;
 }
 
 .tag:hover::after {
@@ -244,6 +245,7 @@
   border-left: 13px solid transparent;
   border-right: 13px solid transparent;
   border-bottom: 13px solid #ea3a7e;
+  cursor: pointer;
 }
 /*===================================*/
 .tog {

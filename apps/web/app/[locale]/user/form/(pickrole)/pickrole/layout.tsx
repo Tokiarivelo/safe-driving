@@ -2,7 +2,7 @@
 import styles from './pickrole.module.css';
 import { motion } from 'framer-motion';
 import { useSelectedLayoutSegment } from 'next/navigation';
-import TopRolex from '../../../../../../components/user/components/toprolex/toprolex';
+import TopRolex from '../../../../../../components/user/components/toprolegray/toprole';
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const segment = useSelectedLayoutSegment();
   return (
