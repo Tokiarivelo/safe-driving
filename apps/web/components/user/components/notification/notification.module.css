@@ -10,10 +10,10 @@
   @apply w-full h-15 text-center sm:h-50 md:px-8 md:mt-2;
 }
 .auth_not4 {
-  @apply text-lg font-semibold text-[#822072] mb-2  sm:mb-10 sm:text-xl md:text-2xl;
+  @apply text-lg font-semibold text-auth-color-text-custom-magenta mb-2  sm:mb-10 sm:text-xl md:text-2xl;
 }
 .auth_not5 {
-  @apply text-[12px] sm:text-base text-[#B15C8B] leading-relaxed sm:mb-8;
+  @apply text-[12px] sm:text-base text-auth-color-placeholder leading-relaxed sm:mb-8;
 }
 .auth_not6 {
   @apply w-full h-15 space-x-25 flex items-center justify-center;
@@ -22,11 +22,11 @@
   @apply flex items-center space-x-2;
 }
 .auth_not8 {
-  @apply text-pink-500;
+  @apply text-auth-color-button;
 }
 .auth_not9 {
   @apply flex items-center space-x-2;
 }
 .auth_not10 {
-  @apply text-pink-500;
+  @apply text-auth-color-button;
 }

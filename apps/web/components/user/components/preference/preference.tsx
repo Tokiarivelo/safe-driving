@@ -121,11 +121,23 @@ export const Notification = () => {
   return (
     <>
       <div className={styles.auth_pref3}>
-        <h2 className={styles.auth_pref4}>{t('title')}</h2>
-        <p className={styles.auth_pref5}>
+        <motion.h2
+          className={styles.auth_pref4}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {t('title')}
+        </motion.h2>
+        <motion.p
+          className={styles.auth_pref5}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           {t('title1')} <br className="sm:hidden" />
           {t('title2')}
-        </p>
+        </motion.p>
       </div>
 
       <div className={styles.auth_pref6}>
@@ -133,7 +145,14 @@ export const Notification = () => {
 
         {/* Theme Section */}
         <div className={styles.auth_pref8}>
-          <h3 className={styles.auth_pref9}>{t('title3')}</h3>
+          <motion.h3
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className={styles.auth_pref9}
+          >
+            {t('title3')}
+          </motion.h3>
         </div>
         <div className={styles.auth_pref10}>
           <motion.div

@@ -3,9 +3,3 @@ mutation createUser($input: UserCreateInput!) {
     ...userFragment
   }
 }
-
-# mutation UpdateUser($data: UpdateUserInput!) {
-#   updateUser(data: $data) {
-#     ...userFragment
-#   }
-# }

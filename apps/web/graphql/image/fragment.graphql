@@ -1,4 +1,4 @@
-fragment Image on UserImage {
+fragment ImageFields on Image {
   id
   updatedAt
   file {

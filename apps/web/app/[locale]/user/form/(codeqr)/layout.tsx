@@ -3,7 +3,7 @@
 import styles from './codeqr.module.css';
 import { motion } from 'framer-motion';
 import { useSelectedLayoutSegment } from 'next/navigation';
-import TopRoles from '../../../../../components/user/components/toprolegreen/toproles';
+import TopRoles from '../../../../../components/user/components/pickrolegreen/toproles';
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const segment = useSelectedLayoutSegment();
   return (

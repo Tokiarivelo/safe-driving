@@ -13,7 +13,7 @@
   @apply text-auth-color-button;
 }
 .auth_bjr7 {
-  @apply px-12 py-[6px] rounded-md border-1 text-auth-color-button border-pink-600 transition-all duration-200 hover:bg-auth-hover hover:text-auth-color-bg-white sm:py-[6px] sm:w-69 md:w-[333px] lg:w-45 lg:mt-3;
+  @apply px-12 py-[6px] rounded-md border-1 text-auth-color-button border-auth-color-button transition-all duration-200 hover:bg-auth-hover hover:text-auth-color-bg-white sm:py-[6px] sm:w-69 md:w-[333px] lg:w-45 lg:mt-3;
 }
 .auth_bjr8 {
   @apply px-12 py-[6px]  bg-auth-color-button sm:mt-3 text-auth-color-bg-white rounded-md hover:bg-auth-hover sm:w-full lg:w-42;
@@ -71,7 +71,7 @@
   @apply block text-sm font-medium text-auth-color-placeholder;
 }
 .auth_pref17 {
-  @apply w-full border border-pink-500 bg-auth-color-input rounded-sm px-3 py-5 flex items-center gap-2 transition-colors;
+  @apply w-full border border-auth-color-button bg-auth-color-input rounded-sm px-3 py-5 flex items-center gap-2 transition-colors;
 }
 .auth_pref18 {
   @apply flex items-center gap-2;
@@ -86,7 +86,7 @@
   @apply max-h-[250px] overflow-y-auto;
 }
  .auth_pref22 {
-  @apply hover:bg-[#fae7db] focus:bg-[#fadbf0] cursor-pointer;
+  @apply hover:bg-auth-color-input focus:bg-auth-color-input cursor-pointer;
 }
 .auth_pref23 {
   @apply flex items-center gap-2;

@@ -53,6 +53,7 @@
   --auth-background: linear-gradient(135deg, #c02aa8 0%, #c02aa8 15%, #ee6984 60%, #fe7f78 100%);
   --auth-gradient-card: linear-gradient(135deg, #ea3a7e 14%, #ff7746 64%);
   --auth-gradient-but-card: linear-gradient(135deg, #e91e63 0%, #ff6b35 100%);
+  --auth-color-black: #000000;
   --auth-color-bg: #fff;
   --auth-color-bg: ;
   --auth-color-green: #22c55e;
@@ -114,6 +115,7 @@
   --auth-background: linear-gradient(135deg, #c02aa8 0%, #c02aa8 15%, #ee6984 60%, #fe7f78 100%);
   --auth-gradient-card: linear-gradient(135deg, #ea3a7e 14%, #ff7746 64%);
   --auth-gradient-but-card: linear-gradient(135deg, #e91e63 0%, #ff6b35 100%);
+  --auth-color-black: #000000;
   --auth-color-bg: #fff;
   --auth-color-text: #333;
   --auth-color-text-light: #fff;
@@ -178,6 +180,7 @@
   --color-auth-color-input: var(--auth-color-input);
   --color-auth-color-placeholder: var(--auth-color-placeholder);
   --color-auth-hover: var(--auth-color-btn-bg);
+  --color-auth-color-black: var(--auth-color-black);
   --color-auth-colorx-green: var(--auth-color-green);
 }
 /* =========== Auth card ======== */

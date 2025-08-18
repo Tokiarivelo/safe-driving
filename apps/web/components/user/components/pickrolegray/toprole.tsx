@@ -3,11 +3,16 @@
 import React, { use } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import styles from './toprolex.module.css';
+import { useTranslation } from 'react-i18next';
 function toprole() {
+    const { t, ready } = useTranslation('user/toprole');
+  
+    if (!ready) return null;
   return (
     <>
-      <div className="w-full h-60 sm:hidden">
-        <div className="w-full h-[40%] flex justify-center items-center">
+      <div className={styles.auth_toprol}>
+        <div className={styles.auth_toprole}>
           <motion.div
             initial={{ opacity: 0, filter: 'brightness(50%)' }}
             animate={{ opacity: 1, filter: 'brightness(100%)' }}
@@ -20,15 +25,15 @@ function toprole() {
               height={100}
               priority={true}
               blurDataURL=""
-              className="w-full h-21"
+              className={styles.auth_toprole1}
             />
           </motion.div>
         </div>
-        <div className="w-full h-[25%]">
+        <div className={styles.auth_toprole2}>
 
-     <div className="w-[18%] pt-2 pr-4">
-            <div className="relative flex justify-center mb-8">
-              <svg className="w-13 h-13 transform -rotate-90" viewBox="0 0 100 100">
+     <div className={styles.auth_toprole3}>
+            <div className={styles.auth_toprole4}>
+              <svg className={styles.auth_toprole5} viewBox="0 0 100 100">
                 <circle
                   cx="50"
                   cy="50"
@@ -48,11 +53,11 @@ function toprole() {
                   strokeDasharray={282.74}
                   strokeDashoffset={235.62}
                   strokeLinecap="round"
-                  className="transition-all duration-500 ease-in-out"
+                  className={styles.auth_toprole6}
                 />
               </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span id="progressText" className="text-sm font-bold text-white">
+              <div className={styles.auth_toprole7}>
+                <span id="progressText" className={styles.auth_toprole8}>
                   1/6
                 </span>
               </div>
@@ -61,24 +66,24 @@ function toprole() {
 
         </div>
       </div>
-      <div className=" hidden sm:max-w-4xl sm:w-full sm:h-20 sm:top-0 sm:flex sm:justify-center sm:space-x-1">
+      <div className={styles.auth_toprole9}>
         <div>
-          <div className="bg-black w-9 border-3 border-white h-9 rounded-full flex items-center justify-center text-auth-color-bg-white">
+          <div className={styles.auth_toprole10}>
             1
           </div>
           <div>
-            <h3 className="text-auth-color-bg-white">Role</h3>
+            <h3 className={styles.auth_toprole11}>Role</h3>
           </div>
         </div>
-        <div className=" w-45 h-10 flex mt-4 justify-center">
-          <hr className=" bg-auth-color-bg-white w-full h-[2px]" />
+        <div className={styles.auth_toprole12}>
+          <hr className={styles.auth_toprole13}/>
         </div>
         <div>
-          <div className="bg-[#C3BABA] w-9 border-3 border-white h-9 rounded-full text-center text-xl font-semibold text-auth-color-bg-white">
+          <div className={styles.auth_toprole14}>
             2
           </div>
           <div>
-            <h3 className="text-auth-color-bg-white">information</h3>
+            <h3 className={styles.auth_toprole15}>information</h3>
           </div>
         </div>
       </div>

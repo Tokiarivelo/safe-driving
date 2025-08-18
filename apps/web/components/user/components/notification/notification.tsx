@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 export const Notification = () => {
   const router = useRouter();
   const [size, setSize] = useState('medium');
-  const { t, ready } = useTranslation('user/gps');
+  const { t, ready } = useTranslation('user/notification');
 
   if (!ready) return null;
   return (

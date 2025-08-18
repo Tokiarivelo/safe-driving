@@ -16,11 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { MultiSelect } from '@/components/ui/multi-select';
-import {
-  CableCar,
-  Car,
-  Bike,
-} from 'lucide-react';
+import { CableCar, Car, Bike } from 'lucide-react';
 
 const options = [
   {
@@ -140,23 +136,56 @@ export default function Notification() {
     <>
       {/* Title Section */}
       <div className={styles.auth_reca3}>
-        <h2 className={styles.auth_reca4}>Faites-le à votre façon</h2>
-        <p className={styles.auth_reca5}>
+        <motion.h2
+          className={styles.auth_reca4}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          Faites-le à votre façon
+        </motion.h2>
+        <motion.p
+          className={styles.auth_reca5}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           Sélectionnez vos modes de transport favoris et activez le thème
           <br className={styles.auth_reca6} />
           sombre si vous préférez une expérience plus douce pour les yeux.
-        </p>
+        </motion.p>
       </div>
 
       {/* Main Content */}
       <div className={styles.auth_reca7}>
         <div className={styles.auth_reca8}>
-          <ToggleSwitch isOn={toggles.toggle1} onToggle={() => handleToggle('toggle1')} />
-          <ToggleSwitch isOn={toggles.toggle2} onToggle={() => handleToggle('toggle2')} />
+          <div className={styles.auth_reca28}>
+            <div>
+              <ToggleSwitch isOn={toggles.toggle1} onToggle={() => handleToggle('toggle1')} />
+            </div>
+            <div className={styles.auth_reca29}>
+              <label htmlFor="">GPS</label>
+            </div>
+          </div>
+          <div className={styles.auth_reca30}>
+            <div>
+              <ToggleSwitch isOn={toggles.toggle2} onToggle={() => handleToggle('toggle2')} />
+            </div>
+            <div className={styles.auth_reca31}>
+              <label htmlFor="">Notification</label>
+            </div>
+          </div>
         </div>
         {/* Theme Section */}
         <div className={styles.auth_reca9}>
-          <h3 className={styles.auth_reca10}>Thème</h3>
+          <motion.h3
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className={styles.auth_reca10}
+          >
+            Thème
+          </motion.h3>
         </div>
         <div className={styles.auth_reca11}>
           <motion.div
@@ -255,7 +284,6 @@ export default function Notification() {
           </form>
         </div>
       </div>
-
       {/* Action Buttons */}
       <div className={styles.auth_reca27}>
         <motion.div
