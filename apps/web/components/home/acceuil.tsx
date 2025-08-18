@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../language/language-switcher';
+import { UploadComponent } from '../ui/upload';
 
 export default function Acceuil() {
   const { t, ready } = useTranslation('accueil');
@@ -17,6 +18,7 @@ export default function Acceuil() {
       </header>
 
       <div className="inset-0 z-0">{t('title')}</div>
+      <UploadComponent />
     </div>
   );
 }

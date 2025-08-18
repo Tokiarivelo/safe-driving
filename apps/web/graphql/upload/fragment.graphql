@@ -1,0 +1,5 @@
+fragment PresignedUrl on PresignedUrl {
+  key
+  url
+  expiresIn
+}

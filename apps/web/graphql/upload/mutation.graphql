@@ -1,0 +1,5 @@
+mutation createBatchPresignedUrls($files: [FileMetaInput!]!, $type: ImageType!) {
+  createBatchPresignedUrls(files: $files, type: $type) {
+    ...PresignedUrl
+  }
+}

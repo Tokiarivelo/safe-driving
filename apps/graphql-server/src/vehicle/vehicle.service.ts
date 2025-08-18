@@ -172,4 +172,27 @@ export class VehicleService {
       });
     });
   }
+
+  async uploadVehicleImages(userId: string, keys: string[]) {
+    // check ownership
+    const vehicle = await this.prisma.driverVehicle.findFirst({
+      where: {
+        userId,
+        VehicleImage: { some: { file: { key: { in: keys } } } },
+      },
+      include: { VehicleImage: { include: { file: true } } },
+    });
+    if (!vehicle)
+      throw new NotFoundException('Vehicle not found or no images to upload');
+
+    // upload each image
+    const results = [];
+    for (const key of keys) {
+      const image = vehicle.VehicleImage.find((img) => img.file.key === key);
+      if (image) {
+        results.push(image.file);
+      }
+    }
+    return results;
+  }
 }

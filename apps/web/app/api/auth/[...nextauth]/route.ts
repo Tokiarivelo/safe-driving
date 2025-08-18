@@ -39,7 +39,7 @@ const { handlers } = NextAuth({
             },
           });
 
-          console.log('data')
+          console.log('data');
 
           if (data?.login?.token && data.login.user) {
             // 3. Retournez un "user" enrichi de votre token
@@ -77,7 +77,7 @@ const { handlers } = NextAuth({
     // Expose token + user dans useSession()
     async session({ session, token }) {
       session.user = token.user as any;
-      session.sessionToken = token.accessToken as string;
+      session.accessToken = token.accessToken as string; // même nom
       return session;
     },
     authorized({ auth, request: { nextUrl } }) {

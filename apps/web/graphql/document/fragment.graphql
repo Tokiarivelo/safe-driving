@@ -1,4 +1,4 @@
-fragment Image on UserImage {
+fragment Document on UserDocument {
   id
   updatedAt
   file {

@@ -5,8 +5,20 @@ fragment userFragment on User {
   email
   phone
   username
-  images {
+  UserImage {
     ...Image
+  }
+  UserDocument {
+    id
+    fileId
+    createdAt
+    file {
+      id
+      url
+      type
+      meta
+      name
+    }
   }
   Role {
     id
