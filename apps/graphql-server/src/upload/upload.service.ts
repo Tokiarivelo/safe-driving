@@ -4,7 +4,10 @@ import { Injectable } from '@nestjs/common';
 import { FileUpload } from 'graphql-upload-ts';
 import { ImageType } from 'src/dtos/@generated';
 import { FileMetaInput } from 'src/dtos/upload/upload.input';
-import { PresignedUrl } from 'src/dtos/upload/upload.output';
+import {
+  CompleteUploadOutput,
+  PresignedUrl,
+} from 'src/dtos/upload/upload.output';
 import { S3Service } from 'src/s3/s3.service';
 
 @Injectable()
@@ -86,5 +89,13 @@ export class UploadService {
     files: FileMetaInput[],
   ): Promise<PresignedUrl[]> {
     return this.s3Service.createBatchPresignedUrls(userId, type, files);
+  }
+
+  async completeUploadBulk(
+    userId: string,
+    keys: string[],
+    type: ImageType,
+  ): Promise<CompleteUploadOutput[]> {
+    return this.s3Service.completeUploadBulk(userId, keys, type);
   }
 }

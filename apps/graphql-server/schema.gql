@@ -2,9 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input BoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
 input BoolFilter {
   equals: Boolean
   not: NestedBoolFilter
+}
+
+type CompleteUploadOutput {
+  contentType: String
+  etag: String
+  key: String!
+  size: Int
 }
 
 input CreateDriverVehicleInput {
@@ -21,6 +32,10 @@ input CreateDriverVehicleInput {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+input DateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
 
 input DateTimeFilter {
   equals: DateTime
@@ -232,8 +247,175 @@ input DriverVehicleOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
+input DriverVehicleScalarWhereInput {
+  AND: [DriverVehicleScalarWhereInput!]
+  NOT: [DriverVehicleScalarWhereInput!]
+  OR: [DriverVehicleScalarWhereInput!]
+  brand: StringNullableFilter
+  id: StringFilter
+  model: StringNullableFilter
+  place: IntFilter
+  registrationNumber: StringNullableFilter
+  userId: StringFilter
+  vehicleTypeId: StringFilter
+}
+
 type DriverVehicleSumAggregate {
   place: Int
+}
+
+input DriverVehicleUpdateManyMutationInput {
+  brand: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  model: NullableStringFieldUpdateOperationsInput
+  place: IntFieldUpdateOperationsInput
+  registrationNumber: NullableStringFieldUpdateOperationsInput
+}
+
+input DriverVehicleUpdateManyWithWhereWithoutTypeInput {
+  data: DriverVehicleUpdateManyMutationInput!
+  where: DriverVehicleScalarWhereInput!
+}
+
+input DriverVehicleUpdateManyWithWhereWithoutUserInput {
+  data: DriverVehicleUpdateManyMutationInput!
+  where: DriverVehicleScalarWhereInput!
+}
+
+input DriverVehicleUpdateManyWithoutTypeNestedInput {
+  connect: [DriverVehicleWhereUniqueInput!]
+  connectOrCreate: [DriverVehicleCreateOrConnectWithoutTypeInput!]
+  create: [DriverVehicleCreateWithoutTypeInput!]
+  createMany: DriverVehicleCreateManyTypeInputEnvelope
+  delete: [DriverVehicleWhereUniqueInput!]
+  deleteMany: [DriverVehicleScalarWhereInput!]
+  disconnect: [DriverVehicleWhereUniqueInput!]
+  set: [DriverVehicleWhereUniqueInput!]
+  update: [DriverVehicleUpdateWithWhereUniqueWithoutTypeInput!]
+  updateMany: [DriverVehicleUpdateManyWithWhereWithoutTypeInput!]
+  upsert: [DriverVehicleUpsertWithWhereUniqueWithoutTypeInput!]
+}
+
+input DriverVehicleUpdateManyWithoutUserNestedInput {
+  connect: [DriverVehicleWhereUniqueInput!]
+  connectOrCreate: [DriverVehicleCreateOrConnectWithoutUserInput!]
+  create: [DriverVehicleCreateWithoutUserInput!]
+  createMany: DriverVehicleCreateManyUserInputEnvelope
+  delete: [DriverVehicleWhereUniqueInput!]
+  deleteMany: [DriverVehicleScalarWhereInput!]
+  disconnect: [DriverVehicleWhereUniqueInput!]
+  set: [DriverVehicleWhereUniqueInput!]
+  update: [DriverVehicleUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [DriverVehicleUpdateManyWithWhereWithoutUserInput!]
+  upsert: [DriverVehicleUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input DriverVehicleUpdateOneWithoutVehicleDocumentNestedInput {
+  connect: DriverVehicleWhereUniqueInput
+  connectOrCreate: DriverVehicleCreateOrConnectWithoutVehicleDocumentInput
+  create: DriverVehicleCreateWithoutVehicleDocumentInput
+  delete: DriverVehicleWhereInput
+  disconnect: DriverVehicleWhereInput
+  update: DriverVehicleUpdateToOneWithWhereWithoutVehicleDocumentInput
+  upsert: DriverVehicleUpsertWithoutVehicleDocumentInput
+}
+
+input DriverVehicleUpdateOneWithoutVehicleImageNestedInput {
+  connect: DriverVehicleWhereUniqueInput
+  connectOrCreate: DriverVehicleCreateOrConnectWithoutVehicleImageInput
+  create: DriverVehicleCreateWithoutVehicleImageInput
+  delete: DriverVehicleWhereInput
+  disconnect: DriverVehicleWhereInput
+  update: DriverVehicleUpdateToOneWithWhereWithoutVehicleImageInput
+  upsert: DriverVehicleUpsertWithoutVehicleImageInput
+}
+
+input DriverVehicleUpdateToOneWithWhereWithoutVehicleDocumentInput {
+  data: DriverVehicleUpdateWithoutVehicleDocumentInput!
+  where: DriverVehicleWhereInput
+}
+
+input DriverVehicleUpdateToOneWithWhereWithoutVehicleImageInput {
+  data: DriverVehicleUpdateWithoutVehicleImageInput!
+  where: DriverVehicleWhereInput
+}
+
+input DriverVehicleUpdateWithWhereUniqueWithoutTypeInput {
+  data: DriverVehicleUpdateWithoutTypeInput!
+  where: DriverVehicleWhereUniqueInput!
+}
+
+input DriverVehicleUpdateWithWhereUniqueWithoutUserInput {
+  data: DriverVehicleUpdateWithoutUserInput!
+  where: DriverVehicleWhereUniqueInput!
+}
+
+input DriverVehicleUpdateWithoutTypeInput {
+  VehicleDocument: VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput
+  VehicleImage: VehicleImageUpdateManyWithoutDriverVehicleNestedInput
+  brand: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  model: NullableStringFieldUpdateOperationsInput
+  place: IntFieldUpdateOperationsInput
+  registrationNumber: NullableStringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutVehiclesNestedInput
+}
+
+input DriverVehicleUpdateWithoutUserInput {
+  VehicleDocument: VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput
+  VehicleImage: VehicleImageUpdateManyWithoutDriverVehicleNestedInput
+  brand: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  model: NullableStringFieldUpdateOperationsInput
+  place: IntFieldUpdateOperationsInput
+  registrationNumber: NullableStringFieldUpdateOperationsInput
+  type: VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput
+}
+
+input DriverVehicleUpdateWithoutVehicleDocumentInput {
+  VehicleImage: VehicleImageUpdateManyWithoutDriverVehicleNestedInput
+  brand: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  model: NullableStringFieldUpdateOperationsInput
+  place: IntFieldUpdateOperationsInput
+  registrationNumber: NullableStringFieldUpdateOperationsInput
+  type: VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput
+  user: UserUpdateOneRequiredWithoutVehiclesNestedInput
+}
+
+input DriverVehicleUpdateWithoutVehicleImageInput {
+  VehicleDocument: VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput
+  brand: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  model: NullableStringFieldUpdateOperationsInput
+  place: IntFieldUpdateOperationsInput
+  registrationNumber: NullableStringFieldUpdateOperationsInput
+  type: VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput
+  user: UserUpdateOneRequiredWithoutVehiclesNestedInput
+}
+
+input DriverVehicleUpsertWithWhereUniqueWithoutTypeInput {
+  create: DriverVehicleCreateWithoutTypeInput!
+  update: DriverVehicleUpdateWithoutTypeInput!
+  where: DriverVehicleWhereUniqueInput!
+}
+
+input DriverVehicleUpsertWithWhereUniqueWithoutUserInput {
+  create: DriverVehicleCreateWithoutUserInput!
+  update: DriverVehicleUpdateWithoutUserInput!
+  where: DriverVehicleWhereUniqueInput!
+}
+
+input DriverVehicleUpsertWithoutVehicleDocumentInput {
+  create: DriverVehicleCreateWithoutVehicleDocumentInput!
+  update: DriverVehicleUpdateWithoutVehicleDocumentInput!
+  where: DriverVehicleWhereInput
+}
+
+input DriverVehicleUpsertWithoutVehicleImageInput {
+  create: DriverVehicleCreateWithoutVehicleImageInput!
+  update: DriverVehicleUpdateWithoutVehicleImageInput!
+  where: DriverVehicleWhereInput
 }
 
 input DriverVehicleWhereInput {
@@ -268,6 +450,10 @@ input DriverVehicleWhereUniqueInput {
   user: UserScalarRelationFilter
   userId: StringFilter
   vehicleTypeId: StringFilter
+}
+
+input EnumImageTypeFieldUpdateOperationsInput {
+  set: ImageType
 }
 
 input EnumImageTypeFilter {
@@ -324,6 +510,26 @@ type FileCountAggregate {
   type: Int!
   url: Int!
   userId: Int!
+}
+
+input FileCreateInput {
+  UserDocument: UserDocumentCreateNestedManyWithoutFileInput
+  UserImage: UserImageCreateNestedManyWithoutFileInput
+  VehicleDocument: VehicleDocumentCreateNestedManyWithoutFileInput
+  VehicleImage: VehicleImageCreateNestedManyWithoutFileInput
+  contentType: String
+  driverVehicleId: String
+  etag: String
+  id: String
+  key: String!
+  meta: JSON
+  name: String
+  originalName: String!
+  size: Int
+  status: String
+  type: ImageType!
+  url: String
+  userId: String!
 }
 
 input FileCreateNestedOneWithoutUserDocumentInput {
@@ -482,6 +688,42 @@ type FileMinAggregate {
   userId: String
 }
 
+input FileOrderByWithRelationInput {
+  UserDocument: UserDocumentOrderByRelationAggregateInput
+  UserImage: UserImageOrderByRelationAggregateInput
+  VehicleDocument: VehicleDocumentOrderByRelationAggregateInput
+  VehicleImage: VehicleImageOrderByRelationAggregateInput
+  contentType: SortOrderInput
+  driverVehicleId: SortOrderInput
+  etag: SortOrderInput
+  id: SortOrder
+  key: SortOrder
+  meta: SortOrderInput
+  name: SortOrderInput
+  originalName: SortOrder
+  size: SortOrderInput
+  status: SortOrder
+  type: SortOrder
+  url: SortOrderInput
+  userId: SortOrder
+}
+
+enum FileScalarFieldEnum {
+  contentType
+  driverVehicleId
+  etag
+  id
+  key
+  meta
+  name
+  originalName
+  size
+  status
+  type
+  url
+  userId
+}
+
 input FileScalarRelationFilter {
   is: FileWhereInput
   isNot: FileWhereInput
@@ -491,8 +733,180 @@ type FileSumAggregate {
   size: Int
 }
 
+input FileUpdateInput {
+  UserDocument: UserDocumentUpdateManyWithoutFileNestedInput
+  UserImage: UserImageUpdateManyWithoutFileNestedInput
+  VehicleDocument: VehicleDocumentUpdateManyWithoutFileNestedInput
+  VehicleImage: VehicleImageUpdateManyWithoutFileNestedInput
+  contentType: NullableStringFieldUpdateOperationsInput
+  driverVehicleId: NullableStringFieldUpdateOperationsInput
+  etag: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  key: StringFieldUpdateOperationsInput
+  meta: JSON
+  name: NullableStringFieldUpdateOperationsInput
+  originalName: StringFieldUpdateOperationsInput
+  size: NullableIntFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+  type: EnumImageTypeFieldUpdateOperationsInput
+  url: NullableStringFieldUpdateOperationsInput
+  userId: StringFieldUpdateOperationsInput
+}
+
+input FileUpdateOneRequiredWithoutUserDocumentNestedInput {
+  connect: FileWhereUniqueInput
+  connectOrCreate: FileCreateOrConnectWithoutUserDocumentInput
+  create: FileCreateWithoutUserDocumentInput
+  update: FileUpdateToOneWithWhereWithoutUserDocumentInput
+  upsert: FileUpsertWithoutUserDocumentInput
+}
+
+input FileUpdateOneRequiredWithoutUserImageNestedInput {
+  connect: FileWhereUniqueInput
+  connectOrCreate: FileCreateOrConnectWithoutUserImageInput
+  create: FileCreateWithoutUserImageInput
+  update: FileUpdateToOneWithWhereWithoutUserImageInput
+  upsert: FileUpsertWithoutUserImageInput
+}
+
+input FileUpdateOneRequiredWithoutVehicleDocumentNestedInput {
+  connect: FileWhereUniqueInput
+  connectOrCreate: FileCreateOrConnectWithoutVehicleDocumentInput
+  create: FileCreateWithoutVehicleDocumentInput
+  update: FileUpdateToOneWithWhereWithoutVehicleDocumentInput
+  upsert: FileUpsertWithoutVehicleDocumentInput
+}
+
+input FileUpdateOneRequiredWithoutVehicleImageNestedInput {
+  connect: FileWhereUniqueInput
+  connectOrCreate: FileCreateOrConnectWithoutVehicleImageInput
+  create: FileCreateWithoutVehicleImageInput
+  update: FileUpdateToOneWithWhereWithoutVehicleImageInput
+  upsert: FileUpsertWithoutVehicleImageInput
+}
+
+input FileUpdateToOneWithWhereWithoutUserDocumentInput {
+  data: FileUpdateWithoutUserDocumentInput!
+  where: FileWhereInput
+}
+
+input FileUpdateToOneWithWhereWithoutUserImageInput {
+  data: FileUpdateWithoutUserImageInput!
+  where: FileWhereInput
+}
+
+input FileUpdateToOneWithWhereWithoutVehicleDocumentInput {
+  data: FileUpdateWithoutVehicleDocumentInput!
+  where: FileWhereInput
+}
+
+input FileUpdateToOneWithWhereWithoutVehicleImageInput {
+  data: FileUpdateWithoutVehicleImageInput!
+  where: FileWhereInput
+}
+
+input FileUpdateWithoutUserDocumentInput {
+  UserImage: UserImageUpdateManyWithoutFileNestedInput
+  VehicleDocument: VehicleDocumentUpdateManyWithoutFileNestedInput
+  VehicleImage: VehicleImageUpdateManyWithoutFileNestedInput
+  contentType: NullableStringFieldUpdateOperationsInput
+  driverVehicleId: NullableStringFieldUpdateOperationsInput
+  etag: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  key: StringFieldUpdateOperationsInput
+  meta: JSON
+  name: NullableStringFieldUpdateOperationsInput
+  originalName: StringFieldUpdateOperationsInput
+  size: NullableIntFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+  type: EnumImageTypeFieldUpdateOperationsInput
+  url: NullableStringFieldUpdateOperationsInput
+  userId: StringFieldUpdateOperationsInput
+}
+
+input FileUpdateWithoutUserImageInput {
+  UserDocument: UserDocumentUpdateManyWithoutFileNestedInput
+  VehicleDocument: VehicleDocumentUpdateManyWithoutFileNestedInput
+  VehicleImage: VehicleImageUpdateManyWithoutFileNestedInput
+  contentType: NullableStringFieldUpdateOperationsInput
+  driverVehicleId: NullableStringFieldUpdateOperationsInput
+  etag: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  key: StringFieldUpdateOperationsInput
+  meta: JSON
+  name: NullableStringFieldUpdateOperationsInput
+  originalName: StringFieldUpdateOperationsInput
+  size: NullableIntFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+  type: EnumImageTypeFieldUpdateOperationsInput
+  url: NullableStringFieldUpdateOperationsInput
+  userId: StringFieldUpdateOperationsInput
+}
+
+input FileUpdateWithoutVehicleDocumentInput {
+  UserDocument: UserDocumentUpdateManyWithoutFileNestedInput
+  UserImage: UserImageUpdateManyWithoutFileNestedInput
+  VehicleImage: VehicleImageUpdateManyWithoutFileNestedInput
+  contentType: NullableStringFieldUpdateOperationsInput
+  driverVehicleId: NullableStringFieldUpdateOperationsInput
+  etag: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  key: StringFieldUpdateOperationsInput
+  meta: JSON
+  name: NullableStringFieldUpdateOperationsInput
+  originalName: StringFieldUpdateOperationsInput
+  size: NullableIntFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+  type: EnumImageTypeFieldUpdateOperationsInput
+  url: NullableStringFieldUpdateOperationsInput
+  userId: StringFieldUpdateOperationsInput
+}
+
+input FileUpdateWithoutVehicleImageInput {
+  UserDocument: UserDocumentUpdateManyWithoutFileNestedInput
+  UserImage: UserImageUpdateManyWithoutFileNestedInput
+  VehicleDocument: VehicleDocumentUpdateManyWithoutFileNestedInput
+  contentType: NullableStringFieldUpdateOperationsInput
+  driverVehicleId: NullableStringFieldUpdateOperationsInput
+  etag: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  key: StringFieldUpdateOperationsInput
+  meta: JSON
+  name: NullableStringFieldUpdateOperationsInput
+  originalName: StringFieldUpdateOperationsInput
+  size: NullableIntFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+  type: EnumImageTypeFieldUpdateOperationsInput
+  url: NullableStringFieldUpdateOperationsInput
+  userId: StringFieldUpdateOperationsInput
+}
+
 type FileUploadResult {
   url: String!
+}
+
+input FileUpsertWithoutUserDocumentInput {
+  create: FileCreateWithoutUserDocumentInput!
+  update: FileUpdateWithoutUserDocumentInput!
+  where: FileWhereInput
+}
+
+input FileUpsertWithoutUserImageInput {
+  create: FileCreateWithoutUserImageInput!
+  update: FileUpdateWithoutUserImageInput!
+  where: FileWhereInput
+}
+
+input FileUpsertWithoutVehicleDocumentInput {
+  create: FileCreateWithoutVehicleDocumentInput!
+  update: FileUpdateWithoutVehicleDocumentInput!
+  where: FileWhereInput
+}
+
+input FileUpsertWithoutVehicleImageInput {
+  create: FileCreateWithoutVehicleImageInput!
+  update: FileUpdateWithoutVehicleImageInput!
+  where: FileWhereInput
 }
 
 input FileWhereInput {
@@ -553,6 +967,14 @@ enum ImageType {
   VEHICLE
 }
 
+input IntFieldUpdateOperationsInput {
+  decrement: Int
+  divide: Int
+  increment: Int
+  multiply: Int
+  set: Int
+}
+
 input IntFilter {
   equals: Int
   gt: Int
@@ -608,10 +1030,13 @@ type LoginOutput {
 }
 
 type Mutation {
+  completeUploadBulk(keys: [String!]!, type: ImageType!): [CompleteUploadOutput!]!
   createBatchPresignedUrls(files: [FileMetaInput!]!, type: ImageType!): [PresignedUrl!]!
   createDriverVehicle(input: CreateDriverVehicleInput!, vehicleId: String!): UserPreference!
+  createFile(input: FileCreateInput!): File!
   createUser(input: UserCreateInput!): User!
   createVehicleType(input: VehicleTypeCreateInput!): VehicleType!
+  deleteFilesByUserId: [File!]!
   deleteObject(key: String!): Boolean!
   deleteVehicleType(id: String!): VehicleType!
   forgotPassword(email: String!): ForgotPasswordOutput!
@@ -620,6 +1045,7 @@ type Mutation {
   logout: Boolean!
   register(data: RegisterInput!): User!
   resetPassword(newPassword: String!, sessionToken: String!): Boolean!
+  updateFile(id: String!, input: FileUpdateInput!): File!
   uploadFile(file: Upload!, path: String): FileUploadResult!
   upsertUserPreference(input: UserPreferenceUpsertInput!): UserPreference!
 }
@@ -708,6 +1134,22 @@ input NestedStringNullableFilter {
   startsWith: String
 }
 
+input NullableDateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input NullableIntFieldUpdateOperationsInput {
+  decrement: Int
+  divide: Int
+  increment: Int
+  multiply: Int
+  set: Int
+}
+
+input NullableStringFieldUpdateOperationsInput {
+  set: String
+}
+
 enum NullsOrder {
   first
   last
@@ -721,6 +1163,8 @@ type PresignedUrl {
 
 type Query {
   VehicleType(id: String!): VehicleType!
+  file(id: String!): File!
+  files(cursor: FileWhereUniqueInput, distinct: [FileScalarFieldEnum!], orderBy: [FileOrderByWithRelationInput!], skip: Int, take: Int, where: FileWhereInput): [File!]!
   listObjects(bucket: String!): [String!]!
   me: User!
   user(id: String!): User!
@@ -811,6 +1255,61 @@ input RefreshTokenOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
+input RefreshTokenScalarWhereInput {
+  AND: [RefreshTokenScalarWhereInput!]
+  NOT: [RefreshTokenScalarWhereInput!]
+  OR: [RefreshTokenScalarWhereInput!]
+  createdAt: DateTimeFilter
+  expiresAt: DateTimeFilter
+  id: StringFilter
+  token: StringFilter
+  userId: StringFilter
+}
+
+input RefreshTokenUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  expiresAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  token: StringFieldUpdateOperationsInput
+}
+
+input RefreshTokenUpdateManyWithWhereWithoutUserInput {
+  data: RefreshTokenUpdateManyMutationInput!
+  where: RefreshTokenScalarWhereInput!
+}
+
+input RefreshTokenUpdateManyWithoutUserNestedInput {
+  connect: [RefreshTokenWhereUniqueInput!]
+  connectOrCreate: [RefreshTokenCreateOrConnectWithoutUserInput!]
+  create: [RefreshTokenCreateWithoutUserInput!]
+  createMany: RefreshTokenCreateManyUserInputEnvelope
+  delete: [RefreshTokenWhereUniqueInput!]
+  deleteMany: [RefreshTokenScalarWhereInput!]
+  disconnect: [RefreshTokenWhereUniqueInput!]
+  set: [RefreshTokenWhereUniqueInput!]
+  update: [RefreshTokenUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [RefreshTokenUpdateManyWithWhereWithoutUserInput!]
+  upsert: [RefreshTokenUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input RefreshTokenUpdateWithWhereUniqueWithoutUserInput {
+  data: RefreshTokenUpdateWithoutUserInput!
+  where: RefreshTokenWhereUniqueInput!
+}
+
+input RefreshTokenUpdateWithoutUserInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  expiresAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  token: StringFieldUpdateOperationsInput
+}
+
+input RefreshTokenUpsertWithWhereUniqueWithoutUserInput {
+  create: RefreshTokenCreateWithoutUserInput!
+  update: RefreshTokenUpdateWithoutUserInput!
+  where: RefreshTokenWhereUniqueInput!
+}
+
 input RefreshTokenWhereInput {
   AND: [RefreshTokenWhereInput!]
   NOT: [RefreshTokenWhereInput!]
@@ -896,6 +1395,53 @@ input RoleOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
+input RoleScalarWhereInput {
+  AND: [RoleScalarWhereInput!]
+  NOT: [RoleScalarWhereInput!]
+  OR: [RoleScalarWhereInput!]
+  id: StringFilter
+  name: StringFilter
+}
+
+input RoleUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+}
+
+input RoleUpdateManyWithWhereWithoutUsersInput {
+  data: RoleUpdateManyMutationInput!
+  where: RoleScalarWhereInput!
+}
+
+input RoleUpdateManyWithoutUsersNestedInput {
+  connect: [RoleWhereUniqueInput!]
+  connectOrCreate: [RoleCreateOrConnectWithoutUsersInput!]
+  create: [RoleCreateWithoutUsersInput!]
+  delete: [RoleWhereUniqueInput!]
+  deleteMany: [RoleScalarWhereInput!]
+  disconnect: [RoleWhereUniqueInput!]
+  set: [RoleWhereUniqueInput!]
+  update: [RoleUpdateWithWhereUniqueWithoutUsersInput!]
+  updateMany: [RoleUpdateManyWithWhereWithoutUsersInput!]
+  upsert: [RoleUpsertWithWhereUniqueWithoutUsersInput!]
+}
+
+input RoleUpdateWithWhereUniqueWithoutUsersInput {
+  data: RoleUpdateWithoutUsersInput!
+  where: RoleWhereUniqueInput!
+}
+
+input RoleUpdateWithoutUsersInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+}
+
+input RoleUpsertWithWhereUniqueWithoutUsersInput {
+  create: RoleCreateWithoutUsersInput!
+  update: RoleUpdateWithoutUsersInput!
+  where: RoleWhereUniqueInput!
+}
+
 input RoleWhereInput {
   AND: [RoleWhereInput!]
   NOT: [RoleWhereInput!]
@@ -922,6 +1468,10 @@ enum SortOrder {
 input SortOrderInput {
   nulls: NullsOrder
   sort: SortOrder!
+}
+
+input StringFieldUpdateOperationsInput {
+  set: String
 }
 
 input StringFilter {
@@ -1245,6 +1795,97 @@ input UserDocumentOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
+input UserDocumentScalarWhereInput {
+  AND: [UserDocumentScalarWhereInput!]
+  NOT: [UserDocumentScalarWhereInput!]
+  OR: [UserDocumentScalarWhereInput!]
+  createdAt: DateTimeFilter
+  fileId: StringFilter
+  id: StringFilter
+  updatedAt: DateTimeNullableFilter
+  userId: StringFilter
+}
+
+input UserDocumentUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input UserDocumentUpdateManyWithWhereWithoutFileInput {
+  data: UserDocumentUpdateManyMutationInput!
+  where: UserDocumentScalarWhereInput!
+}
+
+input UserDocumentUpdateManyWithWhereWithoutUserInput {
+  data: UserDocumentUpdateManyMutationInput!
+  where: UserDocumentScalarWhereInput!
+}
+
+input UserDocumentUpdateManyWithoutFileNestedInput {
+  connect: [UserDocumentWhereUniqueInput!]
+  connectOrCreate: [UserDocumentCreateOrConnectWithoutFileInput!]
+  create: [UserDocumentCreateWithoutFileInput!]
+  createMany: UserDocumentCreateManyFileInputEnvelope
+  delete: [UserDocumentWhereUniqueInput!]
+  deleteMany: [UserDocumentScalarWhereInput!]
+  disconnect: [UserDocumentWhereUniqueInput!]
+  set: [UserDocumentWhereUniqueInput!]
+  update: [UserDocumentUpdateWithWhereUniqueWithoutFileInput!]
+  updateMany: [UserDocumentUpdateManyWithWhereWithoutFileInput!]
+  upsert: [UserDocumentUpsertWithWhereUniqueWithoutFileInput!]
+}
+
+input UserDocumentUpdateManyWithoutUserNestedInput {
+  connect: [UserDocumentWhereUniqueInput!]
+  connectOrCreate: [UserDocumentCreateOrConnectWithoutUserInput!]
+  create: [UserDocumentCreateWithoutUserInput!]
+  createMany: UserDocumentCreateManyUserInputEnvelope
+  delete: [UserDocumentWhereUniqueInput!]
+  deleteMany: [UserDocumentScalarWhereInput!]
+  disconnect: [UserDocumentWhereUniqueInput!]
+  set: [UserDocumentWhereUniqueInput!]
+  update: [UserDocumentUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [UserDocumentUpdateManyWithWhereWithoutUserInput!]
+  upsert: [UserDocumentUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input UserDocumentUpdateWithWhereUniqueWithoutFileInput {
+  data: UserDocumentUpdateWithoutFileInput!
+  where: UserDocumentWhereUniqueInput!
+}
+
+input UserDocumentUpdateWithWhereUniqueWithoutUserInput {
+  data: UserDocumentUpdateWithoutUserInput!
+  where: UserDocumentWhereUniqueInput!
+}
+
+input UserDocumentUpdateWithoutFileInput {
+  User: UserUpdateOneRequiredWithoutUserDocumentNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input UserDocumentUpdateWithoutUserInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  file: FileUpdateOneRequiredWithoutUserDocumentNestedInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input UserDocumentUpsertWithWhereUniqueWithoutFileInput {
+  create: UserDocumentCreateWithoutFileInput!
+  update: UserDocumentUpdateWithoutFileInput!
+  where: UserDocumentWhereUniqueInput!
+}
+
+input UserDocumentUpsertWithWhereUniqueWithoutUserInput {
+  create: UserDocumentCreateWithoutUserInput!
+  update: UserDocumentUpdateWithoutUserInput!
+  where: UserDocumentWhereUniqueInput!
+}
+
 input UserDocumentWhereInput {
   AND: [UserDocumentWhereInput!]
   NOT: [UserDocumentWhereInput!]
@@ -1376,6 +2017,97 @@ type UserImageMinAggregate {
 
 input UserImageOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input UserImageScalarWhereInput {
+  AND: [UserImageScalarWhereInput!]
+  NOT: [UserImageScalarWhereInput!]
+  OR: [UserImageScalarWhereInput!]
+  createdAt: DateTimeFilter
+  fileId: StringFilter
+  id: StringFilter
+  updatedAt: DateTimeNullableFilter
+  userId: StringFilter
+}
+
+input UserImageUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input UserImageUpdateManyWithWhereWithoutFileInput {
+  data: UserImageUpdateManyMutationInput!
+  where: UserImageScalarWhereInput!
+}
+
+input UserImageUpdateManyWithWhereWithoutUserInput {
+  data: UserImageUpdateManyMutationInput!
+  where: UserImageScalarWhereInput!
+}
+
+input UserImageUpdateManyWithoutFileNestedInput {
+  connect: [UserImageWhereUniqueInput!]
+  connectOrCreate: [UserImageCreateOrConnectWithoutFileInput!]
+  create: [UserImageCreateWithoutFileInput!]
+  createMany: UserImageCreateManyFileInputEnvelope
+  delete: [UserImageWhereUniqueInput!]
+  deleteMany: [UserImageScalarWhereInput!]
+  disconnect: [UserImageWhereUniqueInput!]
+  set: [UserImageWhereUniqueInput!]
+  update: [UserImageUpdateWithWhereUniqueWithoutFileInput!]
+  updateMany: [UserImageUpdateManyWithWhereWithoutFileInput!]
+  upsert: [UserImageUpsertWithWhereUniqueWithoutFileInput!]
+}
+
+input UserImageUpdateManyWithoutUserNestedInput {
+  connect: [UserImageWhereUniqueInput!]
+  connectOrCreate: [UserImageCreateOrConnectWithoutUserInput!]
+  create: [UserImageCreateWithoutUserInput!]
+  createMany: UserImageCreateManyUserInputEnvelope
+  delete: [UserImageWhereUniqueInput!]
+  deleteMany: [UserImageScalarWhereInput!]
+  disconnect: [UserImageWhereUniqueInput!]
+  set: [UserImageWhereUniqueInput!]
+  update: [UserImageUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [UserImageUpdateManyWithWhereWithoutUserInput!]
+  upsert: [UserImageUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input UserImageUpdateWithWhereUniqueWithoutFileInput {
+  data: UserImageUpdateWithoutFileInput!
+  where: UserImageWhereUniqueInput!
+}
+
+input UserImageUpdateWithWhereUniqueWithoutUserInput {
+  data: UserImageUpdateWithoutUserInput!
+  where: UserImageWhereUniqueInput!
+}
+
+input UserImageUpdateWithoutFileInput {
+  User: UserUpdateOneRequiredWithoutUserImageNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input UserImageUpdateWithoutUserInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  file: FileUpdateOneRequiredWithoutUserImageNestedInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input UserImageUpsertWithWhereUniqueWithoutFileInput {
+  create: UserImageCreateWithoutFileInput!
+  update: UserImageUpdateWithoutFileInput!
+  where: UserImageWhereUniqueInput!
+}
+
+input UserImageUpsertWithWhereUniqueWithoutUserInput {
+  create: UserImageCreateWithoutUserInput!
+  update: UserImageUpdateWithoutUserInput!
+  where: UserImageWhereUniqueInput!
 }
 
 input UserImageWhereInput {
@@ -1607,6 +2339,106 @@ input UserPreferenceOrderByWithRelationInput {
   userId: SortOrder
 }
 
+input UserPreferenceScalarWhereInput {
+  AND: [UserPreferenceScalarWhereInput!]
+  NOT: [UserPreferenceScalarWhereInput!]
+  OR: [UserPreferenceScalarWhereInput!]
+  activateEmailNotifications: BoolFilter
+  activateLocation: BoolFilter
+  activateNotifications: BoolFilter
+  activateSmsNotifications: BoolFilter
+  cguAccepted: BoolFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  language: StringNullableFilter
+  privacyPolicyAccepted: BoolFilter
+  theme: StringNullableFilter
+  updatedAt: DateTimeNullableFilter
+  userId: StringFilter
+}
+
+input UserPreferenceUpdateManyMutationInput {
+  activateEmailNotifications: BoolFieldUpdateOperationsInput
+  activateLocation: BoolFieldUpdateOperationsInput
+  activateNotifications: BoolFieldUpdateOperationsInput
+  activateSmsNotifications: BoolFieldUpdateOperationsInput
+  cguAccepted: BoolFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  language: NullableStringFieldUpdateOperationsInput
+  privacyPolicyAccepted: BoolFieldUpdateOperationsInput
+  theme: NullableStringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input UserPreferenceUpdateManyWithWhereWithoutPreferedveliclesInput {
+  data: UserPreferenceUpdateManyMutationInput!
+  where: UserPreferenceScalarWhereInput!
+}
+
+input UserPreferenceUpdateManyWithoutPreferedveliclesNestedInput {
+  connect: [UserPreferenceWhereUniqueInput!]
+  connectOrCreate: [UserPreferenceCreateOrConnectWithoutPreferedveliclesInput!]
+  create: [UserPreferenceCreateWithoutPreferedveliclesInput!]
+  delete: [UserPreferenceWhereUniqueInput!]
+  deleteMany: [UserPreferenceScalarWhereInput!]
+  disconnect: [UserPreferenceWhereUniqueInput!]
+  set: [UserPreferenceWhereUniqueInput!]
+  update: [UserPreferenceUpdateWithWhereUniqueWithoutPreferedveliclesInput!]
+  updateMany: [UserPreferenceUpdateManyWithWhereWithoutPreferedveliclesInput!]
+  upsert: [UserPreferenceUpsertWithWhereUniqueWithoutPreferedveliclesInput!]
+}
+
+input UserPreferenceUpdateOneWithoutUserNestedInput {
+  connect: UserPreferenceWhereUniqueInput
+  connectOrCreate: UserPreferenceCreateOrConnectWithoutUserInput
+  create: UserPreferenceCreateWithoutUserInput
+  delete: UserPreferenceWhereInput
+  disconnect: UserPreferenceWhereInput
+  update: UserPreferenceUpdateToOneWithWhereWithoutUserInput
+  upsert: UserPreferenceUpsertWithoutUserInput
+}
+
+input UserPreferenceUpdateToOneWithWhereWithoutUserInput {
+  data: UserPreferenceUpdateWithoutUserInput!
+  where: UserPreferenceWhereInput
+}
+
+input UserPreferenceUpdateWithWhereUniqueWithoutPreferedveliclesInput {
+  data: UserPreferenceUpdateWithoutPreferedveliclesInput!
+  where: UserPreferenceWhereUniqueInput!
+}
+
+input UserPreferenceUpdateWithoutPreferedveliclesInput {
+  activateEmailNotifications: BoolFieldUpdateOperationsInput
+  activateLocation: BoolFieldUpdateOperationsInput
+  activateNotifications: BoolFieldUpdateOperationsInput
+  activateSmsNotifications: BoolFieldUpdateOperationsInput
+  cguAccepted: BoolFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  language: NullableStringFieldUpdateOperationsInput
+  privacyPolicyAccepted: BoolFieldUpdateOperationsInput
+  theme: NullableStringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutUserPreferenceNestedInput
+}
+
+input UserPreferenceUpdateWithoutUserInput {
+  activateEmailNotifications: BoolFieldUpdateOperationsInput
+  activateLocation: BoolFieldUpdateOperationsInput
+  activateNotifications: BoolFieldUpdateOperationsInput
+  activateSmsNotifications: BoolFieldUpdateOperationsInput
+  cguAccepted: BoolFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  language: NullableStringFieldUpdateOperationsInput
+  preferedvelicles: VehicleTypeUpdateManyWithoutUserPreferenceNestedInput
+  privacyPolicyAccepted: BoolFieldUpdateOperationsInput
+  theme: NullableStringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
 input UserPreferenceUpsertInput {
   activateEmailNotifications: Boolean
   activateLocation: Boolean
@@ -1620,6 +2452,18 @@ input UserPreferenceUpsertInput {
   privacyPolicyAccepted: Boolean
   theme: String
   updatedAt: DateTime
+}
+
+input UserPreferenceUpsertWithWhereUniqueWithoutPreferedveliclesInput {
+  create: UserPreferenceCreateWithoutPreferedveliclesInput!
+  update: UserPreferenceUpdateWithoutPreferedveliclesInput!
+  where: UserPreferenceWhereUniqueInput!
+}
+
+input UserPreferenceUpsertWithoutUserInput {
+  create: UserPreferenceCreateWithoutUserInput!
+  update: UserPreferenceUpdateWithoutUserInput!
+  where: UserPreferenceWhereInput
 }
 
 input UserPreferenceWhereInput {
@@ -1678,6 +2522,154 @@ enum UserScalarFieldEnum {
 input UserScalarRelationFilter {
   is: UserWhereInput
   isNot: UserWhereInput
+}
+
+input UserUpdateOneRequiredWithoutUserDocumentNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutUserDocumentInput
+  create: UserCreateWithoutUserDocumentInput
+  update: UserUpdateToOneWithWhereWithoutUserDocumentInput
+  upsert: UserUpsertWithoutUserDocumentInput
+}
+
+input UserUpdateOneRequiredWithoutUserImageNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutUserImageInput
+  create: UserCreateWithoutUserImageInput
+  update: UserUpdateToOneWithWhereWithoutUserImageInput
+  upsert: UserUpsertWithoutUserImageInput
+}
+
+input UserUpdateOneRequiredWithoutUserPreferenceNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutUserPreferenceInput
+  create: UserCreateWithoutUserPreferenceInput
+  update: UserUpdateToOneWithWhereWithoutUserPreferenceInput
+  upsert: UserUpsertWithoutUserPreferenceInput
+}
+
+input UserUpdateOneRequiredWithoutVehiclesNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutVehiclesInput
+  create: UserCreateWithoutVehiclesInput
+  update: UserUpdateToOneWithWhereWithoutVehiclesInput
+  upsert: UserUpsertWithoutVehiclesInput
+}
+
+input UserUpdateToOneWithWhereWithoutUserDocumentInput {
+  data: UserUpdateWithoutUserDocumentInput!
+  where: UserWhereInput
+}
+
+input UserUpdateToOneWithWhereWithoutUserImageInput {
+  data: UserUpdateWithoutUserImageInput!
+  where: UserWhereInput
+}
+
+input UserUpdateToOneWithWhereWithoutUserPreferenceInput {
+  data: UserUpdateWithoutUserPreferenceInput!
+  where: UserWhereInput
+}
+
+input UserUpdateToOneWithWhereWithoutVehiclesInput {
+  data: UserUpdateWithoutVehiclesInput!
+  where: UserWhereInput
+}
+
+input UserUpdateWithoutUserDocumentInput {
+  Role: RoleUpdateManyWithoutUsersNestedInput
+  UserImage: UserImageUpdateManyWithoutUserNestedInput
+  UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isVerified: BoolFieldUpdateOperationsInput
+  lastName: NullableStringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+  vehicles: DriverVehicleUpdateManyWithoutUserNestedInput
+}
+
+input UserUpdateWithoutUserImageInput {
+  Role: RoleUpdateManyWithoutUsersNestedInput
+  UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
+  UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isVerified: BoolFieldUpdateOperationsInput
+  lastName: NullableStringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+  vehicles: DriverVehicleUpdateManyWithoutUserNestedInput
+}
+
+input UserUpdateWithoutUserPreferenceInput {
+  Role: RoleUpdateManyWithoutUsersNestedInput
+  UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
+  UserImage: UserImageUpdateManyWithoutUserNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isVerified: BoolFieldUpdateOperationsInput
+  lastName: NullableStringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+  vehicles: DriverVehicleUpdateManyWithoutUserNestedInput
+}
+
+input UserUpdateWithoutVehiclesInput {
+  Role: RoleUpdateManyWithoutUsersNestedInput
+  UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
+  UserImage: UserImageUpdateManyWithoutUserNestedInput
+  UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isVerified: BoolFieldUpdateOperationsInput
+  lastName: NullableStringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+}
+
+input UserUpsertWithoutUserDocumentInput {
+  create: UserCreateWithoutUserDocumentInput!
+  update: UserUpdateWithoutUserDocumentInput!
+  where: UserWhereInput
+}
+
+input UserUpsertWithoutUserImageInput {
+  create: UserCreateWithoutUserImageInput!
+  update: UserUpdateWithoutUserImageInput!
+  where: UserWhereInput
+}
+
+input UserUpsertWithoutUserPreferenceInput {
+  create: UserCreateWithoutUserPreferenceInput!
+  update: UserUpdateWithoutUserPreferenceInput!
+  where: UserWhereInput
+}
+
+input UserUpsertWithoutVehiclesInput {
+  create: UserCreateWithoutVehiclesInput!
+  update: UserUpdateWithoutVehiclesInput!
+  where: UserWhereInput
 }
 
 input UserWhereInput {
@@ -1827,6 +2819,101 @@ type VehicleDocumentMinAggregate {
   updatedAt: DateTime
 }
 
+input VehicleDocumentOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input VehicleDocumentScalarWhereInput {
+  AND: [VehicleDocumentScalarWhereInput!]
+  NOT: [VehicleDocumentScalarWhereInput!]
+  OR: [VehicleDocumentScalarWhereInput!]
+  createdAt: DateTimeFilter
+  driverVehicleId: StringFilter
+  fileId: StringFilter
+  id: StringFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input VehicleDocumentUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input VehicleDocumentUpdateManyWithWhereWithoutDriverVehicleInput {
+  data: VehicleDocumentUpdateManyMutationInput!
+  where: VehicleDocumentScalarWhereInput!
+}
+
+input VehicleDocumentUpdateManyWithWhereWithoutFileInput {
+  data: VehicleDocumentUpdateManyMutationInput!
+  where: VehicleDocumentScalarWhereInput!
+}
+
+input VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput {
+  connect: [VehicleDocumentWhereUniqueInput!]
+  connectOrCreate: [VehicleDocumentCreateOrConnectWithoutDriverVehicleInput!]
+  create: [VehicleDocumentCreateWithoutDriverVehicleInput!]
+  createMany: VehicleDocumentCreateManyDriverVehicleInputEnvelope
+  delete: [VehicleDocumentWhereUniqueInput!]
+  deleteMany: [VehicleDocumentScalarWhereInput!]
+  disconnect: [VehicleDocumentWhereUniqueInput!]
+  set: [VehicleDocumentWhereUniqueInput!]
+  update: [VehicleDocumentUpdateWithWhereUniqueWithoutDriverVehicleInput!]
+  updateMany: [VehicleDocumentUpdateManyWithWhereWithoutDriverVehicleInput!]
+  upsert: [VehicleDocumentUpsertWithWhereUniqueWithoutDriverVehicleInput!]
+}
+
+input VehicleDocumentUpdateManyWithoutFileNestedInput {
+  connect: [VehicleDocumentWhereUniqueInput!]
+  connectOrCreate: [VehicleDocumentCreateOrConnectWithoutFileInput!]
+  create: [VehicleDocumentCreateWithoutFileInput!]
+  createMany: VehicleDocumentCreateManyFileInputEnvelope
+  delete: [VehicleDocumentWhereUniqueInput!]
+  deleteMany: [VehicleDocumentScalarWhereInput!]
+  disconnect: [VehicleDocumentWhereUniqueInput!]
+  set: [VehicleDocumentWhereUniqueInput!]
+  update: [VehicleDocumentUpdateWithWhereUniqueWithoutFileInput!]
+  updateMany: [VehicleDocumentUpdateManyWithWhereWithoutFileInput!]
+  upsert: [VehicleDocumentUpsertWithWhereUniqueWithoutFileInput!]
+}
+
+input VehicleDocumentUpdateWithWhereUniqueWithoutDriverVehicleInput {
+  data: VehicleDocumentUpdateWithoutDriverVehicleInput!
+  where: VehicleDocumentWhereUniqueInput!
+}
+
+input VehicleDocumentUpdateWithWhereUniqueWithoutFileInput {
+  data: VehicleDocumentUpdateWithoutFileInput!
+  where: VehicleDocumentWhereUniqueInput!
+}
+
+input VehicleDocumentUpdateWithoutDriverVehicleInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  file: FileUpdateOneRequiredWithoutVehicleDocumentNestedInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input VehicleDocumentUpdateWithoutFileInput {
+  DriverVehicle: DriverVehicleUpdateOneWithoutVehicleDocumentNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input VehicleDocumentUpsertWithWhereUniqueWithoutDriverVehicleInput {
+  create: VehicleDocumentCreateWithoutDriverVehicleInput!
+  update: VehicleDocumentUpdateWithoutDriverVehicleInput!
+  where: VehicleDocumentWhereUniqueInput!
+}
+
+input VehicleDocumentUpsertWithWhereUniqueWithoutFileInput {
+  create: VehicleDocumentCreateWithoutFileInput!
+  update: VehicleDocumentUpdateWithoutFileInput!
+  where: VehicleDocumentWhereUniqueInput!
+}
+
 input VehicleDocumentWhereInput {
   AND: [VehicleDocumentWhereInput!]
   DriverVehicle: DriverVehicleNullableScalarRelationFilter
@@ -1956,6 +3043,101 @@ type VehicleImageMinAggregate {
   updatedAt: DateTime
 }
 
+input VehicleImageOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input VehicleImageScalarWhereInput {
+  AND: [VehicleImageScalarWhereInput!]
+  NOT: [VehicleImageScalarWhereInput!]
+  OR: [VehicleImageScalarWhereInput!]
+  createdAt: DateTimeFilter
+  driverVehicleId: StringFilter
+  fileId: StringFilter
+  id: StringFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input VehicleImageUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input VehicleImageUpdateManyWithWhereWithoutDriverVehicleInput {
+  data: VehicleImageUpdateManyMutationInput!
+  where: VehicleImageScalarWhereInput!
+}
+
+input VehicleImageUpdateManyWithWhereWithoutFileInput {
+  data: VehicleImageUpdateManyMutationInput!
+  where: VehicleImageScalarWhereInput!
+}
+
+input VehicleImageUpdateManyWithoutDriverVehicleNestedInput {
+  connect: [VehicleImageWhereUniqueInput!]
+  connectOrCreate: [VehicleImageCreateOrConnectWithoutDriverVehicleInput!]
+  create: [VehicleImageCreateWithoutDriverVehicleInput!]
+  createMany: VehicleImageCreateManyDriverVehicleInputEnvelope
+  delete: [VehicleImageWhereUniqueInput!]
+  deleteMany: [VehicleImageScalarWhereInput!]
+  disconnect: [VehicleImageWhereUniqueInput!]
+  set: [VehicleImageWhereUniqueInput!]
+  update: [VehicleImageUpdateWithWhereUniqueWithoutDriverVehicleInput!]
+  updateMany: [VehicleImageUpdateManyWithWhereWithoutDriverVehicleInput!]
+  upsert: [VehicleImageUpsertWithWhereUniqueWithoutDriverVehicleInput!]
+}
+
+input VehicleImageUpdateManyWithoutFileNestedInput {
+  connect: [VehicleImageWhereUniqueInput!]
+  connectOrCreate: [VehicleImageCreateOrConnectWithoutFileInput!]
+  create: [VehicleImageCreateWithoutFileInput!]
+  createMany: VehicleImageCreateManyFileInputEnvelope
+  delete: [VehicleImageWhereUniqueInput!]
+  deleteMany: [VehicleImageScalarWhereInput!]
+  disconnect: [VehicleImageWhereUniqueInput!]
+  set: [VehicleImageWhereUniqueInput!]
+  update: [VehicleImageUpdateWithWhereUniqueWithoutFileInput!]
+  updateMany: [VehicleImageUpdateManyWithWhereWithoutFileInput!]
+  upsert: [VehicleImageUpsertWithWhereUniqueWithoutFileInput!]
+}
+
+input VehicleImageUpdateWithWhereUniqueWithoutDriverVehicleInput {
+  data: VehicleImageUpdateWithoutDriverVehicleInput!
+  where: VehicleImageWhereUniqueInput!
+}
+
+input VehicleImageUpdateWithWhereUniqueWithoutFileInput {
+  data: VehicleImageUpdateWithoutFileInput!
+  where: VehicleImageWhereUniqueInput!
+}
+
+input VehicleImageUpdateWithoutDriverVehicleInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  file: FileUpdateOneRequiredWithoutVehicleImageNestedInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input VehicleImageUpdateWithoutFileInput {
+  DriverVehicle: DriverVehicleUpdateOneWithoutVehicleImageNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input VehicleImageUpsertWithWhereUniqueWithoutDriverVehicleInput {
+  create: VehicleImageCreateWithoutDriverVehicleInput!
+  update: VehicleImageUpdateWithoutDriverVehicleInput!
+  where: VehicleImageWhereUniqueInput!
+}
+
+input VehicleImageUpsertWithWhereUniqueWithoutFileInput {
+  create: VehicleImageCreateWithoutFileInput!
+  update: VehicleImageUpdateWithoutFileInput!
+  where: VehicleImageWhereUniqueInput!
+}
+
 input VehicleImageWhereInput {
   AND: [VehicleImageWhereInput!]
   DriverVehicle: DriverVehicleNullableScalarRelationFilter
@@ -2077,6 +3259,79 @@ enum VehicleTypeScalarFieldEnum {
 input VehicleTypeScalarRelationFilter {
   is: VehicleTypeWhereInput
   isNot: VehicleTypeWhereInput
+}
+
+input VehicleTypeScalarWhereInput {
+  AND: [VehicleTypeScalarWhereInput!]
+  NOT: [VehicleTypeScalarWhereInput!]
+  OR: [VehicleTypeScalarWhereInput!]
+  id: StringFilter
+  name: StringFilter
+}
+
+input VehicleTypeUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+}
+
+input VehicleTypeUpdateManyWithWhereWithoutUserPreferenceInput {
+  data: VehicleTypeUpdateManyMutationInput!
+  where: VehicleTypeScalarWhereInput!
+}
+
+input VehicleTypeUpdateManyWithoutUserPreferenceNestedInput {
+  connect: [VehicleTypeWhereUniqueInput!]
+  connectOrCreate: [VehicleTypeCreateOrConnectWithoutUserPreferenceInput!]
+  create: [VehicleTypeCreateWithoutUserPreferenceInput!]
+  delete: [VehicleTypeWhereUniqueInput!]
+  deleteMany: [VehicleTypeScalarWhereInput!]
+  disconnect: [VehicleTypeWhereUniqueInput!]
+  set: [VehicleTypeWhereUniqueInput!]
+  update: [VehicleTypeUpdateWithWhereUniqueWithoutUserPreferenceInput!]
+  updateMany: [VehicleTypeUpdateManyWithWhereWithoutUserPreferenceInput!]
+  upsert: [VehicleTypeUpsertWithWhereUniqueWithoutUserPreferenceInput!]
+}
+
+input VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput {
+  connect: VehicleTypeWhereUniqueInput
+  connectOrCreate: VehicleTypeCreateOrConnectWithoutVehiclesInput
+  create: VehicleTypeCreateWithoutVehiclesInput
+  update: VehicleTypeUpdateToOneWithWhereWithoutVehiclesInput
+  upsert: VehicleTypeUpsertWithoutVehiclesInput
+}
+
+input VehicleTypeUpdateToOneWithWhereWithoutVehiclesInput {
+  data: VehicleTypeUpdateWithoutVehiclesInput!
+  where: VehicleTypeWhereInput
+}
+
+input VehicleTypeUpdateWithWhereUniqueWithoutUserPreferenceInput {
+  data: VehicleTypeUpdateWithoutUserPreferenceInput!
+  where: VehicleTypeWhereUniqueInput!
+}
+
+input VehicleTypeUpdateWithoutUserPreferenceInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  vehicles: DriverVehicleUpdateManyWithoutTypeNestedInput
+}
+
+input VehicleTypeUpdateWithoutVehiclesInput {
+  UserPreference: UserPreferenceUpdateManyWithoutPreferedveliclesNestedInput
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+}
+
+input VehicleTypeUpsertWithWhereUniqueWithoutUserPreferenceInput {
+  create: VehicleTypeCreateWithoutUserPreferenceInput!
+  update: VehicleTypeUpdateWithoutUserPreferenceInput!
+  where: VehicleTypeWhereUniqueInput!
+}
+
+input VehicleTypeUpsertWithoutVehiclesInput {
+  create: VehicleTypeCreateWithoutVehiclesInput!
+  update: VehicleTypeUpdateWithoutVehiclesInput!
+  where: VehicleTypeWhereInput
 }
 
 input VehicleTypeWhereInput {

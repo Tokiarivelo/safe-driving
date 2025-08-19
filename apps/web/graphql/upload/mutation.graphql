@@ -3,3 +3,12 @@ mutation createBatchPresignedUrls($files: [FileMetaInput!]!, $type: ImageType!) 
     ...PresignedUrl
   }
 }
+
+mutation completeUploadBulk($keys: [String!]!, $type: ImageType!) {
+  completeUploadBulk(keys: $keys, type: $type) {
+    key
+    size
+    etag
+    contentType
+  }
+}

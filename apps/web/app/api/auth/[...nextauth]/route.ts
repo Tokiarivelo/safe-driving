@@ -39,8 +39,6 @@ const { handlers } = NextAuth({
             },
           });
 
-          console.log('data');
-
           if (data?.login?.token && data.login.user) {
             // 3. Retournez un "user" enrichi de votre token
             return {

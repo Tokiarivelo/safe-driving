@@ -44,8 +44,6 @@ export const useRegister = () => {
     try {
       const { confirmPassword, ...dataInput } = values;
 
-      console.log('Register function called', dataInput);
-
       const { data, errors } = await mutationRegister({
         variables: {
           data: { ...dataInput },

@@ -14,6 +14,7 @@ import {
   CreateBucketCommand,
   DeleteObjectCommand,
   HeadObjectCommand,
+  DeleteObjectsCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { v4 as uuidv4 } from 'uuid';
@@ -128,15 +129,24 @@ export class S3Service {
     await this.ensureBucketExists();
   }
 
+  async sanitizeFilename(name: string) {
+    return name
+      .normalize('NFKD') // sépare les diacritiques
+      .replace(/[\u0300-\u036f]/g, '') // enlève accents
+      .replace(/[^a-zA-Z0-9._-]+/g, '-') // espaces & caractères bizarres -> '-'
+      .replace(/^-+|-+$/g, '') // trim des '-'
+      .slice(0, 120);
+  }
+
   // génère une key unique ( recommande stocker cette key en DB )
-  makeKey(
+  async makeKey(
     userId: string,
     originalName: string,
     type: ImageType,
     uniqueId?: string,
   ) {
     const uid = uniqueId ?? uuidv4();
-    const safe = encodeURIComponent(originalName).slice(0, 120);
+    const safe = await this.sanitizeFilename(originalName);
     return `users/${userId}/${type}/${uid}-${Date.now()}-${safe}`;
   }
 
@@ -169,12 +179,13 @@ export class S3Service {
 
     const results = await Promise.all(
       files.map(async (f) => {
-        const key = this.makeKey(userId, f.originalName, type, f.uniqueId);
-        const putCmd = new PutObjectCommand({
-          Bucket: this.bucket,
-          Key: key,
-          ContentType: f.contentType,
-        });
+        const key = await this.makeKey(
+          userId,
+          f.originalName,
+          type,
+          f.uniqueId,
+        );
+
         const url = await this.createPresignedUrl(key, f.contentType);
 
         // create DB record (pending)
@@ -271,7 +282,6 @@ export class S3Service {
               status: 'uploaded',
               size: head.ContentLength ? Number(head.ContentLength) : undefined,
               etag: head.ETag,
-
               contentType: head.ContentType,
             },
           });
@@ -337,5 +347,26 @@ export class S3Service {
     const command = new ListObjectsV2Command({ Bucket: bucket });
     const response = await this.client.send(command);
     return response.Contents || [];
+  }
+
+  async deleteManyObjects(keys: string[]): Promise<void> {
+    if (!keys || keys.length === 0) return;
+
+    const objects = keys.map((key) => ({ Key: key }));
+    const command = new DeleteObjectsCommand({
+      Bucket: this.bucket,
+      Delete: {
+        Objects: objects,
+        Quiet: false, // true pour ne pas retourner les objets supprimés
+      },
+    });
+
+    try {
+      await this.client.send(command);
+      this.logger.log(`Deleted ${keys.length} objects successfully.`);
+    } catch (err) {
+      this.logger.error(`Failed to delete objects: ${err}`);
+      throw err;
+    }
   }
 }

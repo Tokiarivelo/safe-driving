@@ -2,7 +2,11 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { UploadService } from './upload.service';
 import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
-import { FileUploadResult, PresignedUrl } from 'src/dtos/upload/upload.output';
+import {
+  CompleteUploadOutput,
+  FileUploadResult,
+  PresignedUrl,
+} from 'src/dtos/upload/upload.output';
 import { Query } from '@nestjs/graphql';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { FileMetaInput } from 'src/dtos/upload/upload.input';
@@ -54,5 +58,15 @@ export class UploadResolver {
   ): Promise<PresignedUrl[]> {
     const userId = user.id;
     return this.uploadService.createBatchPresignedUrls(userId, type, files);
+  }
+
+  @Mutation(() => [CompleteUploadOutput], { name: 'completeUploadBulk' })
+  async completeUploadBulk(
+    @CurrentUser() user: User,
+    @Args('keys', { type: () => [String] }) keys: string[],
+    @Args('type', { type: () => ImageType }) type: ImageType,
+  ): Promise<CompleteUploadOutput[]> {
+    const userId = user.id;
+    return this.uploadService.completeUploadBulk(userId, keys, type);
   }
 }
