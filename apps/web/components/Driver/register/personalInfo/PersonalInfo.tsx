@@ -10,7 +10,9 @@ import { CardFormContainer } from '@/components/ui/CardFormContainer'
 import { StepListCard } from '@/components/ui/StepListCard'
 import { StepIndicator } from '@/components/ui/PogressBar'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
 import * as icons from 'lucide-react'
+import { PersonalInfoFormValues } from './schema' 
 
 interface PersonalInfoFormProps {
   initialData?: {
@@ -18,12 +20,13 @@ interface PersonalInfoFormProps {
     email?: string
     phone?: string
   }
-  onSubmit: (data: { name: string; email: string; phone: string }) => Promise<void> | void
+  onSubmit: (data: PersonalInfoFormValues & { userId: string }) => Promise<void> | void
 }
 
 export const PersonalInfoForm = ({ initialData, onSubmit }: PersonalInfoFormProps) => {
-  const { form, handleFormSubmit } = usePersonalInfoAction(initialData)
+  const { form, handleFormSubmit, loading, error } = usePersonalInfoAction(initialData)
   const { t } = useTranslation(['registerDriver/step2', 'registerDriver/stepList'])
+  const { data: session } = useSession()
 
   const iconNames = [
     'User', 'UserRound', 'IdCard', 'CarFront', 'FileUp', 'Camera',
@@ -37,19 +40,43 @@ export const PersonalInfoForm = ({ initialData, onSubmit }: PersonalInfoFormProp
 
     return {
       id: `step${stepNum}`,
-      icon: <IconComponent size={18} />, 
+      icon: <IconComponent size={18} />,
       title: t(`registerDriver/stepList:step${stepNum}`),
     }
   })
 
-  const processSubmit = async (data: { name: string; email: string; phone: string }) => {
+  const processSubmit = async (data: PersonalInfoFormValues) => {
     try {
-      console.log('Données du formulaire:', data)
-      await onSubmit(data)
+      if (!session?.user?.id) {
+        throw new Error('User not authenticated')
+      }
+
+      await onSubmit({ 
+        ...data,
+        userId: session.user.id
+      })
       await handleFormSubmit(data)
     } catch (error) {
       console.error('Erreur lors de la soumission:', error)
     }
+  }
+
+  if (loading) {
+    return <div>Chargement des données utilisateur...</div>
+  }
+
+  if (error) {
+    return (
+      <div className="text-red-500 p-4">
+        Erreur lors du chargement des données: {error}
+        <button 
+          onClick={() => window.location.reload()} 
+          className="ml-4 bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          Réessayer
+        </button>
+      </div>
+    )
   }
 
   return (
@@ -89,45 +116,62 @@ export const PersonalInfoForm = ({ initialData, onSubmit }: PersonalInfoFormProp
               <div className={styles.formContainer}>
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(processSubmit)}>
-                    <div className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <Input
-                            label={t('form.name.label')}
-                            placeholder={t('form.name.placeholder')}
-                            {...field}
-                          />
-                        )}
-                      />
+                    <div className="space-y-6">
+                      
+                      {/* Champ Nom */}
+                      <div className="flex flex-col gap-1">
+                        <p className="text-sm font-medium text-[var(--color-auth-color-subtitle)]">
+                          {t('form.name.label')}
+                        </p>
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <Input
+                              placeholder={t('form.name.placeholder')}
+                              {...field}
+                            />
+                          )}
+                        />
+                      </div>
 
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <Input
-                            label={t('form.email.label')}
-                            placeholder={t('form.email.placeholder')}
-                            type="email"
-                            {...field}
-                          />
-                        )}
-                      />
+                      {/* Champ Email */}
+                      <div className="flex flex-col gap-1">
+                        <p className="text-sm font-medium text-[var(--color-auth-color-subtitle)]">
+                          {t('form.email.label')}
+                        </p>
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <Input
+                              placeholder={t('form.email.placeholder')}
+                              type="email"
+                              {...field}
+                            />
+                          )}
+                        />
+                      </div>
 
-                      <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                          <Input
-                            label={t('form.phone.label')}
-                            placeholder={t('form.phone.placeholder')}
-                            type="tel"
-                            {...field}
-                          />
-                        )}
-                      />
+                      {/* Champ Téléphone */}
+                      <div className="flex flex-col gap-1">
+                        <p className="text-sm font-medium text-[var(--color-auth-color-subtitle)]">
+                          {t('form.phone.label')}
+                        </p>
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <Input
+                              placeholder={t('form.phone.placeholder')}
+                              type="tel"
+                              {...field}
+                            />
+                          )}
+                        />
+                      </div>
 
+                      {/* Boutons */}
                       <div className={styles.buttonContainer}>
                         <Button variant="outline" type="button" className={styles.buttonOutline}>
                           {t('buttons.later')}
