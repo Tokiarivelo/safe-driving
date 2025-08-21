@@ -2,23 +2,14 @@ class Role {
   final String id;
   final String name;
 
-  Role({
-    required this.id,
-    required this.name,
-  });
+  Role({required this.id, required this.name});
 
   factory Role.fromJson(Map<String, dynamic> json) {
-    return Role(
-      id: json['id'],
-      name: json['name'],
-    );
+    return Role(id: json['id'], name: json['name']);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-    };
+    return {'id': id, 'name': name};
   }
 }
 
@@ -45,12 +36,7 @@ class UserImage {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'url': url,
-      'type': type,
-      'userId': userId,
-    };
+    return {'id': id, 'url': url, 'type': type, 'userId': userId};
   }
 }
 
@@ -139,10 +125,7 @@ class AuthResponse {
   final String token;
   final User user;
 
-  AuthResponse({
-    required this.token,
-    required this.user,
-  });
+  AuthResponse({required this.token, required this.user});
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) {
     return AuthResponse(
@@ -152,10 +135,7 @@ class AuthResponse {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'token': token,
-      'user': user.toJson(),
-    };
+    return {'token': token, 'user': user.toJson()};
   }
 }
 
@@ -188,7 +168,7 @@ class CreateUserInput {
   }
 }
 
-// RegisterInput for registration 
+// RegisterInput for registration
 class RegisterInput {
   final String email;
   final String firstName;
@@ -222,12 +202,7 @@ class UpdateUserInput {
   final String? phone;
   final List<String>? roleIds;
 
-  UpdateUserInput({
-    this.firstName,
-    this.lastName,
-    this.phone,
-    this.roleIds,
-  });
+  UpdateUserInput({this.firstName, this.lastName, this.phone, this.roleIds});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
@@ -237,4 +212,100 @@ class UpdateUserInput {
     if (roleIds != null) data['roleIds'] = roleIds;
     return data;
   }
+}
+
+// Auth Steps Data
+class StepAuthDataText {
+  static final Map<String, StepAuthContent> stepContents = {
+    'forgotPassword': StepAuthContent(
+      title: "🔒 Mot de passe oublié ?",
+      subtitle:
+          "Pas de panique, ça arrive à tout le monde. Entrez votre adresse e-mail dans le formulaire et nous vous enverrons un lien pour réinitialiser votre mot de passe en toute sécurité.",
+      subSubtitle: "",
+      actionButtonText: "Reset Password",
+      socialText: "",
+      navigationPrefix: "",
+      navigationLink: "",
+      backToLoginText: "Back to login",
+      forgotPasswordText: "",
+      additionalContent: {
+        "inputs": [
+          {"hint": "Email", "icon": "email_outlined", "type": "email"},
+        ],
+      },
+    ),
+    'register': StepAuthContent(
+      title: "🚀 Prêt à rejoindre Safe Driving ?",
+      subtitle: "Explorez la ville comme jamais auparavant.",
+      subSubtitle:
+          "Créez votre compte et laissez notre assistant intelligent vous guider pour une expérience fluide, rapide et sécurisée.",
+      actionButtonText: "S'inscrire",
+      socialText: "- ou s'inscrire avec -",
+      navigationPrefix: "Vous avez déjà un compte ? ",
+      navigationLink: "Se connecter",
+      backToLoginText: "",
+      forgotPasswordText: "",
+      additionalContent: {
+        "inputs": [
+          {"hint": "Nom", "icon": "badge_outlined", "type": "text"},
+          {"hint": "Prénom", "icon": "badge_outlined", "type": "text"},
+          {"hint": "Email", "icon": "email_outlined", "type": "email"},
+          {"hint": "Mot de passe", "icon": "lock_outlined", "type": "password"},
+          {
+            "hint": "Confirmer le mot de passe",
+            "icon": "lock_outlined",
+            "type": "confirmPassword",
+          },
+        ],
+      },
+    ),
+    'login': StepAuthContent(
+      title: "👋 Bienvenue sur Safe Driving",
+      subtitle: "Voyagez l'esprit léger.",
+      subSubtitle:
+          "Connectez-vous pour réserver votre transport en un clin d'œil et suivre votre course en temps réel.",
+      actionButtonText: "Se connecter",
+      socialText: "- ou continuer avec -",
+      navigationPrefix: "Pas encore de compte ? ",
+      navigationLink: "S'inscrire",
+      backToLoginText: "",
+      forgotPasswordText: "Mot de passe oublié ?",
+      additionalContent: {
+        "inputs": [
+          {
+            "hint": "Email ou Nom d'utilisateur",
+            "icon": "person_outline",
+            "type": "email",
+          },
+          {"hint": "Mot de passe", "icon": "lock_outlined", "type": "password"},
+        ],
+      },
+    ),
+  };
+}
+
+class StepAuthContent {
+  final String title;
+  final String subtitle;
+  final String subSubtitle;
+  final String actionButtonText;
+  final String socialText;
+  final String navigationPrefix;
+  final String navigationLink;
+  final String backToLoginText;
+  final String forgotPasswordText;
+  final Map<String, dynamic>? additionalContent;
+
+  StepAuthContent({
+    required this.title,
+    required this.subtitle,
+    required this.subSubtitle,
+    required this.actionButtonText,
+    required this.socialText,
+    required this.navigationPrefix,
+    required this.navigationLink,
+    required this.backToLoginText,
+    required this.forgotPasswordText,
+    this.additionalContent,
+  });
 }

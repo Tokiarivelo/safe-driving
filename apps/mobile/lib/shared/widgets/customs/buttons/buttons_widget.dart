@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 
@@ -13,20 +14,29 @@ class ButtonsWidget {
     Color? textColor,
     double? elevation,
   }) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor ?? AppColors.fillButtonBackgorund,
-        foregroundColor: textColor ?? AppColors.light,
-        elevation: elevation ?? 4,
-        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius ?? 12),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius ?? 11),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: backgroundColor ?? AppColors.fillButtonBackgorund,
+            foregroundColor: textColor ?? AppColors.light,
+            elevation: elevation ?? 4,
+            padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius ?? 11),
+            ),
+          ),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: fontSize ?? 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: fontSize ?? 16, fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -41,23 +51,34 @@ class ButtonsWidget {
     Color? backgroundColor,
     Color? textColor,
     Color? borderColor,
+    double? elevation,
   }) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        backgroundColor: backgroundColor ?? AppColors.secondBackgroundColor,
-        foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
-        side: BorderSide(
-          color: borderColor ?? AppColors.buttonWithoutBackGround,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius ?? 11),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+        child: OutlinedButton(
+          onPressed: onPressed,
+          style: OutlinedButton.styleFrom(
+            backgroundColor: backgroundColor ?? AppColors.light,
+            foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
+            elevation: elevation,
+            side: BorderSide(
+              color: borderColor ?? AppColors.buttonWithoutBackGround,
+            ),
+            padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius ?? 11),
+            ),
+          ),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: fontSize ?? 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
-        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius ?? 12),
-        ),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: fontSize ?? 16, fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -71,24 +92,35 @@ class ButtonsWidget {
     double? borderRadius,
     Color? textColor,
     Color? borderColor,
+    double? elevation,
   }) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.transparent,
-        foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
-        elevation: 0,
-        side: BorderSide(
-          color: borderColor ?? AppColors.buttonWithoutBackGround,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius ?? 11),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.light,
+            foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
+            elevation: elevation,
+            shadowColor: AppColors.dark,
+            side: BorderSide(
+              color: borderColor ?? AppColors.buttonWithoutBackGround,
+            ),
+            padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius ?? 11),
+            ),
+          ),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: fontSize ?? 16,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
-        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius ?? 12),
-        ),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: fontSize ?? 16, fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -134,6 +166,7 @@ class ButtonsWidget {
                     onPressed: onPressedList[index],
                     fontSize: fontSize,
                     padding: buttonPadding,
+                    elevation: 5,
                   ),
           ),
         );
@@ -194,6 +227,7 @@ class ButtonsWidget {
             borderRadius: 2,
             fontSize: fontSize ?? 14,
             padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+            elevation: 5,
           ),
         ),
         SizedBox(width: spacing ?? 16),
@@ -281,7 +315,7 @@ class ButtonsWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.fillButtonBackgorund
-              : Colors.transparent,
+              : AppColors.transparent,
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
             color: isSelected

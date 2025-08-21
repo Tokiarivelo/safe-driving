@@ -6,6 +6,8 @@ import '../../../core/constants/colors/colors.dart';
 import '../../../core/constants/validations/validator.dart';
 import '../customs/colors/colors_widget.dart';
 import '../customs/snackbar/snackbar_helper.dart';
+import '../customs/inputs/inputs.dart';
+import '../../../models/auth/auth_model.dart';
 
 class AuthWidget extends StatefulWidget {
   final bool isLogin;
@@ -44,8 +46,8 @@ class AuthWidget extends StatefulWidget {
 }
 
 class AuthWidgetState extends State<AuthWidget> {
-  bool _isPasswordVisible = false;
-  bool _isConfirmPasswordVisible = false;
+  final bool _isPasswordVisible = false;
+  final bool _isConfirmPasswordVisible = false;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -63,7 +65,7 @@ class AuthWidgetState extends State<AuthWidget> {
 
   @override
   void dispose() {
-    // N'oubliez pas de disposer les contrôleurs
+    // les contrôleurs
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
@@ -132,41 +134,23 @@ class AuthWidgetState extends State<AuthWidget> {
 
   //les titres
   Widget _buildHeaderText() {
-    final Map<String, Map<String, String>> headerTexts = {
-      'forgotPassword': {
-        'title': "🔒 Mot de passe oublié ?",
-        'subtitle':
-            "Pas de panique, ça arrive à tout le monde. Entrez votre adresse e-mail dans le formulaire et nous vous enverrons un lien pour réinitialiser votre mot de passe en toute sécurité.",
-        'subSubtitle': "",
-      },
-      'register': {
-        'title': "🚀 Prêt à rejoindre Safe Driving ?",
-        'subtitle': "Explorez la ville comme jamais auparavant.",
-        'subSubtitle':
-            "Créez votre compte et laissez notre assistant intelligent vous guider pour une expérience fluide, rapide et sécurisée.",
-      },
-      'login': {
-        'title': "👋 Bienvenue sur Safe Driving",
-        'subtitle': "Voyagez l'esprit léger.",
-        'subSubtitle':
-            "Connectez-vous pour réserver votre transport en un clin d'œil et suivre votre course en temps réel.",
-      },
-    };
-
-    final currentTexts = widget.isForgotPassword
-        ? headerTexts['forgotPassword']!
+    // Obtenir les données depuis StepAuthData
+    final String stepKey = widget.isForgotPassword
+        ? 'forgotPassword'
         : widget.isLogin
-        ? headerTexts['login']!
-        : headerTexts['register']!;
+        ? 'login'
+        : 'register';
+
+    final StepAuthContent currentStep = StepAuthDataText.stepContents[stepKey]!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          currentTexts['title']!,
+          currentStep.title,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'Inder',
             fontSize: 20,
             color: AppColors.titleColor,
@@ -174,7 +158,7 @@ class AuthWidgetState extends State<AuthWidget> {
         ),
         const SizedBox(height: 8),
         Text(
-          currentTexts['subtitle']!,
+          currentStep.subtitle,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: 'Inder',
@@ -182,10 +166,10 @@ class AuthWidgetState extends State<AuthWidget> {
             color: AppColors.titleColor.withAlpha(220),
           ),
         ),
-        if (!widget.isForgotPassword) ...[
+        if (!widget.isForgotPassword && currentStep.subSubtitle.isNotEmpty) ...[
           const SizedBox(height: 8),
           Text(
-            currentTexts['subSubtitle']!,
+            currentStep.subSubtitle,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Inder',
@@ -268,9 +252,7 @@ class AuthWidgetState extends State<AuthWidget> {
                   SizedBox(height: isSmallScreen ? 12 : 16),
                   if (!widget.isForgotPassword) ...[
                     Text(
-                      widget.isLogin
-                          ? "- ou continuer avec -"
-                          : "- ou s'inscrire avec -",
+                      _getCurrentStepData().socialText,
                       style: const TextStyle(
                         fontFamily: 'Inder',
                         color: AppColors.textColor,
@@ -343,7 +325,7 @@ class AuthWidgetState extends State<AuthWidget> {
               widget.onNavigateToLogin?.call();
             },
             child: Text(
-              "Back to login",
+              _getCurrentStepData().backToLoginText,
               style: TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
           ),
@@ -363,7 +345,7 @@ class AuthWidgetState extends State<AuthWidget> {
     String? errorMessage,
     Function(String)? onChanged,
   }) {
-    bool isVisible = isPassword
+    bool _ = isPassword
         ? _isPasswordVisible
         : isConfirmPassword
         ? _isConfirmPasswordVisible
@@ -371,89 +353,18 @@ class AuthWidgetState extends State<AuthWidget> {
 
     final screenHeight = MediaQuery.of(context).size.height;
     final bool isSmallScreen = screenHeight < 700;
-    final bool hasError = errorMessage != null && errorMessage.isNotEmpty;
+    final bool _ = errorMessage != null && errorMessage.isNotEmpty;
 
-    return Padding(
+    return CustomInputField(
+      hint: hint,
+      icon: icon,
+      obscureText: obscureText,
+      isPassword: isPassword,
+      isConfirmPassword: isConfirmPassword,
+      controller: controller,
+      errorMessage: errorMessage,
+      onChanged: onChanged,
       padding: EdgeInsets.symmetric(vertical: isSmallScreen ? 4.0 : 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextField(
-            style: const TextStyle(fontSize: 10),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: AppColors.inputTextBackground,
-              hintText: hint,
-              hintStyle: TextStyle(color: AppColors.placeHolderInput),
-              prefixIcon: Icon(icon, color: AppColors.icon),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: isSmallScreen ? 12 : 16,
-              ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: hasError
-                      ? AppColors.error
-                      : AppColors.borderInputField,
-                  width: hasError ? 2 : 1,
-                ),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: hasError
-                      ? AppColors.error
-                      : AppColors.borderInputField,
-                  width: hasError ? 2 : 1,
-                ),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: hasError
-                      ? AppColors.error
-                      : AppColors.borderInputField,
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              suffixIcon: obscureText
-                  ? IconButton(
-                      icon: Icon(
-                        isVisible ? Icons.visibility_off : Icons.visibility,
-                      ),
-                      color: AppColors.icon,
-                      onPressed: () {
-                        setState(() {
-                          if (isPassword) {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          } else if (isConfirmPassword) {
-                            _isConfirmPasswordVisible =
-                                !_isConfirmPasswordVisible;
-                          }
-                        });
-                      },
-                    )
-                  : null,
-            ),
-            obscureText: obscureText && !isVisible,
-            controller: controller,
-            onChanged: onChanged,
-          ),
-          if (hasError)
-            Padding(
-              padding: const EdgeInsets.only(top: 4.0, left: 8.0),
-              child: Text(
-                errorMessage,
-                style: TextStyle(
-                  color: AppColors.error,
-                  fontSize: 10,
-                  fontFamily: 'Inder',
-                ),
-              ),
-            ),
-        ],
-      ),
     );
   }
 
@@ -578,7 +489,7 @@ class AuthWidgetState extends State<AuthWidget> {
             ),
           ),
           child: Text(
-            "Mot de passe oublié ?",
+            _getCurrentStepData().forgotPasswordText,
             style: TextStyle(
               fontFamily: 'Inder',
               color: AppColors.buttonWithoutBackGround,
@@ -600,11 +511,7 @@ class AuthWidgetState extends State<AuthWidget> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
       child: Text(
-        widget.isForgotPassword
-            ? "Reset Password"
-            : widget.isLogin
-            ? "Se connecter"
-            : "S'inscrire",
+        _getCurrentStepData().actionButtonText,
         style: const TextStyle(
           fontFamily: 'Inder',
           color: AppColors.titleColor,
@@ -690,11 +597,8 @@ class AuthWidgetState extends State<AuthWidget> {
 
   //lien de navigation
   Widget _buildNavigationLink() {
+    final currentStep = _getCurrentStepData();
     final isLogin = widget.isLogin;
-    final prefixText = isLogin
-        ? "Pas encore de compte ? "
-        : "Vous avez déjà un compte ? ";
-    final linkText = isLogin ? "S'inscrire" : "Se connecter";
     final onTap = isLogin
         ? widget.onNavigateToRegister
         : widget.onNavigateToLogin;
@@ -703,7 +607,7 @@ class AuthWidgetState extends State<AuthWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          prefixText,
+          currentStep.navigationPrefix,
           style: const TextStyle(
             fontFamily: 'Inder',
             color: AppColors.textColor,
@@ -723,7 +627,7 @@ class AuthWidgetState extends State<AuthWidget> {
               ),
             ),
             child: Text(
-              linkText,
+              currentStep.navigationLink,
               style: TextStyle(
                 fontFamily: 'Inder',
                 color: AppColors.buttonWithoutBackGround,
@@ -735,6 +639,17 @@ class AuthWidgetState extends State<AuthWidget> {
         ),
       ],
     );
+  }
+
+  // Méthode pour obtenir les données du step actuel
+  StepAuthContent _getCurrentStepData() {
+    final String stepKey = widget.isForgotPassword
+        ? 'forgotPassword'
+        : widget.isLogin
+        ? 'login'
+        : 'register';
+
+    return StepAuthDataText.stepContents[stepKey]!;
   }
 
   // Méthode pour afficher les erreurs

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:safe_driving/app/routes.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/models/interactive_menu/interactive_menu_models.dart';
 import 'package:safe_driving/shared/widgets/customs/animations/animation_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/interactive_menus/driver_interactive_menu_widget.dart';
 
 class InteractiveMenuWidget extends StatefulWidget {
   const InteractiveMenuWidget({super.key});
@@ -23,7 +23,8 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   // Configuration des étapes (utilisation de StepUserData)
   static const List<StepInfo> _steps = StepUserData.steps;
   static const List<String> _transportModes = StepUserData.transportModes;
-  static const Map<String, IconData> _transportIcons = StepUserData.transportIcons;
+  static const Map<String, IconData> _transportIcons =
+      StepUserData.transportIcons;
 
   @override
   void initState() {
@@ -129,13 +130,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
 
   // Méthode pour finaliser le processus d'onboarding
   void _completeOnboarding() {
-    // Ici vous pouvez sauvegarder les préférences de l'utilisateur
-    // par exemple dans SharedPreferences ou une base de données
-    
-    // Pour l'instant, on navigue vers l'écran principal
-    // Remplacez par la route appropriée de votre app
+    //rehefa vita
     Navigator.pushReplacementNamed(context, '/home'); // ou AppRoutes.home
-    
+
     // Optionnel: Afficher un message de succès
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -267,7 +264,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
           ),
           initiallyExpanded: isExpanded,
           maintainState:
-              true, // Maintient l'état pour éviter les reconstructions
+              true, // Maintient l'état pour éviter les reconstructions : for security
           onExpansionChanged: (bool expanded) {
             setState(() {
               _expandedTiles[step] = expanded;
@@ -339,9 +336,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   }
 
   Widget _buildStepContent(int step) {
-    // Obtenir les données de l'étape depuis StepUserData
+    // Obtenir les données de l'étape depuis StepUserDatatext
     final stepContent = StepUserData.stepContents[step - 1];
-    
+
     switch (step) {
       case 1:
         return Column(
@@ -357,9 +354,23 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             ),
             const SizedBox(height: 20),
             ButtonsWidget.roleChoiceButtons(
-              onUserPressed: _nextStep,
+              onUserPressed: () => _nextStep(),
               onDriverPressed: () {
-                Navigator.pushNamed(context, AppRoutes.isDriver);
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const DriverInteractiveMenuWidget(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                          return RouteSlideTransition(
+                            animation: animation,
+                            direction: SlideDirection.fromRight,
+                            child: child,
+                          );
+                        },
+                    transitionDuration: const Duration(milliseconds: 600),
+                  ),
+                );
               },
             ),
           ],
@@ -403,7 +414,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         );
 
       case 3:
-        final radioOptions = stepContent.additionalContent?['radioOptions'] ?? ['Plus tard', 'Activer'];
+        final radioOptions =
+            stepContent.additionalContent?['radioOptions'] ??
+            ['Plus tard', 'Activer'];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -474,7 +487,12 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         );
 
       case 4:
-        final radioOptions = stepContent.additionalContent?['radioOptions'] ?? [StepUserData.buttonTexts['later']!, StepUserData.buttonTexts['activate']!];
+        final radioOptions =
+            stepContent.additionalContent?['radioOptions'] ??
+            [
+              StepUserData.buttonTexts['later']!,
+              StepUserData.buttonTexts['activate']!,
+            ];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -545,9 +563,14 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         );
 
       case 5:
-        final themeLabel = stepContent.additionalContent?['themeLabel'] ?? 'Thème';
-        final themeOptions = stepContent.additionalContent?['themeOptions'] ?? ['Clair', 'Sombre'];
-        final transportLabel = stepContent.additionalContent?['transportLabel'] ?? 'Type de transport';
+        final themeLabel =
+            stepContent.additionalContent?['themeLabel'] ?? 'Thème';
+        final themeOptions =
+            stepContent.additionalContent?['themeOptions'] ??
+            ['Clair', 'Sombre'];
+        final transportLabel =
+            stepContent.additionalContent?['transportLabel'] ??
+            'Type de transport';
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -630,7 +653,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                   // Optionnel: Afficher un message ou forcer la sélection d'au moins un transport
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Veuillez sélectionner au moins un mode de transport'),
+                      content: Text(
+                        'Veuillez sélectionner au moins un mode de transport',
+                      ),
                       duration: Duration(seconds: 2),
                     ),
                   );
@@ -646,14 +671,16 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         );
 
       case 6:
-        final summaryLabels = stepContent.additionalContent?['summaryLabels'] ?? {
-          'gps': 'GPS',
-          'notifications': 'Notifications',
-          'theme': 'Thème',
-          'transport': 'Transport(s)',
-          'language': 'Langue',
-          'noTransport': 'Aucun transport sélectionné',
-        };
+        final summaryLabels =
+            stepContent.additionalContent?['summaryLabels'] ??
+            {
+              'gps': 'GPS',
+              'notifications': 'Notifications',
+              'theme': 'Thème',
+              'transport': 'Transport(s)',
+              'language': 'Langue',
+              'noTransport': 'Aucun transport sélectionné',
+            };
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -683,7 +710,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 const SizedBox(width: 8),
                 Text(
                   summaryLabels['gps'] ?? 'GPS',
-                  style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+                  style: const TextStyle(
+                    color: AppColors.buttonWithoutBackGround,
+                  ),
                 ),
               ],
             ),
@@ -697,7 +726,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 const SizedBox(width: 8),
                 Text(
                   summaryLabels['notifications'] ?? 'Notifications',
-                  style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+                  style: const TextStyle(
+                    color: AppColors.buttonWithoutBackGround,
+                  ),
                 ),
               ],
             ),
@@ -760,7 +791,8 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     )
                   else
                     Text(
-                      summaryLabels['noTransport'] ?? 'Aucun transport sélectionné',
+                      summaryLabels['noTransport'] ??
+                          'Aucun transport sélectionné',
                       style: TextStyle(
                         color: AppColors.buttonWithoutBackGround.withValues(
                           alpha: 0.6,

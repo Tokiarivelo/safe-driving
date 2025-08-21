@@ -8,7 +8,7 @@ class SnackbarHelper {
         content: Text(
           message,
           style: const TextStyle(
-            color: Colors.white,
+            color: AppColors.light,
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -28,12 +28,12 @@ class SnackbarHelper {
         content: Text(
           message,
           style: const TextStyle(
-            color: Colors.white,
+            color: AppColors.light,
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: AppColors.snackbarSuccess,
         duration: const Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -48,12 +48,12 @@ class SnackbarHelper {
         content: Text(
           message,
           style: const TextStyle(
-            color: Colors.white,
+            color: AppColors.light,
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor: Colors.orange,
+        backgroundColor: AppColors.snackbarWarning,
         duration: const Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -68,12 +68,12 @@ class SnackbarHelper {
         content: Text(
           message,
           style: const TextStyle(
-            color: Colors.white,
+            color: AppColors.light,
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: AppColors.snackbarInfo,
         duration: const Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

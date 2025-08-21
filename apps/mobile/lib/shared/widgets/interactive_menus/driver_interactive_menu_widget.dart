@@ -5,6 +5,9 @@ import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
 import 'package:safe_driving/shared/widgets/pagination/pagination_widget.dart';
 import 'package:safe_driving/models/interactive_menu/interactive_menu_models.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/inputs/inputs.dart';
+import 'package:safe_driving/shared/widgets/customs/upload/upload_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class DriverInteractiveMenuWidget extends StatefulWidget {
   const DriverInteractiveMenuWidget({super.key});
@@ -19,35 +22,44 @@ class DriverInteractiveMenuWidgetState
   static const int _totalSteps = 14;
   final GlobalKey<PaginationWidgetState> _paginationKey =
       GlobalKey<PaginationWidgetState>();
-  final List<StepDriverContent> stepContents = StepDriverData.stepContents;
+  final List<StepDriverContent> stepContents = StepDriverDataText.stepContents;
 
   Widget _buildStepContent(StepDriverContent step, VoidCallback nextStep) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+
         children: [
+          SizedBox(height: 20),
           Text(
+            textAlign: TextAlign.center,
             step.title,
             style: const TextStyle(
               fontSize: 24,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               color: AppColors.textColor,
+              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 16),
           Text(
+            textAlign: TextAlign.center,
             step.subtitle,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
-              color: AppColors.textColor,
+              color: AppColors.textColor.withAlpha(180),
               height: 1.5,
+              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 24),
           // Contenu additionnel basé sur le type de step
-          if (step.additionalContent != null)
+          if (step.additionalContent != null &&
+              step.additionalContent?['form'] != null)
+            _buildForm(step.additionalContent!['form'] as Map<String, String>)
+          else if (step.additionalContent != null)
             _buildAdditionalContent(step.additionalContent!),
           const SizedBox(height: 32),
           // Boutons
@@ -60,7 +72,11 @@ class DriverInteractiveMenuWidgetState
                     step.buttonTitles.length - 1;
                 return () {
                   if (isMainButton) {
+                    // Bouton principal (Démarrer, Valider, etc.)
+                    //à implementer la logique (utilisant shared preference après)
                     nextStep();
+                  } else {
+                    nextStep(); //plus tard
                   }
                 };
               }).toList(),
@@ -76,7 +92,76 @@ class DriverInteractiveMenuWidgetState
   }
 
   Widget _buildAdditionalContent(Map<String, dynamic> content) {
-    // basé sur les clés dans additionalContent (form, documents, etc.)
+    // Gérer le cas spécifique de la vérification d'identité (Step 3)
+    if (content.containsKey('carteIdentité')) {
+      final carteIdentiteData =
+          content['carteIdentité'] as Map<String, dynamic>;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Recto ID
+          if (carteIdentiteData.containsKey('rectoID'))
+            _buildUploadSection(
+              carteIdentiteData['rectoID'] as Map<String, dynamic>,
+            ),
+
+          const SizedBox(height: 16),
+
+          // Verso ID
+          if (carteIdentiteData.containsKey('versoID'))
+            _buildUploadSection(
+              carteIdentiteData['versoID'] as Map<String, dynamic>,
+            ),
+
+          const SizedBox(height: 16),
+
+          // Permis de conduire
+          if (carteIdentiteData.containsKey('permisConduire'))
+            _buildUploadSection(
+              carteIdentiteData['permisConduire'] as Map<String, dynamic>,
+            ),
+        ],
+      );
+    }
+
+    // Gérer le cas spécifique des documents véhicule (Step 5)
+    if (content.containsKey('documents')) {
+      final documentsData = content['documents'] as Map<String, dynamic>;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Certificat d'immatriculation
+          if (documentsData.containsKey('certificatImmatriculation'))
+            _buildDocumentSection(
+              documentsData['certificatImmatriculation']
+                  as Map<String, dynamic>,
+              'Certificat d\'immatriculation',
+            ),
+
+          const SizedBox(height: 16),
+
+          // Attestation d'assurance
+          if (documentsData.containsKey('attestationAssurance'))
+            _buildDocumentSection(
+              documentsData['attestationAssurance'] as Map<String, dynamic>,
+              'Attestation d\'assurance',
+            ),
+
+          const SizedBox(height: 16),
+
+          // Photos du véhicule
+          if (documentsData.containsKey('photosVehicule'))
+            _buildDocumentSection(
+              documentsData['photosVehicule'] as Map<String, dynamic>,
+              'Photos du véhicule',
+            ),
+        ],
+      );
+    }
+
+    // Cas par défaut pour les autres contenus additionnels
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -90,6 +175,138 @@ class DriverInteractiveMenuWidgetState
           fontStyle: FontStyle.italic,
         ),
       ),
+    );
+  }
+
+  Widget _buildUploadSection(Map<String, dynamic> sectionData) {
+    final title = sectionData['title'] as String? ?? '';
+    final textCenter =
+        sectionData['textCenter'] as String? ??
+        'Glissez un fichier pour le téléverser';
+    final bouton = sectionData['bouton'] as String? ?? 'Choisir un fichier';
+
+    return UploadWidget(
+      title: title,
+      description: textCenter,
+      buttonText: bouton,
+      onTap: () {
+        // Afficher snackbar de succès pour le moment
+        SnackbarHelper.showSuccess(context, 'Fichier sélectionné pour $title');
+      },
+    );
+  }
+
+  Widget _buildDocumentSection(
+    Map<String, dynamic> documentData,
+    String defaultTitle,
+  ) {
+    final uploadZone = documentData['uploadZone'] as Map<String, dynamic>?;
+    final ajoutPhoto = documentData['ajoutPhoto'] as String?;
+
+    if (uploadZone != null) {
+      final textCenter =
+          uploadZone['textCenter'] as String? ??
+          'Glissez un fichier pour le téléverser';
+      final bouton = uploadZone['bouton'] as String? ?? 'Choisir un fichier';
+
+      // Simuler l'état hasPhotoAdded
+      bool hasPhotoAdded = false; // À remplacer après
+
+      return UploadWidget(
+        title: defaultTitle,
+        description: textCenter,
+        buttonText: bouton,
+        addMorePhotosText: ajoutPhoto,
+        hasPhotoAdded: hasPhotoAdded,
+        onTap: () {
+          // Afficher snackbar de succès pour le moment
+          SnackbarHelper.showSuccess(
+            context,
+            'Document sélectionné pour $defaultTitle',
+          );
+        },
+      );
+    }
+
+    return Container();
+  }
+
+  Widget _buildForm(Map<String, String> formData) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Formulaire d'informations personnelles (Step 2)
+        if (formData.containsKey('labelTextName')) ...[
+          CustomInputField(
+            label: formData['labelTextName'] ?? 'Nom complet',
+            hint: formData['placeholderName'] ?? 'John Doe',
+            icon: Icons.person,
+            showLabel: true,
+          ),
+          const SizedBox(height: 16),
+
+          CustomInputField(
+            label: formData['labelTextEmail'] ?? 'E-mail',
+            hint: formData['placeholderEmail'] ?? 'example@email.com',
+            icon: Icons.email,
+            keyboardType: TextInputType.emailAddress,
+            showLabel: true,
+          ),
+          const SizedBox(height: 16),
+
+          CustomInputField(
+            label: formData['labelTextPhone'] ?? 'Téléphone',
+            hint: formData['placeholderPhone'] ?? '+261...',
+            icon: Icons.phone,
+            keyboardType: TextInputType.phone,
+            showLabel: true,
+          ),
+        ],
+
+        // Formulaire d'informations véhicule (Step 4)
+        if (formData.containsKey('labelMarque')) ...[
+          CustomInputField(
+            label: formData['labelMarque'] ?? 'Marque',
+            hint: formData['placeholderMarque'] ?? 'ex: Peugeot',
+            icon: Icons.car_rental,
+            showLabel: true,
+          ),
+          const SizedBox(height: 16),
+
+          CustomInputField(
+            label: formData['labelModele'] ?? 'Modèle',
+            hint: formData['placeholderModele'] ?? 'ex: 404',
+            icon: Icons.directions_car,
+            showLabel: true,
+          ),
+          const SizedBox(height: 16),
+
+          CustomInputField(
+            label:
+                formData['labelImmatriculation'] ?? 'Numéro d\'immatriculation',
+            hint: formData['placeholderImmatriculation'] ?? 'ex: AB-123-CD',
+            icon: Icons.confirmation_number,
+            showLabel: true,
+          ),
+          const SizedBox(height: 16),
+
+          CustomInputField(
+            label: formData['labelPlaces'] ?? 'Nombre de places',
+            hint: formData['placeholderPlaces'] ?? 'ex: 4',
+            icon: Icons.airline_seat_recline_normal,
+            keyboardType: TextInputType.number,
+            showLabel: true,
+          ),
+          const SizedBox(height: 16),
+
+          CustomInputField(
+            label: formData['labelTypeVehicule'] ?? 'Type de véhicule',
+            hint: formData['placeholderTypeVehicule'] ?? 'ex: Voiture',
+            icon: Icons.local_taxi,
+            showLabel: true,
+          ),
+        ],
+      ],
     );
   }
 

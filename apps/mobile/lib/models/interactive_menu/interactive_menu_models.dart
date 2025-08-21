@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class StepDriverData {
+class StepDriverDataText {
   static final List<StepDriverContent> stepContents = [
     StepDriverContent(
       title: 'Bienvenue chez Safe Driving !',
@@ -251,12 +251,14 @@ class StepUserData {
     ),
     StepUserContent(
       title: 'Bienvenue chez Safe Driving !',
-      subtitle: 'Merci d\'avoir rejoint notre communauté ! Laissez-nous vous guider pour personnaliser votre expérience.',
+      subtitle:
+          'Merci d\'avoir rejoint notre communauté ! Laissez-nous vous guider pour personnaliser votre expérience.',
       buttonTitles: ['Plus tard', 'Démarrer'],
     ),
     StepUserContent(
       title: 'Où êtes-vous ?',
-      subtitle: 'Pour vous proposer les véhicules les plus proches, autorisez l\'accès à votre position. C\'est rapide et sécurisé.',
+      subtitle:
+          'Pour vous proposer les véhicules les plus proches, autorisez l\'accès à votre position. C\'est rapide et sécurisé.',
       buttonTitles: ['Plus tard', 'Activer'],
       additionalContent: {
         'radioOptions': ['Plus tard', 'Activer'],
@@ -264,7 +266,8 @@ class StepUserData {
     ),
     StepUserContent(
       title: 'Restez informé',
-      subtitle: 'Choisissez de recevoir des alertes en temps réel sur l\'arrivée de votre chauffeur et l\'état de votre trajet.',
+      subtitle:
+          'Choisissez de recevoir des alertes en temps réel sur l\'arrivée de votre chauffeur et l\'état de votre trajet.',
       buttonTitles: ['Plus tard', 'Activer'],
       additionalContent: {
         'radioOptions': ['Plus tard', 'Activer'],
@@ -272,7 +275,8 @@ class StepUserData {
     ),
     StepUserContent(
       title: 'Faites-le à votre façon',
-      subtitle: 'Sélectionnez vos modes de transport favoris et activez le thème sombre si vous préférez une expérience plus douce pour les yeux.',
+      subtitle:
+          'Sélectionnez vos modes de transport favoris et activez le thème sombre si vous préférez une expérience plus douce pour les yeux.',
       buttonTitles: ['Plus tard', 'Valider'],
       additionalContent: {
         'themeLabel': 'Thème',
@@ -283,7 +287,8 @@ class StepUserData {
     ),
     StepUserContent(
       title: 'Tout est prêt !',
-      subtitle: 'Voilà un résumé de vos choix. Vous pouvez toujours les modifier plus tard dans les paramètres. Prêt·e à démarrer ?',
+      subtitle:
+          'Voilà un résumé de vos choix. Vous pouvez toujours les modifier plus tard dans les paramètres. Prêt·e à démarrer ?',
       buttonTitles: ['Annuler', 'Commencer'],
       additionalContent: {
         'summaryLabels': {

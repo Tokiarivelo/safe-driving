@@ -176,9 +176,7 @@ class PaginationWidgetState extends State<PaginationWidget>
       _barAnimationController.forward();
     } else {
       // Animation de fermeture plus fluide avec courbe élastique
-      _barAnimationController.reverse().then((_) {
-        // Animation complète
-      });
+      _barAnimationController.reverse().then((_) {});
     }
   }
 
@@ -391,8 +389,8 @@ class PaginationWidgetState extends State<PaginationWidget>
     return PageView.builder(
       controller: _pageController,
       onPageChanged: (index) {
-        // Ne pas faire de reset/forward lors du changement de page via swipe
-        // car cela cause les clignotements
+        // Plus de reset/forward lors du changement de page via swipe
+        // car cela cause les clignotements: comportement bizarre de flutter
         setState(() {
           _currentStep = index + 1;
         });

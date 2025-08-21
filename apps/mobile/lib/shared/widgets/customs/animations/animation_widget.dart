@@ -4,7 +4,7 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 /// Fonction pour le slide smooth améliorée
 Widget slideSmoothAnimation({required Widget child}) {
   return TweenAnimationBuilder<double>(
-    duration: const Duration(milliseconds: 250),
+    duration: const Duration(milliseconds: 600),
     curve: Curves.easeOutCubic,
     tween: Tween<double>(begin: 0.0, end: 1.0),
     builder: (context, value, child) {
@@ -245,7 +245,7 @@ class SmoothSlideTransition extends StatelessWidget {
   const SmoothSlideTransition({
     super.key,
     required this.child,
-    this.duration = const Duration(milliseconds: 250),
+    this.duration = const Duration(milliseconds: 300),
     this.curve = Curves.easeOutCubic,
     this.direction = SlideDirection.fromRight,
     this.distance = 15.0,
@@ -272,23 +272,72 @@ class SmoothSlideTransition extends StatelessWidget {
         break;
     }
 
-    return TweenAnimationBuilder<double>(
+    return AnimatedSwitcher(
       duration: duration,
-      curve: curve,
-      tween: Tween<double>(begin: 0.0, end: 1.0),
-      builder: (context, value, child) {
-        // Éviter les valeurs extrêmes qui créent des flashs blancs
-        final clampedOpacity = value.clamp(0.1, 1.0);
-        final smoothValue = Curves.easeOutCubic.transform(value);
-
-        return Transform.translate(
-          offset: Offset(
-            beginOffset.dx * (1 - smoothValue),
-            beginOffset.dy * (1 - smoothValue),
-          ),
-          child: Opacity(opacity: clampedOpacity, child: child),
+      switchInCurve: curve,
+      layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
+        return Stack(
+          children: <Widget>[
+            ...previousChildren,
+            if (currentChild != null) currentChild,
+          ],
         );
       },
+      child: TweenAnimationBuilder<Offset>(
+        key: ValueKey<SlideDirection>(direction),
+        duration: duration,
+        curve: curve,
+        tween: Tween<Offset>(begin: beginOffset, end: Offset.zero),
+        builder: (context, offset, child) {
+          return Transform.translate(offset: offset, child: child);
+        },
+        child: child,
+      ),
+    );
+  }
+}
+
+/// Version pour les transitions de route qui utilise l'animation externe
+class RouteSlideTransition extends StatelessWidget {
+  final Widget child;
+  final Animation<double> animation;
+  final SlideDirection direction;
+  final double distance;
+  final Curve curve;
+
+  const RouteSlideTransition({
+    super.key,
+    required this.child,
+    required this.animation,
+    this.direction = SlideDirection.fromRight,
+    this.distance = 1.0,
+    this.curve = Curves.easeOutCubic,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Offset beginOffset;
+    switch (direction) {
+      case SlideDirection.fromLeft:
+        beginOffset = Offset(-distance, 0);
+        break;
+      case SlideDirection.fromRight:
+        beginOffset = Offset(distance, 0);
+        break;
+      case SlideDirection.fromTop:
+        beginOffset = Offset(0, -distance);
+        break;
+      case SlideDirection.fromBottom:
+        beginOffset = Offset(0, distance);
+        break;
+    }
+
+    final curvedAnimation = CurvedAnimation(parent: animation, curve: curve);
+
+    final offsetTween = Tween<Offset>(begin: beginOffset, end: Offset.zero);
+
+    return SlideTransition(
+      position: offsetTween.animate(curvedAnimation),
       child: child,
     );
   }
@@ -337,7 +386,7 @@ class PaginationAnimations {
   }) {
     return ClipOval(
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparent,
         child: InkWell(
           onTap: onTap,
           splashColor: AppColors.fillButtonBackgorund.withAlpha(77),
