@@ -8,6 +8,7 @@ import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart'
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/upload/upload_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
+import 'package:safe_driving/shared/widgets/customs/photos_management/camera/camera_management.dart';
 
 class DriverInteractiveMenuWidget extends StatefulWidget {
   const DriverInteractiveMenuWidget({super.key});
@@ -22,7 +23,14 @@ class DriverInteractiveMenuWidgetState
   static const int _totalSteps = 14;
   final GlobalKey<PaginationWidgetState> _paginationKey =
       GlobalKey<PaginationWidgetState>();
-  final List<StepDriverContent> stepContents = StepDriverData.stepContents;
+  final List<StepDriverContent> stepContents = StepDriverDataText.stepContents;
+
+  // State management for driver steps
+  bool _gpsEnabled = false;
+  final List<String> _selectedNotifications = [];
+  String _selectedTheme = 'clair';
+  String _selectedLanguage = 'fr';
+  final List<bool> _cguAccepted = [false, false];
 
   Widget _buildStepContent(StepDriverContent step, VoidCallback nextStep) {
     return Container(
@@ -55,15 +63,18 @@ class DriverInteractiveMenuWidgetState
             ),
           ),
           const SizedBox(height: 24),
-    
+
           if (step.additionalContent != null &&
               step.additionalContent?['form'] != null)
             _buildForm(step.additionalContent!['form'] as Map<String, String>)
           else if (step.additionalContent != null)
-            _buildAdditionalContent(step.additionalContent!),
+            _buildAdditionalContent(step.additionalContent!, step),
           const SizedBox(height: 32),
-     
-          if (step.buttonTitles.isNotEmpty)
+
+          // Cas spécial pour l'étape 7 (GPS) - utiliser des boutons radio
+          if (step.title == "Partagez votre position")
+            _buildGpsRadioButtons(nextStep)
+          else if (step.buttonTitles.isNotEmpty)
             ButtonsWidget.buttonRow(
               buttonTitles: step.buttonTitles,
               onPressedList: step.buttonTitles.map((buttonTitle) {
@@ -90,8 +101,61 @@ class DriverInteractiveMenuWidgetState
     );
   }
 
-  Widget _buildAdditionalContent(Map<String, dynamic> content) {
+  Widget _buildGpsRadioButtons(VoidCallback nextStep) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: ButtonsWidget.customRadio<String>(
+                title: "Plus tard",
+                value: "Plus tard",
+                groupValue: _gpsEnabled ? "Autoriser" : "Plus tard",
+                onChanged: (value) => setState(() => _gpsEnabled = false),
+                titleColor: AppColors.fillButtonBackground,
+                activeColor: AppColors.fillButtonBackground,
+              ),
+            ),
+            Expanded(
+              child: ButtonsWidget.customRadio<String>(
+                title: "Autoriser",
+                value: "Autoriser",
+                groupValue: _gpsEnabled ? "Autoriser" : "Plus tard",
+                onChanged: (value) async {
+                  if (value == "Autoriser") {
+                    final granted = await ButtonsWidget.handleGpsPermission(context);
+                    if (mounted) {
+                      setState(() {
+                        _gpsEnabled = granted;
+                      });
+                      if (granted) {
+                        SnackbarHelper.showSuccess(context, 'Géolocalisation activée avec succès !');
+                      }
+                    }
+                  } else {
+                    setState(() => _gpsEnabled = false);
+                  }
+                },
+                titleColor: AppColors.fillButtonBackground,
+                activeColor: AppColors.fillButtonBackground,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 32),
+        ButtonsWidget.primaryButton(
+          text: "Continuer",
+          onPressed: nextStep,
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+        ),
+      ],
+    );
+  }
 
+  Widget _buildAdditionalContent(
+    Map<String, dynamic> content,
+    StepDriverContent step,
+  ) {
     if (content.containsKey('carteIdentité')) {
       final carteIdentiteData =
           content['carteIdentité'] as Map<String, dynamic>;
@@ -99,7 +163,6 @@ class DriverInteractiveMenuWidgetState
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        
           if (carteIdentiteData.containsKey('rectoID'))
             _buildUploadSection(
               carteIdentiteData['rectoID'] as Map<String, dynamic>,
@@ -114,7 +177,6 @@ class DriverInteractiveMenuWidgetState
 
           const SizedBox(height: 16),
 
-    
           if (carteIdentiteData.containsKey('permisConduire'))
             _buildUploadSection(
               carteIdentiteData['permisConduire'] as Map<String, dynamic>,
@@ -130,7 +192,6 @@ class DriverInteractiveMenuWidgetState
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         
           if (documentsData.containsKey('certificatImmatriculation'))
             _buildDocumentSection(
               documentsData['certificatImmatriculation']
@@ -148,12 +209,194 @@ class DriverInteractiveMenuWidgetState
 
           const SizedBox(height: 16),
 
-
           if (documentsData.containsKey('photosVehicule'))
             _buildDocumentSection(
               documentsData['photosVehicule'] as Map<String, dynamic>,
               'Photos du véhicule',
             ),
+        ],
+      );
+    }
+
+    // Gérer le cas spécifique du selfie (Step 6)
+    if (content.containsKey('selfie')) {
+      final selfieData = content['selfie'] as Map<String, dynamic>;
+      final title = selfieData['title'] as String?;
+      final description = selfieData['description'] as String?;
+
+      return CameraManagement(
+        title: title,
+        description: description,
+        onPictureTaken: (imagePath) {
+          if (imagePath != null) {
+            SnackbarHelper.showSuccess(context, 'Selfie pris avec succès !');
+          } else {
+            SnackbarHelper.showError(
+              context,
+              'Erreur lors de la prise de photo',
+            );
+          }
+        },
+      );
+    }
+
+    if (content.containsKey('radioOptions')) {
+      final radioOptions = content['radioOptions'] as List<String>;
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: ButtonsWidget.customRadio<bool>(
+                  title: radioOptions[0],
+                  value: false,
+                  groupValue: _gpsEnabled,
+                  onChanged: (value) => setState(() => _gpsEnabled = value!),
+                  titleColor: AppColors.fillButtonBackground,
+                  activeColor: AppColors.fillButtonBackground,
+                ),
+              ),
+              Expanded(
+                child: ButtonsWidget.customRadio<bool>(
+                  title: radioOptions[1],
+                  value: true,
+                  groupValue: _gpsEnabled,
+                  onChanged: (value) => setState(() => _gpsEnabled = value!),
+                  titleColor: AppColors.fillButtonBackground,
+                  activeColor: AppColors.fillButtonBackground,
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+
+    if (content.containsKey('checkboxOptions')) {
+      final checkboxOptions = content['checkboxOptions'] as List<String>;
+
+      // Handle step 8 (notifications)
+      if (step.title == "Restez informé") {
+        return Column(
+          children: checkboxOptions.asMap().entries.map((entry) {
+            int idx = entry.key;
+            String option = entry.value;
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: idx < checkboxOptions.length - 1 ? 8.0 : 0,
+              ),
+              child: ButtonsWidget.customCheckbox(
+                title: option,
+                value: _selectedNotifications.contains(option),
+                onChanged: (value) {
+                  setState(() {
+                    if (value!) {
+                      _selectedNotifications.add(option);
+                    } else {
+                      _selectedNotifications.remove(option);
+                    }
+                  });
+                },
+                titleColor: AppColors.fillButtonBackground,
+              ),
+            );
+          }).toList(),
+        );
+      }
+
+      // Handle step 10 (CGU)
+      if (step.title == "Un dernier point avant de démarrer") {
+        return Column(
+          children: checkboxOptions.asMap().entries.map((entry) {
+            int idx = entry.key;
+            String option = entry.value;
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: idx < checkboxOptions.length - 1 ? 8.0 : 0,
+              ),
+              child: ButtonsWidget.customCheckbox(
+                title: option,
+                value: _cguAccepted[idx],
+                onChanged: (value) {
+                  setState(() {
+                    _cguAccepted[idx] = value!;
+                  });
+                },
+                titleColor: AppColors.fillButtonBackground,
+              ),
+            );
+          }).toList(),
+        );
+      }
+    }
+
+    if (content.containsKey('theme')) {
+      final themeOptions =
+          (content['theme']['options'] as List<Map<String, String>>);
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Thème',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textColor,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ...themeOptions
+                  .asMap()
+                  .entries
+                  .map((entry) {
+                    final index = entry.key;
+                    final option = entry.value;
+                    return [
+                      ButtonsWidget.customChoiceChip(
+                        label: option['label']!,
+                        selected: _selectedTheme == option['value'],
+                        onSelected: (_) {
+                          setState(() {
+                            _selectedTheme = option['value']!;
+                          });
+                        },
+                      ),
+                      if (index < themeOptions.length - 1)
+                        const SizedBox(width: 24),
+                    ];
+                  })
+                  .expand((element) => element),
+            ],
+          ),
+          const SizedBox(height: 32),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Langue',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textColor,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          ButtonsWidget.languageButtonContainer(
+            selectedLanguage: _selectedLanguage,
+            onLanguageChanged: (lang) {
+              setState(() {
+                _selectedLanguage = lang;
+              });
+            },
+          ),
         ],
       );
     }
@@ -185,7 +428,6 @@ class DriverInteractiveMenuWidgetState
       description: textCenter!,
       buttonText: bouton!,
       onPhotosChanged: (photos) {
-
         SnackbarHelper.showSuccess(
           context,
           '${photos.length} photo${photos.length > 1 ? 's' : ''} sélectionnée${photos.length > 1 ? 's' : ''} pour $title',
@@ -206,7 +448,7 @@ class DriverInteractiveMenuWidgetState
       final bouton = uploadZone['bouton'] as String?;
 
       // Simuler l'état hasPhotoAdded
-      bool hasPhotoAdded = false; 
+      bool hasPhotoAdded = false;
 
       return UploadWidget(
         title: defaultTitle,

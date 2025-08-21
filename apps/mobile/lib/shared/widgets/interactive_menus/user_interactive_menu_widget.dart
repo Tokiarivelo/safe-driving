@@ -21,10 +21,10 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   final Map<int, bool> _expandedTiles = {};
 
   // Configuration des étapes (utilisation de StepUserData)
-  static const List<StepInfo> _steps = StepUserData.steps;
-  static const List<String> _transportModes = StepUserData.transportModes;
+  static const List<StepInfo> _steps = StepUserDataText.steps;
+  static const List<String> _transportModes = StepUserDataText.transportModes;
   static const Map<String, IconData> _transportIcons =
-      StepUserData.transportIcons;
+      StepUserDataText.transportIcons;
 
   @override
   void initState() {
@@ -80,7 +80,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   }
 
   String _getStepTitle(int step) {
-    return StepUserData.stepTitles[step] ?? 'Étape $step';
+    return StepUserDataText.stepTitles[step] ?? 'Étape $step';
   }
 
   // Update state
@@ -246,9 +246,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          key: ValueKey(
-            'expansion_tile_${step}_$isExpanded',
-          ), // Clé dynamique pour forcer le rebuild
+          key: ValueKey('expansion_tile_${step}_$isExpanded'),
           backgroundColor: AppColors.transparent,
           collapsedBackgroundColor: AppColors.transparent,
           iconColor: AppColors.light,
@@ -262,13 +260,11 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             side: BorderSide(color: AppColors.light, width: 1.0),
           ),
           initiallyExpanded: isExpanded,
-          maintainState:
-              true, // Maintient l'état pour éviter les reconstructions : for security
+          maintainState: true,
           onExpansionChanged: (bool expanded) {
             setState(() {
               _expandedTiles[step] = expanded;
               if (expanded && _currentStep != step) {
-                // Fermer les autres tiles
                 for (int i = 2; i <= 6; i++) {
                   if (i != step) {
                     _expandedTiles[i] = false;
@@ -278,8 +274,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               }
             });
           },
-          controlAffinity: ListTileControlAffinity
-              .trailing, // on assure que la flèche est bien gérée (compliquer à gérer avec SlidingExpansionTile)
+          controlAffinity: ListTileControlAffinity.trailing,
           tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           title: Row(
             children: [
@@ -335,7 +330,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
 
   Widget _buildStepContent(int step) {
     // Obtenir les données de l'étape depuis StepUserDatatext
-    final stepContent = StepUserData.stepContents[step - 1];
+    final stepContent = StepUserDataText.stepContents[step - 1];
 
     switch (step) {
       case 1:
@@ -390,7 +385,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             Text(
               stepContent.subtitle,
               style: TextStyle(
-                color: AppColors.buttonWithoutBackGround.withOpacity(0.75),
+                color: AppColors.buttonWithoutBackGround.withValues(
+                  alpha: 0.75,
+                ),
               ),
               textAlign: TextAlign.center,
             ),
@@ -430,44 +427,45 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             Text(
               stepContent.subtitle,
               style: TextStyle(
-                color: AppColors.buttonWithoutBackGround.withOpacity(0.75),
+                color: AppColors.buttonWithoutBackGround.withValues(
+                  alpha: 0.75,
+                ),
               ),
             ),
             const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
-                  child: RadioListTile<bool>(
-                    contentPadding: EdgeInsets.zero,
-                    visualDensity: const VisualDensity(horizontal: -4),
-                    title: Text(
-                      radioOptions[0],
-                      style: TextStyle(
-                        color: AppColors.buttonWithoutBackGround,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                  child: ButtonsWidget.customRadio<bool>(
+                    title: radioOptions[0],
                     value: false,
                     groupValue: _appState.gpsEnabled,
-                    activeColor: AppColors.buttonWithoutBackGround,
                     onChanged: (value) => _updateGps(value!),
                   ),
                 ),
                 Expanded(
-                  child: RadioListTile<bool>(
-                    contentPadding: EdgeInsets.zero,
-                    visualDensity: const VisualDensity(horizontal: -4),
-                    title: Text(
-                      radioOptions[1],
-                      style: TextStyle(
-                        color: AppColors.buttonWithoutBackGround,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                  child: ButtonsWidget.customRadio<bool>(
+                    title: radioOptions[1],
                     value: true,
                     groupValue: _appState.gpsEnabled,
-                    activeColor: AppColors.buttonWithoutBackGround,
-                    onChanged: (value) => _updateGps(value!),
+                    onChanged: (value) async {
+                      if (value!) {
+                        final granted = await ButtonsWidget.handleGpsPermission(context);
+                        if (!mounted) return;
+                        _updateGps(granted);
+                        if (granted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Géolocalisation activée avec succès !'),
+                              backgroundColor: AppColors.snackbarSuccess,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      } else {
+                        _updateGps(false);
+                      }
+                    },
                   ),
                 ),
               ],
@@ -475,7 +473,6 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             const SizedBox(height: 8),
             ButtonsWidget.nextButton(
               onPressed: () {
-           
                 _nextStepImmediate();
               },
               fontSize: 14,
@@ -488,8 +485,8 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         final radioOptions =
             stepContent.additionalContent?['radioOptions'] ??
             [
-              StepUserData.buttonTexts['later']!,
-              StepUserData.buttonTexts['activate']!,
+              StepUserDataText.buttonTexts['later']!,
+              StepUserDataText.buttonTexts['activate']!,
             ];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -506,43 +503,27 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             Text(
               stepContent.subtitle,
               style: TextStyle(
-                color: AppColors.buttonWithoutBackGround.withOpacity(0.75),
+                color: AppColors.buttonWithoutBackGround.withValues(
+                  alpha: 0.75,
+                ),
               ),
             ),
             const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
-                  child: RadioListTile<bool>(
-                    contentPadding: EdgeInsets.zero,
-                    visualDensity: const VisualDensity(horizontal: -4),
-                    title: Text(
-                      radioOptions[0],
-                      style: TextStyle(
-                        color: AppColors.buttonWithoutBackGround,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                  child: ButtonsWidget.customRadio<bool>(
+                    title: radioOptions[0],
                     value: false,
                     groupValue: _appState.notifEnabled,
-                    activeColor: AppColors.buttonWithoutBackGround,
                     onChanged: (value) => _updateNotifications(value!),
                   ),
                 ),
                 Expanded(
-                  child: RadioListTile<bool>(
-                    contentPadding: EdgeInsets.zero,
-                    visualDensity: const VisualDensity(horizontal: -4),
-                    title: Text(
-                      radioOptions[1],
-                      style: TextStyle(
-                        color: AppColors.buttonWithoutBackGround,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                  child: ButtonsWidget.customRadio<bool>(
+                    title: radioOptions[1],
                     value: true,
                     groupValue: _appState.notifEnabled,
-                    activeColor: AppColors.buttonWithoutBackGround,
                     onChanged: (value) => _updateNotifications(value!),
                   ),
                 ),
@@ -551,7 +532,6 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             const SizedBox(height: 8),
             ButtonsWidget.nextButton(
               onPressed: () {
-                // Sauvegarder le choix de notifications et passer à l'étape suivante
                 _nextStepImmediate();
               },
               fontSize: 14,
@@ -579,7 +559,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             Text(
               stepContent.subtitle,
               style: TextStyle(
-                color: AppColors.buttonWithoutBackGround.withOpacity(0.75),
+                color: AppColors.buttonWithoutBackGround.withValues(
+                  alpha: 0.75,
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -589,14 +571,14 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             ),
             Row(
               children: [
-                ChoiceChip(
-                  label: Text(themeOptions[0]),
+                ButtonsWidget.customChoiceChip(
+                  label: themeOptions[0],
                   selected: _appState.selectedTheme == themeOptions[0],
                   onSelected: (_) => _updateTheme(themeOptions[0]),
                 ),
                 const SizedBox(width: 8),
-                ChoiceChip(
-                  label: Text(themeOptions[1]),
+                ButtonsWidget.customChoiceChip(
+                  label: themeOptions[1],
                   selected: _appState.selectedTheme == themeOptions[1],
                   onSelected: (_) => _updateTheme(themeOptions[1]),
                 ),
@@ -611,7 +593,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.fillButtonBackground.withOpacity(0.3),
+                  color: AppColors.fillButtonBackground.withValues(alpha: 0.3),
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(8),
@@ -680,15 +662,16 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             Text(
               stepContent.subtitle,
               style: TextStyle(
-                color: AppColors.buttonWithoutBackGround.withOpacity(0.75),
+                color: AppColors.buttonWithoutBackGround.withValues(
+                  alpha: 0.75,
+                ),
               ),
             ),
             const SizedBox(height: 16),
             Row(
               children: [
-                Switch(
+                ButtonsWidget.customSwitch(
                   value: _appState.gpsEnabled,
-                  activeColor: AppColors.progress,
                   onChanged: _updateGps,
                 ),
                 const SizedBox(width: 8),
@@ -702,9 +685,8 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             ),
             Row(
               children: [
-                Switch(
+                ButtonsWidget.customSwitch(
                   value: _appState.notifEnabled,
-                  activeColor: AppColors.progress,
                   onChanged: _updateNotifications,
                 ),
                 const SizedBox(width: 8),
@@ -730,7 +712,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.fillButtonBackground.withOpacity(0.3),
+                  color: AppColors.fillButtonBackground.withValues(alpha: 0.3),
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(8),
@@ -765,7 +747,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                           onDeleted: () => _removeTransport(transport),
                           backgroundColor: AppColors.secondBackgroundColor,
                           side: BorderSide(
-                            color: AppColors.fillButtonBackground.withOpacity(0.5),
+                            color: AppColors.fillButtonBackground.withValues(
+                              alpha: 0.5,
+                            ),
                             width: 1,
                           ),
                         );
@@ -775,7 +759,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     Text(
                       summaryLabels['noTransport'],
                       style: TextStyle(
-                        color: AppColors.buttonWithoutBackGround.withOpacity(0.6),
+                        color: AppColors.buttonWithoutBackGround.withValues(
+                          alpha: 0.6,
+                        ),
                         fontStyle: FontStyle.italic,
                       ),
                     ),

@@ -1,9 +1,9 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class ButtonsWidget {
-  /// Bouton principal avec background rempli
   static Widget primaryButton({
     required String text,
     required VoidCallback onPressed,
@@ -16,40 +16,40 @@ class ButtonsWidget {
     Widget? icon,
   }) {
     return ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            shadowColor: AppColors.dark,
-            backgroundColor: backgroundColor ?? AppColors.fillButtonBackground,
-            foregroundColor: textColor ?? AppColors.light,
-            elevation: elevation ?? 6,
-            padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 11),
-            ),
-          ),
-          child: icon != null
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    icon,
-                    const SizedBox(width: 8),
-                    Text(
-                      text,
-                      style: TextStyle(
-                        fontSize: fontSize ?? 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                )
-              : Text(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        shadowColor: AppColors.dark,
+        backgroundColor: backgroundColor ?? AppColors.fillButtonBackground,
+        foregroundColor: textColor ?? AppColors.light,
+        elevation: elevation ?? 6,
+        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 11),
+        ),
+      ),
+      child: icon != null
+          ? Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                icon,
+                const SizedBox(width: 8),
+                Text(
                   text,
                   style: TextStyle(
                     fontSize: fontSize ?? 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-        );
+              ],
+            )
+          : Text(
+              text,
+              style: TextStyle(
+                fontSize: fontSize ?? 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+    );
   }
 
   /// Bouton secondaire avec bordure (outline)
@@ -66,42 +66,42 @@ class ButtonsWidget {
     Widget? icon,
   }) {
     return OutlinedButton(
-          onPressed: onPressed,
-          style: OutlinedButton.styleFrom(
-            backgroundColor: backgroundColor ?? AppColors.light,
-            foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
-            elevation: elevation,
-            side: BorderSide(
-              color: borderColor ?? AppColors.buttonWithoutBackGround,
-            ),
-            padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 11),
-            ),
-          ),
-          child: icon != null
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    icon,
-                    const SizedBox(width: 8),
-                    Text(
-                      text,
-                      style: TextStyle(
-                        fontSize: fontSize ?? 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                )
-              : Text(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        backgroundColor: backgroundColor ?? AppColors.light,
+        foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
+        elevation: elevation,
+        side: BorderSide(
+          color: borderColor ?? AppColors.buttonWithoutBackGround,
+        ),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 11),
+        ),
+      ),
+      child: icon != null
+          ? Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                icon,
+                const SizedBox(width: 8),
+                Text(
                   text,
                   style: TextStyle(
                     fontSize: fontSize ?? 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-        );
+              ],
+            )
+          : Text(
+              text,
+              style: TextStyle(
+                fontSize: fontSize ?? 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+    );
   }
 
   /// Bouton transparent avec bordure
@@ -116,28 +116,25 @@ class ButtonsWidget {
     double? elevation,
   }) {
     return ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.light,
-            foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
-            elevation: elevation,
-            shadowColor: AppColors.dark,
-            side: BorderSide(
-              color: borderColor ?? AppColors.buttonWithoutBackGround,
-            ),
-            padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 11),
-            ),
-          ),
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: fontSize ?? 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        );
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.light,
+        foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
+        elevation: elevation,
+        shadowColor: AppColors.dark,
+        side: BorderSide(
+          color: borderColor ?? AppColors.buttonWithoutBackGround,
+        ),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 11),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: fontSize ?? 16, fontWeight: FontWeight.w500),
+      ),
+    );
   }
 
   /// Row de boutons avec espacement automatique (pour les boutons côte à côte)
@@ -394,5 +391,129 @@ class ButtonsWidget {
         ],
       ),
     );
+  }
+
+  /// Custom Switch
+  static Widget customSwitch({
+    required bool value,
+    required ValueChanged<bool> onChanged,
+    Color? activeColor,
+  }) {
+    return Switch(
+      value: value,
+      onChanged: onChanged,
+      activeColor: activeColor ?? AppColors.progress,
+    );
+  }
+
+  /// Custom RadioListTile
+  static Widget customRadio<T>({
+    required String title,
+    required T value,
+    required T groupValue,
+    required ValueChanged<T?> onChanged,
+    Color? activeColor,
+    Color? titleColor,
+  }) {
+    return RadioListTile<T>(
+      contentPadding: EdgeInsets.zero,
+      visualDensity: const VisualDensity(horizontal: -4),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: titleColor ?? AppColors.buttonWithoutBackGround,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      value: value,
+      groupValue: groupValue,
+      activeColor: activeColor ?? AppColors.buttonWithoutBackGround,
+      onChanged: onChanged,
+    );
+  }
+
+  /// Custom CheckboxListTile
+  static Widget customCheckbox({
+    required String title,
+    required bool value,
+    required ValueChanged<bool?> onChanged,
+    Color? activeColor,
+    Color? checkColor,
+    Color? titleColor,
+  }) {
+    return CheckboxListTile(
+      title: Text(
+        title,
+        style: TextStyle(
+          color: titleColor ?? AppColors.textColor,
+          fontFamily: 'Inder',
+        ),
+      ),
+      value: value,
+      onChanged: onChanged,
+      activeColor: activeColor ?? AppColors.buttonWithoutBackGround,
+      checkColor: checkColor ?? AppColors.light,
+      controlAffinity: ListTileControlAffinity.leading,
+      contentPadding: EdgeInsets.zero,
+    );
+  }
+
+  /// Custom ChoiceChip for themes
+  static Widget customChoiceChip({
+    required String label,
+    required bool selected,
+    required ValueChanged<bool> onSelected,
+    Color? selectedColor,
+    Color? labelColor,
+  }) {
+    return ChoiceChip(
+      label: Text(
+        label,
+        style: TextStyle(
+          color:
+              labelColor ?? (selected ? AppColors.light : AppColors.textColor),
+        ),
+      ),
+      selected: selected,
+      onSelected: onSelected,
+      selectedColor: selectedColor ?? AppColors.fillButtonBackground,
+    );
+  }
+
+  /// Handles GPS permission request and provides user feedback.
+  static Future<bool> handleGpsPermission(BuildContext context) async {
+    // Check if location services are enabled
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      if (context.mounted) {
+        SnackbarHelper.showError(
+            context, 'Les services de localisation sont désactivés. Veuillez les activer.');
+      }
+      await Geolocator.openLocationSettings();
+      return false;
+    }
+
+    // Check and request permission
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        if (context.mounted) {
+          SnackbarHelper.showError(context, 'Permission de localisation refusée.');
+        }
+        return false;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      if (context.mounted) {
+        SnackbarHelper.showError(context,
+            'La permission de localisation est refusée en permanence. Veuillez l\'activer dans les paramètres de l\'application.');
+      }
+      await Geolocator.openAppSettings();
+      return false;
+    }
+
+    return true;
   }
 }

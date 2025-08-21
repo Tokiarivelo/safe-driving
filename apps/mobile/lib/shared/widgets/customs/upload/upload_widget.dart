@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/shared/widgets/customs/upload/photo_management_modal.dart';
+import 'package:safe_driving/shared/widgets/customs/photos_management/gallery_modal.dart';
 
 class UploadWidget extends StatefulWidget {
   final String title;
@@ -86,7 +86,7 @@ class UploadWidgetState extends State<UploadWidget> {
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.all(32),
-            margin: const EdgeInsets.all(2), 
+            margin: const EdgeInsets.all(2),
             decoration: BoxDecoration(
               color: AppColors.softBackgroundColor,
               borderRadius: BorderRadius.circular(12),
@@ -105,7 +105,6 @@ class UploadWidgetState extends State<UploadWidget> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-
         Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
