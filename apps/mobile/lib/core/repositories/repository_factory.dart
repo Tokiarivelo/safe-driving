@@ -1,7 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:safe_driving/presentation/authentification/repository/auth_repository.dart';
-import 'package:safe_driving/presentation/onboarding/user/repository/user_repository.dart';
-import 'package:safe_driving/presentation/onboarding/driver/repository/driver_repository.dart';
+import 'package:safe_driving/features/authentication/repository/auth_repository.dart';
+import 'package:safe_driving/features/onboarding/user/repository/user_repository.dart';
+import 'package:safe_driving/features/onboarding/driver/repository/driver_repository.dart';
 
 class RepositoryFactory {
   static RepositoryFactory? _instance;

@@ -1,4 +1,3 @@
-// User fragment for consistent user data structure
 const String userFragment = r'''
 fragment UserFragment on User {
   id

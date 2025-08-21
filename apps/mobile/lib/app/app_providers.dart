@@ -1,6 +1,6 @@
-import 'package:safe_driving/presentation/authentification/repository/auth_repository.dart';
-import 'package:safe_driving/presentation/onboarding/user/repository/user_repository.dart';
-import 'package:safe_driving/presentation/onboarding/driver/repository/driver_repository.dart';
+import 'package:safe_driving/features/authentication/repository/auth_repository.dart';
+import 'package:safe_driving/features/onboarding/user/repository/user_repository.dart';
+import 'package:safe_driving/features/onboarding/driver/repository/driver_repository.dart';
 
 class AppProviders {
   static AppProviders _instance = AppProviders._internal();
