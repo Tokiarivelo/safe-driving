@@ -218,19 +218,20 @@ class UpdateUserInput {
 class StepAuthDataText {
   static final Map<String, StepAuthContent> stepContents = {
     'forgotPassword': StepAuthContent(
-      title: "🔒 Mot de passe oublié ?",
+      title: "🔐 Réinitialiser le mot de passe",
       subtitle:
-          "Pas de panique, ça arrive à tout le monde. Entrez votre adresse e-mail dans le formulaire et nous vous enverrons un lien pour réinitialiser votre mot de passe en toute sécurité.",
+          "Choisissez un nouveau mot de passe sécurisé pour votre compte. Assurez-vous qu'il contient au moins 8 caractères.",
       subSubtitle: "",
-      actionButtonText: "Reset Password",
+      actionButtonText: "Réinitialiser le mot de passe",
       socialText: "",
       navigationPrefix: "",
       navigationLink: "",
-      backToLoginText: "Back to login",
+      backToLoginText: "Retour à la connexion",
       forgotPasswordText: "",
       additionalContent: {
         "inputs": [
-          {"hint": "Email", "icon": "email_outlined", "type": "email"},
+          {"hint": "Nouveau mot de passe", "icon": "lock_outlined", "type": "password"},
+          {"hint": "Confirmer le mot de passe", "icon": "lock_outlined", "type": "confirmPassword"},
         ],
       },
     ),

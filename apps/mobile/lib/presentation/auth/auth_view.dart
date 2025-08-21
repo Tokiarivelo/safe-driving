@@ -35,7 +35,6 @@ class _AuthViewState extends State<AuthView> {
 
     if (success) {
       SnackbarHelper.showSuccess(context, 'Connexion réussie !');
-      // affichage du next screen
     } else {
       SnackbarHelper.showError(
         context,
@@ -77,14 +76,38 @@ class _AuthViewState extends State<AuthView> {
     }
   }
 
-  void _handleResetPassword(String email) {
+  Future<void> _handleResetPassword(
+    String newPassword,
+    String confirmPassword,
+  ) async {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Mbola tsy vita lol, miandry server'),
-        backgroundColor: Colors.orange,
-      ),
-    );
+
+    if (newPassword != confirmPassword) {
+      SnackbarHelper.showError(
+        context,
+        'Les mots de passe ne correspondent pas',
+      );
+      return;
+    }
+
+    final auth = context.authVM;
+    final success = await auth.resetPassword(newPassword);
+
+    if (!mounted) return;
+
+    if (success) {
+      SnackbarHelper.showSuccess(
+        context,
+        'Mot de passe réinitialisé avec succès',
+      );
+      _navigateToLogin();
+    } else {
+      SnackbarHelper.showError(
+        context,
+        auth.errorMessage ??
+            'Erreur lors de la réinitialisation du mot de passe',
+      );
+    }
   }
 
   void _handleGoogleSignIn() {
@@ -156,21 +179,23 @@ class _AuthViewState extends State<AuthView> {
         duration: const Duration(milliseconds: 300),
         transitionBuilder: (Widget child, Animation<double> animation) {
           return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0.05, 0),
-              end: Offset.zero,
-            ).animate(CurvedAnimation(
-              parent: animation,
-              curve: Curves.easeInOutCubic,
-            )),
+            position:
+                Tween<Offset>(
+                  begin: const Offset(0.05, 0),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeInOutCubic,
+                  ),
+                ),
             child: FadeTransition(
-              opacity: Tween<double>(
-                begin: 0.0,
-                end: 1.0,
-              ).animate(CurvedAnimation(
-                parent: animation,
-                curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
-              )),
+              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                  parent: animation,
+                  curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
+                ),
+              ),
               child: child,
             ),
           );

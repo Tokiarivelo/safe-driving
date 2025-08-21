@@ -72,6 +72,22 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  // Reset Password
+  Future<bool> resetPassword(String newPassword) async {
+    _setLoading(true);
+    _clearError();
+    try {
+      await _userService.resetPassword(newPassword);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _setError(e.toString());
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   // Update user
   Future<bool> updateUser(String id, UpdateUserInput input) async {
     _setLoading(true);

@@ -21,7 +21,7 @@ class AuthWidget extends StatefulWidget {
     String password,
   )?
   onSignUp;
-  final Function(String email)? onResetPassword;
+  final Function(String password, String confirmPassword)? onResetPassword;
   final VoidCallback? onGoogleSignIn;
   final VoidCallback? onFacebookSignIn;
   final VoidCallback? onNavigateToLogin;
@@ -450,18 +450,42 @@ class AuthWidgetState extends State<AuthWidget> {
           SizedBox(height: MediaQuery.of(context).size.height < 700 ? 2 : 5),
           if (widget.isLogin) _buildForgotPasswordLink(),
         ],
-        if (widget.isForgotPassword)
-          _buildInputFieldWithValidation(
-            hint: "Email",
-            icon: Icons.email_outlined,
-            controller: _emailController,
-            errorMessage: _emailError,
-            onChanged: (value) {
-              setState(() {
-                _emailError = RegexFormatter.getEmailValidationMessage(value);
-              });
-            },
-          ),
+            if (widget.isForgotPassword)
+              ...[
+                _buildInputFieldWithValidation(
+                  hint: "Nouveau mot de passe",
+                  icon: Icons.lock_outlined,
+                  obscureText: true,
+                  isPassword: true,
+                  controller: _passwordController,
+                  errorMessage: _passwordError,
+                  onChanged: (value) {
+                    setState(() {
+                      _passwordError = RegexFormatter.getPasswordValidationMessage(value);
+                      if (_confirmPasswordController.text.isNotEmpty) {
+                        _confirmPasswordError = value != _confirmPasswordController.text
+                            ? "Les mots de passe ne correspondent pas"
+                            : "";
+                      }
+                    });
+                  },
+                ),
+                _buildInputFieldWithValidation(
+                  hint: "Confirmer le mot de passe",
+                  icon: Icons.lock_outlined,
+                  obscureText: true,
+                  isConfirmPassword: true,
+                  controller: _confirmPasswordController,
+                  errorMessage: _confirmPasswordError,
+                  onChanged: (value) {
+                    setState(() {
+                      _confirmPasswordError = value != _passwordController.text
+                          ? "Les mots de passe ne correspondent pas"
+                          : "";
+                    });
+                  },
+                ),
+              ],
       ],
     );
   }
@@ -513,15 +537,23 @@ class AuthWidgetState extends State<AuthWidget> {
 
   void _handleButtonPress() {
     if (widget.isForgotPassword) {
-      if (_emailController.text.trim().isEmpty) {
-        _showErrorSnackBar("Veuillez saisir votre adresse email");
+      if (_passwordController.text.trim().isEmpty) {
+        _showErrorSnackBar("Veuillez saisir votre nouveau mot de passe");
         return;
       }
-      if (!RegexFormatter.isValidEmail(_emailController.text.trim())) {
-        _showErrorSnackBar("Veuillez saisir une adresse email valide");
+      if (_confirmPasswordController.text.trim().isEmpty) {
+        _showErrorSnackBar("Veuillez confirmer votre nouveau mot de passe");
         return;
       }
-      widget.onResetPassword?.call(_emailController.text.trim());
+      if (_passwordController.text.trim() != _confirmPasswordController.text.trim()) {
+        _showErrorSnackBar("Les mots de passe ne correspondent pas");
+        return;
+      }
+      if (_passwordController.text.trim().length < 8) {
+        _showErrorSnackBar("Le mot de passe doit contenir au moins 8 caractères");
+        return;
+      }
+      widget.onResetPassword?.call(_passwordController.text.trim(), _confirmPasswordController.text.trim());
     } else if (widget.isLogin) {
       if (_emailController.text.trim().isEmpty) {
         _showErrorSnackBar("Veuillez saisir votre email ou nom d'utilisateur");

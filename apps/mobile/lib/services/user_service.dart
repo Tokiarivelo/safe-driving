@@ -2,6 +2,14 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import '../models/auth/auth_model.dart';
 import '../graphql/queries.dart';
 
+const String resetPasswordMutation = r'''
+mutation ResetPassword($password: String!) {
+  resetPassword(password: $password) {
+    success
+  }
+}
+''';
+
 class UserService {
   final GraphQLClient _client;
 
@@ -37,6 +45,15 @@ class UserService {
     return AuthResponse(
       token: token,
       user: User.fromJson(data['user']),
+    );
+  }
+
+  // Reset Password
+  Future<void> resetPassword(String password) async {
+    await _mutate(
+      document: resetPasswordMutation,
+      variables: {'password': password},
+      key: 'resetPassword',
     );
   }
 
