@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../../shared/widgets/customs/inputs/inputs_widget.dart';
+import '../../../../shared/widgets/customs/inputs/inputs_widget.dart';
 
-class PasswordInput extends StatelessWidget {
+class ConfirmPasswordInput extends StatelessWidget {
   final TextEditingController controller;
   final String errorMessage;
   final Function(String) onChanged;
   final bool isSmallScreen;
 
-  const PasswordInput({
+  const ConfirmPasswordInput({
     super.key,
     required this.controller,
     required this.errorMessage,
@@ -18,10 +18,10 @@ class PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomInputField(
-      hint: "Nouveau mot de passe",
+      hint: "Confirmer le mot de passe",
       icon: Icons.lock_outlined,
       obscureText: true,
-      isPassword: true,
+      isConfirmPassword: true,
       controller: controller,
       errorMessage: errorMessage,
       onChanged: onChanged,

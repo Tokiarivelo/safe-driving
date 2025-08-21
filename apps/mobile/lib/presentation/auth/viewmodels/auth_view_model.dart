@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import '../models/auth_models.dart';
-import '../services/user_service.dart';
+import '../services/services.dart';
 
 class AuthViewModel extends ChangeNotifier {
+  final AuthService _authService;
   final UserService _userService;
+  final UserRepository _userRepository;
+  final SessionService _sessionService;
   User? _currentUser;
   bool _isLoading = false;
   String? _error;
-  String? _token;
 
-  AuthViewModel(this._userService);
+  AuthViewModel(
+    this._authService,
+    this._userService,
+    this._userRepository,
+    this._sessionService,
+  );
 
-  String? get token => _token;
-  bool get isAuthenticated => _currentUser != null && _token != null;
+  String? get token => _sessionService.token;
+  bool get isAuthenticated => _sessionService.isAuthenticated && _currentUser != null;
   User? get currentUser => _currentUser;
   bool get isLoading => _isLoading;
   String? get errorMessage => _error;
@@ -22,9 +29,9 @@ class AuthViewModel extends ChangeNotifier {
     _clearError();
 
     try {
-      final authResponse = await _userService.login(email, password);
+      final authResponse = await _authService.login(email, password);
       _currentUser = authResponse.user;
-      _token = authResponse.token;
+      _sessionService.saveToken(authResponse.token);
       notifyListeners();
       return true;
     } catch (e) {
@@ -40,9 +47,9 @@ class AuthViewModel extends ChangeNotifier {
     _clearError();
 
     try {
-      final authResponse = await _userService.register(input);
+      final authResponse = await _authService.register(input);
       _currentUser = authResponse.user;
-      _token = authResponse.token;
+      _sessionService.saveToken(authResponse.token);
       notifyListeners();
       return true;
     } catch (e) {
@@ -78,7 +85,7 @@ class AuthViewModel extends ChangeNotifier {
     _setLoading(true);
     _clearError();
     try {
-      await _userService.resetPassword(newPassword);
+      await _authService.resetPassword(newPassword);
       notifyListeners();
       return true;
     } catch (e) {
@@ -122,14 +129,14 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<void> logout() async {
     _currentUser = null;
-    _token = null;
+    _sessionService.clear();
     _clearError();
     notifyListeners();
   }
 
   Future<bool> isEmailTaken(String email) async {
     try {
-      return await _userService.isEmailTaken(email);
+      return await _userRepository.isEmailTaken(email);
     } catch (_) {
       return false;
     }

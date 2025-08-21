@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../shared/state_management/state.dart';
-import '../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
+import '../../../../shared/state_management/state.dart';
+import '../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class ResetSuccessHandler {
   static Future<void> handleResetPassword({
@@ -11,12 +11,18 @@ class ResetSuccessHandler {
     VoidCallback? onNavigateToLogin,
   }) async {
     if (newPassword.isEmpty) {
-      SnackbarHelper.showError(context, "Veuillez saisir votre nouveau mot de passe");
+      SnackbarHelper.showError(
+        context,
+        "Veuillez saisir votre nouveau mot de passe",
+      );
       return;
     }
-    
+
     if (confirmPassword.isEmpty) {
-      SnackbarHelper.showError(context, "Veuillez confirmer votre nouveau mot de passe");
+      SnackbarHelper.showError(
+        context,
+        "Veuillez confirmer votre nouveau mot de passe",
+      );
       return;
     }
 

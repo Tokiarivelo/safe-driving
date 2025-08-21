@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../widgets/auth_widgets.dart';
-import '../models/auth_models.dart';
-import '../../../shared/state_management/state.dart';
-import '../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
+import '../../widgets/auth/auth_widget.dart';
+import '../../models/auth_models.dart';
+import '../../../../shared/state_management/state.dart';
+import '../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class RegisterView extends StatefulWidget {
   final VoidCallback? onNavigateToLogin;
@@ -65,7 +65,10 @@ class _RegisterViewState extends State<RegisterView> {
     if (widget.onGoogleSignIn != null) {
       widget.onGoogleSignIn!();
     } else {
-      SnackbarHelper.showInfo(context, 'Connexion Google non encore implémentée');
+      SnackbarHelper.showInfo(
+        context,
+        'Connexion Google non encore implémentée',
+      );
     }
   }
 

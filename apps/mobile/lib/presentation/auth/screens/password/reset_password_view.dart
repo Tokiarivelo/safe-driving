@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/utils/form/form_utils.dart';
-import '../../../shared/widgets/customs/colors/colors_widget.dart';
-import '../builders/auth_ui_builder.dart';
-import '../widgets/reset_password_container.dart';
-import '../widgets/reset_success_handler.dart';
+import '../../../../core/constants/utils/form/form_utils.dart';
+import '../../../../shared/widgets/customs/colors/colors_widget.dart';
+import '../../builders/auth_ui_builder.dart';
+import '../../widgets/password/reset_password_container.dart';
+import '../../widgets/password/reset_success_handler.dart';
 
 class ResetPasswordView extends StatefulWidget {
   final VoidCallback? onNavigateToLogin;
@@ -25,7 +25,8 @@ class ResetPasswordView extends StatefulWidget {
 
 class _ResetPasswordViewState extends State<ResetPasswordView> {
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   String _passwordError = "";
   String _confirmPasswordError = "";
 
@@ -36,10 +37,10 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     super.dispose();
   }
 
-Future<void> _handleResetPassword() async {
+  Future<void> _handleResetPassword() async {
     final newPassword = _passwordController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
-    
+
     await ResetSuccessHandler.handleResetPassword(
       context: context,
       newPassword: newPassword,
@@ -119,5 +120,4 @@ Future<void> _handleResetPassword() async {
       onNavigateToLogin: widget.onNavigateToLogin,
     );
   }
-
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter_svg/svg.dart';
-import '../../../core/constants/colors/colors.dart';
-import '../builders/auth_ui_builder.dart';
+import '../../../../core/constants/colors/colors.dart';
+import '../../builders/auth_ui_builder.dart';
 import 'password_input.dart';
 import 'confirm_password_input.dart';
 
