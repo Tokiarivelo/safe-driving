@@ -90,13 +90,13 @@ class StepFiveView extends StatelessWidget {
             spacing: 8,
             children: UserOnboardingData.transportModes.map((mode) {
               final isSelected = selectedTransports.contains(mode);
-              return FilterChip(
-                avatar: Icon(UserOnboardingData.transportIcons[mode], size: 18),
-                label: Text(mode),
+              return ButtonsWidget.customFilterChip(
+                avatarIcon: UserOnboardingData.transportIcons[mode],
+                label: mode,
                 selected: isSelected,
                 onSelected: (selected) => onTransportChanged(mode, selected),
-                selectedColor: AppColors.fillButtonBackground,
-                checkmarkColor: AppColors.light,
+                selectedLabelColor: AppColors.light,
+                labelColor: AppColors.buttonWithoutBackGround,
               );
             }).toList(),
           ),

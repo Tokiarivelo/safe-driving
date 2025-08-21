@@ -148,7 +148,7 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
           padding: const EdgeInsets.only(top: 20, bottom: 10),
           child: Center(
             child: SvgPicture.asset(
-              'assets/logo/logo_white.svg',
+              'lib/resources/assets/logo/logo_white.svg',
               width: 85,
               height: 85,
             ),
@@ -340,7 +340,7 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
             ButtonsWidget.roleChoiceButtons(
               onUserPressed: () => _nextStep(),
               onDriverPressed: () {
-                Navigator.pushNamed(context, '/driverOnboarding');
+                Navigator.pushNamed(context, '/driver_onboarding');
               },
             ),
           ],

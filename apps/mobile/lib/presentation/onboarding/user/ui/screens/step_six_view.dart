@@ -108,32 +108,14 @@ class StepSixView extends StatelessWidget {
                   spacing: 8,
                   runSpacing: 4,
                   children: appState.selectedTransports.map((transport) {
-                    return Chip(
+                    return ButtonsWidget.customChip(
+                      label: transport,
                       avatar: Icon(
                         UserOnboardingData.transportIcons[transport],
                         size: 16,
                         color: AppColors.buttonWithoutBackGround,
                       ),
-                      label: Text(
-                        transport,
-                        style: const TextStyle(
-                          color: AppColors.buttonWithoutBackGround,
-                          fontSize: 12,
-                        ),
-                      ),
-                      deleteIcon: const Icon(
-                        Icons.close,
-                        size: 18,
-                        color: AppColors.buttonWithoutBackGround,
-                      ),
                       onDeleted: () => onTransportRemoved(transport),
-                      backgroundColor: AppColors.secondBackgroundColor,
-                      side: BorderSide(
-                        color: AppColors.fillButtonBackground.withValues(
-                          alpha: 0.5,
-                        ),
-                        width: 1,
-                      ),
                     );
                   }).toList(),
                 )

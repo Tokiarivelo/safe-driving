@@ -20,17 +20,9 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
   final GlobalKey<DriverPaginationWidgetState> _paginationKey =
       GlobalKey<DriverPaginationWidgetState>();
 
-  late DriverOnboardingViewModel _viewModel;
-
-  @override
-  void initState() {
-    super.initState();
-    _viewModel = Provider.of<DriverOnboardingViewModel>(context, listen: false);
-  }
-
-  void _navigateToStep(int stepIndex) {
+  void _navigateToStep(int stepIndex, DriverOnboardingViewModel viewModel) {
     _paginationKey.currentState?.goToStep(stepIndex);
-    _viewModel.goToStep(stepIndex);
+    viewModel.goToStep(stepIndex);
   }
 
   @override
@@ -66,7 +58,7 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                                 flex: 2,
                                 child: Center(
                                   child: SvgPicture.asset(
-                                    'assets/logo/logo_white.svg',
+                                    'lib/resources/assets/logo/logo_white.svg',
                                     width: 85,
                                     height: 85,
                                   ),
@@ -109,15 +101,15 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                           child:
                               _paginationKey.currentState?.buildPageView(
                                 itemBuilder: (index) {
-                                  return SingleChildScrollView(
-                                    child: DriverUIBuilder.buildStepContent(
-                                      viewModel.steps[index],
-                                      viewModel,
-                                      nextStep,
-                                      _navigateToStep,
-                                      context,
-                                    ),
-                                  );
+                                    return SingleChildScrollView(
+                                      child: DriverUIBuilder.buildStepContent(
+                                        viewModel.steps[index],
+                                        viewModel,
+                                        nextStep,
+                                        (stepIndex) => _navigateToStep(stepIndex, viewModel),
+                                        context,
+                                      ),
+                                    );
                                 },
                                 itemCount: viewModel.steps.length,
                               ) ??

@@ -28,11 +28,11 @@ class SocialButtonsBuilder {
       children: [
         buildSocialButton(
           onTap: onGoogleSignIn,
-          imagePath: 'assets/img/social/google.png',
+          imagePath: 'lib/resources/assets/img/social/google.png',
         ),
         buildSocialButton(
           onTap: onFacebookSignIn,
-          imagePath: 'assets/img/social/facebook.png',
+          imagePath: 'lib/resources/assets/img/social/facebook.png',
         ),
       ],
     );

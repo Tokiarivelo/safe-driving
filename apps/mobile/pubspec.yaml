@@ -50,10 +50,8 @@ flutter:
   generate: true
   assets:
     - .env
-    - lib/resources/assets/img/social/google.png
-    - lib/resources/assets/img/social/facebook.png
-    - lib/resources/assets/logo/logo.svg
-    - lib/resources/assets/logo/logo_white.svg
+    - lib/resources/assets/img/social/
+    - lib/resources/assets/logo/
   fonts:
     - family: Inder
       fonts:

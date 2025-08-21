@@ -7,6 +7,7 @@ import 'package:safe_driving/presentation/authentification/services/service/sess
 import 'package:safe_driving/presentation/authentification/services/service/user/user_repository.dart';
 import 'package:safe_driving/presentation/authentification/services/service/user/user_service.dart';
 import '../../presentation/authentification/viewmodels/auth_view_model.dart';
+import '../../presentation/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
 
 class AppProviders {
   static List<ChangeNotifierProvider> get providers => [
@@ -26,10 +27,15 @@ class AppProviders {
         );
       },
     ),
+    ChangeNotifierProvider<DriverOnboardingViewModel>(
+      create: (context) => DriverOnboardingViewModel(),
+    ),
   ];
 }
 
 extension AppContext on BuildContext {
   AuthViewModel get authVM => read<AuthViewModel>();
   AuthViewModel get authVMWatch => watch<AuthViewModel>();
+  DriverOnboardingViewModel get driverOnboardingVM => read<DriverOnboardingViewModel>();
+  DriverOnboardingViewModel get driverOnboardingVMWatch => watch<DriverOnboardingViewModel>();
 }

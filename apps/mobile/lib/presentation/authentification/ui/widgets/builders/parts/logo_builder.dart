@@ -6,7 +6,7 @@ class LogoBuilder {
     return Transform.scale(
       scale: isSmallScreen ? 0.8 : 1,
       child: SvgPicture.asset(
-        'assets/logo/logo.svg',
+        'lib/resources/assets/logo/logo.svg',
         height: isSmallScreen ? 80 : 100,
         width: 500,
       ),

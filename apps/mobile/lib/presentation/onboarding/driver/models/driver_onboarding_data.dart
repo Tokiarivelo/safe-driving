@@ -5,9 +5,8 @@ class DriverOnboardingData {
 
   static List<DriverOnboardingStepModel> getDriverSteps() {
     return [
-      // Step 1: Welcome
       DriverOnboardingStepModel(
-        stepNumber: 1,
+        stepNumber: 2,
         title: 'Bienvenue chez Safe Driving !',
         subtitle:
             "Merci d'avoir choisi Safe Driving. Commençons par configurer votre profil pour que vous puissiez prendre la route en toute sérénité.",
@@ -15,9 +14,8 @@ class DriverOnboardingData {
         buttonTitles: ["Plus tard", "Démarrer"],
       ),
 
-      // Step 2: Personal Information
       DriverOnboardingStepModel(
-        stepNumber: 2,
+        stepNumber: 3,
         title: 'Quelques détails sur vous',
         subtitle:
             "Renseignez vos coordonnées pour que nous puissions vous contacter et valider votre identité",
@@ -37,7 +35,7 @@ class DriverOnboardingData {
 
       // Step 3: Identity Documents
       DriverOnboardingStepModel(
-        stepNumber: 3,
+        stepNumber: 4,
         title: 'Vérification d\'identité',
         subtitle:
             "Téléchargez votre permis de conduire et votre carte d'identité pour vous assurer une inscription rapide et fiable.",
@@ -68,7 +66,7 @@ class DriverOnboardingData {
 
       // Step 4: Vehicle Information
       DriverOnboardingStepModel(
-        stepNumber: 4,
+        stepNumber: 5,
         title: 'Dites-nous en plus sur votre véhicule',
         subtitle:
             "Pour mieux vous identifier et garantir la sécurité de vos passagers, renseignez les caractéristiques de votre voiture.",
@@ -92,7 +90,7 @@ class DriverOnboardingData {
 
       // Step 5: Vehicle Documents
       DriverOnboardingStepModel(
-        stepNumber: 5,
+        stepNumber: 6,
         title: 'À propos de votre véhicule',
         subtitle:
             "Ajoutez votre certificat d'immatriculation, votre attestation d'assurance et quelques photos du véhicule.",
@@ -130,7 +128,7 @@ class DriverOnboardingData {
 
       // Step 6: Selfie
       DriverOnboardingStepModel(
-        stepNumber: 6,
+        stepNumber: 7,
         title: 'Confirmez votre identité en photo',
         subtitle:
             "Prenez un selfie en temps réel pour finaliser la vérification et renforcer la sécurité de la communauté.",
@@ -147,7 +145,7 @@ class DriverOnboardingData {
 
       // Step 7: GPS Permission
       DriverOnboardingStepModel(
-        stepNumber: 7,
+        stepNumber: 8,
         title: 'Partagez votre position',
         subtitle:
             "Autorisez la géolocalisation pour recevoir les demandes de course à proximité.",
@@ -157,7 +155,7 @@ class DriverOnboardingData {
 
       // Step 8: Notifications
       DriverOnboardingStepModel(
-        stepNumber: 8,
+        stepNumber: 9,
         title: 'Restez informé',
         subtitle:
             "Choisissez comment vous souhaitez être alerté(e) des nouvelles missions : push, SMS ou e-mail.",
@@ -170,7 +168,7 @@ class DriverOnboardingData {
 
       // Step 9: Preferences
       DriverOnboardingStepModel(
-        stepNumber: 9,
+        stepNumber: 10,
         title: 'Personnalisez votre expérience',
         subtitle:
             "Réglez votre thème (clair/sombre) et choisissez la langue de l'application.",
@@ -194,7 +192,7 @@ class DriverOnboardingData {
 
       // Step 10: Legal
       DriverOnboardingStepModel(
-        stepNumber: 10,
+        stepNumber: 11,
         title: 'Un dernier point avant de démarrer',
         subtitle:
             "Merci de lire et d'accepter nos Conditions Générales d'Utilisation et notre Politique de Confidentialité.",
@@ -210,7 +208,7 @@ class DriverOnboardingData {
 
       // Step 11: Summary
       DriverOnboardingStepModel(
-        stepNumber: 11,
+        stepNumber: 12,
         title: 'Tout est prêt !',
         subtitle:
             "Vérifiez vos informations et vos choix avant de valider. Vous pourrez toujours revenir modifier vos préférences plus tard.",
@@ -247,7 +245,7 @@ class DriverOnboardingData {
 
       // Step 12: Completion
       DriverOnboardingStepModel(
-        stepNumber: 12,
+        stepNumber: 13,
         title: '🎉 Bienvenue à bord, ',
         subtitle:
             "Votre profil a bien été complété et validé. Vous êtes maintenant prêt(e) à utiliser Safe Driving en tant que chauffeur.",
@@ -264,7 +262,7 @@ class DriverOnboardingData {
 
       // Step 13: CGU
       DriverOnboardingStepModel(
-        stepNumber: 13,
+        stepNumber: 14,
         title: 'Conditions Générales d\'Utilisation (CGU) de Safe Driving',
         subtitle: "Veuillez lire attentivement nos conditions d'utilisation.",
         stepType: DriverStepType.legal,
@@ -320,7 +318,7 @@ class DriverOnboardingData {
 
       // Step 14: Privacy Policy
       DriverOnboardingStepModel(
-        stepNumber: 14,
+        stepNumber: 15,
         title: 'Politique de Confidentialité',
         subtitle:
             "Votre vie privée est importante pour nous. Découvrez comment nous protégeons vos données.",

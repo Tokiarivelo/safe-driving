@@ -97,7 +97,6 @@ class UserOnboardingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // State management methods
   Future<void> updateGps(
     bool value,
     BuildContext context, {
@@ -120,7 +119,16 @@ class UserOnboardingViewModel extends ChangeNotifier {
     BuildContext context, {
     bool shouldSave = true,
   }) async {
-    _appState = _appState.copyWith(notifEnabled: value);
+    if (value) {
+      final selectedNotifications = ['push', 'alerts', 'updates'];
+      final granted = await UserOnboardingService.requestNotificationPermission(
+        context,
+        selectedNotifications,
+      );
+      _appState = _appState.copyWith(notifEnabled: granted);
+    } else {
+      _appState = _appState.copyWith(notifEnabled: value);
+    }
     notifyListeners();
     if (shouldSave && value) {
       await _savePreferences();
@@ -175,7 +183,6 @@ class UserOnboardingViewModel extends ChangeNotifier {
     return null;
   }
 
-  // Utility methods
   String getStepTitle(int step) {
     return UserOnboardingData.getStepTitle(step);
   }
@@ -214,7 +221,6 @@ class UserOnboardingViewModel extends ChangeNotifier {
 
     try {
       await _savePreferences();
-      // Check if the widget is still mounted before using context
       if (context.mounted) {
         UserOnboardingService.completeOnboarding(context);
       }

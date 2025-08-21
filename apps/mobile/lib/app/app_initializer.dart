@@ -21,7 +21,7 @@ class SafeDriving extends StatelessWidget {
             title: 'Safe Driving',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(fontFamily: 'Inder'),
-            initialRoute: AppRoutes.auth,
+            initialRoute: AppRoutes.useronboarding,
             routes: AppRoutes.routes,
           ),
         ),

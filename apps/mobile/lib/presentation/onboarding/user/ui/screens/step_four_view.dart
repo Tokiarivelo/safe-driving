@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import '../../models/user_onboarding_data.dart';
 
 class StepFourView extends StatelessWidget {
@@ -56,7 +57,27 @@ class StepFourView extends StatelessWidget {
                 title: radioOptions[1],
                 value: true,
                 groupValue: notificationsEnabled,
-                onChanged: (value) => onNotificationsChanged(value!),
+                onChanged: (value) async {
+                  if (value!) {
+                    final selectedNotifications = ['push', 'alerts'];
+                    final granted =
+                        await ButtonsWidget.handleNotificationPermissions(
+                          context,
+                          selectedNotifications,
+                        );
+                    if (!context.mounted) return;
+                    if (granted) {
+                      onNotificationsChanged(true);
+                    }
+                  } else {
+                    onNotificationsChanged(false);
+                    SnackbarHelper.showSuccess(
+                      context,
+                      'Préférences de notifications sauvegardées !',
+                      duration: const Duration(seconds: 2),
+                    );
+                  }
+                },
               ),
             ),
           ],
