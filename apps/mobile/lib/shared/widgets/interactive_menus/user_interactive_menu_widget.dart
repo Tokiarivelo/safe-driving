@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:safe_driving/app/routes.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/models/interactive_menu/interactive_menu_models.dart';
 import 'package:safe_driving/shared/widgets/customs/animations/animation_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+<<<<<<< HEAD
 import 'package:safe_driving/shared/widgets/interactive_menus/driver_interactive_menu_widget.dart';
+=======
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
 
 class InteractiveMenuWidget extends StatefulWidget {
   const InteractiveMenuWidget({super.key});
@@ -23,8 +27,12 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   // Configuration des étapes (utilisation de StepUserData)
   static const List<StepInfo> _steps = StepUserData.steps;
   static const List<String> _transportModes = StepUserData.transportModes;
+<<<<<<< HEAD
   static const Map<String, IconData> _transportIcons =
       StepUserData.transportIcons;
+=======
+  static const Map<String, IconData> _transportIcons = StepUserData.transportIcons;
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
 
   @override
   void initState() {
@@ -130,9 +138,19 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
 
   // Méthode pour finaliser le processus d'onboarding
   void _completeOnboarding() {
+<<<<<<< HEAD
     //rehefa vita
     Navigator.pushReplacementNamed(context, '/home'); // ou AppRoutes.home
 
+=======
+    // Ici vous pouvez sauvegarder les préférences de l'utilisateur
+    // par exemple dans SharedPreferences ou une base de données
+    
+    // Pour l'instant, on navigue vers l'écran principal
+    // Remplacez par la route appropriée de votre app
+    Navigator.pushReplacementNamed(context, '/home'); // ou AppRoutes.home
+    
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
     // Optionnel: Afficher un message de succès
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -336,9 +354,15 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   }
 
   Widget _buildStepContent(int step) {
+<<<<<<< HEAD
     // Obtenir les données de l'étape depuis StepUserDatatext
     final stepContent = StepUserData.stepContents[step - 1];
 
+=======
+    // Obtenir les données de l'étape depuis StepUserData
+    final stepContent = StepUserData.stepContents[step - 1];
+    
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
     switch (step) {
       case 1:
         return Column(
@@ -354,6 +378,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             ),
             const SizedBox(height: 20),
             ButtonsWidget.roleChoiceButtons(
+<<<<<<< HEAD
               onUserPressed: () => _nextStep(),
               onDriverPressed: () {
                 Navigator.of(context).push(
@@ -371,6 +396,11 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     transitionDuration: const Duration(milliseconds: 600),
                   ),
                 );
+=======
+              onUserPressed: _nextStep,
+              onDriverPressed: () {
+                Navigator.pushNamed(context, AppRoutes.isDriver);
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
               },
             ),
           ],
@@ -414,9 +444,13 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         );
 
       case 3:
+<<<<<<< HEAD
         final radioOptions =
             stepContent.additionalContent?['radioOptions'] ??
             ['Plus tard', 'Activer'];
+=======
+        final radioOptions = stepContent.additionalContent?['radioOptions'] ?? ['Plus tard', 'Activer'];
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -487,12 +521,16 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         );
 
       case 4:
+<<<<<<< HEAD
         final radioOptions =
             stepContent.additionalContent?['radioOptions'] ??
             [
               StepUserData.buttonTexts['later']!,
               StepUserData.buttonTexts['activate']!,
             ];
+=======
+        final radioOptions = stepContent.additionalContent?['radioOptions'] ?? [StepUserData.buttonTexts['later']!, StepUserData.buttonTexts['activate']!];
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -563,6 +601,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         );
 
       case 5:
+<<<<<<< HEAD
         final themeLabel =
             stepContent.additionalContent?['themeLabel'] ?? 'Thème';
         final themeOptions =
@@ -571,6 +610,11 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         final transportLabel =
             stepContent.additionalContent?['transportLabel'] ??
             'Type de transport';
+=======
+        final themeLabel = stepContent.additionalContent?['themeLabel'] ?? 'Thème';
+        final themeOptions = stepContent.additionalContent?['themeOptions'] ?? ['Clair', 'Sombre'];
+        final transportLabel = stepContent.additionalContent?['transportLabel'] ?? 'Type de transport';
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -653,9 +697,13 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                   // Optionnel: Afficher un message ou forcer la sélection d'au moins un transport
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
+<<<<<<< HEAD
                       content: Text(
                         'Veuillez sélectionner au moins un mode de transport',
                       ),
+=======
+                      content: Text('Veuillez sélectionner au moins un mode de transport'),
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
                       duration: Duration(seconds: 2),
                     ),
                   );
@@ -671,6 +719,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         );
 
       case 6:
+<<<<<<< HEAD
         final summaryLabels =
             stepContent.additionalContent?['summaryLabels'] ??
             {
@@ -681,6 +730,16 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               'language': 'Langue',
               'noTransport': 'Aucun transport sélectionné',
             };
+=======
+        final summaryLabels = stepContent.additionalContent?['summaryLabels'] ?? {
+          'gps': 'GPS',
+          'notifications': 'Notifications',
+          'theme': 'Thème',
+          'transport': 'Transport(s)',
+          'language': 'Langue',
+          'noTransport': 'Aucun transport sélectionné',
+        };
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -710,9 +769,13 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 const SizedBox(width: 8),
                 Text(
                   summaryLabels['gps'] ?? 'GPS',
+<<<<<<< HEAD
                   style: const TextStyle(
                     color: AppColors.buttonWithoutBackGround,
                   ),
+=======
+                  style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
                 ),
               ],
             ),
@@ -726,9 +789,13 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                 const SizedBox(width: 8),
                 Text(
                   summaryLabels['notifications'] ?? 'Notifications',
+<<<<<<< HEAD
                   style: const TextStyle(
                     color: AppColors.buttonWithoutBackGround,
                   ),
+=======
+                  style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
                 ),
               ],
             ),
@@ -791,8 +858,12 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     )
                   else
                     Text(
+<<<<<<< HEAD
                       summaryLabels['noTransport'] ??
                           'Aucun transport sélectionné',
+=======
+                      summaryLabels['noTransport'] ?? 'Aucun transport sélectionné',
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
                       style: TextStyle(
                         color: AppColors.buttonWithoutBackGround.withValues(
                           alpha: 0.6,

@@ -26,8 +26,11 @@ class AppColors {
   static Color transparent = Colors.transparent;
   static const Color forSmoothProgression = Color(0xFF822072);
   static const Color dark = Color.fromARGB(255, 0, 0, 0);
+<<<<<<< HEAD
   //forsnackbarres
   static const Color snackbarSuccess = Color(0xFF4CAF50);
   static const Color snackbarWarning = Color(0xFFFFC107);
   static const Color snackbarInfo = Color(0xFF2196F3);
+=======
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
 }

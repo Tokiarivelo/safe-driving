@@ -6,8 +6,11 @@ import '../../../core/constants/colors/colors.dart';
 import '../../../core/constants/validations/validator.dart';
 import '../customs/colors/colors_widget.dart';
 import '../customs/snackbar/snackbar_helper.dart';
+<<<<<<< HEAD
 import '../customs/inputs/inputs.dart';
 import '../../../models/auth/auth_model.dart';
+=======
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
 
 class AuthWidget extends StatefulWidget {
   final bool isLogin;
@@ -252,7 +255,13 @@ class AuthWidgetState extends State<AuthWidget> {
                   SizedBox(height: isSmallScreen ? 12 : 16),
                   if (!widget.isForgotPassword) ...[
                     Text(
+<<<<<<< HEAD
                       _getCurrentStepData().socialText,
+=======
+                      widget.isLogin
+                          ? "- ou continuer avec -"
+                          : "- ou s'inscrire avec -",
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
                       style: const TextStyle(
                         fontFamily: 'Inder',
                         color: AppColors.textColor,
@@ -489,7 +498,11 @@ class AuthWidgetState extends State<AuthWidget> {
             ),
           ),
           child: Text(
+<<<<<<< HEAD
             _getCurrentStepData().forgotPasswordText,
+=======
+            "Mot de passe oublié ?",
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
             style: TextStyle(
               fontFamily: 'Inder',
               color: AppColors.buttonWithoutBackGround,
@@ -511,7 +524,15 @@ class AuthWidgetState extends State<AuthWidget> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
       child: Text(
+<<<<<<< HEAD
         _getCurrentStepData().actionButtonText,
+=======
+        widget.isForgotPassword
+            ? "Reset Password"
+            : widget.isLogin
+            ? "Se connecter"
+            : "S'inscrire",
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
         style: const TextStyle(
           fontFamily: 'Inder',
           color: AppColors.titleColor,

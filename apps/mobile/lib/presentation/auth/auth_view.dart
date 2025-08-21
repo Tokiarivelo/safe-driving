@@ -151,11 +151,15 @@ class _AuthViewState extends State<AuthView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       backgroundColor: AppColors.color1,
+=======
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
         transitionBuilder: (Widget child, Animation<double> animation) {
           return SlideTransition(
+<<<<<<< HEAD
             position:
                 Tween<Offset>(
                   begin: const Offset(0.05, 0),
@@ -173,6 +177,23 @@ class _AuthViewState extends State<AuthView> {
                   curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
                 ),
               ),
+=======
+            position: Tween<Offset>(
+              begin: const Offset(0.05, 0),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOutCubic,
+            )),
+            child: FadeTransition(
+              opacity: Tween<double>(
+                begin: 0.0,
+                end: 1.0,
+              ).animate(CurvedAnimation(
+                parent: animation,
+                curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
+              )),
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
               child: child,
             ),
           );

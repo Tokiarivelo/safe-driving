@@ -5,9 +5,12 @@ import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
 import 'package:safe_driving/shared/widgets/pagination/pagination_widget.dart';
 import 'package:safe_driving/models/interactive_menu/interactive_menu_models.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+<<<<<<< HEAD
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs.dart';
 import 'package:safe_driving/shared/widgets/customs/upload/upload_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
+=======
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
 
 class DriverInteractiveMenuWidget extends StatefulWidget {
   const DriverInteractiveMenuWidget({super.key});
@@ -22,13 +25,18 @@ class DriverInteractiveMenuWidgetState
   static const int _totalSteps = 14;
   final GlobalKey<PaginationWidgetState> _paginationKey =
       GlobalKey<PaginationWidgetState>();
+<<<<<<< HEAD
   final List<StepDriverContent> stepContents = StepDriverDataText.stepContents;
+=======
+  final List<StepDriverContent> stepContents = StepDriverData.stepContents;
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
 
   Widget _buildStepContent(StepDriverContent step, VoidCallback nextStep) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       child: Column(
+<<<<<<< HEAD
         crossAxisAlignment: CrossAxisAlignment.center,
 
         children: [
@@ -41,10 +49,21 @@ class DriverInteractiveMenuWidgetState
               fontWeight: FontWeight.w600,
               color: AppColors.textColor,
               fontFamily: 'Inder',
+=======
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            step.title,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textColor,
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
             ),
           ),
           const SizedBox(height: 16),
           Text(
+<<<<<<< HEAD
             textAlign: TextAlign.center,
             step.subtitle,
             style: TextStyle(
@@ -52,14 +71,25 @@ class DriverInteractiveMenuWidgetState
               color: AppColors.textColor.withAlpha(180),
               height: 1.5,
               fontFamily: 'Inder',
+=======
+            step.subtitle,
+            style: const TextStyle(
+              fontSize: 16,
+              color: AppColors.textColor,
+              height: 1.5,
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
             ),
           ),
           const SizedBox(height: 24),
           // Contenu additionnel basé sur le type de step
+<<<<<<< HEAD
           if (step.additionalContent != null &&
               step.additionalContent?['form'] != null)
             _buildForm(step.additionalContent!['form'] as Map<String, String>)
           else if (step.additionalContent != null)
+=======
+          if (step.additionalContent != null)
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
             _buildAdditionalContent(step.additionalContent!),
           const SizedBox(height: 32),
           // Boutons
@@ -72,11 +102,15 @@ class DriverInteractiveMenuWidgetState
                     step.buttonTitles.length - 1;
                 return () {
                   if (isMainButton) {
+<<<<<<< HEAD
                     // Bouton principal (Démarrer, Valider, etc.)
                     //à implementer la logique (utilisant shared preference après)
                     nextStep();
                   } else {
                     nextStep(); //plus tard
+=======
+                    nextStep();
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
                   }
                 };
               }).toList(),
@@ -92,6 +126,7 @@ class DriverInteractiveMenuWidgetState
   }
 
   Widget _buildAdditionalContent(Map<String, dynamic> content) {
+<<<<<<< HEAD
     // Gérer le cas spécifique de la vérification d'identité (Step 3)
     if (content.containsKey('carteIdentité')) {
       final carteIdentiteData =
@@ -162,6 +197,9 @@ class DriverInteractiveMenuWidgetState
     }
 
     // Cas par défaut pour les autres contenus additionnels
+=======
+    // basé sur les clés dans additionalContent (form, documents, etc.)
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -178,6 +216,7 @@ class DriverInteractiveMenuWidgetState
     );
   }
 
+<<<<<<< HEAD
   Widget _buildUploadSection(Map<String, dynamic> sectionData) {
     final title = sectionData['title'] as String? ?? '';
     final textCenter =
@@ -310,6 +349,8 @@ class DriverInteractiveMenuWidgetState
     );
   }
 
+=======
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;

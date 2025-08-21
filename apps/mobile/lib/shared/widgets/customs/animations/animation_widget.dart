@@ -4,7 +4,11 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 /// Fonction pour le slide smooth améliorée
 Widget slideSmoothAnimation({required Widget child}) {
   return TweenAnimationBuilder<double>(
+<<<<<<< HEAD
     duration: const Duration(milliseconds: 600),
+=======
+    duration: const Duration(milliseconds: 250),
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
     curve: Curves.easeOutCubic,
     tween: Tween<double>(begin: 0.0, end: 1.0),
     builder: (context, value, child) {
@@ -245,7 +249,11 @@ class SmoothSlideTransition extends StatelessWidget {
   const SmoothSlideTransition({
     super.key,
     required this.child,
+<<<<<<< HEAD
     this.duration = const Duration(milliseconds: 300),
+=======
+    this.duration = const Duration(milliseconds: 250),
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
     this.curve = Curves.easeOutCubic,
     this.direction = SlideDirection.fromRight,
     this.distance = 15.0,
@@ -272,6 +280,7 @@ class SmoothSlideTransition extends StatelessWidget {
         break;
     }
 
+<<<<<<< HEAD
     return AnimatedSwitcher(
       duration: duration,
       switchInCurve: curve,
@@ -338,6 +347,25 @@ class RouteSlideTransition extends StatelessWidget {
 
     return SlideTransition(
       position: offsetTween.animate(curvedAnimation),
+=======
+    return TweenAnimationBuilder<double>(
+      duration: duration,
+      curve: curve,
+      tween: Tween<double>(begin: 0.0, end: 1.0),
+      builder: (context, value, child) {
+        // Éviter les valeurs extrêmes qui créent des flashs blancs
+        final clampedOpacity = value.clamp(0.1, 1.0);
+        final smoothValue = Curves.easeOutCubic.transform(value);
+
+        return Transform.translate(
+          offset: Offset(
+            beginOffset.dx * (1 - smoothValue),
+            beginOffset.dy * (1 - smoothValue),
+          ),
+          child: Opacity(opacity: clampedOpacity, child: child),
+        );
+      },
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
       child: child,
     );
   }
@@ -386,7 +414,11 @@ class PaginationAnimations {
   }) {
     return ClipOval(
       child: Material(
+<<<<<<< HEAD
         color: AppColors.transparent,
+=======
+        color: Colors.transparent,
+>>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
         child: InkWell(
           onTap: onTap,
           splashColor: AppColors.fillButtonBackgorund.withAlpha(77),
