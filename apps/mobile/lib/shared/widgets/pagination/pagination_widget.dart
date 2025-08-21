@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import '../customs/animations/animation_widget.dart';
-
-// Classe pour personnaliser le style du widget de pagination
 class PaginationStyle {
   final Color? primaryColor;
   final Color? backgroundColor;
@@ -176,13 +174,9 @@ class PaginationWidgetState extends State<PaginationWidget>
       _barAnimationController.forward();
     } else {
       // Animation de fermeture plus fluide avec courbe élastique
-<<<<<<< HEAD
-      _barAnimationController.reverse().then((_) {});
-=======
       _barAnimationController.reverse().then((_) {
         // Animation complète
       });
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
     }
   }
 
@@ -395,13 +389,7 @@ class PaginationWidgetState extends State<PaginationWidget>
     return PageView.builder(
       controller: _pageController,
       onPageChanged: (index) {
-<<<<<<< HEAD
-        // Plus de reset/forward lors du changement de page via swipe
-        // car cela cause les clignotements: comportement bizarre de flutter
-=======
         // Ne pas faire de reset/forward lors du changement de page via swipe
-        // car cela cause les clignotements
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
         setState(() {
           _currentStep = index + 1;
         });
@@ -411,7 +399,6 @@ class PaginationWidgetState extends State<PaginationWidget>
       },
       itemCount: itemCount,
       itemBuilder: (context, index) {
-        // Pas d'animation sur le contenu du PageView pour éviter les conflits
         return itemBuilder(index);
       },
     );

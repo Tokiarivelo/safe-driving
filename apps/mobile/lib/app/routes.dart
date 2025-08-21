@@ -6,10 +6,8 @@ import 'package:safe_driving/shared/widgets/interactive_menus/driver_interactive
 class AppRoutes {
   static const String auth = '/auth';
   static const String menu = '/menu';
-  static const String isDriver = '/isDriver';
   static Map<String, WidgetBuilder> routes = {
     auth: (context) => const AuthView(),
     menu: (context) => const InteractiveMenuView(),
-    isDriver: (context) => const DriverInteractiveMenuWidget(),
   };
 }

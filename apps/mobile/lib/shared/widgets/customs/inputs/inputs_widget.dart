@@ -14,6 +14,7 @@ class CustomInputField extends StatefulWidget {
   final TextInputType? keyboardType;
   final bool showLabel;
   final EdgeInsets? padding;
+  final Color? backgroundColor;
 
   const CustomInputField({
     super.key,
@@ -29,6 +30,7 @@ class CustomInputField extends StatefulWidget {
     this.keyboardType,
     this.showLabel = false,
     this.padding,
+    this.backgroundColor,
   });
 
   @override
@@ -59,7 +61,6 @@ class CustomInputFieldState extends State<CustomInputField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Label optionnel (pour driver interactive menu)
           if (widget.showLabel && widget.label != null) ...[
             Padding(
               padding: const EdgeInsets.only(left: 8, bottom: 6),
@@ -78,7 +79,7 @@ class CustomInputFieldState extends State<CustomInputField> {
           Container(
             decoration: widget.showLabel
                 ? BoxDecoration(
-                    color: AppColors.inputTextBackground,
+                    color: widget.backgroundColor ?? AppColors.softBackgroundColor,
                     borderRadius: BorderRadius.circular(2),
                     border: Border.all(
                       color: AppColors.borderInputField.withAlpha(100),
@@ -107,7 +108,7 @@ class CustomInputFieldState extends State<CustomInputField> {
                 prefixIcon: Icon(
                   widget.icon,
                   color: widget.showLabel
-                      ? AppColors.textColor.withAlpha(153)
+                      ? AppColors.textColor.withAlpha(200)
                       : AppColors.icon,
                   size: widget.showLabel ? 20 : 24,
                 ),

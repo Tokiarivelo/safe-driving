@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-<<<<<<< HEAD
-class StepDriverDataText {
-=======
 class StepDriverData {
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
   static final List<StepDriverContent> stepContents = [
     StepDriverContent(
       title: 'Bienvenue chez Safe Driving !',
@@ -37,17 +33,17 @@ class StepDriverData {
         "carteIdentité": {
           "rectoID": {
             "title": "Recto",
-            "textCenter": "Glissez un fichier pour le téléverser",
+            "textCenter": "",
             "bouton": "Choisir un fichier",
           },
           "versoID": {
             "title": "Verso",
-            "textCenter": "Glissez un fichier pour le téléverser",
+            "textCenter": "",
             "bouton": "Choisir un fichier",
           },
           "permisConduire": {
             "title": "Permis de conduire",
-            "textCenter": "Glissez un fichier pour le téléverser",
+            "textCenter": "",
             "bouton": "Choisir un fichier",
           },
         },
@@ -82,21 +78,21 @@ class StepDriverData {
         "documents": {
           "certificatImmatriculation": {
             "uploadZone": {
-              "textCenter": "Glissez un fichier pour le téléverser",
+              "textCenter": "",
               "bouton": "Choisir un fichier",
             },
             "ajoutPhoto": "Ajouter plus de photos",
           },
           "attestationAssurance": {
             "uploadZone": {
-              "textCenter": "Glissez un fichier pour le téléverser",
+              "textCenter": "",
               "bouton": "Choisir un fichier",
             },
             "ajoutPhoto": "Ajouter plus de photos",
           },
           "photosVehicule": {
             "uploadZone": {
-              "textCenter": "Glissez un fichier pour le téléverser",
+              "textCenter": "",
               "bouton": "Choisir un fichier",
             },
             "ajoutPhoto": "Ajouter plus de photos",
@@ -255,22 +251,12 @@ class StepUserData {
     ),
     StepUserContent(
       title: 'Bienvenue chez Safe Driving !',
-<<<<<<< HEAD
-      subtitle:
-          'Merci d\'avoir rejoint notre communauté ! Laissez-nous vous guider pour personnaliser votre expérience.',
-=======
       subtitle: 'Merci d\'avoir rejoint notre communauté ! Laissez-nous vous guider pour personnaliser votre expérience.',
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
       buttonTitles: ['Plus tard', 'Démarrer'],
     ),
     StepUserContent(
       title: 'Où êtes-vous ?',
-<<<<<<< HEAD
-      subtitle:
-          'Pour vous proposer les véhicules les plus proches, autorisez l\'accès à votre position. C\'est rapide et sécurisé.',
-=======
       subtitle: 'Pour vous proposer les véhicules les plus proches, autorisez l\'accès à votre position. C\'est rapide et sécurisé.',
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
       buttonTitles: ['Plus tard', 'Activer'],
       additionalContent: {
         'radioOptions': ['Plus tard', 'Activer'],
@@ -278,12 +264,7 @@ class StepUserData {
     ),
     StepUserContent(
       title: 'Restez informé',
-<<<<<<< HEAD
-      subtitle:
-          'Choisissez de recevoir des alertes en temps réel sur l\'arrivée de votre chauffeur et l\'état de votre trajet.',
-=======
       subtitle: 'Choisissez de recevoir des alertes en temps réel sur l\'arrivée de votre chauffeur et l\'état de votre trajet.',
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
       buttonTitles: ['Plus tard', 'Activer'],
       additionalContent: {
         'radioOptions': ['Plus tard', 'Activer'],
@@ -291,12 +272,7 @@ class StepUserData {
     ),
     StepUserContent(
       title: 'Faites-le à votre façon',
-<<<<<<< HEAD
-      subtitle:
-          'Sélectionnez vos modes de transport favoris et activez le thème sombre si vous préférez une expérience plus douce pour les yeux.',
-=======
       subtitle: 'Sélectionnez vos modes de transport favoris et activez le thème sombre si vous préférez une expérience plus douce pour les yeux.',
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
       buttonTitles: ['Plus tard', 'Valider'],
       additionalContent: {
         'themeLabel': 'Thème',
@@ -307,12 +283,7 @@ class StepUserData {
     ),
     StepUserContent(
       title: 'Tout est prêt !',
-<<<<<<< HEAD
-      subtitle:
-          'Voilà un résumé de vos choix. Vous pouvez toujours les modifier plus tard dans les paramètres. Prêt·e à démarrer ?',
-=======
       subtitle: 'Voilà un résumé de vos choix. Vous pouvez toujours les modifier plus tard dans les paramètres. Prêt·e à démarrer ?',
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
       buttonTitles: ['Annuler', 'Commencer'],
       additionalContent: {
         'summaryLabels': {

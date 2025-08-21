@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 import 'dart:ui';
-=======
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 
@@ -16,50 +13,43 @@ class ButtonsWidget {
     Color? backgroundColor,
     Color? textColor,
     double? elevation,
+    Widget? icon,
   }) {
-<<<<<<< HEAD
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius ?? 11),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-        child: ElevatedButton(
+    return ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: backgroundColor ?? AppColors.fillButtonBackgorund,
+            shadowColor: AppColors.dark,
+            backgroundColor: backgroundColor ?? AppColors.fillButtonBackground,
             foregroundColor: textColor ?? AppColors.light,
-            elevation: elevation ?? 4,
+            elevation: elevation ?? 6,
             padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius ?? 11),
             ),
           ),
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: fontSize ?? 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-      ),
-=======
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor ?? AppColors.fillButtonBackgorund,
-        foregroundColor: textColor ?? AppColors.light,
-        elevation: elevation ?? 4,
-        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius ?? 12),
-        ),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: fontSize ?? 16, fontWeight: FontWeight.w500),
-      ),
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
-    );
+          child: icon != null
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    icon,
+                    const SizedBox(width: 8),
+                    Text(
+                      text,
+                      style: TextStyle(
+                        fontSize: fontSize ?? 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                )
+              : Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: fontSize ?? 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+        );
   }
 
   /// Bouton secondaire avec bordure (outline)
@@ -72,14 +62,10 @@ class ButtonsWidget {
     Color? backgroundColor,
     Color? textColor,
     Color? borderColor,
-<<<<<<< HEAD
     double? elevation,
+    Widget? icon,
   }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius ?? 11),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-        child: OutlinedButton(
+    return OutlinedButton(
           onPressed: onPressed,
           style: OutlinedButton.styleFrom(
             backgroundColor: backgroundColor ?? AppColors.light,
@@ -93,35 +79,29 @@ class ButtonsWidget {
               borderRadius: BorderRadius.circular(borderRadius ?? 11),
             ),
           ),
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: fontSize ?? 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-=======
-  }) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        backgroundColor: backgroundColor ?? AppColors.secondBackgroundColor,
-        foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
-        side: BorderSide(
-          color: borderColor ?? AppColors.buttonWithoutBackGround,
-        ),
-        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius ?? 12),
-        ),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: fontSize ?? 16, fontWeight: FontWeight.w500),
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
-      ),
-    );
+          child: icon != null
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    icon,
+                    const SizedBox(width: 8),
+                    Text(
+                      text,
+                      style: TextStyle(
+                        fontSize: fontSize ?? 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                )
+              : Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: fontSize ?? 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+        );
   }
 
   /// Bouton transparent avec bordure
@@ -133,14 +113,9 @@ class ButtonsWidget {
     double? borderRadius,
     Color? textColor,
     Color? borderColor,
-<<<<<<< HEAD
     double? elevation,
   }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius ?? 11),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-        child: ElevatedButton(
+    return ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.light,
@@ -159,32 +134,10 @@ class ButtonsWidget {
             text,
             style: TextStyle(
               fontSize: fontSize ?? 16,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w500,
             ),
           ),
-        ),
-=======
-  }) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.transparent,
-        foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
-        elevation: 0,
-        side: BorderSide(
-          color: borderColor ?? AppColors.buttonWithoutBackGround,
-        ),
-        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius ?? 12),
-        ),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: fontSize ?? 16, fontWeight: FontWeight.w500),
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
-      ),
-    );
+        );
   }
 
   /// Row de boutons avec espacement automatique (pour les boutons côte à côte)
@@ -222,16 +175,14 @@ class ButtonsWidget {
                     onPressed: onPressedList[index],
                     fontSize: fontSize,
                     padding: buttonPadding,
+                    elevation: 6,
                   )
                 : transparentButton(
                     text: buttonTitle,
                     onPressed: onPressedList[index],
                     fontSize: fontSize,
                     padding: buttonPadding,
-<<<<<<< HEAD
-                    elevation: 5,
-=======
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
+                    elevation: 6,
                   ),
           ),
         );
@@ -282,31 +233,32 @@ class ButtonsWidget {
     EdgeInsets? padding,
     double? spacing,
   }) {
-    return Row(
-      mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.spaceEvenly,
+    return Stack(
       children: [
-        Expanded(
-          child: secondaryButton(
-            text: laterText,
-            onPressed: onLaterPressed,
-            borderRadius: 2,
-            fontSize: fontSize ?? 14,
-            padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-<<<<<<< HEAD
-            elevation: 5,
-=======
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
-          ),
-        ),
-        SizedBox(width: spacing ?? 16),
-        Expanded(
-          child: primaryButton(
-            text: actionText,
-            onPressed: onActionPressed,
-            borderRadius: 2,
-            fontSize: fontSize ?? 14,
-            padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-          ),
+        Row(
+          mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: secondaryButton(
+                text: laterText,
+                onPressed: onLaterPressed,
+                borderRadius: 2,
+                fontSize: fontSize ?? 14,
+                padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+                elevation: 5,
+              ),
+            ),
+            SizedBox(width: spacing ?? 16),
+            Expanded(
+              child: primaryButton(
+                text: actionText,
+                onPressed: onActionPressed,
+                borderRadius: 2,
+                fontSize: fontSize ?? 14,
+                padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -382,16 +334,12 @@ class ButtonsWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.fillButtonBackgorund
-<<<<<<< HEAD
+              ? AppColors.fillButtonBackground
               : AppColors.transparent,
-=======
-              : Colors.transparent,
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
             color: isSelected
-                ? AppColors.fillButtonBackgorund
+                ? AppColors.fillButtonBackground
                 : AppColors.buttonWithoutBackGround.withValues(alpha: 0.3),
           ),
         ),
@@ -422,7 +370,7 @@ class ButtonsWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
-          color: AppColors.fillButtonBackgorund.withValues(alpha: 0.3),
+          color: AppColors.fillButtonBackground.withValues(alpha: 0.3),
           width: 1,
         ),
         borderRadius: BorderRadius.circular(8),

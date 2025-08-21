@@ -5,12 +5,9 @@ import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
 import 'package:safe_driving/shared/widgets/pagination/pagination_widget.dart';
 import 'package:safe_driving/models/interactive_menu/interactive_menu_models.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
-<<<<<<< HEAD
-import 'package:safe_driving/shared/widgets/customs/inputs/inputs.dart';
+import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/upload/upload_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
-=======
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
 
 class DriverInteractiveMenuWidget extends StatefulWidget {
   const DriverInteractiveMenuWidget({super.key});
@@ -25,18 +22,13 @@ class DriverInteractiveMenuWidgetState
   static const int _totalSteps = 14;
   final GlobalKey<PaginationWidgetState> _paginationKey =
       GlobalKey<PaginationWidgetState>();
-<<<<<<< HEAD
-  final List<StepDriverContent> stepContents = StepDriverDataText.stepContents;
-=======
   final List<StepDriverContent> stepContents = StepDriverData.stepContents;
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
 
   Widget _buildStepContent(StepDriverContent step, VoidCallback nextStep) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       child: Column(
-<<<<<<< HEAD
         crossAxisAlignment: CrossAxisAlignment.center,
 
         children: [
@@ -49,21 +41,10 @@ class DriverInteractiveMenuWidgetState
               fontWeight: FontWeight.w600,
               color: AppColors.textColor,
               fontFamily: 'Inder',
-=======
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            step.title,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textColor,
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
             ),
           ),
           const SizedBox(height: 16),
           Text(
-<<<<<<< HEAD
             textAlign: TextAlign.center,
             step.subtitle,
             style: TextStyle(
@@ -71,28 +52,17 @@ class DriverInteractiveMenuWidgetState
               color: AppColors.textColor.withAlpha(180),
               height: 1.5,
               fontFamily: 'Inder',
-=======
-            step.subtitle,
-            style: const TextStyle(
-              fontSize: 16,
-              color: AppColors.textColor,
-              height: 1.5,
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
             ),
           ),
           const SizedBox(height: 24),
-          // Contenu additionnel basé sur le type de step
-<<<<<<< HEAD
+    
           if (step.additionalContent != null &&
               step.additionalContent?['form'] != null)
             _buildForm(step.additionalContent!['form'] as Map<String, String>)
           else if (step.additionalContent != null)
-=======
-          if (step.additionalContent != null)
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
             _buildAdditionalContent(step.additionalContent!),
           const SizedBox(height: 32),
-          // Boutons
+     
           if (step.buttonTitles.isNotEmpty)
             ButtonsWidget.buttonRow(
               buttonTitles: step.buttonTitles,
@@ -102,15 +72,10 @@ class DriverInteractiveMenuWidgetState
                     step.buttonTitles.length - 1;
                 return () {
                   if (isMainButton) {
-<<<<<<< HEAD
-                    // Bouton principal (Démarrer, Valider, etc.)
-                    //à implementer la logique (utilisant shared preference après)
+                    //après
                     nextStep();
                   } else {
                     nextStep(); //plus tard
-=======
-                    nextStep();
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
                   }
                 };
               }).toList(),
@@ -126,8 +91,7 @@ class DriverInteractiveMenuWidgetState
   }
 
   Widget _buildAdditionalContent(Map<String, dynamic> content) {
-<<<<<<< HEAD
-    // Gérer le cas spécifique de la vérification d'identité (Step 3)
+
     if (content.containsKey('carteIdentité')) {
       final carteIdentiteData =
           content['carteIdentité'] as Map<String, dynamic>;
@@ -135,7 +99,7 @@ class DriverInteractiveMenuWidgetState
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Recto ID
+        
           if (carteIdentiteData.containsKey('rectoID'))
             _buildUploadSection(
               carteIdentiteData['rectoID'] as Map<String, dynamic>,
@@ -143,7 +107,6 @@ class DriverInteractiveMenuWidgetState
 
           const SizedBox(height: 16),
 
-          // Verso ID
           if (carteIdentiteData.containsKey('versoID'))
             _buildUploadSection(
               carteIdentiteData['versoID'] as Map<String, dynamic>,
@@ -151,7 +114,7 @@ class DriverInteractiveMenuWidgetState
 
           const SizedBox(height: 16),
 
-          // Permis de conduire
+    
           if (carteIdentiteData.containsKey('permisConduire'))
             _buildUploadSection(
               carteIdentiteData['permisConduire'] as Map<String, dynamic>,
@@ -167,7 +130,7 @@ class DriverInteractiveMenuWidgetState
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Certificat d'immatriculation
+         
           if (documentsData.containsKey('certificatImmatriculation'))
             _buildDocumentSection(
               documentsData['certificatImmatriculation']
@@ -177,7 +140,6 @@ class DriverInteractiveMenuWidgetState
 
           const SizedBox(height: 16),
 
-          // Attestation d'assurance
           if (documentsData.containsKey('attestationAssurance'))
             _buildDocumentSection(
               documentsData['attestationAssurance'] as Map<String, dynamic>,
@@ -186,7 +148,7 @@ class DriverInteractiveMenuWidgetState
 
           const SizedBox(height: 16),
 
-          // Photos du véhicule
+
           if (documentsData.containsKey('photosVehicule'))
             _buildDocumentSection(
               documentsData['photosVehicule'] as Map<String, dynamic>,
@@ -197,9 +159,6 @@ class DriverInteractiveMenuWidgetState
     }
 
     // Cas par défaut pour les autres contenus additionnels
-=======
-    // basé sur les clés dans additionalContent (form, documents, etc.)
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -216,21 +175,21 @@ class DriverInteractiveMenuWidgetState
     );
   }
 
-<<<<<<< HEAD
   Widget _buildUploadSection(Map<String, dynamic> sectionData) {
     final title = sectionData['title'] as String? ?? '';
-    final textCenter =
-        sectionData['textCenter'] as String? ??
-        'Glissez un fichier pour le téléverser';
-    final bouton = sectionData['bouton'] as String? ?? 'Choisir un fichier';
+    final textCenter = sectionData['textCenter'] as String?;
+    final bouton = sectionData['bouton'] as String?;
 
     return UploadWidget(
       title: title,
-      description: textCenter,
-      buttonText: bouton,
-      onTap: () {
-        // Afficher snackbar de succès pour le moment
-        SnackbarHelper.showSuccess(context, 'Fichier sélectionné pour $title');
+      description: textCenter!,
+      buttonText: bouton!,
+      onPhotosChanged: (photos) {
+
+        SnackbarHelper.showSuccess(
+          context,
+          '${photos.length} photo${photos.length > 1 ? 's' : ''} sélectionnée${photos.length > 1 ? 's' : ''} pour $title',
+        );
       },
     );
   }
@@ -243,25 +202,22 @@ class DriverInteractiveMenuWidgetState
     final ajoutPhoto = documentData['ajoutPhoto'] as String?;
 
     if (uploadZone != null) {
-      final textCenter =
-          uploadZone['textCenter'] as String? ??
-          'Glissez un fichier pour le téléverser';
-      final bouton = uploadZone['bouton'] as String? ?? 'Choisir un fichier';
+      final textCenter = uploadZone['textCenter'] as String?;
+      final bouton = uploadZone['bouton'] as String?;
 
       // Simuler l'état hasPhotoAdded
-      bool hasPhotoAdded = false; // À remplacer après
+      bool hasPhotoAdded = false; 
 
       return UploadWidget(
         title: defaultTitle,
-        description: textCenter,
-        buttonText: bouton,
+        description: textCenter!,
+        buttonText: bouton!,
         addMorePhotosText: ajoutPhoto,
         hasPhotoAdded: hasPhotoAdded,
-        onTap: () {
-          // Afficher snackbar de succès pour le moment
+        onPhotosChanged: (photos) {
           SnackbarHelper.showSuccess(
             context,
-            'Document sélectionné pour $defaultTitle',
+            '${photos.length} photo${photos.length > 1 ? 's' : ''} sélectionnée${photos.length > 1 ? 's' : ''} pour $defaultTitle',
           );
         },
       );
@@ -277,25 +233,26 @@ class DriverInteractiveMenuWidgetState
         // Formulaire d'informations personnelles (Step 2)
         if (formData.containsKey('labelTextName')) ...[
           CustomInputField(
-            label: formData['labelTextName'] ?? 'Nom complet',
-            hint: formData['placeholderName'] ?? 'John Doe',
+            label: formData['labelTextName'],
+            hint: formData['placeholderName']!,
             icon: Icons.person,
             showLabel: true,
           ),
           const SizedBox(height: 16),
 
           CustomInputField(
-            label: formData['labelTextEmail'] ?? 'E-mail',
-            hint: formData['placeholderEmail'] ?? 'example@email.com',
+            label: formData['labelTextEmail'],
+            hint: formData['placeholderEmail']!,
             icon: Icons.email,
             keyboardType: TextInputType.emailAddress,
             showLabel: true,
+            backgroundColor: Colors.grey[300],
           ),
           const SizedBox(height: 16),
 
           CustomInputField(
-            label: formData['labelTextPhone'] ?? 'Téléphone',
-            hint: formData['placeholderPhone'] ?? '+261...',
+            label: formData['labelTextPhone'],
+            hint: formData['placeholderPhone']!,
             icon: Icons.phone,
             keyboardType: TextInputType.phone,
             showLabel: true,
@@ -305,33 +262,32 @@ class DriverInteractiveMenuWidgetState
         // Formulaire d'informations véhicule (Step 4)
         if (formData.containsKey('labelMarque')) ...[
           CustomInputField(
-            label: formData['labelMarque'] ?? 'Marque',
-            hint: formData['placeholderMarque'] ?? 'ex: Peugeot',
+            label: formData['labelMarque'],
+            hint: formData['placeholderMarque']!,
             icon: Icons.car_rental,
             showLabel: true,
           ),
           const SizedBox(height: 16),
 
           CustomInputField(
-            label: formData['labelModele'] ?? 'Modèle',
-            hint: formData['placeholderModele'] ?? 'ex: 404',
+            label: formData['labelModele'],
+            hint: formData['placeholderModele']!,
             icon: Icons.directions_car,
             showLabel: true,
           ),
           const SizedBox(height: 16),
 
           CustomInputField(
-            label:
-                formData['labelImmatriculation'] ?? 'Numéro d\'immatriculation',
-            hint: formData['placeholderImmatriculation'] ?? 'ex: AB-123-CD',
+            label: formData['labelImmatriculation'],
+            hint: formData['placeholderImmatriculation']!,
             icon: Icons.confirmation_number,
             showLabel: true,
           ),
           const SizedBox(height: 16),
 
           CustomInputField(
-            label: formData['labelPlaces'] ?? 'Nombre de places',
-            hint: formData['placeholderPlaces'] ?? 'ex: 4',
+            label: formData['labelPlaces'],
+            hint: formData['placeholderPlaces']!,
             icon: Icons.airline_seat_recline_normal,
             keyboardType: TextInputType.number,
             showLabel: true,
@@ -339,8 +295,8 @@ class DriverInteractiveMenuWidgetState
           const SizedBox(height: 16),
 
           CustomInputField(
-            label: formData['labelTypeVehicule'] ?? 'Type de véhicule',
-            hint: formData['placeholderTypeVehicule'] ?? 'ex: Voiture',
+            label: formData['labelTypeVehicule'],
+            hint: formData['placeholderTypeVehicule']!,
             icon: Icons.local_taxi,
             showLabel: true,
           ),
@@ -349,8 +305,6 @@ class DriverInteractiveMenuWidgetState
     );
   }
 
-=======
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;

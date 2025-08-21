@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/shared/widgets/auth/auth_widget.dart';
 import 'package:safe_driving/models/auth/auth_model.dart';
 import 'package:safe_driving/shared/state_management/state.dart';
+import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import 'package:safe_driving/shared/widgets/customs/animations/animation_widget.dart';
 
@@ -82,7 +82,7 @@ class _AuthViewState extends State<AuthView> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Mbola tsy vita lol, miandry server'),
-        backgroundColor: AppColors.color2,
+        backgroundColor: Colors.orange,
       ),
     );
   }
@@ -151,33 +151,11 @@ class _AuthViewState extends State<AuthView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
       backgroundColor: AppColors.color1,
-=======
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
         transitionBuilder: (Widget child, Animation<double> animation) {
           return SlideTransition(
-<<<<<<< HEAD
-            position:
-                Tween<Offset>(
-                  begin: const Offset(0.05, 0),
-                  end: Offset.zero,
-                ).animate(
-                  CurvedAnimation(
-                    parent: animation,
-                    curve: Curves.easeInOutCubic,
-                  ),
-                ),
-            child: FadeTransition(
-              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-                CurvedAnimation(
-                  parent: animation,
-                  curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
-                ),
-              ),
-=======
             position: Tween<Offset>(
               begin: const Offset(0.05, 0),
               end: Offset.zero,
@@ -193,7 +171,6 @@ class _AuthViewState extends State<AuthView> {
                 parent: animation,
                 curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
               )),
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
               child: child,
             ),
           );

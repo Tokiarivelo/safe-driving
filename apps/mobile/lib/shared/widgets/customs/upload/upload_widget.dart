@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/shared/widgets/customs/upload/photo_management_modal.dart';
 
 class UploadWidget extends StatefulWidget {
   final String title;
@@ -9,6 +11,7 @@ class UploadWidget extends StatefulWidget {
   final String? addMorePhotosText;
   final bool hasPhotoAdded;
   final VoidCallback? onTap;
+  final Function(List<dynamic>)? onPhotosChanged;
 
   const UploadWidget({
     super.key,
@@ -18,6 +21,7 @@ class UploadWidget extends StatefulWidget {
     this.addMorePhotosText,
     this.hasPhotoAdded = false,
     this.onTap,
+    this.onPhotosChanged,
   });
 
   @override
@@ -25,6 +29,27 @@ class UploadWidget extends StatefulWidget {
 }
 
 class UploadWidgetState extends State<UploadWidget> {
+  List<File> _selectedImages = [];
+
+  void _showPhotoModal() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => PhotoManagementModal(
+        selectedImages: _selectedImages,
+        onImagesChanged: (images) {
+          setState(() {
+            _selectedImages = images;
+          });
+          if (widget.onPhotosChanged != null) {
+            widget.onPhotosChanged!(images);
+          }
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -50,10 +75,10 @@ class UploadWidgetState extends State<UploadWidget> {
           ),
           const SizedBox(height: 8),
         ],
-        // Carré avec bordure pointillée
+
         CustomPaint(
           painter: DashedBorderPainter(
-            color: AppColors.fillButtonBackgorund,
+            color: AppColors.fillButtonBackground,
             strokeWidth: 2,
             dashWidth: 8,
             dashSpace: 4,
@@ -61,8 +86,12 @@ class UploadWidgetState extends State<UploadWidget> {
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.all(32),
-            margin: const EdgeInsets.all(2), // Pour que la bordure soit visible
-            child: widget.hasPhotoAdded
+            margin: const EdgeInsets.all(2), 
+            decoration: BoxDecoration(
+              color: AppColors.softBackgroundColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: _selectedImages.isNotEmpty
                 ? _buildPhotoAddedState()
                 : _buildInitialState(),
           ),
@@ -76,7 +105,7 @@ class UploadWidgetState extends State<UploadWidget> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Icône flèche vers le haut
+
         Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -84,13 +113,12 @@ class UploadWidgetState extends State<UploadWidget> {
           ),
           padding: const EdgeInsets.all(16),
           child: const Icon(
-            Icons.keyboard_arrow_up,
+            Icons.cloud_upload_outlined,
             color: AppColors.light,
             size: 32,
           ),
         ),
         const SizedBox(height: 16),
-        // Description avec même style que titre
         if (widget.description.isNotEmpty) ...[
           Text(
             widget.description,
@@ -104,11 +132,10 @@ class UploadWidgetState extends State<UploadWidget> {
           ),
           const SizedBox(height: 16),
         ],
-        // Bouton avec même style que "Valider"
         if (widget.buttonText.isNotEmpty)
           ButtonsWidget.primaryButton(
             text: widget.buttonText,
-            onPressed: widget.onTap ?? () {},
+            onPressed: _showPhotoModal,
             fontSize: 16,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           ),
@@ -121,7 +148,6 @@ class UploadWidgetState extends State<UploadWidget> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Logo bouton add (icône +)
         Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -131,7 +157,6 @@ class UploadWidgetState extends State<UploadWidget> {
           child: const Icon(Icons.add, color: AppColors.light, size: 32),
         ),
         const SizedBox(height: 16),
-        // "Ajout plus de photos"
         if (widget.addMorePhotosText != null &&
             widget.addMorePhotosText!.isNotEmpty) ...[
           Text(
@@ -142,6 +167,25 @@ class UploadWidgetState extends State<UploadWidget> {
               fontWeight: FontWeight.w600,
               color: AppColors.textColor,
               fontFamily: 'Inder',
+            ),
+          ),
+          const SizedBox(height: 12),
+          GestureDetector(
+            onTap: _showPhotoModal,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.fillButtonBackground,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                "Gérer les photos (${_selectedImages.length})",
+                style: const TextStyle(
+                  color: AppColors.light,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ),
         ],

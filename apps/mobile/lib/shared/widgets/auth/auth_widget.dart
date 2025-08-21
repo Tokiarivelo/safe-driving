@@ -6,11 +6,8 @@ import '../../../core/constants/colors/colors.dart';
 import '../../../core/constants/validations/validator.dart';
 import '../customs/colors/colors_widget.dart';
 import '../customs/snackbar/snackbar_helper.dart';
-<<<<<<< HEAD
-import '../customs/inputs/inputs.dart';
+import '../customs/inputs/inputs_widget.dart';
 import '../../../models/auth/auth_model.dart';
-=======
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
 
 class AuthWidget extends StatefulWidget {
   final bool isLogin;
@@ -92,7 +89,6 @@ class AuthWidgetState extends State<AuthWidget> {
             ? SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Header ajusté selon le type d'écran avec plus d'espace en bas
                     Container(
                       height: isSmallScreen ? 100 : 140,
                       padding: const EdgeInsets.symmetric(
@@ -101,7 +97,6 @@ class AuthWidgetState extends State<AuthWidget> {
                       ),
                       child: Center(child: _buildHeaderText()),
                     ),
-                    // Container auth avec padding pour éviter l'écrasement
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 20.0),
                       child: _buildAuthContainer(),
@@ -120,7 +115,6 @@ class AuthWidgetState extends State<AuthWidget> {
                     ),
                     child: Center(child: _buildHeaderText()),
                   ),
-                  // Container auth avec gestion d'espace flexible
                   Expanded(
                     child: SingleChildScrollView(
                       child: Padding(
@@ -191,8 +185,6 @@ class AuthWidgetState extends State<AuthWidget> {
     final screenHeight = MediaQuery.of(context).size.height;
     final bool isSmallScreen = screenHeight < 700;
     final bool isRegister = !widget.isLogin && !widget.isForgotPassword;
-
-    // Calculer la hauteur disponible pour le container
     final headerHeight = isRegister
         ? (isSmallScreen ? 140 : 200)
         : (isSmallScreen ? 140 : 180);
@@ -204,7 +196,6 @@ class AuthWidgetState extends State<AuthWidget> {
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0),
-      // Pour login et forgot password, prendre toute la hauteur disponible
       constraints: BoxConstraints(
         minHeight: isRegister ? 400 : availableHeight * 0.9,
         maxHeight: isRegister ? double.infinity : availableHeight * 0.95,
@@ -235,7 +226,7 @@ class AuthWidgetState extends State<AuthWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // Logo avec taille adaptée
+             
                   Transform.scale(
                     scale: isSmallScreen ? 0.8 : 1,
                     child: SvgPicture.asset(
@@ -255,13 +246,7 @@ class AuthWidgetState extends State<AuthWidget> {
                   SizedBox(height: isSmallScreen ? 12 : 16),
                   if (!widget.isForgotPassword) ...[
                     Text(
-<<<<<<< HEAD
                       _getCurrentStepData().socialText,
-=======
-                      widget.isLogin
-                          ? "- ou continuer avec -"
-                          : "- ou s'inscrire avec -",
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
                       style: const TextStyle(
                         fontFamily: 'Inder',
                         color: AppColors.textColor,
@@ -377,9 +362,6 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  // champ input (version ancienne, gardée pour compatibilité)
-
-  //les champs input avec validation en temps réel
   Widget _buildInputFields() {
     return Column(
       children: [
@@ -439,7 +421,6 @@ class AuthWidgetState extends State<AuthWidget> {
                 _passwordError = RegexFormatter.getPasswordValidationMessage(
                   value,
                 );
-                // Vérifier aussi la confirmation du mot de passe si elle existe
                 if (!widget.isLogin &&
                     _confirmPasswordController.text.isNotEmpty) {
                   _confirmPasswordError =
@@ -498,11 +479,7 @@ class AuthWidgetState extends State<AuthWidget> {
             ),
           ),
           child: Text(
-<<<<<<< HEAD
             _getCurrentStepData().forgotPasswordText,
-=======
-            "Mot de passe oublié ?",
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
             style: TextStyle(
               fontFamily: 'Inder',
               color: AppColors.buttonWithoutBackGround,
@@ -520,19 +497,11 @@ class AuthWidgetState extends State<AuthWidget> {
     return ElevatedButton(
       onPressed: () => _handleButtonPress(),
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.fillButtonBackgorund,
+        backgroundColor: AppColors.fillButtonBackground,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
       child: Text(
-<<<<<<< HEAD
         _getCurrentStepData().actionButtonText,
-=======
-        widget.isForgotPassword
-            ? "Reset Password"
-            : widget.isLogin
-            ? "Se connecter"
-            : "S'inscrire",
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
         style: const TextStyle(
           fontFamily: 'Inder',
           color: AppColors.titleColor,
@@ -544,7 +513,6 @@ class AuthWidgetState extends State<AuthWidget> {
 
   void _handleButtonPress() {
     if (widget.isForgotPassword) {
-      // Validation pour réinitialisation du mot de passe
       if (_emailController.text.trim().isEmpty) {
         _showErrorSnackBar("Veuillez saisir votre adresse email");
         return;
@@ -555,7 +523,6 @@ class AuthWidgetState extends State<AuthWidget> {
       }
       widget.onResetPassword?.call(_emailController.text.trim());
     } else if (widget.isLogin) {
-      // Validation pour connexion
       if (_emailController.text.trim().isEmpty) {
         _showErrorSnackBar("Veuillez saisir votre email ou nom d'utilisateur");
         return;
@@ -569,7 +536,6 @@ class AuthWidgetState extends State<AuthWidget> {
         _passwordController.text.trim(),
       );
     } else {
-      // Validation pour inscription
       if (_firstNameController.text.trim().isEmpty) {
         _showErrorSnackBar("Veuillez saisir votre prénom");
         return;
@@ -606,7 +572,6 @@ class AuthWidgetState extends State<AuthWidget> {
         return;
       }
 
-      // Appel de la fonction d'inscription avec les données validées
       widget.onSignUp?.call(
         _firstNameController.text.trim(),
         _lastNameController.text.trim(),
@@ -662,7 +627,6 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  // Méthode pour obtenir les données du step actuel
   StepAuthContent _getCurrentStepData() {
     final String stepKey = widget.isForgotPassword
         ? 'forgotPassword'
@@ -673,7 +637,6 @@ class AuthWidgetState extends State<AuthWidget> {
     return StepAuthDataText.stepContents[stepKey]!;
   }
 
-  // Méthode pour afficher les erreurs
   void _showErrorSnackBar(String message) {
     SnackbarHelper.showError(context, message);
   }

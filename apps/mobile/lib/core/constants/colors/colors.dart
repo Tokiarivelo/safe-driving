@@ -5,11 +5,11 @@ class AppColors {
   static const Color color1 = Color(0xFFEA3A7E);
   static const Color color2 = Color(0xFFFF7746);
   //classic background
-  static const Color fillButtonBackgorund = Color(0xFFDC318D);
+  static const Color fillButtonBackground = Color(0xFFDC318D);
   static const Color secondBackgroundColor = Color(0xFFFAF9F6);
   static const Color softBackgroundColor = Color.fromARGB(255, 240, 226, 234);
   static const Color buttonWithoutBackGround = Color(0xFF822072);
-  static const Color inputTextBackground = Color.fromARGB(120, 207, 166, 194);
+  static const Color inputTextBackground = Color.fromARGB(120, 239, 213, 230);
   //classic colors
   static const Color icon = Color(0xFFE33486);
   static const Color titleColor = Color(0xFFFFFFFF);
@@ -26,11 +26,9 @@ class AppColors {
   static Color transparent = Colors.transparent;
   static const Color forSmoothProgression = Color(0xFF822072);
   static const Color dark = Color.fromARGB(255, 0, 0, 0);
-<<<<<<< HEAD
+  static const Color unclickable = Color.fromARGB(255, 88, 85, 85);
   //forsnackbarres
   static const Color snackbarSuccess = Color(0xFF4CAF50);
   static const Color snackbarWarning = Color(0xFFFFC107);
   static const Color snackbarInfo = Color(0xFF2196F3);
-=======
->>>>>>> 569ec74 (feat: creating of interactive menu Driver. Refactorisation. creation of animations for pagenavigation. extraction of all text for model)
 }
