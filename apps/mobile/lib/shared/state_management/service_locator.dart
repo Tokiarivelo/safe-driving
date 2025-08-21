@@ -1,6 +1,6 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:safe_driving/features/authentication/services/session_service.dart';
-import '../services/graphql_client_service.dart';
+import 'package:safe_driving/api/graphql/graphql_client.dart';
 import '../../features/authentication/data/auth_data_source_interface.dart';
 import '../../features/authentication/data/auth_data_source_graphql.dart';
 import '../../features/authentication/services/auth_service.dart';
@@ -39,27 +39,30 @@ class ServiceLocator {
     throw Exception('Service of type $T is not registered');
   }
 
-  void setupDependencies(GraphQLClient graphQLClient) {
-    registerSingleton<GraphQLClient>(graphQLClient);
+  void setupDependencies() {
+    registerSingleton<GraphQLClientWrapper>(GraphQLClientWrapper.instance);
 
-    registerLazySingleton<GraphQLClientService>(
-      () => GraphQLClientService(get<GraphQLClient>()),
+    get<GraphQLClientWrapper>().configure(
+      onTokenRefresh: (newToken) {},
+      onError: (error) {
+        debugPrint('GraphQL Error: $error');
+      },
     );
 
     registerLazySingleton<IAuthDataSource>(
-      () => AuthDataSourceGraphQL(get<GraphQLClientService>()),
+      () => AuthDataSourceGraphQL(get<GraphQLClientWrapper>()),
     );
 
     registerLazySingleton<SessionService>(() => SessionService());
 
     registerLazySingleton<UserRepository>(
-      () => UserRepository(get<GraphQLClientService>()),
+      () => UserRepository(get<GraphQLClientWrapper>()),
     );
 
     registerLazySingleton<AuthService>(
       () => AuthService(
-        get<IAuthDataSource>(), 
-        get<SessionService>(), 
+        get<IAuthDataSource>(),
+        get<SessionService>(),
         get<UserRepository>(),
       ),
     );

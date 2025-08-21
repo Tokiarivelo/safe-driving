@@ -1,6 +1,6 @@
 export 'core/auth_barrel.dart';
 
-// UI components (screens, widgets)
+// UI components
 export 'ui/auth_ui_barrel.dart';
 
 // Data layer

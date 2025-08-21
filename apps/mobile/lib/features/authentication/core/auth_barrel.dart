@@ -9,7 +9,6 @@ export '../services/services.dart';
 
 // Data Sources
 export '../data/auth_data_source_interface.dart';
-export '../data/auth_data_source.dart';
 export '../data/auth_data_source_graphql.dart';
 
 // ViewModels

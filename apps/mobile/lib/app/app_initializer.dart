@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/app/routes.dart';
-import 'package:safe_driving/shared/services/graphql_client.dart';
+import 'package:safe_driving/api/graphql/graphql_client.dart';
 import 'package:safe_driving/shared/state_management/providers.dart';
 
 class SafeDriving extends StatelessWidget {
@@ -13,8 +13,8 @@ class SafeDriving extends StatelessWidget {
   Widget build(BuildContext context) {
     return GraphQLProvider(
       client: client,
-      child: Provider<GraphQLClient>.value(
-        value: client.value,
+      child: Provider<GraphQLClientWrapper>.value(
+        value: GraphQLClientWrapper.instance,
         child: MultiProvider(
           providers: AppProviders.providers,
           child: MaterialApp(

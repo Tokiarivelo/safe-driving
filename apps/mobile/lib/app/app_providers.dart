@@ -2,7 +2,7 @@ import 'package:safe_driving/features/authentication/repositories/user_repositor
 import 'package:safe_driving/features/authentication/viewmodels/auth_view_model.dart';
 import 'package:safe_driving/features/onboarding/driver/repository/driver_repository.dart';
 import 'package:safe_driving/shared/state_management/service_locator.dart';
-import 'package:safe_driving/shared/services/graphql_client_service.dart';
+import 'package:safe_driving/api/graphql/graphql_client.dart';
 
 class AppProviders {
   static AppProviders _instance = AppProviders._internal();
@@ -23,7 +23,9 @@ class AppProviders {
   }
 
   UserRepository get userRepository {
-    _userRepository ??= UserRepository(ServiceLocator.instance.get<GraphQLClientService>());
+    _userRepository ??= UserRepository(
+      ServiceLocator.instance.get<GraphQLClientWrapper>(),
+    );
     return _userRepository!;
   }
 
