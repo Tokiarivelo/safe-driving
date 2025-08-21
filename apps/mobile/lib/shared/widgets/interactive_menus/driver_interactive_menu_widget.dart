@@ -394,7 +394,6 @@ class DriverInteractiveMenuWidgetState
               },
             ),
             const SizedBox(height: 32),
-            // Show Continue button only when both CGU and Policy are accepted
             if (_cguAccepted.every((accepted) => accepted))
               ButtonsWidget.primaryButton(
                 text: "Continuer",
