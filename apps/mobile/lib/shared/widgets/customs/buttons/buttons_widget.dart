@@ -22,7 +22,7 @@ class ButtonsWidget {
         backgroundColor: backgroundColor ?? AppColors.fillButtonBackground,
         foregroundColor: textColor ?? AppColors.light,
         elevation: elevation ?? 6,
-        padding: padding ?? const EdgeInsets.symmetric(vertical: 20),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius ?? 11),
         ),
@@ -114,6 +114,7 @@ class ButtonsWidget {
     Color? textColor,
     Color? borderColor,
     double? elevation,
+    Icon? icon,
   }) {
     return ElevatedButton(
       onPressed: onPressed,
@@ -121,7 +122,7 @@ class ButtonsWidget {
         backgroundColor: AppColors.light,
         foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
         elevation: elevation,
-        // shadowColor: AppColors.dark,
+        shadowColor: AppColors.dark,
         side: BorderSide(
           color: borderColor ?? AppColors.buttonWithoutBackGround,
           width: 0.2,
@@ -131,10 +132,28 @@ class ButtonsWidget {
           borderRadius: BorderRadius.circular(borderRadius ?? 11),
         ),
       ),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: fontSize ?? 16, fontWeight: FontWeight.w500),
-      ),
+      child: icon == null
+          ? Text(
+              text,
+              style: TextStyle(
+                fontSize: fontSize ?? 16,
+                fontWeight: FontWeight.w500,
+              ),
+            )
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                icon,
+                const SizedBox(width: 8),
+                Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: fontSize ?? 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
     );
   }
 
@@ -203,7 +222,7 @@ class ButtonsWidget {
             onPressed: onUserPressed,
             fontSize: 10,
             borderRadius: 2,
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 15),
           ),
         ),
         SizedBox(width: spacing ?? 50),
@@ -213,7 +232,7 @@ class ButtonsWidget {
             onPressed: onDriverPressed,
             fontSize: 10,
             borderRadius: 2,
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 15),
           ),
         ),
       ],

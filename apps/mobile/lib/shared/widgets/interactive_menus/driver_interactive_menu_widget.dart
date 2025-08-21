@@ -9,6 +9,8 @@ import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/upload/upload_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import 'package:safe_driving/shared/widgets/customs/photos_management/camera/camera_management/camera_management.dart';
+import 'package:safe_driving/shared/widgets/customs/photos_management/gallery/captured_photos_modal.dart';
+import 'dart:io';
 
 class DriverInteractiveMenuWidget extends StatefulWidget {
   const DriverInteractiveMenuWidget({super.key});
@@ -31,6 +33,26 @@ class DriverInteractiveMenuWidgetState
   String _selectedTheme = 'clair';
   String _selectedLanguage = 'fr';
   final List<bool> _cguAccepted = [false, false];
+  final List<File> _capturedPhotos = [];
+
+  void _showCapturedPhotosModal() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return CapturedPhotosModal(
+          selectedImages: _capturedPhotos,
+          onImagesChanged: (updatedImages) {
+            setState(() {
+              _capturedPhotos.clear();
+              _capturedPhotos.addAll(updatedImages);
+            });
+          },
+        );
+      },
+    );
+  }
 
   Widget _buildStepContent(StepDriverContent step, VoidCallback nextStep) {
     return Container(
@@ -93,7 +115,7 @@ class DriverInteractiveMenuWidgetState
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               isLastButtonPrimary: true,
               spacing: 8,
-              buttonPadding: const EdgeInsets.symmetric(vertical: 20),
+              buttonPadding: const EdgeInsets.symmetric(vertical: 16),
               fontSize: 16,
             ),
         ],
@@ -234,7 +256,12 @@ class DriverInteractiveMenuWidgetState
         description: description,
         onPictureTaken: (imagePath) {
           if (imagePath != null) {
+            final capturedFile = File(imagePath);
+            setState(() {
+              _capturedPhotos.add(capturedFile);
+            });
             SnackbarHelper.showSuccess(context, 'Selfie pris avec succès !');
+            _showCapturedPhotosModal();
           } else {
             SnackbarHelper.showError(
               context,

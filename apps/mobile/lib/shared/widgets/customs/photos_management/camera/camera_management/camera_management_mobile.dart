@@ -9,12 +9,14 @@ class PlatformCameraManagement extends StatefulWidget {
   final Function(String? imagePath) onPictureTaken;
   final String? title;
   final String? description;
+  final bool showDocumentGuide;
 
   const PlatformCameraManagement({
     super.key,
     required this.onPictureTaken,
     this.title,
     this.description,
+    this.showDocumentGuide = false,
   });
 
   @override
@@ -144,7 +146,7 @@ class CameraManagementMobileState extends State<PlatformCameraManagement> {
                   return Stack(
                     children: [
                       CameraPreview(_mobileController!),
-                      _buildDocumentGuideOverlay(),
+                      if (widget.showDocumentGuide) _buildDocumentGuideOverlay(),
                     ],
                   );
                 }

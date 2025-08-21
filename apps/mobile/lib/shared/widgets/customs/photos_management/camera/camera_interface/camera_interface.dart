@@ -73,6 +73,7 @@ class CameraInterfaceState extends State<CameraInterface> {
                 title: 'Capture de document',
                 description:
                     'Placez le document dans le cadre et appuyez sur le bouton pour capturer',
+                showDocumentGuide: true,
               ),
             ),
           ),

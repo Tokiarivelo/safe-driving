@@ -11,12 +11,14 @@ class PlatformCameraManagement extends StatefulWidget {
   final Function(String? imagePath) onPictureTaken;
   final String? title;
   final String? description;
+  final bool showDocumentGuide;
 
   const PlatformCameraManagement({
     super.key,
     required this.onPictureTaken,
     this.title,
     this.description,
+    this.showDocumentGuide = false,
   });
 
   @override
@@ -87,7 +89,7 @@ class CameraManagementWebState extends State<PlatformCameraManagement> {
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             border: Border.all(
-              color: AppColors.fillButtonBackground.withOpacity(0.5),
+              color: AppColors.fillButtonBackground.withValues(alpha: 0.5),
               width: 0.2,
             ),
             borderRadius: BorderRadius.circular(8),
@@ -119,7 +121,7 @@ class CameraManagementWebState extends State<PlatformCameraManagement> {
             child: Stack(
               children: [
                 HtmlElementView(viewType: _viewType),
-                _buildDocumentGuideOverlay(),
+                if (widget.showDocumentGuide) _buildDocumentGuideOverlay(),
               ],
             ),
           ),
@@ -132,7 +134,7 @@ class CameraManagementWebState extends State<PlatformCameraManagement> {
               borderRadius: BorderRadius.circular(100),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.dark.withOpacity(0.6),
+                  color: AppColors.dark.withValues(alpha: 0.6),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),

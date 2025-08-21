@@ -7,12 +7,14 @@ class CameraManagement extends StatelessWidget {
   final Function(String? imagePath) onPictureTaken;
   final String? title;
   final String? description;
+  final bool showDocumentGuide;
 
   const CameraManagement({
     super.key,
     required this.onPictureTaken,
     this.title,
     this.description,
+    this.showDocumentGuide = false,
   });
 
   @override
@@ -21,6 +23,7 @@ class CameraManagement extends StatelessWidget {
       onPictureTaken: onPictureTaken,
       title: title,
       description: description,
+      showDocumentGuide: showDocumentGuide,
     );
   }
 }
