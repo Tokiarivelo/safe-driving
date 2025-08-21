@@ -56,6 +56,17 @@
 <!-- Autorisation pour le micro -->
 <key>NSMicrophoneUsageDescription</key>
 <string>Cette application a besoin d'accéder au micro pour enregistrer de l'audio.</string>
+<key>UIBackgroundModes</key>
+<array>
+  <string>remote-notification</string>
+</array>
+<key>FirebaseAppDelegateProxyEnabled</key>
+<false/>
+<key>NSAppTransportSecurity</key>
+<dict>
+  <key>NSAllowsArbitraryLoads</key>
+  <true/>
+</dict>
 
 
 </dict>

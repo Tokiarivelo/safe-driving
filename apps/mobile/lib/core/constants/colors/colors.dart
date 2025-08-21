@@ -27,6 +27,7 @@ class AppColors {
   static const Color forSmoothProgression = Color(0xFF822072);
   static const Color dark = Color.fromARGB(255, 0, 0, 0);
   static const Color unclickable = Color.fromARGB(255, 88, 85, 85);
+  static const Color success = Color.fromARGB(255, 76, 175, 80);
   //forsnackbarres
   static const Color snackbarSuccess = Color(0xFF4CAF50);
   static const Color snackbarWarning = Color(0xFFFFC107);

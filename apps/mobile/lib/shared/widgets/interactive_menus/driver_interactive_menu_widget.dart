@@ -10,6 +10,7 @@ import 'package:safe_driving/shared/widgets/customs/upload/upload_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import 'package:safe_driving/shared/widgets/customs/photos_management/camera/camera_management/camera_management.dart';
 import 'package:safe_driving/shared/widgets/customs/photos_management/gallery/captured_photos_modal.dart';
+import 'package:safe_driving/shared/widgets/customs/cgu_politique/cgu_politique.dart';
 import 'dart:io';
 
 class DriverInteractiveMenuWidget extends StatefulWidget {
@@ -96,7 +97,9 @@ class DriverInteractiveMenuWidgetState
           // Cas spécial pour l'étape 7 (GPS) - utiliser des boutons radio
           if (step.title == "Partagez votre position")
             _buildGpsRadioButtons(nextStep)
-          else if (step.buttonTitles.isNotEmpty)
+          // Ne pas afficher les boutons par défaut pour l'étape CGU car elle a ses propres boutons
+          else if (step.buttonTitles.isNotEmpty &&
+              step.title != "Un dernier point avant de démarrer")
             ButtonsWidget.buttonRow(
               buttonTitles: step.buttonTitles,
               onPressedList: step.buttonTitles.map((buttonTitle) {
@@ -337,28 +340,73 @@ class DriverInteractiveMenuWidgetState
         );
       }
 
-      // Handle step 10 (CGU)
+      // Handle step 10 (CGU & politique)
       if (step.title == "Un dernier point avant de démarrer") {
         return Column(
-          children: checkboxOptions.asMap().entries.map((entry) {
-            int idx = entry.key;
-            String option = entry.value;
-            return Padding(
-              padding: EdgeInsets.only(
-                bottom: idx < checkboxOptions.length - 1 ? 8.0 : 0,
-              ),
-              child: ButtonsWidget.customCheckbox(
-                title: option,
-                value: _cguAccepted[idx],
-                onChanged: (value) {
-                  setState(() {
-                    _cguAccepted[idx] = value!;
-                  });
+          children: [
+            ButtonsWidget.elegantAcceptanceButton(
+              text: "Conditions Générales d'Utilisation",
+              subtitle: "Lire et accepter les CGU",
+              isAccepted: _cguAccepted[0],
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return PolicyModal(
+                      content:
+                          StepDriverDataText
+                              .stepContents[10]
+                              .additionalContent?["content"] ??
+                          "",
+                      onAccept: () {
+                        setState(() {
+                          _cguAccepted[0] = true;
+                        });
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            ButtonsWidget.elegantAcceptanceButton(
+              text: "Politique de Confidentialité",
+              subtitle: "Lire et accepter la politique",
+              isAccepted: _cguAccepted[1],
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return PolicyModal(
+                      content:
+                          StepDriverDataText
+                              .stepContents[11]
+                              .additionalContent?["content"] ??
+                          "",
+                      onAccept: () {
+                        setState(() {
+                          _cguAccepted[1] = true;
+                        });
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+            const SizedBox(height: 32),
+            // Show Continue button only when both CGU and Policy are accepted
+            if (_cguAccepted.every((accepted) => accepted))
+              ButtonsWidget.primaryButton(
+                text: "Continuer",
+                onPressed: () {
+                  _paginationKey.currentState?.nextStep();
                 },
-                titleColor: AppColors.fillButtonBackground,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 40,
+                ),
               ),
-            );
-          }).toList(),
+          ],
         );
       }
     }

@@ -394,11 +394,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             const SizedBox(height: 16),
             ButtonsWidget.laterAndActionButtons(
               onLaterPressed: () {
-                // "Plus tard" - passer à l'étape suivante sans configuration
                 _nextStepImmediate();
               },
               onActionPressed: () {
-                // "Démarrer" - commencer la configuration
                 _nextStepImmediate();
               },
               actionText: stepContent.buttonTitles[1],
@@ -450,13 +448,17 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     groupValue: _appState.gpsEnabled,
                     onChanged: (value) async {
                       if (value!) {
-                        final granted = await ButtonsWidget.handleGpsPermission(context);
+                        final granted = await ButtonsWidget.handleGpsPermission(
+                          context,
+                        );
                         if (!mounted) return;
                         _updateGps(granted);
                         if (granted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Géolocalisation activée avec succès !'),
+                              content: Text(
+                                'Géolocalisation activée avec succès !',
+                              ),
                               backgroundColor: AppColors.snackbarSuccess,
                               duration: Duration(seconds: 2),
                             ),
