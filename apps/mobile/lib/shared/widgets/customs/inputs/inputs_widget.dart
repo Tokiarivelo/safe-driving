@@ -16,6 +16,9 @@ class CustomInputField extends StatefulWidget {
   final EdgeInsets? padding;
   final Color? backgroundColor;
 
+  // Ajout de validateurs personnalisés
+  final String? Function(String?)? validator;
+
   const CustomInputField({
     super.key,
     required this.hint,
@@ -31,6 +34,7 @@ class CustomInputField extends StatefulWidget {
     this.showLabel = false,
     this.padding,
     this.backgroundColor,
+    this.validator,
   });
 
   @override
@@ -87,7 +91,7 @@ class CustomInputFieldState extends State<CustomInputField> {
                     ),
                   )
                 : null,
-            child: TextField(
+            child: TextFormField(
               style: TextStyle(
                 fontSize: widget.showLabel ? 16 : 10,
                 color: AppColors.textColor,
@@ -171,6 +175,8 @@ class CustomInputFieldState extends State<CustomInputField> {
               obscureText: widget.obscureText && !isVisible,
               controller: widget.controller,
               onChanged: widget.onChanged,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: widget.validator,
             ),
           ),
 

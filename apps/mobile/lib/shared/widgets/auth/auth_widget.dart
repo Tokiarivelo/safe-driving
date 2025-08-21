@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../core/constants/colors/colors.dart';
-import '../../../core/constants/validations/validator.dart';
+import '../../../core/constants/utils/form/form_utils.dart';
 import '../customs/colors/colors_widget.dart';
 import '../customs/snackbar/snackbar_helper.dart';
 import '../customs/inputs/inputs_widget.dart';
@@ -226,7 +226,6 @@ class AuthWidgetState extends State<AuthWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-             
                   Transform.scale(
                     scale: isSmallScreen ? 0.8 : 1,
                     child: SvgPicture.asset(
@@ -450,42 +449,44 @@ class AuthWidgetState extends State<AuthWidget> {
           SizedBox(height: MediaQuery.of(context).size.height < 700 ? 2 : 5),
           if (widget.isLogin) _buildForgotPasswordLink(),
         ],
-            if (widget.isForgotPassword)
-              ...[
-                _buildInputFieldWithValidation(
-                  hint: "Nouveau mot de passe",
-                  icon: Icons.lock_outlined,
-                  obscureText: true,
-                  isPassword: true,
-                  controller: _passwordController,
-                  errorMessage: _passwordError,
-                  onChanged: (value) {
-                    setState(() {
-                      _passwordError = RegexFormatter.getPasswordValidationMessage(value);
-                      if (_confirmPasswordController.text.isNotEmpty) {
-                        _confirmPasswordError = value != _confirmPasswordController.text
-                            ? "Les mots de passe ne correspondent pas"
-                            : "";
-                      }
-                    });
-                  },
-                ),
-                _buildInputFieldWithValidation(
-                  hint: "Confirmer le mot de passe",
-                  icon: Icons.lock_outlined,
-                  obscureText: true,
-                  isConfirmPassword: true,
-                  controller: _confirmPasswordController,
-                  errorMessage: _confirmPasswordError,
-                  onChanged: (value) {
-                    setState(() {
-                      _confirmPasswordError = value != _passwordController.text
-                          ? "Les mots de passe ne correspondent pas"
-                          : "";
-                    });
-                  },
-                ),
-              ],
+        if (widget.isForgotPassword) ...[
+          _buildInputFieldWithValidation(
+            hint: "Nouveau mot de passe",
+            icon: Icons.lock_outlined,
+            obscureText: true,
+            isPassword: true,
+            controller: _passwordController,
+            errorMessage: _passwordError,
+            onChanged: (value) {
+              setState(() {
+                _passwordError = RegexFormatter.getPasswordValidationMessage(
+                  value,
+                );
+                if (_confirmPasswordController.text.isNotEmpty) {
+                  _confirmPasswordError =
+                      value != _confirmPasswordController.text
+                      ? "Les mots de passe ne correspondent pas"
+                      : "";
+                }
+              });
+            },
+          ),
+          _buildInputFieldWithValidation(
+            hint: "Confirmer le mot de passe",
+            icon: Icons.lock_outlined,
+            obscureText: true,
+            isConfirmPassword: true,
+            controller: _confirmPasswordController,
+            errorMessage: _confirmPasswordError,
+            onChanged: (value) {
+              setState(() {
+                _confirmPasswordError = value != _passwordController.text
+                    ? "Les mots de passe ne correspondent pas"
+                    : "";
+              });
+            },
+          ),
+        ],
       ],
     );
   }
@@ -545,15 +546,21 @@ class AuthWidgetState extends State<AuthWidget> {
         _showErrorSnackBar("Veuillez confirmer votre nouveau mot de passe");
         return;
       }
-      if (_passwordController.text.trim() != _confirmPasswordController.text.trim()) {
+      if (_passwordController.text.trim() !=
+          _confirmPasswordController.text.trim()) {
         _showErrorSnackBar("Les mots de passe ne correspondent pas");
         return;
       }
       if (_passwordController.text.trim().length < 8) {
-        _showErrorSnackBar("Le mot de passe doit contenir au moins 8 caractères");
+        _showErrorSnackBar(
+          "Le mot de passe doit contenir au moins 8 caractères",
+        );
         return;
       }
-      widget.onResetPassword?.call(_passwordController.text.trim(), _confirmPasswordController.text.trim());
+      widget.onResetPassword?.call(
+        _passwordController.text.trim(),
+        _confirmPasswordController.text.trim(),
+      );
     } else if (widget.isLogin) {
       if (_emailController.text.trim().isEmpty) {
         _showErrorSnackBar("Veuillez saisir votre email ou nom d'utilisateur");

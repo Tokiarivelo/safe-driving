@@ -11,6 +11,7 @@ import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dar
 import 'package:safe_driving/shared/widgets/customs/photos_management/camera/camera_management/camera_management.dart';
 import 'package:safe_driving/shared/widgets/customs/photos_management/gallery/captured_photos_modal.dart';
 import 'package:safe_driving/shared/widgets/customs/cgu_politique/cgu_politique.dart';
+import 'package:safe_driving/core/constants/utils/form/form_utils.dart';
 import 'dart:io';
 
 class DriverInteractiveMenuWidget extends StatefulWidget {
@@ -23,10 +24,12 @@ class DriverInteractiveMenuWidget extends StatefulWidget {
 
 class DriverInteractiveMenuWidgetState
     extends State<DriverInteractiveMenuWidget> {
-  static const int _totalSteps = 14;
+  static const int _totalSteps = 12;
   final GlobalKey<PaginationWidgetState> _paginationKey =
       GlobalKey<PaginationWidgetState>();
-  final List<StepDriverContent> stepContents = StepDriverDataText.stepContents;
+  final List<StepDriverContent> stepContents = StepDriverDataText.stepContents
+      .take(12)
+      .toList();
 
   // State management for driver steps
   bool _gpsEnabled = false;
@@ -480,6 +483,151 @@ class DriverInteractiveMenuWidgetState
       );
     }
 
+    // Gérer le cas spécifique de l'étape "Tout est prêt !" (résumé)
+    if (content.containsKey('resume')) {
+      final resumeData = content['resume'] as List;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: resumeData.map<Widget>((section) {
+          final titre = section['titre'] as String;
+          final elements = section['elements'] as List<String>;
+
+          return Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.inputTextBackground.withAlpha(50),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: AppColors.fillButtonBackground.withAlpha(100),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  titre,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textColor,
+                    fontFamily: 'Inder',
+                  ),
+                ),
+                const SizedBox(height: 8),
+                ...elements.map<Widget>((element) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.check_circle,
+                          size: 16,
+                          color: AppColors.fillButtonBackground,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          element,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppColors.textColor.withAlpha(200),
+                            fontFamily: 'Inder',
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+              ],
+            ),
+          );
+        }).toList(),
+      );
+    }
+
+    // Gérer le cas spécifique de l'étape "Bienvenue à bord" (QR code et message)
+    if (content.containsKey('subsubtitle') ||
+        content.containsKey('instructions') ||
+        content.containsKey('messageConfiance')) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (content.containsKey('subsubtitle'))
+            Text(
+              content['subsubtitle'] as String,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textColor,
+                fontFamily: 'Inder',
+              ),
+            ),
+          const SizedBox(height: 16),
+
+          // le QR code
+          Container(
+            width: 150,
+            height: 150,
+            decoration: BoxDecoration(
+              color: AppColors.inputTextBackground.withAlpha(100),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: AppColors.fillButtonBackground.withAlpha(100),
+                width: 2,
+              ),
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.qr_code,
+                size: 80,
+                color: AppColors.fillButtonBackground,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 16),
+          if (content.containsKey('instructions'))
+            Text(
+              content['instructions'] as String,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColors.textColor.withAlpha(180),
+                height: 1.4,
+                fontFamily: 'Inder',
+              ),
+            ),
+
+          const SizedBox(height: 20),
+          if (content.containsKey('messageConfiance'))
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.fillButtonBackground.withAlpha(20),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppColors.fillButtonBackground.withAlpha(100),
+                  width: 1,
+                ),
+              ),
+              child: Text(
+                content['messageConfiance'] as String,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textColor,
+                  height: 1.4,
+                  fontFamily: 'Inder',
+                ),
+              ),
+            ),
+        ],
+      );
+    }
+
     // Cas par défaut pour les autres contenus additionnels
     return Container(
       padding: const EdgeInsets.all(16),
@@ -558,6 +706,8 @@ class DriverInteractiveMenuWidgetState
             hint: formData['placeholderName']!,
             icon: Icons.person,
             showLabel: true,
+            validator: (value) =>
+                RegexFormatter.getNameValidationMessage(value!),
           ),
           const SizedBox(height: 16),
 
@@ -567,6 +717,8 @@ class DriverInteractiveMenuWidgetState
             icon: Icons.email,
             keyboardType: TextInputType.emailAddress,
             showLabel: true,
+            validator: (value) =>
+                RegexFormatter.getEmailValidationMessage(value!),
             backgroundColor: Colors.grey[300],
           ),
           const SizedBox(height: 16),
@@ -577,6 +729,13 @@ class DriverInteractiveMenuWidgetState
             icon: Icons.phone,
             keyboardType: TextInputType.phone,
             showLabel: true,
+            validator: (value) => value?.isEmpty == true
+                ? null
+                : (RegexFormatter.isValidMalagasyPhone(value!)
+                      ? null
+                      : RegexFormatter.getMalagasyPhoneValidationMessage(
+                          value,
+                        )),
           ),
         ],
 
@@ -587,6 +746,8 @@ class DriverInteractiveMenuWidgetState
             hint: formData['placeholderMarque']!,
             icon: Icons.car_rental,
             showLabel: true,
+            validator: (value) =>
+                RegexFormatter.getVehicleNameValidationMessage(value!),
           ),
           const SizedBox(height: 16),
 
@@ -595,6 +756,8 @@ class DriverInteractiveMenuWidgetState
             hint: formData['placeholderModele']!,
             icon: Icons.directions_car,
             showLabel: true,
+            validator: (value) =>
+                RegexFormatter.getVehicleNameValidationMessage(value!),
           ),
           const SizedBox(height: 16),
 
@@ -603,6 +766,8 @@ class DriverInteractiveMenuWidgetState
             hint: formData['placeholderImmatriculation']!,
             icon: Icons.confirmation_number,
             showLabel: true,
+            validator: (value) =>
+                RegexFormatter.getLicensePlateValidationMessage(value!),
           ),
           const SizedBox(height: 16),
 
@@ -612,6 +777,8 @@ class DriverInteractiveMenuWidgetState
             icon: Icons.airline_seat_recline_normal,
             keyboardType: TextInputType.number,
             showLabel: true,
+            validator: (value) =>
+                RegexFormatter.getSeatCountValidationMessage(value!),
           ),
           const SizedBox(height: 16),
 
