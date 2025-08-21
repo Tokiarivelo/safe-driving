@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../core/constants/colors/colors.dart';
 import '../../../core/constants/validations/validator.dart';
-import '../../../shared/widgets/colors/colors_widget.dart';
-import '../snackbar/snackbar_helper.dart';
+import '../customs/colors/colors_widget.dart';
+import '../customs/snackbar/snackbar_helper.dart';
 
 class AuthWidget extends StatefulWidget {
   final bool isLogin;
@@ -80,6 +80,7 @@ class AuthWidgetState extends State<AuthWidget> {
     final bool isSmallScreen = screenHeight < 700;
 
     return Container(
+      height: double.infinity,
       decoration: ColorsWidget.background,
       child: SafeArea(
         child: isRegister
@@ -268,8 +269,8 @@ class AuthWidgetState extends State<AuthWidget> {
                   if (!widget.isForgotPassword) ...[
                     Text(
                       widget.isLogin
-                          ? "- or continue with -"
-                          : "- or sign up with -",
+                          ? "- ou continuer avec -"
+                          : "- ou s'inscrire avec -",
                       style: const TextStyle(
                         fontFamily: 'Inder',
                         color: AppColors.textColor,
@@ -464,7 +465,7 @@ class AuthWidgetState extends State<AuthWidget> {
       children: [
         if (!widget.isForgotPassword) ...[
           _buildInputFieldWithValidation(
-            hint: widget.isLogin ? "Email or Username" : "First Name",
+            hint: widget.isLogin ? "Email ou Nom d'utilisateur" : "Nom",
             icon: widget.isLogin ? Icons.person_outline : Icons.badge_outlined,
             controller: widget.isLogin
                 ? _emailController
@@ -482,7 +483,7 @@ class AuthWidgetState extends State<AuthWidget> {
           ),
           if (!widget.isLogin)
             _buildInputFieldWithValidation(
-              hint: "Last Name",
+              hint: "Prénom",
               icon: Icons.badge_outlined,
               controller: _lastNameController,
               errorMessage: _lastNameError,
@@ -507,7 +508,7 @@ class AuthWidgetState extends State<AuthWidget> {
               },
             ),
           _buildInputFieldWithValidation(
-            hint: "Password",
+            hint: "Mot de passe",
             icon: Icons.lock_outlined,
             obscureText: true,
             isPassword: true,
@@ -531,7 +532,7 @@ class AuthWidgetState extends State<AuthWidget> {
           ),
           if (!widget.isLogin)
             _buildInputFieldWithValidation(
-              hint: "Confirm Password",
+              hint: "Comfirmer le mot de passe",
               icon: Icons.lock_outlined,
               obscureText: true,
               isConfirmPassword: true,
@@ -577,7 +578,7 @@ class AuthWidgetState extends State<AuthWidget> {
             ),
           ),
           child: Text(
-            "Forgot Password?",
+            "Mot de passe oublié ?",
             style: TextStyle(
               fontFamily: 'Inder',
               color: AppColors.buttonWithoutBackGround,
@@ -602,8 +603,8 @@ class AuthWidgetState extends State<AuthWidget> {
         widget.isForgotPassword
             ? "Reset Password"
             : widget.isLogin
-            ? "Sign In"
-            : "Sign Up",
+            ? "Se connecter"
+            : "S'inscrire",
         style: const TextStyle(
           fontFamily: 'Inder',
           color: AppColors.titleColor,

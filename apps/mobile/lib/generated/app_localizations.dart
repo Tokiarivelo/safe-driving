@@ -710,11 +710,533 @@ abstract class AppLocalizations {
   /// **'Validate'**
   String get stepSummaryValidate;
 
+  /// Bouton commencer récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Begin'**
+  String get stepSummaryBegin;
+
   /// Bouton suivant
   ///
   /// In en, this message translates to:
   /// **'Next'**
   String get next;
+
+  /// Titre de bienvenue chauffeur onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Safe Driving!'**
+  String get driverOnboardingWelcomeTitle;
+
+  /// Sous-titre de bienvenue chauffeur onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for choosing Safe Driving. Let\'s start by setting up your profile so you can hit the road with peace of mind.'**
+  String get driverOnboardingWelcomeSubtitle;
+
+  /// Bouton plus tard chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get driverOnboardingLater;
+
+  /// Bouton démarrer chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get driverOnboardingStart;
+
+  /// Titre détails chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us more about you'**
+  String get driverDetailsTitle;
+
+  /// Sous-titre détails chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'Provide your contact information so we can reach you and verify your identity'**
+  String get driverDetailsSubtitle;
+
+  /// Bouton valider détails
+  ///
+  /// In en, this message translates to:
+  /// **'Validate'**
+  String get driverDetailsValidate;
+
+  /// Label nom complet
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get driverDetailsFullName;
+
+  /// Placeholder nom complet
+  ///
+  /// In en, this message translates to:
+  /// **'John Doe'**
+  String get driverDetailsFullNamePlaceholder;
+
+  /// Label email chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get driverDetailsEmail;
+
+  /// Placeholder email chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'example@email.com'**
+  String get driverDetailsEmailPlaceholder;
+
+  /// Label téléphone chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get driverDetailsPhone;
+
+  /// Placeholder téléphone chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'+261...'**
+  String get driverDetailsPhonePlaceholder;
+
+  /// Titre vérification identité
+  ///
+  /// In en, this message translates to:
+  /// **'Identity Verification'**
+  String get driverIdentityVerificationTitle;
+
+  /// Sous-titre vérification identité
+  ///
+  /// In en, this message translates to:
+  /// **'Upload your driver\'s license and ID card to ensure a fast and reliable registration.'**
+  String get driverIdentityVerificationSubtitle;
+
+  /// Recto document
+  ///
+  /// In en, this message translates to:
+  /// **'Front'**
+  String get driverIdentityRecto;
+
+  /// Verso document
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get driverIdentityVerso;
+
+  /// Permis de conduire
+  ///
+  /// In en, this message translates to:
+  /// **'Driver\'s License'**
+  String get driverIdentityLicense;
+
+  /// Texte zone upload
+  ///
+  /// In en, this message translates to:
+  /// **'Drag a file to upload'**
+  String get driverIdentityUploadText;
+
+  /// Bouton choisir fichier
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a file'**
+  String get driverIdentityChooseFile;
+
+  /// Titre infos véhicule
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your vehicle'**
+  String get driverVehicleInfoTitle;
+
+  /// Sous-titre infos véhicule
+  ///
+  /// In en, this message translates to:
+  /// **'To better identify you and ensure passenger safety, provide your car\'s characteristics.'**
+  String get driverVehicleInfoSubtitle;
+
+  /// Label marque véhicule
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get driverVehicleBrand;
+
+  /// Placeholder marque véhicule
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Peugeot'**
+  String get driverVehicleBrandPlaceholder;
+
+  /// Label modèle véhicule
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get driverVehicleModel;
+
+  /// Placeholder modèle véhicule
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 404'**
+  String get driverVehicleModelPlaceholder;
+
+  /// Label immatriculation
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Number'**
+  String get driverVehicleRegistration;
+
+  /// Placeholder immatriculation
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. AB-123-CD'**
+  String get driverVehicleRegistrationPlaceholder;
+
+  /// Label nombre places
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Seats'**
+  String get driverVehicleSeats;
+
+  /// Placeholder nombre places
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 4'**
+  String get driverVehicleSeatsPlaceholder;
+
+  /// Label type véhicule
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Type'**
+  String get driverVehicleType;
+
+  /// Placeholder type véhicule
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Car'**
+  String get driverVehicleTypePlaceholder;
+
+  /// Titre documents véhicule
+  ///
+  /// In en, this message translates to:
+  /// **'About your vehicle'**
+  String get driverVehicleDocumentsTitle;
+
+  /// Sous-titre documents véhicule
+  ///
+  /// In en, this message translates to:
+  /// **'Add your registration certificate, insurance certificate and some photos of the vehicle.'**
+  String get driverVehicleDocumentsSubtitle;
+
+  /// Bouton ajouter photos
+  ///
+  /// In en, this message translates to:
+  /// **'Add more photos'**
+  String get driverVehicleAddPhotos;
+
+  /// Titre photo identité
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your identity with a photo'**
+  String get driverIdentityPhotoTitle;
+
+  /// Sous-titre photo identité
+  ///
+  /// In en, this message translates to:
+  /// **'Take a real-time selfie to finalize verification and strengthen community security.'**
+  String get driverIdentityPhotoSubtitle;
+
+  /// Titre localisation
+  ///
+  /// In en, this message translates to:
+  /// **'Share your location'**
+  String get driverLocationTitle;
+
+  /// Sous-titre localisation
+  ///
+  /// In en, this message translates to:
+  /// **'Allow geolocation to receive nearby ride requests.'**
+  String get driverLocationSubtitle;
+
+  /// Bouton activer localisation
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get driverLocationEnable;
+
+  /// Titre notifications chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'Stay informed'**
+  String get driverNotificationTitle;
+
+  /// Sous-titre notifications chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how you want to be alerted about new missions: push, SMS or email.'**
+  String get driverNotificationSubtitle;
+
+  /// Option SMS
+  ///
+  /// In en, this message translates to:
+  /// **'SMS'**
+  String get driverNotificationSms;
+
+  /// Option push notification
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile push notification'**
+  String get driverNotificationPush;
+
+  /// Option email
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get driverNotificationEmail;
+
+  /// Titre personnalisation
+  ///
+  /// In en, this message translates to:
+  /// **'Customize your experience'**
+  String get driverCustomizeTitle;
+
+  /// Sous-titre personnalisation
+  ///
+  /// In en, this message translates to:
+  /// **'Set your theme (light/dark), adjust alert volume and choose the app language.'**
+  String get driverCustomizeSubtitle;
+
+  /// Thème clair
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get driverCustomizeThemeLight;
+
+  /// Thème sombre
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get driverCustomizeThemeDark;
+
+  /// Langue française
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get driverCustomizeLanguageFr;
+
+  /// Langue anglaise
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get driverCustomizeLanguageEn;
+
+  /// Titre conditions d'utilisation
+  ///
+  /// In en, this message translates to:
+  /// **'One last point before getting started'**
+  String get driverTermsTitle;
+
+  /// Sous-titre conditions d'utilisation
+  ///
+  /// In en, this message translates to:
+  /// **'Please read and accept our Terms of Service and Privacy Policy.'**
+  String get driverTermsSubtitle;
+
+  /// Accepter CGU
+  ///
+  /// In en, this message translates to:
+  /// **'I accept the Terms of Service'**
+  String get driverAcceptTerms;
+
+  /// Accepter politique confidentialité
+  ///
+  /// In en, this message translates to:
+  /// **'I accept the Privacy Policy'**
+  String get driverAcceptPrivacy;
+
+  /// Titre CGU
+  ///
+  /// In en, this message translates to:
+  /// **'Safe Driving Terms of Service (ToS)'**
+  String get driverCguTitle;
+
+  /// Bouton accepter CGU
+  ///
+  /// In en, this message translates to:
+  /// **'I accept'**
+  String get driverCguAccept;
+
+  /// Titre politique confidentialité
+  ///
+  /// In en, this message translates to:
+  /// **'🛡️ Privacy Policy – Safe Driving'**
+  String get driverPrivacyTitle;
+
+  /// Bouton accepter politique confidentialité
+  ///
+  /// In en, this message translates to:
+  /// **'I accept'**
+  String get driverPrivacyAccept;
+
+  /// Titre récapitulatif chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'All set!'**
+  String get driverSummaryTitle;
+
+  /// Sous-titre récapitulatif chauffeur
+  ///
+  /// In en, this message translates to:
+  /// **'Check your information and choices before validating. You can always come back to modify your preferences later.'**
+  String get driverSummarySubtitle;
+
+  /// Bouton valider récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Validate'**
+  String get driverSummaryValidate;
+
+  /// Section infos personnelles
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get driverSummaryPersonalInfo;
+
+  /// Nom récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get driverSummaryPersonalInfoName;
+
+  /// Email récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get driverSummaryPersonalInfoEmail;
+
+  /// Téléphone récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get driverSummaryPersonalInfoPhone;
+
+  /// Photos uploadées récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Uploaded photos'**
+  String get driverSummaryPersonalInfoPhotos;
+
+  /// Section véhicule récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle'**
+  String get driverSummaryVehicle;
+
+  /// Type véhicule récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get driverSummaryVehicleType;
+
+  /// Marque véhicule récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get driverSummaryVehicleBrand;
+
+  /// Modèle véhicule récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get driverSummaryVehicleModel;
+
+  /// Immatriculation récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Registration'**
+  String get driverSummaryVehicleRegistration;
+
+  /// Nombre places récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Number of seats'**
+  String get driverSummaryVehicleSeats;
+
+  /// Photos véhicule récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Uploaded photos'**
+  String get driverSummaryVehiclePhotos;
+
+  /// Section GPS et notifications
+  ///
+  /// In en, this message translates to:
+  /// **'GPS & Notifications'**
+  String get driverSummaryGpsNotifications;
+
+  /// GPS récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'GPS'**
+  String get driverSummaryGps;
+
+  /// Notifications récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get driverSummaryNotifications;
+
+  /// Section préférences récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get driverSummaryPreferences;
+
+  /// Thème récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get driverSummaryTheme;
+
+  /// Langue récapitulatif
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get driverSummaryLanguage;
+
+  /// Titre bienvenue final
+  ///
+  /// In en, this message translates to:
+  /// **'🎉 Welcome aboard, '**
+  String get driverCompleteTitle;
+
+  /// Sous-titre bienvenue final
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile has been completed and validated. You are now ready to use Safe Driving as a driver.'**
+  String get driverCompleteSubtitle;
+
+  /// Bouton c'est parti
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s go!'**
+  String get driverCompleteStart;
+
+  /// Sous-titre QR code
+  ///
+  /// In en, this message translates to:
+  /// **'Your personal QR code has been generated:'**
+  String get driverCompleteQrCodeSubtitle;
+
+  /// Instructions QR code
+  ///
+  /// In en, this message translates to:
+  /// **'It will allow your passengers to identify you quickly and securely. You can view or download this QR code at any time in the My Account > My QR code menu.'**
+  String get driverCompleteQrCodeInstructions;
+
+  /// Message de remerciement final
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for being part of the Safe Driving community. We wish you safe travels!'**
+  String get driverCompleteThankYou;
 }
 
 class _AppLocalizationsDelegate

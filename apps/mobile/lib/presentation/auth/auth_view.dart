@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:safe_driving/shared/widgets/auth/auth_widget.dart';
 import 'package:safe_driving/models/auth/auth_model.dart';
 import 'package:safe_driving/shared/state_management/state.dart';
-import 'package:safe_driving/shared/widgets/snackbar/snackbar_helper.dart';
+import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
+import 'package:safe_driving/shared/widgets/customs/animations/animation_widget.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({super.key});
@@ -92,39 +93,54 @@ class _AuthViewState extends State<AuthView> {
 
   void _handleFacebookSignIn() {
     if (!mounted) return;
-    SnackbarHelper.showInfo(context, 'Connexion Facebook non encore implémentée');
+    SnackbarHelper.showInfo(
+      context,
+      'Connexion Facebook non encore implémentée',
+    );
   }
 
   Widget _buildAuthWidget() {
     switch (_currentIndex) {
-      case 0:
-        return AuthWidget(
-          isLogin: true,
-          isForgotPassword: false,
-          onForgotPassword: _navigateToForgotPassword,
-          onSignIn: _handleSignIn,
-          onGoogleSignIn: _handleGoogleSignIn,
-          onFacebookSignIn: _handleFacebookSignIn,
-          onNavigateToRegister: _navigateToRegister,
+      case 0: // Login
+        return SmoothSlideTransition(
+          key: const ValueKey('login'),
+          direction: SlideDirection.fromLeft,
+          child: AuthWidget(
+            isLogin: true,
+            isForgotPassword: false,
+            onForgotPassword: _navigateToForgotPassword,
+            onSignIn: _handleSignIn,
+            onGoogleSignIn: _handleGoogleSignIn,
+            onFacebookSignIn: _handleFacebookSignIn,
+            onNavigateToRegister: _navigateToRegister,
+          ),
         );
-      case 1:
-        return AuthWidget(
-          isLogin: false,
-          isForgotPassword: false,
-          onForgotPassword: _navigateToForgotPassword,
-          onSignUp: _handleSignUp,
-          onGoogleSignIn: _handleGoogleSignIn,
-          onFacebookSignIn: _handleFacebookSignIn,
-          onNavigateToLogin: _navigateToLogin,
+      case 1: // Register
+        return SmoothSlideTransition(
+          key: const ValueKey('register'),
+          direction: SlideDirection.fromRight,
+          child: AuthWidget(
+            isLogin: false,
+            isForgotPassword: false,
+            onForgotPassword: _navigateToForgotPassword,
+            onSignUp: _handleSignUp,
+            onGoogleSignIn: _handleGoogleSignIn,
+            onFacebookSignIn: _handleFacebookSignIn,
+            onNavigateToLogin: _navigateToLogin,
+          ),
         );
-      case 2:
-        return AuthWidget(
-          isLogin: false,
-          isForgotPassword: true,
-          onResetPassword: _handleResetPassword,
-          onNavigateToLogin: _navigateToLogin,
-          onSignIn: (_, __) => _navigateToLogin(),
-          onSignUp: (_, __, ___, ____) => _navigateToRegister(),
+      case 2: // Forgot Password
+        return SmoothSlideTransition(
+          key: const ValueKey('forgot'),
+          direction: SlideDirection.fromTop,
+          child: AuthWidget(
+            isLogin: false,
+            isForgotPassword: true,
+            onResetPassword: _handleResetPassword,
+            onNavigateToLogin: _navigateToLogin,
+            onSignIn: (_, _) => _navigateToLogin(),
+            onSignUp: (_, _, _, _) => _navigateToRegister(),
+          ),
         );
       default:
         return const SizedBox.shrink();
@@ -134,7 +150,31 @@ class _AuthViewState extends State<AuthView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildAuthWidget(),
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0.05, 0),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOutCubic,
+            )),
+            child: FadeTransition(
+              opacity: Tween<double>(
+                begin: 0.0,
+                end: 1.0,
+              ).animate(CurvedAnimation(
+                parent: animation,
+                curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
+              )),
+              child: child,
+            ),
+          );
+        },
+        child: _buildAuthWidget(),
+      ),
     );
   }
 }

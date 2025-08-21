@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:safe_driving/core/constants/colors/colors.dart';
 
-/// Fonction pour le slide smooth
+/// Fonction pour le slide smooth améliorée
 Widget slideSmoothAnimation({required Widget child}) {
   return TweenAnimationBuilder<double>(
-    duration: const Duration(milliseconds: 400),
-    curve: Curves.easeInOut,
+    duration: const Duration(milliseconds: 250),
+    curve: Curves.easeOutCubic,
     tween: Tween<double>(begin: 0.0, end: 1.0),
     builder: (context, value, child) {
+      final clampedOpacity = value.clamp(0.05, 1.0);
       return Transform.translate(
-        offset: Offset(0.0, (1 - value) * 20),
-        child: Opacity(opacity: value, child: child),
+        offset: Offset(0.0, (1 - value) * 15),
+        child: Opacity(opacity: clampedOpacity, child: child),
       );
     },
     child: child,
@@ -228,6 +230,141 @@ class SlideInTransition extends StatelessWidget {
         );
       },
       child: child,
+    );
+  }
+}
+
+class SmoothSlideTransition extends StatelessWidget {
+  final Widget child;
+  final Duration duration;
+  final Curve curve;
+  final SlideDirection direction;
+  final double distance;
+  final bool animate;
+
+  const SmoothSlideTransition({
+    super.key,
+    required this.child,
+    this.duration = const Duration(milliseconds: 250),
+    this.curve = Curves.easeOutCubic,
+    this.direction = SlideDirection.fromRight,
+    this.distance = 15.0,
+    this.animate = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (!animate) return child;
+
+    Offset beginOffset;
+    switch (direction) {
+      case SlideDirection.fromLeft:
+        beginOffset = Offset(-distance, 0);
+        break;
+      case SlideDirection.fromRight:
+        beginOffset = Offset(distance, 0);
+        break;
+      case SlideDirection.fromTop:
+        beginOffset = Offset(0, -distance);
+        break;
+      case SlideDirection.fromBottom:
+        beginOffset = Offset(0, distance);
+        break;
+    }
+
+    return TweenAnimationBuilder<double>(
+      duration: duration,
+      curve: curve,
+      tween: Tween<double>(begin: 0.0, end: 1.0),
+      builder: (context, value, child) {
+        // Éviter les valeurs extrêmes qui créent des flashs blancs
+        final clampedOpacity = value.clamp(0.1, 1.0);
+        final smoothValue = Curves.easeOutCubic.transform(value);
+
+        return Transform.translate(
+          offset: Offset(
+            beginOffset.dx * (1 - smoothValue),
+            beginOffset.dy * (1 - smoothValue),
+          ),
+          child: Opacity(opacity: clampedOpacity, child: child),
+        );
+      },
+      child: child,
+    );
+  }
+}
+
+enum SlideDirection { fromLeft, fromRight, fromTop, fromBottom }
+
+class PaginationAnimations {
+  static Widget buildProgressBarAnimation({
+    required Animation<double> animation,
+    required Widget child,
+  }) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        final clampedOpacity = animation.value.clamp(0.0, 1.0);
+        final translateY = (1 - clampedOpacity) * 30 - 5;
+
+        return Transform.translate(
+          offset: Offset(0, translateY),
+          child: Opacity(opacity: clampedOpacity, child: child),
+        );
+      },
+      child: child,
+    );
+  }
+
+  static Widget buildClickAnimation({
+    required Animation<double> animation,
+    required Widget child,
+  }) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        return Transform.scale(scale: animation.value, child: child);
+      },
+      child: child,
+    );
+  }
+
+  static Widget buildDotAnimation({
+    required bool isActive,
+    required bool isCurrent,
+    required VoidCallback onTap,
+    required double size,
+  }) {
+    return ClipOval(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          splashColor: AppColors.fillButtonBackgorund.withAlpha(77),
+          highlightColor: AppColors.placeHolderInput.withAlpha(51),
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isActive ? AppColors.progress : AppColors.light,
+              border: Border.all(
+                color: AppColors.light,
+                width: isCurrent ? 2.0 : (isActive ? 1.0 : 0.5),
+              ),
+              boxShadow: isCurrent
+                  ? [
+                      BoxShadow(
+                        color: AppColors.light,
+                        blurRadius: 2,
+                        spreadRadius: 1,
+                      ),
+                    ]
+                  : null,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

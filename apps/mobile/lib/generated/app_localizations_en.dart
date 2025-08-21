@@ -326,5 +326,281 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stepSummaryValidate => 'Validate';
 
   @override
+  String get stepSummaryBegin => 'Begin';
+
+  @override
   String get next => 'Next';
+
+  @override
+  String get driverOnboardingWelcomeTitle => 'Welcome to Safe Driving!';
+
+  @override
+  String get driverOnboardingWelcomeSubtitle =>
+      'Thank you for choosing Safe Driving. Let\'s start by setting up your profile so you can hit the road with peace of mind.';
+
+  @override
+  String get driverOnboardingLater => 'Later';
+
+  @override
+  String get driverOnboardingStart => 'Get Started';
+
+  @override
+  String get driverDetailsTitle => 'Tell us more about you';
+
+  @override
+  String get driverDetailsSubtitle =>
+      'Provide your contact information so we can reach you and verify your identity';
+
+  @override
+  String get driverDetailsValidate => 'Validate';
+
+  @override
+  String get driverDetailsFullName => 'Full Name';
+
+  @override
+  String get driverDetailsFullNamePlaceholder => 'John Doe';
+
+  @override
+  String get driverDetailsEmail => 'Email';
+
+  @override
+  String get driverDetailsEmailPlaceholder => 'example@email.com';
+
+  @override
+  String get driverDetailsPhone => 'Phone';
+
+  @override
+  String get driverDetailsPhonePlaceholder => '+261...';
+
+  @override
+  String get driverIdentityVerificationTitle => 'Identity Verification';
+
+  @override
+  String get driverIdentityVerificationSubtitle =>
+      'Upload your driver\'s license and ID card to ensure a fast and reliable registration.';
+
+  @override
+  String get driverIdentityRecto => 'Front';
+
+  @override
+  String get driverIdentityVerso => 'Back';
+
+  @override
+  String get driverIdentityLicense => 'Driver\'s License';
+
+  @override
+  String get driverIdentityUploadText => 'Drag a file to upload';
+
+  @override
+  String get driverIdentityChooseFile => 'Choose a file';
+
+  @override
+  String get driverVehicleInfoTitle => 'Tell us about your vehicle';
+
+  @override
+  String get driverVehicleInfoSubtitle =>
+      'To better identify you and ensure passenger safety, provide your car\'s characteristics.';
+
+  @override
+  String get driverVehicleBrand => 'Brand';
+
+  @override
+  String get driverVehicleBrandPlaceholder => 'e.g. Peugeot';
+
+  @override
+  String get driverVehicleModel => 'Model';
+
+  @override
+  String get driverVehicleModelPlaceholder => 'e.g. 404';
+
+  @override
+  String get driverVehicleRegistration => 'Registration Number';
+
+  @override
+  String get driverVehicleRegistrationPlaceholder => 'e.g. AB-123-CD';
+
+  @override
+  String get driverVehicleSeats => 'Number of Seats';
+
+  @override
+  String get driverVehicleSeatsPlaceholder => 'e.g. 4';
+
+  @override
+  String get driverVehicleType => 'Vehicle Type';
+
+  @override
+  String get driverVehicleTypePlaceholder => 'e.g. Car';
+
+  @override
+  String get driverVehicleDocumentsTitle => 'About your vehicle';
+
+  @override
+  String get driverVehicleDocumentsSubtitle =>
+      'Add your registration certificate, insurance certificate and some photos of the vehicle.';
+
+  @override
+  String get driverVehicleAddPhotos => 'Add more photos';
+
+  @override
+  String get driverIdentityPhotoTitle => 'Confirm your identity with a photo';
+
+  @override
+  String get driverIdentityPhotoSubtitle =>
+      'Take a real-time selfie to finalize verification and strengthen community security.';
+
+  @override
+  String get driverLocationTitle => 'Share your location';
+
+  @override
+  String get driverLocationSubtitle =>
+      'Allow geolocation to receive nearby ride requests.';
+
+  @override
+  String get driverLocationEnable => 'Enable';
+
+  @override
+  String get driverNotificationTitle => 'Stay informed';
+
+  @override
+  String get driverNotificationSubtitle =>
+      'Choose how you want to be alerted about new missions: push, SMS or email.';
+
+  @override
+  String get driverNotificationSms => 'SMS';
+
+  @override
+  String get driverNotificationPush => 'Mobile push notification';
+
+  @override
+  String get driverNotificationEmail => 'Email';
+
+  @override
+  String get driverCustomizeTitle => 'Customize your experience';
+
+  @override
+  String get driverCustomizeSubtitle =>
+      'Set your theme (light/dark), adjust alert volume and choose the app language.';
+
+  @override
+  String get driverCustomizeThemeLight => 'Light';
+
+  @override
+  String get driverCustomizeThemeDark => 'Dark';
+
+  @override
+  String get driverCustomizeLanguageFr => 'French';
+
+  @override
+  String get driverCustomizeLanguageEn => 'English';
+
+  @override
+  String get driverTermsTitle => 'One last point before getting started';
+
+  @override
+  String get driverTermsSubtitle =>
+      'Please read and accept our Terms of Service and Privacy Policy.';
+
+  @override
+  String get driverAcceptTerms => 'I accept the Terms of Service';
+
+  @override
+  String get driverAcceptPrivacy => 'I accept the Privacy Policy';
+
+  @override
+  String get driverCguTitle => 'Safe Driving Terms of Service (ToS)';
+
+  @override
+  String get driverCguAccept => 'I accept';
+
+  @override
+  String get driverPrivacyTitle => '🛡️ Privacy Policy – Safe Driving';
+
+  @override
+  String get driverPrivacyAccept => 'I accept';
+
+  @override
+  String get driverSummaryTitle => 'All set!';
+
+  @override
+  String get driverSummarySubtitle =>
+      'Check your information and choices before validating. You can always come back to modify your preferences later.';
+
+  @override
+  String get driverSummaryValidate => 'Validate';
+
+  @override
+  String get driverSummaryPersonalInfo => 'Personal Information';
+
+  @override
+  String get driverSummaryPersonalInfoName => 'Name';
+
+  @override
+  String get driverSummaryPersonalInfoEmail => 'Email';
+
+  @override
+  String get driverSummaryPersonalInfoPhone => 'Phone';
+
+  @override
+  String get driverSummaryPersonalInfoPhotos => 'Uploaded photos';
+
+  @override
+  String get driverSummaryVehicle => 'Vehicle';
+
+  @override
+  String get driverSummaryVehicleType => 'Type';
+
+  @override
+  String get driverSummaryVehicleBrand => 'Brand';
+
+  @override
+  String get driverSummaryVehicleModel => 'Model';
+
+  @override
+  String get driverSummaryVehicleRegistration => 'Registration';
+
+  @override
+  String get driverSummaryVehicleSeats => 'Number of seats';
+
+  @override
+  String get driverSummaryVehiclePhotos => 'Uploaded photos';
+
+  @override
+  String get driverSummaryGpsNotifications => 'GPS & Notifications';
+
+  @override
+  String get driverSummaryGps => 'GPS';
+
+  @override
+  String get driverSummaryNotifications => 'Notifications';
+
+  @override
+  String get driverSummaryPreferences => 'Preferences';
+
+  @override
+  String get driverSummaryTheme => 'Theme';
+
+  @override
+  String get driverSummaryLanguage => 'Language';
+
+  @override
+  String get driverCompleteTitle => '🎉 Welcome aboard, ';
+
+  @override
+  String get driverCompleteSubtitle =>
+      'Your profile has been completed and validated. You are now ready to use Safe Driving as a driver.';
+
+  @override
+  String get driverCompleteStart => 'Let\'s go!';
+
+  @override
+  String get driverCompleteQrCodeSubtitle =>
+      'Your personal QR code has been generated:';
+
+  @override
+  String get driverCompleteQrCodeInstructions =>
+      'It will allow your passengers to identify you quickly and securely. You can view or download this QR code at any time in the My Account > My QR code menu.';
+
+  @override
+  String get driverCompleteThankYou =>
+      'Thank you for being part of the Safe Driving community. We wish you safe travels!';
 }

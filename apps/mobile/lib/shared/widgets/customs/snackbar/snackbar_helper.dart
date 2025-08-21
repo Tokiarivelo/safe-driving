@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/colors/colors.dart';
+import '../../../../core/constants/colors/colors.dart';
 
 class SnackbarHelper {
   static void showError(BuildContext context, String message) {

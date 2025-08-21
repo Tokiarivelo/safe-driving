@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:safe_driving/app/routes.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/models/auth/interactive_menu/for_user.dart';
-import 'package:safe_driving/shared/widgets/animations/animation_widget.dart';
+import 'package:safe_driving/models/interactive_menu/interactive_menu_models.dart';
+import 'package:safe_driving/shared/widgets/customs/animations/animation_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 
 class InteractiveMenuWidget extends StatefulWidget {
   const InteractiveMenuWidget({super.key});
@@ -18,28 +20,10 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   AppState _appState = const AppState();
   final Map<int, bool> _expandedTiles = {};
 
-  // Configuration des étapes
-  static const List<StepInfo> _steps = [
-    StepInfo(title: 'Bienvenue', emoji: '👋'),
-    StepInfo(title: 'GPS', icon: Icons.location_on),
-    StepInfo(title: 'Notifications', icon: Icons.notifications),
-    StepInfo(title: 'Préférence', icon: Icons.settings),
-    StepInfo(title: 'Récapitulatif', icon: Icons.recent_actors),
-  ];
-
-  static const List<String> _transportModes = [
-    'Voiture',
-    'Moto',
-    'TukTuk',
-    'Vélo',
-  ];
-
-  static const Map<String, IconData> _transportIcons = {
-    'Voiture': Icons.directions_car,
-    'Moto': Icons.motorcycle,
-    'TukTuk': Icons.electric_rickshaw,
-    'Vélo': Icons.pedal_bike,
-  };
+  // Configuration des étapes (utilisation de StepUserData)
+  static const List<StepInfo> _steps = StepUserData.steps;
+  static const List<String> _transportModes = StepUserData.transportModes;
+  static const Map<String, IconData> _transportIcons = StepUserData.transportIcons;
 
   @override
   void initState() {
@@ -95,15 +79,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   }
 
   String _getStepTitle(int step) {
-    const titles = {
-      1: 'Rôle',
-      2: 'Bienvenue',
-      3: 'GPS',
-      4: 'Notifications',
-      5: 'Préférences',
-      6: 'Récapitulatif',
-    };
-    return titles[step] ?? 'Étape $step';
+    return StepUserData.stepTitles[step] ?? 'Étape $step';
   }
 
   // Update state
@@ -149,6 +125,25 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
     setState(() {
       _appState = _appState.copyWith(selectedLanguage: language);
     });
+  }
+
+  // Méthode pour finaliser le processus d'onboarding
+  void _completeOnboarding() {
+    // Ici vous pouvez sauvegarder les préférences de l'utilisateur
+    // par exemple dans SharedPreferences ou une base de données
+    
+    // Pour l'instant, on navigue vers l'écran principal
+    // Remplacez par la route appropriée de votre app
+    Navigator.pushReplacementNamed(context, '/home'); // ou AppRoutes.home
+    
+    // Optionnel: Afficher un message de succès
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Configuration terminée avec succès !'),
+        backgroundColor: Colors.green,
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
@@ -344,13 +339,16 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   }
 
   Widget _buildStepContent(int step) {
+    // Obtenir les données de l'étape depuis StepUserData
+    final stepContent = StepUserData.stepContents[step - 1];
+    
     switch (step) {
       case 1:
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Vous êtes… ?',
+              stepContent.title,
               style: TextStyle(
                 color: AppColors.buttonWithoutBackGround,
                 fontSize: 20,
@@ -358,43 +356,11 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               ),
             ),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.fillButtonBackgorund,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    onPressed: _nextStep,
-                    child: const Text(
-                      'Je suis utilisateur',
-                      style: TextStyle(color: AppColors.light, fontSize: 10),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 50),
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.fillButtonBackgorund,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    onPressed: _nextStep,
-                    child: const Text(
-                      'Je suis un chauffeur',
-                      style: TextStyle(color: AppColors.light, fontSize: 10),
-                    ),
-                  ),
-                ),
-              ],
+            ButtonsWidget.roleChoiceButtons(
+              onUserPressed: _nextStep,
+              onDriverPressed: () {
+                Navigator.pushNamed(context, AppRoutes.isDriver);
+              },
             ),
           ],
         );
@@ -404,7 +370,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Bienvenue chez Safe Driving !',
+              stepContent.title,
               style: TextStyle(
                 color: AppColors.buttonWithoutBackGround,
                 fontWeight: FontWeight.w800,
@@ -413,54 +379,36 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Merci d’avoir rejoint notre communauté ! Laissez-nous vous guider pour personnaliser votre expérience.',
+              stepContent.subtitle,
               style: TextStyle(
                 color: AppColors.buttonWithoutBackGround.withAlpha(190),
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: AppColors.secondBackgroundColor,
-                    side: BorderSide(color: AppColors.buttonWithoutBackGround),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  onPressed: _nextStepImmediate,
-                  child: Text(
-                    'Plus tard',
-                    style: TextStyle(color: AppColors.buttonWithoutBackGround),
-                  ),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.fillButtonBackgorund,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  onPressed: _nextStepImmediate,
-                  child: const Text(
-                    'Démarrer',
-                    style: TextStyle(color: AppColors.light),
-                  ),
-                ),
-              ],
+            ButtonsWidget.laterAndActionButtons(
+              onLaterPressed: () {
+                // "Plus tard" - passer à l'étape suivante sans configuration
+                _nextStepImmediate();
+              },
+              onActionPressed: () {
+                // "Démarrer" - commencer la configuration
+                _nextStepImmediate();
+              },
+              actionText: stepContent.buttonTitles[1],
+              fontSize: 14,
+              padding: const EdgeInsets.symmetric(vertical: 16),
             ),
           ],
         );
 
       case 3:
+        final radioOptions = stepContent.additionalContent?['radioOptions'] ?? ['Plus tard', 'Activer'];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Où êtes-vous ?',
+              stepContent.title,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -469,7 +417,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Pour vous proposer les véhicules les plus proches, autorisez l\'accès à votre position. C\'est rapide et sécurisé.',
+              stepContent.subtitle,
               style: TextStyle(
                 color: AppColors.buttonWithoutBackGround.withAlpha(190),
               ),
@@ -482,7 +430,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     contentPadding: EdgeInsets.zero,
                     visualDensity: const VisualDensity(horizontal: -4),
                     title: Text(
-                      'Plus tard',
+                      radioOptions[0],
                       style: TextStyle(
                         color: AppColors.buttonWithoutBackGround,
                         fontWeight: FontWeight.w600,
@@ -499,7 +447,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     contentPadding: EdgeInsets.zero,
                     visualDensity: const VisualDensity(horizontal: -4),
                     title: Text(
-                      'Activer',
+                      radioOptions[1],
                       style: TextStyle(
                         color: AppColors.buttonWithoutBackGround,
                         fontWeight: FontWeight.w600,
@@ -514,30 +462,24 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               ],
             ),
             const SizedBox(height: 8),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.fillButtonBackgorund,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                onPressed: _nextStepImmediate,
-                child: const Text(
-                  'Suivant',
-                  style: TextStyle(color: AppColors.light),
-                ),
-              ),
+            ButtonsWidget.nextButton(
+              onPressed: () {
+                // Sauvegarder le choix GPS et passer à l'étape suivante
+                _nextStepImmediate();
+              },
+              fontSize: 14,
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
             ),
           ],
         );
 
       case 4:
+        final radioOptions = stepContent.additionalContent?['radioOptions'] ?? [StepUserData.buttonTexts['later']!, StepUserData.buttonTexts['activate']!];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Restez informé',
+              stepContent.title,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -546,7 +488,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Choisissez de recevoir des alertes en temps réel sur l\'arrivée de votre chauffeur et l\'état de votre trajet.',
+              stepContent.subtitle,
               style: TextStyle(
                 color: AppColors.buttonWithoutBackGround.withAlpha(190),
               ),
@@ -559,7 +501,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     contentPadding: EdgeInsets.zero,
                     visualDensity: const VisualDensity(horizontal: -4),
                     title: Text(
-                      'Plus tard',
+                      radioOptions[0],
                       style: TextStyle(
                         color: AppColors.buttonWithoutBackGround,
                         fontWeight: FontWeight.w600,
@@ -576,7 +518,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     contentPadding: EdgeInsets.zero,
                     visualDensity: const VisualDensity(horizontal: -4),
                     title: Text(
-                      'Activer',
+                      radioOptions[1],
                       style: TextStyle(
                         color: AppColors.buttonWithoutBackGround,
                         fontWeight: FontWeight.w600,
@@ -591,30 +533,26 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               ],
             ),
             const SizedBox(height: 8),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.fillButtonBackgorund,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                onPressed: _nextStepImmediate,
-                child: const Text(
-                  'Suivant',
-                  style: TextStyle(color: AppColors.light),
-                ),
-              ),
+            ButtonsWidget.nextButton(
+              onPressed: () {
+                // Sauvegarder le choix de notifications et passer à l'étape suivante
+                _nextStepImmediate();
+              },
+              fontSize: 14,
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
             ),
           ],
         );
 
       case 5:
+        final themeLabel = stepContent.additionalContent?['themeLabel'] ?? 'Thème';
+        final themeOptions = stepContent.additionalContent?['themeOptions'] ?? ['Clair', 'Sombre'];
+        final transportLabel = stepContent.additionalContent?['transportLabel'] ?? 'Type de transport';
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Faites-le à votre façon',
+              stepContent.title,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -623,34 +561,34 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Sélectionnez vos modes de transport favoris et activez le thème sombre si vous préférez une expérience plus douce pour les yeux.',
+              stepContent.subtitle,
               style: TextStyle(
                 color: AppColors.buttonWithoutBackGround.withAlpha(190),
               ),
             ),
             const SizedBox(height: 16),
             Text(
-              'Thème',
+              themeLabel,
               style: TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
             Row(
               children: [
                 ChoiceChip(
-                  label: const Text('Clair'),
-                  selected: _appState.selectedTheme == 'Clair',
-                  onSelected: (_) => _updateTheme('Clair'),
+                  label: Text(themeOptions[0]),
+                  selected: _appState.selectedTheme == themeOptions[0],
+                  onSelected: (_) => _updateTheme(themeOptions[0]),
                 ),
                 const SizedBox(width: 8),
                 ChoiceChip(
-                  label: const Text('Sombre'),
-                  selected: _appState.selectedTheme == 'Sombre',
-                  onSelected: (_) => _updateTheme('Sombre'),
+                  label: Text(themeOptions[1]),
+                  selected: _appState.selectedTheme == themeOptions[1],
+                  onSelected: (_) => _updateTheme(themeOptions[1]),
                 ),
               ],
             ),
             const SizedBox(height: 16),
             Text(
-              'Type de transport',
+              transportLabel,
               style: TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
             const SizedBox(height: 8),
@@ -681,47 +619,46 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
               ),
             ),
             const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: AppColors.secondBackgroundColor,
-                    side: BorderSide(color: AppColors.buttonWithoutBackGround),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
+            ButtonsWidget.laterAndActionButtons(
+              onLaterPressed: () {
+                // "Plus tard" - garder les paramètres par défaut et continuer
+                _nextStepImmediate();
+              },
+              onActionPressed: () {
+                // "Valider" - sauvegarder les préférences et continuer
+                if (_appState.selectedTransports.isEmpty) {
+                  // Optionnel: Afficher un message ou forcer la sélection d'au moins un transport
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Veuillez sélectionner au moins un mode de transport'),
+                      duration: Duration(seconds: 2),
                     ),
-                  ),
-                  onPressed: _nextStepImmediate,
-                  child: Text(
-                    'Plus tard',
-                    style: TextStyle(color: AppColors.buttonWithoutBackGround),
-                  ),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.fillButtonBackgorund,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  onPressed: _nextStepImmediate,
-                  child: const Text(
-                    'Valider',
-                    style: TextStyle(color: AppColors.light),
-                  ),
-                ),
-              ],
+                  );
+                  return;
+                }
+                _nextStepImmediate();
+              },
+              actionText: stepContent.buttonTitles[1],
+              fontSize: 14,
+              padding: const EdgeInsets.symmetric(vertical: 16),
             ),
           ],
         );
 
       case 6:
+        final summaryLabels = stepContent.additionalContent?['summaryLabels'] ?? {
+          'gps': 'GPS',
+          'notifications': 'Notifications',
+          'theme': 'Thème',
+          'transport': 'Transport(s)',
+          'language': 'Langue',
+          'noTransport': 'Aucun transport sélectionné',
+        };
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Tout est prêt !',
+              stepContent.title,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -730,7 +667,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Voilà un résumé de vos choix. Vous pouvez toujours les modifier plus tard dans les paramètres. Prêt·e à démarrer ?',
+              stepContent.subtitle,
               style: TextStyle(
                 color: AppColors.buttonWithoutBackGround.withAlpha(190),
               ),
@@ -744,9 +681,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                   onChanged: _updateGps,
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'GPS',
-                  style: TextStyle(color: AppColors.buttonWithoutBackGround),
+                Text(
+                  summaryLabels['gps'] ?? 'GPS',
+                  style: const TextStyle(color: AppColors.buttonWithoutBackGround),
                 ),
               ],
             ),
@@ -758,20 +695,20 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                   onChanged: _updateNotifications,
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'Notifications',
-                  style: TextStyle(color: AppColors.buttonWithoutBackGround),
+                Text(
+                  summaryLabels['notifications'] ?? 'Notifications',
+                  style: const TextStyle(color: AppColors.buttonWithoutBackGround),
                 ),
               ],
             ),
             const SizedBox(height: 16),
             Text(
-              'Thème : ${_appState.selectedTheme}',
+              '${summaryLabels['theme'] ?? 'Thème'} : ${_appState.selectedTheme}',
               style: TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
             const SizedBox(height: 8),
             Text(
-              'Transport(s) :',
+              '${summaryLabels['transport'] ?? 'Transport(s)'} :',
               style: TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
             const SizedBox(height: 8),
@@ -823,7 +760,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     )
                   else
                     Text(
-                      'Aucun transport sélectionné',
+                      summaryLabels['noTransport'] ?? 'Aucun transport sélectionné',
                       style: TextStyle(
                         color: AppColors.buttonWithoutBackGround.withValues(
                           alpha: 0.6,
@@ -836,131 +773,28 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Langue :',
+              '${summaryLabels['language'] ?? 'Langue'} :',
               style: TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
             const SizedBox(height: 8),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors.fillButtonBackgorund.withValues(alpha: 0.3),
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => _updateLanguage('Français'),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: _appState.selectedLanguage == 'Français'
-                            ? AppColors.fillButtonBackgorund
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: _appState.selectedLanguage == 'Français'
-                              ? AppColors.fillButtonBackgorund
-                              : AppColors.buttonWithoutBackGround.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '🇫🇷',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'Français',
-                            style: TextStyle(
-                              color: _appState.selectedLanguage == 'Français'
-                                  ? AppColors.light
-                                  : AppColors.buttonWithoutBackGround,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  GestureDetector(
-                    onTap: () => _updateLanguage('English'),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: _appState.selectedLanguage == 'English'
-                            ? AppColors.fillButtonBackgorund
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: _appState.selectedLanguage == 'English'
-                              ? AppColors.fillButtonBackgorund
-                              : AppColors.buttonWithoutBackGround.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '🇺🇸',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'English',
-                            style: TextStyle(
-                              color: _appState.selectedLanguage == 'English'
-                                  ? AppColors.light
-                                  : AppColors.buttonWithoutBackGround,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            ButtonsWidget.languageButtonContainer(
+              selectedLanguage: _appState.selectedLanguage,
+              onLanguageChanged: _updateLanguage,
             ),
             const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: AppColors.secondBackgroundColor,
-                    side: BorderSide(color: AppColors.buttonWithoutBackGround),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  onPressed: () => _goToStep(1),
-                  child: Text(
-                    'Annuler',
-                    style: TextStyle(color: AppColors.buttonWithoutBackGround),
-                  ),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.fillButtonBackgorund,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  onPressed: () {
-                    //finale (vers homeview)
-                  },
-                  child: const Text(
-                    'Valider',
-                    style: TextStyle(color: AppColors.light),
-                  ),
-                ),
-              ],
+            ButtonsWidget.laterAndActionButtons(
+              onLaterPressed: () {
+                // "Annuler" - retourner au début
+                _goToStep(1);
+              },
+              onActionPressed: () {
+                // "Commencer" - finaliser la configuration et naviguer vers l'écran principal
+                _completeOnboarding();
+              },
+              laterText: stepContent.buttonTitles[0],
+              actionText: stepContent.buttonTitles[1],
+              fontSize: 14,
+              padding: const EdgeInsets.symmetric(vertical: 16),
             ),
           ],
         );

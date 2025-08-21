@@ -22,4 +22,6 @@ class AppColors {
   static Color blur = Colors.black.withAlpha(50);
   static Color progress = const Color.fromARGB(255, 41, 218, 17);
   static Color transparent = Colors.transparent;
+  static const Color forSmoothProgression = Color(0xFF822072);
+  static const Color dark = Color.fromARGB(255, 0, 0, 0);
 }
