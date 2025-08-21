@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/controls/chips.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/language_buttons.dart';
 import '../../models/user_onboarding_data.dart';
 import '../../models/user_onboarding_step_model.dart';
 
@@ -51,7 +54,7 @@ class StepSixView extends StatelessWidget {
 
         Row(
           children: [
-            ButtonsWidget.customSwitch(
+            SwitchesAndRadios.customSwitch(
               value: appState.gpsEnabled,
               onChanged: onGpsChanged,
             ),
@@ -65,7 +68,7 @@ class StepSixView extends StatelessWidget {
 
         Row(
           children: [
-            ButtonsWidget.customSwitch(
+            SwitchesAndRadios.customSwitch(
               value: appState.notifEnabled,
               onChanged: onNotificationsChanged,
             ),
@@ -108,7 +111,7 @@ class StepSixView extends StatelessWidget {
                   spacing: 8,
                   runSpacing: 4,
                   children: appState.selectedTransports.map((transport) {
-                    return ButtonsWidget.customChip(
+                    return Chips.customChip(
                       label: transport,
                       avatar: Icon(
                         UserOnboardingData.transportIcons[transport],
@@ -140,14 +143,14 @@ class StepSixView extends StatelessWidget {
           style: const TextStyle(color: AppColors.buttonWithoutBackGround),
         ),
         const SizedBox(height: 8),
-        ButtonsWidget.languageButtonContainer(
+        LanguageButtons.languageButtonContainer(
           selectedLanguage: appState.selectedLanguage,
           onLanguageChanged: onLanguageChanged,
         ),
 
         const SizedBox(height: 24),
 
-        ButtonsWidget.laterAndActionButtons(
+        ButtonRows.laterAndActionButtons(
           onLaterPressed: onCancelPressed,
           onActionPressed: onCompletePressed,
           laterText: stepContent.buttonTitles[0],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/controls/chips.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import '../../models/user_onboarding_data.dart';
 
@@ -56,13 +57,13 @@ class StepFiveView extends StatelessWidget {
         ),
         Row(
           children: [
-            ButtonsWidget.customChoiceChip(
+            Chips.customChoiceChip(
               label: themeOptions[0],
               selected: selectedTheme == themeOptions[0],
               onSelected: (_) => onThemeChanged(themeOptions[0]),
             ),
             const SizedBox(width: 8),
-            ButtonsWidget.customChoiceChip(
+            Chips.customChoiceChip(
               label: themeOptions[1],
               selected: selectedTheme == themeOptions[1],
               onSelected: (_) => onThemeChanged(themeOptions[1]),
@@ -90,7 +91,7 @@ class StepFiveView extends StatelessWidget {
             spacing: 8,
             children: UserOnboardingData.transportModes.map((mode) {
               final isSelected = selectedTransports.contains(mode);
-              return ButtonsWidget.customFilterChip(
+              return Chips.customFilterChip(
                 avatarIcon: UserOnboardingData.transportIcons[mode],
                 label: mode,
                 selected: isSelected,
@@ -103,7 +104,7 @@ class StepFiveView extends StatelessWidget {
         ),
 
         const SizedBox(height: 24),
-        ButtonsWidget.laterAndActionButtons(
+        ButtonRows.laterAndActionButtons(
           onLaterPressed: onLaterPressed,
           onActionPressed: () {
             if (selectedTransports.isEmpty) {

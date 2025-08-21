@@ -450,7 +450,7 @@ class DriverUIBuilder {
           padding: EdgeInsets.only(
             bottom: idx < checkboxOptions.length - 1 ? 8.0 : 0,
           ),
-          child: ButtonsWidget.customCheckbox(
+          child: SwitchesAndRadios.customCheckbox(
             title: option,
             value: viewModel.selectedNotifications.contains(option),
             onChanged: (value) {
@@ -470,7 +470,7 @@ class DriverUIBuilder {
   ) {
     return Column(
       children: [
-        ButtonsWidget.elegantAcceptanceButton(
+        ElegantAcceptanceButton.elegantAcceptanceButton(
           text: "Conditions Générales d'Utilisation",
           subtitle: "Lire et accepter les CGU",
           isAccepted: viewModel.cguAccepted[0],
@@ -491,7 +491,7 @@ class DriverUIBuilder {
           },
         ),
         const SizedBox(height: 16),
-        ButtonsWidget.elegantAcceptanceButton(
+        ElegantAcceptanceButton.elegantAcceptanceButton(
           text: "Politique de Confidentialité",
           subtitle: "Lire et accepter la politique",
           isAccepted: viewModel.cguAccepted[1],
@@ -541,7 +541,7 @@ class DriverUIBuilder {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ButtonsWidget.customChoiceChip(
+              Chips.customChoiceChip(
                 label: 'Clair',
                 selected: viewModel.selectedTheme == 'clair',
                 onSelected: (_) {
@@ -549,7 +549,7 @@ class DriverUIBuilder {
                 },
               ),
               const SizedBox(width: 24),
-              ButtonsWidget.customChoiceChip(
+              Chips.customChoiceChip(
                 label: 'Sombre',
                 selected: viewModel.selectedTheme == 'sombre',
                 onSelected: (_) {
@@ -575,7 +575,7 @@ class DriverUIBuilder {
             ),
           ),
           const SizedBox(height: 12),
-          ButtonsWidget.languageButtonContainer(
+          LanguageButtons.languageButtonContainer(
             selectedLanguage: viewModel.selectedLanguage,
             onLanguageChanged: (lang) {
               viewModel.setLanguage(lang);
@@ -840,7 +840,7 @@ class DriverUIBuilder {
     // Legal step has special handling
     if (step.title == "Un dernier point avant de démarrer") {
       if (viewModel.allCguAccepted) {
-        return ButtonsWidget.primaryButton(
+        return PrimaryButton.primaryButton(
           text: "Continuer",
           onPressed: nextStep,
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
@@ -850,7 +850,7 @@ class DriverUIBuilder {
     }
 
     if (step.buttonTitles.isNotEmpty) {
-      return ButtonsWidget.buttonRow(
+      return ButtonRows.buttonRow(
         buttonTitles: step.buttonTitles,
         onPressedList: step.buttonTitles.map((buttonTitle) {
           final isMainButton =
@@ -887,7 +887,7 @@ class DriverUIBuilder {
         Row(
           children: [
             Expanded(
-              child: ButtonsWidget.customRadio<String>(
+              child: SwitchesAndRadios.customRadio<String>(
                 title: "Plus tard",
                 value: "Plus tard",
                 groupValue: viewModel.gpsEnabled ? "Autoriser" : "Plus tard",
@@ -897,7 +897,7 @@ class DriverUIBuilder {
               ),
             ),
             Expanded(
-              child: ButtonsWidget.customRadio<String>(
+              child: SwitchesAndRadios.customRadio<String>(
                 title: "Autoriser",
                 value: "Autoriser",
                 groupValue: viewModel.gpsEnabled ? "Autoriser" : "Plus tard",
@@ -921,7 +921,7 @@ class DriverUIBuilder {
           ],
         ),
         const SizedBox(height: 32),
-        ButtonsWidget.primaryButton(
+        PrimaryButton.primaryButton(
           text: "Continuer",
           onPressed: nextStep,
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),

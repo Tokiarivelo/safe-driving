@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/core/utils/form/form_utils.dart';
 
 class StepFourView extends StatefulWidget {
@@ -148,7 +148,7 @@ class _StepFourViewState extends State<StepFourView> {
           ),
 
           const SizedBox(height: 32),
-          ButtonsWidget.buttonRow(
+          ButtonRows.buttonRow(
             buttonTitles: ['Plus tard', 'Valider'],
             onPressedList: [widget.onSkip, _handleNext],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

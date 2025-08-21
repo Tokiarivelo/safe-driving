@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/utils/permission_handlers.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import '../../models/user_onboarding_data.dart';
 
@@ -45,7 +47,7 @@ class StepThreeView extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: ButtonsWidget.customRadio<bool>(
+              child: SwitchesAndRadios.customRadio<bool>(
                 title: radioOptions[0],
                 value: false,
                 groupValue: gpsEnabled,
@@ -53,13 +55,13 @@ class StepThreeView extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ButtonsWidget.customRadio<bool>(
+              child: SwitchesAndRadios.customRadio<bool>(
                 title: radioOptions[1],
                 value: true,
                 groupValue: gpsEnabled,
                 onChanged: (value) async {
                   if (value!) {
-                    final granted = await ButtonsWidget.handleGpsPermission(
+                    final granted = await PermissionHandlers.handleGpsPermission(
                       context,
                     );
                     if (!context.mounted) return;
@@ -80,7 +82,7 @@ class StepThreeView extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        ButtonsWidget.nextButton(
+        PrimaryButton.nextButton(
           onPressed: onNextStep,
           fontSize: 14,
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),

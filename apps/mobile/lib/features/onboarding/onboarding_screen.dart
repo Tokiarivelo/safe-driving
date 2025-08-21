@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -105,7 +105,7 @@ class OnboardingScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          ButtonsWidget.roleChoiceButtons(
+                          ButtonRows.roleChoiceButtons(
                             onUserPressed: onUserPressed,
                             onDriverPressed: onDriverPressed,
                           ),

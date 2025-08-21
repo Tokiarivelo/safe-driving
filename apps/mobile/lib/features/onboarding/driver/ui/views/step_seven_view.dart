@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 
 class StepSevenView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -57,7 +58,7 @@ class StepSevenView extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: ButtonsWidget.customRadio<String>(
+                    child: SwitchesAndRadios.customRadio<String>(
                       title: "Plus tard",
                       value: "Plus tard",
                       groupValue: viewModel.gpsEnabled
@@ -69,7 +70,7 @@ class StepSevenView extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: ButtonsWidget.customRadio<String>(
+                    child: SwitchesAndRadios.customRadio<String>(
                       title: "Autoriser",
                       value: "Autoriser",
                       groupValue: viewModel.gpsEnabled
@@ -84,7 +85,7 @@ class StepSevenView extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 32),
-              ButtonsWidget.primaryButton(
+              PrimaryButton.primaryButton(
                 text: "Continuer",
                 onPressed: onContinue,
                 padding: const EdgeInsets.symmetric(

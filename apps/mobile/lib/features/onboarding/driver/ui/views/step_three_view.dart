@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/upload_widget.dart';
 
 class StepThreeView extends StatelessWidget {
@@ -96,7 +96,7 @@ class StepThreeView extends StatelessWidget {
             ),
           ),
 
-          ButtonsWidget.buttonRow(
+          ButtonRows.buttonRow(
             buttonTitles: ['Plus tard', 'Valider'],
             onPressedList: [onSkip ?? () {}, onContinue],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

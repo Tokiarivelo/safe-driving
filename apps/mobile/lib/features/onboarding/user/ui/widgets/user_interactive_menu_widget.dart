@@ -4,7 +4,12 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 import '../../models/user_onboarding_step_model.dart';
 import '../../models/user_onboarding_data.dart';
 import 'package:safe_driving/shared/widgets/customs/animations/animation_widget.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/controls/chips.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/language_buttons.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/utils/permission_handlers.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class UserInteractiveMenuWidget extends StatefulWidget {
@@ -319,7 +324,7 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            ButtonsWidget.laterAndActionButtons(
+            ButtonRows.laterAndActionButtons(
               onLaterPressed: () {
                 _nextStepImmediate();
               },
@@ -362,7 +367,7 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
             Row(
               children: [
                 Expanded(
-                  child: ButtonsWidget.customRadio<bool>(
+                  child: SwitchesAndRadios.customRadio<bool>(
                     title: radioOptions[0],
                     value: false,
                     groupValue: _appState.gpsEnabled,
@@ -370,13 +375,13 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
                   ),
                 ),
                 Expanded(
-                  child: ButtonsWidget.customRadio<bool>(
+                  child: SwitchesAndRadios.customRadio<bool>(
                     title: radioOptions[1],
                     value: true,
                     groupValue: _appState.gpsEnabled,
                     onChanged: (value) async {
                       if (value!) {
-                        final granted = await ButtonsWidget.handleGpsPermission(
+                        final granted = await PermissionHandlers.handleGpsPermission(
                           context,
                         );
                         if (!mounted) return;
@@ -396,7 +401,8 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
               ],
             ),
             const SizedBox(height: 8),
-            ButtonsWidget.nextButton(
+            PrimaryButton.primaryButton(
+              text: 'Suivant',
               onPressed: () {
                 _nextStepImmediate();
               },
@@ -437,7 +443,7 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
             Row(
               children: [
                 Expanded(
-                  child: ButtonsWidget.customRadio<bool>(
+                  child: SwitchesAndRadios.customRadio<bool>(
                     title: radioOptions[0],
                     value: false,
                     groupValue: _appState.notifEnabled,
@@ -446,7 +452,7 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
                   ),
                 ),
                 Expanded(
-                  child: ButtonsWidget.customRadio<bool>(
+                  child: SwitchesAndRadios.customRadio<bool>(
                     title: radioOptions[1],
                     value: true,
                     groupValue: _appState.notifEnabled,
@@ -457,7 +463,8 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
               ],
             ),
             const SizedBox(height: 8),
-            ButtonsWidget.nextButton(
+            PrimaryButton.primaryButton(
+              text: 'Suivant',
               onPressed: () {
                 _nextStepImmediate();
               },
@@ -498,13 +505,13 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
             ),
             Row(
               children: [
-                ButtonsWidget.customChoiceChip(
+                Chips.customChoiceChip(
                   label: themeOptions[0],
                   selected: _appState.selectedTheme == themeOptions[0],
                   onSelected: (_) => _updateTheme(themeOptions[0]),
                 ),
                 const SizedBox(width: 8),
-                ButtonsWidget.customChoiceChip(
+                Chips.customChoiceChip(
                   label: themeOptions[1],
                   selected: _appState.selectedTheme == themeOptions[1],
                   onSelected: (_) => _updateTheme(themeOptions[1]),
@@ -532,19 +539,19 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
                   final isSelected = _appState.selectedTransports.contains(
                     mode,
                   );
-                  return FilterChip(
-                    avatar: Icon(_transportIcons[mode], size: 18),
-                    label: Text(mode),
+                  return Chips.customFilterChip(
+                    avatarIcon: _transportIcons[mode],
+                    label: mode,
                     selected: isSelected,
                     onSelected: (selected) => _updateTransport(mode, selected),
-                    selectedColor: AppColors.fillButtonBackground,
-                    checkmarkColor: AppColors.light,
+                    selectedLabelColor: AppColors.light,
+                    labelColor: AppColors.buttonWithoutBackGround,
                   );
                 }).toList(),
               ),
             ),
             const SizedBox(height: 24),
-            ButtonsWidget.laterAndActionButtons(
+            ButtonRows.laterAndActionButtons(
               onLaterPressed: () {
                 _nextStepImmediate();
               },
@@ -591,7 +598,7 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
             const SizedBox(height: 16),
             Row(
               children: [
-                ButtonsWidget.customSwitch(
+                SwitchesAndRadios.customSwitch(
                   value: _appState.gpsEnabled,
                   onChanged: _updateGps,
                 ),
@@ -606,7 +613,7 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
             ),
             Row(
               children: [
-                ButtonsWidget.customSwitch(
+                SwitchesAndRadios.customSwitch(
                   value: _appState.notifEnabled,
                   onChanged: _updateNotifications,
                 ),
@@ -695,12 +702,12 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
               style: const TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
             const SizedBox(height: 8),
-            ButtonsWidget.languageButtonContainer(
+            LanguageButtons.languageButtonContainer(
               selectedLanguage: _appState.selectedLanguage,
               onLanguageChanged: _updateLanguage,
             ),
             const SizedBox(height: 24),
-            ButtonsWidget.laterAndActionButtons(
+            ButtonRows.laterAndActionButtons(
               onLaterPressed: () {
                 _goToStep(2); // Retour à l'étape 2 (Bienvenue)
               },

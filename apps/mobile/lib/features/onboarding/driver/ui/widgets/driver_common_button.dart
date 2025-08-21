@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/basic/secondary_button.dart';
 
 class DriverCommonButton extends StatelessWidget {
   final String text;
@@ -19,14 +20,14 @@ class DriverCommonButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isPrimary) {
-      return ButtonsWidget.primaryButton(
+      return PrimaryButton.primaryButton(
         text: text,
         onPressed: onPressed,
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
         icon: icon != null ? Icon(icon, color: AppColors.light) : null,
       );
     }
-    return ButtonsWidget.secondaryButton(
+    return SecondaryButton.secondaryButton(
       text: text,
       onPressed: onPressed,
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),

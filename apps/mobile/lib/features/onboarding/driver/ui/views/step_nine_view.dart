@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/controls/chips.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/language_buttons.dart';
 
 class StepNineView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -80,7 +82,7 @@ class StepNineView extends StatelessWidget {
                         final index = entry.key;
                         final option = entry.value;
                         return [
-                          ButtonsWidget.customChoiceChip(
+                          Chips.customChoiceChip(
                             label: option['label']!,
                             selected:
                                 viewModel.selectedTheme == option['value'],
@@ -108,7 +110,7 @@ class StepNineView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              ButtonsWidget.languageButtonContainer(
+              LanguageButtons.languageButtonContainer(
                 selectedLanguage: viewModel.selectedLanguage,
                 onLanguageChanged: (lang) {
                   viewModel.setSelectedLanguage(lang);
@@ -119,7 +121,7 @@ class StepNineView extends StatelessWidget {
 
           const SizedBox(height: 32),
 
-          ButtonsWidget.buttonRow(
+          ButtonRows.buttonRow(
             buttonTitles: ['Plus tard', 'Valider'],
             onPressedList: [onSkip ?? () {}, onContinue],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

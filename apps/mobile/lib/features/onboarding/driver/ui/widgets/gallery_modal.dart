@@ -4,7 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/basic/secondary_button.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/camera_interface.dart';
 
@@ -165,7 +166,7 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     return Row(
       children: [
         Expanded(
-          child: ButtonsWidget.primaryButton(
+          child: PrimaryButton.primaryButton(
             text: 'Galerie',
             onPressed: () => _pickImage(ImageSource.gallery),
             fontSize: 14,
@@ -179,7 +180,7 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: ButtonsWidget.secondaryButton(
+          child: SecondaryButton.secondaryButton(
             text: 'Caméra',
             onPressed: () => _showCameraInterface(),
             fontSize: 14,
@@ -195,7 +196,7 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
 
         if (_localImages.isNotEmpty)
           Expanded(
-            child: ButtonsWidget.transparentButton(
+            child: SecondaryButton.transparentButton(
               text: 'Tout supprimer',
               onPressed: _showDeleteAllConfirmation,
               fontSize: 14,

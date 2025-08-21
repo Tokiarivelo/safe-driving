@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 
 class StepEightView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -60,7 +61,7 @@ class StepEightView extends StatelessWidget {
                 padding: EdgeInsets.only(
                   bottom: idx < notificationOptions.length - 1 ? 8.0 : 0,
                 ),
-                child: ButtonsWidget.customCheckbox(
+                child: SwitchesAndRadios.customCheckbox(
                   title: option,
                   value: viewModel.selectedNotifications.contains(option),
                   onChanged: (value) {
@@ -74,7 +75,7 @@ class StepEightView extends StatelessWidget {
 
           const SizedBox(height: 32),
 
-          ButtonsWidget.buttonRow(
+          ButtonRows.buttonRow(
             buttonTitles: ['Plus tard', 'Valider'],
             onPressedList: [onSkip ?? () {}, onContinue],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

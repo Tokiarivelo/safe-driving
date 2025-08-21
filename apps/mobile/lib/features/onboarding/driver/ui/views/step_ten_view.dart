@@ -3,7 +3,8 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/policy_modal.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/specialized/elegant_acceptance_button.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 
 class StepTenView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -53,7 +54,7 @@ class StepTenView extends StatelessWidget {
 
           Column(
             children: [
-              ButtonsWidget.elegantAcceptanceButton(
+              ElegantAcceptanceButton.elegantAcceptanceButton(
                 text: "Conditions Générales d'Utilisation",
                 subtitle: "Lire et accepter les CGU",
                 isAccepted: viewModel.cguAccepted[0],
@@ -74,7 +75,7 @@ class StepTenView extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 16),
-              ButtonsWidget.elegantAcceptanceButton(
+              ElegantAcceptanceButton.elegantAcceptanceButton(
                 text: "Politique de Confidentialité",
                 subtitle: "Lire et accepter la politique",
                 isAccepted: viewModel.cguAccepted[1],
@@ -95,7 +96,7 @@ class StepTenView extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               if (viewModel.cguAccepted.every((accepted) => accepted))
-                ButtonsWidget.primaryButton(
+                PrimaryButton.nextButton(
                   text: "Continuer",
                   onPressed: onContinue,
                   padding: const EdgeInsets.symmetric(

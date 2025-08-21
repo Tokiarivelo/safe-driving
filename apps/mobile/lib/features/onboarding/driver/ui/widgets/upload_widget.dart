@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/gallery_modal.dart';
 
@@ -131,7 +131,7 @@ class UploadWidgetState extends State<UploadWidget> {
           const SizedBox(height: 16),
         ],
         if (widget.buttonText.isNotEmpty)
-          ButtonsWidget.primaryButton(
+          PrimaryButton.primaryButton(
             text: widget.buttonText,
             onPressed: _showPhotoModal,
             fontSize: 16,

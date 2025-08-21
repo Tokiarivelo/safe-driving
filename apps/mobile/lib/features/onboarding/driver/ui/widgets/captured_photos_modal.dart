@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/basic/secondary_button.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/base_photos_modal.dart';
 
 class CapturedPhotosModal extends BasePhotosModal {
@@ -68,7 +68,7 @@ class CapturedPhotosModalState
     if (localImages.isEmpty) {
       return const SizedBox.shrink();
     }
-    return ButtonsWidget.transparentButton(
+    return SecondaryButton.transparentButton(
       text: localImages.length > 1 ? 'Tout supprimer' : 'Supprimer',
       onPressed: showDeleteAllConfirmation,
       fontSize: 14,

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/controls/chips.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/language_buttons.dart';
 
 class UserCommonButton {
   static Widget laterAndActionButtons({
@@ -10,7 +14,7 @@ class UserCommonButton {
     double? fontSize,
     EdgeInsets? padding,
   }) {
-    return ButtonsWidget.laterAndActionButtons(
+    return ButtonRows.laterAndActionButtons(
       onLaterPressed: onLaterPressed,
       onActionPressed: onActionPressed,
       actionText: actionText,
@@ -26,7 +30,7 @@ class UserCommonButton {
     double? fontSize,
     EdgeInsets? padding,
   }) {
-    return ButtonsWidget.nextButton(
+    return PrimaryButton.nextButton(
       text: text,
       onPressed: onPressed,
       fontSize: fontSize ?? 14,
@@ -41,7 +45,7 @@ class UserCommonButton {
     required VoidCallback onDriverPressed,
     double? spacing,
   }) {
-    return ButtonsWidget.roleChoiceButtons(
+    return ButtonRows.roleChoiceButtons(
       onUserPressed: onUserPressed,
       onDriverPressed: onDriverPressed,
       spacing: spacing ?? 50,
@@ -56,7 +60,7 @@ class UserCommonButton {
     Color? activeColor,
     Color? titleColor,
   }) {
-    return ButtonsWidget.customRadio<T>(
+    return SwitchesAndRadios.customRadio<T>(
       title: title,
       value: value,
       groupValue: groupValue,
@@ -73,7 +77,7 @@ class UserCommonButton {
     Color? selectedColor,
     Color? labelColor,
   }) {
-    return ButtonsWidget.customChoiceChip(
+    return Chips.customChoiceChip(
       label: label,
       selected: selected,
       onSelected: onSelected,
@@ -87,7 +91,7 @@ class UserCommonButton {
     required ValueChanged<bool> onChanged,
     Color? activeColor,
   }) {
-    return ButtonsWidget.customSwitch(
+    return SwitchesAndRadios.customSwitch(
       value: value,
       onChanged: onChanged,
       activeColor: activeColor,
@@ -98,7 +102,7 @@ class UserCommonButton {
     required String selectedLanguage,
     required Function(String) onLanguageChanged,
   }) {
-    return ButtonsWidget.languageButtonContainer(
+    return LanguageButtons.languageButtonContainer(
       selectedLanguage: selectedLanguage,
       onLanguageChanged: onLanguageChanged,
     );

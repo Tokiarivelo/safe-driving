@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 
 class StepOneView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -47,7 +47,7 @@ class StepOneView extends StatelessWidget {
           ),
           const SizedBox(height: 32),
           const Spacer(),
-          ButtonsWidget.buttonRow(
+          ButtonRows.buttonRow(
             buttonTitles: ['Plus tard', 'Démarrer'],
             onPressedList: [
               onSkip ?? () {},

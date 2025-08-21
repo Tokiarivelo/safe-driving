@@ -4,7 +4,7 @@ import '../models/driver_onboarding_step_model.dart';
 import '../services/driver_services.dart';
 import '../services/storage_service.dart';
 import '../models/driver_onboarding_data.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/utils/permission_handlers.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class DriverOnboardingViewModel extends ChangeNotifier {
@@ -288,7 +288,7 @@ class DriverOnboardingViewModel extends ChangeNotifier {
 
   // GPS permission handler
   Future<void> handleGpsPermission(BuildContext context) async {
-    final granted = await ButtonsWidget.handleGpsPermission(context);
+    final granted = await PermissionHandlers.handleGpsPermission(context);
     setGpsEnabled(granted);
     if (granted && context.mounted) {
       SnackbarHelper.showSuccess(

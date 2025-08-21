@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import '../../models/user_onboarding_data.dart';
 
 class StepTwoView extends StatelessWidget {
@@ -37,7 +37,7 @@ class StepTwoView extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16),
-        ButtonsWidget.laterAndActionButtons(
+        ButtonRows.laterAndActionButtons(
           onLaterPressed: onLaterPressed,
           onActionPressed: onActionPressed,
           actionText: stepContent.buttonTitles[1],
