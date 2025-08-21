@@ -12,7 +12,7 @@ class AuthScreen extends StatefulWidget {
   State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
   int _currentIndex = 0;
   String? _userEmailForReset;
 
@@ -66,22 +66,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.color1,
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          // Pas d'animation au niveau du container - seulement un fade très subtil
-          return FadeTransition(
-            opacity: Tween<double>(begin: 0.8, end: 1.0).animate(
-              CurvedAnimation(
-                parent: animation,
-                curve: const Interval(0.0, 0.3, curve: Curves.easeOut),
-              ),
-            ),
-            child: child,
-          );
-        },
-        child: _buildAuthWidget(),
-      ),
+      body: _buildAuthWidget(),
     );
   }
 }
