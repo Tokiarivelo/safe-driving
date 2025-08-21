@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
+import 'package:safe_driving/features/onboarding/driver/ui/widgets/modals/policy_modal.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
-import 'package:safe_driving/features/onboarding/driver/ui/widgets/policy_modal.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/specialized/elegant_acceptance_button.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 
@@ -85,7 +85,8 @@ class StepTenView extends StatelessWidget {
                     builder: (context) {
                       return PolicyModal(
                         titleContent: "Politique de Confidentialité",
-                        content: coordinator.legalViewModel.getPrivacyPolicyContent(),
+                        content: coordinator.legalViewModel
+                            .getPrivacyPolicyContent(),
                         onAccept: () {
                           coordinator.legalViewModel.setCguAccepted(1, true);
                         },
@@ -95,7 +96,9 @@ class StepTenView extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 32),
-              if (coordinator.legalViewModel.cguAccepted.every((accepted) => accepted))
+              if (coordinator.legalViewModel.cguAccepted.every(
+                (accepted) => accepted,
+              ))
                 PrimaryButton.nextButton(
                   text: "Continuer",
                   onPressed: onContinue,

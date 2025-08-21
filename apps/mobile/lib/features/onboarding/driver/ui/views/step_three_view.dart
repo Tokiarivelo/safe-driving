@@ -2,9 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
+import 'package:safe_driving/features/onboarding/driver/ui/widgets/specialized/upload_widget.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
-import 'package:safe_driving/features/onboarding/driver/ui/widgets/upload_widget.dart';
 
 class StepThreeView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -64,8 +64,9 @@ class StepThreeView extends StatelessWidget {
                     description:
                         "Téléchargez la face avant de votre carte d'identité",
                     buttonText: "Ajouter un fichier",
-                    onPhotosChanged: (List<File> photos) =>
-                        coordinator.documentUploadViewModel.uploadPhotos(photos, 'carteIdentiteRecto'),
+                    onPhotosChanged: (List<File> photos) => coordinator
+                        .documentUploadViewModel
+                        .uploadPhotos(photos, 'carteIdentiteRecto'),
                   ),
 
                   const SizedBox(height: 16),
@@ -76,8 +77,9 @@ class StepThreeView extends StatelessWidget {
                     description:
                         "Téléchargez la face arrière de votre carte d'identité",
                     buttonText: "Ajouter un fichier",
-                    onPhotosChanged: (List<File> photos) =>
-                        coordinator.documentUploadViewModel.uploadPhotos(photos, 'carteIdentiteVerso'),
+                    onPhotosChanged: (List<File> photos) => coordinator
+                        .documentUploadViewModel
+                        .uploadPhotos(photos, 'carteIdentiteVerso'),
                   ),
 
                   const SizedBox(height: 16),
@@ -87,8 +89,9 @@ class StepThreeView extends StatelessWidget {
                     title: "Permis de conduire",
                     description: "Téléchargez votre permis de conduire valide",
                     buttonText: "Ajouter un fichier",
-                    onPhotosChanged: (List<File> photos) =>
-                        coordinator.documentUploadViewModel.uploadPhotos(photos, 'permisConduire'),
+                    onPhotosChanged: (List<File> photos) => coordinator
+                        .documentUploadViewModel
+                        .uploadPhotos(photos, 'permisConduire'),
                   ),
 
                   const SizedBox(height: 32),

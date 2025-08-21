@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/features/onboarding/driver/ui/widgets/specialized/upload_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
-import 'package:safe_driving/features/onboarding/driver/ui/widgets/upload_widget.dart';
 import 'package:safe_driving/features/onboarding/driver/services/storage_service.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:safe_driving/features/onboarding/driver/ui/widgets/modals/gallery_modal.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/features/onboarding/driver/ui/widgets/gallery_modal.dart';
 
 class UploadWidget extends StatefulWidget {
   final String title;

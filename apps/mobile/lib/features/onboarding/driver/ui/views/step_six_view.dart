@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
+import 'package:safe_driving/features/onboarding/driver/ui/widgets/camera/camera_interface.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
-import 'package:safe_driving/features/onboarding/driver/ui/widgets/camera_interface.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 
 class StepSixView extends StatelessWidget {
@@ -59,7 +59,9 @@ class StepSixView extends StatelessWidget {
                   'Positionnez-vous face à la caméra et assurez-vous que votre visage soit bien visible.',
               onPictureTaken: (imagePath) {
                 if (imagePath != null) {
-                  coordinator.documentUploadViewModel.addCapturedPhoto(File(imagePath));
+                  coordinator.documentUploadViewModel.addCapturedPhoto(
+                    File(imagePath),
+                  );
                 }
               },
             ),
