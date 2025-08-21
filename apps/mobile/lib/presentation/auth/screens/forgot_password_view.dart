@@ -27,16 +27,18 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   }
 
   Future<void> _handleSendCode(String email, String password) async {
-    // Dans ce cas, nous n'utilisons que l'email (password sera vide)
     final emailToUse = email.trim();
-    
+
     if (emailToUse.isEmpty) {
       SnackbarHelper.showError(context, "Veuillez saisir votre adresse email");
       return;
     }
-    
+
     if (!RegexFormatter.isValidEmail(emailToUse)) {
-      SnackbarHelper.showError(context, "Veuillez saisir une adresse email valide");
+      SnackbarHelper.showError(
+        context,
+        "Veuillez saisir une adresse email valide",
+      );
       return;
     }
 
@@ -46,7 +48,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       context,
       'Un code de réinitialisation a été envoyé à votre adresse email',
     );
-    
+
     if (widget.onSendCodeSuccess != null) {
       widget.onSendCodeSuccess!(emailToUse);
     }
@@ -57,7 +59,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     return AuthWidget(
       isLogin: false,
       isForgotPassword: true,
-      onSignIn: _handleSendCode, // Réutilise la fonction pour l'envoi de code
+      onSignIn: _handleSendCode,
       onNavigateToLogin: widget.onNavigateToLogin,
     );
   }

@@ -44,7 +44,6 @@ class ActionButtonBuilder {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // Logo will be imported from logo_builder
         SizedBox(height: isSmallScreen ? 10 : 15),
         inputFields,
         SizedBox(height: isSmallScreen ? 12 : 16),
@@ -62,14 +61,10 @@ class ActionButtonBuilder {
             ),
           ),
           SizedBox(height: isSmallScreen ? 10 : 15),
-          // Social buttons will be imported from social_buttons_builder
+
           SizedBox(height: isSmallScreen ? 15 : 20),
-          // Navigation links will be imported from navigation_links_builder
         ],
-        if (isForgotPassword) ...[
-          const SizedBox(height: 10),
-          // Back to login button will be imported from navigation_links_builder
-        ],
+        if (isForgotPassword) ...[const SizedBox(height: 10)],
       ],
     );
   }
