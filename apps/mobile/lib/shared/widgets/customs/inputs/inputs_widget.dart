@@ -16,7 +16,6 @@ class CustomInputField extends StatefulWidget {
   final EdgeInsets? padding;
   final Color? backgroundColor;
 
-  // Ajout de validateurs personnalisés
   final String? Function(String?)? validator;
 
   const CustomInputField({
@@ -83,7 +82,8 @@ class CustomInputFieldState extends State<CustomInputField> {
           Container(
             decoration: widget.showLabel
                 ? BoxDecoration(
-                    color: widget.backgroundColor ?? AppColors.softBackgroundColor,
+                    color:
+                        widget.backgroundColor ?? AppColors.softBackgroundColor,
                     borderRadius: BorderRadius.circular(2),
                     border: Border.all(
                       color: AppColors.borderInputField.withAlpha(100),

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:safe_driving/features/authentication/models/auth_step_content_model.dart';
 import '../../../../../../core/constants/colors/colors.dart';
+import 'logo_builder.dart';
+import 'social_buttons_builder.dart';
+import 'navigation_links_builder.dart';
 
 class ActionButtonBuilder {
   static Widget buildActionButton({
@@ -31,7 +35,7 @@ class ActionButtonBuilder {
     required bool isLogin,
     required bool isForgotPassword,
     required bool isSmallScreen,
-    required dynamic stepData,
+    required AuthStepContent stepData,
     required VoidCallback onButtonPress,
     required VoidCallback? onGoogleSignIn,
     required VoidCallback? onFacebookSignIn,
@@ -44,6 +48,7 @@ class ActionButtonBuilder {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        LogoBuilder.buildLogo(isSmallScreen: isSmallScreen),
         SizedBox(height: isSmallScreen ? 10 : 15),
         inputFields,
         SizedBox(height: isSmallScreen ? 12 : 16),
@@ -61,10 +66,23 @@ class ActionButtonBuilder {
             ),
           ),
           SizedBox(height: isSmallScreen ? 10 : 15),
-
+          SocialButtonsBuilder.buildSocialButtons(
+            onGoogleSignIn: onGoogleSignIn,
+            onFacebookSignIn: onFacebookSignIn,
+          ),
           SizedBox(height: isSmallScreen ? 15 : 20),
+          NavigationLinksBuilder.buildNavigationLink(
+            stepData: stepData,
+            onTap: isLogin ? onNavigateToRegister : onNavigateToLogin,
+          ),
         ],
-        if (isForgotPassword) ...[const SizedBox(height: 10)],
+        if (isForgotPassword) ...[
+          const SizedBox(height: 10),
+          NavigationLinksBuilder.buildBackToLoginButton(
+            backText: stepData.backToLoginText,
+            onTap: onNavigateToLogin,
+          ),
+        ],
       ],
     );
   }

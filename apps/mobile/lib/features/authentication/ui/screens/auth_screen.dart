@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/colors/colors.dart';
+import '../../../../shared/widgets/customs/animations/animation_widget.dart';
 import 'sign_in_screen.dart';
 import 'sign_up_screen.dart';
 import 'password/forgot_password_view.dart';
@@ -66,7 +67,9 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.color1,
-      body: _buildAuthWidget(),
+      body: slideRightSmoothSwitcher(
+        child: _buildAuthWidget(),
+      ),
     );
   }
 }

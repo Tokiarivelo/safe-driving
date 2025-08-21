@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../models/auth_models.dart';
+import '../../../../models/auth_step_content_model.dart';
 import '../../../../../../core/constants/colors/colors.dart';
 
 class HeaderBuilder {
