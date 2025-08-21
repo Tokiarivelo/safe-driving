@@ -11,7 +11,7 @@ class UploadWidget extends StatefulWidget {
   final String? addMorePhotosText;
   final bool hasPhotoAdded;
   final VoidCallback? onTap;
-  final Function(List<dynamic>)? onPhotosChanged;
+  final Function(List<File>)? onPhotosChanged;
 
   const UploadWidget({
     super.key,

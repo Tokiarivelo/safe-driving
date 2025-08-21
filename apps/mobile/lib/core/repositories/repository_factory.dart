@@ -1,5 +1,6 @@
 import 'package:safe_driving/features/authentication/repositories/user_repository.dart';
-import 'package:safe_driving/features/onboarding/driver/repository/driver_repository.dart';
+import 'package:safe_driving/features/onboarding/driver/repositories/driver_repository.dart';
+import 'package:safe_driving/features/onboarding/driver/data/driver_data_source_graphql.dart';
 import 'package:safe_driving/api/graphql/graphql_client.dart';
 
 class RepositoryFactory {
@@ -20,7 +21,9 @@ class RepositoryFactory {
   }
 
   DriverRepository getDriverRepository() {
-    _driverRepository ??= DriverRepository();
+    _driverRepository ??= DriverRepository(
+      DriverDataSourceGraphQL(GraphQLClientWrapper.instance),
+    );
     return _driverRepository!;
   }
 

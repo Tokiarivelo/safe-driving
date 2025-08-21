@@ -1,13 +1,48 @@
 import '../models/driver_onboarding_data.dart';
+import '../data/driver_data_source_interface.dart';
+import '../../../../core/repositories/repository_interface.dart';
 
-class DriverRepository {
+class DriverRepository implements RepositoryInterface {
+  final IDriverDataSource _dataSource;
+  
+  DriverRepository(this._dataSource);
+
+  @override
+  Future<void> initialize() async {
+    // Repository initialization logic if needed
+  }
+
+  @override
+  Future<void> dispose() async {
+    // Repository cleanup logic if needed
+  }
+
+  @override
+  Future<bool> isConnected() async {
+    return true;
+  }
+
+  @override
+  Future<bool> testConnection() async {
+    return true;
+  }
+
   Future<void> savePersonalInfo({
     required String userId,
     required String name,
     required String email,
     required String phone,
   }) async {
-    throw UnimplementedError('savePersonalInfo not implemented yet');
+    try {
+      await _dataSource.savePersonalInfo(
+        userId: userId,
+        name: name,
+        email: email,
+        phone: phone,
+      );
+    } catch (e) {
+      throw Exception('Failed to save personal info: $e');
+    }
   }
 
   Future<void> saveVehicleInfo({
@@ -18,7 +53,18 @@ class DriverRepository {
     required String couleur,
     required int annee,
   }) async {
-    throw UnimplementedError('saveVehicleInfo not implemented yet');
+    try {
+      await _dataSource.saveVehicleInfo(
+        userId: userId,
+        marque: marque,
+        modele: modele,
+        immatriculation: immatriculation,
+        couleur: couleur,
+        annee: annee,
+      );
+    } catch (e) {
+      throw Exception('Failed to save vehicle info: $e');
+    }
   }
 
   Future<String> uploadDocument({
@@ -27,34 +73,70 @@ class DriverRepository {
     required String filePath,
     required String side,
   }) async {
-    throw UnimplementedError('uploadDocument not implemented yet');
+    try {
+      final result = await _dataSource.uploadDocument(
+        userId: userId,
+        documentType: documentType,
+        filePath: filePath,
+        side: side,
+      );
+      return result['data']['id'] ?? '';
+    } catch (e) {
+      throw Exception('Failed to upload document: $e');
+    }
   }
 
   Future<String> uploadSelfie({
     required String userId,
     required String filePath,
   }) async {
-    throw UnimplementedError('uploadSelfie not implemented yet');
+    try {
+      final result = await _dataSource.uploadSelfie(
+        userId: userId,
+        filePath: filePath,
+      );
+      return result['data']['id'] ?? '';
+    } catch (e) {
+      throw Exception('Failed to upload selfie: $e');
+    }
   }
 
   Future<void> saveNotificationPreferences({
     required String userId,
     required Map<String, bool> preferences,
   }) async {
-    throw UnimplementedError('saveNotificationPreferences not implemented yet');
+    try {
+      await _dataSource.saveNotificationPreferences(
+        userId: userId,
+        preferences: preferences,
+      );
+    } catch (e) {
+      throw Exception('Failed to save notification preferences: $e');
+    }
   }
 
-  /// Sauvegarde les préférences de thème et langue
   Future<void> saveAppPreferences({
     required String userId,
     required String theme,
     required String language,
   }) async {
-    throw UnimplementedError('saveAppPreferences not implemented yet');
+    try {
+      await _dataSource.saveAppPreferences(
+        userId: userId,
+        theme: theme,
+        language: language,
+      );
+    } catch (e) {
+      throw Exception('Failed to save app preferences: $e');
+    }
   }
 
   Future<void> completeDriverOnboarding(String userId) async {
-    throw UnimplementedError('completeDriverOnboarding not implemented yet');
+    try {
+      await _dataSource.completeDriverOnboarding(userId);
+    } catch (e) {
+      throw Exception('Failed to complete driver onboarding: $e');
+    }
   }
 
   Future<DriverOnboardingData?> getDriverOnboardingData(String userId) async {

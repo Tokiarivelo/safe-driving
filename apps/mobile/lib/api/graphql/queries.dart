@@ -108,3 +108,71 @@ query GetCurrentUser {
   }
 }
 ''';
+
+// Driver onboarding queries
+const String driverFragment = r'''
+fragment DriverFragment on Driver {
+  id
+  userId
+  personalInfo {
+    name
+    email
+    phone
+  }
+  vehicleInfo {
+    marque
+    modele
+    immatriculation
+    couleur
+    annee
+    places
+    typeVehicule
+  }
+  preferences {
+    gpsEnabled
+    notifications
+    theme
+    language
+  }
+  status
+  currentStep
+  completedAt
+  createdAt
+  updatedAt
+}
+''';
+
+const String getDriverOnboardingDataQuery = r'''
+query GetDriverOnboardingData($userId: String!) {
+  getDriverOnboardingData(userId: $userId) {
+    ...DriverFragment
+  }
+}
+''' + driverFragment;
+
+const String getDriverDocumentsQuery = r'''
+query GetDriverDocuments($userId: String!) {
+  getDriverDocuments(userId: $userId) {
+    id
+    type
+    filePath
+    side
+    status
+    uploadedAt
+    validatedAt
+    rejectionReason
+  }
+}
+''';
+
+const String getDriverStatsQuery = r'''
+query GetDriverStats($userId: String!) {
+  getDriverStats(userId: $userId) {
+    totalTrips
+    totalDistance
+    averageRating
+    joinedAt
+    lastActivity
+  }
+}
+''';

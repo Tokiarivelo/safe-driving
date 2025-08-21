@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
@@ -63,7 +64,7 @@ class StepThreeView extends StatelessWidget {
                     description:
                         "Téléchargez la face avant de votre carte d'identité",
                     buttonText: "Ajouter un fichier",
-                    onPhotosChanged: (photos) =>
+                    onPhotosChanged: (List<File> photos) =>
                         viewModel.handleIdentityRectoPhotos(photos),
                   ),
 
@@ -75,7 +76,7 @@ class StepThreeView extends StatelessWidget {
                     description:
                         "Téléchargez la face arrière de votre carte d'identité",
                     buttonText: "Ajouter un fichier",
-                    onPhotosChanged: (photos) =>
+                    onPhotosChanged: (List<File> photos) =>
                         viewModel.handleIdentityVersoPhotos(photos),
                   ),
 
@@ -86,7 +87,7 @@ class StepThreeView extends StatelessWidget {
                     title: "Permis de conduire",
                     description: "Téléchargez votre permis de conduire valide",
                     buttonText: "Ajouter un fichier",
-                    onPhotosChanged: (photos) =>
+                    onPhotosChanged: (List<File> photos) =>
                         viewModel.handleDrivingLicensePhotos(photos),
                   ),
 

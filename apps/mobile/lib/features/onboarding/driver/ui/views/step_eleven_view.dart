@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
+import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_summary_view_model.dart';
+import 'package:safe_driving/shared/state_management/service_locator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 
 class StepElevenView extends StatelessWidget {
@@ -20,87 +23,19 @@ class StepElevenView extends StatelessWidget {
     this.onSkip,
   });
 
-  IconData _getFieldIcon(String fieldName) {
-    switch (fieldName) {
-      case 'Nom':
-        return Icons.person;
-      case 'E-mail':
-        return Icons.email;
-      case 'Téléphone':
-        return Icons.phone;
-      case 'Photos uploadées':
-        return Icons.photo_library;
-      case 'Type':
-        return Icons.local_taxi;
-      case 'Marque':
-        return Icons.car_rental;
-      case 'Modèle':
-        return Icons.directions_car;
-      case 'Immatriculation':
-        return Icons.confirmation_number;
-      case 'Nombre de places':
-        return Icons.airline_seat_recline_normal;
-      case 'GPS':
-        return Icons.location_on;
-      case 'Notifications':
-        return Icons.notifications;
-      case 'Thème':
-        return Icons.palette;
-      case 'Langue':
-        return Icons.language;
-      default:
-        return Icons.info;
-    }
-  }
-
-  IconData _getSectionIcon(String sectionTitle) {
-    switch (sectionTitle) {
-      case 'Infos personnelles':
-        return Icons.person;
-      case 'Véhicule':
-        return Icons.directions_car;
-      case 'GPS & Notifications':
-        return Icons.settings;
-      case 'Préférences':
-        return Icons.tune;
-      default:
-        return Icons.info;
-    }
-  }
-
-  int _getStepIndexForField(String fieldName) {
-    switch (fieldName) {
-      case 'Nom':
-      case 'E-mail':
-      case 'Téléphone':
-        return 1;
-      case 'Type':
-      case 'Marque':
-      case 'Modèle':
-      case 'Immatriculation':
-      case 'Nombre de places':
-        return 3;
-      case 'GPS':
-        return 6;
-      case 'Notifications':
-        return 7;
-      case 'Thème':
-      case 'Langue':
-        return 8;
-      default:
-        return 0;
-    }
-  }
-
-  Widget _buildResumeElement(String element, String sectionTitle) {
+  Widget _buildResumeElement(
+    DriverSummaryViewModel summaryViewModel,
+    String element,
+    String sectionTitle,
+  ) {
     if (element == 'Photos uploadées') {
-      final totalPhotos = viewModel.getTotalUploadedPhotosCount();
+      final totalPhotos = summaryViewModel.getTotalUploadedPhotosCount();
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: Row(
           children: [
             Icon(
-              _getFieldIcon(element),
+              summaryViewModel.getFieldIcon(element),
               size: 16,
               color: AppColors.fillButtonBackground,
             ),
@@ -120,15 +55,16 @@ class StepElevenView extends StatelessWidget {
       );
     }
 
-    final fieldValue = viewModel.getFieldValue(element);
-    final stepIndex = _getStepIndexForField(element);
+    final summaryData = viewModel.getSummaryData();
+    final fieldValue = summaryViewModel.getFieldValue(element, summaryData);
+    final stepIndex = summaryViewModel.getStepIndexForField(element);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         children: [
           Icon(
-            _getFieldIcon(element),
+            summaryViewModel.getFieldIcon(element),
             size: 16,
             color: AppColors.fillButtonBackground,
           ),
@@ -190,124 +126,188 @@ class StepElevenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resumeData = [
-      {
-        "titre": "Infos personnelles",
-        "elements": ["Nom", "E-mail", "Téléphone", "Photos uploadées"],
-      },
-      {
-        "titre": "Véhicule",
-        "elements": [
-          "Type",
-          "Marque",
-          "Modèle",
-          "Immatriculation",
-          "Nombre de places",
-          "Photos uploadées",
-        ],
-      },
-      {
-        "titre": "GPS & Notifications",
-        "elements": ["GPS", "Notifications"],
-      },
-      {
-        "titre": "Préférences",
-        "elements": ["Thème", "Langue"],
-      },
-    ];
-    
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 20),
-          Text(
-            step.title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
-              fontFamily: 'Inder',
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            step.description ?? '',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.textColor.withAlpha(180),
-              height: 1.5,
-              fontFamily: 'Inder',
-            ),
-          ),
-          const SizedBox(height: 24),
-          
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: resumeData.map<Widget>((section) {
-                  final titre = section['titre'] as String;
-                  final elements = section['elements'] as List<String>;
+    return ChangeNotifierProvider(
+      create: (context) =>
+          ServiceLocator.instance.get<DriverSummaryViewModel>(),
+      child: Consumer<DriverSummaryViewModel>(
+        builder: (context, summaryViewModel, child) {
+          final resumeData = summaryViewModel.getResumeData();
 
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.inputTextBackground.withAlpha(50),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: AppColors.fillButtonBackground.withAlpha(100),
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              _getSectionIcon(titre),
-                              size: 20,
-                              color: AppColors.fillButtonBackground,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              titre,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.textColor,
-                                fontFamily: 'Inder',
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        ...elements.map<Widget>((element) {
-                          return _buildResumeElement(element, titre);
-                        }),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              ),
+          return Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                _buildHeader(),
+                const SizedBox(height: 24),
+                _buildSummaryContent(summaryViewModel, resumeData),
+                const SizedBox(height: 16),
+                _buildActionButton(summaryViewModel),
+                _buildErrorMessage(summaryViewModel),
+              ],
             ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Column(
+      children: [
+        Text(
+          step.title,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textColor,
+            fontFamily: 'Inder',
           ),
-          
-          const SizedBox(height: 16),
-          
-          PrimaryButton.primaryButton(
-            text: "Valider",
-            onPressed: onContinue,
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          step.description ?? '',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            color: AppColors.textColor.withAlpha(180),
+            height: 1.5,
+            fontFamily: 'Inder',
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSummaryContent(
+    DriverSummaryViewModel summaryViewModel,
+    List<Map<String, dynamic>> resumeData,
+  ) {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: resumeData.map<Widget>((section) {
+            final titre = section['titre'] as String;
+            final elements = section['elements'] as List<String>;
+
+            return _buildSectionContainer(summaryViewModel, titre, elements);
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionContainer(
+    DriverSummaryViewModel summaryViewModel,
+    String titre,
+    List<String> elements,
+  ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.inputTextBackground.withAlpha(50),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.fillButtonBackground.withAlpha(100),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader(summaryViewModel, titre),
+          const SizedBox(height: 12),
+          ...elements.map<Widget>((element) {
+            return _buildResumeElement(summaryViewModel, element, titre);
+          }),
         ],
       ),
     );
+  }
+
+  Widget _buildSectionHeader(
+    DriverSummaryViewModel summaryViewModel,
+    String titre,
+  ) {
+    return Row(
+      children: [
+        Icon(
+          summaryViewModel.getSectionIcon(titre),
+          size: 20,
+          color: AppColors.fillButtonBackground,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          titre,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textColor,
+            fontFamily: 'Inder',
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionButton(DriverSummaryViewModel summaryViewModel) {
+    if (summaryViewModel.isLoading) {
+      return const CircularProgressIndicator();
+    }
+
+    return PrimaryButton.primaryButton(
+      text: "Valider",
+      onPressed: () => _handleValidation(summaryViewModel),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+    );
+  }
+
+  Widget _buildErrorMessage(DriverSummaryViewModel summaryViewModel) {
+    if (summaryViewModel.errorMessage == null) {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Text(
+        summaryViewModel.errorMessage!,
+        style: const TextStyle(color: Colors.red, fontSize: 14),
+      ),
+    );
+  }
+
+  Future<void> _handleValidation(
+    DriverSummaryViewModel summaryViewModel,
+  ) async {
+    try {
+      final data = _prepareOnboardingData();
+
+      if (summaryViewModel.validateAllData(data)) {
+        await summaryViewModel.completeOnboarding(data);
+        onContinue();
+      }
+    } catch (e) {
+      // ViewModel
+    }
+  }
+
+  Map<String, dynamic> _prepareOnboardingData() {
+    return {
+      'personal_info': {
+        'name': viewModel.getController('name').text,
+        'email': viewModel.getController('email').text,
+        'phone': viewModel.getController('phone').text,
+      },
+      'vehicle_info': {
+        'marque': viewModel.getController('marque').text,
+        'modele': viewModel.getController('modele').text,
+        'immatriculation': viewModel.getController('immatriculation').text,
+      },
+    };
   }
 }

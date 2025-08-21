@@ -325,3 +325,123 @@ mutation CompleteOnboarding($appState: AppStateInput!) {
   }
 }
 ''';
+
+// Driver onboarding mutations
+const String saveDriverPersonalInfoMutation = r'''
+mutation SaveDriverPersonalInfo($input: DriverPersonalInfoInput!) {
+  saveDriverPersonalInfo(input: $input) {
+    success
+    message
+    data {
+      id
+      name
+      email
+      phone
+    }
+  }
+}
+''';
+
+const String saveDriverVehicleInfoMutation = r'''
+mutation SaveDriverVehicleInfo($input: DriverVehicleInfoInput!) {
+  saveDriverVehicleInfo(input: $input) {
+    success
+    message
+    data {
+      id
+      marque
+      modele
+      immatriculation
+      couleur
+      annee
+      places
+      typeVehicule
+    }
+  }
+}
+''';
+
+const String uploadDriverDocumentMutation = r'''
+mutation UploadDriverDocument($input: DocumentUploadInput!) {
+  uploadDriverDocument(input: $input) {
+    success
+    message
+    data {
+      id
+      documentType
+      filePath
+      side
+      uploadedAt
+    }
+  }
+}
+''';
+
+const String uploadDriverSelfieMutation = r'''
+mutation UploadDriverSelfie($input: SelfieUploadInput!) {
+  uploadDriverSelfie(input: $input) {
+    success
+    message
+    data {
+      id
+      filePath
+      uploadedAt
+    }
+  }
+}
+''';
+
+const String saveDriverNotificationPreferencesMutation = r'''
+mutation SaveDriverNotificationPreferences($input: NotificationPreferencesInput!) {
+  saveDriverNotificationPreferences(input: $input) {
+    success
+    message
+    data {
+      userId
+      preferences
+    }
+  }
+}
+''';
+
+const String saveDriverAppPreferencesMutation = r'''
+mutation SaveDriverAppPreferences($input: AppPreferencesInput!) {
+  saveDriverAppPreferences(input: $input) {
+    success
+    message
+    data {
+      userId
+      theme
+      language
+    }
+  }
+}
+''';
+
+const String completeDriverOnboardingMutation = r'''
+mutation CompleteDriverOnboarding($userId: String!) {
+  completeDriverOnboarding(userId: $userId) {
+    success
+    message
+    data {
+      userId
+      completedAt
+      status
+    }
+  }
+}
+''';
+
+const String updateDriverOnboardingStepMutation = r'''
+mutation UpdateDriverOnboardingStep($input: OnboardingStepInput!) {
+  updateDriverOnboardingStep(input: $input) {
+    success
+    message
+    data {
+      userId
+      currentStep
+      updatedAt
+    }
+  }
+}
+''';

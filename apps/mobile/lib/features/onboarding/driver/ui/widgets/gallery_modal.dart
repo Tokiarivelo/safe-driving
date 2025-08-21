@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/secondary_button.dart';
-import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/camera_interface.dart';
 
 class PhotoManagementModal extends StatefulWidget {
