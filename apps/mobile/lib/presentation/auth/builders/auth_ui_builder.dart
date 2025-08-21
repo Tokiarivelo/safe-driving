@@ -6,7 +6,7 @@ import '../../../shared/widgets/customs/inputs/inputs_widget.dart';
 
 class AuthUIBuilder {
   static Widget buildHeaderText({
-    required StepAuthContent stepData,
+    required AuthStepContent stepData,
     required bool isForgotPassword,
   }) {
     return Column(
@@ -111,7 +111,7 @@ class AuthUIBuilder {
   }
 
   static Widget buildNavigationLink({
-    required StepAuthContent stepData,
+    required AuthStepContent stepData,
     required VoidCallback? onTap,
   }) {
     return Row(
@@ -241,7 +241,7 @@ class AuthUIBuilder {
     required bool isLogin,
     required bool isForgotPassword,
     required bool isSmallScreen,
-    required StepAuthContent stepData,
+    required AuthStepContent stepData,
     required VoidCallback onButtonPress,
     required VoidCallback? onGoogleSignIn,
     required VoidCallback? onFacebookSignIn,
@@ -333,7 +333,7 @@ class AuthUIBuilder {
     );
   }
 
-  static StepAuthContent getStepData({
+  static AuthStepContent getStepData({
     required bool isLogin,
     required bool isForgotPassword,
     bool isResetPassword = false,
@@ -346,6 +346,6 @@ class AuthUIBuilder {
         ? 'login'
         : 'register';
 
-    return StepAuthDataText.stepContents[stepKey]!;
+    return AuthStepContentMap.stepContents[stepKey]!;
   }
 }

@@ -377,14 +377,14 @@ class AuthWidgetState extends State<AuthWidget> {
     }
   }
 
-  StepAuthContent _getCurrentStepData() {
+  AuthStepContent _getCurrentStepData() {
     final String stepKey = widget.isForgotPassword
         ? 'forgotPassword'
         : widget.isLogin
         ? 'login'
         : 'register';
 
-    return StepAuthDataText.stepContents[stepKey]!;
+    return AuthStepContentMap.stepContents[stepKey]!;
   }
 
   void _showErrorSnackBar(String message) {
@@ -397,7 +397,7 @@ class _AnimatedAuthContent extends StatefulWidget {
   final bool isLogin;
   final bool isForgotPassword;
   final bool isSmallScreen;
-  final StepAuthContent stepData;
+  final AuthStepContent stepData;
   final VoidCallback onButtonPress;
   final VoidCallback? onGoogleSignIn;
   final VoidCallback? onFacebookSignIn;
