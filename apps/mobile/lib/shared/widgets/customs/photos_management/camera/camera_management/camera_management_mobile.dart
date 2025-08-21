@@ -80,6 +80,29 @@ class CameraManagementMobileState extends State<PlatformCameraManagement> {
     }
   }
 
+  Widget _buildDocumentGuideOverlay() {
+    return Center(
+      child: Container(
+        width: 350,
+        height: 300,
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.fillButtonBackground, width: 3),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Container(
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: AppColors.fillButtonBackground.withValues(alpha: 0.5),
+              width: 0.2,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void dispose() {
     _mobileController?.dispose();
@@ -101,7 +124,7 @@ class CameraManagementMobileState extends State<PlatformCameraManagement> {
       );
     }
     return SizedBox(
-      height: 400,
+      height: 350,
       child: Column(
         children: [
           Expanded(
@@ -118,13 +141,18 @@ class CameraManagementMobileState extends State<PlatformCameraManagement> {
                     });
                     return const Center(child: CircularProgressIndicator());
                   }
-                  return CameraPreview(_mobileController!);
+                  return Stack(
+                    children: [
+                      CameraPreview(_mobileController!),
+                      _buildDocumentGuideOverlay(),
+                    ],
+                  );
                 }
                 return const Center(child: CircularProgressIndicator());
               },
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           Container(
             width: 100,
             height: 100,

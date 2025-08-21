@@ -74,6 +74,29 @@ class CameraManagementWebState extends State<PlatformCameraManagement> {
     widget.onPictureTaken(dataUrl);
   }
 
+  Widget _buildDocumentGuideOverlay() {
+    return Center(
+      child: Container(
+        width: 350,
+        height: 300,
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.fillButtonBackground, width: 3),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Container(
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: AppColors.fillButtonBackground.withOpacity(0.5),
+              width: 0.2,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void dispose() {
     _mediaStream?.getTracks().forEach((t) => t.stop());
@@ -89,11 +112,18 @@ class CameraManagementWebState extends State<PlatformCameraManagement> {
       return const Center(child: CircularProgressIndicator());
     }
     return SizedBox(
-      height: 400,
+      height: 350,
       child: Column(
         children: [
-          Expanded(child: HtmlElementView(viewType: _viewType)),
-          const SizedBox(height: 16),
+          Expanded(
+            child: Stack(
+              children: [
+                HtmlElementView(viewType: _viewType),
+                _buildDocumentGuideOverlay(),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
           Container(
             width: 100,
             height: 100,

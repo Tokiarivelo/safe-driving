@@ -8,7 +8,7 @@ import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart'
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/upload/upload_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
-import 'package:safe_driving/shared/widgets/customs/photos_management/camera/camera_management.dart';
+import 'package:safe_driving/shared/widgets/customs/photos_management/camera/camera_management/camera_management.dart';
 
 class DriverInteractiveMenuWidget extends StatefulWidget {
   const DriverInteractiveMenuWidget({super.key});
@@ -93,7 +93,7 @@ class DriverInteractiveMenuWidgetState
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               isLastButtonPrimary: true,
               spacing: 8,
-              buttonPadding: const EdgeInsets.symmetric(vertical: 16),
+              buttonPadding: const EdgeInsets.symmetric(vertical: 20),
               fontSize: 16,
             ),
         ],

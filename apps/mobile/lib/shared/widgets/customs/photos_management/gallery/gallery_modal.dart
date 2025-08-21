@@ -3,11 +3,10 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:photo_view/photo_view_gallery.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
+import 'package:safe_driving/shared/widgets/customs/photos_management/camera/camera_interface/camera_interface.dart';
 
 class PhotoManagementModal extends StatefulWidget {
   final List<File> selectedImages;
@@ -34,7 +33,6 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     _localImages = List.from(widget.selectedImages);
   }
 
-  //modal UI
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -63,7 +61,6 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     );
   }
 
-  // Builds the header with title and close button
   Widget _buildHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,7 +82,6 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     );
   }
 
-  // Displays message when no photos are selected
   Widget _buildEmptyState() {
     return Center(
       child: Column(
@@ -120,7 +116,6 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     );
   }
 
-  // Builds the photo gallery view
   Widget _buildGallery() {
     return Stack(
       children: [
@@ -146,7 +141,6 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     );
   }
 
-  // Page indicator for multiple photos
   Widget _buildPageIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -167,7 +161,6 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     );
   }
 
-  // Action buttons for managing photos
   Widget _buildActionButtons() {
     return Row(
       children: [
@@ -176,7 +169,7 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
             text: 'Galerie',
             onPressed: () => _pickImage(ImageSource.gallery),
             fontSize: 14,
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 16),
             icon: Icon(Icons.photo_library, size: 18, color: AppColors.light),
           ),
         ),
@@ -184,9 +177,9 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
         Expanded(
           child: ButtonsWidget.secondaryButton(
             text: 'Caméra',
-            onPressed: () => _pickImage(ImageSource.camera),
+            onPressed: () => _showCameraInterface(),
             fontSize: 14,
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 16),
             icon: Icon(
               Icons.camera_alt,
               size: 18,
@@ -211,7 +204,6 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     );
   }
 
-  // Picks an image from a specified source
   Future<void> _pickImage(ImageSource source) async {
     try {
       final pickedFile = await ImagePicker().pickImage(
@@ -240,7 +232,6 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     }
   }
 
-  // Deletes an image at the given index
   void _deleteImageAt(int index) {
     if (index >= 0 && index < _localImages.length) {
       setState(() {
@@ -255,7 +246,6 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     }
   }
 
-  // Shows confirmation dialog for deleting all images
   void _showDeleteAllConfirmation() {
     showDialog(
       context: context,
@@ -286,7 +276,6 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     );
   }
 
-  // Deletes all selected images
   void _deleteAllImages() {
     setState(() {
       _localImages.clear();
@@ -295,7 +284,31 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     widget.onImagesChanged(_localImages);
   }
 
-  // Builds web-compatible gallery (for webview)
+  void _showCameraInterface() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => CameraInterface(
+        onPictureTaken: (imagePath) {
+          if (imagePath != null) {
+            setState(() {
+              _localImages.add(File(imagePath));
+            });
+            widget.onImagesChanged(_localImages);
+            Navigator.of(context).pop();
+            SnackbarHelper.showSuccess(context, 'Photo prise avec succès');
+          } else {
+            SnackbarHelper.showError(
+              context,
+              'Erreur lors de la prise de photo',
+            );
+          }
+        },
+      ),
+    );
+  }
+
   Widget _buildWebGallery() {
     return Container(
       color: AppColors.softBackgroundColor,
@@ -365,75 +378,58 @@ class PhotoManagementModalState extends State<PhotoManagementModal> {
     );
   }
 
-  // Builds mobile gallery with PhotoView
   Widget _buildMobileGallery() {
-    return PhotoViewGallery.builder(
-      itemCount: _localImages.length,
-      builder: (context, index) {
-        return PhotoViewGalleryPageOptions(
-          imageProvider: FileImage(_localImages[index]),
-          initialScale: PhotoViewComputedScale.contained,
-          minScale: PhotoViewComputedScale.contained * 0.8,
-          maxScale: PhotoViewComputedScale.covered * 2.0,
-          heroAttributes: PhotoViewHeroAttributes(tag: 'photo_$index'),
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              color: AppColors.softBackgroundColor,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.broken_image,
-                      size: 64,
-                      color: AppColors.textColor.withValues(alpha: 0.5),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Erreur de chargement',
-                      style: TextStyle(
-                        color: AppColors.textColor.withValues(alpha: 0.7),
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-      scrollPhysics: const BouncingScrollPhysics(),
-      backgroundDecoration: BoxDecoration(color: AppColors.softBackgroundColor),
-      pageController: _pageController,
-      onPageChanged: (index) {
-        setState(() {
-          _currentIndex = index;
-        });
-      },
-      loadingBuilder: (context, event) {
-        if (event == null) {
+    return Container(
+      color: AppColors.softBackgroundColor,
+      child: PageView.builder(
+        controller: _pageController,
+        itemCount: _localImages.length,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        itemBuilder: (context, index) {
           return Container(
             color: AppColors.softBackgroundColor,
             child: Center(
-              child: CircularProgressIndicator(
-                color: AppColors.fillButtonBackground,
+              child: Image.file(
+                _localImages[index],
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.broken_image,
+                        size: 64,
+                        color: AppColors.textColor.withValues(alpha: 0.5),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Erreur de chargement image',
+                        style: TextStyle(
+                          color: AppColors.textColor.withValues(alpha: 0.7),
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Path: ${_localImages[index].path}',
+                        style: TextStyle(
+                          color: AppColors.textColor.withValues(alpha: 0.5),
+                          fontSize: 10,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           );
-        }
-        final value =
-            event.cumulativeBytesLoaded / (event.expectedTotalBytes ?? 1);
-        return Container(
-          color: AppColors.softBackgroundColor,
-          child: Center(
-            child: CircularProgressIndicator(
-              value: value,
-              color: AppColors.fillButtonBackground,
-            ),
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 

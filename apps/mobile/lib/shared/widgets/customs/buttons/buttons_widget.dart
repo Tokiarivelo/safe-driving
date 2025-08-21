@@ -22,7 +22,7 @@ class ButtonsWidget {
         backgroundColor: backgroundColor ?? AppColors.fillButtonBackground,
         foregroundColor: textColor ?? AppColors.light,
         elevation: elevation ?? 6,
-        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: 20),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius ?? 11),
         ),
@@ -74,7 +74,7 @@ class ButtonsWidget {
         side: BorderSide(
           color: borderColor ?? AppColors.buttonWithoutBackGround,
         ),
-        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: 20),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius ?? 11),
         ),
@@ -121,9 +121,10 @@ class ButtonsWidget {
         backgroundColor: AppColors.light,
         foregroundColor: textColor ?? AppColors.buttonWithoutBackGround,
         elevation: elevation,
-        shadowColor: AppColors.dark,
+        // shadowColor: AppColors.dark,
         side: BorderSide(
           color: borderColor ?? AppColors.buttonWithoutBackGround,
+          width: 0.2,
         ),
         padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(
@@ -202,7 +203,7 @@ class ButtonsWidget {
             onPressed: onUserPressed,
             fontSize: 10,
             borderRadius: 2,
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 20),
           ),
         ),
         SizedBox(width: spacing ?? 50),
@@ -212,7 +213,7 @@ class ButtonsWidget {
             onPressed: onDriverPressed,
             fontSize: 10,
             borderRadius: 2,
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 20),
           ),
         ),
       ],
@@ -487,7 +488,9 @@ class ButtonsWidget {
     if (!serviceEnabled) {
       if (context.mounted) {
         SnackbarHelper.showError(
-            context, 'Les services de localisation sont désactivés. Veuillez les activer.');
+          context,
+          'Les services de localisation sont désactivés. Veuillez les activer.',
+        );
       }
       await Geolocator.openLocationSettings();
       return false;
@@ -499,7 +502,10 @@ class ButtonsWidget {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         if (context.mounted) {
-          SnackbarHelper.showError(context, 'Permission de localisation refusée.');
+          SnackbarHelper.showError(
+            context,
+            'Permission de localisation refusée.',
+          );
         }
         return false;
       }
@@ -507,8 +513,10 @@ class ButtonsWidget {
 
     if (permission == LocationPermission.deniedForever) {
       if (context.mounted) {
-        SnackbarHelper.showError(context,
-            'La permission de localisation est refusée en permanence. Veuillez l\'activer dans les paramètres de l\'application.');
+        SnackbarHelper.showError(
+          context,
+          'La permission de localisation est refusée en permanence. Veuillez l\'activer dans les paramètres de l\'application.',
+        );
       }
       await Geolocator.openAppSettings();
       return false;
