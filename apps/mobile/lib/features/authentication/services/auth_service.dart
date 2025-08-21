@@ -1,5 +1,4 @@
-import '../models/models.dart'
-    hide ResetPasswordRequest, ChangePasswordRequest, UpdateProfileRequest;
+import '../models/auth_models.dart';
 import '../models/auth_request.dart';
 import '../data/auth_data_source_interface.dart';
 import '../repositories/repositories.dart';

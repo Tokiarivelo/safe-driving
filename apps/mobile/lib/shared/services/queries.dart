@@ -168,3 +168,84 @@ query IsEmailTaken($email: String!) {
   isEmailTaken(email: $email)
 }
 ''';
+
+// User preferences and onboarding queries
+const String getUserPreferencesQuery = r'''
+query GetUserPreferences($userId: String!) {
+  userPreferences(userId: $userId) {
+    theme
+    language
+    gpsEnabled
+    notificationsEnabled
+    transportPreferences
+    onboardingCompleted
+  }
+}
+''';
+
+const String getUserOnboardingDataQuery = r'''
+query GetUserOnboardingData($userId: String!) {
+  userOnboardingData(userId: $userId) {
+    userId
+    preferences
+    settings
+    createdAt
+    updatedAt
+  }
+}
+''';
+
+// User preferences mutations
+const String saveThemePreferenceMutation = r'''
+mutation SaveThemePreference($theme: String!) {
+  saveThemePreference(theme: $theme) {
+    success
+    message
+  }
+}
+''';
+
+const String saveLanguagePreferenceMutation = r'''
+mutation SaveLanguagePreference($language: String!) {
+  saveLanguagePreference(language: $language) {
+    success
+    message
+  }
+}
+''';
+
+const String saveGpsPreferenceMutation = r'''
+mutation SaveGpsPreference($enabled: Boolean!) {
+  saveGpsPreference(enabled: $enabled) {
+    success
+    message
+  }
+}
+''';
+
+const String saveNotificationPreferenceMutation = r'''
+mutation SaveNotificationPreference($enabled: Boolean!) {
+  saveNotificationPreference(enabled: $enabled) {
+    success
+    message
+  }
+}
+''';
+
+const String saveTransportPreferencesMutation = r'''
+mutation SaveTransportPreferences($transports: [String!]!) {
+  saveTransportPreferences(transports: $transports) {
+    success
+    message
+  }
+}
+''';
+
+const String completeOnboardingMutation = r'''
+mutation CompleteOnboarding($appState: AppStateInput!) {
+  completeOnboarding(appState: $appState) {
+    success
+    message
+  }
+}
+''';

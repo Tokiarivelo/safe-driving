@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/features/authentication/models/auth_request.dart';
+import 'package:safe_driving/features/authentication/models/user_model.dart';
 import '../services/auth_service.dart';
-import '../models/models.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthService _authService;

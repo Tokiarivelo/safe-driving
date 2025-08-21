@@ -1,7 +1,7 @@
 import '../models/user_onboarding_data.dart';
 import '../models/app_state.dart';
 
-class UserRepository {
+class UserOnboardingRepository {
   Future<void> saveGpsPreference(bool enabled) async {
     throw UnimplementedError('saveGpsPreference not implemented yet');
   }

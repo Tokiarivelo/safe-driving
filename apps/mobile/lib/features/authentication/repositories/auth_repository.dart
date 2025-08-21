@@ -1,5 +1,8 @@
 import 'package:safe_driving/features/authentication/models/auth_request.dart';
 import 'package:safe_driving/features/authentication/data/auth_data_source_interface.dart';
+import 'package:safe_driving/features/authentication/models/change_password_request_model.dart';
+import 'package:safe_driving/features/authentication/models/reset_password_request_model.dart';
+import 'package:safe_driving/features/authentication/models/update_profile_request_model.dart';
 
 class AuthRepository {
   final IAuthDataSource _dataSource;
@@ -11,7 +14,12 @@ class AuthRepository {
     return await _dataSource.signIn(request);
   }
 
-  Future<Map<String, dynamic>> signUp(String firstName, String lastName, String email, String password) async {
+  Future<Map<String, dynamic>> signUp(
+    String firstName,
+    String lastName,
+    String email,
+    String password,
+  ) async {
     final request = SignUpRequest(
       firstName: firstName,
       lastName: lastName,
@@ -47,7 +55,10 @@ class AuthRepository {
     return await _dataSource.updateProfile(request);
   }
 
-  Future<Map<String, dynamic>> changePassword(String currentPassword, String newPassword) async {
+  Future<Map<String, dynamic>> changePassword(
+    String currentPassword,
+    String newPassword,
+  ) async {
     final request = ChangePasswordRequest(
       currentPassword: currentPassword,
       newPassword: newPassword,
@@ -67,7 +78,10 @@ class AuthRepository {
     return await _dataSource.signInWithFacebook();
   }
 
-  Future<Map<String, dynamic>> deleteAccount(String userId, String password) async {
+  Future<Map<String, dynamic>> deleteAccount(
+    String userId,
+    String password,
+  ) async {
     return await _dataSource.deleteAccount(userId, password);
   }
 }

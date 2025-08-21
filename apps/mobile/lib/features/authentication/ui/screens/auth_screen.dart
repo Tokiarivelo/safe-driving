@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/features/authentication/ui/screens/signup/signup_view.dart';
 import '../../../../core/constants/colors/colors.dart';
-import 'signin/signin_view.dart';
+import 'sign_in_screen.dart';
+import 'sign_up_screen.dart';
 import 'password/forgot_password_view.dart';
 import 'password/reset_password_view.dart';
 
@@ -33,13 +33,13 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
   Widget _buildAuthWidget() {
     switch (_currentIndex) {
       case 0:
-        return SigninView(
+        return SignInScreen(
           key: const ValueKey('login'),
           onNavigateToRegister: _navigateToRegister,
           onNavigateToForgotPassword: _navigateToForgotPassword,
         );
       case 1:
-        return SignupView(
+        return SignUpScreen(
           key: const ValueKey('register'),
           onNavigateToLogin: _navigateToLogin,
           onRegistrationSuccess: _navigateToLogin,

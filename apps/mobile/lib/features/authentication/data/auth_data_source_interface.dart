@@ -1,3 +1,7 @@
+import 'package:safe_driving/features/authentication/models/change_password_request_model.dart';
+import 'package:safe_driving/features/authentication/models/reset_password_request_model.dart';
+import 'package:safe_driving/features/authentication/models/update_profile_request_model.dart';
+
 import '../models/auth_request.dart';
 
 abstract class IAuthDataSource {

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import '../models/app_state.dart';
-import '../models/user_onboarding_data.dart';
-import '../repository/user_repository.dart';
+import 'package:safe_driving/features/authentication/repositories/user_repository.dart';
+import 'package:safe_driving/features/authentication/models/app_state.dart';
+import 'package:safe_driving/features/authentication/models/user_onboarding_data.dart';
 
 class UserInteractiveMenuViewModel extends ChangeNotifier {
   final UserRepository _repository;
@@ -83,7 +83,9 @@ class UserInteractiveMenuViewModel extends ChangeNotifier {
       _appState = _appState.copyWith(notificationsEnabled: enabled);
       notifyListeners();
     } catch (e) {
-      _setError('Erreur lors de la sauvegarde des préférences de notification: $e');
+      _setError(
+        'Erreur lors de la sauvegarde des préférences de notification: $e',
+      );
     }
   }
 
@@ -93,7 +95,9 @@ class UserInteractiveMenuViewModel extends ChangeNotifier {
       _appState = _appState.copyWith(transportPreferences: transports);
       notifyListeners();
     } catch (e) {
-      _setError('Erreur lors de la sauvegarde des préférences de transport: $e');
+      _setError(
+        'Erreur lors de la sauvegarde des préférences de transport: $e',
+      );
     }
   }
 

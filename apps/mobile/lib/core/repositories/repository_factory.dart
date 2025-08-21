@@ -1,6 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:safe_driving/features/onboarding/user/repository/user_repository.dart';
+import 'package:safe_driving/features/authentication/repositories/user_repository.dart';
 import 'package:safe_driving/features/onboarding/driver/repository/driver_repository.dart';
+import 'package:safe_driving/shared/services/graphql_client_service.dart';
 
 class RepositoryFactory {
   static RepositoryFactory? _instance;
@@ -15,7 +16,7 @@ class RepositoryFactory {
   DriverRepository? _driverRepository;
 
   UserRepository getUserRepository(GraphQLClient client) {
-    _userRepository ??= UserRepository();
+    _userRepository ??= UserRepository(GraphQLClientService(client));
     return _userRepository!;
   }
 

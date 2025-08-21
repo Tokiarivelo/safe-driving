@@ -1,5 +1,7 @@
 import 'package:safe_driving/features/authentication/models/user_model.dart';
 import 'package:safe_driving/shared/services/graphql_client_service.dart';
+import '../models/app_state.dart';
+import '../models/user_onboarding_data.dart';
 
 import '../../../../shared/services/queries.dart';
 
@@ -28,5 +30,63 @@ class UserRepository {
       variables: {'email': email},
     );
     return data['isEmailTaken'] ?? false;
+  }
+
+  Future<AppState> getUserPreferences(String userId) async {
+    final data = await _graphQLClient.executeQuery(
+      document: getUserPreferencesQuery,
+      variables: {'userId': userId},
+    );
+    return AppState.fromJson(data['userPreferences']);
+  }
+
+  Future<UserOnboardingData> getUserOnboardingData(String userId) async {
+    final data = await _graphQLClient.executeQuery(
+      document: getUserOnboardingDataQuery,
+      variables: {'userId': userId},
+    );
+    return UserOnboardingData.fromJson(data['userOnboardingData']);
+  }
+
+  Future<void> saveThemePreference(String theme) async {
+    await _graphQLClient.executeMutation(
+      document: saveThemePreferenceMutation,
+      variables: {'theme': theme},
+    );
+  }
+
+  Future<void> saveLanguagePreference(String language) async {
+    await _graphQLClient.executeMutation(
+      document: saveLanguagePreferenceMutation,
+      variables: {'language': language},
+    );
+  }
+
+  Future<void> saveGpsPreference(bool enabled) async {
+    await _graphQLClient.executeMutation(
+      document: saveGpsPreferenceMutation,
+      variables: {'enabled': enabled},
+    );
+  }
+
+  Future<void> saveNotificationPreference(bool enabled) async {
+    await _graphQLClient.executeMutation(
+      document: saveNotificationPreferenceMutation,
+      variables: {'enabled': enabled},
+    );
+  }
+
+  Future<void> saveTransportPreferences(List<String> transports) async {
+    await _graphQLClient.executeMutation(
+      document: saveTransportPreferencesMutation,
+      variables: {'transports': transports},
+    );
+  }
+
+  Future<void> completeOnboarding(AppState appState) async {
+    await _graphQLClient.executeMutation(
+      document: completeOnboardingMutation,
+      variables: {'appState': appState.toJson()},
+    );
   }
 }
