@@ -33,6 +33,11 @@ dependencies:
   camera_web: ^0.3.5
   #for gps
   geolocator: ^14.0.2
+  shared_preferences: ^2.5.3
+  
+  # for file storage
+  path_provider: ^2.1.5
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

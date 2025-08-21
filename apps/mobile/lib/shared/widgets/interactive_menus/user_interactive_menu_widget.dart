@@ -38,7 +38,6 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
     }
   }
 
-  // Navigation entre les étapes (ici steps ce sont les expansions)
   void _nextStep() {
     if (_currentStep < _totalSteps) {
       _updateStep(_currentStep + 1);
@@ -72,7 +71,6 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
         _expandedTiles[_currentStep] = false;
       }
       _currentStep = newStep;
-      // Ouvrir immédiatement la nouvelle step
       if (newStep > 1) {
         _expandedTiles[newStep] = true;
       }
@@ -83,17 +81,18 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
     return StepUserDataText.stepTitles[step] ?? 'Étape $step';
   }
 
-  // Update state
-  void _updateGps(bool value) {
+  void _updateGps(bool value, {bool shouldSave = true}) {
     setState(() {
       _appState = _appState.copyWith(gpsEnabled: value);
     });
+    if (shouldSave && value) {}
   }
 
-  void _updateNotifications(bool value) {
+  void _updateNotifications(bool value, {bool shouldSave = true}) {
     setState(() {
       _appState = _appState.copyWith(notifEnabled: value);
     });
+    if (shouldSave && value) {}
   }
 
   void _updateTheme(String theme) {
@@ -128,12 +127,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
     });
   }
 
-  // Méthode pour finaliser le processus d'onboarding
   void _completeOnboarding() {
-    //rehefa vita
-    Navigator.pushReplacementNamed(context, '/home'); // ou AppRoutes.home
+    Navigator.pushReplacementNamed(context, '/home');
 
-    // Optionnel: Afficher un message de succès
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Configuration terminée avec succès !'),
@@ -176,10 +172,8 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
           ),
         ),
 
-        //Zone contenu
         Expanded(
           child: _currentStep == 1
-              // Step 1 : carte blanche
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -201,7 +195,6 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     ),
                   ],
                 )
-              // Steps 2–6 : ExpansionTiles
               : ListView.builder(
                   itemCount: 5,
                   itemBuilder: (ctx, i) => _buildExpansionTile(i + 2),
@@ -236,7 +229,6 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
     );
   }
 
-  //Les expansions avec effet de slide (on utilise un widget animation)
   Widget _buildExpansionTile(int step) {
     final info = _steps[step - 2];
     final isExpanded = _expandedTiles[step] ?? false;
@@ -329,7 +321,6 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
   }
 
   Widget _buildStepContent(int step) {
-    // Obtenir les données de l'étape depuis StepUserDatatext
     final stepContent = StepUserDataText.stepContents[step - 1];
 
     switch (step) {
@@ -438,7 +429,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     title: radioOptions[0],
                     value: false,
                     groupValue: _appState.gpsEnabled,
-                    onChanged: (value) => _updateGps(value!),
+                    onChanged: (value) => _updateGps(value!, shouldSave: false),
                   ),
                 ),
                 Expanded(
@@ -452,7 +443,6 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                           context,
                         );
                         if (!mounted) return;
-                        _updateGps(granted);
                         if (granted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -465,7 +455,7 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                           );
                         }
                       } else {
-                        _updateGps(false);
+                        _updateGps(false, shouldSave: false);
                       }
                     },
                   ),
@@ -518,7 +508,8 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     title: radioOptions[0],
                     value: false,
                     groupValue: _appState.notifEnabled,
-                    onChanged: (value) => _updateNotifications(value!),
+                    onChanged: (value) =>
+                        _updateNotifications(value!, shouldSave: false),
                   ),
                 ),
                 Expanded(
@@ -526,7 +517,8 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
                     title: radioOptions[1],
                     value: true,
                     groupValue: _appState.notifEnabled,
-                    onChanged: (value) => _updateNotifications(value!),
+                    onChanged: (value) =>
+                        _updateNotifications(value!, shouldSave: true),
                   ),
                 ),
               ],
@@ -621,13 +613,10 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             const SizedBox(height: 24),
             ButtonsWidget.laterAndActionButtons(
               onLaterPressed: () {
-                // "Plus tard" - garder les paramètres par défaut et continuer
                 _nextStepImmediate();
               },
               onActionPressed: () {
-                // "Valider" - sauvegarder les préférences et continuer
                 if (_appState.selectedTransports.isEmpty) {
-                  // Optionnel: Afficher un message ou forcer la sélection d'au moins un transport
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
@@ -783,11 +772,9 @@ class InteractiveMenuWidgetState extends State<InteractiveMenuWidget> {
             const SizedBox(height: 24),
             ButtonsWidget.laterAndActionButtons(
               onLaterPressed: () {
-                // "Annuler" - retourner au début
                 _goToStep(1);
               },
               onActionPressed: () {
-                // "Commencer" - finaliser la configuration et naviguer vers l'écran principal
                 _completeOnboarding();
               },
               laterText: stepContent.buttonTitles[0],

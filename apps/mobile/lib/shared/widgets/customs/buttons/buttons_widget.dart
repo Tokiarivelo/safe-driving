@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 
@@ -52,7 +53,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Bouton secondaire avec bordure (outline)
   static Widget secondaryButton({
     required String text,
     required VoidCallback onPressed,
@@ -104,7 +104,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Bouton transparent avec bordure
   static Widget transparentButton({
     required String text,
     required VoidCallback onPressed,
@@ -157,7 +156,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Row de boutons avec espacement automatique (pour les boutons côte à côte)
   static Widget buttonRow({
     required List<String> buttonTitles,
     required List<VoidCallback> onPressedList,
@@ -207,7 +205,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Boutons pour le choix de rôle (Driver/User)
   static Widget roleChoiceButtons({
     required VoidCallback onUserPressed,
     required VoidCallback onDriverPressed,
@@ -239,7 +236,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Boutons pour "Plus tard" et action principale
   static Widget laterAndActionButtons({
     required VoidCallback onLaterPressed,
     required VoidCallback onActionPressed,
@@ -281,7 +277,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Bouton simple avec style personnalisable
   static Widget customButton({
     required String text,
     required VoidCallback onPressed,
@@ -295,7 +290,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Bouton de navigation "Suivant"
   static Widget nextButton({
     required VoidCallback onPressed,
     String text = 'Suivant',
@@ -314,7 +308,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Boutons de validation finale (Annuler/Valider)
   static Widget finalValidationButtons({
     required VoidCallback onCancelPressed,
     required VoidCallback onValidatePressed,
@@ -338,7 +331,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Bouton pour le choix de langue avec flag
   static Widget languageButton({
     required String language,
     required String flag,
@@ -413,7 +405,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Custom Switch
   static Widget customSwitch({
     required bool value,
     required ValueChanged<bool> onChanged,
@@ -426,7 +417,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Custom RadioListTile
   static Widget customRadio<T>({
     required String title,
     required T value,
@@ -452,7 +442,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Custom CheckboxListTile
   static Widget customCheckbox({
     required String title,
     required bool value,
@@ -481,7 +470,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Custom ChoiceChip for themes
   static Widget customChoiceChip({
     required String label,
     required bool selected,
@@ -504,7 +492,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Elegant acceptance button for CGU and policies
   static Widget elegantAcceptanceButton({
     required String text,
     required String subtitle,
@@ -538,7 +525,6 @@ class ButtonsWidget {
         ),
         child: Row(
           children: [
-            // Icon on the left with smooth animation
             AnimatedContainer(
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeInOut,
@@ -615,7 +601,6 @@ class ButtonsWidget {
     );
   }
 
-  /// Handles GPS permission request and provides user feedback.
   static Future<bool> handleGpsPermission(BuildContext context) async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -629,7 +614,6 @@ class ButtonsWidget {
       return false;
     }
 
-    // Check and request permission
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -656,5 +640,65 @@ class ButtonsWidget {
     }
 
     return true;
+  }
+
+  static Future<bool> handleNotificationPermissions(
+    BuildContext context,
+    List<String> selectedNotifications,
+  ) async {
+    bool needsPermission = selectedNotifications.any(
+      (type) =>
+          type.toLowerCase().contains('push') ||
+          type.toLowerCase().contains('notification'),
+    );
+
+    if (!needsPermission) {
+      if (context.mounted) {
+        SnackbarHelper.showSuccess(
+          context,
+          'Préférences de notifications sauvegardées !',
+        );
+      }
+      return true;
+    }
+
+    PermissionStatus permission = await Permission.notification.status;
+
+    if (permission.isDenied) {
+      permission = await Permission.notification.request();
+
+      if (permission.isDenied) {
+        if (context.mounted) {
+          SnackbarHelper.showError(
+            context,
+            'Permission de notifications refusée. Vous ne recevrez pas de notifications push.',
+          );
+        }
+        return false;
+      }
+    }
+
+    if (permission.isPermanentlyDenied) {
+      if (context.mounted) {
+        SnackbarHelper.showError(
+          context,
+          'Permission de notifications refusée en permanence. Veuillez l\'activer dans les paramètres de l\'application.',
+        );
+        await openAppSettings();
+      }
+      return false;
+    }
+
+    if (permission.isGranted) {
+      if (context.mounted) {
+        SnackbarHelper.showSuccess(
+          context,
+          'Notifications activées avec succès !',
+        );
+      }
+      return true;
+    }
+
+    return false;
   }
 }

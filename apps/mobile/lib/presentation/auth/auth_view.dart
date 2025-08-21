@@ -60,6 +60,16 @@ class _AuthViewState extends State<AuthView> {
 
     final success = await auth.register(input);
 
+    // if (success) {
+    //   await StorageService.saveAuthData(
+    //     firstName: firstName,
+    //     lastName: lastName,
+    //     email: email,
+    //     password: password,
+    //     userType: '',
+    //   );
+    // }
+
     if (!mounted) return;
 
     if (success) {

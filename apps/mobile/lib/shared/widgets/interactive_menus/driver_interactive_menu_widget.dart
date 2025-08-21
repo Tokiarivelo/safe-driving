@@ -12,6 +12,7 @@ import 'package:safe_driving/shared/widgets/customs/photos_management/camera/cam
 import 'package:safe_driving/shared/widgets/customs/photos_management/gallery/captured_photos_modal.dart';
 import 'package:safe_driving/shared/widgets/customs/cgu_politique/cgu_politique.dart';
 import 'package:safe_driving/core/constants/utils/form/form_utils.dart';
+import 'package:safe_driving/services/storage_service.dart';
 import 'dart:io';
 
 class DriverInteractiveMenuWidget extends StatefulWidget {
@@ -38,6 +39,35 @@ class DriverInteractiveMenuWidgetState
   String _selectedLanguage = 'fr';
   final List<bool> _cguAccepted = [false, false];
   final List<File> _capturedPhotos = [];
+  final StorageService _storageService = StorageService();
+
+  // Form controllers for data storage
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _marqueController = TextEditingController();
+  final TextEditingController _modeleController = TextEditingController();
+  final TextEditingController _immatriculationController =
+      TextEditingController();
+  final TextEditingController _placesController = TextEditingController();
+  final TextEditingController _typeVehiculeController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    _marqueController.dispose();
+    _modeleController.dispose();
+    _immatriculationController.dispose();
+    _placesController.dispose();
+    _typeVehiculeController.dispose();
+    super.dispose();
+  }
 
   void _showCapturedPhotosModal() {
     showModalBottomSheet(
@@ -56,6 +86,116 @@ class DriverInteractiveMenuWidgetState
         );
       },
     );
+  }
+
+  void _navigateToStep(int stepIndex) {
+    _paginationKey.currentState?.goToStep(stepIndex);
+  }
+
+  String _getFieldValue(String fieldName) {
+    switch (fieldName) {
+      case 'Nom':
+        return _nameController.text.isNotEmpty
+            ? _nameController.text
+            : 'Non renseigné';
+      case 'E-mail':
+        return _emailController.text.isNotEmpty
+            ? _emailController.text
+            : 'Non renseigné';
+      case 'Téléphone':
+        return _phoneController.text.isNotEmpty
+            ? _phoneController.text
+            : 'Non renseigné';
+      case 'Type':
+        return _typeVehiculeController.text.isNotEmpty
+            ? _typeVehiculeController.text
+            : 'Non renseigné';
+      case 'Marque':
+        return _marqueController.text.isNotEmpty
+            ? _marqueController.text
+            : 'Non renseigné';
+      case 'Modèle':
+        return _modeleController.text.isNotEmpty
+            ? _modeleController.text
+            : 'Non renseigné';
+      case 'Immatriculation':
+        return _immatriculationController.text.isNotEmpty
+            ? _immatriculationController.text
+            : 'Non renseigné';
+      case 'Nombre de places':
+        return _placesController.text.isNotEmpty
+            ? _placesController.text
+            : 'Non renseigné';
+      case 'GPS':
+        return _gpsEnabled ? 'Activé' : 'Désactivé';
+      case 'Notifications':
+        return _selectedNotifications.isNotEmpty
+            ? _selectedNotifications.join(', ')
+            : 'Aucune';
+      case 'Thème':
+        return _selectedTheme == 'clair' ? 'Clair' : 'Sombre';
+      case 'Langue':
+        return _selectedLanguage == 'fr' ? 'Français' : 'Anglais';
+      default:
+        return 'Non renseigné';
+    }
+  }
+
+  IconData _getFieldIcon(String fieldName) {
+    switch (fieldName) {
+      case 'Nom':
+        return Icons.person;
+      case 'E-mail':
+        return Icons.email;
+      case 'Téléphone':
+        return Icons.phone;
+      case 'Photos uploadées':
+        return Icons.photo_library;
+      case 'Type':
+        return Icons.local_taxi;
+      case 'Marque':
+        return Icons.car_rental;
+      case 'Modèle':
+        return Icons.directions_car;
+      case 'Immatriculation':
+        return Icons.confirmation_number;
+      case 'Nombre de places':
+        return Icons.airline_seat_recline_normal;
+      case 'GPS':
+        return Icons.location_on;
+      case 'Notifications':
+        return Icons.notifications;
+      case 'Thème':
+        return Icons.palette;
+      case 'Langue':
+        return Icons.language;
+      default:
+        return Icons.info;
+    }
+  }
+
+  int _getStepIndexForField(String fieldName) {
+    switch (fieldName) {
+      case 'Nom':
+      case 'E-mail':
+      case 'Téléphone':
+        return 1;
+      case 'Type':
+      case 'Marque':
+      case 'Modèle':
+      case 'Immatriculation':
+      case 'Nombre de places':
+        return 3;
+      case 'GPS':
+        return 6;
+      case 'Notifications':
+        return 7;
+      case 'Thème':
+      case 'Langue':
+        return 8;
+      default:
+        return 0;
+    }
   }
 
   Widget _buildStepContent(StepDriverContent step, VoidCallback nextStep) {
@@ -97,10 +237,8 @@ class DriverInteractiveMenuWidgetState
             _buildAdditionalContent(step.additionalContent!, step),
           const SizedBox(height: 32),
 
-          // Cas spécial pour l'étape 7 (GPS) - utiliser des boutons radio
           if (step.title == "Partagez votre position")
             _buildGpsRadioButtons(nextStep)
-          // Ne pas afficher les boutons par défaut pour l'étape CGU car elle a ses propres boutons
           else if (step.buttonTitles.isNotEmpty &&
               step.title != "Un dernier point avant de démarrer")
             ButtonsWidget.buttonRow(
@@ -109,12 +247,14 @@ class DriverInteractiveMenuWidgetState
                 final isMainButton =
                     step.buttonTitles.indexOf(buttonTitle) ==
                     step.buttonTitles.length - 1;
+                final isPlusTard = buttonTitle.toLowerCase().contains(
+                  'plus tard',
+                );
                 return () {
-                  if (isMainButton) {
-                    //après
+                  if (isMainButton && !isPlusTard) {
                     nextStep();
                   } else {
-                    nextStep(); //plus tard
+                    nextStep();
                   }
                 };
               }).toList(),
@@ -158,6 +298,7 @@ class DriverInteractiveMenuWidgetState
                       setState(() {
                         _gpsEnabled = granted;
                       });
+
                       if (granted) {
                         SnackbarHelper.showSuccess(
                           context,
@@ -218,7 +359,6 @@ class DriverInteractiveMenuWidgetState
       );
     }
 
-    // Gérer le cas spécifique des documents véhicule (Step 5)
     if (content.containsKey('documents')) {
       final documentsData = content['documents'] as Map<String, dynamic>;
 
@@ -251,7 +391,6 @@ class DriverInteractiveMenuWidgetState
       );
     }
 
-    // Gérer le cas spécifique du selfie (Step 6)
     if (content.containsKey('selfie')) {
       final selfieData = content['selfie'] as Map<String, dynamic>;
       final title = selfieData['title'] as String?;
@@ -260,14 +399,22 @@ class DriverInteractiveMenuWidgetState
       return CameraManagement(
         title: title,
         description: description,
-        onPictureTaken: (imagePath) {
+        onPictureTaken: (imagePath) async {
           if (imagePath != null) {
             final capturedFile = File(imagePath);
             setState(() {
               _capturedPhotos.add(capturedFile);
             });
-            SnackbarHelper.showSuccess(context, 'Selfie pris avec succès !');
-            _showCapturedPhotosModal();
+
+            await _storageService.storePhoto(
+              capturedFile,
+              StorageService.selfieType,
+            );
+
+            if (mounted) {
+              SnackbarHelper.showSuccess(context, 'Selfie pris avec succès !');
+              _showCapturedPhotosModal();
+            }
           } else {
             SnackbarHelper.showError(
               context,
@@ -314,7 +461,6 @@ class DriverInteractiveMenuWidgetState
     if (content.containsKey('checkboxOptions')) {
       final checkboxOptions = content['checkboxOptions'] as List<String>;
 
-      // Handle step 8 (notifications)
       if (step.title == "Restez informé") {
         return Column(
           children: checkboxOptions.asMap().entries.map((entry) {
@@ -343,7 +489,6 @@ class DriverInteractiveMenuWidgetState
         );
       }
 
-      // Handle step 10 (CGU & politique)
       if (step.title == "Un dernier point avant de démarrer") {
         return Column(
           children: [
@@ -356,9 +501,10 @@ class DriverInteractiveMenuWidgetState
                   context: context,
                   builder: (context) {
                     return PolicyModal(
+                      titleContent: StepDriverDataText.stepContents[12].title,
                       content:
                           StepDriverDataText
-                              .stepContents[10]
+                              .stepContents[12]
                               .additionalContent?["content"] ??
                           "",
                       onAccept: () {
@@ -381,9 +527,10 @@ class DriverInteractiveMenuWidgetState
                   context: context,
                   builder: (context) {
                     return PolicyModal(
+                      titleContent: StepDriverDataText.stepContents[12].title,
                       content:
                           StepDriverDataText
-                              .stepContents[11]
+                              .stepContents[13]
                               .additionalContent?["content"] ??
                           "",
                       onAccept: () {
@@ -483,7 +630,6 @@ class DriverInteractiveMenuWidgetState
       );
     }
 
-    // Gérer le cas spécifique de l'étape "Tout est prêt !" (résumé)
     if (content.containsKey('resume')) {
       final resumeData = content['resume'] as List;
       return Column(
@@ -506,38 +652,28 @@ class DriverInteractiveMenuWidgetState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  titre,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textColor,
-                    fontFamily: 'Inder',
-                  ),
-                ),
-                const SizedBox(height: 8),
-                ...elements.map<Widget>((element) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.check_circle,
-                          size: 16,
-                          color: AppColors.fillButtonBackground,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          element,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppColors.textColor.withAlpha(200),
-                            fontFamily: 'Inder',
-                          ),
-                        ),
-                      ],
+                Row(
+                  children: [
+                    Icon(
+                      _getSectionIcon(titre),
+                      size: 20,
+                      color: AppColors.fillButtonBackground,
                     ),
-                  );
+                    const SizedBox(width: 8),
+                    Text(
+                      titre,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textColor,
+                        fontFamily: 'Inder',
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                ...elements.map<Widget>((element) {
+                  return _buildResumeElement(element, titre);
                 }),
               ],
             ),
@@ -546,7 +682,6 @@ class DriverInteractiveMenuWidgetState
       );
     }
 
-    // Gérer le cas spécifique de l'étape "Bienvenue à bord" (QR code et message)
     if (content.containsKey('subsubtitle') ||
         content.containsKey('instructions') ||
         content.containsKey('messageConfiance')) {
@@ -654,11 +789,26 @@ class DriverInteractiveMenuWidgetState
       title: title,
       description: textCenter!,
       buttonText: bouton!,
-      onPhotosChanged: (photos) {
-        SnackbarHelper.showSuccess(
-          context,
-          '${photos.length} photo${photos.length > 1 ? 's' : ''} sélectionnée${photos.length > 1 ? 's' : ''} pour $title',
-        );
+      onPhotosChanged: (photos) async {
+        String storageType;
+        if (title.contains('Recto')) {
+          storageType = StorageService.carteIdentiteRectoType;
+        } else if (title.contains('Verso')) {
+          storageType = StorageService.carteIdentiteVersoType;
+        } else if (title.contains('Permis')) {
+          storageType = StorageService.permisConduireType;
+        } else {
+          storageType = 'unknown';
+        }
+
+        await _storageService.storePhotos(photos, storageType);
+
+        if (mounted) {
+          SnackbarHelper.showSuccess(
+            context,
+            '${photos.length} photo${photos.length > 1 ? 's' : ''} sélectionnée${photos.length > 1 ? 's' : ''} pour $title',
+          );
+        }
       },
     );
   }
@@ -674,7 +824,6 @@ class DriverInteractiveMenuWidgetState
       final textCenter = uploadZone['textCenter'] as String?;
       final bouton = uploadZone['bouton'] as String?;
 
-      // Simuler l'état hasPhotoAdded
       bool hasPhotoAdded = false;
 
       return UploadWidget(
@@ -683,11 +832,26 @@ class DriverInteractiveMenuWidgetState
         buttonText: bouton!,
         addMorePhotosText: ajoutPhoto,
         hasPhotoAdded: hasPhotoAdded,
-        onPhotosChanged: (photos) {
-          SnackbarHelper.showSuccess(
-            context,
-            '${photos.length} photo${photos.length > 1 ? 's' : ''} sélectionnée${photos.length > 1 ? 's' : ''} pour $defaultTitle',
-          );
+        onPhotosChanged: (photos) async {
+          String storageType;
+          if (defaultTitle.contains('Certificat')) {
+            storageType = StorageService.certificatImmatriculationType;
+          } else if (defaultTitle.contains('Attestation')) {
+            storageType = StorageService.attestationAssuranceType;
+          } else if (defaultTitle.contains('Photos')) {
+            storageType = StorageService.photosVehiculeType;
+          } else {
+            storageType = 'unknown';
+          }
+
+          await _storageService.storePhotos(photos, storageType);
+
+          if (mounted) {
+            SnackbarHelper.showSuccess(
+              context,
+              '${photos.length} photo${photos.length > 1 ? 's' : ''} sélectionnée${photos.length > 1 ? 's' : ''} pour $defaultTitle',
+            );
+          }
         },
       );
     }
@@ -695,17 +859,131 @@ class DriverInteractiveMenuWidgetState
     return Container();
   }
 
+  IconData _getSectionIcon(String sectionTitle) {
+    switch (sectionTitle) {
+      case 'Infos personnelles':
+        return Icons.person;
+      case 'Véhicule':
+        return Icons.directions_car;
+      case 'GPS & Notifications':
+        return Icons.settings;
+      case 'Préférences':
+        return Icons.tune;
+      default:
+        return Icons.info;
+    }
+  }
+
+  Widget _buildResumeElement(String element, String sectionTitle) {
+    if (element == 'Photos uploadées') {
+      final totalPhotos = _storageService.getTotalUploadedPhotosCount();
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Row(
+          children: [
+            Icon(
+              _getFieldIcon(element),
+              size: 16,
+              color: AppColors.fillButtonBackground,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                '$element : $totalPhotos',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppColors.textColor.withAlpha(200),
+                  fontFamily: 'Inder',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final fieldValue = _getFieldValue(element);
+    final stepIndex = _getStepIndexForField(element);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(
+            _getFieldIcon(element),
+            size: 16,
+            color: AppColors.fillButtonBackground,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: '$element: ',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textColor.withAlpha(200),
+                      fontFamily: 'Inder',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  TextSpan(
+                    text: fieldValue,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textColor.withAlpha(160),
+                      fontFamily: 'Inder',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+
+          if (element != 'Photos uploadées')
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: AppColors.fillButtonBackground.withAlpha(20),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.fillButtonBackground.withAlpha(100),
+                  width: 1,
+                ),
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  size: 16,
+                  color: AppColors.fillButtonBackground,
+                ),
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  _navigateToStep(stepIndex);
+                },
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildForm(Map<String, String> formData) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Formulaire d'informations personnelles (Step 2)
         if (formData.containsKey('labelTextName')) ...[
           CustomInputField(
             label: formData['labelTextName'],
             hint: formData['placeholderName']!,
             icon: Icons.person,
             showLabel: true,
+            backgroundColor: AppColors.inputTextBackground,
+            controller: _nameController,
+            onChanged: (value) => (_) {},
             validator: (value) =>
                 RegexFormatter.getNameValidationMessage(value!),
           ),
@@ -716,10 +994,9 @@ class DriverInteractiveMenuWidgetState
             hint: formData['placeholderEmail']!,
             icon: Icons.email,
             keyboardType: TextInputType.emailAddress,
+            controller: _emailController,
             showLabel: true,
-            validator: (value) =>
-                RegexFormatter.getEmailValidationMessage(value!),
-            backgroundColor: Colors.grey[300],
+            backgroundColor: AppColors.inputTextBackground,
           ),
           const SizedBox(height: 16),
 
@@ -729,6 +1006,8 @@ class DriverInteractiveMenuWidgetState
             icon: Icons.phone,
             keyboardType: TextInputType.phone,
             showLabel: true,
+            controller: _phoneController,
+            onChanged: (value) => (_) {},
             validator: (value) => value?.isEmpty == true
                 ? null
                 : (RegexFormatter.isValidMalagasyPhone(value!)
@@ -739,13 +1018,14 @@ class DriverInteractiveMenuWidgetState
           ),
         ],
 
-        // Formulaire d'informations véhicule (Step 4)
         if (formData.containsKey('labelMarque')) ...[
           CustomInputField(
             label: formData['labelMarque'],
             hint: formData['placeholderMarque']!,
             icon: Icons.car_rental,
             showLabel: true,
+            controller: _marqueController,
+            onChanged: (value) => (_) {},
             validator: (value) =>
                 RegexFormatter.getVehicleNameValidationMessage(value!),
           ),
@@ -756,6 +1036,8 @@ class DriverInteractiveMenuWidgetState
             hint: formData['placeholderModele']!,
             icon: Icons.directions_car,
             showLabel: true,
+            controller: _modeleController,
+            onChanged: (value) => (_) {},
             validator: (value) =>
                 RegexFormatter.getVehicleNameValidationMessage(value!),
           ),
@@ -766,6 +1048,8 @@ class DriverInteractiveMenuWidgetState
             hint: formData['placeholderImmatriculation']!,
             icon: Icons.confirmation_number,
             showLabel: true,
+            controller: _immatriculationController,
+            onChanged: (value) => (_) {},
             validator: (value) =>
                 RegexFormatter.getLicensePlateValidationMessage(value!),
           ),
@@ -777,6 +1061,8 @@ class DriverInteractiveMenuWidgetState
             icon: Icons.airline_seat_recline_normal,
             keyboardType: TextInputType.number,
             showLabel: true,
+            controller: _placesController,
+            onChanged: (value) => (_) {},
             validator: (value) =>
                 RegexFormatter.getSeatCountValidationMessage(value!),
           ),
@@ -787,6 +1073,8 @@ class DriverInteractiveMenuWidgetState
             hint: formData['placeholderTypeVehicule']!,
             icon: Icons.local_taxi,
             showLabel: true,
+            controller: _typeVehiculeController,
+            onChanged: (value) => (_) {},
           ),
         ],
       ],
@@ -807,7 +1095,6 @@ class DriverInteractiveMenuWidgetState
           contentBuilder: (currentStep, nextStep, previousStep) {
             return Stack(
               children: [
-                // Container du haut (25% de l'écran)
                 Positioned(
                   top: 0,
                   left: 0,
@@ -868,7 +1155,6 @@ class DriverInteractiveMenuWidgetState
                     ),
                   ),
                 ),
-                // Zone contenu (reste de l'écran) avec border radius forcé
                 Positioned(
                   top: headerHeight,
                   left: 0,

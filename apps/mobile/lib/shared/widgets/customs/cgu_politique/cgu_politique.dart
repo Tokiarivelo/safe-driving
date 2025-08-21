@@ -3,10 +3,16 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 
 class PolicyModal extends StatefulWidget {
+  final String titleContent;
   final String content;
   final VoidCallback onAccept;
 
-  const PolicyModal({super.key, required this.content, required this.onAccept});
+  const PolicyModal({
+    super.key,
+    required this.titleContent,
+    required this.content,
+    required this.onAccept,
+  });
 
   @override
   State<PolicyModal> createState() => _PolicyModalState();
@@ -43,14 +49,12 @@ class _PolicyModalState extends State<PolicyModal> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        "Politique de Confidentialité",
-        style: TextStyle(
+      title: Text(widget.titleContent, style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
           color: AppColors.textColor,
-        ),
-      ),
+        ),),
+       
       content: SizedBox(
         width: double.maxFinite,
         height: MediaQuery.of(context).size.height * 0.6,
