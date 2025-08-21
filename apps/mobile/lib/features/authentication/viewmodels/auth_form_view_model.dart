@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/auth_models.dart';
 import '../ui/widgets/auth/auth_validators.dart';
 
-class AuthWidgetViewModel extends ChangeNotifier {
+class AuthFormViewModel extends ChangeNotifier {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();

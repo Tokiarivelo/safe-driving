@@ -1,11 +1,14 @@
-import '../services/service/core/graphql_client_service.dart';
-import '../models/auth_requests.dart';
+import 'package:safe_driving/shared/services/graphql_client_service.dart';
 
-class AuthDataSource {
+import '../models/auth_request.dart';
+import 'auth_data_source_interface.dart';
+
+class AuthDataSource implements IAuthDataSource {
   final GraphQLClientService _graphQLService;
 
   AuthDataSource(this._graphQLService);
 
+  @override
   Future<Map<String, dynamic>> signIn(SignInRequest request) async {
     const String mutation = '''
       mutation SignIn(\$data: SignInInput!) {
@@ -34,15 +37,19 @@ class AuthDataSource {
       }
     ''';
 
-    final result = await _graphQLService.mutate(
+    final result = await _graphQLService.executeMutation(
       document: mutation,
       variables: {'data': request.toJson()},
-      key: 'signIn',
     );
 
+    // Retourner les données de la mutation signIn
+    if (result.containsKey('signIn')) {
+      return result['signIn'];
+    }
     return result;
   }
 
+  @override
   Future<Map<String, dynamic>> signUp(SignUpRequest request) async {
     const String mutation = '''
       mutation SignUp(\$data: SignUpInput!) {
@@ -71,15 +78,19 @@ class AuthDataSource {
       }
     ''';
 
-    final result = await _graphQLService.mutate(
+    final result = await _graphQLService.executeMutation(
       document: mutation,
       variables: {'data': request.toJson()},
-      key: 'signUp',
     );
 
+    // Retourner les données de la mutation signUp
+    if (result.containsKey('signUp')) {
+      return result['signUp'];
+    }
     return result;
   }
 
+  @override
   Future<Map<String, dynamic>> resetPassword(
     ResetPasswordRequest request,
   ) async {
@@ -93,15 +104,19 @@ class AuthDataSource {
       }
     ''';
 
-    final result = await _graphQLService.mutate(
+    final result = await _graphQLService.executeMutation(
       document: mutation,
       variables: {'data': request.toJson()},
-      key: 'resetPassword',
     );
 
+    // Retourner les données de la mutation resetPassword
+    if (result.containsKey('resetPassword')) {
+      return result['resetPassword'];
+    }
     return result;
   }
 
+  @override
   Future<Map<String, dynamic>> refreshToken(String refreshToken) async {
     const String mutation = '''
       mutation RefreshToken(\$refreshToken: String!) {
@@ -118,15 +133,19 @@ class AuthDataSource {
       }
     ''';
 
-    final result = await _graphQLService.mutate(
+    final result = await _graphQLService.executeMutation(
       document: mutation,
       variables: {'refreshToken': refreshToken},
-      key: 'refreshToken',
     );
 
+    // Retourner les données de la mutation refreshToken
+    if (result.containsKey('refreshToken')) {
+      return result['refreshToken'];
+    }
     return result;
   }
 
+  @override
   Future<Map<String, dynamic>> signInWithGoogle() async {
     const String mutation = '''
       mutation SignInWithGoogle {
@@ -155,15 +174,19 @@ class AuthDataSource {
       }
     ''';
 
-    final result = await _graphQLService.mutate(
+    final result = await _graphQLService.executeMutation(
       document: mutation,
       variables: {},
-      key: 'signInWithGoogle',
     );
 
+    // Retourner les données de la mutation signInWithGoogle
+    if (result.containsKey('signInWithGoogle')) {
+      return result['signInWithGoogle'];
+    }
     return result;
   }
 
+  @override
   Future<Map<String, dynamic>> signInWithFacebook() async {
     const String mutation = '''
       mutation SignInWithFacebook {
@@ -192,15 +215,19 @@ class AuthDataSource {
       }
     ''';
 
-    final result = await _graphQLService.mutate(
+    final result = await _graphQLService.executeMutation(
       document: mutation,
       variables: {},
-      key: 'signInWithFacebook',
     );
 
+    // Retourner les données de la mutation signInWithFacebook
+    if (result.containsKey('signInWithFacebook')) {
+      return result['signInWithFacebook'];
+    }
     return result;
   }
 
+  @override
   Future<Map<String, dynamic>> getCurrentUser() async {
     const String query = '''
       query GetCurrentUser {
@@ -219,11 +246,15 @@ class AuthDataSource {
       }
     ''';
 
-    final result = await _graphQLService.query(query, variables: {});
+    final result = await _graphQLService.executeQuery(
+      document: query,
+      variables: {},
+    );
 
     return result['getCurrentUser'] ?? {};
   }
 
+  @override
   Future<Map<String, dynamic>> updateProfile(
     UpdateProfileRequest request,
   ) async {
@@ -244,15 +275,19 @@ class AuthDataSource {
       }
     ''';
 
-    final result = await _graphQLService.mutate(
+    final result = await _graphQLService.executeMutation(
       document: mutation,
       variables: {'data': request.toJson()},
-      key: 'updateProfile',
     );
 
+    // Retourner les données de la mutation updateProfile
+    if (result.containsKey('updateProfile')) {
+      return result['updateProfile'];
+    }
     return result;
   }
 
+  @override
   Future<Map<String, dynamic>> changePassword(
     ChangePasswordRequest request,
   ) async {
@@ -266,15 +301,19 @@ class AuthDataSource {
       }
     ''';
 
-    final result = await _graphQLService.mutate(
+    final result = await _graphQLService.executeMutation(
       document: mutation,
       variables: {'data': request.toJson()},
-      key: 'changePassword',
     );
 
+    // Retourner les données de la mutation changePassword
+    if (result.containsKey('changePassword')) {
+      return result['changePassword'];
+    }
     return result;
   }
 
+  @override
   Future<Map<String, dynamic>> deleteAccount(
     String userId,
     String password,
@@ -289,12 +328,15 @@ class AuthDataSource {
       }
     ''';
 
-    final result = await _graphQLService.mutate(
+    final result = await _graphQLService.executeMutation(
       document: mutation,
       variables: {'userId': userId, 'password': password},
-      key: 'deleteAccount',
     );
 
+    // Retourner les données de la mutation deleteAccount
+    if (result.containsKey('deleteAccount')) {
+      return result['deleteAccount'];
+    }
     return result;
   }
 }

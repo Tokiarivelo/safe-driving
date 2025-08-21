@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../viewmodels/auth_widget_viewmodel.dart';
+import '../../../viewmodels/auth_form_view_model.dart';
 import '../builders/auth_ui_builder.dart';
 import 'auth_layout.dart';
 import 'auth_form.dart';
@@ -44,12 +44,12 @@ class AuthWidget extends StatefulWidget {
 }
 
 class AuthWidgetState extends State<AuthWidget> {
-  late AuthWidgetViewModel _viewModel;
+  late AuthFormViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = AuthWidgetViewModel();
+    _viewModel = AuthFormViewModel();
   }
 
   @override
@@ -65,7 +65,7 @@ class AuthWidgetState extends State<AuthWidget> {
 
     return ChangeNotifierProvider.value(
       value: _viewModel,
-      child: Consumer<AuthWidgetViewModel>(
+      child: Consumer<AuthFormViewModel>(
         builder: (context, viewModel, child) {
           return AuthLayout(
             isLogin: widget.isLogin,
@@ -78,7 +78,7 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  Widget _buildHeader(AuthWidgetViewModel viewModel) {
+  Widget _buildHeader(AuthFormViewModel viewModel) {
     return AuthUIBuilder.buildHeaderText(
       stepData: viewModel.getCurrentStepData(
         isLogin: widget.isLogin,

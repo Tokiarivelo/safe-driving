@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/auth/auth_widget.dart';
-import '../../../viewmodels/signin_viewmodel.dart';
+import '../../../viewmodels/signin_view_model.dart';
 
 class SigninView extends StatelessWidget {
   final VoidCallback? onNavigateToRegister;

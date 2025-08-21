@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/features/authentication/ui/screens/signup/register_view.dart';
+import 'package:safe_driving/features/authentication/ui/screens/signup/signup_view.dart';
 import '../../../../core/constants/colors/colors.dart';
 import 'signin/signin_view.dart';
 import 'password/forgot_password_view.dart';
@@ -39,7 +39,7 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
           onNavigateToForgotPassword: _navigateToForgotPassword,
         );
       case 1:
-        return RegisterView(
+        return SignupView(
           key: const ValueKey('register'),
           onNavigateToLogin: _navigateToLogin,
           onRegistrationSuccess: _navigateToLogin,

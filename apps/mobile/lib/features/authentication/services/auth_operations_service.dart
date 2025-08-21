@@ -1,6 +1,8 @@
-import '../models/auth_models.dart';
-import 'service/auth_service.dart';
-import 'service/session_service.dart';
+import 'package:safe_driving/features/authentication/services/session_service.dart';
+import 'package:safe_driving/features/authentication/services/auth_service.dart';
+
+import '../models/auth_result.dart';
+import '../models/auth_request.dart';
 
 class AuthOperationsService {
   final AuthService _authService;
@@ -8,32 +10,51 @@ class AuthOperationsService {
 
   AuthOperationsService(this._authService, this._sessionService);
 
-  Future<AuthResult> login(String email, String password) async {
+  Future<AuthResult> signIn(String email, String password) async {
     try {
-      final authResponse = await _authService.login(email, password);
-      _sessionService.saveToken(authResponse.token);
-      return AuthResult.success(authResponse.user);
+      final result = await _authService.signIn(email, password);
+
+      if (result.isSuccess) {
+        if (result.token != null) {
+          await _sessionService.saveToken(result.token!);
+        }
+        if (result.refreshToken != null) {
+          await _sessionService.saveRefreshToken(result.refreshToken!);
+        }
+      }
+
+      return result;
     } catch (e) {
-      return AuthResult.failure(e.toString());
+      return AuthResult.failure(errorMessage: e.toString());
     }
   }
 
-  Future<AuthResult> register(RegisterInput input) async {
+  Future<AuthResult> signUp(SignUpRequest request) async {
     try {
-      final authResponse = await _authService.register(input);
-      _sessionService.saveToken(authResponse.token);
-      return AuthResult.success(authResponse.user);
+      final result = await _authService.signUp(request);
+
+      if (result.isSuccess) {
+        if (result.token != null) {
+          await _sessionService.saveToken(result.token!);
+        }
+        if (result.refreshToken != null) {
+          await _sessionService.saveRefreshToken(result.refreshToken!);
+        }
+      }
+
+      return result;
     } catch (e) {
-      return AuthResult.failure(_formatRegisterError(e.toString()));
+      return AuthResult.failure(
+        errorMessage: _formatRegisterError(e.toString()),
+      );
     }
   }
 
-  Future<AuthResult> resetPassword(String newPassword) async {
+  Future<AuthResult> resetPassword(String email) async {
     try {
-      await _authService.resetPassword(newPassword);
-      return AuthResult.success(null);
+      return await _authService.resetPassword(email);
     } catch (e) {
-      return AuthResult.failure(e.toString());
+      return AuthResult.failure(errorMessage: e.toString());
     }
   }
 
@@ -59,13 +80,4 @@ class AuthOperationsService {
     }
     return message;
   }
-}
-
-class AuthResult {
-  final bool isSuccess;
-  final User? user;
-  final String? error;
-
-  AuthResult.success(this.user) : isSuccess = true, error = null;
-  AuthResult.failure(this.error) : isSuccess = false, user = null;
 }

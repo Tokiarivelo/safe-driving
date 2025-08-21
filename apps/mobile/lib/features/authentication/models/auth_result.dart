@@ -1,4 +1,4 @@
-import 'user/user.dart';
+import 'package:safe_driving/features/authentication/models/user_model.dart';
 
 class AuthResult {
   final bool success;
@@ -18,14 +18,16 @@ class AuthResult {
   });
 
   factory AuthResult.success({
-    required User user,
-    required String token,
+    User? user,
+    String? token,
+    String? accessToken,
     String? refreshToken,
+    String? message,
   }) {
     return AuthResult(
       success: true,
       user: user,
-      token: token,
+      token: accessToken ?? token,
       refreshToken: refreshToken,
     );
   }
@@ -64,4 +66,7 @@ class AuthResult {
   }
 
   bool get isAuthenticated => success && user != null && token != null;
+
+  bool get isSuccess => success;
+  String? get error => errorMessage;
 }

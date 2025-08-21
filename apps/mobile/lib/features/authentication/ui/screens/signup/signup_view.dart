@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '../../widgets/auth/auth_widget.dart';
-import '../../../models/auth_models.dart';
+import '../../../models/auth_request.dart';
 import '../../../../../shared/state_management/providers.dart';
 import '../../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
 
-class RegisterView extends StatefulWidget {
+class SignupView extends StatefulWidget {
   final VoidCallback? onNavigateToLogin;
   final VoidCallback? onGoogleSignIn;
   final VoidCallback? onFacebookSignIn;
   final VoidCallback? onRegistrationSuccess;
 
-  const RegisterView({
+  const SignupView({
     super.key,
     this.onNavigateToLogin,
     this.onGoogleSignIn,
@@ -19,10 +19,10 @@ class RegisterView extends StatefulWidget {
   });
 
   @override
-  State<RegisterView> createState() => _RegisterViewState();
+  State<SignupView> createState() => _SignupViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
+class _SignupViewState extends State<SignupView> {
   Future<void> _handleSignUp(
     String firstName,
     String lastName,
@@ -31,14 +31,14 @@ class _RegisterViewState extends State<RegisterView> {
   ) async {
     final auth = context.authVM;
 
-    final input = RegisterInput(
+    final request = SignUpRequest(
       email: email,
       firstName: firstName,
-      lastName: lastName.isNotEmpty ? lastName : null,
+      lastName: lastName.isNotEmpty ? lastName : 'Non spécifié',
       password: password,
     );
 
-    final success = await auth.register(input);
+    final success = await auth.register(request);
 
     if (!mounted) return;
 

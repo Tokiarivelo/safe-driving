@@ -1,6 +1,7 @@
-import 'package:safe_driving/features/authentication/repository/auth_repository.dart';
+import 'package:safe_driving/features/authentication/viewmodels/auth_view_model.dart';
 import 'package:safe_driving/features/onboarding/user/repository/user_repository.dart';
 import 'package:safe_driving/features/onboarding/driver/repository/driver_repository.dart';
+import 'package:safe_driving/shared/state_management/service_locator.dart';
 
 class AppProviders {
   static AppProviders _instance = AppProviders._internal();
@@ -11,13 +12,13 @@ class AppProviders {
 
   AppProviders._internal();
 
-  AuthRepository? _authRepository;
+  AuthViewModel? _authViewModel;
   UserRepository? _userRepository;
   DriverRepository? _driverRepository;
 
-  AuthRepository get authRepository {
-    _authRepository ??= AuthRepository();
-    return _authRepository!;
+  AuthViewModel get authViewModel {
+    _authViewModel ??= ServiceLocator.instance.get<AuthViewModel>();
+    return _authViewModel!;
   }
 
   UserRepository get userRepository {
@@ -31,7 +32,7 @@ class AppProviders {
   }
 
   void dispose() {
-    _authRepository = null;
+    _authViewModel = null;
     _userRepository = null;
     _driverRepository = null;
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../viewmodels/auth_widget_viewmodel.dart';
+import '../../../viewmodels/auth_form_view_model.dart';
 import 'auth_input_fields.dart';
 import 'auth_validators.dart';
 
@@ -30,7 +30,7 @@ class AuthForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthWidgetViewModel>(
+    return Consumer<AuthFormViewModel>(
       builder: (context, viewModel, child) {
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -71,7 +71,7 @@ class AuthForm extends StatelessWidget {
 
   Widget _buildSubmitButton(
     BuildContext context,
-    AuthWidgetViewModel viewModel,
+    AuthFormViewModel viewModel,
   ) {
     return SizedBox(
       width: double.infinity,
@@ -87,7 +87,7 @@ class AuthForm extends StatelessWidget {
     return isLogin ? 'Se connecter' : 'S\'inscrire';
   }
 
-  void _handleButtonPress(BuildContext context, AuthWidgetViewModel viewModel) {
+  void _handleButtonPress(BuildContext context, AuthFormViewModel viewModel) {
     String? validationError;
 
     if (isForgotPassword) {

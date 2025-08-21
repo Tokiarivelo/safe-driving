@@ -1,4 +1,4 @@
-import 'user/user_model.dart';
+import 'package:safe_driving/features/authentication/models/user_model.dart';
 
 class AuthResponse {
   final String token;
@@ -18,41 +18,13 @@ class AuthResponse {
   }
 }
 
-class CreateUserInput {
-  final String email;
-  final String firstName;
-  final String? lastName;
-  final String? phone;
-  final String password;
-  final List<String>? roleIds;
-
-  CreateUserInput({
-    required this.email,
-    required this.firstName,
-    this.lastName,
-    this.phone,
-    required this.password,
-    this.roleIds,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'email': email,
-      'firstName': firstName,
-      'lastName': lastName,
-      'phone': phone,
-      'password': password,
-      'roleIds': roleIds,
-    };
-  }
-}
-
 class RegisterInput {
   final String email;
   final String firstName;
   final String password;
   final String? lastName;
   final String? phone;
+  final List<String>? roleIds;
 
   RegisterInput({
     required this.email,
@@ -60,6 +32,7 @@ class RegisterInput {
     required this.password,
     this.lastName,
     this.phone,
+    this.roleIds,
   });
 
   Map<String, dynamic> toJson() {
@@ -70,9 +43,12 @@ class RegisterInput {
     };
     if (lastName != null) data['lastName'] = lastName;
     if (phone != null) data['phone'] = phone;
+    if (roleIds != null) data['roleIds'] = roleIds;
     return data;
   }
 }
+
+typedef CreateUserInput = RegisterInput;
 
 class UpdateUserInput {
   final String? firstName;

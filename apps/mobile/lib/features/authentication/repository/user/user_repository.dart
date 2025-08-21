@@ -1,7 +1,7 @@
-import 'package:safe_driving/features/authentication/models/user/user_model.dart';
+import 'package:safe_driving/features/authentication/models/user_model.dart';
+import 'package:safe_driving/shared/services/graphql_client_service.dart';
 
 import '../../../../api/graphql/queries.dart';
-import '../../services/service/core/graphql_client_service.dart';
 
 class UserRepository {
   final GraphQLClientService _graphQLClient;
@@ -13,8 +13,8 @@ class UserRepository {
     int? skip,
     Map<String, dynamic>? where,
   }) async {
-    final data = await _graphQLClient.query(
-      getUsersQuery,
+    final data = await _graphQLClient.executeQuery(
+      document: getUsersQuery,
       variables: {'take': take, 'skip': skip, 'where': where},
     );
 
@@ -23,8 +23,8 @@ class UserRepository {
   }
 
   Future<bool> isEmailTaken(String email) async {
-    final data = await _graphQLClient.query(
-      isEmailTakenQuery,
+    final data = await _graphQLClient.executeQuery(
+      document: isEmailTakenQuery,
       variables: {'email': email},
     );
     return data['isEmailTaken'] ?? false;
