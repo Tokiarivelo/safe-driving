@@ -475,6 +475,9 @@ class ButtonsWidget {
       checkColor: checkColor ?? AppColors.light,
       controlAffinity: ListTileControlAffinity.leading,
       contentPadding: EdgeInsets.zero,
+      side: BorderSide(
+        color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.2),
+      ),
     );
   }
 
@@ -502,7 +505,6 @@ class ButtonsWidget {
 
   /// Handles GPS permission request and provides user feedback.
   static Future<bool> handleGpsPermission(BuildContext context) async {
-    // Check if location services are enabled
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       if (context.mounted) {

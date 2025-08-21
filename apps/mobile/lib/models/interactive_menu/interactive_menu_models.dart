@@ -166,7 +166,7 @@ class StepDriverDataText {
     StepDriverContent(
       title: 'Conditions Générales d’Utilisation (CGU) de Safe Driving',
       subtitle: "Veuillez lire attentivement nos conditions d'utilisation.",
-      buttonTitles: [],
+      buttonTitles: ["J'accepte"],
       additionalContent: {
         "content":
             "# Conditions Générales d’Utilisation (CGU) de Safe Driving\n\n"
@@ -220,7 +220,7 @@ class StepDriverDataText {
       title: 'Politique de Confidentialité',
       subtitle:
           "Votre vie privée est importante pour nous. Découvrez comment nous protégeons vos données.",
-      buttonTitles: [],
+      buttonTitles: ["J'accepte"],
       additionalContent: {
         "content":
             "# Politique de Confidentialité – Safe Driving\n"
