@@ -1,0 +1,25 @@
+ors:
+  services:
+    routing:
+      enabled: true
+      profiles:
+        active: [driving-car]
+        profiles:
+          driving-car:
+            profile: driving-car
+            parameters:
+              encoder_options: access;duration
+              max_speed: 120
+              weightings: fastest
+              maximum_distance: 100000
+              maximum_segment_distance_with_dynamic_weights: 5000
+
+graphhopper:
+  datareader.file: /home/ors/files/madagascar-latest.osm.pbf
+  graph.location: /home/ors/graphs
+  profiles:
+    - name: driving-car
+      vehicle: car
+      weighting: fastest
+  prepare.ch.weightings: [fastest]
+  prepare.ch.threads: 1
