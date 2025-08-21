@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'user_onboarding_step_model.dart';
 
 class UserOnboardingData {
-  static const int totalSteps = 6;
+  static const int totalSteps = 5;
 
   static List<UserOnboardingStepModel> getUserSteps() {
     return [
-      // Step 2: Welcome
       UserOnboardingStepModel(
         stepNumber: 1,
         title: 'Bienvenue chez Safe Driving !',
@@ -15,8 +14,7 @@ class UserOnboardingData {
         stepType: UserStepType.welcome,
         buttonTitles: ['Plus tard', 'Démarrer'],
       ),
-
-      // Step 3: Location/GPS
+      //Location/GPS
       UserOnboardingStepModel(
         stepNumber: 2,
         title: 'Où êtes-vous ?',
@@ -29,7 +27,7 @@ class UserOnboardingData {
         },
       ),
 
-      // Step 4: Notifications
+      //Notifications
       UserOnboardingStepModel(
         stepNumber: 3,
         title: 'Restez informé',
@@ -42,7 +40,7 @@ class UserOnboardingData {
         },
       ),
 
-      // Step 5: Preferences
+      //Preferences
       UserOnboardingStepModel(
         stepNumber: 4,
         title: 'Faites-le à votre façon',
@@ -58,7 +56,7 @@ class UserOnboardingData {
         },
       ),
 
-      // Step 6: Summary
+      //Summary
       UserOnboardingStepModel(
         stepNumber: 5,
         title: 'Tout est prêt !',
@@ -84,17 +82,16 @@ class UserOnboardingData {
     StepInfo(title: 'Bienvenue', emoji: '👋'),
     StepInfo(title: 'GPS', icon: Icons.location_on),
     StepInfo(title: 'Notifications', icon: Icons.notifications),
-    StepInfo(title: 'Préférence', icon: Icons.settings),
-    StepInfo(title: 'Récapitulatif', icon: Icons.recent_actors),
+    StepInfo(title: 'Préférences', icon: Icons.settings),
+    StepInfo(title: 'Récapitulatif', icon: Icons.check_circle),
   ];
 
   static const Map<int, String> stepTitles = {
-    1: 'Rôle',
-    2: 'Bienvenue',
-    3: 'GPS',
-    4: 'Notifications',
-    5: 'Préférences',
-    6: 'Récapitulatif',
+    1: 'Bienvenue',
+    2: 'GPS',
+    3: 'Notifications',
+    4: 'Préférences',
+    5: 'Récapitulatif',
   };
 
   static const List<String> transportModes = [

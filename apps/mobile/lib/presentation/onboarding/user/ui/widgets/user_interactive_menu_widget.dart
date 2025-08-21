@@ -16,14 +16,13 @@ class UserInteractiveMenuWidget extends StatefulWidget {
 }
 
 class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
-  static const int _totalSteps = 4;
+  static const int _totalSteps = 6; // Total global d'étapes (1 à 6)
 
-  int _currentStep = 0;
+  int _currentStep = 2; // Commence à l'étape 2
   AppState _appState = const AppState();
   final Map<int, bool> _expandedTiles = {};
 
   // Configuration des étapes
-  static const List<StepInfo> _steps = UserOnboardingData.steps;
   static const List<String> _transportModes = UserOnboardingData.transportModes;
   static const Map<String, IconData> _transportIcons =
       UserOnboardingData.transportIcons;
@@ -35,52 +34,47 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
   }
 
   void _initializeExpandedTiles() {
-    for (int i = 2; i <= _totalSteps; i++) {
+    for (int i = 2; i <= 6; i++) {
+      // Étapes 2 à 6
       _expandedTiles[i] = false;
     }
-  }
-
-  void _nextStep() {
-    if (_currentStep < _totalSteps) {
-      _updateStep(_currentStep + 1);
-    }
+    // Ouvrir la première étape (Bienvenue) par défaut
+    _expandedTiles[2] = true;
   }
 
   void _goToStep(int step) {
-    if (step >= 1 && step <= _totalSteps) {
+    if (step >= 2 && step <= 6) {
+      // Étapes 2 à 6
       _updateStep(step);
     }
   }
 
   void _nextStepImmediate() {
-    if (_currentStep < _totalSteps) {
+    if (_currentStep < 6) {
+      // Jusqu'à l'étape 6
       final newStep = _currentStep + 1;
       setState(() {
-        if (_currentStep > 1) {
-          _expandedTiles[_currentStep] = false;
-        }
+        _expandedTiles[_currentStep] = false;
         _currentStep = newStep;
-        if (newStep > 1) {
-          _expandedTiles[newStep] = true;
-        }
+        _expandedTiles[newStep] = true;
       });
     }
   }
 
   void _updateStep(int newStep) {
     setState(() {
-      if (_currentStep > 1) {
-        _expandedTiles[_currentStep] = false;
-      }
+      _expandedTiles[_currentStep] = false;
       _currentStep = newStep;
-      if (newStep > 1) {
-        _expandedTiles[newStep] = true;
-      }
+      _expandedTiles[newStep] = true;
     });
   }
 
   String _getStepTitle(int step) {
-    return UserOnboardingData.stepTitles[step] ?? 'Étape $step';
+    final stepIndex = step - 2;
+    if (stepIndex >= 0 && stepIndex < UserOnboardingData.steps.length) {
+      return UserOnboardingData.steps[stepIndex].title;
+    }
+    return 'Étape $step';
   }
 
   void _updateGps(bool value, {bool shouldSave = true}) {
@@ -173,32 +167,10 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
         ),
 
         Expanded(
-          child: _currentStep == 1
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        right: 16,
-                        bottom: 30,
-                      ),
-                      child: Container(
-                        width: 330,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: AppColors.secondBackgroundColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: _buildStepContent(1),
-                      ),
-                    ),
-                  ],
-                )
-              : ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (ctx, i) => _buildExpansionTile(i + 2),
-                ),
+          child: ListView.builder(
+            itemCount: 5,
+            itemBuilder: (ctx, i) => _buildExpansionTile(i + 2),
+          ),
         ),
       ],
     );
@@ -212,13 +184,13 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
         alignment: Alignment.center,
         children: [
           CircularProgressIndicator(
-            value: _currentStep / 6,
+            value: _currentStep / _totalSteps, // Progression de 2/6 à 6/6
             backgroundColor: AppColors.light,
             valueColor: AlwaysStoppedAnimation(AppColors.progress),
             strokeWidth: 4,
           ),
           Text(
-            '$_currentStep/6',
+            '$_currentStep/$_totalSteps', // Afficher 2/6, 3/6, etc.
             style: const TextStyle(
               color: AppColors.light,
               fontWeight: FontWeight.bold,
@@ -230,7 +202,6 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
   }
 
   Widget _buildExpansionTile(int step) {
-    final info = _steps[step - 2];
     final isExpanded = _expandedTiles[step] ?? false;
 
     return Container(
@@ -270,24 +241,10 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
           tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           title: Row(
             children: [
-              if (info.emoji != null)
-                Transform.translate(
-                  offset: const Offset(-4, 0),
-                  child: Container(
-                    width: 24,
-                    height: 30,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      info.emoji!,
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                  ),
-                )
-              else if (info.icon != null)
-                Icon(info.icon, color: AppColors.light, size: 24),
+              _buildStepIconOrEmoji(step),
               const SizedBox(width: 8),
               Text(
-                info.title,
+                _getStepTitle(step),
                 style: const TextStyle(
                   color: AppColors.light,
                   fontWeight: FontWeight.normal,
@@ -320,32 +277,25 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
     );
   }
 
+  Widget _buildStepIconOrEmoji(int step) {
+    final stepIndex = step - 2; // Convertir étape (2-6) vers index (0-4)
+    if (stepIndex >= 0 && stepIndex < UserOnboardingData.steps.length) {
+      final stepInfo = UserOnboardingData.steps[stepIndex];
+      if (stepInfo.emoji != null) {
+        return Text(stepInfo.emoji!, style: const TextStyle(fontSize: 24));
+      } else if (stepInfo.icon != null) {
+        return Icon(stepInfo.icon!, color: AppColors.light, size: 24);
+      }
+    }
+    return const Icon(Icons.help, color: AppColors.light, size: 24);
+  }
+
   Widget _buildStepContent(int step) {
-    final stepContent = UserOnboardingData.getStepContent(step - 1);
+    final stepContent = UserOnboardingData.getStepContent(
+      step - 2,
+    ); // Index 0-4
 
     switch (step) {
-      case 1:
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              stepContent.title,
-              style: const TextStyle(
-                color: AppColors.buttonWithoutBackGround,
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            const SizedBox(height: 20),
-            ButtonsWidget.roleChoiceButtons(
-              onUserPressed: () => _nextStep(),
-              onDriverPressed: () {
-                Navigator.pushNamed(context, '/driver_onboarding');
-              },
-            ),
-          ],
-        );
-
       case 2:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -376,6 +326,7 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
               onActionPressed: () {
                 _nextStepImmediate();
               },
+              laterText: stepContent.buttonTitles[0],
               actionText: stepContent.buttonTitles[1],
               fontSize: 14,
               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -751,7 +702,7 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
             const SizedBox(height: 24),
             ButtonsWidget.laterAndActionButtons(
               onLaterPressed: () {
-                _goToStep(1);
+                _goToStep(2); // Retour à l'étape 2 (Bienvenue)
               },
               onActionPressed: () {
                 _completeOnboarding();

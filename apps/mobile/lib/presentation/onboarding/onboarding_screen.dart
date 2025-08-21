@@ -22,7 +22,7 @@ class OnboardingScreen extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           CircularProgressIndicator(
-            value: 1 / 6, // Première étape sur 6
+            value: 1 / 6,
             backgroundColor: AppColors.light,
             valueColor: AlwaysStoppedAnimation(AppColors.progress),
             strokeWidth: 4,
