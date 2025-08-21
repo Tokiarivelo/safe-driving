@@ -22,6 +22,14 @@ fragment UserFragment on User {
 }
 ''';
 
+const String resetPasswordMutation = r'''
+mutation ResetPassword($password: String!) {
+  resetPassword(password: $password) {
+    success
+  }
+}
+''';
+
 // Authentication mutations
 const String loginMutation = r'''
 mutation Login($data: LoginInput!) {
@@ -86,46 +94,56 @@ mutation Register($data: RegisterInput!) {
 ''';
 
 // User queries
-const String getUserQuery = r'''
+const String getUserQuery =
+    r'''
 query GetUser($id: String!) {
   user(id: $id) {
     ...UserFragment
   }
 }
-''' + userFragment;
+''' +
+    userFragment;
 
-const String getCurrentUserQuery = r'''
+const String getCurrentUserQuery =
+    r'''
 query GetCurrentUser {
   me {
     ...UserFragment
   }
 }
-''' + userFragment;
+''' +
+    userFragment;
 
-const String getUsersQuery = r'''
+const String getUsersQuery =
+    r'''
 query GetUsers($take: Int, $skip: Int, $where: UserWhereInput) {
   users(take: $take, skip: $skip, where: $where) {
     ...UserFragment
   }
 }
-''' + userFragment;
+''' +
+    userFragment;
 
 // User mutations
-const String createUserMutation = r'''
+const String createUserMutation =
+    r'''
 mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
     ...UserFragment
   }
 }
-''' + userFragment;
+''' +
+    userFragment;
 
-const String updateUserMutation = r'''
+const String updateUserMutation =
+    r'''
 mutation UpdateUser($id: String!, $input: UpdateUserInput!) {
   updateUser(id: $id, input: $input) {
     ...UserFragment
   }
 }
-''' + userFragment;
+''' +
+    userFragment;
 
 const String deleteUserMutation = r'''
 mutation DeleteUser($id: String!) {

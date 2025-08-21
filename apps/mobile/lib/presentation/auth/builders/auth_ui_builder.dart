@@ -303,33 +303,30 @@ class AuthUIBuilder {
     final bool isRegister = !isLogin && !isForgotPassword;
     final screenHeight = MediaQuery.of(context).size.height;
     final headerHeight = isRegister
-        ? (isSmallScreen ? 140 : 200)
-        : (isSmallScreen ? 140 : 180);
-    final availableHeight =
-        screenHeight -
-        headerHeight -
-        MediaQuery.of(context).padding.top -
-        MediaQuery.of(context).padding.bottom;
+        ? (isSmallScreen ? 100 : 140)
+        : (isSmallScreen ? 100 : 130);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 0),
-      constraints: BoxConstraints(
-        minHeight: isRegister ? 400 : availableHeight * 0.9,
-        maxHeight: isRegister ? double.infinity : availableHeight * 0.95,
-      ),
+      width: MediaQuery.of(context).size.width,
+
+      padding: EdgeInsets.zero,
+      height: screenHeight - headerHeight - MediaQuery.of(context).padding.top,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
         color: AppColors.secondBackgroundColor,
         boxShadow: [
           BoxShadow(
             color: AppColors.blur,
-            blurRadius: 6,
-            spreadRadius: 6,
-            offset: isRegister ? const Offset(0, -4) : const Offset(0, -2),
+            blurRadius: 4,
+            spreadRadius: 4,
+            offset: const Offset(0, -2),
           ),
         ],
       ),
-      child: child,
+      child: SingleChildScrollView(child: child),
     );
   }
 

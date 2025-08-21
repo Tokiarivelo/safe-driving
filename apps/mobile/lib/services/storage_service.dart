@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class StorageService {
-  // Types de photos
   static const String selfieType = 'selfie';
   static const String carteIdentiteRectoType = 'carte_identite_recto';
   static const String carteIdentiteVersoType = 'carte_identite_verso';

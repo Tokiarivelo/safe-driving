@@ -1,6 +1,6 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import '../presentation/auth/models/auth_models.dart';
-import '../graphql/queries.dart';
+import '../models/auth_models.dart';
+import '../../../graphql/queries.dart';
 
 const String resetPasswordMutation = r'''
 mutation ResetPassword($password: String!) {
@@ -18,17 +18,16 @@ class UserService {
   Future<AuthResponse> login(String email, String password) async {
     final data = await _mutate(
       document: loginMutation,
-      variables: {'data': {'email': email, 'password': password}},
+      variables: {
+        'data': {'email': email, 'password': password},
+      },
       key: 'login',
     );
 
     final token = _extractToken(data['tokens']);
     if (token == null) throw Exception('No access token received.');
 
-    return AuthResponse(
-      token: token,
-      user: User.fromJson(data['user']),
-    );
+    return AuthResponse(token: token, user: User.fromJson(data['user']));
   }
 
   Future<AuthResponse> register(RegisterInput input) async {
@@ -41,10 +40,7 @@ class UserService {
     final token = _extractToken(data['tokens']);
     if (token == null) throw Exception('No access token received.');
 
-    return AuthResponse(
-      token: token,
-      user: User.fromJson(data['user']),
-    );
+    return AuthResponse(token: token, user: User.fromJson(data['user']));
   }
 
   Future<void> resetPassword(String password) async {
@@ -116,10 +112,7 @@ class UserService {
   }
 
   Future<bool> isEmailTaken(String email) async {
-    final data = await _query(
-      isEmailTakenQuery,
-      variables: {'email': email},
-    );
+    final data = await _query(isEmailTakenQuery, variables: {'email': email});
     return data['isEmailTaken'] ?? false;
   }
 
@@ -145,10 +138,7 @@ class UserService {
     required String key,
   }) async {
     final result = await _client.mutate(
-      MutationOptions(
-        document: gql(document),
-        variables: variables ?? {},
-      ),
+      MutationOptions(document: gql(document), variables: variables ?? {}),
     );
     _handleException(result.exception);
     return result.data![key];

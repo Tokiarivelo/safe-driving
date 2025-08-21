@@ -27,7 +27,7 @@ class AuthStepContent {
 class AuthStepContentMap {
   static final Map<String, AuthStepContent> stepContents = {
     'forgotPassword': AuthStepContent(
-      title: "📧 Mot de passe oublié ?",
+      title: "🔒 Mot de passe oublié ?",
       subtitle:
           "Saisissez votre adresse email et nous vous enverrons un code de réinitialisation.",
       subSubtitle: "",

@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:safe_driving/presentation/auth/view_models/auth_view_models.dart';
 
-import '../../services/user_service.dart';
+import '../../presentation/auth/services/user_service.dart';
+// ...existing code...
 
 class AppProviders {
   static List<ChangeNotifierProvider> get providers => [

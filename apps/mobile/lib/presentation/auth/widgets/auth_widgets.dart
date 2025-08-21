@@ -84,14 +84,11 @@ class AuthWidgetState extends State<AuthWidget> {
                   children: [
                     Container(
                       height: isSmallScreen ? 100 : 140,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                        vertical: 10.0,
-                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: Center(child: _buildHeaderText()),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 20.0),
+                      padding: EdgeInsets.zero,
                       child: _buildAuthContainer(),
                     ),
                   ],
@@ -110,7 +107,7 @@ class AuthWidgetState extends State<AuthWidget> {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
                         child: _buildAuthContainer(),
                       ),
                     ),
@@ -138,7 +135,7 @@ class AuthWidgetState extends State<AuthWidget> {
       isForgotPassword: widget.isForgotPassword,
       isSmallScreen: isSmallScreen,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(30),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
           child: Padding(
