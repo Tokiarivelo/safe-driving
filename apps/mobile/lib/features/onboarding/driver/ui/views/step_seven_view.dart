@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
-import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
+import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 
 class StepSevenView extends StatelessWidget {
   final DriverOnboardingStepModel step;
-  final DriverOnboardingViewModel viewModel;
+  final DriverOnboardingCoordinator coordinator;
   final VoidCallback onContinue;
   final VoidCallback? onSkip;
 
   const StepSevenView({
     super.key,
     required this.step,
-    required this.viewModel,
+    required this.coordinator,
     required this.onContinue,
     this.onSkip,
   });
@@ -61,10 +61,10 @@ class StepSevenView extends StatelessWidget {
                     child: SwitchesAndRadios.customRadio<String>(
                       title: "Plus tard",
                       value: "Plus tard",
-                      groupValue: viewModel.gpsEnabled
+                      groupValue: coordinator.preferencesViewModel.gpsEnabled
                           ? "Autoriser"
                           : "Plus tard",
-                      onChanged: (value) => viewModel.setGpsEnabled(false),
+                      onChanged: (value) => coordinator.preferencesViewModel.setGpsEnabled(false),
                       titleColor: AppColors.fillButtonBackground,
                       activeColor: AppColors.fillButtonBackground,
                     ),
@@ -73,11 +73,11 @@ class StepSevenView extends StatelessWidget {
                     child: SwitchesAndRadios.customRadio<String>(
                       title: "Autoriser",
                       value: "Autoriser",
-                      groupValue: viewModel.gpsEnabled
+                      groupValue: coordinator.preferencesViewModel.gpsEnabled
                           ? "Autoriser"
                           : "Plus tard",
                       onChanged: (value) =>
-                          viewModel.handleGpsPermission(context),
+                          coordinator.preferencesViewModel.handleGpsPermission(context),
                       titleColor: AppColors.fillButtonBackground,
                       activeColor: AppColors.fillButtonBackground,
                     ),

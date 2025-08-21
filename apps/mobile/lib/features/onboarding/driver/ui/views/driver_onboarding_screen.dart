@@ -5,8 +5,8 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/driver_pagination_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
 
-import '../../viewmodels/driver_onboarding_viewmodel.dart';
-import '../builders/driver_ui_builder.dart';
+import '../../viewmodels/driver_onboarding_coordinator.dart';
+import '../widgets/builders/driver_ui_builder.dart';
 import '../widgets/driver_step_indicator.dart';
 
 class DriverOnboardingScreen extends StatefulWidget {
@@ -20,15 +20,15 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
   final GlobalKey<DriverPaginationWidgetState> _paginationKey =
       GlobalKey<DriverPaginationWidgetState>();
 
-  void _navigateToStep(int stepIndex, DriverOnboardingViewModel viewModel) {
+  void _navigateToStep(int stepIndex, DriverOnboardingCoordinator coordinator) {
     _paginationKey.currentState?.goToStep(stepIndex);
-    viewModel.goToStep(stepIndex);
+    coordinator.goToStep(stepIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DriverOnboardingViewModel>(
-      builder: (context, viewModel, child) {
+    return Consumer<DriverOnboardingCoordinator>(
+      builder: (context, coordinator, child) {
         final screenHeight = MediaQuery.of(context).size.height;
         final headerHeight = screenHeight * 0.25;
 
@@ -37,7 +37,7 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
             decoration: ColorsWidget.background,
             child: DriverPaginationWidget(
               key: _paginationKey,
-              totalSteps: viewModel.steps.length,
+              totalSteps: coordinator.steps.length,
               contentBuilder: (currentStep, nextStep, previousStep) {
                 return Stack(
                   children: [
@@ -75,7 +75,7 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                                     ),
                                     child: DriverStepIndicator(
                                       currentStep: currentStep,
-                                      totalSteps: viewModel.steps.length,
+                      totalSteps: coordinator.steps.length,
                                     ),
                                   ),
                                 ),
@@ -103,22 +103,22 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                                 itemBuilder: (index) {
                                     return SingleChildScrollView(
                                       child: DriverUIBuilder.buildStepContent(
-                                        viewModel.steps[index],
-                                        viewModel,
+                                        coordinator.steps[index],
+                                        coordinator,
                                         nextStep,
-                                        (stepIndex) => _navigateToStep(stepIndex, viewModel),
+                                        (stepIndex) => _navigateToStep(stepIndex, coordinator),
                                         context,
                                       ),
                                     );
                                 },
-                                itemCount: viewModel.steps.length,
+                                itemCount: coordinator.steps.length,
                               ) ??
                               const Center(child: CircularProgressIndicator()),
                         ),
                       ),
                     ),
                     // Loading overlay
-                    if (viewModel.isLoading)
+                    if (coordinator.isLoading)
                       Positioned.fill(
                         child: Container(
                           color: Colors.black.withValues(alpha: 0.5),

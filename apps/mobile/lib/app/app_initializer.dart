@@ -4,9 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:safe_driving/app/routes.dart';
 import 'package:safe_driving/api/graphql/graphql_client.dart';
 import 'package:safe_driving/shared/state_management/providers.dart';
+import 'package:safe_driving/shared/state_management/service_locator.dart';
 
 class SafeDriving extends StatelessWidget {
-  SafeDriving({super.key});
+  SafeDriving({super.key}) {
+    ServiceLocator.instance.setupDependencies();
+  }
   final ValueNotifier<GraphQLClient> client = initGraphQLClient();
 
   @override

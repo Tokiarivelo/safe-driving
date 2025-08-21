@@ -1,20 +1,21 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
-import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
+import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/camera_interface.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 
 class StepSixView extends StatelessWidget {
   final DriverOnboardingStepModel step;
-  final DriverOnboardingViewModel viewModel;
+  final DriverOnboardingCoordinator coordinator;
   final VoidCallback onContinue;
   final VoidCallback? onSkip;
 
   const StepSixView({
     super.key,
     required this.step,
-    required this.viewModel,
+    required this.coordinator,
     required this.onContinue,
     this.onSkip,
   });
@@ -56,7 +57,11 @@ class StepSixView extends StatelessWidget {
               title: 'Selfie de vérification',
               description:
                   'Positionnez-vous face à la caméra et assurez-vous que votre visage soit bien visible.',
-              onPictureTaken: viewModel.onSelfieTaken,
+              onPictureTaken: (imagePath) {
+                if (imagePath != null) {
+                  coordinator.documentUploadViewModel.addCapturedPhoto(File(imagePath));
+                }
+              },
             ),
           ),
 

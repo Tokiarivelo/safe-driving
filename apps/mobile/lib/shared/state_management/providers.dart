@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../features/authentication/viewmodels/auth_view_model.dart';
-import '../../features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
+import '../../features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'service_locator.dart';
 
 class AppProviders {
@@ -9,8 +9,8 @@ class AppProviders {
     ChangeNotifierProvider<AuthViewModel>(
       create: (_) => ServiceLocator.instance.get<AuthViewModel>(),
     ),
-    ChangeNotifierProvider<DriverOnboardingViewModel>(
-      create: (_) => ServiceLocator.instance.get<DriverOnboardingViewModel>(),
+    ChangeNotifierProvider<DriverOnboardingCoordinator>(
+      create: (_) => ServiceLocator.instance.get<DriverOnboardingCoordinator>(),
     ),
   ];
 }
@@ -18,8 +18,8 @@ class AppProviders {
 extension AppContext on BuildContext {
   AuthViewModel get authVM => read<AuthViewModel>();
   AuthViewModel get authVMWatch => watch<AuthViewModel>();
-  DriverOnboardingViewModel get driverOnboardingVM =>
-      read<DriverOnboardingViewModel>();
-  DriverOnboardingViewModel get driverOnboardingVMWatch =>
-      watch<DriverOnboardingViewModel>();
+  DriverOnboardingCoordinator get driverOnboardingVM =>
+      read<DriverOnboardingCoordinator>();
+  DriverOnboardingCoordinator get driverOnboardingVMWatch =>
+      watch<DriverOnboardingCoordinator>();
 }

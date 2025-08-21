@@ -17,8 +17,8 @@ export 'views/step_ten_view.dart';
 export 'views/step_eleven_view.dart';
 export 'views/step_twelve_view.dart';
 
-// UI Builders
-export 'builders/driver_ui_builder.dart';
+
+export 'widgets/builders/driver_ui_builder.dart';
 
 // Common Widgets
 export 'widgets/driver_common_button.dart';

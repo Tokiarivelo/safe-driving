@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
-import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
+import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
 import 'package:safe_driving/core/utils/form/form_utils.dart';
 
 class StepTwoView extends StatelessWidget {
   final DriverOnboardingStepModel step;
-  final DriverOnboardingViewModel viewModel;
+  final DriverOnboardingCoordinator coordinator;
   final VoidCallback onContinue;
   final VoidCallback? onSkip;
 
   const StepTwoView({
     super.key,
     required this.step,
-    required this.viewModel,
+    required this.coordinator,
     required this.onContinue,
     this.onSkip,
   });
@@ -59,7 +59,7 @@ class StepTwoView extends StatelessWidget {
             icon: Icons.person,
             showLabel: true,
             backgroundColor: AppColors.inputTextBackground,
-            controller: viewModel.nameController,
+            controller: coordinator.personalInfoViewModel.nameController,
             onChanged: (value) => {},
             validator: (value) =>
                 RegexFormatter.getNameValidationMessage(value!),
@@ -71,7 +71,7 @@ class StepTwoView extends StatelessWidget {
             hint: 'example@email.com',
             icon: Icons.email,
             keyboardType: TextInputType.emailAddress,
-            controller: viewModel.emailController,
+            controller: coordinator.personalInfoViewModel.emailController,
             showLabel: true,
             backgroundColor: AppColors.inputTextBackground,
           ),
@@ -83,7 +83,7 @@ class StepTwoView extends StatelessWidget {
             icon: Icons.phone,
             keyboardType: TextInputType.phone,
             showLabel: true,
-            controller: viewModel.phoneController,
+            controller: coordinator.personalInfoViewModel.phoneController,
             onChanged: (value) => {},
             validator: (value) => value?.isEmpty == true
                 ? null

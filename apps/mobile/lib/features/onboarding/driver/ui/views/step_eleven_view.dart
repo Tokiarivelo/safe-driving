@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
-import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
+import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_summary_view_model.dart';
 import 'package:safe_driving/shared/state_management/service_locator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 
 class StepElevenView extends StatelessWidget {
   final DriverOnboardingStepModel step;
-  final DriverOnboardingViewModel viewModel;
+  final DriverOnboardingCoordinator coordinator;
   final VoidCallback onContinue;
   final VoidCallback? onSkip;
   final Function(int) onNavigateToStep;
@@ -17,10 +17,10 @@ class StepElevenView extends StatelessWidget {
   const StepElevenView({
     super.key,
     required this.step,
-    required this.viewModel,
+    required this.coordinator,
     required this.onContinue,
-    required this.onNavigateToStep,
     this.onSkip,
+    required this.onNavigateToStep,
   });
 
   Widget _buildResumeElement(
@@ -55,7 +55,7 @@ class StepElevenView extends StatelessWidget {
       );
     }
 
-    final summaryData = viewModel.getSummaryData();
+    final summaryData = coordinator.getSummaryData();
     final fieldValue = summaryViewModel.getFieldValue(element, summaryData);
     final stepIndex = summaryViewModel.getStepIndexForField(element);
 
@@ -298,16 +298,10 @@ class StepElevenView extends StatelessWidget {
 
   Map<String, dynamic> _prepareOnboardingData() {
     return {
-      'personal_info': {
-        'name': viewModel.getController('name').text,
-        'email': viewModel.getController('email').text,
-        'phone': viewModel.getController('phone').text,
-      },
-      'vehicle_info': {
-        'marque': viewModel.getController('marque').text,
-        'modele': viewModel.getController('modele').text,
-        'immatriculation': viewModel.getController('immatriculation').text,
-      },
+      'personal_info': coordinator.personalInfoViewModel.getPersonalInfoData(),
+      'vehicle_info': coordinator.vehicleInfoViewModel.getVehicleInfoData(),
+      'preferences': coordinator.preferencesViewModel.getPreferencesData(),
+      'legal': coordinator.legalViewModel.getLegalStatus(),
     };
   }
 }

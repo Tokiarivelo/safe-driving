@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
-import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
+import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/chips.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/language_buttons.dart';
 
 class StepNineView extends StatelessWidget {
   final DriverOnboardingStepModel step;
-  final DriverOnboardingViewModel viewModel;
+  final DriverOnboardingCoordinator coordinator;
   final VoidCallback onContinue;
   final VoidCallback? onSkip;
 
   const StepNineView({
     super.key,
     required this.step,
-    required this.viewModel,
+    required this.coordinator,
     required this.onContinue,
     this.onSkip,
   });
@@ -85,9 +85,9 @@ class StepNineView extends StatelessWidget {
                           Chips.customChoiceChip(
                             label: option['label']!,
                             selected:
-                                viewModel.selectedTheme == option['value'],
+                                coordinator.preferencesViewModel.selectedTheme == option['value'],
                             onSelected: (_) {
-                              viewModel.setSelectedTheme(option['value']!);
+                              coordinator.preferencesViewModel.setSelectedTheme(option['value']!);
                             },
                           ),
                           if (index < themeOptions.length - 1)
@@ -111,9 +111,9 @@ class StepNineView extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               LanguageButtons.languageButtonContainer(
-                selectedLanguage: viewModel.selectedLanguage,
+                selectedLanguage: coordinator.preferencesViewModel.selectedLanguage,
                 onLanguageChanged: (lang) {
-                  viewModel.setSelectedLanguage(lang);
+                  coordinator.preferencesViewModel.setSelectedLanguage(lang);
                 },
               ),
             ],

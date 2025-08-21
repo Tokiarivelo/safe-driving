@@ -5,18 +5,18 @@ import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart'
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import 'package:safe_driving/core/utils/form/form_utils.dart';
-import '../widgets/upload_widget.dart';
-import '../widgets/camera_interface.dart';
-import '../widgets/captured_photos_modal.dart';
-import '../widgets/policy_modal.dart';
-import '../../models/driver_onboarding_step_model.dart';
-import '../../viewmodels/driver_onboarding_viewmodel.dart';
-import '../../models/driver_onboarding_data.dart';
+import '../upload_widget.dart';
+import '../camera_interface.dart';
+import '../captured_photos_modal.dart';
+import '../policy_modal.dart';
+import '../../../models/driver_onboarding_step_model.dart';
+import '../../../viewmodels/driver_onboarding_coordinator.dart';
+import '../../../models/driver_onboarding_data.dart';
 
 class DriverUIBuilder {
   static Widget buildStepContent(
     DriverOnboardingStepModel step,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     VoidCallback nextStep,
     Function(int) navigateToStep,
     BuildContext context,
@@ -56,7 +56,7 @@ class DriverUIBuilder {
             _buildAdditionalContent(
               step.additionalContent!,
               step,
-              viewModel,
+              coordinator,
               navigateToStep,
               context,
             ),
@@ -64,7 +64,7 @@ class DriverUIBuilder {
           const SizedBox(height: 32),
 
           // Build buttons
-          _buildButtons(step, viewModel, nextStep, context),
+          _buildButtons(step, coordinator, nextStep, context),
         ],
       ),
     );
@@ -73,54 +73,54 @@ class DriverUIBuilder {
   static Widget _buildAdditionalContent(
     Map<String, dynamic> content,
     DriverOnboardingStepModel step,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     Function(int) navigateToStep,
     BuildContext context,
   ) {
     // Form content
     if (content.containsKey('form')) {
-      return _buildForm(content['form'] as Map<String, String>, viewModel);
+      return _buildForm(content['form'] as Map<String, String>, coordinator);
     }
 
     // Identity documents
     if (content.containsKey('carteIdentité')) {
       final carteIdentiteData =
           content['carteIdentité'] as Map<String, dynamic>;
-      return _buildIdentityDocuments(carteIdentiteData, viewModel, context);
+      return _buildIdentityDocuments(carteIdentiteData, coordinator, context);
     }
 
     // Vehicle documents
     if (content.containsKey('documents')) {
       final documentsData = content['documents'] as Map<String, dynamic>;
-      return _buildVehicleDocuments(documentsData, viewModel, context);
+      return _buildVehicleDocuments(documentsData, coordinator, context);
     }
 
     // Selfie camera
     if (content.containsKey('selfie')) {
       final selfieData = content['selfie'] as Map<String, dynamic>;
-      return _buildSelfieCamera(selfieData, viewModel, context);
+      return _buildSelfieCamera(selfieData, coordinator, context);
     }
 
     // Notifications checkboxes
     if (content.containsKey('checkboxOptions')) {
       final checkboxOptions = content['checkboxOptions'] as List<String>;
       if (step.title == "Restez informé") {
-        return _buildNotificationsCheckboxes(checkboxOptions, viewModel);
+        return _buildNotificationsCheckboxes(checkboxOptions, coordinator);
       }
       if (step.title == "Un dernier point avant de démarrer") {
-        return _buildLegalCheckboxes(checkboxOptions, viewModel, context);
+        return _buildLegalCheckboxes(checkboxOptions, coordinator, context);
       }
     }
 
     // Theme and language preferences
     if (content.containsKey('theme')) {
-      return _buildPreferences(content, viewModel);
+      return _buildPreferences(content, coordinator);
     }
 
     // Summary
     if (content.containsKey('resume')) {
       final resumeData = content['resume'] as List;
-      return _buildSummary(resumeData, viewModel, navigateToStep);
+      return _buildSummary(resumeData, coordinator, navigateToStep);
     }
 
     // Completion QR code
@@ -140,7 +140,7 @@ class DriverUIBuilder {
 
   static Widget _buildForm(
     Map<String, String> formData,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,7 +153,7 @@ class DriverUIBuilder {
             icon: Icons.person,
             showLabel: true,
             backgroundColor: AppColors.inputTextBackground,
-            controller: viewModel.getController('name'),
+            controller: coordinator.personalInfoViewModel.getController('name'),
             validator: (value) =>
                 RegexFormatter.getNameValidationMessage(value!),
           ),
@@ -163,7 +163,7 @@ class DriverUIBuilder {
             hint: formData['placeholderEmail']!,
             icon: Icons.email,
             keyboardType: TextInputType.emailAddress,
-            controller: viewModel.getController('email'),
+            controller: coordinator.personalInfoViewModel.getController('email'),
             showLabel: true,
             backgroundColor: AppColors.inputTextBackground,
           ),
@@ -174,7 +174,7 @@ class DriverUIBuilder {
             icon: Icons.phone,
             keyboardType: TextInputType.phone,
             showLabel: true,
-            controller: viewModel.getController('phone'),
+            controller: coordinator.personalInfoViewModel.getController('phone'),
             validator: (value) => value?.isEmpty == true
                 ? null
                 : (RegexFormatter.isValidMalagasyPhone(value!)
@@ -192,7 +192,7 @@ class DriverUIBuilder {
             hint: formData['placeholderMarque']!,
             icon: Icons.car_rental,
             showLabel: true,
-            controller: viewModel.getController('marque'),
+            controller: coordinator.vehicleInfoViewModel.getController('marque'),
             validator: (value) =>
                 RegexFormatter.getVehicleNameValidationMessage(value!),
           ),
@@ -202,7 +202,7 @@ class DriverUIBuilder {
             hint: formData['placeholderModele']!,
             icon: Icons.directions_car,
             showLabel: true,
-            controller: viewModel.getController('modele'),
+            controller: coordinator.vehicleInfoViewModel.getController('modele'),
             validator: (value) =>
                 RegexFormatter.getVehicleNameValidationMessage(value!),
           ),
@@ -212,7 +212,7 @@ class DriverUIBuilder {
             hint: formData['placeholderImmatriculation']!,
             icon: Icons.confirmation_number,
             showLabel: true,
-            controller: viewModel.getController('immatriculation'),
+            controller: coordinator.vehicleInfoViewModel.getController('immatriculation'),
             validator: (value) =>
                 RegexFormatter.getLicensePlateValidationMessage(value!),
           ),
@@ -223,7 +223,7 @@ class DriverUIBuilder {
             icon: Icons.airline_seat_recline_normal,
             keyboardType: TextInputType.number,
             showLabel: true,
-            controller: viewModel.getController('places'),
+            controller: coordinator.vehicleInfoViewModel.getController('places'),
             validator: (value) =>
                 RegexFormatter.getSeatCountValidationMessage(value!),
           ),
@@ -233,7 +233,7 @@ class DriverUIBuilder {
             hint: formData['placeholderTypeVehicule']!,
             icon: Icons.local_taxi,
             showLabel: true,
-            controller: viewModel.getController('typeVehicule'),
+            controller: coordinator.vehicleInfoViewModel.getController('typeVehicule'),
           ),
         ],
       ],
@@ -242,7 +242,7 @@ class DriverUIBuilder {
 
   static Widget _buildIdentityDocuments(
     Map<String, dynamic> carteIdentiteData,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     BuildContext context,
   ) {
     return Column(
@@ -251,21 +251,21 @@ class DriverUIBuilder {
         if (carteIdentiteData.containsKey('rectoID'))
           _buildUploadSection(
             carteIdentiteData['rectoID'] as Map<String, dynamic>,
-            viewModel,
+            coordinator,
             context,
           ),
         const SizedBox(height: 16),
         if (carteIdentiteData.containsKey('versoID'))
           _buildUploadSection(
             carteIdentiteData['versoID'] as Map<String, dynamic>,
-            viewModel,
+            coordinator,
             context,
           ),
         const SizedBox(height: 16),
         if (carteIdentiteData.containsKey('permisConduire'))
           _buildUploadSection(
             carteIdentiteData['permisConduire'] as Map<String, dynamic>,
-            viewModel,
+            coordinator,
             context,
           ),
       ],
@@ -274,7 +274,7 @@ class DriverUIBuilder {
 
   static Widget _buildVehicleDocuments(
     Map<String, dynamic> documentsData,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     BuildContext context,
   ) {
     return Column(
@@ -284,7 +284,7 @@ class DriverUIBuilder {
           _buildDocumentSection(
             documentsData['certificatImmatriculation'] as Map<String, dynamic>,
             'Certificat d\'immatriculation',
-            viewModel,
+            coordinator,
             context,
           ),
         const SizedBox(height: 16),
@@ -292,7 +292,7 @@ class DriverUIBuilder {
           _buildDocumentSection(
             documentsData['attestationAssurance'] as Map<String, dynamic>,
             'Attestation d\'assurance',
-            viewModel,
+            coordinator,
             context,
           ),
         const SizedBox(height: 16),
@@ -300,7 +300,7 @@ class DriverUIBuilder {
           _buildDocumentSection(
             documentsData['photosVehicule'] as Map<String, dynamic>,
             'Photos du véhicule',
-            viewModel,
+            coordinator,
             context,
           ),
       ],
@@ -309,7 +309,7 @@ class DriverUIBuilder {
 
   static Widget _buildUploadSection(
     Map<String, dynamic> sectionData,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     BuildContext context,
   ) {
     final title = sectionData['title'] as String? ?? '';
@@ -332,7 +332,7 @@ class DriverUIBuilder {
           storageType = 'unknown';
         }
 
-        await viewModel.uploadPhotos(photos.cast<File>(), storageType);
+        await coordinator.documentUploadViewModel.uploadPhotos(photos.cast<File>(), storageType);
 
         if (context.mounted) {
           SnackbarHelper.showSuccess(
@@ -347,7 +347,7 @@ class DriverUIBuilder {
   static Widget _buildDocumentSection(
     Map<String, dynamic> documentData,
     String defaultTitle,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     BuildContext context,
   ) {
     final uploadZone = documentData['uploadZone'] as Map<String, dynamic>?;
@@ -374,7 +374,7 @@ class DriverUIBuilder {
             storageType = 'unknown';
           }
 
-          await viewModel.uploadPhotos(photos.cast<File>(), storageType);
+          await coordinator.documentUploadViewModel.uploadPhotos(photos.cast<File>(), storageType);
 
           if (context.mounted) {
             SnackbarHelper.showSuccess(
@@ -391,7 +391,7 @@ class DriverUIBuilder {
 
   static Widget _buildSelfieCamera(
     Map<String, dynamic> selfieData,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     BuildContext context,
   ) {
     return SizedBox(
@@ -400,13 +400,13 @@ class DriverUIBuilder {
         onPictureTaken: (imagePath) async {
           if (imagePath != null) {
             final capturedFile = File(imagePath);
-            viewModel.addCapturedPhoto(capturedFile);
+            coordinator.documentUploadViewModel.addCapturedPhoto(capturedFile);
 
-            await viewModel.uploadPhotos([capturedFile], 'selfie');
+            await coordinator.documentUploadViewModel.uploadPhotos([capturedFile], 'selfie');
 
             if (context.mounted) {
               SnackbarHelper.showSuccess(context, 'Selfie pris avec succès !');
-              _showCapturedPhotosModal(context, viewModel);
+              _showCapturedPhotosModal(context, coordinator);
             }
           } else {
             SnackbarHelper.showError(
@@ -421,7 +421,7 @@ class DriverUIBuilder {
 
   static void _showCapturedPhotosModal(
     BuildContext context,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
   ) {
     showModalBottomSheet(
       context: context,
@@ -429,9 +429,9 @@ class DriverUIBuilder {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return CapturedPhotosModal(
-          selectedImages: viewModel.capturedPhotos,
+          selectedImages: coordinator.documentUploadViewModel.capturedPhotos,
           onImagesChanged: (updatedImages) {
-            viewModel.updateCapturedPhotos(updatedImages);
+            coordinator.documentUploadViewModel.updateCapturedPhotos(updatedImages);
           },
         );
       },
@@ -440,7 +440,7 @@ class DriverUIBuilder {
 
   static Widget _buildNotificationsCheckboxes(
     List<String> checkboxOptions,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
   ) {
     return Column(
       children: checkboxOptions.asMap().entries.map((entry) {
@@ -452,9 +452,9 @@ class DriverUIBuilder {
           ),
           child: SwitchesAndRadios.customCheckbox(
             title: option,
-            value: viewModel.selectedNotifications.contains(option),
+            value: coordinator.preferencesViewModel.selectedNotifications.contains(option),
             onChanged: (value) {
-              viewModel.toggleNotification(option);
+              coordinator.preferencesViewModel.toggleNotification(option);
             },
             titleColor: AppColors.fillButtonBackground,
           ),
@@ -465,7 +465,7 @@ class DriverUIBuilder {
 
   static Widget _buildLegalCheckboxes(
     List<String> checkboxOptions,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     BuildContext context,
   ) {
     return Column(
@@ -473,7 +473,7 @@ class DriverUIBuilder {
         ElegantAcceptanceButton.elegantAcceptanceButton(
           text: "Conditions Générales d'Utilisation",
           subtitle: "Lire et accepter les CGU",
-          isAccepted: viewModel.cguAccepted[0],
+          isAccepted: coordinator.legalViewModel.cguAccepted[0],
           onTap: () {
             showDialog(
               context: context,
@@ -483,7 +483,7 @@ class DriverUIBuilder {
                   titleContent: cguStep.title,
                   content: cguStep.additionalContent?["content"] ?? "",
                   onAccept: () {
-                    viewModel.setCguAccepted(0, true);
+                    coordinator.legalViewModel.setCguAccepted(0, true);
                   },
                 );
               },
@@ -494,7 +494,7 @@ class DriverUIBuilder {
         ElegantAcceptanceButton.elegantAcceptanceButton(
           text: "Politique de Confidentialité",
           subtitle: "Lire et accepter la politique",
-          isAccepted: viewModel.cguAccepted[1],
+          isAccepted: coordinator.legalViewModel.cguAccepted[1],
           onTap: () {
             showDialog(
               context: context,
@@ -506,7 +506,7 @@ class DriverUIBuilder {
                   titleContent: privacyStep.title,
                   content: privacyStep.additionalContent?["content"] ?? "",
                   onAccept: () {
-                    viewModel.setCguAccepted(1, true);
+                    coordinator.legalViewModel.setCguAccepted(1, true);
                   },
                 );
               },
@@ -519,7 +519,7 @@ class DriverUIBuilder {
 
   static Widget _buildPreferences(
     Map<String, dynamic> content,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -543,17 +543,17 @@ class DriverUIBuilder {
             children: [
               Chips.customChoiceChip(
                 label: 'Clair',
-                selected: viewModel.selectedTheme == 'clair',
+                selected: coordinator.preferencesViewModel.selectedTheme == 'clair',
                 onSelected: (_) {
-                  viewModel.setTheme('clair');
+                  coordinator.preferencesViewModel.setTheme('clair');
                 },
               ),
               const SizedBox(width: 24),
               Chips.customChoiceChip(
                 label: 'Sombre',
-                selected: viewModel.selectedTheme == 'sombre',
+                selected: coordinator.preferencesViewModel.selectedTheme == 'sombre',
                 onSelected: (_) {
-                  viewModel.setTheme('sombre');
+                  coordinator.preferencesViewModel.setTheme('sombre');
                 },
               ),
             ],
@@ -576,9 +576,9 @@ class DriverUIBuilder {
           ),
           const SizedBox(height: 12),
           LanguageButtons.languageButtonContainer(
-            selectedLanguage: viewModel.selectedLanguage,
+            selectedLanguage: coordinator.preferencesViewModel.selectedLanguage,
             onLanguageChanged: (lang) {
-              viewModel.setLanguage(lang);
+              coordinator.preferencesViewModel.setLanguage(lang);
             },
           ),
         ],
@@ -588,7 +588,7 @@ class DriverUIBuilder {
 
   static Widget _buildSummary(
     List resumeData,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     Function(int) navigateToStep,
   ) {
     return Column(
@@ -635,7 +635,7 @@ class DriverUIBuilder {
                 return _buildResumeElement(
                   element,
                   titre,
-                  viewModel,
+                  coordinator,
                   navigateToStep,
                 );
               }),
@@ -649,11 +649,11 @@ class DriverUIBuilder {
   static Widget _buildResumeElement(
     String element,
     String sectionTitle,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     Function(int) navigateToStep,
   ) {
     if (element == 'Photos uploadées') {
-      final totalPhotos = viewModel.getTotalUploadedPhotosCount();
+      final totalPhotos = coordinator.documentUploadViewModel.getTotalUploadedPhotosCount();
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: Row(
@@ -679,7 +679,7 @@ class DriverUIBuilder {
       );
     }
 
-    final fieldValue = _getFieldValue(element, viewModel);
+    final fieldValue = coordinator.getFieldValue(element);
     final stepIndex = _getStepIndexForField(element);
 
     return Padding(
@@ -828,18 +828,18 @@ class DriverUIBuilder {
 
   static Widget _buildButtons(
     DriverOnboardingStepModel step,
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     VoidCallback nextStep,
     BuildContext context,
   ) {
     // GPS step has special handling
     if (step.title == "Partagez votre position") {
-      return _buildGpsButtons(viewModel, nextStep, context);
+      return _buildGpsButtons(coordinator, nextStep, context);
     }
 
     // Legal step has special handling
     if (step.title == "Un dernier point avant de démarrer") {
-      if (viewModel.allCguAccepted) {
+      if (coordinator.legalViewModel.allCguAccepted) {
         return PrimaryButton.primaryButton(
           text: "Continuer",
           onPressed: nextStep,
@@ -878,7 +878,7 @@ class DriverUIBuilder {
   }
 
   static Widget _buildGpsButtons(
-    DriverOnboardingViewModel viewModel,
+    DriverOnboardingCoordinator coordinator,
     VoidCallback nextStep,
     BuildContext context,
   ) {
@@ -890,8 +890,8 @@ class DriverUIBuilder {
               child: SwitchesAndRadios.customRadio<String>(
                 title: "Plus tard",
                 value: "Plus tard",
-                groupValue: viewModel.gpsEnabled ? "Autoriser" : "Plus tard",
-                onChanged: (value) => viewModel.setGpsEnabled(false),
+                groupValue: coordinator.preferencesViewModel.gpsEnabled ? "Autoriser" : "Plus tard",
+                onChanged: (value) => coordinator.preferencesViewModel.setGpsEnabled(false),
                 titleColor: AppColors.fillButtonBackground,
                 activeColor: AppColors.fillButtonBackground,
               ),
@@ -900,10 +900,10 @@ class DriverUIBuilder {
               child: SwitchesAndRadios.customRadio<String>(
                 title: "Autoriser",
                 value: "Autoriser",
-                groupValue: viewModel.gpsEnabled ? "Autoriser" : "Plus tard",
+                groupValue: coordinator.preferencesViewModel.gpsEnabled ? "Autoriser" : "Plus tard",
                 onChanged: (value) async {
                   if (value == "Autoriser") {
-                    final granted = await viewModel.requestGpsPermission();
+                    final granted = await coordinator.preferencesViewModel.requestGpsPermission();
                     if (context.mounted && granted) {
                       SnackbarHelper.showSuccess(
                         context,
@@ -911,7 +911,7 @@ class DriverUIBuilder {
                       );
                     }
                   } else {
-                    viewModel.setGpsEnabled(false);
+                    coordinator.preferencesViewModel.setGpsEnabled(false);
                   }
                 },
                 titleColor: AppColors.fillButtonBackground,
@@ -928,14 +928,6 @@ class DriverUIBuilder {
         ),
       ],
     );
-  }
-
-  static String _getFieldValue(
-    String fieldName,
-    DriverOnboardingViewModel viewModel,
-  ) {
-    final summaryData = viewModel.getSummaryData();
-    return summaryData[fieldName] ?? 'Non renseigné';
   }
 
   static IconData _getFieldIcon(String fieldName) {

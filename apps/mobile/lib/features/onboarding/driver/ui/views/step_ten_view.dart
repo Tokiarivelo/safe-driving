@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
-import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
+import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/policy_modal.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/specialized/elegant_acceptance_button.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 
 class StepTenView extends StatelessWidget {
   final DriverOnboardingStepModel step;
-  final DriverOnboardingViewModel viewModel;
+  final DriverOnboardingCoordinator coordinator;
   final VoidCallback onContinue;
   final VoidCallback? onSkip;
 
   const StepTenView({
     super.key,
     required this.step,
-    required this.viewModel,
+    required this.coordinator,
     required this.onContinue,
     this.onSkip,
   });
@@ -57,7 +57,7 @@ class StepTenView extends StatelessWidget {
               ElegantAcceptanceButton.elegantAcceptanceButton(
                 text: "Conditions Générales d'Utilisation",
                 subtitle: "Lire et accepter les CGU",
-                isAccepted: viewModel.cguAccepted[0],
+                isAccepted: coordinator.legalViewModel.cguAccepted[0],
                 onTap: () {
                   showDialog(
                     context: context,
@@ -65,9 +65,9 @@ class StepTenView extends StatelessWidget {
                       return PolicyModal(
                         titleContent:
                             "Conditions Générales d'Utilisation (CGU) de Safe Driving",
-                        content: viewModel.getCguContent(),
+                        content: coordinator.legalViewModel.getCguContent(),
                         onAccept: () {
-                          viewModel.setCguAccepted(0, true);
+                          coordinator.legalViewModel.setCguAccepted(0, true);
                         },
                       );
                     },
@@ -78,16 +78,16 @@ class StepTenView extends StatelessWidget {
               ElegantAcceptanceButton.elegantAcceptanceButton(
                 text: "Politique de Confidentialité",
                 subtitle: "Lire et accepter la politique",
-                isAccepted: viewModel.cguAccepted[1],
+                isAccepted: coordinator.legalViewModel.cguAccepted[1],
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (context) {
                       return PolicyModal(
                         titleContent: "Politique de Confidentialité",
-                        content: viewModel.getPrivacyPolicyContent(),
+                        content: coordinator.legalViewModel.getPrivacyPolicyContent(),
                         onAccept: () {
-                          viewModel.setCguAccepted(1, true);
+                          coordinator.legalViewModel.setCguAccepted(1, true);
                         },
                       );
                     },
@@ -95,7 +95,7 @@ class StepTenView extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 32),
-              if (viewModel.cguAccepted.every((accepted) => accepted))
+              if (coordinator.legalViewModel.cguAccepted.every((accepted) => accepted))
                 PrimaryButton.nextButton(
                   text: "Continuer",
                   onPressed: onContinue,

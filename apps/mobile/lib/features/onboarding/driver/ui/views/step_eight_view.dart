@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
-import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
+import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 
 class StepEightView extends StatelessWidget {
   final DriverOnboardingStepModel step;
-  final DriverOnboardingViewModel viewModel;
+  final DriverOnboardingCoordinator coordinator;
   final VoidCallback onContinue;
   final VoidCallback? onSkip;
 
   const StepEightView({
     super.key,
     required this.step,
-    required this.viewModel,
+    required this.coordinator,
     required this.onContinue,
     this.onSkip,
   });
@@ -63,9 +63,9 @@ class StepEightView extends StatelessWidget {
                 ),
                 child: SwitchesAndRadios.customCheckbox(
                   title: option,
-                  value: viewModel.selectedNotifications.contains(option),
+                  value: coordinator.preferencesViewModel.selectedNotifications.contains(option),
                   onChanged: (value) {
-                    viewModel.toggleNotification(option);
+                    coordinator.preferencesViewModel.toggleNotification(option);
                   },
                   titleColor: AppColors.fillButtonBackground,
                 ),

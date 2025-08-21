@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
-import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
+import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 
 class StepTwelveView extends StatelessWidget {
   final DriverOnboardingStepModel step;
-  final DriverOnboardingViewModel viewModel;
+  final DriverOnboardingCoordinator coordinator;
   final VoidCallback onContinue;
   final VoidCallback? onSkip;
 
   const StepTwelveView({
     super.key,
     required this.step,
-    required this.viewModel,
+    required this.coordinator,
     required this.onContinue,
     this.onSkip,
   });
@@ -28,7 +28,7 @@ class StepTwelveView extends StatelessWidget {
         children: [
           const SizedBox(height: 20),
           Text(
-            '${step.title}${viewModel.nameController.text.isNotEmpty ? viewModel.nameController.text : 'Conducteur'}',
+            '${step.title} ${coordinator.getFieldValue('Prénom et Nom').isNotEmpty && coordinator.getFieldValue('Prénom et Nom') != 'Non renseigné' ? coordinator.getFieldValue('Prénom et Nom') : 'Conducteur'}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 24,
