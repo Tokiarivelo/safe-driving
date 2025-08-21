@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:safe_driving/presentation/auth/view_models/auth_view_models.dart';
+import '../../presentation/auth/viewmodels/auth_view_model.dart';
 
 import '../../presentation/auth/services/user_service.dart';
 // ...existing code...

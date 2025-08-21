@@ -98,7 +98,11 @@ class UserOnboardingViewModel extends ChangeNotifier {
   }
 
   // State management methods
-  Future<void> updateGps(bool value, BuildContext context, {bool shouldSave = true}) async {
+  Future<void> updateGps(
+    bool value,
+    BuildContext context, {
+    bool shouldSave = true,
+  }) async {
     if (value) {
       final granted = await UserOnboardingService.requestGpsPermission(context);
       _appState = _appState.copyWith(gpsEnabled: granted);
@@ -111,7 +115,11 @@ class UserOnboardingViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> updateNotifications(bool value, BuildContext context, {bool shouldSave = true}) async {
+  Future<void> updateNotifications(
+    bool value,
+    BuildContext context, {
+    bool shouldSave = true,
+  }) async {
     _appState = _appState.copyWith(notifEnabled: value);
     notifyListeners();
     if (shouldSave && value) {
@@ -147,10 +155,9 @@ class UserOnboardingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Validation methods
   bool validateCurrentStep() {
     switch (_currentStep) {
-      case 5: // Preferences step
+      case 5:
         return _appState.selectedTransports.isNotEmpty;
       default:
         return true;
@@ -204,7 +211,7 @@ class UserOnboardingViewModel extends ChangeNotifier {
   Future<bool> completeOnboarding(BuildContext context) async {
     _setLoading(true);
     _setError(null);
-    
+
     try {
       await _savePreferences();
       // Check if the widget is still mounted before using context
@@ -229,5 +236,4 @@ class UserOnboardingViewModel extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
   }
-
 }

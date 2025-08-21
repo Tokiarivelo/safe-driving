@@ -1,6 +1,6 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../models/auth_models.dart';
-import '../../../graphql/queries.dart';
+import '../../../api/graphql/queries.dart';
 
 const String resetPasswordMutation = r'''
 mutation ResetPassword($password: String!) {

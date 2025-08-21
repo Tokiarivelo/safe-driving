@@ -340,11 +340,7 @@ class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
             ButtonsWidget.roleChoiceButtons(
               onUserPressed: () => _nextStep(),
               onDriverPressed: () {
-                SnackbarHelper.showInfo(
-                  context,
-                  'Navigation vers le mode chauffeur bientôt disponible',
-                  duration: const Duration(seconds: 2),
-                );
+                Navigator.pushNamed(context, '/driverOnboarding');
               },
             ),
           ],

@@ -1,217 +1,80 @@
+export 'parts/header_builder.dart';
+export 'parts/input_builder.dart';
+export 'parts/social_buttons_builder.dart';
+export 'parts/action_button_builder.dart';
+export 'parts/logo_builder.dart';
+export 'parts/navigation_links_builder.dart';
+export 'parts/auth_container_builder.dart';
+export 'parts/step_data_getter.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import '../models/auth_models.dart';
 import '../../../core/constants/colors/colors.dart';
-import '../../../shared/widgets/customs/inputs/inputs_widget.dart';
+import 'parts/header_builder.dart';
+import 'parts/input_builder.dart';
+import 'parts/social_buttons_builder.dart';
+import 'parts/action_button_builder.dart';
+import 'parts/logo_builder.dart';
+import 'parts/navigation_links_builder.dart';
+import 'parts/auth_container_builder.dart';
+import 'parts/step_data_getter.dart';
 
 class AuthUIBuilder {
   static Widget buildHeaderText({
     required AuthStepContent stepData,
     required bool isForgotPassword,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(
-          stepData.title,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontFamily: 'Inder',
-            fontSize: 20,
-            color: AppColors.titleColor,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          stepData.subtitle,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Inder',
-            fontSize: 12,
-            color: AppColors.titleColor.withAlpha(220),
-          ),
-        ),
-        if (!isForgotPassword && stepData.subSubtitle.isNotEmpty) ...[
-          const SizedBox(height: 8),
-          Text(
-            stepData.subSubtitle,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Inder',
-              fontSize: 12,
-              fontWeight: FontWeight.w200,
-              color: AppColors.titleColor.withAlpha(220),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
+  }) => HeaderBuilder.buildHeaderText(
+    stepData: stepData,
+    isForgotPassword: isForgotPassword,
+  );
 
   static Widget buildActionButton({
     required String buttonText,
     required VoidCallback onPressed,
-  }) {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.fillButtonBackground,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        ),
-        child: Text(
-          buttonText,
-          style: const TextStyle(
-            fontFamily: 'Inder',
-            color: AppColors.titleColor,
-            fontSize: 13,
-          ),
-        ),
-      ),
-    );
-  }
+  }) => ActionButtonBuilder.buildActionButton(
+    buttonText: buttonText,
+    onPressed: onPressed,
+  );
 
   static Widget buildSocialButton({
     required VoidCallback? onTap,
     required String imagePath,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: AppColors.buttonWithoutBackGround),
-      ),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Image.asset(imagePath, height: 40),
-      ),
-    );
-  }
+  }) => SocialButtonsBuilder.buildSocialButton(
+    onTap: onTap,
+    imagePath: imagePath,
+  );
 
   static Widget buildSocialButtons({
     required VoidCallback? onGoogleSignIn,
     required VoidCallback? onFacebookSignIn,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        buildSocialButton(
-          onTap: onGoogleSignIn,
-          imagePath: 'assets/img/social/google.png',
-        ),
-        buildSocialButton(
-          onTap: onFacebookSignIn,
-          imagePath: 'assets/img/social/facebook.png',
-        ),
-      ],
-    );
-  }
+  }) => SocialButtonsBuilder.buildSocialButtons(
+    onGoogleSignIn: onGoogleSignIn,
+    onFacebookSignIn: onFacebookSignIn,
+  );
 
   static Widget buildNavigationLink({
     required AuthStepContent stepData,
     required VoidCallback? onTap,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          stepData.navigationPrefix,
-          style: const TextStyle(
-            fontFamily: 'Inder',
-            color: AppColors.textColor,
-            fontSize: 12,
-          ),
-        ),
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            margin: const EdgeInsets.only(top: 1),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColors.buttonWithoutBackGround,
-                  width: 1.5,
-                ),
-              ),
-            ),
-            child: Text(
-              stepData.navigationLink,
-              style: TextStyle(
-                fontFamily: 'Inder',
-                color: AppColors.buttonWithoutBackGround,
-                fontSize: 9,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  }) => NavigationLinksBuilder.buildNavigationLink(
+    stepData: stepData,
+    onTap: onTap,
+  );
 
   static Widget buildBackToLoginButton({
     required String backText,
     required VoidCallback? onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        children: [
-          Icon(Icons.arrow_back, color: AppColors.buttonWithoutBackGround),
-          const SizedBox(width: 8),
-          Text(
-            backText,
-            style: TextStyle(
-              fontFamily: 'Inder',
-              color: AppColors.buttonWithoutBackGround,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  }) => NavigationLinksBuilder.buildBackToLoginButton(
+    backText: backText,
+    onTap: onTap,
+  );
 
   static Widget buildForgotPasswordLink({
     required String forgotText,
     required VoidCallback? onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: AppColors.buttonWithoutBackGround),
-            ),
-          ),
-          child: Text(
-            forgotText,
-            style: TextStyle(
-              fontFamily: 'Inder',
-              color: AppColors.buttonWithoutBackGround,
-              fontWeight: FontWeight.bold,
-              fontSize: 10,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  static Widget buildLogo({required bool isSmallScreen}) {
-    return Transform.scale(
-      scale: isSmallScreen ? 0.8 : 1,
-      child: SvgPicture.asset(
-        'assets/logo/logo.svg',
-        height: isSmallScreen ? 80 : 100,
-        width: 500,
-      ),
-    );
-  }
+  }) => InputBuilder.buildForgotPasswordLink(
+    forgotText: forgotText,
+    onTap: onTap,
+  );
 
   static Widget buildInputFieldWithValidation({
     required String hint,
@@ -223,19 +86,44 @@ class AuthUIBuilder {
     String? errorMessage,
     Function(String)? onChanged,
     required bool isSmallScreen,
-  }) {
-    return CustomInputField(
-      hint: hint,
-      icon: icon,
-      obscureText: obscureText,
-      isPassword: isPassword,
-      isConfirmPassword: isConfirmPassword,
-      controller: controller,
-      errorMessage: errorMessage,
-      onChanged: onChanged,
-      padding: EdgeInsets.symmetric(vertical: isSmallScreen ? 4.0 : 8.0),
-    );
-  }
+  }) => InputBuilder.buildInputFieldWithValidation(
+    hint: hint,
+    icon: icon,
+    obscureText: obscureText,
+    isPassword: isPassword,
+    isConfirmPassword: isConfirmPassword,
+    controller: controller,
+    errorMessage: errorMessage,
+    onChanged: onChanged,
+    isSmallScreen: isSmallScreen,
+  );
+
+  static Widget buildLogo({required bool isSmallScreen}) =>
+      LogoBuilder.buildLogo(isSmallScreen: isSmallScreen);
+
+  static Widget buildAuthContainer({
+    required BuildContext context,
+    required bool isLogin,
+    required bool isForgotPassword,
+    required bool isSmallScreen,
+    required Widget child,
+  }) => AuthContainerBuilder.buildAuthContainer(
+    context: context,
+    isLogin: isLogin,
+    isForgotPassword: isForgotPassword,
+    isSmallScreen: isSmallScreen,
+    child: child,
+  );
+
+  static AuthStepContent getStepData({
+    required bool isLogin,
+    required bool isForgotPassword,
+    bool isResetPassword = false,
+  }) => StepDataGetter.getStepData(
+    isLogin: isLogin,
+    isForgotPassword: isForgotPassword,
+    isResetPassword: isResetPassword,
+  );
 
   static Widget buildMainContent({
     required bool isLogin,
@@ -254,11 +142,11 @@ class AuthUIBuilder {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        buildLogo(isSmallScreen: isSmallScreen),
+        LogoBuilder.buildLogo(isSmallScreen: isSmallScreen),
         SizedBox(height: isSmallScreen ? 10 : 15),
         inputFields,
         SizedBox(height: isSmallScreen ? 12 : 16),
-        buildActionButton(
+        ActionButtonBuilder.buildActionButton(
           buttonText: stepData.actionButtonText,
           onPressed: onButtonPress,
         ),
@@ -272,77 +160,24 @@ class AuthUIBuilder {
             ),
           ),
           SizedBox(height: isSmallScreen ? 10 : 15),
-          buildSocialButtons(
+          SocialButtonsBuilder.buildSocialButtons(
             onGoogleSignIn: onGoogleSignIn,
             onFacebookSignIn: onFacebookSignIn,
           ),
           SizedBox(height: isSmallScreen ? 15 : 20),
-          buildNavigationLink(
+          NavigationLinksBuilder.buildNavigationLink(
             stepData: stepData,
             onTap: isLogin ? onNavigateToRegister : onNavigateToLogin,
           ),
         ],
         if (isForgotPassword) ...[
           const SizedBox(height: 10),
-          buildBackToLoginButton(
+          NavigationLinksBuilder.buildBackToLoginButton(
             backText: stepData.backToLoginText,
             onTap: onNavigateToLogin,
           ),
         ],
       ],
     );
-  }
-
-  static Widget buildAuthContainer({
-    required BuildContext context,
-    required bool isLogin,
-    required bool isForgotPassword,
-    required bool isSmallScreen,
-    required Widget child,
-  }) {
-    final bool isRegister = !isLogin && !isForgotPassword;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final headerHeight = isRegister
-        ? (isSmallScreen ? 100 : 140)
-        : (isSmallScreen ? 100 : 130);
-
-    return Container(
-      width: MediaQuery.of(context).size.width,
-
-      padding: EdgeInsets.zero,
-      height: screenHeight - headerHeight - MediaQuery.of(context).padding.top,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-        color: AppColors.secondBackgroundColor,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.blur,
-            blurRadius: 4,
-            spreadRadius: 4,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: SingleChildScrollView(child: child),
-    );
-  }
-
-  static AuthStepContent getStepData({
-    required bool isLogin,
-    required bool isForgotPassword,
-    bool isResetPassword = false,
-  }) {
-    final String stepKey = isResetPassword
-        ? 'resetPassword'
-        : isForgotPassword
-        ? 'forgotPassword'
-        : isLogin
-        ? 'login'
-        : 'register';
-
-    return AuthStepContentMap.stepContents[stepKey]!;
   }
 }
