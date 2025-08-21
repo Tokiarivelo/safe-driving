@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'generated/app_localizations.dart';
+import 'package:safe_driving/l10n/generated/app_localizations.dart';
 
 class L10n {
   static final List<Locale> supportedLocales = [

@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import '../models/driver_onboarding_step_model.dart';
 import '../services/driver_services.dart';
 import '../services/storage_service.dart';
-import '../utils/driver_onboarding_data.dart';
+import '../models/driver_onboarding_data.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class DriverOnboardingViewModel extends ChangeNotifier {
   final DriverOnboardingService _service = DriverOnboardingService();
-  
+
   int _currentStep = 0;
   bool _isLoading = false;
   String? _errorMessage;
-  
+
   // Form data
   final Map<String, TextEditingController> _controllers = {};
   final Map<String, dynamic> _formData = {};
@@ -28,17 +28,18 @@ class DriverOnboardingViewModel extends ChangeNotifier {
   int get currentStep => _currentStep;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
-  List<DriverOnboardingStepModel> get steps => DriverOnboardingData.getDriverSteps();
-  
+  List<DriverOnboardingStepModel> get steps =>
+      DriverOnboardingData.getDriverSteps();
+
   bool get gpsEnabled => _gpsEnabled;
   List<String> get selectedNotifications => _selectedNotifications;
   String get selectedTheme => _selectedTheme;
   String get selectedLanguage => _selectedLanguage;
   List<bool> get cguAccepted => _cguAccepted;
   List<File> get capturedPhotos => _capturedPhotos;
-  
+
   Map<String, dynamic> get formData => _formData;
-  
+
   TextEditingController getController(String key) {
     if (!_controllers.containsKey(key)) {
       _controllers[key] = TextEditingController();
@@ -177,7 +178,7 @@ class DriverOnboardingViewModel extends ChangeNotifier {
   // Validation methods
   bool isStepValid(int stepIndex) {
     final step = steps[stepIndex];
-    
+
     switch (step.stepType) {
       case DriverStepType.personalInfo:
         return _validatePersonalInfo();
@@ -206,33 +207,33 @@ class DriverOnboardingViewModel extends ChangeNotifier {
   // Summary data methods
   Map<String, String> getSummaryData() {
     return {
-      'Nom': getController('name').text.isNotEmpty 
-          ? getController('name').text 
+      'Nom': getController('name').text.isNotEmpty
+          ? getController('name').text
           : 'Non renseigné',
-      'E-mail': getController('email').text.isNotEmpty 
-          ? getController('email').text 
+      'E-mail': getController('email').text.isNotEmpty
+          ? getController('email').text
           : 'Non renseigné',
-      'Téléphone': getController('phone').text.isNotEmpty 
-          ? getController('phone').text 
+      'Téléphone': getController('phone').text.isNotEmpty
+          ? getController('phone').text
           : 'Non renseigné',
-      'Marque': getController('marque').text.isNotEmpty 
-          ? getController('marque').text 
+      'Marque': getController('marque').text.isNotEmpty
+          ? getController('marque').text
           : 'Non renseigné',
-      'Modèle': getController('modele').text.isNotEmpty 
-          ? getController('modele').text 
+      'Modèle': getController('modele').text.isNotEmpty
+          ? getController('modele').text
           : 'Non renseigné',
-      'Immatriculation': getController('immatriculation').text.isNotEmpty 
-          ? getController('immatriculation').text 
+      'Immatriculation': getController('immatriculation').text.isNotEmpty
+          ? getController('immatriculation').text
           : 'Non renseigné',
-      'Nombre de places': getController('places').text.isNotEmpty 
-          ? getController('places').text 
+      'Nombre de places': getController('places').text.isNotEmpty
+          ? getController('places').text
           : 'Non renseigné',
-      'Type de véhicule': getController('typeVehicule').text.isNotEmpty 
-          ? getController('typeVehicule').text 
+      'Type de véhicule': getController('typeVehicule').text.isNotEmpty
+          ? getController('typeVehicule').text
           : 'Non renseigné',
       'GPS': _gpsEnabled ? 'Activé' : 'Désactivé',
-      'Notifications': _selectedNotifications.isNotEmpty 
-          ? _selectedNotifications.join(', ') 
+      'Notifications': _selectedNotifications.isNotEmpty
+          ? _selectedNotifications.join(', ')
           : 'Aucune',
       'Thème': _selectedTheme == 'clair' ? 'Clair' : 'Sombre',
       'Langue': _selectedLanguage == 'fr' ? 'Français' : 'Anglais',
@@ -264,7 +265,7 @@ class DriverOnboardingViewModel extends ChangeNotifier {
         },
         'cgu_accepted': allCguAccepted,
       };
-      
+
       await _service.completeDriverOnboarding(data);
     } catch (e) {
       _setError('Erreur lors de la finalisation: $e');
@@ -274,15 +275,16 @@ class DriverOnboardingViewModel extends ChangeNotifier {
     }
   }
 
-  // Controller accessors
   TextEditingController get nameController => getController('name');
   TextEditingController get emailController => getController('email');
   TextEditingController get phoneController => getController('phone');
   TextEditingController get marqueController => getController('marque');
   TextEditingController get modeleController => getController('modele');
-  TextEditingController get immatriculationController => getController('immatriculation');
+  TextEditingController get immatriculationController =>
+      getController('immatriculation');
   TextEditingController get placesController => getController('places');
-  TextEditingController get typeVehiculeController => getController('typeVehicule');
+  TextEditingController get typeVehiculeController =>
+      getController('typeVehicule');
 
   // GPS permission handler
   Future<void> handleGpsPermission(BuildContext context) async {
@@ -301,7 +303,7 @@ class DriverOnboardingViewModel extends ChangeNotifier {
     if (imagePath != null) {
       final capturedFile = File(imagePath);
       addCapturedPhoto(capturedFile);
-      
+
       try {
         final storageService = StorageService();
         await storageService.storePhoto(
@@ -363,7 +365,10 @@ class DriverOnboardingViewModel extends ChangeNotifier {
   Future<void> handleIdentityRectoPhotos(List<dynamic> photos) async {
     try {
       final storageService = StorageService();
-      await storageService.storePhotos(photos, StorageService.identityRectoType);
+      await storageService.storePhotos(
+        photos,
+        StorageService.identityRectoType,
+      );
     } catch (e) {
       _setError('Erreur lors du stockage des photos recto: $e');
     }
@@ -372,7 +377,10 @@ class DriverOnboardingViewModel extends ChangeNotifier {
   Future<void> handleIdentityVersoPhotos(List<dynamic> photos) async {
     try {
       final storageService = StorageService();
-      await storageService.storePhotos(photos, StorageService.identityVersoType);
+      await storageService.storePhotos(
+        photos,
+        StorageService.identityVersoType,
+      );
     } catch (e) {
       _setError('Erreur lors du stockage des photos verso: $e');
     }
@@ -381,7 +389,10 @@ class DriverOnboardingViewModel extends ChangeNotifier {
   Future<void> handleDrivingLicensePhotos(List<dynamic> photos) async {
     try {
       final storageService = StorageService();
-      await storageService.storePhotos(photos, StorageService.drivingLicenseType);
+      await storageService.storePhotos(
+        photos,
+        StorageService.drivingLicenseType,
+      );
     } catch (e) {
       _setError('Erreur lors du stockage des photos de permis: $e');
     }
