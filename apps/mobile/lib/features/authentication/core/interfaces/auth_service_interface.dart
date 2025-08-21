@@ -1,7 +1,4 @@
-import 'package:safe_driving/features/authentication/models/auth_model.dart';
-
 import '../../models/auth_models.dart';
-import '../../models/auth_result.dart';
 
 abstract class IAuthService {
   Future<AuthResult> login(String email, String password);

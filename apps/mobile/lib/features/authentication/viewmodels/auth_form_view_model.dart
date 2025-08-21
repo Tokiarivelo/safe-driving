@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/auth_models.dart';
+import 'package:safe_driving/features/authentication/services/auth_step_content_service.dart';
+import 'package:safe_driving/features/authentication/models/auth_step_content_model.dart';
 import '../ui/widgets/auth/auth_validators.dart';
 
 class AuthFormViewModel extends ChangeNotifier {
@@ -100,7 +101,7 @@ class AuthFormViewModel extends ChangeNotifier {
         ? 'login'
         : 'register';
 
-    return AuthStepContentMap.stepContents[stepKey]!;
+    return AuthStepContentService.stepContents[stepKey]!;
   }
 
   void clearErrors() {

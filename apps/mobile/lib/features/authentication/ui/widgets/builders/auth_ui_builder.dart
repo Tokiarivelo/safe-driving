@@ -8,7 +8,7 @@ export 'parts/auth_container_builder.dart';
 export 'parts/step_data_getter.dart';
 
 import 'package:flutter/material.dart';
-import '../../../models/auth_models.dart';
+import 'package:safe_driving/features/authentication/models/auth_models.dart';
 import '../../../../../core/constants/colors/colors.dart';
 import 'parts/header_builder.dart';
 import 'parts/input_builder.dart';

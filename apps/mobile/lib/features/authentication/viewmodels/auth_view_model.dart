@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:safe_driving/features/authentication/models/auth_request.dart';
 import '../services/auth_service.dart';
-import '../models/user_model.dart';
-import '../models/auth_request.dart';
+import '../models/models.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthService _authService;
@@ -70,7 +70,6 @@ class AuthViewModel extends ChangeNotifier {
       return false;
     }
   }
-
 
   Future<void> fetchCurrentUser() async {
     _setLoading(true);

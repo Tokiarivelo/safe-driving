@@ -1,31 +1,5 @@
 import 'package:safe_driving/features/authentication/models/role_model.dart';
-
-class UserImage {
-  final String id;
-  final String url;
-  final String type;
-  final String userId;
-
-  UserImage({
-    required this.id,
-    required this.url,
-    required this.type,
-    required this.userId,
-  });
-
-  factory UserImage.fromJson(Map<String, dynamic> json) {
-    return UserImage(
-      id: json['id'],
-      url: json['url'],
-      type: json['type'],
-      userId: json['userId'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'url': url, 'type': type, 'userId': userId};
-  }
-}
+import 'package:safe_driving/features/authentication/models/user_image_model.dart';
 
 class User {
   final String id;

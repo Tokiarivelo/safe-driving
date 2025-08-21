@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../models/auth_models.dart';
+import 'package:safe_driving/features/authentication/models/auth_step_content_model.dart';
+
 import '../../../../../../core/constants/colors/colors.dart';
 
 class NavigationLinksBuilder {

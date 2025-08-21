@@ -1,4 +1,5 @@
-import '../../../../models/auth_models.dart';
+import 'package:safe_driving/features/authentication/services/auth_step_content_service.dart';
+import 'package:safe_driving/features/authentication/models/auth_step_content_model.dart';
 
 class StepDataGetter {
   static AuthStepContent getStepData({
@@ -14,6 +15,6 @@ class StepDataGetter {
         ? 'login'
         : 'register';
 
-    return AuthStepContentMap.stepContents[stepKey]!;
+    return AuthStepContentService.stepContents[stepKey]!;
   }
 }

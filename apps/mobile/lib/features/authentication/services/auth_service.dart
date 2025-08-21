@@ -1,8 +1,8 @@
-import '../models/auth_result.dart';
+import '../models/models.dart'
+    hide ResetPasswordRequest, ChangePasswordRequest, UpdateProfileRequest;
 import '../models/auth_request.dart';
-import '../models/user_model.dart';
 import '../data/auth_data_source_interface.dart';
-import '../repository/user/user_repository.dart';
+import '../repositories/repositories.dart';
 import 'session_service.dart';
 
 class AuthService {
