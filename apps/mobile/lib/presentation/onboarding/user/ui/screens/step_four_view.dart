@@ -4,24 +4,30 @@ import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart'
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import '../../models/user_onboarding_data.dart';
 
-class StepFourView extends StatelessWidget {
-  final bool notificationsEnabled;
-  final Function(bool) onNotificationsChanged;
-  final VoidCallback onNextStep;
+class StepFiveView extends StatelessWidget {
+  final String selectedTheme;
+  final List<String> selectedTransports;
+  final Function(String) onThemeChanged;
+  final Function(String, bool) onTransportChanged;
+  final VoidCallback onLaterPressed;
+  final VoidCallback onValidatePressed;
 
-  const StepFourView({
+  const StepFiveView({
     super.key,
-    required this.notificationsEnabled,
-    required this.onNotificationsChanged,
-    required this.onNextStep,
+    required this.selectedTheme,
+    required this.selectedTransports,
+    required this.onThemeChanged,
+    required this.onTransportChanged,
+    required this.onLaterPressed,
+    required this.onValidatePressed,
   });
 
   @override
   Widget build(BuildContext context) {
     final stepContent = UserOnboardingData.getStepContent(3);
-    final radioOptions =
-        stepContent.additionalContent?['radioOptions'] ??
-        ['Plus tard', 'Activer'];
+    final themeLabel = stepContent.additionalContent?['themeLabel'];
+    final themeOptions = stepContent.additionalContent?['themeOptions'];
+    final transportLabel = stepContent.additionalContent?['transportLabel'];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,51 +48,77 @@ class StepFourView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
+
+        // Thème
+        Text(
+          themeLabel,
+          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        ),
         Row(
           children: [
-            Expanded(
-              child: ButtonsWidget.customRadio<bool>(
-                title: radioOptions[0],
-                value: false,
-                groupValue: notificationsEnabled,
-                onChanged: (value) => onNotificationsChanged(value!),
-              ),
+            ButtonsWidget.customChoiceChip(
+              label: themeOptions[0],
+              selected: selectedTheme == themeOptions[0],
+              onSelected: (_) => onThemeChanged(themeOptions[0]),
             ),
-            Expanded(
-              child: ButtonsWidget.customRadio<bool>(
-                title: radioOptions[1],
-                value: true,
-                groupValue: notificationsEnabled,
-                onChanged: (value) async {
-                  if (value!) {
-                    final selectedNotifications = ['push', 'alerts'];
-                    final granted =
-                        await ButtonsWidget.handleNotificationPermissions(
-                          context,
-                          selectedNotifications,
-                        );
-                    if (!context.mounted) return;
-                    if (granted) {
-                      onNotificationsChanged(true);
-                    }
-                  } else {
-                    onNotificationsChanged(false);
-                    SnackbarHelper.showSuccess(
-                      context,
-                      'Préférences de notifications sauvegardées !',
-                      duration: const Duration(seconds: 2),
-                    );
-                  }
-                },
-              ),
+            const SizedBox(width: 8),
+            ButtonsWidget.customChoiceChip(
+              label: themeOptions[1],
+              selected: selectedTheme == themeOptions[1],
+              onSelected: (_) => onThemeChanged(themeOptions[1]),
             ),
           ],
         ),
+
         const SizedBox(height: 16),
-        ButtonsWidget.nextButton(
-          onPressed: onNextStep,
+
+        Text(
+          transportLabel,
+          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: AppColors.fillButtonBackground.withValues(alpha: 0.3),
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.all(8),
+          child: Wrap(
+            spacing: 8,
+            children: UserOnboardingData.transportModes.map((mode) {
+              final isSelected = selectedTransports.contains(mode);
+              return ButtonsWidget.customFilterChip(
+                avatarIcon: UserOnboardingData.transportIcons[mode],
+                label: mode,
+                selected: isSelected,
+                onSelected: (selected) => onTransportChanged(mode, selected),
+                selectedLabelColor: AppColors.light,
+                labelColor: AppColors.buttonWithoutBackGround,
+              );
+            }).toList(),
+          ),
+        ),
+
+        const SizedBox(height: 24),
+        ButtonsWidget.laterAndActionButtons(
+          onLaterPressed: onLaterPressed,
+          onActionPressed: () {
+            if (selectedTransports.isEmpty) {
+              SnackbarHelper.showWarning(
+                context,
+                'Veuillez sélectionner au moins un mode de transport',
+                duration: const Duration(seconds: 2),
+              );
+              return;
+            }
+            onValidatePressed();
+          },
+          actionText: stepContent.buttonTitles[1],
           fontSize: 14,
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+          padding: const EdgeInsets.symmetric(vertical: 16),
         ),
       ],
     );

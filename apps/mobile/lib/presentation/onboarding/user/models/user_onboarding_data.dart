@@ -6,18 +6,9 @@ class UserOnboardingData {
 
   static List<UserOnboardingStepModel> getUserSteps() {
     return [
-      // Step 1: Role Selection
-      UserOnboardingStepModel(
-        stepNumber: 1,
-        title: 'Vous êtes… ?',
-        subtitle: '',
-        stepType: UserStepType.role,
-        buttonTitles: ['Utilisateur', 'Chauffeur'],
-      ),
-
       // Step 2: Welcome
       UserOnboardingStepModel(
-        stepNumber: 2,
+        stepNumber: 1,
         title: 'Bienvenue chez Safe Driving !',
         subtitle:
             'Merci d\'avoir rejoint notre communauté ! Laissez-nous vous guider pour personnaliser votre expérience.',
@@ -27,7 +18,7 @@ class UserOnboardingData {
 
       // Step 3: Location/GPS
       UserOnboardingStepModel(
-        stepNumber: 3,
+        stepNumber: 2,
         title: 'Où êtes-vous ?',
         subtitle:
             'Pour vous proposer les véhicules les plus proches, autorisez l\'accès à votre position. C\'est rapide et sécurisé.',
@@ -40,7 +31,7 @@ class UserOnboardingData {
 
       // Step 4: Notifications
       UserOnboardingStepModel(
-        stepNumber: 4,
+        stepNumber: 3,
         title: 'Restez informé',
         subtitle:
             'Choisissez de recevoir des alertes en temps réel sur l\'arrivée de votre chauffeur et l\'état de votre trajet.',
@@ -53,7 +44,7 @@ class UserOnboardingData {
 
       // Step 5: Preferences
       UserOnboardingStepModel(
-        stepNumber: 5,
+        stepNumber: 4,
         title: 'Faites-le à votre façon',
         subtitle:
             'Sélectionnez vos modes de transport favoris et activez le thème sombre si vous préférez une expérience plus douce pour les yeux.',
@@ -69,7 +60,7 @@ class UserOnboardingData {
 
       // Step 6: Summary
       UserOnboardingStepModel(
-        stepNumber: 6,
+        stepNumber: 5,
         title: 'Tout est prêt !',
         subtitle:
             'Voilà un résumé de vos choix. Vous pouvez toujours les modifier plus tard dans les paramètres. Prêt·e à démarrer ?',

@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
-import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import '../../models/user_onboarding_data.dart';
+import '../../models/user_onboarding_step_model.dart';
 
-class StepFiveView extends StatelessWidget {
-  final String selectedTheme;
-  final List<String> selectedTransports;
-  final Function(String) onThemeChanged;
-  final Function(String, bool) onTransportChanged;
-  final VoidCallback onLaterPressed;
-  final VoidCallback onValidatePressed;
+class StepSixView extends StatelessWidget {
+  final AppState appState;
+  final Function(bool) onGpsChanged;
+  final Function(bool) onNotificationsChanged;
+  final Function(String) onTransportRemoved;
+  final Function(String) onLanguageChanged;
+  final VoidCallback onCancelPressed;
+  final VoidCallback onCompletePressed;
 
-  const StepFiveView({
+  const StepSixView({
     super.key,
-    required this.selectedTheme,
-    required this.selectedTransports,
-    required this.onThemeChanged,
-    required this.onTransportChanged,
-    required this.onLaterPressed,
-    required this.onValidatePressed,
+    required this.appState,
+    required this.onGpsChanged,
+    required this.onNotificationsChanged,
+    required this.onTransportRemoved,
+    required this.onLanguageChanged,
+    required this.onCancelPressed,
+    required this.onCompletePressed,
   });
 
   @override
   Widget build(BuildContext context) {
     final stepContent = UserOnboardingData.getStepContent(4);
-    final themeLabel = stepContent.additionalContent?['themeLabel'];
-    final themeOptions = stepContent.additionalContent?['themeOptions'];
-    final transportLabel = stepContent.additionalContent?['transportLabel'];
+    final summaryLabels = stepContent.additionalContent?['summaryLabels'];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,23 +49,30 @@ class StepFiveView extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        // Thème
-        Text(
-          themeLabel,
-          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
-        ),
         Row(
           children: [
-            ButtonsWidget.customChoiceChip(
-              label: themeOptions[0],
-              selected: selectedTheme == themeOptions[0],
-              onSelected: (_) => onThemeChanged(themeOptions[0]),
+            ButtonsWidget.customSwitch(
+              value: appState.gpsEnabled,
+              onChanged: onGpsChanged,
             ),
             const SizedBox(width: 8),
-            ButtonsWidget.customChoiceChip(
-              label: themeOptions[1],
-              selected: selectedTheme == themeOptions[1],
-              onSelected: (_) => onThemeChanged(themeOptions[1]),
+            Text(
+              summaryLabels['gps'],
+              style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+            ),
+          ],
+        ),
+
+        Row(
+          children: [
+            ButtonsWidget.customSwitch(
+              value: appState.notifEnabled,
+              onChanged: onNotificationsChanged,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              summaryLabels['notifications'],
+              style: const TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
           ],
         ),
@@ -73,7 +80,14 @@ class StepFiveView extends StatelessWidget {
         const SizedBox(height: 16),
 
         Text(
-          transportLabel,
+          '${summaryLabels['theme']} : ${appState.selectedTheme}',
+          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        ),
+
+        const SizedBox(height: 8),
+
+        Text(
+          '${summaryLabels['transport']} :',
           style: const TextStyle(color: AppColors.buttonWithoutBackGround),
         ),
         const SizedBox(height: 8),
@@ -85,37 +99,58 @@ class StepFiveView extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(8),
           ),
-          padding: const EdgeInsets.all(8),
-          child: Wrap(
-            spacing: 8,
-            children: UserOnboardingData.transportModes.map((mode) {
-              final isSelected = selectedTransports.contains(mode);
-              return ButtonsWidget.customFilterChip(
-                avatarIcon: UserOnboardingData.transportIcons[mode],
-                label: mode,
-                selected: isSelected,
-                onSelected: (selected) => onTransportChanged(mode, selected),
-                selectedLabelColor: AppColors.light,
-                labelColor: AppColors.buttonWithoutBackGround,
-              );
-            }).toList(),
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (appState.selectedTransports.isNotEmpty)
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: appState.selectedTransports.map((transport) {
+                    return ButtonsWidget.customChip(
+                      label: transport,
+                      avatar: Icon(
+                        UserOnboardingData.transportIcons[transport],
+                        size: 16,
+                        color: AppColors.buttonWithoutBackGround,
+                      ),
+                      onDeleted: () => onTransportRemoved(transport),
+                    );
+                  }).toList(),
+                )
+              else
+                Text(
+                  summaryLabels['noTransport'],
+                  style: TextStyle(
+                    color: AppColors.buttonWithoutBackGround.withValues(
+                      alpha: 0.6,
+                    ),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+            ],
           ),
         ),
 
+        const SizedBox(height: 16),
+
+        Text(
+          '${summaryLabels['language']} :',
+          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        ),
+        const SizedBox(height: 8),
+        ButtonsWidget.languageButtonContainer(
+          selectedLanguage: appState.selectedLanguage,
+          onLanguageChanged: onLanguageChanged,
+        ),
+
         const SizedBox(height: 24),
+
         ButtonsWidget.laterAndActionButtons(
-          onLaterPressed: onLaterPressed,
-          onActionPressed: () {
-            if (selectedTransports.isEmpty) {
-              SnackbarHelper.showWarning(
-                context,
-                'Veuillez sélectionner au moins un mode de transport',
-                duration: const Duration(seconds: 2),
-              );
-              return;
-            }
-            onValidatePressed();
-          },
+          onLaterPressed: onCancelPressed,
+          onActionPressed: onCompletePressed,
+          laterText: stepContent.buttonTitles[0],
           actionText: stepContent.buttonTitles[1],
           fontSize: 14,
           padding: const EdgeInsets.symmetric(vertical: 16),

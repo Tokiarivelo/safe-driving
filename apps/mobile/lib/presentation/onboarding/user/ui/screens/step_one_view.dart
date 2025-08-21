@@ -3,14 +3,14 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import '../../models/user_onboarding_data.dart';
 
-class StepOneView extends StatelessWidget {
-  final VoidCallback onUserPressed;
-  final VoidCallback onDriverPressed;
+class StepTwoView extends StatelessWidget {
+  final VoidCallback onLaterPressed;
+  final VoidCallback onActionPressed;
 
-  const StepOneView({
+  const StepTwoView({
     super.key,
-    required this.onUserPressed,
-    required this.onDriverPressed,
+    required this.onLaterPressed,
+    required this.onActionPressed,
   });
 
   @override
@@ -18,20 +18,31 @@ class StepOneView extends StatelessWidget {
     final stepContent = UserOnboardingData.getStepContent(0);
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           stepContent.title,
           style: const TextStyle(
             color: AppColors.buttonWithoutBackGround,
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w800,
+            fontSize: 18,
           ),
         ),
-        const SizedBox(height: 20),
-        ButtonsWidget.roleChoiceButtons(
-          onUserPressed: onUserPressed,
-          onDriverPressed: onDriverPressed,
+        const SizedBox(height: 8),
+        Text(
+          stepContent.subtitle,
+          style: TextStyle(
+            color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16),
+        ButtonsWidget.laterAndActionButtons(
+          onLaterPressed: onLaterPressed,
+          onActionPressed: onActionPressed,
+          actionText: stepContent.buttonTitles[1],
+          fontSize: 14,
+          padding: const EdgeInsets.symmetric(vertical: 16),
         ),
       ],
     );

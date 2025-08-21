@@ -4,15 +4,15 @@ import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart'
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import '../../models/user_onboarding_data.dart';
 
-class StepThreeView extends StatelessWidget {
-  final bool gpsEnabled;
-  final Function(bool) onGpsChanged;
+class StepFourView extends StatelessWidget {
+  final bool notificationsEnabled;
+  final Function(bool) onNotificationsChanged;
   final VoidCallback onNextStep;
 
-  const StepThreeView({
+  const StepFourView({
     super.key,
-    required this.gpsEnabled,
-    required this.onGpsChanged,
+    required this.notificationsEnabled,
+    required this.onNotificationsChanged,
     required this.onNextStep,
   });
 
@@ -48,31 +48,34 @@ class StepThreeView extends StatelessWidget {
               child: ButtonsWidget.customRadio<bool>(
                 title: radioOptions[0],
                 value: false,
-                groupValue: gpsEnabled,
-                onChanged: (value) => onGpsChanged(value!),
+                groupValue: notificationsEnabled,
+                onChanged: (value) => onNotificationsChanged(value!),
               ),
             ),
             Expanded(
               child: ButtonsWidget.customRadio<bool>(
                 title: radioOptions[1],
                 value: true,
-                groupValue: gpsEnabled,
+                groupValue: notificationsEnabled,
                 onChanged: (value) async {
                   if (value!) {
-                    final granted = await ButtonsWidget.handleGpsPermission(
-                      context,
-                    );
+                    final selectedNotifications = ['push', 'alerts'];
+                    final granted =
+                        await ButtonsWidget.handleNotificationPermissions(
+                          context,
+                          selectedNotifications,
+                        );
                     if (!context.mounted) return;
                     if (granted) {
-                      onGpsChanged(true);
-                      SnackbarHelper.showSuccess(
-                        context,
-                        'Géolocalisation activée avec succès !',
-                        duration: const Duration(seconds: 2),
-                      );
+                      onNotificationsChanged(true);
                     }
                   } else {
-                    onGpsChanged(false);
+                    onNotificationsChanged(false);
+                    SnackbarHelper.showSuccess(
+                      context,
+                      'Préférences de notifications sauvegardées !',
+                      duration: const Duration(seconds: 2),
+                    );
                   }
                 },
               ),

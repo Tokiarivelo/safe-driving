@@ -16,9 +16,9 @@ class UserInteractiveMenuWidget extends StatefulWidget {
 }
 
 class UserInteractiveMenuWidgetState extends State<UserInteractiveMenuWidget> {
-  static const int _totalSteps = 6;
+  static const int _totalSteps = 4;
 
-  int _currentStep = 1;
+  int _currentStep = 0;
   AppState _appState = const AppState();
   final Map<int, bool> _expandedTiles = {};
 
