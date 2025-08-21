@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/shared/widgets/customs/photos_management/gallery_modal.dart';
+import 'package:safe_driving/shared/widgets/customs/photos_management/gallery/gallery_modal.dart';
 
 class UploadWidget extends StatefulWidget {
   final String title;
@@ -55,7 +55,6 @@ class UploadWidgetState extends State<UploadWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Titre à l'extérieur du carré avec background softBackgroundColor
         if (widget.title.isNotEmpty) ...[
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -124,8 +123,8 @@ class UploadWidgetState extends State<UploadWidget> {
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
+              fontWeight: FontWeight.w400,
+              color: Color.fromARGB(202, 130, 32, 114),
               fontFamily: 'Inder',
             ),
           ),
@@ -150,25 +149,25 @@ class UploadWidgetState extends State<UploadWidget> {
         Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.upload,
+            color: AppColors.color1,
           ),
           padding: const EdgeInsets.all(16),
-          child: const Icon(Icons.add, color: AppColors.light, size: 32),
+          child: const Icon(Icons.check, color: AppColors.light, size: 32),
         ),
         const SizedBox(height: 16),
+        Text(
+          "${_selectedImages.length} photo${_selectedImages.length > 1 ? 's' : ''} sélectionnée${_selectedImages.length > 1 ? 's' : ''}",
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textColor,
+            fontFamily: 'Inder',
+          ),
+        ),
+        const SizedBox(height: 12),
         if (widget.addMorePhotosText != null &&
             widget.addMorePhotosText!.isNotEmpty) ...[
-          Text(
-            widget.addMorePhotosText!,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
-              fontFamily: 'Inder',
-            ),
-          ),
-          const SizedBox(height: 12),
           GestureDetector(
             onTap: _showPhotoModal,
             child: Container(
@@ -178,8 +177,27 @@ class UploadWidgetState extends State<UploadWidget> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                "Gérer les photos (${_selectedImages.length})",
+                widget.addMorePhotosText!,
                 style: const TextStyle(
+                  color: AppColors.light,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ] else ...[
+          GestureDetector(
+            onTap: _showPhotoModal,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.fillButtonBackground,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                "Gérer les photos",
+                style: TextStyle(
                   color: AppColors.light,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,

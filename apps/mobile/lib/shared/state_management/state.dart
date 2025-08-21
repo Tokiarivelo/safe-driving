@@ -17,7 +17,7 @@ class AppProviders {
   ];
 }
 
-// Extensions utiles pour accéder au ViewModel
+// accéder au(x) ViewModel(s)
 extension AppContext on BuildContext {
   AuthViewModel get authVM => read<AuthViewModel>();
   AuthViewModel get authVMWatch => watch<AuthViewModel>();

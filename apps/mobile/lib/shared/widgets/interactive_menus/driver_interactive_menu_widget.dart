@@ -123,13 +123,18 @@ class DriverInteractiveMenuWidgetState
                 groupValue: _gpsEnabled ? "Autoriser" : "Plus tard",
                 onChanged: (value) async {
                   if (value == "Autoriser") {
-                    final granted = await ButtonsWidget.handleGpsPermission(context);
+                    final granted = await ButtonsWidget.handleGpsPermission(
+                      context,
+                    );
                     if (mounted) {
                       setState(() {
                         _gpsEnabled = granted;
                       });
                       if (granted) {
-                        SnackbarHelper.showSuccess(context, 'Géolocalisation activée avec succès !');
+                        SnackbarHelper.showSuccess(
+                          context,
+                          'Géolocalisation activée avec succès !',
+                        );
                       }
                     }
                   } else {
