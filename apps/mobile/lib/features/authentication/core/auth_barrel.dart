@@ -1,6 +1,3 @@
-// Core Authentication Barrel
-// This file exports all authentication core components
-
 // Models
 export '../models/auth_models.dart';
 
