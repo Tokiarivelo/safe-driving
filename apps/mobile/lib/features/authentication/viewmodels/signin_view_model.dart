@@ -14,7 +14,7 @@ class SigninViewModel extends ChangeNotifier {
     
     final auth = _context!.authVM;
 
-    final success = await auth.login(email, password);
+    final success = await auth.signIn(email, password);
 
     if (success) {
       SnackbarHelper.showSuccess(_context!, 'Connexion réussie !');

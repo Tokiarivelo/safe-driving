@@ -4,6 +4,7 @@ import '../services/graphql_client_service.dart';
 import '../../features/authentication/data/auth_data_source_interface.dart';
 import '../../features/authentication/data/auth_data_source_graphql.dart';
 import '../../features/authentication/services/auth_service.dart';
+import '../../features/authentication/repository/user/user_repository.dart';
 import '../../features/authentication/viewmodels/auth_view_model.dart';
 import '../../features/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
 
@@ -51,8 +52,16 @@ class ServiceLocator {
 
     registerLazySingleton<SessionService>(() => SessionService());
 
+    registerLazySingleton<UserRepository>(
+      () => UserRepository(get<GraphQLClientService>()),
+    );
+
     registerLazySingleton<AuthService>(
-      () => AuthService(get<IAuthDataSource>(), get<SessionService>()),
+      () => AuthService(
+        get<IAuthDataSource>(), 
+        get<SessionService>(), 
+        get<UserRepository>(),
+      ),
     );
 
     registerLazySingleton<AuthViewModel>(

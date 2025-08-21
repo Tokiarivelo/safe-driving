@@ -2,13 +2,15 @@ import '../models/auth_result.dart';
 import '../models/auth_request.dart';
 import '../models/user_model.dart';
 import '../data/auth_data_source_interface.dart';
+import '../repository/user/user_repository.dart';
 import 'session_service.dart';
 
 class AuthService {
   final IAuthDataSource _dataSource;
   final SessionService _sessionService;
+  final UserRepository _userRepository;
 
-  AuthService(this._dataSource, this._sessionService);
+  AuthService(this._dataSource, this._sessionService, this._userRepository);
 
   bool get isAuthenticated => _sessionService.isAuthenticated;
   String? get token => _sessionService.token;
@@ -113,7 +115,13 @@ class AuthService {
 
   Future<void> logout() async => _sessionService.clear();
 
-  Future<bool> isEmailTaken(String email) async => false;
+  Future<bool> isEmailTaken(String email) async {
+    try {
+      return await _userRepository.isEmailTaken(email);
+    } catch (e) {
+      return false;
+    }
+  }
 
   Future<AuthResult> _handleAuth(
     Future<Map<String, dynamic>> Function() operation, {

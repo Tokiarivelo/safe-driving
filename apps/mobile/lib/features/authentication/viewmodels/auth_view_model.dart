@@ -71,15 +71,6 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  // Méthode de compatibility pour l'ancien nom
-  Future<bool> login(String email, String password) async {
-    return await signIn(email, password);
-  }
-
-  // Méthode de compatibility pour l'ancien nom  
-  Future<bool> register(SignUpRequest request) async {
-    return await signUp(request);
-  }
 
   Future<void> fetchCurrentUser() async {
     _setLoading(true);

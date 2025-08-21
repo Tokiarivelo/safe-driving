@@ -1,7 +1,7 @@
 import 'package:safe_driving/features/authentication/models/user_model.dart';
 import 'package:safe_driving/shared/services/graphql_client_service.dart';
 
-import '../../../../api/graphql/queries.dart';
+import '../../../../shared/services/queries.dart';
 
 class UserRepository {
   final GraphQLClientService _graphQLClient;

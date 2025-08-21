@@ -38,7 +38,7 @@ class _SignupViewState extends State<SignupView> {
       password: password,
     );
 
-    final success = await auth.register(request);
+    final success = await auth.signUp(request);
 
     if (!mounted) return;
 
