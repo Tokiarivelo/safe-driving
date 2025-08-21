@@ -16,7 +16,6 @@ Widget slideSmoothAnimation({required Widget child}) {
   );
 }
 
-/// horizontal (vers la droite)
 Widget slideRightSmoothAnimation({
   required Widget child,
   required ValueKey<String> key,
@@ -35,7 +34,6 @@ Widget slideRightSmoothAnimation({
   );
 }
 
-/// Version AnimatedSwitcher avec slideRightSmoothAnimation
 Widget slideRightSmoothSwitcher({
   required Widget child,
   Duration duration = const Duration(milliseconds: 450),
@@ -45,24 +43,17 @@ Widget slideRightSmoothSwitcher({
     switchInCurve: Curves.easeInOut,
     switchOutCurve: Curves.easeInOut,
     layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
-      // Évite la superposition en ne gardant que l'enfant actuel
       return Stack(
         alignment: Alignment.center,
-        children: <Widget>[
-          if (currentChild != null) currentChild,
-        ],
+        children: <Widget>[if (currentChild != null) currentChild],
       );
     },
     transitionBuilder: (Widget child, Animation<double> animation) {
-      // Animation plus propre sans fade disgracieux
       return SlideTransition(
-        position: Tween<Offset>(
-          begin: const Offset(0.08, 0), // Glissement plus subtil
-          end: Offset.zero,
-        ).animate(CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeOutCubic, // Courbe plus douce
-        )),
+        position: Tween<Offset>(begin: const Offset(0.08, 0), end: Offset.zero)
+            .animate(
+              CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
+            ),
         child: child,
       );
     },
