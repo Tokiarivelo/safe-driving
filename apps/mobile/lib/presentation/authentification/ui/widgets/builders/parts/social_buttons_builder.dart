@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/colors/colors.dart';
+import '../../../../../../core/constants/colors/colors.dart';
 
 class SocialButtonsBuilder {
   static Widget buildSocialButton({

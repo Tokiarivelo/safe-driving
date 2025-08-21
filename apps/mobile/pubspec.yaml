@@ -47,16 +47,15 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  # Configuration pour la génération automatique des fichiers de localisation
   generate: true
   assets:
     - .env
-    - assets/img/social/google.png
-    - assets/img/social/facebook.png
-    - assets/logo/logo.svg
-    - assets/logo/logo_white.svg
+    - lib/resources/assets/img/social/google.png
+    - lib/resources/assets/img/social/facebook.png
+    - lib/resources/assets/logo/logo.svg
+    - lib/resources/assets/logo/logo_white.svg
   fonts:
     - family: Inder
       fonts:
-        - asset: assets/fonts/Inder/Inder-Regular.ttf
+        - asset: lib/resources/assets/fonts/Inder/Inder-Regular.ttf
           weight: 700

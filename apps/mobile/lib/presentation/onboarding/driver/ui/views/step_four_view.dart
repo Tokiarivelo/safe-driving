@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
-import 'package:safe_driving/core/constants/utils/form/form_utils.dart';
+import 'package:safe_driving/core/utils/form/form_utils.dart';
 
 class StepFourView extends StatefulWidget {
   final VoidCallback onNext;
@@ -23,7 +23,8 @@ class StepFourView extends StatefulWidget {
 class _StepFourViewState extends State<StepFourView> {
   final TextEditingController _marqueController = TextEditingController();
   final TextEditingController _modeleController = TextEditingController();
-  final TextEditingController _immatriculationController = TextEditingController();
+  final TextEditingController _immatriculationController =
+      TextEditingController();
   final TextEditingController _placesController = TextEditingController();
   final TextEditingController _typeVehiculeController = TextEditingController();
 
@@ -79,7 +80,7 @@ class _StepFourViewState extends State<StepFourView> {
             ),
           ),
           const SizedBox(height: 32),
-          
+
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -145,7 +146,7 @@ class _StepFourViewState extends State<StepFourView> {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 32),
           ButtonsWidget.buttonRow(
             buttonTitles: ['Plus tard', 'Valider'],

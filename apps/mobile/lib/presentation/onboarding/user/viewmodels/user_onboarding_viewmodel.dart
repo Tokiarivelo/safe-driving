@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/user_onboarding_step_model.dart';
 import '../services/user_service.dart';
-import '../utils/user_onboarding_data.dart';
+import '../models/user_onboarding_data.dart';
 
 class UserOnboardingViewModel extends ChangeNotifier {
   int _currentStep = 1;

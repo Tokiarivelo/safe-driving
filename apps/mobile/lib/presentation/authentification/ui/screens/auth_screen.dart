@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/presentation/auth/screens/signup/register_view.dart';
-import '../../../core/constants/colors/colors.dart';
+import 'package:safe_driving/presentation/authentification/ui/screens/signup/register_view.dart';
+import '../../../../core/constants/colors/colors.dart';
 import 'signin/signin_view.dart';
 import 'password/forgot_password_view.dart';
 import 'password/reset_password_view.dart';

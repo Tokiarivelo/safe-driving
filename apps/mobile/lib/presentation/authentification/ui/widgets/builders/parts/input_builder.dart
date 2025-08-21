@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/constants/colors/colors.dart';
-import '../../../../../shared/widgets/customs/inputs/inputs_widget.dart';
+import '../../../../../../core/constants/colors/colors.dart';
+import '../../../../../../shared/widgets/customs/inputs/inputs_widget.dart';
 
 class InputBuilder {
   static Widget buildInputFieldWithValidation({

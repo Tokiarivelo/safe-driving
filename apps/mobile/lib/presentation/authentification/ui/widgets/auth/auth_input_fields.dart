@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'input_field_with_validation.dart';
 import '../builders/auth_ui_builder.dart';
-import '../../models/auth_models.dart';
+import '../../../models/auth_models.dart';
 
 class AuthInputFields extends StatelessWidget {
   final bool isLogin;

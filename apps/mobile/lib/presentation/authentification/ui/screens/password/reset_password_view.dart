@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/utils/form/form_utils.dart';
-import '../../../../shared/widgets/customs/colors/colors_widget.dart';
-import '../../builders/auth_ui_builder.dart';
+import '../../../../../core/utils/form/form_utils.dart';
+import '../../../../../shared/widgets/customs/colors/colors_widget.dart';
+import '../../widgets/builders/auth_ui_builder.dart';
 import '../../widgets/password/reset_password_container.dart';
 import '../../widgets/password/reset_success_handler.dart';
 

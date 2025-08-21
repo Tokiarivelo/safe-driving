@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/presentation/authentification/screens/auth_screen.dart';
-import 'package:safe_driving/presentation/onboarding/user/ui/views/user_onboarding_screen.dart';
+import 'package:safe_driving/presentation/authentification/ui/screens/auth_screen.dart';
+import 'package:safe_driving/presentation/onboarding/user/ui/screens/user_onboarding_screen.dart';
 
 class AppRoutes {
   static const String auth = '/auth';

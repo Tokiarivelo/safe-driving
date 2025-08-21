@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../shared/models/onboarding_step_base.dart';
+import '../../../../shared/shared_onboarding/models/onboarding_step_base.dart';
 
 class DriverOnboardingStepModel extends OnboardingStepBase {
   final String subtitle;

@@ -4,7 +4,7 @@ import 'package:safe_driving/presentation/onboarding/driver/models/driver_onboar
 import 'package:safe_driving/presentation/onboarding/driver/viewmodels/driver_onboarding_viewmodel.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
-import 'package:safe_driving/core/constants/utils/form/form_utils.dart';
+import 'package:safe_driving/core/utils/form/form_utils.dart';
 
 class StepTwoView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -51,7 +51,7 @@ class StepTwoView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          
+
           // Form fields
           CustomInputField(
             label: 'Nom complet',
@@ -61,10 +61,11 @@ class StepTwoView extends StatelessWidget {
             backgroundColor: AppColors.inputTextBackground,
             controller: viewModel.nameController,
             onChanged: (value) => {},
-            validator: (value) => RegexFormatter.getNameValidationMessage(value!),
+            validator: (value) =>
+                RegexFormatter.getNameValidationMessage(value!),
           ),
           const SizedBox(height: 16),
-          
+
           CustomInputField(
             label: 'E-mail',
             hint: 'example@email.com',
@@ -75,7 +76,7 @@ class StepTwoView extends StatelessWidget {
             backgroundColor: AppColors.inputTextBackground,
           ),
           const SizedBox(height: 16),
-          
+
           CustomInputField(
             label: 'Téléphone',
             hint: '+261...',
@@ -87,18 +88,17 @@ class StepTwoView extends StatelessWidget {
             validator: (value) => value?.isEmpty == true
                 ? null
                 : (RegexFormatter.isValidMalagasyPhone(value!)
-                    ? null
-                    : RegexFormatter.getMalagasyPhoneValidationMessage(value)),
+                      ? null
+                      : RegexFormatter.getMalagasyPhoneValidationMessage(
+                          value,
+                        )),
           ),
-          
+
           const SizedBox(height: 32),
-          
+
           ButtonsWidget.buttonRow(
             buttonTitles: ['Plus tard', 'Valider'],
-            onPressedList: [
-              onSkip ?? () {},
-              onContinue,
-            ],
+            onPressedList: [onSkip ?? () {}, onContinue],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             isLastButtonPrimary: true,
             spacing: 8,

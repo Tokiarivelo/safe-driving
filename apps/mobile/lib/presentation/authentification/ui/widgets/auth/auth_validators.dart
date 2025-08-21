@@ -1,5 +1,5 @@
-import '../../../../core/constants/utils/form/form_utils.dart';
-import '../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
+import '../../../../../core/utils/form/form_utils.dart';
+import '../../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
 import 'package:flutter/material.dart';
 
 class AuthValidators {

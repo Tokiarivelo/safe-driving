@@ -4,14 +4,14 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
-import 'package:safe_driving/core/constants/utils/form/form_utils.dart';
+import 'package:safe_driving/core/utils/form/form_utils.dart';
 import '../widgets/upload_widget.dart';
 import '../widgets/camera_interface.dart';
 import '../widgets/captured_photos_modal.dart';
 import '../widgets/policy_modal.dart';
 import '../../models/driver_onboarding_step_model.dart';
 import '../../viewmodels/driver_onboarding_viewmodel.dart';
-import '../../utils/driver_onboarding_data.dart';
+import '../../models/driver_onboarding_data.dart';
 
 class DriverUIBuilder {
   static Widget buildStepContent(

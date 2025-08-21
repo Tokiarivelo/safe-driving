@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../models/auth_models.dart';
-import '../../../../../core/constants/colors/colors.dart';
+import '../../../../models/auth_models.dart';
+import '../../../../../../core/constants/colors/colors.dart';
 
 class HeaderBuilder {
   static Widget buildHeaderText({

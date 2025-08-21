@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../widgets/auth/auth_widget.dart';
-import '../../models/auth_models.dart';
-import '../../../../shared/state_management/state.dart';
-import '../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
+import '../../../models/auth_models.dart';
+import '../../../../../shared/state_management/providers.dart';
+import '../../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class RegisterView extends StatefulWidget {
   final VoidCallback? onNavigateToLogin;

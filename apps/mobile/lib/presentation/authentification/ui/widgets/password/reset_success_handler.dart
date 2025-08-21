@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/state_management/state.dart';
-import '../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
+import '../../../../../shared/state_management/providers.dart';
+import '../../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class ResetSuccessHandler {
   static Future<void> handleResetPassword({

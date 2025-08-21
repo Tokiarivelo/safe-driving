@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/app/routes.dart';
-import 'package:safe_driving/api/graphql/config.dart';
-import 'package:safe_driving/shared/state_management/state.dart';
+import 'package:safe_driving/api/graphql/graphql_client.dart';
+import 'package:safe_driving/shared/state_management/providers.dart';
 
 class SafeDriving extends StatelessWidget {
   SafeDriving({super.key});

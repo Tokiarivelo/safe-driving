@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import '../../models/user_onboarding_step_model.dart';
-import '../../utils/user_onboarding_data.dart';
+import '../../models/user_onboarding_data.dart';
 import 'package:safe_driving/shared/widgets/customs/animations/animation_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';

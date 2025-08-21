@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/widgets/customs/inputs/inputs_widget.dart';
+import '../../../../../shared/widgets/customs/inputs/inputs_widget.dart';
 
 class PasswordInput extends StatelessWidget {
   final TextEditingController controller;

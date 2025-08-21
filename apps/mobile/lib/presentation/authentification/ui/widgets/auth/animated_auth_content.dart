@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/widgets/customs/animations/animation_widget.dart';
-import '../../models/auth_models.dart';
-import '../../builders/auth_ui_builder.dart';
+import '../../../../../shared/widgets/customs/animations/animation_widget.dart';
+import '../../../models/auth_models.dart';
+import '../builders/auth_ui_builder.dart';
 
 class AnimatedAuthContent extends StatefulWidget {
   final bool isLogin;

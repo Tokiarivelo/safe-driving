@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/utils/form/form_utils.dart';
-import '../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
+import '../../../../../core/utils/form/form_utils.dart';
+import '../../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
 import '../../widgets/auth/auth_widget.dart';
 
 class ForgotPasswordView extends StatefulWidget {

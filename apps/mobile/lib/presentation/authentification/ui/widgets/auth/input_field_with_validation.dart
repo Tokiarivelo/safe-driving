@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../builders/auth_ui_builder.dart';
+import '../builders/auth_ui_builder.dart';
 
 class InputFieldWithValidation extends StatelessWidget {
   final String hint;

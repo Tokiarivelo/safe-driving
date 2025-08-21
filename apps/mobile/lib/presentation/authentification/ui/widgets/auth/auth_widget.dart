@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import '../../../../shared/widgets/customs/colors/colors_widget.dart';
-import '../../models/auth_models.dart';
-import '../../builders/auth_ui_builder.dart';
+import '../../../../../shared/widgets/customs/colors/colors_widget.dart';
+import '../../../models/auth_models.dart';
+import '../builders/auth_ui_builder.dart';
 import 'auth_validators.dart';
 import 'auth_input_fields.dart';
 import 'animated_auth_content.dart';

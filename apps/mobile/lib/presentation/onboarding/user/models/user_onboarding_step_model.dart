@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../shared/models/onboarding_step_base.dart';
+import '../../../../shared/shared_onboarding/models/onboarding_step_base.dart';
 
 class AppState {
   final bool gpsEnabled;
@@ -102,4 +102,3 @@ enum UserStepType {
   preferences,
   summary,
 }
-

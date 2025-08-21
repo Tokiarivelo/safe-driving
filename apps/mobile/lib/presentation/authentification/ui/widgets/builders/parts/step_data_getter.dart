@@ -1,4 +1,4 @@
-import '../../models/auth_models.dart';
+import '../../../../models/auth_models.dart';
 
 class StepDataGetter {
   static AuthStepContent getStepData({
