@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/models/auth/auth_model.dart';
+
+import 'package:safe_driving/presentation/auth/models/auth_models.dart';
 import 'package:safe_driving/services/user_service.dart';
 
 class AuthViewModel extends ChangeNotifier {
@@ -51,14 +52,19 @@ class AuthViewModel extends ChangeNotifier {
     } catch (e) {
       var message = e.toString();
 
-      if (message.contains('Unique constraint') || message.contains('email') || message.contains('ConflictException')) {
-        message = 'Cette adresse email est déjà utilisée. Veuillez en choisir une autre.';
+      if (message.contains('Unique constraint') ||
+          message.contains('email') ||
+          message.contains('ConflictException')) {
+        message =
+            'Cette adresse email est déjà utilisée. Veuillez en choisir une autre.';
       } else if (message.contains('password')) {
-        message = 'Le mot de passe doit contenir au moins 8 caractères avec une majuscule, une minuscule et un chiffre.';
+        message =
+            'Le mot de passe doit contenir au moins 8 caractères avec une majuscule, une minuscule et un chiffre.';
       } else if (message.contains('firstName')) {
         message = 'Le prénom est requis.';
       } else if (message.contains('non-nullable field LoginOutput.user')) {
-        message = 'Échec de l\'inscription. Cet email est peut-être déjà utilisé.';
+        message =
+            'Échec de l\'inscription. Cet email est peut-être déjà utilisé.';
       } else if (message.contains('INTERNAL_SERVER_ERROR')) {
         message = 'Erreur serveur lors de l\'inscription. Veuillez réessayer.';
       } else if (message.contains('Exception')) {
@@ -95,7 +101,7 @@ class AuthViewModel extends ChangeNotifier {
 
     try {
       final updatedUser = await _userService.updateUser(id, input);
-      _currentUser = updatedUser;
+      _currentUser = updatedUser as User?;
       notifyListeners();
       return true;
     } catch (e) {

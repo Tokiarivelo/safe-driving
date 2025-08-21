@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../core/constants/colors/colors.dart';
 import '../../../core/constants/utils/form/form_utils.dart';
-import '../customs/colors/colors_widget.dart';
-import '../customs/snackbar/snackbar_helper.dart';
-import '../customs/inputs/inputs_widget.dart';
-import '../../../models/auth/auth_model.dart';
+import '../../../shared/widgets/customs/colors/colors_widget.dart';
+import '../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
+import '../../../shared/widgets/customs/inputs/inputs_widget.dart';
+import '../models/auth_models.dart';
 
 class AuthWidget extends StatefulWidget {
   final bool isLogin;
@@ -45,10 +45,7 @@ class AuthWidget extends StatefulWidget {
   AuthWidgetState createState() => AuthWidgetState();
 }
 
-class AuthWidgetState extends State<AuthWidget> {
-  final bool _isPasswordVisible = false;
-  final bool _isConfirmPasswordVisible = false;
-
+class AuthWidgetState extends State<AuthWidget> with TickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
@@ -56,7 +53,9 @@ class AuthWidgetState extends State<AuthWidget> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  // Messages d'erreur pour validation en temps réel
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
   String _emailError = "";
   String _passwordError = "";
   String _firstNameError = "";
@@ -64,8 +63,22 @@ class AuthWidgetState extends State<AuthWidget> {
   String _confirmPasswordError = "";
 
   @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+    _animationController.forward();
+  }
+
+  @override
   void dispose() {
-    // les contrôleurs
+    _animationController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
@@ -76,7 +89,6 @@ class AuthWidgetState extends State<AuthWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Ajustement dynamique en fonction du type d'écran
     final bool isRegister = !widget.isLogin && !widget.isForgotPassword;
     final screenHeight = MediaQuery.of(context).size.height;
     final bool isSmallScreen = screenHeight < 700;
@@ -106,7 +118,6 @@ class AuthWidgetState extends State<AuthWidget> {
               )
             : Column(
                 children: [
-                  // Header ajusté selon le type d'écran
                   Container(
                     height: isSmallScreen ? 100 : 130,
                     padding: const EdgeInsets.symmetric(
@@ -129,9 +140,7 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  //les titres
   Widget _buildHeaderText() {
-    // Obtenir les données depuis StepAuthData
     final String stepKey = widget.isForgotPassword
         ? 'forgotPassword'
         : widget.isLogin
@@ -180,7 +189,6 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  //Le container de auth
   Widget _buildAuthContainer() {
     final screenHeight = MediaQuery.of(context).size.height;
     final bool isSmallScreen = screenHeight < 700;
@@ -221,8 +229,20 @@ class AuthWidgetState extends State<AuthWidget> {
               color: AppColors.secondBackgroundColor.withAlpha(100),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Padding(
-              padding: EdgeInsets.all(isSmallScreen ? 20.0 : 30.0),
+            child: AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return Transform.translate(
+                  offset: Offset(0, (1 - _animation.value) * 20),
+                  child: Opacity(
+                    opacity: 0.3 + (_animation.value * 0.7),
+                    child: Padding(
+                      padding: EdgeInsets.all(isSmallScreen ? 20.0 : 30.0),
+                      child: child,
+                    ),
+                  ),
+                );
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -269,7 +289,6 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  //bouton social
   Widget _buildSocialButton({
     required VoidCallback? onTap,
     required String imagePath,
@@ -287,7 +306,6 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  //les boutons socials
   Widget _buildSocialButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -304,7 +322,6 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  //bouton retour vers login
   Widget _buildBackToLoginButton() {
     return GestureDetector(
       onTap: () {
@@ -327,7 +344,6 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  // champ input avec validation en temps réel
   Widget _buildInputFieldWithValidation({
     required String hint,
     required IconData icon,
@@ -338,15 +354,8 @@ class AuthWidgetState extends State<AuthWidget> {
     String? errorMessage,
     Function(String)? onChanged,
   }) {
-    bool _ = isPassword
-        ? _isPasswordVisible
-        : isConfirmPassword
-        ? _isConfirmPasswordVisible
-        : false;
-
     final screenHeight = MediaQuery.of(context).size.height;
     final bool isSmallScreen = screenHeight < 700;
-    final bool _ = errorMessage != null && errorMessage.isNotEmpty;
 
     return CustomInputField(
       hint: hint,
@@ -491,7 +500,6 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  //le lien "mot de passe oublié"
   Widget _buildForgotPasswordLink() {
     return GestureDetector(
       onTap: widget.onForgotPassword,
@@ -517,7 +525,6 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  //configuration des boutons d'actions
   Widget _buildActionButton() {
     return ElevatedButton(
       onPressed: () => _handleButtonPress(),
@@ -620,7 +627,6 @@ class AuthWidgetState extends State<AuthWidget> {
     }
   }
 
-  //lien de navigation
   Widget _buildNavigationLink() {
     final currentStep = _getCurrentStepData();
     final isLogin = widget.isLogin;

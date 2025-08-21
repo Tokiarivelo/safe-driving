@@ -429,30 +429,33 @@ class DriverInteractiveMenuWidgetState
       final radioOptions = content['radioOptions'] as List<String>;
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: ButtonsWidget.customRadio<bool>(
-                  title: radioOptions[0],
-                  value: false,
-                  groupValue: _gpsEnabled,
-                  onChanged: (value) => setState(() => _gpsEnabled = value!),
-                  titleColor: AppColors.fillButtonBackground,
-                  activeColor: AppColors.fillButtonBackground,
+          IntrinsicHeight(
+            child: Row(
+              children: [
+                Expanded(
+                  child: ButtonsWidget.customRadio<bool>(
+                    title: radioOptions[0],
+                    value: false,
+                    groupValue: _gpsEnabled,
+                    onChanged: (value) => setState(() => _gpsEnabled = value!),
+                    titleColor: AppColors.fillButtonBackground,
+                    activeColor: AppColors.fillButtonBackground,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ButtonsWidget.customRadio<bool>(
-                  title: radioOptions[1],
-                  value: true,
-                  groupValue: _gpsEnabled,
-                  onChanged: (value) => setState(() => _gpsEnabled = value!),
-                  titleColor: AppColors.fillButtonBackground,
-                  activeColor: AppColors.fillButtonBackground,
+                Expanded(
+                  child: ButtonsWidget.customRadio<bool>(
+                    title: radioOptions[1],
+                    value: true,
+                    groupValue: _gpsEnabled,
+                    onChanged: (value) => setState(() => _gpsEnabled = value!),
+                    titleColor: AppColors.fillButtonBackground,
+                    activeColor: AppColors.fillButtonBackground,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       );

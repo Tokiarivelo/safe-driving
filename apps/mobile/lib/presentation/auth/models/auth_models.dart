@@ -168,7 +168,6 @@ class CreateUserInput {
   }
 }
 
-// RegisterInput for registration
 class RegisterInput {
   final String email;
   final String firstName;
@@ -214,10 +213,26 @@ class UpdateUserInput {
   }
 }
 
-// Auth Steps Data
 class StepAuthDataText {
   static final Map<String, StepAuthContent> stepContents = {
     'forgotPassword': StepAuthContent(
+      title: "📧 Mot de passe oublié ?",
+      subtitle:
+          "Saisissez votre adresse email et nous vous enverrons un code de réinitialisation.",
+      subSubtitle: "",
+      actionButtonText: "Envoyer le code",
+      socialText: "",
+      navigationPrefix: "",
+      navigationLink: "",
+      backToLoginText: "Retour à la connexion",
+      forgotPasswordText: "",
+      additionalContent: {
+        "inputs": [
+          {"hint": "Adresse email", "icon": "email_outlined", "type": "email"},
+        ],
+      },
+    ),
+    'resetPassword': StepAuthContent(
       title: "🔐 Réinitialiser le mot de passe",
       subtitle:
           "Choisissez un nouveau mot de passe sécurisé pour votre compte. Assurez-vous qu'il contient au moins 8 caractères.",

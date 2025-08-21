@@ -4,7 +4,7 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 /// Fonction pour le slide smooth améliorée
 Widget slideSmoothAnimation({required Widget child}) {
   return TweenAnimationBuilder<double>(
-    duration: const Duration(milliseconds: 600),
+    duration: const Duration(milliseconds: 700),
     curve: Curves.easeOutCubic,
     tween: Tween<double>(begin: 0.0, end: 1.0),
     builder: (context, value, child) {
@@ -43,7 +43,7 @@ class SlidingExpansionTile extends StatefulWidget {
     this.tilePadding,
     this.shape,
     this.collapsedShape,
-    this.animationDuration = const Duration(milliseconds: 600),
+    this.animationDuration = const Duration(milliseconds: 700),
     this.curve = Curves.easeInOut,
   });
 
@@ -88,7 +88,6 @@ class _SlidingExpansionTileState extends State<SlidingExpansionTile>
   @override
   void didUpdateWidget(SlidingExpansionTile oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Force l'animation si l'état d'expansion a changé (l'état doit etre à jour)
     if (widget.initiallyExpanded != oldWidget.initiallyExpanded) {
       setState(() {
         _isExpanded = widget.initiallyExpanded;
@@ -145,9 +144,7 @@ class _SlidingExpansionTileState extends State<SlidingExpansionTile>
             onTap: () => _handleExpansionChanged(!_isExpanded),
             borderRadius: BorderRadius.circular(12),
             child: Container(
-              constraints: const BoxConstraints(
-                minHeight: 56,
-              ), // Hauteur minimale
+              constraints: const BoxConstraints(minHeight: 56),
               padding:
                   widget.tilePadding ??
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -208,7 +205,7 @@ class SlideInTransition extends StatelessWidget {
   const SlideInTransition({
     super.key,
     required this.child,
-    this.duration = const Duration(milliseconds: 300),
+    this.duration = const Duration(milliseconds: 500),
     this.curve = Curves.easeOutCubic,
     this.beginOffset = const Offset(0, 0.1),
     this.animate = true,
@@ -244,7 +241,7 @@ class SmoothSlideTransition extends StatelessWidget {
   const SmoothSlideTransition({
     super.key,
     required this.child,
-    this.duration = const Duration(milliseconds: 300),
+    this.duration = const Duration(milliseconds: 500),
     this.curve = Curves.easeOutCubic,
     this.direction = SlideDirection.fromRight,
     this.distance = 15.0,
@@ -296,7 +293,6 @@ class SmoothSlideTransition extends StatelessWidget {
   }
 }
 
-/// Version pour les transitions de route qui utilise l'animation externe
 class RouteSlideTransition extends StatelessWidget {
   final Widget child;
   final Animation<double> animation;

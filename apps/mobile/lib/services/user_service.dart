@@ -1,5 +1,5 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import '../models/auth/auth_model.dart';
+import '../presentation/auth/models/auth_models.dart';
 import '../graphql/queries.dart';
 
 const String resetPasswordMutation = r'''
@@ -15,7 +15,6 @@ class UserService {
 
   UserService(this._client);
 
-  // Authentification
   Future<AuthResponse> login(String email, String password) async {
     final data = await _mutate(
       document: loginMutation,
@@ -48,7 +47,6 @@ class UserService {
     );
   }
 
-  // Reset Password
   Future<void> resetPassword(String password) async {
     await _mutate(
       document: resetPasswordMutation,
@@ -57,7 +55,6 @@ class UserService {
     );
   }
 
-  // Utilisateurs
   Future<User> getUser(String id) async {
     final data = await _query(getUserQuery, variables: {'id': id});
     return User.fromJson(data['user']);
@@ -112,14 +109,12 @@ class UserService {
     return data['id'];
   }
 
-  // Rôles
   Future<List<Role>> getRoles() async {
     final data = await _query(getRolesQuery);
     final roles = data['roles'] as List;
     return roles.map((r) => Role.fromJson(r)).toList();
   }
 
-  // Email validation
   Future<bool> isEmailTaken(String email) async {
     final data = await _query(
       isEmailTakenQuery,
@@ -128,7 +123,6 @@ class UserService {
     return data['isEmailTaken'] ?? false;
   }
 
-  // Utils
   Future<Map<String, dynamic>> _query(
     String document, {
     Map<String, dynamic>? variables,
