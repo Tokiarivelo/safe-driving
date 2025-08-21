@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:safe_driving/features/authentication/services/session_service.dart';
 import 'package:safe_driving/api/graphql/graphql_client.dart';
 import '../../features/authentication/data/auth_data_source_interface.dart';
@@ -44,9 +43,7 @@ class ServiceLocator {
 
     get<GraphQLClientWrapper>().configure(
       onTokenRefresh: (newToken) {},
-      onError: (error) {
-        debugPrint('GraphQL Error: $error');
-      },
+      onError: (error) {},
     );
 
     registerLazySingleton<IAuthDataSource>(

@@ -125,7 +125,6 @@ class GraphQLClientWrapper {
   }
 
   void _handleError(String error) {
-    debugPrint('GraphQL Error: $error');
     if (_onError != null) {
       _onError!(error);
     }
@@ -218,7 +217,6 @@ class GraphQLClientWrapper {
     try {
       return _client.cache.readQuery(request);
     } catch (e) {
-      debugPrint('Cache read error: $e');
       return null;
     }
   }
