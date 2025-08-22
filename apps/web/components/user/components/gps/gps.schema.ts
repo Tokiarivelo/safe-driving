@@ -1,11 +1,9 @@
 import { z } from 'zod';
 
-// Mifanaraka amin'ny GraphQL UserPreferenceUpsertInput
 export const gpsSchema = z.object({
   activateLocation: z.boolean(),
 });
 
-// Schema fanampiny ho an'ny UserPreference rehetra
 export const userPreferenceSchema = z.object({
   id: z.string().optional(),
   activateLocation: z.boolean().optional(),

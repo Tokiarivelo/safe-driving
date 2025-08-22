@@ -1,0 +1,11 @@
+query getMyUserPreference {
+  userPreference {
+    ...UserPreferenceFields
+  }
+}
+
+query getVehicleTypes {
+  vehicleTypes {
+    ...vehicleTypeFragment
+  }
+}

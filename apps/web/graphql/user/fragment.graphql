@@ -1,4 +1,4 @@
-fragment UserPreferenceFields on UserPreference {
+fragment userFragment on User {
   id
   firstName
   lastName

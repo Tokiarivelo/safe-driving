@@ -271,7 +271,7 @@ pnpm translate
 |            | `pnpm graphql:start:prod`                | Lancement prod NestJS              |
 |            | `pnpm graphql:prisma:generate`           | `prisma generate`                  |
 |            | `pnpm graphql:prisma:migrate [-- <nom>]` | Génère + applique migration (dev)  |
-|            | `pnpm graphql:prisma:apply`              | Applique migrations en dev         |
+|            | `pnpm graphql:prisma:migrate:apply`              | Applique migrations en dev         |
 |            | `pnpm graphql:prisma:deploy`             | Déploiement migrations (CI / prod) |
 |            | `pnpm graphql:prisma:db-push`            | Pousse schema direct               |
 |            | `pnpm graphql:prisma:studio`             | Ouvre Prisma Studio                |

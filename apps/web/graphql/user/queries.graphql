@@ -1,0 +1,11 @@
+query getUser($id: String!) {
+  user(id: $id) {
+    ...userFragment
+  }
+}
+
+query me {
+  me {
+    ...userFragment
+  }
+}

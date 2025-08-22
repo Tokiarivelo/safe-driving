@@ -7,12 +7,10 @@ import { useGpsSettings } from './gpsAction';
 import { Radio } from '@/components/ui/radiogroup';
 import styles from './gps.module.css';
 
-// Esorina ny userId prop sy ny interface GpsProps
 export const Gps: React.FC = () => {
   const router = useRouter();
   const { t, ready } = useTranslation('user/gps');
   const [selectedOption, setSelectedOption] = useState<string>('');
-  // Ovaina ny useGpsSettings mba tsy handray userId
   const { toggleGps, loading,} = useGpsSettings();
 
   if (!ready) return null;

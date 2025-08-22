@@ -1,0 +1,10 @@
+mutation upsertUserPreference($input: UserPreferenceUpsertInput!) {
+  upsertUserPreference(input: $input) {
+    ...UserPreferenceFields
+  }
+}
+mutation createVehicleType ( $input: VehicleTypeCreateInput! ) {
+  createVehicleType(input: $input) {
+    ...vehicleTypeFragment
+  }
+}

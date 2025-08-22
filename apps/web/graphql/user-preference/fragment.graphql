@@ -1,0 +1,21 @@
+fragment UserPreferenceFields on UserPreference {
+  activateEmailNotifications
+  activateLocation
+  activateNotifications
+  activateSmsNotifications
+  cguAccepted
+  createdAt
+  id
+  language
+  preferedvelicles {
+    id
+    name
+  }
+  privacyPolicyAccepted
+  theme
+  updatedAt
+}
+fragment vehicleTypeFragment on VehicleType {
+  id
+  name
+}      

@@ -48,7 +48,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full px-3 py-2 text-left bg-auth-color-input border border-pink-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:border-red-500"
+        className="flex items-center justify-between w-full px-3 py-2 text-left bg-auth-color-input border border-pink-500 rounded-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:border-red-500"
       >
         <div className="flex items-center flex-wrap gap-1 min-h-[1.5rem]">
           {value.length === 0 ? (

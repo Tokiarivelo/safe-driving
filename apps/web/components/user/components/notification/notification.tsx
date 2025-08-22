@@ -1,17 +1,33 @@
 'use client';
-
-import { useRouter } from 'next/navigation';
-import { Radio, RadioGroup } from '@/components/ui/radiogroup';
-import styles from './notification.module.css';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-export const Notification = () => {
+import { useTranslation } from 'react-i18next';
+import { useNotificationSettings } from './notificationAction';
+import { Radio } from '@/components/ui/radiogroup';
+import styles from './notification.module.css';
+
+export const Notification: React.FC = () => {
   const router = useRouter();
-  const [size, setSize] = useState('medium');
-  const { t, ready } = useTranslation('user/notification');
+  const { t, ready } = useTranslation('user/gps');
+  const [selectedOption, setSelectedOption] = useState<string>('');
+  const { toggleGps, loading } = useNotificationSettings();
 
   if (!ready) return null;
+
+  const handleOptionChange = async (value: string) => {
+    console.log('handleOptionChange value:', value);
+    setSelectedOption(value);
+
+    if (value === 'Plustard') {
+      router.push('/user/form/name/preference');
+    } else if (value === 'Actuve') {
+      const success = await toggleGps(true);
+      if (success) {
+        router.push('/user/form/name/preference');
+      }
+    }
+  };
   return (
     <>
       <div className={styles.auth_not3}>
@@ -40,11 +56,12 @@ export const Notification = () => {
           className={styles.auth_not7}
         >
           <Radio
-            name="size"
+            name="gpsOption"
             value="Plustard"
             id="Plustard"
-            checked={size === 'Plustard'}
-            onChange={e => setSize(e.target.value)}
+            checked={selectedOption === 'Plustard'}
+            onChange={(e) => handleOptionChange(e.target.value)}
+            disabled={loading}
           />
           <label htmlFor="Plustard" className={styles.auth_not8}>
             {t('title3')}
@@ -56,12 +73,13 @@ export const Notification = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className={styles.auth_not9}
         >
-          <Radio
-            name="size"
+             <Radio
+            name="gpsOption"
             value="Actuve"
             id="Actuve"
-            checked={size === 'Actuve'}
-            onChange={e => setSize(e.target.value)}
+            checked={selectedOption === 'Actuve'}
+            onChange={(e) => handleOptionChange(e.target.value)}
+            disabled={loading}
           />
           <label htmlFor="Actuve" className={styles.auth_not10}>
             {t('title4')}

@@ -29,16 +29,14 @@ export const useGpsSettings = () => {
             ? '🎉 GPS activé ! Position détectée 📍'
             : '⚠️ GPS désactivé ! Position non détectée 🚫';
 
-          toast.success(message, { duration: 4000, position: 'top-right' });
+          toast.success(message, { duration: 2000, position: 'top-right' });
           return true;
         }
 
-        // Retry automatique raha misy errors
-        if (!data && errors && retryCount < 1) {
+          if (!data && errors && retryCount < 1) {
           return toggleGps(enable, retryCount + 1);
         }
 
-        // Raha misy erreur avy amin’ny serveur
         let serverMessage = 'Erreur lors de la mise à jour du GPS.';
         if (errors && errors.length > 0) {
           serverMessage = errors[0].message || serverMessage;
@@ -50,7 +48,7 @@ export const useGpsSettings = () => {
         else if (err.graphQLErrors?.length) message = err.graphQLErrors[0].message || message;
         else if (err.message) message = err.message;
 
-        toast.error(message, { duration: 4000, position: 'top-right' });
+        toast.error(message, { duration: 2000, position: 'top-right' });
         return false;
       } finally {
         setLoading(false);
@@ -65,4 +63,3 @@ export const useGpsSettings = () => {
     loading,
   };
 };
-  
