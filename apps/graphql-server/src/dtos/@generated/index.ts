@@ -125,6 +125,15 @@ export enum ReactionScalarFieldEnum {
     createdAt = "createdAt"
 }
 
+export enum QrTokenScalarFieldEnum {
+    id = "id",
+    token = "token",
+    userId = "userId",
+    updatedAt = "updatedAt",
+    createdAt = "createdAt",
+    revoked = "revoked"
+}
+
 export enum TransactionIsolationLevel {
     ReadUncommitted = "ReadUncommitted",
     ReadCommitted = "ReadCommitted",
@@ -233,7 +242,6 @@ export enum MessageScalarFieldEnum {
 export enum FileScalarFieldEnum {
     id = "id",
     url = "url",
-    type = "type",
     key = "key",
     originalName = "originalName",
     contentType = "contentType",
@@ -243,7 +251,8 @@ export enum FileScalarFieldEnum {
     meta = "meta",
     name = "name",
     userId = "userId",
-    driverVehicleId = "driverVehicleId"
+    driverVehicleId = "driverVehicleId",
+    type = "type"
 }
 
 export enum DriverVehicleScalarFieldEnum {
@@ -319,6 +328,7 @@ registerEnumType(NullsOrder, { name: 'NullsOrder', description: undefined })
 registerEnumType(QueryMode, { name: 'QueryMode', description: undefined })
 registerEnumType(SortOrder, { name: 'SortOrder', description: undefined })
 registerEnumType(TransactionIsolationLevel, { name: 'TransactionIsolationLevel', description: undefined })
+registerEnumType(QrTokenScalarFieldEnum, { name: 'QrTokenScalarFieldEnum', description: undefined })
 registerEnumType(ReactionScalarFieldEnum, { name: 'ReactionScalarFieldEnum', description: undefined })
 registerEnumType(RefreshTokenScalarFieldEnum, { name: 'RefreshTokenScalarFieldEnum', description: undefined })
 registerEnumType(ReviewScalarFieldEnum, { name: 'ReviewScalarFieldEnum', description: undefined })
@@ -7661,8 +7671,6 @@ export class FileCountAggregateInput {
     @Field(() => Boolean, {nullable:true})
     url?: true;
     @Field(() => Boolean, {nullable:true})
-    type?: true;
-    @Field(() => Boolean, {nullable:true})
     key?: true;
     @Field(() => Boolean, {nullable:true})
     originalName?: true;
@@ -7683,6 +7691,8 @@ export class FileCountAggregateInput {
     @Field(() => Boolean, {nullable:true})
     driverVehicleId?: true;
     @Field(() => Boolean, {nullable:true})
+    type?: true;
+    @Field(() => Boolean, {nullable:true})
     _all?: true;
 }
 
@@ -7692,8 +7702,6 @@ export class FileCountAggregate {
     id!: number;
     @Field(() => Int, {nullable:false})
     url!: number;
-    @Field(() => Int, {nullable:false})
-    type!: number;
     @Field(() => Int, {nullable:false})
     key!: number;
     @Field(() => Int, {nullable:false})
@@ -7715,6 +7723,8 @@ export class FileCountAggregate {
     @Field(() => Int, {nullable:false})
     driverVehicleId!: number;
     @Field(() => Int, {nullable:false})
+    type!: number;
+    @Field(() => Int, {nullable:false})
     _all!: number;
 }
 
@@ -7724,8 +7734,6 @@ export class FileCountOrderByAggregateInput {
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     url?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    type?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     key?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -7746,6 +7754,8 @@ export class FileCountOrderByAggregateInput {
     userId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
 }
 
 @ObjectType()
@@ -7768,8 +7778,6 @@ export class FileCreateManyInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -7790,6 +7798,8 @@ export class FileCreateManyInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
 }
 
 @InputType()
@@ -7913,8 +7923,6 @@ export class FileCreateWithoutAttachmentInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -7935,6 +7943,8 @@ export class FileCreateWithoutAttachmentInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserImageCreateNestedManyWithoutFileInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutFileInput>;
     @Field(() => UserDocumentCreateNestedManyWithoutFileInput, {nullable:true})
@@ -7951,8 +7961,6 @@ export class FileCreateWithoutUserDocumentInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -7973,6 +7981,8 @@ export class FileCreateWithoutUserDocumentInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserImageCreateNestedManyWithoutFileInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutFileInput>;
     @Field(() => VehicleImageCreateNestedManyWithoutFileInput, {nullable:true})
@@ -7989,8 +7999,6 @@ export class FileCreateWithoutUserImageInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -8011,6 +8019,8 @@ export class FileCreateWithoutUserImageInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserDocumentCreateNestedManyWithoutFileInput, {nullable:true})
     UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutFileInput>;
     @Field(() => VehicleImageCreateNestedManyWithoutFileInput, {nullable:true})
@@ -8027,8 +8037,6 @@ export class FileCreateWithoutVehicleDocumentInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -8049,6 +8057,8 @@ export class FileCreateWithoutVehicleDocumentInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserImageCreateNestedManyWithoutFileInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutFileInput>;
     @Field(() => UserDocumentCreateNestedManyWithoutFileInput, {nullable:true})
@@ -8065,8 +8075,6 @@ export class FileCreateWithoutVehicleImageInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -8087,6 +8095,8 @@ export class FileCreateWithoutVehicleImageInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserImageCreateNestedManyWithoutFileInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutFileInput>;
     @Field(() => UserDocumentCreateNestedManyWithoutFileInput, {nullable:true})
@@ -8103,8 +8113,6 @@ export class FileCreateInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -8125,6 +8133,8 @@ export class FileCreateInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserImageCreateNestedManyWithoutFileInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutFileInput>;
     @Field(() => UserDocumentCreateNestedManyWithoutFileInput, {nullable:true})
@@ -8170,8 +8180,6 @@ export class FileGroupBy {
     id!: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -8192,6 +8200,8 @@ export class FileGroupBy {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => FileCountAggregate, {nullable:true})
     _count?: InstanceType<typeof FileCountAggregate>;
     @Field(() => FileAvgAggregate, {nullable:true})
@@ -8211,8 +8221,6 @@ export class FileMaxAggregateInput {
     @Field(() => Boolean, {nullable:true})
     url?: true;
     @Field(() => Boolean, {nullable:true})
-    type?: true;
-    @Field(() => Boolean, {nullable:true})
     key?: true;
     @Field(() => Boolean, {nullable:true})
     originalName?: true;
@@ -8230,6 +8238,8 @@ export class FileMaxAggregateInput {
     userId?: true;
     @Field(() => Boolean, {nullable:true})
     driverVehicleId?: true;
+    @Field(() => Boolean, {nullable:true})
+    type?: true;
 }
 
 @ObjectType()
@@ -8238,8 +8248,6 @@ export class FileMaxAggregate {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:true})
-    type?: `${ImageType}`;
     @Field(() => String, {nullable:true})
     key?: string;
     @Field(() => String, {nullable:true})
@@ -8258,6 +8266,8 @@ export class FileMaxAggregate {
     userId?: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:true})
+    type?: `${ImageType}`;
 }
 
 @InputType()
@@ -8267,8 +8277,6 @@ export class FileMaxOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     url?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
-    type?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
     key?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     originalName?: `${SortOrder}`;
@@ -8286,6 +8294,8 @@ export class FileMaxOrderByAggregateInput {
     userId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
 }
 
 @InputType()
@@ -8294,8 +8304,6 @@ export class FileMinAggregateInput {
     id?: true;
     @Field(() => Boolean, {nullable:true})
     url?: true;
-    @Field(() => Boolean, {nullable:true})
-    type?: true;
     @Field(() => Boolean, {nullable:true})
     key?: true;
     @Field(() => Boolean, {nullable:true})
@@ -8314,6 +8322,8 @@ export class FileMinAggregateInput {
     userId?: true;
     @Field(() => Boolean, {nullable:true})
     driverVehicleId?: true;
+    @Field(() => Boolean, {nullable:true})
+    type?: true;
 }
 
 @ObjectType()
@@ -8322,8 +8332,6 @@ export class FileMinAggregate {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:true})
-    type?: `${ImageType}`;
     @Field(() => String, {nullable:true})
     key?: string;
     @Field(() => String, {nullable:true})
@@ -8342,6 +8350,8 @@ export class FileMinAggregate {
     userId?: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:true})
+    type?: `${ImageType}`;
 }
 
 @InputType()
@@ -8350,8 +8360,6 @@ export class FileMinOrderByAggregateInput {
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     url?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    type?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     key?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -8370,6 +8378,8 @@ export class FileMinOrderByAggregateInput {
     userId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     driverVehicleId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
 }
 
 @InputType()
@@ -8386,8 +8396,6 @@ export class FileOrderByWithAggregationInput {
     id?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     url?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrder, {nullable:true})
-    type?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     key?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -8408,6 +8416,8 @@ export class FileOrderByWithAggregationInput {
     userId?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
     @Field(() => FileCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof FileCountOrderByAggregateInput>;
     @Field(() => FileAvgOrderByAggregateInput, {nullable:true})
@@ -8427,8 +8437,6 @@ export class FileOrderByWithRelationInput {
     @Field(() => SortOrderInput, {nullable:true})
     url?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
-    type?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
     key?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     originalName?: `${SortOrder}`;
@@ -8448,6 +8456,8 @@ export class FileOrderByWithRelationInput {
     userId?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
     @Field(() => UserImageOrderByRelationAggregateInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageOrderByRelationAggregateInput>;
     @Field(() => UserDocumentOrderByRelationAggregateInput, {nullable:true})
@@ -8480,8 +8490,6 @@ export class FileScalarWhereWithAggregatesInput {
     id?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     url?: InstanceType<typeof StringNullableWithAggregatesFilter>;
-    @Field(() => EnumImageTypeWithAggregatesFilter, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     key?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
@@ -8502,6 +8510,8 @@ export class FileScalarWhereWithAggregatesInput {
     userId?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     driverVehicleId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => EnumImageTypeWithAggregatesFilter, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeWithAggregatesFilter>;
 }
 
 @InputType()
@@ -8528,8 +8538,6 @@ export class FileUncheckedCreateWithoutAttachmentInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -8550,6 +8558,8 @@ export class FileUncheckedCreateWithoutAttachmentInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutFileInput>;
     @Field(() => UserDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
@@ -8566,8 +8576,6 @@ export class FileUncheckedCreateWithoutUserDocumentInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -8588,6 +8596,8 @@ export class FileUncheckedCreateWithoutUserDocumentInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutFileInput>;
     @Field(() => VehicleImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
@@ -8604,8 +8614,6 @@ export class FileUncheckedCreateWithoutUserImageInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -8626,6 +8634,8 @@ export class FileUncheckedCreateWithoutUserImageInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
     UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutFileInput>;
     @Field(() => VehicleImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
@@ -8642,8 +8652,6 @@ export class FileUncheckedCreateWithoutVehicleDocumentInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -8664,6 +8672,8 @@ export class FileUncheckedCreateWithoutVehicleDocumentInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutFileInput>;
     @Field(() => UserDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
@@ -8680,8 +8690,6 @@ export class FileUncheckedCreateWithoutVehicleImageInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -8702,6 +8710,8 @@ export class FileUncheckedCreateWithoutVehicleImageInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutFileInput>;
     @Field(() => UserDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
@@ -8718,8 +8728,6 @@ export class FileUncheckedCreateInput {
     id?: string;
     @Field(() => String, {nullable:true})
     url?: string;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -8740,6 +8748,8 @@ export class FileUncheckedCreateInput {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId?: string;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => UserImageUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutFileInput>;
     @Field(() => UserDocumentUncheckedCreateNestedManyWithoutFileInput, {nullable:true})
@@ -8758,8 +8768,6 @@ export class FileUncheckedUpdateManyInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -8780,6 +8788,8 @@ export class FileUncheckedUpdateManyInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -8788,8 +8798,6 @@ export class FileUncheckedUpdateWithoutAttachmentInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -8810,6 +8818,8 @@ export class FileUncheckedUpdateWithoutAttachmentInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutFileNestedInput>;
     @Field(() => UserDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -8826,8 +8836,6 @@ export class FileUncheckedUpdateWithoutUserDocumentInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -8848,6 +8856,8 @@ export class FileUncheckedUpdateWithoutUserDocumentInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutFileNestedInput>;
     @Field(() => VehicleImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -8864,8 +8874,6 @@ export class FileUncheckedUpdateWithoutUserImageInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -8886,6 +8894,8 @@ export class FileUncheckedUpdateWithoutUserImageInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
     UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutFileNestedInput>;
     @Field(() => VehicleImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -8902,8 +8912,6 @@ export class FileUncheckedUpdateWithoutVehicleDocumentInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -8924,6 +8932,8 @@ export class FileUncheckedUpdateWithoutVehicleDocumentInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutFileNestedInput>;
     @Field(() => UserDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -8940,8 +8950,6 @@ export class FileUncheckedUpdateWithoutVehicleImageInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -8962,6 +8970,8 @@ export class FileUncheckedUpdateWithoutVehicleImageInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutFileNestedInput>;
     @Field(() => UserDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -8978,8 +8988,6 @@ export class FileUncheckedUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -9000,6 +9008,8 @@ export class FileUncheckedUpdateInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserImageUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutFileNestedInput>;
     @Field(() => UserDocumentUncheckedUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -9018,8 +9028,6 @@ export class FileUpdateManyMutationInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -9040,6 +9048,8 @@ export class FileUpdateManyMutationInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -9199,8 +9209,6 @@ export class FileUpdateWithoutAttachmentInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -9221,6 +9229,8 @@ export class FileUpdateWithoutAttachmentInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserImageUpdateManyWithoutFileNestedInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUpdateManyWithoutFileNestedInput>;
     @Field(() => UserDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -9237,8 +9247,6 @@ export class FileUpdateWithoutUserDocumentInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -9259,6 +9267,8 @@ export class FileUpdateWithoutUserDocumentInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserImageUpdateManyWithoutFileNestedInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUpdateManyWithoutFileNestedInput>;
     @Field(() => VehicleImageUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -9275,8 +9285,6 @@ export class FileUpdateWithoutUserImageInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -9297,6 +9305,8 @@ export class FileUpdateWithoutUserImageInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
     UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutFileNestedInput>;
     @Field(() => VehicleImageUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -9313,8 +9323,6 @@ export class FileUpdateWithoutVehicleDocumentInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -9335,6 +9343,8 @@ export class FileUpdateWithoutVehicleDocumentInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserImageUpdateManyWithoutFileNestedInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUpdateManyWithoutFileNestedInput>;
     @Field(() => UserDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -9351,8 +9361,6 @@ export class FileUpdateWithoutVehicleImageInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -9373,6 +9381,8 @@ export class FileUpdateWithoutVehicleImageInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserImageUpdateManyWithoutFileNestedInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUpdateManyWithoutFileNestedInput>;
     @Field(() => UserDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -9389,8 +9399,6 @@ export class FileUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
@@ -9411,6 +9419,8 @@ export class FileUpdateInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     driverVehicleId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumImageTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
     @Field(() => UserImageUpdateManyWithoutFileNestedInput, {nullable:true})
     UserImage?: InstanceType<typeof UserImageUpdateManyWithoutFileNestedInput>;
     @Field(() => UserDocumentUpdateManyWithoutFileNestedInput, {nullable:true})
@@ -9502,8 +9512,6 @@ export class FileWhereUniqueInput {
     NOT?: Array<FileWhereInput>;
     @Field(() => StringNullableFilter, {nullable:true})
     url?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => EnumImageTypeFilter, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFilter>;
     @Field(() => StringFilter, {nullable:true})
     originalName?: InstanceType<typeof StringFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
@@ -9522,6 +9530,8 @@ export class FileWhereUniqueInput {
     userId?: InstanceType<typeof StringFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     driverVehicleId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => EnumImageTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFilter>;
     @Field(() => UserImageListRelationFilter, {nullable:true})
     UserImage?: InstanceType<typeof UserImageListRelationFilter>;
     @Field(() => UserDocumentListRelationFilter, {nullable:true})
@@ -9546,8 +9556,6 @@ export class FileWhereInput {
     id?: InstanceType<typeof StringFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     url?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => EnumImageTypeFilter, {nullable:true})
-    type?: InstanceType<typeof EnumImageTypeFilter>;
     @Field(() => StringFilter, {nullable:true})
     key?: InstanceType<typeof StringFilter>;
     @Field(() => StringFilter, {nullable:true})
@@ -9568,6 +9576,8 @@ export class FileWhereInput {
     userId?: InstanceType<typeof StringFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     driverVehicleId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => EnumImageTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumImageTypeFilter>;
     @Field(() => UserImageListRelationFilter, {nullable:true})
     UserImage?: InstanceType<typeof UserImageListRelationFilter>;
     @Field(() => UserDocumentListRelationFilter, {nullable:true})
@@ -9586,8 +9596,6 @@ export class File {
     id!: string;
     @Field(() => String, {nullable:true})
     url!: string | null;
-    @Field(() => ImageType, {nullable:false})
-    type!: `${ImageType}`;
     @Field(() => String, {nullable:false})
     key!: string;
     @Field(() => String, {nullable:false})
@@ -9608,6 +9616,8 @@ export class File {
     userId!: string;
     @Field(() => String, {nullable:true})
     driverVehicleId!: string | null;
+    @Field(() => ImageType, {nullable:false})
+    type!: `${ImageType}`;
     @Field(() => [UserImage], {nullable:true})
     UserImage?: Array<UserImage>;
     @Field(() => [UserDocument], {nullable:true})
@@ -17848,6 +17858,880 @@ export class StringWithAggregatesFilter {
 }
 
 @ObjectType()
+export class AggregateQrToken {
+    @Field(() => QrTokenCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof QrTokenCountAggregate>;
+    @Field(() => QrTokenMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof QrTokenMinAggregate>;
+    @Field(() => QrTokenMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof QrTokenMaxAggregate>;
+}
+
+@ArgsType()
+export class CreateManyQrTokenArgs {
+    @Field(() => [QrTokenCreateManyInput], {nullable:false})
+    @Type(() => QrTokenCreateManyInput)
+    data!: Array<QrTokenCreateManyInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@ArgsType()
+export class CreateOneQrTokenArgs {
+    @Field(() => QrTokenCreateInput, {nullable:false})
+    @Type(() => QrTokenCreateInput)
+    data!: InstanceType<typeof QrTokenCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManyQrTokenArgs {
+    @Field(() => QrTokenWhereInput, {nullable:true})
+    @Type(() => QrTokenWhereInput)
+    where?: InstanceType<typeof QrTokenWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class DeleteOneQrTokenArgs {
+    @Field(() => QrTokenWhereUniqueInput, {nullable:false})
+    @Type(() => QrTokenWhereUniqueInput)
+    where!: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+}
+
+@ArgsType()
+export class FindFirstQrTokenOrThrowArgs {
+    @Field(() => QrTokenWhereInput, {nullable:true})
+    @Type(() => QrTokenWhereInput)
+    where?: InstanceType<typeof QrTokenWhereInput>;
+    @Field(() => [QrTokenOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<QrTokenOrderByWithRelationInput>;
+    @Field(() => QrTokenWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [QrTokenScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${QrTokenScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstQrTokenArgs {
+    @Field(() => QrTokenWhereInput, {nullable:true})
+    @Type(() => QrTokenWhereInput)
+    where?: InstanceType<typeof QrTokenWhereInput>;
+    @Field(() => [QrTokenOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<QrTokenOrderByWithRelationInput>;
+    @Field(() => QrTokenWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [QrTokenScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${QrTokenScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManyQrTokenArgs {
+    @Field(() => QrTokenWhereInput, {nullable:true})
+    @Type(() => QrTokenWhereInput)
+    where?: InstanceType<typeof QrTokenWhereInput>;
+    @Field(() => [QrTokenOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<QrTokenOrderByWithRelationInput>;
+    @Field(() => QrTokenWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [QrTokenScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${QrTokenScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueQrTokenOrThrowArgs {
+    @Field(() => QrTokenWhereUniqueInput, {nullable:false})
+    @Type(() => QrTokenWhereUniqueInput)
+    where!: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+}
+
+@ArgsType()
+export class FindUniqueQrTokenArgs {
+    @Field(() => QrTokenWhereUniqueInput, {nullable:false})
+    @Type(() => QrTokenWhereUniqueInput)
+    where!: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+}
+
+@ArgsType()
+export class QrTokenAggregateArgs {
+    @Field(() => QrTokenWhereInput, {nullable:true})
+    @Type(() => QrTokenWhereInput)
+    where?: InstanceType<typeof QrTokenWhereInput>;
+    @Field(() => [QrTokenOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<QrTokenOrderByWithRelationInput>;
+    @Field(() => QrTokenWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => QrTokenCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof QrTokenCountAggregateInput>;
+    @Field(() => QrTokenMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof QrTokenMinAggregateInput>;
+    @Field(() => QrTokenMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof QrTokenMaxAggregateInput>;
+}
+
+@InputType()
+export class QrTokenCountAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    token?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    revoked?: true;
+    @Field(() => Boolean, {nullable:true})
+    _all?: true;
+}
+
+@ObjectType()
+export class QrTokenCountAggregate {
+    @Field(() => Int, {nullable:false})
+    id!: number;
+    @Field(() => Int, {nullable:false})
+    token!: number;
+    @Field(() => Int, {nullable:false})
+    userId!: number;
+    @Field(() => Int, {nullable:false})
+    updatedAt!: number;
+    @Field(() => Int, {nullable:false})
+    createdAt!: number;
+    @Field(() => Int, {nullable:false})
+    revoked!: number;
+    @Field(() => Int, {nullable:false})
+    _all!: number;
+}
+
+@InputType()
+export class QrTokenCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    token?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revoked?: `${SortOrder}`;
+}
+
+@InputType()
+export class QrTokenCreateManyUserInputEnvelope {
+    @Field(() => [QrTokenCreateManyUserInput], {nullable:false})
+    @Type(() => QrTokenCreateManyUserInput)
+    data!: Array<QrTokenCreateManyUserInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class QrTokenCreateManyUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    revoked?: boolean;
+}
+
+@InputType()
+export class QrTokenCreateManyInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    revoked?: boolean;
+}
+
+@InputType()
+export class QrTokenCreateNestedManyWithoutUserInput {
+    @Field(() => [QrTokenCreateWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenCreateWithoutUserInput)
+    create?: Array<QrTokenCreateWithoutUserInput>;
+    @Field(() => [QrTokenCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<QrTokenCreateOrConnectWithoutUserInput>;
+    @Field(() => QrTokenCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => QrTokenCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof QrTokenCreateManyUserInputEnvelope>;
+    @Field(() => [QrTokenWhereUniqueInput], {nullable:true})
+    @Type(() => QrTokenWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>>;
+}
+
+@InputType()
+export class QrTokenCreateOrConnectWithoutUserInput {
+    @Field(() => QrTokenWhereUniqueInput, {nullable:false})
+    @Type(() => QrTokenWhereUniqueInput)
+    where!: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => QrTokenCreateWithoutUserInput, {nullable:false})
+    @Type(() => QrTokenCreateWithoutUserInput)
+    create!: InstanceType<typeof QrTokenCreateWithoutUserInput>;
+}
+
+@InputType()
+export class QrTokenCreateWithoutUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    revoked?: boolean;
+}
+
+@InputType()
+export class QrTokenCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    revoked?: boolean;
+    @Field(() => UserCreateNestedOneWithoutQrTokenInput, {nullable:false})
+    user!: InstanceType<typeof UserCreateNestedOneWithoutQrTokenInput>;
+}
+
+@ArgsType()
+export class QrTokenGroupByArgs {
+    @Field(() => QrTokenWhereInput, {nullable:true})
+    @Type(() => QrTokenWhereInput)
+    where?: InstanceType<typeof QrTokenWhereInput>;
+    @Field(() => [QrTokenOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<QrTokenOrderByWithAggregationInput>;
+    @Field(() => [QrTokenScalarFieldEnum], {nullable:false})
+    by!: Array<`${QrTokenScalarFieldEnum}`>;
+    @Field(() => QrTokenScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof QrTokenScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => QrTokenCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof QrTokenCountAggregateInput>;
+    @Field(() => QrTokenMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof QrTokenMinAggregateInput>;
+    @Field(() => QrTokenMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof QrTokenMaxAggregateInput>;
+}
+
+@ObjectType()
+export class QrTokenGroupBy {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date | string;
+    @Field(() => Boolean, {nullable:false})
+    revoked!: boolean;
+    @Field(() => QrTokenCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof QrTokenCountAggregate>;
+    @Field(() => QrTokenMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof QrTokenMinAggregate>;
+    @Field(() => QrTokenMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof QrTokenMaxAggregate>;
+}
+
+@InputType()
+export class QrTokenListRelationFilter {
+    @Field(() => QrTokenWhereInput, {nullable:true})
+    every?: InstanceType<typeof QrTokenWhereInput>;
+    @Field(() => QrTokenWhereInput, {nullable:true})
+    some?: InstanceType<typeof QrTokenWhereInput>;
+    @Field(() => QrTokenWhereInput, {nullable:true})
+    none?: InstanceType<typeof QrTokenWhereInput>;
+}
+
+@InputType()
+export class QrTokenMaxAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    token?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    revoked?: true;
+}
+
+@ObjectType()
+export class QrTokenMaxAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    token?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    revoked?: boolean;
+}
+
+@InputType()
+export class QrTokenMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    token?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revoked?: `${SortOrder}`;
+}
+
+@InputType()
+export class QrTokenMinAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    token?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    revoked?: true;
+}
+
+@ObjectType()
+export class QrTokenMinAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    token?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    revoked?: boolean;
+}
+
+@InputType()
+export class QrTokenMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    token?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revoked?: `${SortOrder}`;
+}
+
+@InputType()
+export class QrTokenOrderByRelationAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    _count?: `${SortOrder}`;
+}
+
+@InputType()
+export class QrTokenOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    token?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revoked?: `${SortOrder}`;
+    @Field(() => QrTokenCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof QrTokenCountOrderByAggregateInput>;
+    @Field(() => QrTokenMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof QrTokenMaxOrderByAggregateInput>;
+    @Field(() => QrTokenMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof QrTokenMinOrderByAggregateInput>;
+}
+
+@InputType()
+export class QrTokenOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    token?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revoked?: `${SortOrder}`;
+    @Field(() => UserOrderByWithRelationInput, {nullable:true})
+    user?: InstanceType<typeof UserOrderByWithRelationInput>;
+}
+
+@InputType()
+export class QrTokenScalarWhereWithAggregatesInput {
+    @Field(() => [QrTokenScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<QrTokenScalarWhereWithAggregatesInput>;
+    @Field(() => [QrTokenScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<QrTokenScalarWhereWithAggregatesInput>;
+    @Field(() => [QrTokenScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<QrTokenScalarWhereWithAggregatesInput>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    token?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    userId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    revoked?: InstanceType<typeof BoolWithAggregatesFilter>;
+}
+
+@InputType()
+export class QrTokenScalarWhereInput {
+    @Field(() => [QrTokenScalarWhereInput], {nullable:true})
+    AND?: Array<QrTokenScalarWhereInput>;
+    @Field(() => [QrTokenScalarWhereInput], {nullable:true})
+    OR?: Array<QrTokenScalarWhereInput>;
+    @Field(() => [QrTokenScalarWhereInput], {nullable:true})
+    NOT?: Array<QrTokenScalarWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    token?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    revoked?: InstanceType<typeof BoolFilter>;
+}
+
+@InputType()
+export class QrTokenUncheckedCreateNestedManyWithoutUserInput {
+    @Field(() => [QrTokenCreateWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenCreateWithoutUserInput)
+    create?: Array<QrTokenCreateWithoutUserInput>;
+    @Field(() => [QrTokenCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<QrTokenCreateOrConnectWithoutUserInput>;
+    @Field(() => QrTokenCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => QrTokenCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof QrTokenCreateManyUserInputEnvelope>;
+    @Field(() => [QrTokenWhereUniqueInput], {nullable:true})
+    @Type(() => QrTokenWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>>;
+}
+
+@InputType()
+export class QrTokenUncheckedCreateWithoutUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    revoked?: boolean;
+}
+
+@InputType()
+export class QrTokenUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    revoked?: boolean;
+}
+
+@InputType()
+export class QrTokenUncheckedUpdateManyWithoutUserNestedInput {
+    @Field(() => [QrTokenCreateWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenCreateWithoutUserInput)
+    create?: Array<QrTokenCreateWithoutUserInput>;
+    @Field(() => [QrTokenCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<QrTokenCreateOrConnectWithoutUserInput>;
+    @Field(() => [QrTokenUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<QrTokenUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => QrTokenCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => QrTokenCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof QrTokenCreateManyUserInputEnvelope>;
+    @Field(() => [QrTokenWhereUniqueInput], {nullable:true})
+    @Type(() => QrTokenWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [QrTokenWhereUniqueInput], {nullable:true})
+    @Type(() => QrTokenWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [QrTokenWhereUniqueInput], {nullable:true})
+    @Type(() => QrTokenWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [QrTokenWhereUniqueInput], {nullable:true})
+    @Type(() => QrTokenWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [QrTokenUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<QrTokenUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [QrTokenUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<QrTokenUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [QrTokenScalarWhereInput], {nullable:true})
+    @Type(() => QrTokenScalarWhereInput)
+    deleteMany?: Array<QrTokenScalarWhereInput>;
+}
+
+@InputType()
+export class QrTokenUncheckedUpdateManyWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    revoked?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class QrTokenUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    revoked?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class QrTokenUncheckedUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    revoked?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class QrTokenUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    revoked?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class QrTokenUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    revoked?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class QrTokenUpdateManyWithWhereWithoutUserInput {
+    @Field(() => QrTokenScalarWhereInput, {nullable:false})
+    @Type(() => QrTokenScalarWhereInput)
+    where!: InstanceType<typeof QrTokenScalarWhereInput>;
+    @Field(() => QrTokenUpdateManyMutationInput, {nullable:false})
+    @Type(() => QrTokenUpdateManyMutationInput)
+    data!: InstanceType<typeof QrTokenUpdateManyMutationInput>;
+}
+
+@InputType()
+export class QrTokenUpdateManyWithoutUserNestedInput {
+    @Field(() => [QrTokenCreateWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenCreateWithoutUserInput)
+    create?: Array<QrTokenCreateWithoutUserInput>;
+    @Field(() => [QrTokenCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<QrTokenCreateOrConnectWithoutUserInput>;
+    @Field(() => [QrTokenUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<QrTokenUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => QrTokenCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => QrTokenCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof QrTokenCreateManyUserInputEnvelope>;
+    @Field(() => [QrTokenWhereUniqueInput], {nullable:true})
+    @Type(() => QrTokenWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [QrTokenWhereUniqueInput], {nullable:true})
+    @Type(() => QrTokenWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [QrTokenWhereUniqueInput], {nullable:true})
+    @Type(() => QrTokenWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [QrTokenWhereUniqueInput], {nullable:true})
+    @Type(() => QrTokenWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [QrTokenUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<QrTokenUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [QrTokenUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => QrTokenUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<QrTokenUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [QrTokenScalarWhereInput], {nullable:true})
+    @Type(() => QrTokenScalarWhereInput)
+    deleteMany?: Array<QrTokenScalarWhereInput>;
+}
+
+@InputType()
+export class QrTokenUpdateWithWhereUniqueWithoutUserInput {
+    @Field(() => QrTokenWhereUniqueInput, {nullable:false})
+    @Type(() => QrTokenWhereUniqueInput)
+    where!: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => QrTokenUpdateWithoutUserInput, {nullable:false})
+    @Type(() => QrTokenUpdateWithoutUserInput)
+    data!: InstanceType<typeof QrTokenUpdateWithoutUserInput>;
+}
+
+@InputType()
+export class QrTokenUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    revoked?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class QrTokenUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    revoked?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => UserUpdateOneRequiredWithoutQrTokenNestedInput, {nullable:true})
+    user?: InstanceType<typeof UserUpdateOneRequiredWithoutQrTokenNestedInput>;
+}
+
+@InputType()
+export class QrTokenUpsertWithWhereUniqueWithoutUserInput {
+    @Field(() => QrTokenWhereUniqueInput, {nullable:false})
+    @Type(() => QrTokenWhereUniqueInput)
+    where!: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => QrTokenUpdateWithoutUserInput, {nullable:false})
+    @Type(() => QrTokenUpdateWithoutUserInput)
+    update!: InstanceType<typeof QrTokenUpdateWithoutUserInput>;
+    @Field(() => QrTokenCreateWithoutUserInput, {nullable:false})
+    @Type(() => QrTokenCreateWithoutUserInput)
+    create!: InstanceType<typeof QrTokenCreateWithoutUserInput>;
+}
+
+@InputType()
+export class QrTokenWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    token?: string;
+    @Field(() => [QrTokenWhereInput], {nullable:true})
+    AND?: Array<QrTokenWhereInput>;
+    @Field(() => [QrTokenWhereInput], {nullable:true})
+    OR?: Array<QrTokenWhereInput>;
+    @Field(() => [QrTokenWhereInput], {nullable:true})
+    NOT?: Array<QrTokenWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    revoked?: InstanceType<typeof BoolFilter>;
+    @Field(() => UserScalarRelationFilter, {nullable:true})
+    user?: InstanceType<typeof UserScalarRelationFilter>;
+}
+
+@InputType()
+export class QrTokenWhereInput {
+    @Field(() => [QrTokenWhereInput], {nullable:true})
+    AND?: Array<QrTokenWhereInput>;
+    @Field(() => [QrTokenWhereInput], {nullable:true})
+    OR?: Array<QrTokenWhereInput>;
+    @Field(() => [QrTokenWhereInput], {nullable:true})
+    NOT?: Array<QrTokenWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    token?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    revoked?: InstanceType<typeof BoolFilter>;
+    @Field(() => UserScalarRelationFilter, {nullable:true})
+    user?: InstanceType<typeof UserScalarRelationFilter>;
+}
+
+@ObjectType()
+export class QrToken {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
+    revoked!: boolean;
+    @Field(() => User, {nullable:false})
+    user?: InstanceType<typeof User>;
+}
+
+@ArgsType()
+export class UpdateManyQrTokenArgs {
+    @Field(() => QrTokenUpdateManyMutationInput, {nullable:false})
+    @Type(() => QrTokenUpdateManyMutationInput)
+    data!: InstanceType<typeof QrTokenUpdateManyMutationInput>;
+    @Field(() => QrTokenWhereInput, {nullable:true})
+    @Type(() => QrTokenWhereInput)
+    where?: InstanceType<typeof QrTokenWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class UpdateOneQrTokenArgs {
+    @Field(() => QrTokenUpdateInput, {nullable:false})
+    @Type(() => QrTokenUpdateInput)
+    data!: InstanceType<typeof QrTokenUpdateInput>;
+    @Field(() => QrTokenWhereUniqueInput, {nullable:false})
+    @Type(() => QrTokenWhereUniqueInput)
+    where!: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+}
+
+@ArgsType()
+export class UpsertOneQrTokenArgs {
+    @Field(() => QrTokenWhereUniqueInput, {nullable:false})
+    @Type(() => QrTokenWhereUniqueInput)
+    where!: Prisma.AtLeast<QrTokenWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => QrTokenCreateInput, {nullable:false})
+    @Type(() => QrTokenCreateInput)
+    create!: InstanceType<typeof QrTokenCreateInput>;
+    @Field(() => QrTokenUpdateInput, {nullable:false})
+    @Type(() => QrTokenUpdateInput)
+    update!: InstanceType<typeof QrTokenUpdateInput>;
+}
+
+@ObjectType()
 export class AggregateReaction {
     @Field(() => ReactionCountAggregate, {nullable:true})
     _count?: InstanceType<typeof ReactionCountAggregate>;
@@ -24273,6 +25157,8 @@ export class UserCount {
     Reaction?: number;
     @Field(() => Int, {nullable:false})
     MessageReadReceipt?: number;
+    @Field(() => Int, {nullable:false})
+    QrToken?: number;
 }
 
 @InputType()
@@ -24346,6 +25232,19 @@ export class UserCreateNestedOneWithoutMessageInput {
     @Field(() => UserCreateOrConnectWithoutMessageInput, {nullable:true})
     @Type(() => UserCreateOrConnectWithoutMessageInput)
     connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutMessageInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+}
+
+@InputType()
+export class UserCreateNestedOneWithoutQrTokenInput {
+    @Field(() => UserCreateWithoutQrTokenInput, {nullable:true})
+    @Type(() => UserCreateWithoutQrTokenInput)
+    create?: InstanceType<typeof UserCreateWithoutQrTokenInput>;
+    @Field(() => UserCreateOrConnectWithoutQrTokenInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutQrTokenInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutQrTokenInput>;
     @Field(() => UserWhereUniqueInput, {nullable:true})
     @Type(() => UserWhereUniqueInput)
     connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
@@ -24499,6 +25398,16 @@ export class UserCreateOrConnectWithoutMessageInput {
 }
 
 @InputType()
+export class UserCreateOrConnectWithoutQrTokenInput {
+    @Field(() => UserWhereUniqueInput, {nullable:false})
+    @Type(() => UserWhereUniqueInput)
+    where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserCreateWithoutQrTokenInput, {nullable:false})
+    @Type(() => UserCreateWithoutQrTokenInput)
+    create!: InstanceType<typeof UserCreateWithoutQrTokenInput>;
+}
+
+@InputType()
 export class UserCreateOrConnectWithoutReactionInput {
     @Field(() => UserWhereUniqueInput, {nullable:false})
     @Type(() => UserWhereUniqueInput)
@@ -24646,6 +25555,8 @@ export class UserCreateWithoutConversationParticipantInput {
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -24696,6 +25607,8 @@ export class UserCreateWithoutMessageReadReceiptInput {
     ConversationParticipant?: InstanceType<typeof ConversationParticipantCreateNestedManyWithoutUserInput>;
     @Field(() => ReactionCreateNestedManyWithoutUserInput, {nullable:true})
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -24740,6 +25653,60 @@ export class UserCreateWithoutMessageInput {
     review?: InstanceType<typeof ReviewCreateNestedManyWithoutUserInput>;
     @Field(() => RideParticipantCreateNestedManyWithoutUserInput, {nullable:true})
     RideParticipant?: InstanceType<typeof RideParticipantCreateNestedManyWithoutUserInput>;
+    @Field(() => ConversationParticipantCreateNestedManyWithoutUserInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantCreateNestedManyWithoutUserInput>;
+    @Field(() => ReactionCreateNestedManyWithoutUserInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserCreateWithoutQrTokenInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => DriverVehicleCreateNestedManyWithoutUserInput)
+    vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
+    @Field(() => RideCreateNestedManyWithoutDriverInput, {nullable:true})
+    @Type(() => RideCreateNestedManyWithoutDriverInput)
+    rides?: InstanceType<typeof RideCreateNestedManyWithoutDriverInput>;
+    @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutUserInput>;
+    @Field(() => ReviewCreateNestedManyWithoutUserInput, {nullable:true})
+    review?: InstanceType<typeof ReviewCreateNestedManyWithoutUserInput>;
+    @Field(() => RideParticipantCreateNestedManyWithoutUserInput, {nullable:true})
+    RideParticipant?: InstanceType<typeof RideParticipantCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageCreateNestedManyWithoutSenderInput, {nullable:true})
+    Message?: InstanceType<typeof MessageCreateNestedManyWithoutSenderInput>;
     @Field(() => ConversationParticipantCreateNestedManyWithoutUserInput, {nullable:true})
     ConversationParticipant?: InstanceType<typeof ConversationParticipantCreateNestedManyWithoutUserInput>;
     @Field(() => ReactionCreateNestedManyWithoutUserInput, {nullable:true})
@@ -24796,6 +25763,8 @@ export class UserCreateWithoutReactionInput {
     ConversationParticipant?: InstanceType<typeof ConversationParticipantCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -24846,6 +25815,8 @@ export class UserCreateWithoutReviewInput {
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -24896,6 +25867,8 @@ export class UserCreateWithoutRideParticipantInput {
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -24945,6 +25918,8 @@ export class UserCreateWithoutRidesInput {
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -24995,6 +25970,8 @@ export class UserCreateWithoutRoleInput {
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -25045,6 +26022,8 @@ export class UserCreateWithoutTokensInput {
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -25095,6 +26074,8 @@ export class UserCreateWithoutUserDocumentInput {
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -25145,6 +26126,8 @@ export class UserCreateWithoutUserImageInput {
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -25195,6 +26178,8 @@ export class UserCreateWithoutUserPreferenceInput {
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -25244,6 +26229,8 @@ export class UserCreateWithoutVehiclesInput {
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -25296,6 +26283,8 @@ export class UserCreateInput {
     Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
 }
 
 @ArgsType()
@@ -25599,6 +26588,8 @@ export class UserOrderByWithRelationInput {
     Reaction?: InstanceType<typeof ReactionOrderByRelationAggregateInput>;
     @Field(() => MessageReadReceiptOrderByRelationAggregateInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptOrderByRelationAggregateInput>;
+    @Field(() => QrTokenOrderByRelationAggregateInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenOrderByRelationAggregateInput>;
 }
 
 @InputType()
@@ -25730,6 +26721,8 @@ export class UserUncheckedCreateWithoutConversationParticipantInput {
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -25780,6 +26773,8 @@ export class UserUncheckedCreateWithoutMessageReadReceiptInput {
     ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => ReactionUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -25824,6 +26819,60 @@ export class UserUncheckedCreateWithoutMessageInput {
     review?: InstanceType<typeof ReviewUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => RideParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     RideParticipant?: InstanceType<typeof RideParticipantUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => ConversationParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => ReactionUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserUncheckedCreateWithoutQrTokenInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput)
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RideUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    @Type(() => RideUncheckedCreateNestedManyWithoutDriverInput)
+    rides?: InstanceType<typeof RideUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => ReviewUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RideParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    Message?: InstanceType<typeof MessageUncheckedCreateNestedManyWithoutSenderInput>;
     @Field(() => ConversationParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => ReactionUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -25880,6 +26929,8 @@ export class UserUncheckedCreateWithoutReactionInput {
     ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -25930,6 +26981,8 @@ export class UserUncheckedCreateWithoutReviewInput {
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -25980,6 +27033,8 @@ export class UserUncheckedCreateWithoutRideParticipantInput {
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -26029,6 +27084,8 @@ export class UserUncheckedCreateWithoutRidesInput {
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -26079,6 +27136,8 @@ export class UserUncheckedCreateWithoutRoleInput {
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -26129,6 +27188,8 @@ export class UserUncheckedCreateWithoutTokensInput {
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -26179,6 +27240,8 @@ export class UserUncheckedCreateWithoutUserDocumentInput {
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -26229,6 +27292,8 @@ export class UserUncheckedCreateWithoutUserImageInput {
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -26279,6 +27344,8 @@ export class UserUncheckedCreateWithoutUserPreferenceInput {
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -26328,6 +27395,8 @@ export class UserUncheckedCreateWithoutVehiclesInput {
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -26380,6 +27449,8 @@ export class UserUncheckedCreateInput {
     Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -26512,6 +27583,8 @@ export class UserUncheckedUpdateWithoutConversationParticipantInput {
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -26562,6 +27635,8 @@ export class UserUncheckedUpdateWithoutMessageReadReceiptInput {
     ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => ReactionUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -26606,6 +27681,60 @@ export class UserUncheckedUpdateWithoutMessageInput {
     review?: InstanceType<typeof ReviewUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => RideParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     RideParticipant?: InstanceType<typeof RideParticipantUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReactionUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserUncheckedUpdateWithoutQrTokenInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput)
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    @Type(() => RideUncheckedUpdateManyWithoutDriverNestedInput)
+    rides?: InstanceType<typeof RideUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReviewUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    Message?: InstanceType<typeof MessageUncheckedUpdateManyWithoutSenderNestedInput>;
     @Field(() => ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => ReactionUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -26662,6 +27791,8 @@ export class UserUncheckedUpdateWithoutReactionInput {
     ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -26712,6 +27843,8 @@ export class UserUncheckedUpdateWithoutReviewInput {
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -26762,6 +27895,8 @@ export class UserUncheckedUpdateWithoutRideParticipantInput {
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -26811,6 +27946,8 @@ export class UserUncheckedUpdateWithoutRidesInput {
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -26861,6 +27998,8 @@ export class UserUncheckedUpdateWithoutRoleInput {
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -26911,6 +28050,8 @@ export class UserUncheckedUpdateWithoutTokensInput {
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -26961,6 +28102,8 @@ export class UserUncheckedUpdateWithoutUserDocumentInput {
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -27011,6 +28154,8 @@ export class UserUncheckedUpdateWithoutUserImageInput {
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -27061,6 +28206,8 @@ export class UserUncheckedUpdateWithoutUserPreferenceInput {
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -27110,6 +28257,8 @@ export class UserUncheckedUpdateWithoutVehiclesInput {
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -27162,6 +28311,8 @@ export class UserUncheckedUpdateInput {
     Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -27287,6 +28438,25 @@ export class UserUpdateOneRequiredWithoutMessageReadReceiptNestedInput {
     @Field(() => UserUpdateToOneWithWhereWithoutMessageReadReceiptInput, {nullable:true})
     @Type(() => UserUpdateToOneWithWhereWithoutMessageReadReceiptInput)
     update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutMessageReadReceiptInput>;
+}
+
+@InputType()
+export class UserUpdateOneRequiredWithoutQrTokenNestedInput {
+    @Field(() => UserCreateWithoutQrTokenInput, {nullable:true})
+    @Type(() => UserCreateWithoutQrTokenInput)
+    create?: InstanceType<typeof UserCreateWithoutQrTokenInput>;
+    @Field(() => UserCreateOrConnectWithoutQrTokenInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutQrTokenInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutQrTokenInput>;
+    @Field(() => UserUpsertWithoutQrTokenInput, {nullable:true})
+    @Type(() => UserUpsertWithoutQrTokenInput)
+    upsert?: InstanceType<typeof UserUpsertWithoutQrTokenInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserUpdateToOneWithWhereWithoutQrTokenInput, {nullable:true})
+    @Type(() => UserUpdateToOneWithWhereWithoutQrTokenInput)
+    update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutQrTokenInput>;
 }
 
 @InputType()
@@ -27497,6 +28667,16 @@ export class UserUpdateToOneWithWhereWithoutMessageInput {
 }
 
 @InputType()
+export class UserUpdateToOneWithWhereWithoutQrTokenInput {
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserUpdateWithoutQrTokenInput, {nullable:false})
+    @Type(() => UserUpdateWithoutQrTokenInput)
+    data!: InstanceType<typeof UserUpdateWithoutQrTokenInput>;
+}
+
+@InputType()
 export class UserUpdateToOneWithWhereWithoutReactionInput {
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
@@ -27644,6 +28824,8 @@ export class UserUpdateWithoutConversationParticipantInput {
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -27694,6 +28876,8 @@ export class UserUpdateWithoutMessageReadReceiptInput {
     ConversationParticipant?: InstanceType<typeof ConversationParticipantUpdateManyWithoutUserNestedInput>;
     @Field(() => ReactionUpdateManyWithoutUserNestedInput, {nullable:true})
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -27738,6 +28922,60 @@ export class UserUpdateWithoutMessageInput {
     review?: InstanceType<typeof ReviewUpdateManyWithoutUserNestedInput>;
     @Field(() => RideParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
     RideParticipant?: InstanceType<typeof RideParticipantUpdateManyWithoutUserNestedInput>;
+    @Field(() => ConversationParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReactionUpdateManyWithoutUserNestedInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserUpdateWithoutQrTokenInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => DriverVehicleUpdateManyWithoutUserNestedInput)
+    vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideUpdateManyWithoutDriverNestedInput, {nullable:true})
+    @Type(() => RideUpdateManyWithoutDriverNestedInput)
+    rides?: InstanceType<typeof RideUpdateManyWithoutDriverNestedInput>;
+    @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReviewUpdateManyWithoutUserNestedInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
+    RideParticipant?: InstanceType<typeof RideParticipantUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageUpdateManyWithoutSenderNestedInput, {nullable:true})
+    Message?: InstanceType<typeof MessageUpdateManyWithoutSenderNestedInput>;
     @Field(() => ConversationParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
     ConversationParticipant?: InstanceType<typeof ConversationParticipantUpdateManyWithoutUserNestedInput>;
     @Field(() => ReactionUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -27794,6 +29032,8 @@ export class UserUpdateWithoutReactionInput {
     ConversationParticipant?: InstanceType<typeof ConversationParticipantUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -27844,6 +29084,8 @@ export class UserUpdateWithoutReviewInput {
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -27894,6 +29136,8 @@ export class UserUpdateWithoutRideParticipantInput {
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -27943,6 +29187,8 @@ export class UserUpdateWithoutRidesInput {
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -27993,6 +29239,8 @@ export class UserUpdateWithoutRoleInput {
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -28043,6 +29291,8 @@ export class UserUpdateWithoutTokensInput {
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -28093,6 +29343,8 @@ export class UserUpdateWithoutUserDocumentInput {
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -28143,6 +29395,8 @@ export class UserUpdateWithoutUserImageInput {
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -28193,6 +29447,8 @@ export class UserUpdateWithoutUserPreferenceInput {
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -28242,6 +29498,8 @@ export class UserUpdateWithoutVehiclesInput {
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -28294,6 +29552,8 @@ export class UserUpdateInput {
     Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
     @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -28343,6 +29603,19 @@ export class UserUpsertWithoutMessageInput {
     @Field(() => UserCreateWithoutMessageInput, {nullable:false})
     @Type(() => UserCreateWithoutMessageInput)
     create!: InstanceType<typeof UserCreateWithoutMessageInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+}
+
+@InputType()
+export class UserUpsertWithoutQrTokenInput {
+    @Field(() => UserUpdateWithoutQrTokenInput, {nullable:false})
+    @Type(() => UserUpdateWithoutQrTokenInput)
+    update!: InstanceType<typeof UserUpdateWithoutQrTokenInput>;
+    @Field(() => UserCreateWithoutQrTokenInput, {nullable:false})
+    @Type(() => UserCreateWithoutQrTokenInput)
+    create!: InstanceType<typeof UserCreateWithoutQrTokenInput>;
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
     where?: InstanceType<typeof UserWhereInput>;
@@ -28521,6 +29794,8 @@ export class UserWhereUniqueInput {
     Reaction?: InstanceType<typeof ReactionListRelationFilter>;
     @Field(() => MessageReadReceiptListRelationFilter, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptListRelationFilter>;
+    @Field(() => QrTokenListRelationFilter, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenListRelationFilter>;
 }
 
 @InputType()
@@ -28579,6 +29854,8 @@ export class UserWhereInput {
     Reaction?: InstanceType<typeof ReactionListRelationFilter>;
     @Field(() => MessageReadReceiptListRelationFilter, {nullable:true})
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptListRelationFilter>;
+    @Field(() => QrTokenListRelationFilter, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenListRelationFilter>;
 }
 
 @ObjectType()
@@ -28629,6 +29906,8 @@ export class User {
     Reaction?: Array<Reaction>;
     @Field(() => [MessageReadReceipt], {nullable:true})
     MessageReadReceipt?: Array<MessageReadReceipt>;
+    @Field(() => [QrToken], {nullable:true})
+    QrToken?: Array<QrToken>;
     @Field(() => UserCount, {nullable:false})
     _count?: InstanceType<typeof UserCount>;
 }

@@ -11,6 +11,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/auth/current-user.decorator';
+import { CustomFileUpdateInput } from 'src/dtos/file/file.input';
 
 @Resolver(() => File)
 @UseGuards(JwtAuthGuard) // 👈 protège la route
@@ -39,7 +40,7 @@ export class FileResolver {
   @Mutation(() => File, { name: 'updateFile' })
   async update(
     @Args('id') id: string,
-    @Args('input') input: FileUpdateInput,
+    @Args('input') input: CustomFileUpdateInput,
   ): Promise<File> {
     const File = await this.fileService.update(id, input);
     return File;

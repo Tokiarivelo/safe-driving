@@ -2,6 +2,406 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Attachment {
+  createdAt: DateTime!
+  file: File
+  fileId: String
+  id: String!
+  linkDesc: String
+  linkMeta: JSON
+  linkThumbnail: String
+  linkTitle: String
+  message: Message!
+  messageId: String!
+  ride: Ride
+  rideId: String
+  type: AttachmentType!
+  url: String
+}
+
+type AttachmentCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  fileId: Int!
+  id: Int!
+  linkDesc: Int!
+  linkMeta: Int!
+  linkThumbnail: Int!
+  linkTitle: Int!
+  messageId: Int!
+  rideId: Int!
+  type: Int!
+  url: Int!
+}
+
+input AttachmentCreateManyFileInput {
+  createdAt: DateTime
+  id: String
+  linkDesc: String
+  linkMeta: JSON
+  linkThumbnail: String
+  linkTitle: String
+  messageId: String!
+  rideId: String
+  type: AttachmentType!
+  url: String
+}
+
+input AttachmentCreateManyFileInputEnvelope {
+  data: [AttachmentCreateManyFileInput!]!
+  skipDuplicates: Boolean
+}
+
+input AttachmentCreateManyMessageInput {
+  createdAt: DateTime
+  fileId: String
+  id: String
+  linkDesc: String
+  linkMeta: JSON
+  linkThumbnail: String
+  linkTitle: String
+  rideId: String
+  type: AttachmentType!
+  url: String
+}
+
+input AttachmentCreateManyMessageInputEnvelope {
+  data: [AttachmentCreateManyMessageInput!]!
+  skipDuplicates: Boolean
+}
+
+input AttachmentCreateManyRideInput {
+  createdAt: DateTime
+  fileId: String
+  id: String
+  linkDesc: String
+  linkMeta: JSON
+  linkThumbnail: String
+  linkTitle: String
+  messageId: String!
+  type: AttachmentType!
+  url: String
+}
+
+input AttachmentCreateManyRideInputEnvelope {
+  data: [AttachmentCreateManyRideInput!]!
+  skipDuplicates: Boolean
+}
+
+input AttachmentCreateNestedManyWithoutFileInput {
+  connect: [AttachmentWhereUniqueInput!]
+  connectOrCreate: [AttachmentCreateOrConnectWithoutFileInput!]
+  create: [AttachmentCreateWithoutFileInput!]
+  createMany: AttachmentCreateManyFileInputEnvelope
+}
+
+input AttachmentCreateNestedManyWithoutMessageInput {
+  connect: [AttachmentWhereUniqueInput!]
+  connectOrCreate: [AttachmentCreateOrConnectWithoutMessageInput!]
+  create: [AttachmentCreateWithoutMessageInput!]
+  createMany: AttachmentCreateManyMessageInputEnvelope
+}
+
+input AttachmentCreateNestedManyWithoutRideInput {
+  connect: [AttachmentWhereUniqueInput!]
+  connectOrCreate: [AttachmentCreateOrConnectWithoutRideInput!]
+  create: [AttachmentCreateWithoutRideInput!]
+  createMany: AttachmentCreateManyRideInputEnvelope
+}
+
+input AttachmentCreateOrConnectWithoutFileInput {
+  create: AttachmentCreateWithoutFileInput!
+  where: AttachmentWhereUniqueInput!
+}
+
+input AttachmentCreateOrConnectWithoutMessageInput {
+  create: AttachmentCreateWithoutMessageInput!
+  where: AttachmentWhereUniqueInput!
+}
+
+input AttachmentCreateOrConnectWithoutRideInput {
+  create: AttachmentCreateWithoutRideInput!
+  where: AttachmentWhereUniqueInput!
+}
+
+input AttachmentCreateWithoutFileInput {
+  createdAt: DateTime
+  id: String
+  linkDesc: String
+  linkMeta: JSON
+  linkThumbnail: String
+  linkTitle: String
+  message: MessageCreateNestedOneWithoutAttachmentsInput!
+  ride: RideCreateNestedOneWithoutAttachmentInput
+  type: AttachmentType!
+  url: String
+}
+
+input AttachmentCreateWithoutMessageInput {
+  createdAt: DateTime
+  file: FileCreateNestedOneWithoutAttachmentInput
+  id: String
+  linkDesc: String
+  linkMeta: JSON
+  linkThumbnail: String
+  linkTitle: String
+  ride: RideCreateNestedOneWithoutAttachmentInput
+  type: AttachmentType!
+  url: String
+}
+
+input AttachmentCreateWithoutRideInput {
+  createdAt: DateTime
+  file: FileCreateNestedOneWithoutAttachmentInput
+  id: String
+  linkDesc: String
+  linkMeta: JSON
+  linkThumbnail: String
+  linkTitle: String
+  message: MessageCreateNestedOneWithoutAttachmentsInput!
+  type: AttachmentType!
+  url: String
+}
+
+input AttachmentListRelationFilter {
+  every: AttachmentWhereInput
+  none: AttachmentWhereInput
+  some: AttachmentWhereInput
+}
+
+type AttachmentMaxAggregate {
+  createdAt: DateTime
+  fileId: String
+  id: String
+  linkDesc: String
+  linkThumbnail: String
+  linkTitle: String
+  messageId: String
+  rideId: String
+  type: AttachmentType
+  url: String
+}
+
+type AttachmentMinAggregate {
+  createdAt: DateTime
+  fileId: String
+  id: String
+  linkDesc: String
+  linkThumbnail: String
+  linkTitle: String
+  messageId: String
+  rideId: String
+  type: AttachmentType
+  url: String
+}
+
+input AttachmentOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input AttachmentScalarWhereInput {
+  AND: [AttachmentScalarWhereInput!]
+  NOT: [AttachmentScalarWhereInput!]
+  OR: [AttachmentScalarWhereInput!]
+  createdAt: DateTimeFilter
+  fileId: StringNullableFilter
+  id: StringFilter
+  linkDesc: StringNullableFilter
+  linkMeta: JsonNullableFilter
+  linkThumbnail: StringNullableFilter
+  linkTitle: StringNullableFilter
+  messageId: StringFilter
+  rideId: StringNullableFilter
+  type: EnumAttachmentTypeFilter
+  url: StringNullableFilter
+}
+
+enum AttachmentType {
+  FILE
+  LINK
+  RIDE
+}
+
+input AttachmentUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  linkDesc: NullableStringFieldUpdateOperationsInput
+  linkMeta: JSON
+  linkThumbnail: NullableStringFieldUpdateOperationsInput
+  linkTitle: NullableStringFieldUpdateOperationsInput
+  type: EnumAttachmentTypeFieldUpdateOperationsInput
+  url: NullableStringFieldUpdateOperationsInput
+}
+
+input AttachmentUpdateManyWithWhereWithoutFileInput {
+  data: AttachmentUpdateManyMutationInput!
+  where: AttachmentScalarWhereInput!
+}
+
+input AttachmentUpdateManyWithWhereWithoutMessageInput {
+  data: AttachmentUpdateManyMutationInput!
+  where: AttachmentScalarWhereInput!
+}
+
+input AttachmentUpdateManyWithWhereWithoutRideInput {
+  data: AttachmentUpdateManyMutationInput!
+  where: AttachmentScalarWhereInput!
+}
+
+input AttachmentUpdateManyWithoutFileNestedInput {
+  connect: [AttachmentWhereUniqueInput!]
+  connectOrCreate: [AttachmentCreateOrConnectWithoutFileInput!]
+  create: [AttachmentCreateWithoutFileInput!]
+  createMany: AttachmentCreateManyFileInputEnvelope
+  delete: [AttachmentWhereUniqueInput!]
+  deleteMany: [AttachmentScalarWhereInput!]
+  disconnect: [AttachmentWhereUniqueInput!]
+  set: [AttachmentWhereUniqueInput!]
+  update: [AttachmentUpdateWithWhereUniqueWithoutFileInput!]
+  updateMany: [AttachmentUpdateManyWithWhereWithoutFileInput!]
+  upsert: [AttachmentUpsertWithWhereUniqueWithoutFileInput!]
+}
+
+input AttachmentUpdateManyWithoutMessageNestedInput {
+  connect: [AttachmentWhereUniqueInput!]
+  connectOrCreate: [AttachmentCreateOrConnectWithoutMessageInput!]
+  create: [AttachmentCreateWithoutMessageInput!]
+  createMany: AttachmentCreateManyMessageInputEnvelope
+  delete: [AttachmentWhereUniqueInput!]
+  deleteMany: [AttachmentScalarWhereInput!]
+  disconnect: [AttachmentWhereUniqueInput!]
+  set: [AttachmentWhereUniqueInput!]
+  update: [AttachmentUpdateWithWhereUniqueWithoutMessageInput!]
+  updateMany: [AttachmentUpdateManyWithWhereWithoutMessageInput!]
+  upsert: [AttachmentUpsertWithWhereUniqueWithoutMessageInput!]
+}
+
+input AttachmentUpdateManyWithoutRideNestedInput {
+  connect: [AttachmentWhereUniqueInput!]
+  connectOrCreate: [AttachmentCreateOrConnectWithoutRideInput!]
+  create: [AttachmentCreateWithoutRideInput!]
+  createMany: AttachmentCreateManyRideInputEnvelope
+  delete: [AttachmentWhereUniqueInput!]
+  deleteMany: [AttachmentScalarWhereInput!]
+  disconnect: [AttachmentWhereUniqueInput!]
+  set: [AttachmentWhereUniqueInput!]
+  update: [AttachmentUpdateWithWhereUniqueWithoutRideInput!]
+  updateMany: [AttachmentUpdateManyWithWhereWithoutRideInput!]
+  upsert: [AttachmentUpsertWithWhereUniqueWithoutRideInput!]
+}
+
+input AttachmentUpdateWithWhereUniqueWithoutFileInput {
+  data: AttachmentUpdateWithoutFileInput!
+  where: AttachmentWhereUniqueInput!
+}
+
+input AttachmentUpdateWithWhereUniqueWithoutMessageInput {
+  data: AttachmentUpdateWithoutMessageInput!
+  where: AttachmentWhereUniqueInput!
+}
+
+input AttachmentUpdateWithWhereUniqueWithoutRideInput {
+  data: AttachmentUpdateWithoutRideInput!
+  where: AttachmentWhereUniqueInput!
+}
+
+input AttachmentUpdateWithoutFileInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  linkDesc: NullableStringFieldUpdateOperationsInput
+  linkMeta: JSON
+  linkThumbnail: NullableStringFieldUpdateOperationsInput
+  linkTitle: NullableStringFieldUpdateOperationsInput
+  message: MessageUpdateOneRequiredWithoutAttachmentsNestedInput
+  ride: RideUpdateOneWithoutAttachmentNestedInput
+  type: EnumAttachmentTypeFieldUpdateOperationsInput
+  url: NullableStringFieldUpdateOperationsInput
+}
+
+input AttachmentUpdateWithoutMessageInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  file: FileUpdateOneWithoutAttachmentNestedInput
+  id: StringFieldUpdateOperationsInput
+  linkDesc: NullableStringFieldUpdateOperationsInput
+  linkMeta: JSON
+  linkThumbnail: NullableStringFieldUpdateOperationsInput
+  linkTitle: NullableStringFieldUpdateOperationsInput
+  ride: RideUpdateOneWithoutAttachmentNestedInput
+  type: EnumAttachmentTypeFieldUpdateOperationsInput
+  url: NullableStringFieldUpdateOperationsInput
+}
+
+input AttachmentUpdateWithoutRideInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  file: FileUpdateOneWithoutAttachmentNestedInput
+  id: StringFieldUpdateOperationsInput
+  linkDesc: NullableStringFieldUpdateOperationsInput
+  linkMeta: JSON
+  linkThumbnail: NullableStringFieldUpdateOperationsInput
+  linkTitle: NullableStringFieldUpdateOperationsInput
+  message: MessageUpdateOneRequiredWithoutAttachmentsNestedInput
+  type: EnumAttachmentTypeFieldUpdateOperationsInput
+  url: NullableStringFieldUpdateOperationsInput
+}
+
+input AttachmentUpsertWithWhereUniqueWithoutFileInput {
+  create: AttachmentCreateWithoutFileInput!
+  update: AttachmentUpdateWithoutFileInput!
+  where: AttachmentWhereUniqueInput!
+}
+
+input AttachmentUpsertWithWhereUniqueWithoutMessageInput {
+  create: AttachmentCreateWithoutMessageInput!
+  update: AttachmentUpdateWithoutMessageInput!
+  where: AttachmentWhereUniqueInput!
+}
+
+input AttachmentUpsertWithWhereUniqueWithoutRideInput {
+  create: AttachmentCreateWithoutRideInput!
+  update: AttachmentUpdateWithoutRideInput!
+  where: AttachmentWhereUniqueInput!
+}
+
+input AttachmentWhereInput {
+  AND: [AttachmentWhereInput!]
+  NOT: [AttachmentWhereInput!]
+  OR: [AttachmentWhereInput!]
+  createdAt: DateTimeFilter
+  file: FileNullableScalarRelationFilter
+  fileId: StringNullableFilter
+  id: StringFilter
+  linkDesc: StringNullableFilter
+  linkMeta: JsonNullableFilter
+  linkThumbnail: StringNullableFilter
+  linkTitle: StringNullableFilter
+  message: MessageScalarRelationFilter
+  messageId: StringFilter
+  ride: RideNullableScalarRelationFilter
+  rideId: StringNullableFilter
+  type: EnumAttachmentTypeFilter
+  url: StringNullableFilter
+}
+
+input AttachmentWhereUniqueInput {
+  AND: [AttachmentWhereInput!]
+  NOT: [AttachmentWhereInput!]
+  OR: [AttachmentWhereInput!]
+  createdAt: DateTimeFilter
+  file: FileNullableScalarRelationFilter
+  fileId: StringNullableFilter
+  id: String
+  linkDesc: StringNullableFilter
+  linkMeta: JsonNullableFilter
+  linkThumbnail: StringNullableFilter
+  linkTitle: StringNullableFilter
+  message: MessageScalarRelationFilter
+  messageId: StringFilter
+  ride: RideNullableScalarRelationFilter
+  rideId: StringNullableFilter
+  type: EnumAttachmentTypeFilter
+  url: StringNullableFilter
+}
+
 input BoolFieldUpdateOperationsInput {
   set: Boolean
 }
@@ -18,6 +418,421 @@ type CompleteUploadOutput {
   size: Int
 }
 
+type Conversation {
+  _count: ConversationCount!
+  createdAt: DateTime!
+  id: String!
+  messages: [Message!]
+  participants: [ConversationParticipant!]
+  title: String
+  type: ConversationType!
+}
+
+type ConversationCount {
+  messages: Int!
+  participants: Int!
+}
+
+type ConversationCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  id: Int!
+  title: Int!
+  type: Int!
+}
+
+input ConversationCreateNestedOneWithoutMessagesInput {
+  connect: ConversationWhereUniqueInput
+  connectOrCreate: ConversationCreateOrConnectWithoutMessagesInput
+  create: ConversationCreateWithoutMessagesInput
+}
+
+input ConversationCreateNestedOneWithoutParticipantsInput {
+  connect: ConversationWhereUniqueInput
+  connectOrCreate: ConversationCreateOrConnectWithoutParticipantsInput
+  create: ConversationCreateWithoutParticipantsInput
+}
+
+input ConversationCreateOrConnectWithoutMessagesInput {
+  create: ConversationCreateWithoutMessagesInput!
+  where: ConversationWhereUniqueInput!
+}
+
+input ConversationCreateOrConnectWithoutParticipantsInput {
+  create: ConversationCreateWithoutParticipantsInput!
+  where: ConversationWhereUniqueInput!
+}
+
+input ConversationCreateWithoutMessagesInput {
+  createdAt: DateTime
+  id: String
+  participants: ConversationParticipantCreateNestedManyWithoutConversationInput
+  title: String
+  type: ConversationType
+}
+
+input ConversationCreateWithoutParticipantsInput {
+  createdAt: DateTime
+  id: String
+  messages: MessageCreateNestedManyWithoutConversationInput
+  title: String
+  type: ConversationType
+}
+
+type ConversationMaxAggregate {
+  createdAt: DateTime
+  id: String
+  title: String
+  type: ConversationType
+}
+
+type ConversationMinAggregate {
+  createdAt: DateTime
+  id: String
+  title: String
+  type: ConversationType
+}
+
+input ConversationNullableScalarRelationFilter {
+  is: ConversationWhereInput
+  isNot: ConversationWhereInput
+}
+
+type ConversationParticipant {
+  conversation: Conversation!
+  conversationId: String!
+  id: String!
+  isMuted: Boolean!
+  joinedAt: DateTime!
+  role: String
+  user: User!
+  userId: String!
+}
+
+input ConversationParticipantConversationIdUserIdCompoundUniqueInput {
+  conversationId: String!
+  userId: String!
+}
+
+type ConversationParticipantCountAggregate {
+  _all: Int!
+  conversationId: Int!
+  id: Int!
+  isMuted: Int!
+  joinedAt: Int!
+  role: Int!
+  userId: Int!
+}
+
+input ConversationParticipantCreateManyConversationInput {
+  id: String
+  isMuted: Boolean
+  joinedAt: DateTime
+  role: String
+  userId: String!
+}
+
+input ConversationParticipantCreateManyConversationInputEnvelope {
+  data: [ConversationParticipantCreateManyConversationInput!]!
+  skipDuplicates: Boolean
+}
+
+input ConversationParticipantCreateManyUserInput {
+  conversationId: String!
+  id: String
+  isMuted: Boolean
+  joinedAt: DateTime
+  role: String
+}
+
+input ConversationParticipantCreateManyUserInputEnvelope {
+  data: [ConversationParticipantCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input ConversationParticipantCreateNestedManyWithoutConversationInput {
+  connect: [ConversationParticipantWhereUniqueInput!]
+  connectOrCreate: [ConversationParticipantCreateOrConnectWithoutConversationInput!]
+  create: [ConversationParticipantCreateWithoutConversationInput!]
+  createMany: ConversationParticipantCreateManyConversationInputEnvelope
+}
+
+input ConversationParticipantCreateNestedManyWithoutUserInput {
+  connect: [ConversationParticipantWhereUniqueInput!]
+  connectOrCreate: [ConversationParticipantCreateOrConnectWithoutUserInput!]
+  create: [ConversationParticipantCreateWithoutUserInput!]
+  createMany: ConversationParticipantCreateManyUserInputEnvelope
+}
+
+input ConversationParticipantCreateOrConnectWithoutConversationInput {
+  create: ConversationParticipantCreateWithoutConversationInput!
+  where: ConversationParticipantWhereUniqueInput!
+}
+
+input ConversationParticipantCreateOrConnectWithoutUserInput {
+  create: ConversationParticipantCreateWithoutUserInput!
+  where: ConversationParticipantWhereUniqueInput!
+}
+
+input ConversationParticipantCreateWithoutConversationInput {
+  id: String
+  isMuted: Boolean
+  joinedAt: DateTime
+  role: String
+  user: UserCreateNestedOneWithoutConversationParticipantInput!
+}
+
+input ConversationParticipantCreateWithoutUserInput {
+  conversation: ConversationCreateNestedOneWithoutParticipantsInput!
+  id: String
+  isMuted: Boolean
+  joinedAt: DateTime
+  role: String
+}
+
+input ConversationParticipantListRelationFilter {
+  every: ConversationParticipantWhereInput
+  none: ConversationParticipantWhereInput
+  some: ConversationParticipantWhereInput
+}
+
+type ConversationParticipantMaxAggregate {
+  conversationId: String
+  id: String
+  isMuted: Boolean
+  joinedAt: DateTime
+  role: String
+  userId: String
+}
+
+type ConversationParticipantMinAggregate {
+  conversationId: String
+  id: String
+  isMuted: Boolean
+  joinedAt: DateTime
+  role: String
+  userId: String
+}
+
+input ConversationParticipantOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ConversationParticipantScalarWhereInput {
+  AND: [ConversationParticipantScalarWhereInput!]
+  NOT: [ConversationParticipantScalarWhereInput!]
+  OR: [ConversationParticipantScalarWhereInput!]
+  conversationId: StringFilter
+  id: StringFilter
+  isMuted: BoolFilter
+  joinedAt: DateTimeFilter
+  role: StringNullableFilter
+  userId: StringFilter
+}
+
+input ConversationParticipantUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  isMuted: BoolFieldUpdateOperationsInput
+  joinedAt: DateTimeFieldUpdateOperationsInput
+  role: NullableStringFieldUpdateOperationsInput
+}
+
+input ConversationParticipantUpdateManyWithWhereWithoutConversationInput {
+  data: ConversationParticipantUpdateManyMutationInput!
+  where: ConversationParticipantScalarWhereInput!
+}
+
+input ConversationParticipantUpdateManyWithWhereWithoutUserInput {
+  data: ConversationParticipantUpdateManyMutationInput!
+  where: ConversationParticipantScalarWhereInput!
+}
+
+input ConversationParticipantUpdateManyWithoutConversationNestedInput {
+  connect: [ConversationParticipantWhereUniqueInput!]
+  connectOrCreate: [ConversationParticipantCreateOrConnectWithoutConversationInput!]
+  create: [ConversationParticipantCreateWithoutConversationInput!]
+  createMany: ConversationParticipantCreateManyConversationInputEnvelope
+  delete: [ConversationParticipantWhereUniqueInput!]
+  deleteMany: [ConversationParticipantScalarWhereInput!]
+  disconnect: [ConversationParticipantWhereUniqueInput!]
+  set: [ConversationParticipantWhereUniqueInput!]
+  update: [ConversationParticipantUpdateWithWhereUniqueWithoutConversationInput!]
+  updateMany: [ConversationParticipantUpdateManyWithWhereWithoutConversationInput!]
+  upsert: [ConversationParticipantUpsertWithWhereUniqueWithoutConversationInput!]
+}
+
+input ConversationParticipantUpdateManyWithoutUserNestedInput {
+  connect: [ConversationParticipantWhereUniqueInput!]
+  connectOrCreate: [ConversationParticipantCreateOrConnectWithoutUserInput!]
+  create: [ConversationParticipantCreateWithoutUserInput!]
+  createMany: ConversationParticipantCreateManyUserInputEnvelope
+  delete: [ConversationParticipantWhereUniqueInput!]
+  deleteMany: [ConversationParticipantScalarWhereInput!]
+  disconnect: [ConversationParticipantWhereUniqueInput!]
+  set: [ConversationParticipantWhereUniqueInput!]
+  update: [ConversationParticipantUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [ConversationParticipantUpdateManyWithWhereWithoutUserInput!]
+  upsert: [ConversationParticipantUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input ConversationParticipantUpdateWithWhereUniqueWithoutConversationInput {
+  data: ConversationParticipantUpdateWithoutConversationInput!
+  where: ConversationParticipantWhereUniqueInput!
+}
+
+input ConversationParticipantUpdateWithWhereUniqueWithoutUserInput {
+  data: ConversationParticipantUpdateWithoutUserInput!
+  where: ConversationParticipantWhereUniqueInput!
+}
+
+input ConversationParticipantUpdateWithoutConversationInput {
+  id: StringFieldUpdateOperationsInput
+  isMuted: BoolFieldUpdateOperationsInput
+  joinedAt: DateTimeFieldUpdateOperationsInput
+  role: NullableStringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutConversationParticipantNestedInput
+}
+
+input ConversationParticipantUpdateWithoutUserInput {
+  conversation: ConversationUpdateOneRequiredWithoutParticipantsNestedInput
+  id: StringFieldUpdateOperationsInput
+  isMuted: BoolFieldUpdateOperationsInput
+  joinedAt: DateTimeFieldUpdateOperationsInput
+  role: NullableStringFieldUpdateOperationsInput
+}
+
+input ConversationParticipantUpsertWithWhereUniqueWithoutConversationInput {
+  create: ConversationParticipantCreateWithoutConversationInput!
+  update: ConversationParticipantUpdateWithoutConversationInput!
+  where: ConversationParticipantWhereUniqueInput!
+}
+
+input ConversationParticipantUpsertWithWhereUniqueWithoutUserInput {
+  create: ConversationParticipantCreateWithoutUserInput!
+  update: ConversationParticipantUpdateWithoutUserInput!
+  where: ConversationParticipantWhereUniqueInput!
+}
+
+input ConversationParticipantWhereInput {
+  AND: [ConversationParticipantWhereInput!]
+  NOT: [ConversationParticipantWhereInput!]
+  OR: [ConversationParticipantWhereInput!]
+  conversation: ConversationScalarRelationFilter
+  conversationId: StringFilter
+  id: StringFilter
+  isMuted: BoolFilter
+  joinedAt: DateTimeFilter
+  role: StringNullableFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input ConversationParticipantWhereUniqueInput {
+  AND: [ConversationParticipantWhereInput!]
+  NOT: [ConversationParticipantWhereInput!]
+  OR: [ConversationParticipantWhereInput!]
+  conversation: ConversationScalarRelationFilter
+  conversationId: StringFilter
+  conversationId_userId: ConversationParticipantConversationIdUserIdCompoundUniqueInput
+  id: String
+  isMuted: BoolFilter
+  joinedAt: DateTimeFilter
+  role: StringNullableFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input ConversationScalarRelationFilter {
+  is: ConversationWhereInput
+  isNot: ConversationWhereInput
+}
+
+enum ConversationType {
+  DIRECT
+  GROUP
+  RIDE_LINKED
+}
+
+input ConversationUpdateOneRequiredWithoutParticipantsNestedInput {
+  connect: ConversationWhereUniqueInput
+  connectOrCreate: ConversationCreateOrConnectWithoutParticipantsInput
+  create: ConversationCreateWithoutParticipantsInput
+  update: ConversationUpdateToOneWithWhereWithoutParticipantsInput
+  upsert: ConversationUpsertWithoutParticipantsInput
+}
+
+input ConversationUpdateOneWithoutMessagesNestedInput {
+  connect: ConversationWhereUniqueInput
+  connectOrCreate: ConversationCreateOrConnectWithoutMessagesInput
+  create: ConversationCreateWithoutMessagesInput
+  delete: ConversationWhereInput
+  disconnect: ConversationWhereInput
+  update: ConversationUpdateToOneWithWhereWithoutMessagesInput
+  upsert: ConversationUpsertWithoutMessagesInput
+}
+
+input ConversationUpdateToOneWithWhereWithoutMessagesInput {
+  data: ConversationUpdateWithoutMessagesInput!
+  where: ConversationWhereInput
+}
+
+input ConversationUpdateToOneWithWhereWithoutParticipantsInput {
+  data: ConversationUpdateWithoutParticipantsInput!
+  where: ConversationWhereInput
+}
+
+input ConversationUpdateWithoutMessagesInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  participants: ConversationParticipantUpdateManyWithoutConversationNestedInput
+  title: NullableStringFieldUpdateOperationsInput
+  type: EnumConversationTypeFieldUpdateOperationsInput
+}
+
+input ConversationUpdateWithoutParticipantsInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  messages: MessageUpdateManyWithoutConversationNestedInput
+  title: NullableStringFieldUpdateOperationsInput
+  type: EnumConversationTypeFieldUpdateOperationsInput
+}
+
+input ConversationUpsertWithoutMessagesInput {
+  create: ConversationCreateWithoutMessagesInput!
+  update: ConversationUpdateWithoutMessagesInput!
+  where: ConversationWhereInput
+}
+
+input ConversationUpsertWithoutParticipantsInput {
+  create: ConversationCreateWithoutParticipantsInput!
+  update: ConversationUpdateWithoutParticipantsInput!
+  where: ConversationWhereInput
+}
+
+input ConversationWhereInput {
+  AND: [ConversationWhereInput!]
+  NOT: [ConversationWhereInput!]
+  OR: [ConversationWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  messages: MessageListRelationFilter
+  participants: ConversationParticipantListRelationFilter
+  title: StringNullableFilter
+  type: EnumConversationTypeFilter
+}
+
+input ConversationWhereUniqueInput {
+  AND: [ConversationWhereInput!]
+  NOT: [ConversationWhereInput!]
+  OR: [ConversationWhereInput!]
+  createdAt: DateTimeFilter
+  id: String
+  messages: MessageListRelationFilter
+  participants: ConversationParticipantListRelationFilter
+  title: StringNullableFilter
+  type: EnumConversationTypeFilter
+}
+
 input CreateDriverVehicleInput {
   brand: String
   model: String
@@ -26,6 +841,258 @@ input CreateDriverVehicleInput {
   uploadDocuments: [UploadedFileRefInput!]
   uploadImages: [UploadedFileRefInput!]
   vehicleTypeId: String!
+}
+
+type CurrentPosition {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  heading: Float
+  latitude: Decimal!
+  longitude: Decimal!
+  provider: String
+  recordedAt: DateTime!
+  speed: Float
+  updatedAt: DateTime!
+  vehicle: DriverVehicle!
+  vehicleId: String!
+}
+
+type CurrentPositionAvgAggregate {
+  accuracy: Float
+  altitude: Float
+  battery: Float
+  heading: Float
+  latitude: Decimal
+  longitude: Decimal
+  speed: Float
+}
+
+type CurrentPositionCountAggregate {
+  _all: Int!
+  accuracy: Int!
+  altitude: Int!
+  battery: Int!
+  heading: Int!
+  latitude: Int!
+  longitude: Int!
+  provider: Int!
+  recordedAt: Int!
+  speed: Int!
+  updatedAt: Int!
+  vehicleId: Int!
+}
+
+input CurrentPositionCreateManyVehicleInput {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  heading: Float
+  latitude: Decimal!
+  longitude: Decimal!
+  provider: String
+  recordedAt: DateTime
+  speed: Float
+  updatedAt: DateTime
+}
+
+input CurrentPositionCreateManyVehicleInputEnvelope {
+  data: [CurrentPositionCreateManyVehicleInput!]!
+  skipDuplicates: Boolean
+}
+
+input CurrentPositionCreateNestedManyWithoutVehicleInput {
+  connect: [CurrentPositionWhereUniqueInput!]
+  connectOrCreate: [CurrentPositionCreateOrConnectWithoutVehicleInput!]
+  create: [CurrentPositionCreateWithoutVehicleInput!]
+  createMany: CurrentPositionCreateManyVehicleInputEnvelope
+}
+
+input CurrentPositionCreateOrConnectWithoutVehicleInput {
+  create: CurrentPositionCreateWithoutVehicleInput!
+  where: CurrentPositionWhereUniqueInput!
+}
+
+input CurrentPositionCreateWithoutVehicleInput {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  heading: Float
+  latitude: Decimal!
+  longitude: Decimal!
+  provider: String
+  recordedAt: DateTime
+  speed: Float
+  updatedAt: DateTime
+}
+
+input CurrentPositionListRelationFilter {
+  every: CurrentPositionWhereInput
+  none: CurrentPositionWhereInput
+  some: CurrentPositionWhereInput
+}
+
+type CurrentPositionMaxAggregate {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  heading: Float
+  latitude: Decimal
+  longitude: Decimal
+  provider: String
+  recordedAt: DateTime
+  speed: Float
+  updatedAt: DateTime
+  vehicleId: String
+}
+
+type CurrentPositionMinAggregate {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  heading: Float
+  latitude: Decimal
+  longitude: Decimal
+  provider: String
+  recordedAt: DateTime
+  speed: Float
+  updatedAt: DateTime
+  vehicleId: String
+}
+
+input CurrentPositionScalarWhereInput {
+  AND: [CurrentPositionScalarWhereInput!]
+  NOT: [CurrentPositionScalarWhereInput!]
+  OR: [CurrentPositionScalarWhereInput!]
+  accuracy: FloatNullableFilter
+  altitude: FloatNullableFilter
+  battery: IntNullableFilter
+  heading: FloatNullableFilter
+  latitude: DecimalFilter
+  longitude: DecimalFilter
+  provider: StringNullableFilter
+  recordedAt: DateTimeFilter
+  speed: FloatNullableFilter
+  updatedAt: DateTimeFilter
+  vehicleId: StringFilter
+}
+
+type CurrentPositionSumAggregate {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  heading: Float
+  latitude: Decimal
+  longitude: Decimal
+  speed: Float
+}
+
+input CurrentPositionUpdateManyMutationInput {
+  accuracy: NullableFloatFieldUpdateOperationsInput
+  altitude: NullableFloatFieldUpdateOperationsInput
+  battery: NullableIntFieldUpdateOperationsInput
+  heading: NullableFloatFieldUpdateOperationsInput
+  latitude: DecimalFieldUpdateOperationsInput
+  longitude: DecimalFieldUpdateOperationsInput
+  provider: NullableStringFieldUpdateOperationsInput
+  recordedAt: DateTimeFieldUpdateOperationsInput
+  speed: NullableFloatFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input CurrentPositionUpdateManyWithWhereWithoutVehicleInput {
+  data: CurrentPositionUpdateManyMutationInput!
+  where: CurrentPositionScalarWhereInput!
+}
+
+input CurrentPositionUpdateManyWithoutVehicleNestedInput {
+  connect: [CurrentPositionWhereUniqueInput!]
+  connectOrCreate: [CurrentPositionCreateOrConnectWithoutVehicleInput!]
+  create: [CurrentPositionCreateWithoutVehicleInput!]
+  createMany: CurrentPositionCreateManyVehicleInputEnvelope
+  delete: [CurrentPositionWhereUniqueInput!]
+  deleteMany: [CurrentPositionScalarWhereInput!]
+  disconnect: [CurrentPositionWhereUniqueInput!]
+  set: [CurrentPositionWhereUniqueInput!]
+  update: [CurrentPositionUpdateWithWhereUniqueWithoutVehicleInput!]
+  updateMany: [CurrentPositionUpdateManyWithWhereWithoutVehicleInput!]
+  upsert: [CurrentPositionUpsertWithWhereUniqueWithoutVehicleInput!]
+}
+
+input CurrentPositionUpdateWithWhereUniqueWithoutVehicleInput {
+  data: CurrentPositionUpdateWithoutVehicleInput!
+  where: CurrentPositionWhereUniqueInput!
+}
+
+input CurrentPositionUpdateWithoutVehicleInput {
+  accuracy: NullableFloatFieldUpdateOperationsInput
+  altitude: NullableFloatFieldUpdateOperationsInput
+  battery: NullableIntFieldUpdateOperationsInput
+  heading: NullableFloatFieldUpdateOperationsInput
+  latitude: DecimalFieldUpdateOperationsInput
+  longitude: DecimalFieldUpdateOperationsInput
+  provider: NullableStringFieldUpdateOperationsInput
+  recordedAt: DateTimeFieldUpdateOperationsInput
+  speed: NullableFloatFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input CurrentPositionUpsertWithWhereUniqueWithoutVehicleInput {
+  create: CurrentPositionCreateWithoutVehicleInput!
+  update: CurrentPositionUpdateWithoutVehicleInput!
+  where: CurrentPositionWhereUniqueInput!
+}
+
+input CurrentPositionWhereInput {
+  AND: [CurrentPositionWhereInput!]
+  NOT: [CurrentPositionWhereInput!]
+  OR: [CurrentPositionWhereInput!]
+  accuracy: FloatNullableFilter
+  altitude: FloatNullableFilter
+  battery: IntNullableFilter
+  heading: FloatNullableFilter
+  latitude: DecimalFilter
+  longitude: DecimalFilter
+  provider: StringNullableFilter
+  recordedAt: DateTimeFilter
+  speed: FloatNullableFilter
+  updatedAt: DateTimeFilter
+  vehicle: DriverVehicleScalarRelationFilter
+  vehicleId: StringFilter
+}
+
+input CurrentPositionWhereUniqueInput {
+  AND: [CurrentPositionWhereInput!]
+  NOT: [CurrentPositionWhereInput!]
+  OR: [CurrentPositionWhereInput!]
+  accuracy: FloatNullableFilter
+  altitude: FloatNullableFilter
+  battery: IntNullableFilter
+  heading: FloatNullableFilter
+  latitude: DecimalFilter
+  longitude: DecimalFilter
+  provider: StringNullableFilter
+  recordedAt: DateTimeFilter
+  speed: FloatNullableFilter
+  updatedAt: DateTimeFilter
+  vehicle: DriverVehicleScalarRelationFilter
+  vehicleId: String
+}
+
+input CustomFileUpdateInput {
+  contentType: NullableStringFieldUpdateOperationsInput
+  driverVehicleId: NullableStringFieldUpdateOperationsInput
+  etag: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  key: StringFieldUpdateOperationsInput
+  meta: JSON
+  name: NullableStringFieldUpdateOperationsInput
+  originalName: StringFieldUpdateOperationsInput
+  size: NullableIntFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+  type: EnumImageTypeFieldUpdateOperationsInput
+  url: NullableStringFieldUpdateOperationsInput
+  userId: StringFieldUpdateOperationsInput
 }
 
 """
@@ -59,7 +1126,31 @@ input DateTimeNullableFilter {
   notIn: [DateTime!]
 }
 
+"""An arbitrary-precision Decimal type"""
+scalar Decimal
+
+input DecimalFieldUpdateOperationsInput {
+  decrement: Decimal
+  divide: Decimal
+  increment: Decimal
+  multiply: Decimal
+  set: Decimal
+}
+
+input DecimalFilter {
+  equals: Decimal
+  gt: Decimal
+  gte: Decimal
+  in: [Decimal!]
+  lt: Decimal
+  lte: Decimal
+  not: NestedDecimalFilter
+  notIn: [Decimal!]
+}
+
 type DriverVehicle {
+  CurrentPosition: [CurrentPosition!]
+  Position: [Position!]
   VehicleDocument: [VehicleDocument!]
   VehicleImage: [VehicleImage!]
   _count: DriverVehicleCount!
@@ -79,6 +1170,8 @@ type DriverVehicleAvgAggregate {
 }
 
 type DriverVehicleCount {
+  CurrentPosition: Int!
+  Position: Int!
   VehicleDocument: Int!
   VehicleImage: Int!
 }
@@ -136,6 +1229,12 @@ input DriverVehicleCreateNestedManyWithoutUserInput {
   createMany: DriverVehicleCreateManyUserInputEnvelope
 }
 
+input DriverVehicleCreateNestedOneWithoutPositionInput {
+  connect: DriverVehicleWhereUniqueInput
+  connectOrCreate: DriverVehicleCreateOrConnectWithoutPositionInput
+  create: DriverVehicleCreateWithoutPositionInput
+}
+
 input DriverVehicleCreateNestedOneWithoutVehicleDocumentInput {
   connect: DriverVehicleWhereUniqueInput
   connectOrCreate: DriverVehicleCreateOrConnectWithoutVehicleDocumentInput
@@ -146,6 +1245,11 @@ input DriverVehicleCreateNestedOneWithoutVehicleImageInput {
   connect: DriverVehicleWhereUniqueInput
   connectOrCreate: DriverVehicleCreateOrConnectWithoutVehicleImageInput
   create: DriverVehicleCreateWithoutVehicleImageInput
+}
+
+input DriverVehicleCreateOrConnectWithoutPositionInput {
+  create: DriverVehicleCreateWithoutPositionInput!
+  where: DriverVehicleWhereUniqueInput!
 }
 
 input DriverVehicleCreateOrConnectWithoutTypeInput {
@@ -168,7 +1272,22 @@ input DriverVehicleCreateOrConnectWithoutVehicleImageInput {
   where: DriverVehicleWhereUniqueInput!
 }
 
+input DriverVehicleCreateWithoutPositionInput {
+  CurrentPosition: CurrentPositionCreateNestedManyWithoutVehicleInput
+  VehicleDocument: VehicleDocumentCreateNestedManyWithoutDriverVehicleInput
+  VehicleImage: VehicleImageCreateNestedManyWithoutDriverVehicleInput
+  brand: String
+  id: String
+  model: String
+  place: Int!
+  registrationNumber: String
+  type: VehicleTypeCreateNestedOneWithoutVehiclesInput!
+  user: UserCreateNestedOneWithoutVehiclesInput!
+}
+
 input DriverVehicleCreateWithoutTypeInput {
+  CurrentPosition: CurrentPositionCreateNestedManyWithoutVehicleInput
+  Position: PositionCreateNestedManyWithoutVehicleInput
   VehicleDocument: VehicleDocumentCreateNestedManyWithoutDriverVehicleInput
   VehicleImage: VehicleImageCreateNestedManyWithoutDriverVehicleInput
   brand: String
@@ -180,6 +1299,8 @@ input DriverVehicleCreateWithoutTypeInput {
 }
 
 input DriverVehicleCreateWithoutUserInput {
+  CurrentPosition: CurrentPositionCreateNestedManyWithoutVehicleInput
+  Position: PositionCreateNestedManyWithoutVehicleInput
   VehicleDocument: VehicleDocumentCreateNestedManyWithoutDriverVehicleInput
   VehicleImage: VehicleImageCreateNestedManyWithoutDriverVehicleInput
   brand: String
@@ -191,6 +1312,8 @@ input DriverVehicleCreateWithoutUserInput {
 }
 
 input DriverVehicleCreateWithoutVehicleDocumentInput {
+  CurrentPosition: CurrentPositionCreateNestedManyWithoutVehicleInput
+  Position: PositionCreateNestedManyWithoutVehicleInput
   VehicleImage: VehicleImageCreateNestedManyWithoutDriverVehicleInput
   brand: String
   id: String
@@ -202,6 +1325,8 @@ input DriverVehicleCreateWithoutVehicleDocumentInput {
 }
 
 input DriverVehicleCreateWithoutVehicleImageInput {
+  CurrentPosition: CurrentPositionCreateNestedManyWithoutVehicleInput
+  Position: PositionCreateNestedManyWithoutVehicleInput
   VehicleDocument: VehicleDocumentCreateNestedManyWithoutDriverVehicleInput
   brand: String
   id: String
@@ -245,6 +1370,11 @@ input DriverVehicleNullableScalarRelationFilter {
 
 input DriverVehicleOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input DriverVehicleScalarRelationFilter {
+  is: DriverVehicleWhereInput
+  isNot: DriverVehicleWhereInput
 }
 
 input DriverVehicleScalarWhereInput {
@@ -310,6 +1440,14 @@ input DriverVehicleUpdateManyWithoutUserNestedInput {
   upsert: [DriverVehicleUpsertWithWhereUniqueWithoutUserInput!]
 }
 
+input DriverVehicleUpdateOneRequiredWithoutPositionNestedInput {
+  connect: DriverVehicleWhereUniqueInput
+  connectOrCreate: DriverVehicleCreateOrConnectWithoutPositionInput
+  create: DriverVehicleCreateWithoutPositionInput
+  update: DriverVehicleUpdateToOneWithWhereWithoutPositionInput
+  upsert: DriverVehicleUpsertWithoutPositionInput
+}
+
 input DriverVehicleUpdateOneWithoutVehicleDocumentNestedInput {
   connect: DriverVehicleWhereUniqueInput
   connectOrCreate: DriverVehicleCreateOrConnectWithoutVehicleDocumentInput
@@ -328,6 +1466,11 @@ input DriverVehicleUpdateOneWithoutVehicleImageNestedInput {
   disconnect: DriverVehicleWhereInput
   update: DriverVehicleUpdateToOneWithWhereWithoutVehicleImageInput
   upsert: DriverVehicleUpsertWithoutVehicleImageInput
+}
+
+input DriverVehicleUpdateToOneWithWhereWithoutPositionInput {
+  data: DriverVehicleUpdateWithoutPositionInput!
+  where: DriverVehicleWhereInput
 }
 
 input DriverVehicleUpdateToOneWithWhereWithoutVehicleDocumentInput {
@@ -350,7 +1493,22 @@ input DriverVehicleUpdateWithWhereUniqueWithoutUserInput {
   where: DriverVehicleWhereUniqueInput!
 }
 
+input DriverVehicleUpdateWithoutPositionInput {
+  CurrentPosition: CurrentPositionUpdateManyWithoutVehicleNestedInput
+  VehicleDocument: VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput
+  VehicleImage: VehicleImageUpdateManyWithoutDriverVehicleNestedInput
+  brand: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  model: NullableStringFieldUpdateOperationsInput
+  place: IntFieldUpdateOperationsInput
+  registrationNumber: NullableStringFieldUpdateOperationsInput
+  type: VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput
+  user: UserUpdateOneRequiredWithoutVehiclesNestedInput
+}
+
 input DriverVehicleUpdateWithoutTypeInput {
+  CurrentPosition: CurrentPositionUpdateManyWithoutVehicleNestedInput
+  Position: PositionUpdateManyWithoutVehicleNestedInput
   VehicleDocument: VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput
   VehicleImage: VehicleImageUpdateManyWithoutDriverVehicleNestedInput
   brand: NullableStringFieldUpdateOperationsInput
@@ -362,6 +1520,8 @@ input DriverVehicleUpdateWithoutTypeInput {
 }
 
 input DriverVehicleUpdateWithoutUserInput {
+  CurrentPosition: CurrentPositionUpdateManyWithoutVehicleNestedInput
+  Position: PositionUpdateManyWithoutVehicleNestedInput
   VehicleDocument: VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput
   VehicleImage: VehicleImageUpdateManyWithoutDriverVehicleNestedInput
   brand: NullableStringFieldUpdateOperationsInput
@@ -373,6 +1533,8 @@ input DriverVehicleUpdateWithoutUserInput {
 }
 
 input DriverVehicleUpdateWithoutVehicleDocumentInput {
+  CurrentPosition: CurrentPositionUpdateManyWithoutVehicleNestedInput
+  Position: PositionUpdateManyWithoutVehicleNestedInput
   VehicleImage: VehicleImageUpdateManyWithoutDriverVehicleNestedInput
   brand: NullableStringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
@@ -384,6 +1546,8 @@ input DriverVehicleUpdateWithoutVehicleDocumentInput {
 }
 
 input DriverVehicleUpdateWithoutVehicleImageInput {
+  CurrentPosition: CurrentPositionUpdateManyWithoutVehicleNestedInput
+  Position: PositionUpdateManyWithoutVehicleNestedInput
   VehicleDocument: VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput
   brand: NullableStringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
@@ -406,6 +1570,12 @@ input DriverVehicleUpsertWithWhereUniqueWithoutUserInput {
   where: DriverVehicleWhereUniqueInput!
 }
 
+input DriverVehicleUpsertWithoutPositionInput {
+  create: DriverVehicleCreateWithoutPositionInput!
+  update: DriverVehicleUpdateWithoutPositionInput!
+  where: DriverVehicleWhereInput
+}
+
 input DriverVehicleUpsertWithoutVehicleDocumentInput {
   create: DriverVehicleCreateWithoutVehicleDocumentInput!
   update: DriverVehicleUpdateWithoutVehicleDocumentInput!
@@ -420,8 +1590,10 @@ input DriverVehicleUpsertWithoutVehicleImageInput {
 
 input DriverVehicleWhereInput {
   AND: [DriverVehicleWhereInput!]
+  CurrentPosition: CurrentPositionListRelationFilter
   NOT: [DriverVehicleWhereInput!]
   OR: [DriverVehicleWhereInput!]
+  Position: PositionListRelationFilter
   VehicleDocument: VehicleDocumentListRelationFilter
   VehicleImage: VehicleImageListRelationFilter
   brand: StringNullableFilter
@@ -437,8 +1609,10 @@ input DriverVehicleWhereInput {
 
 input DriverVehicleWhereUniqueInput {
   AND: [DriverVehicleWhereInput!]
+  CurrentPosition: CurrentPositionListRelationFilter
   NOT: [DriverVehicleWhereInput!]
   OR: [DriverVehicleWhereInput!]
+  Position: PositionListRelationFilter
   VehicleDocument: VehicleDocumentListRelationFilter
   VehicleImage: VehicleImageListRelationFilter
   brand: StringNullableFilter
@@ -452,6 +1626,28 @@ input DriverVehicleWhereUniqueInput {
   vehicleTypeId: StringFilter
 }
 
+input EnumAttachmentTypeFieldUpdateOperationsInput {
+  set: AttachmentType
+}
+
+input EnumAttachmentTypeFilter {
+  equals: AttachmentType
+  in: [AttachmentType!]
+  not: NestedEnumAttachmentTypeFilter
+  notIn: [AttachmentType!]
+}
+
+input EnumConversationTypeFieldUpdateOperationsInput {
+  set: ConversationType
+}
+
+input EnumConversationTypeFilter {
+  equals: ConversationType
+  in: [ConversationType!]
+  not: NestedEnumConversationTypeFilter
+  notIn: [ConversationType!]
+}
+
 input EnumImageTypeFieldUpdateOperationsInput {
   set: ImageType
 }
@@ -463,7 +1659,19 @@ input EnumImageTypeFilter {
   notIn: [ImageType!]
 }
 
+input EnumMessageStateFieldUpdateOperationsInput {
+  set: MessageState
+}
+
+input EnumMessageStateFilter {
+  equals: MessageState
+  in: [MessageState!]
+  not: NestedEnumMessageStateFilter
+  notIn: [MessageState!]
+}
+
 type File {
+  Attachment: [Attachment!]
   UserDocument: [UserDocument!]
   UserImage: [UserImage!]
   VehicleDocument: [VehicleDocument!]
@@ -489,6 +1697,7 @@ type FileAvgAggregate {
 }
 
 type FileCount {
+  Attachment: Int!
   UserDocument: Int!
   UserImage: Int!
   VehicleDocument: Int!
@@ -513,6 +1722,7 @@ type FileCountAggregate {
 }
 
 input FileCreateInput {
+  Attachment: AttachmentCreateNestedManyWithoutFileInput
   UserDocument: UserDocumentCreateNestedManyWithoutFileInput
   UserImage: UserImageCreateNestedManyWithoutFileInput
   VehicleDocument: VehicleDocumentCreateNestedManyWithoutFileInput
@@ -530,6 +1740,12 @@ input FileCreateInput {
   type: ImageType!
   url: String
   userId: String!
+}
+
+input FileCreateNestedOneWithoutAttachmentInput {
+  connect: FileWhereUniqueInput
+  connectOrCreate: FileCreateOrConnectWithoutAttachmentInput
+  create: FileCreateWithoutAttachmentInput
 }
 
 input FileCreateNestedOneWithoutUserDocumentInput {
@@ -556,6 +1772,11 @@ input FileCreateNestedOneWithoutVehicleImageInput {
   create: FileCreateWithoutVehicleImageInput
 }
 
+input FileCreateOrConnectWithoutAttachmentInput {
+  create: FileCreateWithoutAttachmentInput!
+  where: FileWhereUniqueInput!
+}
+
 input FileCreateOrConnectWithoutUserDocumentInput {
   create: FileCreateWithoutUserDocumentInput!
   where: FileWhereUniqueInput!
@@ -576,7 +1797,28 @@ input FileCreateOrConnectWithoutVehicleImageInput {
   where: FileWhereUniqueInput!
 }
 
+input FileCreateWithoutAttachmentInput {
+  UserDocument: UserDocumentCreateNestedManyWithoutFileInput
+  UserImage: UserImageCreateNestedManyWithoutFileInput
+  VehicleDocument: VehicleDocumentCreateNestedManyWithoutFileInput
+  VehicleImage: VehicleImageCreateNestedManyWithoutFileInput
+  contentType: String
+  driverVehicleId: String
+  etag: String
+  id: String
+  key: String!
+  meta: JSON
+  name: String
+  originalName: String!
+  size: Int
+  status: String
+  type: ImageType!
+  url: String
+  userId: String!
+}
+
 input FileCreateWithoutUserDocumentInput {
+  Attachment: AttachmentCreateNestedManyWithoutFileInput
   UserImage: UserImageCreateNestedManyWithoutFileInput
   VehicleDocument: VehicleDocumentCreateNestedManyWithoutFileInput
   VehicleImage: VehicleImageCreateNestedManyWithoutFileInput
@@ -596,6 +1838,7 @@ input FileCreateWithoutUserDocumentInput {
 }
 
 input FileCreateWithoutUserImageInput {
+  Attachment: AttachmentCreateNestedManyWithoutFileInput
   UserDocument: UserDocumentCreateNestedManyWithoutFileInput
   VehicleDocument: VehicleDocumentCreateNestedManyWithoutFileInput
   VehicleImage: VehicleImageCreateNestedManyWithoutFileInput
@@ -615,6 +1858,7 @@ input FileCreateWithoutUserImageInput {
 }
 
 input FileCreateWithoutVehicleDocumentInput {
+  Attachment: AttachmentCreateNestedManyWithoutFileInput
   UserDocument: UserDocumentCreateNestedManyWithoutFileInput
   UserImage: UserImageCreateNestedManyWithoutFileInput
   VehicleImage: VehicleImageCreateNestedManyWithoutFileInput
@@ -634,6 +1878,7 @@ input FileCreateWithoutVehicleDocumentInput {
 }
 
 input FileCreateWithoutVehicleImageInput {
+  Attachment: AttachmentCreateNestedManyWithoutFileInput
   UserDocument: UserDocumentCreateNestedManyWithoutFileInput
   UserImage: UserImageCreateNestedManyWithoutFileInput
   VehicleDocument: VehicleDocumentCreateNestedManyWithoutFileInput
@@ -688,7 +1933,13 @@ type FileMinAggregate {
   userId: String
 }
 
+input FileNullableScalarRelationFilter {
+  is: FileWhereInput
+  isNot: FileWhereInput
+}
+
 input FileOrderByWithRelationInput {
+  Attachment: AttachmentOrderByRelationAggregateInput
   UserDocument: UserDocumentOrderByRelationAggregateInput
   UserImage: UserImageOrderByRelationAggregateInput
   VehicleDocument: VehicleDocumentOrderByRelationAggregateInput
@@ -733,26 +1984,6 @@ type FileSumAggregate {
   size: Int
 }
 
-input FileUpdateInput {
-  UserDocument: UserDocumentUpdateManyWithoutFileNestedInput
-  UserImage: UserImageUpdateManyWithoutFileNestedInput
-  VehicleDocument: VehicleDocumentUpdateManyWithoutFileNestedInput
-  VehicleImage: VehicleImageUpdateManyWithoutFileNestedInput
-  contentType: NullableStringFieldUpdateOperationsInput
-  driverVehicleId: NullableStringFieldUpdateOperationsInput
-  etag: NullableStringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  key: StringFieldUpdateOperationsInput
-  meta: JSON
-  name: NullableStringFieldUpdateOperationsInput
-  originalName: StringFieldUpdateOperationsInput
-  size: NullableIntFieldUpdateOperationsInput
-  status: StringFieldUpdateOperationsInput
-  type: EnumImageTypeFieldUpdateOperationsInput
-  url: NullableStringFieldUpdateOperationsInput
-  userId: StringFieldUpdateOperationsInput
-}
-
 input FileUpdateOneRequiredWithoutUserDocumentNestedInput {
   connect: FileWhereUniqueInput
   connectOrCreate: FileCreateOrConnectWithoutUserDocumentInput
@@ -785,6 +2016,21 @@ input FileUpdateOneRequiredWithoutVehicleImageNestedInput {
   upsert: FileUpsertWithoutVehicleImageInput
 }
 
+input FileUpdateOneWithoutAttachmentNestedInput {
+  connect: FileWhereUniqueInput
+  connectOrCreate: FileCreateOrConnectWithoutAttachmentInput
+  create: FileCreateWithoutAttachmentInput
+  delete: FileWhereInput
+  disconnect: FileWhereInput
+  update: FileUpdateToOneWithWhereWithoutAttachmentInput
+  upsert: FileUpsertWithoutAttachmentInput
+}
+
+input FileUpdateToOneWithWhereWithoutAttachmentInput {
+  data: FileUpdateWithoutAttachmentInput!
+  where: FileWhereInput
+}
+
 input FileUpdateToOneWithWhereWithoutUserDocumentInput {
   data: FileUpdateWithoutUserDocumentInput!
   where: FileWhereInput
@@ -805,7 +2051,28 @@ input FileUpdateToOneWithWhereWithoutVehicleImageInput {
   where: FileWhereInput
 }
 
+input FileUpdateWithoutAttachmentInput {
+  UserDocument: UserDocumentUpdateManyWithoutFileNestedInput
+  UserImage: UserImageUpdateManyWithoutFileNestedInput
+  VehicleDocument: VehicleDocumentUpdateManyWithoutFileNestedInput
+  VehicleImage: VehicleImageUpdateManyWithoutFileNestedInput
+  contentType: NullableStringFieldUpdateOperationsInput
+  driverVehicleId: NullableStringFieldUpdateOperationsInput
+  etag: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  key: StringFieldUpdateOperationsInput
+  meta: JSON
+  name: NullableStringFieldUpdateOperationsInput
+  originalName: StringFieldUpdateOperationsInput
+  size: NullableIntFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+  type: EnumImageTypeFieldUpdateOperationsInput
+  url: NullableStringFieldUpdateOperationsInput
+  userId: StringFieldUpdateOperationsInput
+}
+
 input FileUpdateWithoutUserDocumentInput {
+  Attachment: AttachmentUpdateManyWithoutFileNestedInput
   UserImage: UserImageUpdateManyWithoutFileNestedInput
   VehicleDocument: VehicleDocumentUpdateManyWithoutFileNestedInput
   VehicleImage: VehicleImageUpdateManyWithoutFileNestedInput
@@ -825,6 +2092,7 @@ input FileUpdateWithoutUserDocumentInput {
 }
 
 input FileUpdateWithoutUserImageInput {
+  Attachment: AttachmentUpdateManyWithoutFileNestedInput
   UserDocument: UserDocumentUpdateManyWithoutFileNestedInput
   VehicleDocument: VehicleDocumentUpdateManyWithoutFileNestedInput
   VehicleImage: VehicleImageUpdateManyWithoutFileNestedInput
@@ -844,6 +2112,7 @@ input FileUpdateWithoutUserImageInput {
 }
 
 input FileUpdateWithoutVehicleDocumentInput {
+  Attachment: AttachmentUpdateManyWithoutFileNestedInput
   UserDocument: UserDocumentUpdateManyWithoutFileNestedInput
   UserImage: UserImageUpdateManyWithoutFileNestedInput
   VehicleImage: VehicleImageUpdateManyWithoutFileNestedInput
@@ -863,6 +2132,7 @@ input FileUpdateWithoutVehicleDocumentInput {
 }
 
 input FileUpdateWithoutVehicleImageInput {
+  Attachment: AttachmentUpdateManyWithoutFileNestedInput
   UserDocument: UserDocumentUpdateManyWithoutFileNestedInput
   UserImage: UserImageUpdateManyWithoutFileNestedInput
   VehicleDocument: VehicleDocumentUpdateManyWithoutFileNestedInput
@@ -883,6 +2153,12 @@ input FileUpdateWithoutVehicleImageInput {
 
 type FileUploadResult {
   url: String!
+}
+
+input FileUpsertWithoutAttachmentInput {
+  create: FileCreateWithoutAttachmentInput!
+  update: FileUpdateWithoutAttachmentInput!
+  where: FileWhereInput
 }
 
 input FileUpsertWithoutUserDocumentInput {
@@ -911,6 +2187,7 @@ input FileUpsertWithoutVehicleImageInput {
 
 input FileWhereInput {
   AND: [FileWhereInput!]
+  Attachment: AttachmentListRelationFilter
   NOT: [FileWhereInput!]
   OR: [FileWhereInput!]
   UserDocument: UserDocumentListRelationFilter
@@ -934,6 +2211,7 @@ input FileWhereInput {
 
 input FileWhereUniqueInput {
   AND: [FileWhereInput!]
+  Attachment: AttachmentListRelationFilter
   NOT: [FileWhereInput!]
   OR: [FileWhereInput!]
   UserDocument: UserDocumentListRelationFilter
@@ -955,13 +2233,26 @@ input FileWhereUniqueInput {
   userId: StringFilter
 }
 
+input FloatNullableFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: NestedFloatNullableFilter
+  notIn: [Float!]
+}
+
 type ForgotPasswordOutput {
   email: String!
   resetLink: String!
 }
 
 enum ImageType {
+  COVER
   LANDING
+  MESSAGE
   PROFILE
   USER
   VEHICLE
@@ -1029,12 +2320,1152 @@ type LoginOutput {
   user: User
 }
 
+type Message {
+  _count: MessageCount!
+  attachments: [Attachment!]
+  clientTempId: String
+  content: String
+  conversation: Conversation
+  conversationId: String
+  createdAt: DateTime!
+  deleted: Boolean!
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean!
+  editedAt: DateTime
+  id: String!
+  parentMessage: Message
+  parentMessageId: String
+  reactions: [Reaction!]
+  readReceipts: [MessageReadReceipt!]
+  replies: [Message!]
+  ride: Ride
+  rideId: String
+  sender: User!
+  senderId: String!
+  sentAt: DateTime
+  state: MessageState!
+}
+
+type MessageCount {
+  attachments: Int!
+  reactions: Int!
+  readReceipts: Int!
+  replies: Int!
+}
+
+type MessageCountAggregate {
+  _all: Int!
+  clientTempId: Int!
+  content: Int!
+  conversationId: Int!
+  createdAt: Int!
+  deleted: Int!
+  deletedAt: Int!
+  deliveredAt: Int!
+  edited: Int!
+  editedAt: Int!
+  id: Int!
+  parentMessageId: Int!
+  rideId: Int!
+  senderId: Int!
+  sentAt: Int!
+  state: Int!
+}
+
+input MessageCreateManyConversationInput {
+  clientTempId: String
+  content: String
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessageId: String
+  rideId: String
+  senderId: String!
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageCreateManyConversationInputEnvelope {
+  data: [MessageCreateManyConversationInput!]!
+  skipDuplicates: Boolean
+}
+
+input MessageCreateManyParentMessageInput {
+  clientTempId: String
+  content: String
+  conversationId: String
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  rideId: String
+  senderId: String!
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageCreateManyParentMessageInputEnvelope {
+  data: [MessageCreateManyParentMessageInput!]!
+  skipDuplicates: Boolean
+}
+
+input MessageCreateManyRideInput {
+  clientTempId: String
+  content: String
+  conversationId: String
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessageId: String
+  senderId: String!
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageCreateManyRideInputEnvelope {
+  data: [MessageCreateManyRideInput!]!
+  skipDuplicates: Boolean
+}
+
+input MessageCreateManySenderInput {
+  clientTempId: String
+  content: String
+  conversationId: String
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessageId: String
+  rideId: String
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageCreateManySenderInputEnvelope {
+  data: [MessageCreateManySenderInput!]!
+  skipDuplicates: Boolean
+}
+
+input MessageCreateNestedManyWithoutConversationInput {
+  connect: [MessageWhereUniqueInput!]
+  connectOrCreate: [MessageCreateOrConnectWithoutConversationInput!]
+  create: [MessageCreateWithoutConversationInput!]
+  createMany: MessageCreateManyConversationInputEnvelope
+}
+
+input MessageCreateNestedManyWithoutParentMessageInput {
+  connect: [MessageWhereUniqueInput!]
+  connectOrCreate: [MessageCreateOrConnectWithoutParentMessageInput!]
+  create: [MessageCreateWithoutParentMessageInput!]
+  createMany: MessageCreateManyParentMessageInputEnvelope
+}
+
+input MessageCreateNestedManyWithoutRideInput {
+  connect: [MessageWhereUniqueInput!]
+  connectOrCreate: [MessageCreateOrConnectWithoutRideInput!]
+  create: [MessageCreateWithoutRideInput!]
+  createMany: MessageCreateManyRideInputEnvelope
+}
+
+input MessageCreateNestedManyWithoutSenderInput {
+  connect: [MessageWhereUniqueInput!]
+  connectOrCreate: [MessageCreateOrConnectWithoutSenderInput!]
+  create: [MessageCreateWithoutSenderInput!]
+  createMany: MessageCreateManySenderInputEnvelope
+}
+
+input MessageCreateNestedOneWithoutAttachmentsInput {
+  connect: MessageWhereUniqueInput
+  connectOrCreate: MessageCreateOrConnectWithoutAttachmentsInput
+  create: MessageCreateWithoutAttachmentsInput
+}
+
+input MessageCreateNestedOneWithoutReactionsInput {
+  connect: MessageWhereUniqueInput
+  connectOrCreate: MessageCreateOrConnectWithoutReactionsInput
+  create: MessageCreateWithoutReactionsInput
+}
+
+input MessageCreateNestedOneWithoutReadReceiptsInput {
+  connect: MessageWhereUniqueInput
+  connectOrCreate: MessageCreateOrConnectWithoutReadReceiptsInput
+  create: MessageCreateWithoutReadReceiptsInput
+}
+
+input MessageCreateNestedOneWithoutRepliesInput {
+  connect: MessageWhereUniqueInput
+  connectOrCreate: MessageCreateOrConnectWithoutRepliesInput
+  create: MessageCreateWithoutRepliesInput
+}
+
+input MessageCreateOrConnectWithoutAttachmentsInput {
+  create: MessageCreateWithoutAttachmentsInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageCreateOrConnectWithoutConversationInput {
+  create: MessageCreateWithoutConversationInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageCreateOrConnectWithoutParentMessageInput {
+  create: MessageCreateWithoutParentMessageInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageCreateOrConnectWithoutReactionsInput {
+  create: MessageCreateWithoutReactionsInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageCreateOrConnectWithoutReadReceiptsInput {
+  create: MessageCreateWithoutReadReceiptsInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageCreateOrConnectWithoutRepliesInput {
+  create: MessageCreateWithoutRepliesInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageCreateOrConnectWithoutRideInput {
+  create: MessageCreateWithoutRideInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageCreateOrConnectWithoutSenderInput {
+  create: MessageCreateWithoutSenderInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageCreateWithoutAttachmentsInput {
+  clientTempId: String
+  content: String
+  conversation: ConversationCreateNestedOneWithoutMessagesInput
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessage: MessageCreateNestedOneWithoutRepliesInput
+  reactions: ReactionCreateNestedManyWithoutMessageInput
+  readReceipts: MessageReadReceiptCreateNestedManyWithoutMessageInput
+  replies: MessageCreateNestedManyWithoutParentMessageInput
+  ride: RideCreateNestedOneWithoutMessageInput
+  sender: UserCreateNestedOneWithoutMessageInput!
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageCreateWithoutConversationInput {
+  attachments: AttachmentCreateNestedManyWithoutMessageInput
+  clientTempId: String
+  content: String
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessage: MessageCreateNestedOneWithoutRepliesInput
+  reactions: ReactionCreateNestedManyWithoutMessageInput
+  readReceipts: MessageReadReceiptCreateNestedManyWithoutMessageInput
+  replies: MessageCreateNestedManyWithoutParentMessageInput
+  ride: RideCreateNestedOneWithoutMessageInput
+  sender: UserCreateNestedOneWithoutMessageInput!
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageCreateWithoutParentMessageInput {
+  attachments: AttachmentCreateNestedManyWithoutMessageInput
+  clientTempId: String
+  content: String
+  conversation: ConversationCreateNestedOneWithoutMessagesInput
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  reactions: ReactionCreateNestedManyWithoutMessageInput
+  readReceipts: MessageReadReceiptCreateNestedManyWithoutMessageInput
+  replies: MessageCreateNestedManyWithoutParentMessageInput
+  ride: RideCreateNestedOneWithoutMessageInput
+  sender: UserCreateNestedOneWithoutMessageInput!
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageCreateWithoutReactionsInput {
+  attachments: AttachmentCreateNestedManyWithoutMessageInput
+  clientTempId: String
+  content: String
+  conversation: ConversationCreateNestedOneWithoutMessagesInput
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessage: MessageCreateNestedOneWithoutRepliesInput
+  readReceipts: MessageReadReceiptCreateNestedManyWithoutMessageInput
+  replies: MessageCreateNestedManyWithoutParentMessageInput
+  ride: RideCreateNestedOneWithoutMessageInput
+  sender: UserCreateNestedOneWithoutMessageInput!
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageCreateWithoutReadReceiptsInput {
+  attachments: AttachmentCreateNestedManyWithoutMessageInput
+  clientTempId: String
+  content: String
+  conversation: ConversationCreateNestedOneWithoutMessagesInput
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessage: MessageCreateNestedOneWithoutRepliesInput
+  reactions: ReactionCreateNestedManyWithoutMessageInput
+  replies: MessageCreateNestedManyWithoutParentMessageInput
+  ride: RideCreateNestedOneWithoutMessageInput
+  sender: UserCreateNestedOneWithoutMessageInput!
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageCreateWithoutRepliesInput {
+  attachments: AttachmentCreateNestedManyWithoutMessageInput
+  clientTempId: String
+  content: String
+  conversation: ConversationCreateNestedOneWithoutMessagesInput
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessage: MessageCreateNestedOneWithoutRepliesInput
+  reactions: ReactionCreateNestedManyWithoutMessageInput
+  readReceipts: MessageReadReceiptCreateNestedManyWithoutMessageInput
+  ride: RideCreateNestedOneWithoutMessageInput
+  sender: UserCreateNestedOneWithoutMessageInput!
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageCreateWithoutRideInput {
+  attachments: AttachmentCreateNestedManyWithoutMessageInput
+  clientTempId: String
+  content: String
+  conversation: ConversationCreateNestedOneWithoutMessagesInput
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessage: MessageCreateNestedOneWithoutRepliesInput
+  reactions: ReactionCreateNestedManyWithoutMessageInput
+  readReceipts: MessageReadReceiptCreateNestedManyWithoutMessageInput
+  replies: MessageCreateNestedManyWithoutParentMessageInput
+  sender: UserCreateNestedOneWithoutMessageInput!
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageCreateWithoutSenderInput {
+  attachments: AttachmentCreateNestedManyWithoutMessageInput
+  clientTempId: String
+  content: String
+  conversation: ConversationCreateNestedOneWithoutMessagesInput
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessage: MessageCreateNestedOneWithoutRepliesInput
+  reactions: ReactionCreateNestedManyWithoutMessageInput
+  readReceipts: MessageReadReceiptCreateNestedManyWithoutMessageInput
+  replies: MessageCreateNestedManyWithoutParentMessageInput
+  ride: RideCreateNestedOneWithoutMessageInput
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageListRelationFilter {
+  every: MessageWhereInput
+  none: MessageWhereInput
+  some: MessageWhereInput
+}
+
+type MessageMaxAggregate {
+  clientTempId: String
+  content: String
+  conversationId: String
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessageId: String
+  rideId: String
+  senderId: String
+  sentAt: DateTime
+  state: MessageState
+}
+
+type MessageMinAggregate {
+  clientTempId: String
+  content: String
+  conversationId: String
+  createdAt: DateTime
+  deleted: Boolean
+  deletedAt: DateTime
+  deliveredAt: DateTime
+  edited: Boolean
+  editedAt: DateTime
+  id: String
+  parentMessageId: String
+  rideId: String
+  senderId: String
+  sentAt: DateTime
+  state: MessageState
+}
+
+input MessageNullableScalarRelationFilter {
+  is: MessageWhereInput
+  isNot: MessageWhereInput
+}
+
+input MessageOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+type MessageReadReceipt {
+  id: String!
+  message: Message!
+  messageId: String!
+  readAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+type MessageReadReceiptCountAggregate {
+  _all: Int!
+  id: Int!
+  messageId: Int!
+  readAt: Int!
+  userId: Int!
+}
+
+input MessageReadReceiptCreateManyMessageInput {
+  id: String
+  readAt: DateTime
+  userId: String!
+}
+
+input MessageReadReceiptCreateManyMessageInputEnvelope {
+  data: [MessageReadReceiptCreateManyMessageInput!]!
+  skipDuplicates: Boolean
+}
+
+input MessageReadReceiptCreateManyUserInput {
+  id: String
+  messageId: String!
+  readAt: DateTime
+}
+
+input MessageReadReceiptCreateManyUserInputEnvelope {
+  data: [MessageReadReceiptCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input MessageReadReceiptCreateNestedManyWithoutMessageInput {
+  connect: [MessageReadReceiptWhereUniqueInput!]
+  connectOrCreate: [MessageReadReceiptCreateOrConnectWithoutMessageInput!]
+  create: [MessageReadReceiptCreateWithoutMessageInput!]
+  createMany: MessageReadReceiptCreateManyMessageInputEnvelope
+}
+
+input MessageReadReceiptCreateNestedManyWithoutUserInput {
+  connect: [MessageReadReceiptWhereUniqueInput!]
+  connectOrCreate: [MessageReadReceiptCreateOrConnectWithoutUserInput!]
+  create: [MessageReadReceiptCreateWithoutUserInput!]
+  createMany: MessageReadReceiptCreateManyUserInputEnvelope
+}
+
+input MessageReadReceiptCreateOrConnectWithoutMessageInput {
+  create: MessageReadReceiptCreateWithoutMessageInput!
+  where: MessageReadReceiptWhereUniqueInput!
+}
+
+input MessageReadReceiptCreateOrConnectWithoutUserInput {
+  create: MessageReadReceiptCreateWithoutUserInput!
+  where: MessageReadReceiptWhereUniqueInput!
+}
+
+input MessageReadReceiptCreateWithoutMessageInput {
+  id: String
+  readAt: DateTime
+  user: UserCreateNestedOneWithoutMessageReadReceiptInput!
+}
+
+input MessageReadReceiptCreateWithoutUserInput {
+  id: String
+  message: MessageCreateNestedOneWithoutReadReceiptsInput!
+  readAt: DateTime
+}
+
+input MessageReadReceiptListRelationFilter {
+  every: MessageReadReceiptWhereInput
+  none: MessageReadReceiptWhereInput
+  some: MessageReadReceiptWhereInput
+}
+
+type MessageReadReceiptMaxAggregate {
+  id: String
+  messageId: String
+  readAt: DateTime
+  userId: String
+}
+
+input MessageReadReceiptMessageIdUserIdCompoundUniqueInput {
+  messageId: String!
+  userId: String!
+}
+
+type MessageReadReceiptMinAggregate {
+  id: String
+  messageId: String
+  readAt: DateTime
+  userId: String
+}
+
+input MessageReadReceiptOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input MessageReadReceiptScalarWhereInput {
+  AND: [MessageReadReceiptScalarWhereInput!]
+  NOT: [MessageReadReceiptScalarWhereInput!]
+  OR: [MessageReadReceiptScalarWhereInput!]
+  id: StringFilter
+  messageId: StringFilter
+  readAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input MessageReadReceiptUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  readAt: DateTimeFieldUpdateOperationsInput
+}
+
+input MessageReadReceiptUpdateManyWithWhereWithoutMessageInput {
+  data: MessageReadReceiptUpdateManyMutationInput!
+  where: MessageReadReceiptScalarWhereInput!
+}
+
+input MessageReadReceiptUpdateManyWithWhereWithoutUserInput {
+  data: MessageReadReceiptUpdateManyMutationInput!
+  where: MessageReadReceiptScalarWhereInput!
+}
+
+input MessageReadReceiptUpdateManyWithoutMessageNestedInput {
+  connect: [MessageReadReceiptWhereUniqueInput!]
+  connectOrCreate: [MessageReadReceiptCreateOrConnectWithoutMessageInput!]
+  create: [MessageReadReceiptCreateWithoutMessageInput!]
+  createMany: MessageReadReceiptCreateManyMessageInputEnvelope
+  delete: [MessageReadReceiptWhereUniqueInput!]
+  deleteMany: [MessageReadReceiptScalarWhereInput!]
+  disconnect: [MessageReadReceiptWhereUniqueInput!]
+  set: [MessageReadReceiptWhereUniqueInput!]
+  update: [MessageReadReceiptUpdateWithWhereUniqueWithoutMessageInput!]
+  updateMany: [MessageReadReceiptUpdateManyWithWhereWithoutMessageInput!]
+  upsert: [MessageReadReceiptUpsertWithWhereUniqueWithoutMessageInput!]
+}
+
+input MessageReadReceiptUpdateManyWithoutUserNestedInput {
+  connect: [MessageReadReceiptWhereUniqueInput!]
+  connectOrCreate: [MessageReadReceiptCreateOrConnectWithoutUserInput!]
+  create: [MessageReadReceiptCreateWithoutUserInput!]
+  createMany: MessageReadReceiptCreateManyUserInputEnvelope
+  delete: [MessageReadReceiptWhereUniqueInput!]
+  deleteMany: [MessageReadReceiptScalarWhereInput!]
+  disconnect: [MessageReadReceiptWhereUniqueInput!]
+  set: [MessageReadReceiptWhereUniqueInput!]
+  update: [MessageReadReceiptUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [MessageReadReceiptUpdateManyWithWhereWithoutUserInput!]
+  upsert: [MessageReadReceiptUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input MessageReadReceiptUpdateWithWhereUniqueWithoutMessageInput {
+  data: MessageReadReceiptUpdateWithoutMessageInput!
+  where: MessageReadReceiptWhereUniqueInput!
+}
+
+input MessageReadReceiptUpdateWithWhereUniqueWithoutUserInput {
+  data: MessageReadReceiptUpdateWithoutUserInput!
+  where: MessageReadReceiptWhereUniqueInput!
+}
+
+input MessageReadReceiptUpdateWithoutMessageInput {
+  id: StringFieldUpdateOperationsInput
+  readAt: DateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutMessageReadReceiptNestedInput
+}
+
+input MessageReadReceiptUpdateWithoutUserInput {
+  id: StringFieldUpdateOperationsInput
+  message: MessageUpdateOneRequiredWithoutReadReceiptsNestedInput
+  readAt: DateTimeFieldUpdateOperationsInput
+}
+
+input MessageReadReceiptUpsertWithWhereUniqueWithoutMessageInput {
+  create: MessageReadReceiptCreateWithoutMessageInput!
+  update: MessageReadReceiptUpdateWithoutMessageInput!
+  where: MessageReadReceiptWhereUniqueInput!
+}
+
+input MessageReadReceiptUpsertWithWhereUniqueWithoutUserInput {
+  create: MessageReadReceiptCreateWithoutUserInput!
+  update: MessageReadReceiptUpdateWithoutUserInput!
+  where: MessageReadReceiptWhereUniqueInput!
+}
+
+input MessageReadReceiptWhereInput {
+  AND: [MessageReadReceiptWhereInput!]
+  NOT: [MessageReadReceiptWhereInput!]
+  OR: [MessageReadReceiptWhereInput!]
+  id: StringFilter
+  message: MessageScalarRelationFilter
+  messageId: StringFilter
+  readAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input MessageReadReceiptWhereUniqueInput {
+  AND: [MessageReadReceiptWhereInput!]
+  NOT: [MessageReadReceiptWhereInput!]
+  OR: [MessageReadReceiptWhereInput!]
+  id: String
+  message: MessageScalarRelationFilter
+  messageId: StringFilter
+  messageId_userId: MessageReadReceiptMessageIdUserIdCompoundUniqueInput
+  readAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input MessageScalarRelationFilter {
+  is: MessageWhereInput
+  isNot: MessageWhereInput
+}
+
+input MessageScalarWhereInput {
+  AND: [MessageScalarWhereInput!]
+  NOT: [MessageScalarWhereInput!]
+  OR: [MessageScalarWhereInput!]
+  clientTempId: StringNullableFilter
+  content: StringNullableFilter
+  conversationId: StringNullableFilter
+  createdAt: DateTimeFilter
+  deleted: BoolFilter
+  deletedAt: DateTimeNullableFilter
+  deliveredAt: DateTimeNullableFilter
+  edited: BoolFilter
+  editedAt: DateTimeNullableFilter
+  id: StringFilter
+  parentMessageId: StringNullableFilter
+  rideId: StringNullableFilter
+  senderId: StringFilter
+  sentAt: DateTimeNullableFilter
+  state: EnumMessageStateFilter
+}
+
+enum MessageState {
+  DELIVERED
+  FAILED
+  READ
+  SENT
+}
+
+input MessageUpdateManyMutationInput {
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deleted: BoolFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  deliveredAt: NullableDateTimeFieldUpdateOperationsInput
+  edited: BoolFieldUpdateOperationsInput
+  editedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  sentAt: NullableDateTimeFieldUpdateOperationsInput
+  state: EnumMessageStateFieldUpdateOperationsInput
+}
+
+input MessageUpdateManyWithWhereWithoutConversationInput {
+  data: MessageUpdateManyMutationInput!
+  where: MessageScalarWhereInput!
+}
+
+input MessageUpdateManyWithWhereWithoutParentMessageInput {
+  data: MessageUpdateManyMutationInput!
+  where: MessageScalarWhereInput!
+}
+
+input MessageUpdateManyWithWhereWithoutRideInput {
+  data: MessageUpdateManyMutationInput!
+  where: MessageScalarWhereInput!
+}
+
+input MessageUpdateManyWithWhereWithoutSenderInput {
+  data: MessageUpdateManyMutationInput!
+  where: MessageScalarWhereInput!
+}
+
+input MessageUpdateManyWithoutConversationNestedInput {
+  connect: [MessageWhereUniqueInput!]
+  connectOrCreate: [MessageCreateOrConnectWithoutConversationInput!]
+  create: [MessageCreateWithoutConversationInput!]
+  createMany: MessageCreateManyConversationInputEnvelope
+  delete: [MessageWhereUniqueInput!]
+  deleteMany: [MessageScalarWhereInput!]
+  disconnect: [MessageWhereUniqueInput!]
+  set: [MessageWhereUniqueInput!]
+  update: [MessageUpdateWithWhereUniqueWithoutConversationInput!]
+  updateMany: [MessageUpdateManyWithWhereWithoutConversationInput!]
+  upsert: [MessageUpsertWithWhereUniqueWithoutConversationInput!]
+}
+
+input MessageUpdateManyWithoutParentMessageNestedInput {
+  connect: [MessageWhereUniqueInput!]
+  connectOrCreate: [MessageCreateOrConnectWithoutParentMessageInput!]
+  create: [MessageCreateWithoutParentMessageInput!]
+  createMany: MessageCreateManyParentMessageInputEnvelope
+  delete: [MessageWhereUniqueInput!]
+  deleteMany: [MessageScalarWhereInput!]
+  disconnect: [MessageWhereUniqueInput!]
+  set: [MessageWhereUniqueInput!]
+  update: [MessageUpdateWithWhereUniqueWithoutParentMessageInput!]
+  updateMany: [MessageUpdateManyWithWhereWithoutParentMessageInput!]
+  upsert: [MessageUpsertWithWhereUniqueWithoutParentMessageInput!]
+}
+
+input MessageUpdateManyWithoutRideNestedInput {
+  connect: [MessageWhereUniqueInput!]
+  connectOrCreate: [MessageCreateOrConnectWithoutRideInput!]
+  create: [MessageCreateWithoutRideInput!]
+  createMany: MessageCreateManyRideInputEnvelope
+  delete: [MessageWhereUniqueInput!]
+  deleteMany: [MessageScalarWhereInput!]
+  disconnect: [MessageWhereUniqueInput!]
+  set: [MessageWhereUniqueInput!]
+  update: [MessageUpdateWithWhereUniqueWithoutRideInput!]
+  updateMany: [MessageUpdateManyWithWhereWithoutRideInput!]
+  upsert: [MessageUpsertWithWhereUniqueWithoutRideInput!]
+}
+
+input MessageUpdateManyWithoutSenderNestedInput {
+  connect: [MessageWhereUniqueInput!]
+  connectOrCreate: [MessageCreateOrConnectWithoutSenderInput!]
+  create: [MessageCreateWithoutSenderInput!]
+  createMany: MessageCreateManySenderInputEnvelope
+  delete: [MessageWhereUniqueInput!]
+  deleteMany: [MessageScalarWhereInput!]
+  disconnect: [MessageWhereUniqueInput!]
+  set: [MessageWhereUniqueInput!]
+  update: [MessageUpdateWithWhereUniqueWithoutSenderInput!]
+  updateMany: [MessageUpdateManyWithWhereWithoutSenderInput!]
+  upsert: [MessageUpsertWithWhereUniqueWithoutSenderInput!]
+}
+
+input MessageUpdateOneRequiredWithoutAttachmentsNestedInput {
+  connect: MessageWhereUniqueInput
+  connectOrCreate: MessageCreateOrConnectWithoutAttachmentsInput
+  create: MessageCreateWithoutAttachmentsInput
+  update: MessageUpdateToOneWithWhereWithoutAttachmentsInput
+  upsert: MessageUpsertWithoutAttachmentsInput
+}
+
+input MessageUpdateOneRequiredWithoutReactionsNestedInput {
+  connect: MessageWhereUniqueInput
+  connectOrCreate: MessageCreateOrConnectWithoutReactionsInput
+  create: MessageCreateWithoutReactionsInput
+  update: MessageUpdateToOneWithWhereWithoutReactionsInput
+  upsert: MessageUpsertWithoutReactionsInput
+}
+
+input MessageUpdateOneRequiredWithoutReadReceiptsNestedInput {
+  connect: MessageWhereUniqueInput
+  connectOrCreate: MessageCreateOrConnectWithoutReadReceiptsInput
+  create: MessageCreateWithoutReadReceiptsInput
+  update: MessageUpdateToOneWithWhereWithoutReadReceiptsInput
+  upsert: MessageUpsertWithoutReadReceiptsInput
+}
+
+input MessageUpdateOneWithoutRepliesNestedInput {
+  connect: MessageWhereUniqueInput
+  connectOrCreate: MessageCreateOrConnectWithoutRepliesInput
+  create: MessageCreateWithoutRepliesInput
+  delete: MessageWhereInput
+  disconnect: MessageWhereInput
+  update: MessageUpdateToOneWithWhereWithoutRepliesInput
+  upsert: MessageUpsertWithoutRepliesInput
+}
+
+input MessageUpdateToOneWithWhereWithoutAttachmentsInput {
+  data: MessageUpdateWithoutAttachmentsInput!
+  where: MessageWhereInput
+}
+
+input MessageUpdateToOneWithWhereWithoutReactionsInput {
+  data: MessageUpdateWithoutReactionsInput!
+  where: MessageWhereInput
+}
+
+input MessageUpdateToOneWithWhereWithoutReadReceiptsInput {
+  data: MessageUpdateWithoutReadReceiptsInput!
+  where: MessageWhereInput
+}
+
+input MessageUpdateToOneWithWhereWithoutRepliesInput {
+  data: MessageUpdateWithoutRepliesInput!
+  where: MessageWhereInput
+}
+
+input MessageUpdateWithWhereUniqueWithoutConversationInput {
+  data: MessageUpdateWithoutConversationInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageUpdateWithWhereUniqueWithoutParentMessageInput {
+  data: MessageUpdateWithoutParentMessageInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageUpdateWithWhereUniqueWithoutRideInput {
+  data: MessageUpdateWithoutRideInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageUpdateWithWhereUniqueWithoutSenderInput {
+  data: MessageUpdateWithoutSenderInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageUpdateWithoutAttachmentsInput {
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  conversation: ConversationUpdateOneWithoutMessagesNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deleted: BoolFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  deliveredAt: NullableDateTimeFieldUpdateOperationsInput
+  edited: BoolFieldUpdateOperationsInput
+  editedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  parentMessage: MessageUpdateOneWithoutRepliesNestedInput
+  reactions: ReactionUpdateManyWithoutMessageNestedInput
+  readReceipts: MessageReadReceiptUpdateManyWithoutMessageNestedInput
+  replies: MessageUpdateManyWithoutParentMessageNestedInput
+  ride: RideUpdateOneWithoutMessageNestedInput
+  sender: UserUpdateOneRequiredWithoutMessageNestedInput
+  sentAt: NullableDateTimeFieldUpdateOperationsInput
+  state: EnumMessageStateFieldUpdateOperationsInput
+}
+
+input MessageUpdateWithoutConversationInput {
+  attachments: AttachmentUpdateManyWithoutMessageNestedInput
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deleted: BoolFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  deliveredAt: NullableDateTimeFieldUpdateOperationsInput
+  edited: BoolFieldUpdateOperationsInput
+  editedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  parentMessage: MessageUpdateOneWithoutRepliesNestedInput
+  reactions: ReactionUpdateManyWithoutMessageNestedInput
+  readReceipts: MessageReadReceiptUpdateManyWithoutMessageNestedInput
+  replies: MessageUpdateManyWithoutParentMessageNestedInput
+  ride: RideUpdateOneWithoutMessageNestedInput
+  sender: UserUpdateOneRequiredWithoutMessageNestedInput
+  sentAt: NullableDateTimeFieldUpdateOperationsInput
+  state: EnumMessageStateFieldUpdateOperationsInput
+}
+
+input MessageUpdateWithoutParentMessageInput {
+  attachments: AttachmentUpdateManyWithoutMessageNestedInput
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  conversation: ConversationUpdateOneWithoutMessagesNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deleted: BoolFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  deliveredAt: NullableDateTimeFieldUpdateOperationsInput
+  edited: BoolFieldUpdateOperationsInput
+  editedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  reactions: ReactionUpdateManyWithoutMessageNestedInput
+  readReceipts: MessageReadReceiptUpdateManyWithoutMessageNestedInput
+  replies: MessageUpdateManyWithoutParentMessageNestedInput
+  ride: RideUpdateOneWithoutMessageNestedInput
+  sender: UserUpdateOneRequiredWithoutMessageNestedInput
+  sentAt: NullableDateTimeFieldUpdateOperationsInput
+  state: EnumMessageStateFieldUpdateOperationsInput
+}
+
+input MessageUpdateWithoutReactionsInput {
+  attachments: AttachmentUpdateManyWithoutMessageNestedInput
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  conversation: ConversationUpdateOneWithoutMessagesNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deleted: BoolFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  deliveredAt: NullableDateTimeFieldUpdateOperationsInput
+  edited: BoolFieldUpdateOperationsInput
+  editedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  parentMessage: MessageUpdateOneWithoutRepliesNestedInput
+  readReceipts: MessageReadReceiptUpdateManyWithoutMessageNestedInput
+  replies: MessageUpdateManyWithoutParentMessageNestedInput
+  ride: RideUpdateOneWithoutMessageNestedInput
+  sender: UserUpdateOneRequiredWithoutMessageNestedInput
+  sentAt: NullableDateTimeFieldUpdateOperationsInput
+  state: EnumMessageStateFieldUpdateOperationsInput
+}
+
+input MessageUpdateWithoutReadReceiptsInput {
+  attachments: AttachmentUpdateManyWithoutMessageNestedInput
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  conversation: ConversationUpdateOneWithoutMessagesNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deleted: BoolFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  deliveredAt: NullableDateTimeFieldUpdateOperationsInput
+  edited: BoolFieldUpdateOperationsInput
+  editedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  parentMessage: MessageUpdateOneWithoutRepliesNestedInput
+  reactions: ReactionUpdateManyWithoutMessageNestedInput
+  replies: MessageUpdateManyWithoutParentMessageNestedInput
+  ride: RideUpdateOneWithoutMessageNestedInput
+  sender: UserUpdateOneRequiredWithoutMessageNestedInput
+  sentAt: NullableDateTimeFieldUpdateOperationsInput
+  state: EnumMessageStateFieldUpdateOperationsInput
+}
+
+input MessageUpdateWithoutRepliesInput {
+  attachments: AttachmentUpdateManyWithoutMessageNestedInput
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  conversation: ConversationUpdateOneWithoutMessagesNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deleted: BoolFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  deliveredAt: NullableDateTimeFieldUpdateOperationsInput
+  edited: BoolFieldUpdateOperationsInput
+  editedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  parentMessage: MessageUpdateOneWithoutRepliesNestedInput
+  reactions: ReactionUpdateManyWithoutMessageNestedInput
+  readReceipts: MessageReadReceiptUpdateManyWithoutMessageNestedInput
+  ride: RideUpdateOneWithoutMessageNestedInput
+  sender: UserUpdateOneRequiredWithoutMessageNestedInput
+  sentAt: NullableDateTimeFieldUpdateOperationsInput
+  state: EnumMessageStateFieldUpdateOperationsInput
+}
+
+input MessageUpdateWithoutRideInput {
+  attachments: AttachmentUpdateManyWithoutMessageNestedInput
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  conversation: ConversationUpdateOneWithoutMessagesNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deleted: BoolFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  deliveredAt: NullableDateTimeFieldUpdateOperationsInput
+  edited: BoolFieldUpdateOperationsInput
+  editedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  parentMessage: MessageUpdateOneWithoutRepliesNestedInput
+  reactions: ReactionUpdateManyWithoutMessageNestedInput
+  readReceipts: MessageReadReceiptUpdateManyWithoutMessageNestedInput
+  replies: MessageUpdateManyWithoutParentMessageNestedInput
+  sender: UserUpdateOneRequiredWithoutMessageNestedInput
+  sentAt: NullableDateTimeFieldUpdateOperationsInput
+  state: EnumMessageStateFieldUpdateOperationsInput
+}
+
+input MessageUpdateWithoutSenderInput {
+  attachments: AttachmentUpdateManyWithoutMessageNestedInput
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  conversation: ConversationUpdateOneWithoutMessagesNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deleted: BoolFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  deliveredAt: NullableDateTimeFieldUpdateOperationsInput
+  edited: BoolFieldUpdateOperationsInput
+  editedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  parentMessage: MessageUpdateOneWithoutRepliesNestedInput
+  reactions: ReactionUpdateManyWithoutMessageNestedInput
+  readReceipts: MessageReadReceiptUpdateManyWithoutMessageNestedInput
+  replies: MessageUpdateManyWithoutParentMessageNestedInput
+  ride: RideUpdateOneWithoutMessageNestedInput
+  sentAt: NullableDateTimeFieldUpdateOperationsInput
+  state: EnumMessageStateFieldUpdateOperationsInput
+}
+
+input MessageUpsertWithWhereUniqueWithoutConversationInput {
+  create: MessageCreateWithoutConversationInput!
+  update: MessageUpdateWithoutConversationInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageUpsertWithWhereUniqueWithoutParentMessageInput {
+  create: MessageCreateWithoutParentMessageInput!
+  update: MessageUpdateWithoutParentMessageInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageUpsertWithWhereUniqueWithoutRideInput {
+  create: MessageCreateWithoutRideInput!
+  update: MessageUpdateWithoutRideInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageUpsertWithWhereUniqueWithoutSenderInput {
+  create: MessageCreateWithoutSenderInput!
+  update: MessageUpdateWithoutSenderInput!
+  where: MessageWhereUniqueInput!
+}
+
+input MessageUpsertWithoutAttachmentsInput {
+  create: MessageCreateWithoutAttachmentsInput!
+  update: MessageUpdateWithoutAttachmentsInput!
+  where: MessageWhereInput
+}
+
+input MessageUpsertWithoutReactionsInput {
+  create: MessageCreateWithoutReactionsInput!
+  update: MessageUpdateWithoutReactionsInput!
+  where: MessageWhereInput
+}
+
+input MessageUpsertWithoutReadReceiptsInput {
+  create: MessageCreateWithoutReadReceiptsInput!
+  update: MessageUpdateWithoutReadReceiptsInput!
+  where: MessageWhereInput
+}
+
+input MessageUpsertWithoutRepliesInput {
+  create: MessageCreateWithoutRepliesInput!
+  update: MessageUpdateWithoutRepliesInput!
+  where: MessageWhereInput
+}
+
+input MessageWhereInput {
+  AND: [MessageWhereInput!]
+  NOT: [MessageWhereInput!]
+  OR: [MessageWhereInput!]
+  attachments: AttachmentListRelationFilter
+  clientTempId: StringNullableFilter
+  content: StringNullableFilter
+  conversation: ConversationNullableScalarRelationFilter
+  conversationId: StringNullableFilter
+  createdAt: DateTimeFilter
+  deleted: BoolFilter
+  deletedAt: DateTimeNullableFilter
+  deliveredAt: DateTimeNullableFilter
+  edited: BoolFilter
+  editedAt: DateTimeNullableFilter
+  id: StringFilter
+  parentMessage: MessageNullableScalarRelationFilter
+  parentMessageId: StringNullableFilter
+  reactions: ReactionListRelationFilter
+  readReceipts: MessageReadReceiptListRelationFilter
+  replies: MessageListRelationFilter
+  ride: RideNullableScalarRelationFilter
+  rideId: StringNullableFilter
+  sender: UserScalarRelationFilter
+  senderId: StringFilter
+  sentAt: DateTimeNullableFilter
+  state: EnumMessageStateFilter
+}
+
+input MessageWhereUniqueInput {
+  AND: [MessageWhereInput!]
+  NOT: [MessageWhereInput!]
+  OR: [MessageWhereInput!]
+  attachments: AttachmentListRelationFilter
+  clientTempId: StringNullableFilter
+  content: StringNullableFilter
+  conversation: ConversationNullableScalarRelationFilter
+  conversationId: StringNullableFilter
+  createdAt: DateTimeFilter
+  deleted: BoolFilter
+  deletedAt: DateTimeNullableFilter
+  deliveredAt: DateTimeNullableFilter
+  edited: BoolFilter
+  editedAt: DateTimeNullableFilter
+  id: String
+  parentMessage: MessageNullableScalarRelationFilter
+  parentMessageId: StringNullableFilter
+  reactions: ReactionListRelationFilter
+  readReceipts: MessageReadReceiptListRelationFilter
+  replies: MessageListRelationFilter
+  ride: RideNullableScalarRelationFilter
+  rideId: StringNullableFilter
+  sender: UserScalarRelationFilter
+  senderId: StringFilter
+  sentAt: DateTimeNullableFilter
+  state: EnumMessageStateFilter
+}
+
 type Mutation {
   completeUploadBulk(keys: [String!]!, type: ImageType!): [CompleteUploadOutput!]!
   createBatchPresignedUrls(files: [FileMetaInput!]!, type: ImageType!): [PresignedUrl!]!
   createDriverVehicle(input: CreateDriverVehicleInput!, vehicleId: String!): UserPreference!
   createFile(input: FileCreateInput!): File!
   createUser(input: UserCreateInput!): User!
+  createUserQr: String!
   createVehicleType(input: VehicleTypeCreateInput!): VehicleType!
   deleteFilesByUserId: [File!]!
   deleteObject(key: String!): Boolean!
@@ -1045,7 +3476,8 @@ type Mutation {
   logout: Boolean!
   register(data: RegisterInput!): User!
   resetPassword(newPassword: String!, sessionToken: String!): Boolean!
-  updateFile(id: String!, input: FileUpdateInput!): File!
+  updateFile(id: String!, input: CustomFileUpdateInput!): File!
+  updateUser(input: UserUpdateInput!): User!
   uploadFile(file: Upload!, path: String): FileUploadResult!
   upsertUserPreference(input: UserPreferenceUpsertInput!): UserPreference!
 }
@@ -1077,11 +3509,54 @@ input NestedDateTimeNullableFilter {
   notIn: [DateTime!]
 }
 
+input NestedDecimalFilter {
+  equals: Decimal
+  gt: Decimal
+  gte: Decimal
+  in: [Decimal!]
+  lt: Decimal
+  lte: Decimal
+  not: NestedDecimalFilter
+  notIn: [Decimal!]
+}
+
+input NestedEnumAttachmentTypeFilter {
+  equals: AttachmentType
+  in: [AttachmentType!]
+  not: NestedEnumAttachmentTypeFilter
+  notIn: [AttachmentType!]
+}
+
+input NestedEnumConversationTypeFilter {
+  equals: ConversationType
+  in: [ConversationType!]
+  not: NestedEnumConversationTypeFilter
+  notIn: [ConversationType!]
+}
+
 input NestedEnumImageTypeFilter {
   equals: ImageType
   in: [ImageType!]
   not: NestedEnumImageTypeFilter
   notIn: [ImageType!]
+}
+
+input NestedEnumMessageStateFilter {
+  equals: MessageState
+  in: [MessageState!]
+  not: NestedEnumMessageStateFilter
+  notIn: [MessageState!]
+}
+
+input NestedFloatNullableFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: NestedFloatNullableFilter
+  notIn: [Float!]
 }
 
 input NestedIntFilter {
@@ -1138,6 +3613,14 @@ input NullableDateTimeFieldUpdateOperationsInput {
   set: DateTime
 }
 
+input NullableFloatFieldUpdateOperationsInput {
+  decrement: Float
+  divide: Float
+  increment: Float
+  multiply: Float
+  set: Float
+}
+
 input NullableIntFieldUpdateOperationsInput {
   decrement: Int
   divide: Int
@@ -1155,10 +3638,569 @@ enum NullsOrder {
   last
 }
 
+type Position {
+  Ride: Ride
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  clientTempId: String
+  createdAt: DateTime!
+  createdBy: String
+  heading: Float
+  id: String!
+  is_mock: Boolean!
+  latitude: Decimal!
+  longitude: Decimal!
+  provider: String
+  recordedAt: DateTime!
+  rideId: String
+  speed: Float
+  vehicle: DriverVehicle!
+  vehicleId: String!
+}
+
+type PositionAvgAggregate {
+  accuracy: Float
+  altitude: Float
+  battery: Float
+  heading: Float
+  latitude: Decimal
+  longitude: Decimal
+  speed: Float
+}
+
+type PositionCountAggregate {
+  _all: Int!
+  accuracy: Int!
+  altitude: Int!
+  battery: Int!
+  clientTempId: Int!
+  createdAt: Int!
+  createdBy: Int!
+  heading: Int!
+  id: Int!
+  is_mock: Int!
+  latitude: Int!
+  longitude: Int!
+  provider: Int!
+  recordedAt: Int!
+  rideId: Int!
+  speed: Int!
+  vehicleId: Int!
+}
+
+input PositionCreateManyRideInput {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  clientTempId: String
+  createdAt: DateTime
+  createdBy: String
+  heading: Float
+  id: String
+  is_mock: Boolean
+  latitude: Decimal!
+  longitude: Decimal!
+  provider: String
+  recordedAt: DateTime
+  speed: Float
+  vehicleId: String!
+}
+
+input PositionCreateManyRideInputEnvelope {
+  data: [PositionCreateManyRideInput!]!
+  skipDuplicates: Boolean
+}
+
+input PositionCreateManyVehicleInput {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  clientTempId: String
+  createdAt: DateTime
+  createdBy: String
+  heading: Float
+  id: String
+  is_mock: Boolean
+  latitude: Decimal!
+  longitude: Decimal!
+  provider: String
+  recordedAt: DateTime
+  rideId: String
+  speed: Float
+}
+
+input PositionCreateManyVehicleInputEnvelope {
+  data: [PositionCreateManyVehicleInput!]!
+  skipDuplicates: Boolean
+}
+
+input PositionCreateNestedManyWithoutRideInput {
+  connect: [PositionWhereUniqueInput!]
+  connectOrCreate: [PositionCreateOrConnectWithoutRideInput!]
+  create: [PositionCreateWithoutRideInput!]
+  createMany: PositionCreateManyRideInputEnvelope
+}
+
+input PositionCreateNestedManyWithoutVehicleInput {
+  connect: [PositionWhereUniqueInput!]
+  connectOrCreate: [PositionCreateOrConnectWithoutVehicleInput!]
+  create: [PositionCreateWithoutVehicleInput!]
+  createMany: PositionCreateManyVehicleInputEnvelope
+}
+
+input PositionCreateOrConnectWithoutRideInput {
+  create: PositionCreateWithoutRideInput!
+  where: PositionWhereUniqueInput!
+}
+
+input PositionCreateOrConnectWithoutVehicleInput {
+  create: PositionCreateWithoutVehicleInput!
+  where: PositionWhereUniqueInput!
+}
+
+input PositionCreateWithoutRideInput {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  clientTempId: String
+  createdAt: DateTime
+  createdBy: String
+  heading: Float
+  id: String
+  is_mock: Boolean
+  latitude: Decimal!
+  longitude: Decimal!
+  provider: String
+  recordedAt: DateTime
+  speed: Float
+  vehicle: DriverVehicleCreateNestedOneWithoutPositionInput!
+}
+
+input PositionCreateWithoutVehicleInput {
+  Ride: RideCreateNestedOneWithoutPositionsInput
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  clientTempId: String
+  createdAt: DateTime
+  createdBy: String
+  heading: Float
+  id: String
+  is_mock: Boolean
+  latitude: Decimal!
+  longitude: Decimal!
+  provider: String
+  recordedAt: DateTime
+  speed: Float
+}
+
+input PositionListRelationFilter {
+  every: PositionWhereInput
+  none: PositionWhereInput
+  some: PositionWhereInput
+}
+
+type PositionMaxAggregate {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  clientTempId: String
+  createdAt: DateTime
+  createdBy: String
+  heading: Float
+  id: String
+  is_mock: Boolean
+  latitude: Decimal
+  longitude: Decimal
+  provider: String
+  recordedAt: DateTime
+  rideId: String
+  speed: Float
+  vehicleId: String
+}
+
+type PositionMinAggregate {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  clientTempId: String
+  createdAt: DateTime
+  createdBy: String
+  heading: Float
+  id: String
+  is_mock: Boolean
+  latitude: Decimal
+  longitude: Decimal
+  provider: String
+  recordedAt: DateTime
+  rideId: String
+  speed: Float
+  vehicleId: String
+}
+
+input PositionScalarWhereInput {
+  AND: [PositionScalarWhereInput!]
+  NOT: [PositionScalarWhereInput!]
+  OR: [PositionScalarWhereInput!]
+  accuracy: FloatNullableFilter
+  altitude: FloatNullableFilter
+  battery: IntNullableFilter
+  clientTempId: StringNullableFilter
+  createdAt: DateTimeFilter
+  createdBy: StringNullableFilter
+  heading: FloatNullableFilter
+  id: StringFilter
+  is_mock: BoolFilter
+  latitude: DecimalFilter
+  longitude: DecimalFilter
+  provider: StringNullableFilter
+  recordedAt: DateTimeFilter
+  rideId: StringNullableFilter
+  speed: FloatNullableFilter
+  vehicleId: StringFilter
+}
+
+type PositionSumAggregate {
+  accuracy: Float
+  altitude: Float
+  battery: Int
+  heading: Float
+  latitude: Decimal
+  longitude: Decimal
+  speed: Float
+}
+
+input PositionUpdateManyMutationInput {
+  accuracy: NullableFloatFieldUpdateOperationsInput
+  altitude: NullableFloatFieldUpdateOperationsInput
+  battery: NullableIntFieldUpdateOperationsInput
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  createdBy: NullableStringFieldUpdateOperationsInput
+  heading: NullableFloatFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  is_mock: BoolFieldUpdateOperationsInput
+  latitude: DecimalFieldUpdateOperationsInput
+  longitude: DecimalFieldUpdateOperationsInput
+  provider: NullableStringFieldUpdateOperationsInput
+  recordedAt: DateTimeFieldUpdateOperationsInput
+  speed: NullableFloatFieldUpdateOperationsInput
+}
+
+input PositionUpdateManyWithWhereWithoutRideInput {
+  data: PositionUpdateManyMutationInput!
+  where: PositionScalarWhereInput!
+}
+
+input PositionUpdateManyWithWhereWithoutVehicleInput {
+  data: PositionUpdateManyMutationInput!
+  where: PositionScalarWhereInput!
+}
+
+input PositionUpdateManyWithoutRideNestedInput {
+  connect: [PositionWhereUniqueInput!]
+  connectOrCreate: [PositionCreateOrConnectWithoutRideInput!]
+  create: [PositionCreateWithoutRideInput!]
+  createMany: PositionCreateManyRideInputEnvelope
+  delete: [PositionWhereUniqueInput!]
+  deleteMany: [PositionScalarWhereInput!]
+  disconnect: [PositionWhereUniqueInput!]
+  set: [PositionWhereUniqueInput!]
+  update: [PositionUpdateWithWhereUniqueWithoutRideInput!]
+  updateMany: [PositionUpdateManyWithWhereWithoutRideInput!]
+  upsert: [PositionUpsertWithWhereUniqueWithoutRideInput!]
+}
+
+input PositionUpdateManyWithoutVehicleNestedInput {
+  connect: [PositionWhereUniqueInput!]
+  connectOrCreate: [PositionCreateOrConnectWithoutVehicleInput!]
+  create: [PositionCreateWithoutVehicleInput!]
+  createMany: PositionCreateManyVehicleInputEnvelope
+  delete: [PositionWhereUniqueInput!]
+  deleteMany: [PositionScalarWhereInput!]
+  disconnect: [PositionWhereUniqueInput!]
+  set: [PositionWhereUniqueInput!]
+  update: [PositionUpdateWithWhereUniqueWithoutVehicleInput!]
+  updateMany: [PositionUpdateManyWithWhereWithoutVehicleInput!]
+  upsert: [PositionUpsertWithWhereUniqueWithoutVehicleInput!]
+}
+
+input PositionUpdateWithWhereUniqueWithoutRideInput {
+  data: PositionUpdateWithoutRideInput!
+  where: PositionWhereUniqueInput!
+}
+
+input PositionUpdateWithWhereUniqueWithoutVehicleInput {
+  data: PositionUpdateWithoutVehicleInput!
+  where: PositionWhereUniqueInput!
+}
+
+input PositionUpdateWithoutRideInput {
+  accuracy: NullableFloatFieldUpdateOperationsInput
+  altitude: NullableFloatFieldUpdateOperationsInput
+  battery: NullableIntFieldUpdateOperationsInput
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  createdBy: NullableStringFieldUpdateOperationsInput
+  heading: NullableFloatFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  is_mock: BoolFieldUpdateOperationsInput
+  latitude: DecimalFieldUpdateOperationsInput
+  longitude: DecimalFieldUpdateOperationsInput
+  provider: NullableStringFieldUpdateOperationsInput
+  recordedAt: DateTimeFieldUpdateOperationsInput
+  speed: NullableFloatFieldUpdateOperationsInput
+  vehicle: DriverVehicleUpdateOneRequiredWithoutPositionNestedInput
+}
+
+input PositionUpdateWithoutVehicleInput {
+  Ride: RideUpdateOneWithoutPositionsNestedInput
+  accuracy: NullableFloatFieldUpdateOperationsInput
+  altitude: NullableFloatFieldUpdateOperationsInput
+  battery: NullableIntFieldUpdateOperationsInput
+  clientTempId: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  createdBy: NullableStringFieldUpdateOperationsInput
+  heading: NullableFloatFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  is_mock: BoolFieldUpdateOperationsInput
+  latitude: DecimalFieldUpdateOperationsInput
+  longitude: DecimalFieldUpdateOperationsInput
+  provider: NullableStringFieldUpdateOperationsInput
+  recordedAt: DateTimeFieldUpdateOperationsInput
+  speed: NullableFloatFieldUpdateOperationsInput
+}
+
+input PositionUpsertWithWhereUniqueWithoutRideInput {
+  create: PositionCreateWithoutRideInput!
+  update: PositionUpdateWithoutRideInput!
+  where: PositionWhereUniqueInput!
+}
+
+input PositionUpsertWithWhereUniqueWithoutVehicleInput {
+  create: PositionCreateWithoutVehicleInput!
+  update: PositionUpdateWithoutVehicleInput!
+  where: PositionWhereUniqueInput!
+}
+
+input PositionWhereInput {
+  AND: [PositionWhereInput!]
+  NOT: [PositionWhereInput!]
+  OR: [PositionWhereInput!]
+  Ride: RideNullableScalarRelationFilter
+  accuracy: FloatNullableFilter
+  altitude: FloatNullableFilter
+  battery: IntNullableFilter
+  clientTempId: StringNullableFilter
+  createdAt: DateTimeFilter
+  createdBy: StringNullableFilter
+  heading: FloatNullableFilter
+  id: StringFilter
+  is_mock: BoolFilter
+  latitude: DecimalFilter
+  longitude: DecimalFilter
+  provider: StringNullableFilter
+  recordedAt: DateTimeFilter
+  rideId: StringNullableFilter
+  speed: FloatNullableFilter
+  vehicle: DriverVehicleScalarRelationFilter
+  vehicleId: StringFilter
+}
+
+input PositionWhereUniqueInput {
+  AND: [PositionWhereInput!]
+  NOT: [PositionWhereInput!]
+  OR: [PositionWhereInput!]
+  Ride: RideNullableScalarRelationFilter
+  accuracy: FloatNullableFilter
+  altitude: FloatNullableFilter
+  battery: IntNullableFilter
+  clientTempId: StringNullableFilter
+  createdAt: DateTimeFilter
+  createdBy: StringNullableFilter
+  heading: FloatNullableFilter
+  id: String
+  is_mock: BoolFilter
+  latitude: DecimalFilter
+  longitude: DecimalFilter
+  provider: StringNullableFilter
+  recordedAt: DateTimeFilter
+  rideId: StringNullableFilter
+  speed: FloatNullableFilter
+  vehicle: DriverVehicleScalarRelationFilter
+  vehicleId: StringFilter
+}
+
 type PresignedUrl {
   expiresIn: Float!
   key: String!
   url: String!
+}
+
+type QrToken {
+  createdAt: DateTime!
+  id: String!
+  revoked: Boolean!
+  token: String!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+type QrTokenCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  id: Int!
+  revoked: Int!
+  token: Int!
+  updatedAt: Int!
+  userId: Int!
+}
+
+input QrTokenCreateManyUserInput {
+  createdAt: DateTime
+  id: String
+  revoked: Boolean
+  token: String!
+  updatedAt: DateTime
+}
+
+input QrTokenCreateManyUserInputEnvelope {
+  data: [QrTokenCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input QrTokenCreateNestedManyWithoutUserInput {
+  connect: [QrTokenWhereUniqueInput!]
+  connectOrCreate: [QrTokenCreateOrConnectWithoutUserInput!]
+  create: [QrTokenCreateWithoutUserInput!]
+  createMany: QrTokenCreateManyUserInputEnvelope
+}
+
+input QrTokenCreateOrConnectWithoutUserInput {
+  create: QrTokenCreateWithoutUserInput!
+  where: QrTokenWhereUniqueInput!
+}
+
+input QrTokenCreateWithoutUserInput {
+  createdAt: DateTime
+  id: String
+  revoked: Boolean
+  token: String!
+  updatedAt: DateTime
+}
+
+input QrTokenListRelationFilter {
+  every: QrTokenWhereInput
+  none: QrTokenWhereInput
+  some: QrTokenWhereInput
+}
+
+type QrTokenMaxAggregate {
+  createdAt: DateTime
+  id: String
+  revoked: Boolean
+  token: String
+  updatedAt: DateTime
+  userId: String
+}
+
+type QrTokenMinAggregate {
+  createdAt: DateTime
+  id: String
+  revoked: Boolean
+  token: String
+  updatedAt: DateTime
+  userId: String
+}
+
+input QrTokenOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input QrTokenScalarWhereInput {
+  AND: [QrTokenScalarWhereInput!]
+  NOT: [QrTokenScalarWhereInput!]
+  OR: [QrTokenScalarWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  revoked: BoolFilter
+  token: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input QrTokenUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  revoked: BoolFieldUpdateOperationsInput
+  token: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input QrTokenUpdateManyWithWhereWithoutUserInput {
+  data: QrTokenUpdateManyMutationInput!
+  where: QrTokenScalarWhereInput!
+}
+
+input QrTokenUpdateManyWithoutUserNestedInput {
+  connect: [QrTokenWhereUniqueInput!]
+  connectOrCreate: [QrTokenCreateOrConnectWithoutUserInput!]
+  create: [QrTokenCreateWithoutUserInput!]
+  createMany: QrTokenCreateManyUserInputEnvelope
+  delete: [QrTokenWhereUniqueInput!]
+  deleteMany: [QrTokenScalarWhereInput!]
+  disconnect: [QrTokenWhereUniqueInput!]
+  set: [QrTokenWhereUniqueInput!]
+  update: [QrTokenUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [QrTokenUpdateManyWithWhereWithoutUserInput!]
+  upsert: [QrTokenUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input QrTokenUpdateWithWhereUniqueWithoutUserInput {
+  data: QrTokenUpdateWithoutUserInput!
+  where: QrTokenWhereUniqueInput!
+}
+
+input QrTokenUpdateWithoutUserInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  revoked: BoolFieldUpdateOperationsInput
+  token: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input QrTokenUpsertWithWhereUniqueWithoutUserInput {
+  create: QrTokenCreateWithoutUserInput!
+  update: QrTokenUpdateWithoutUserInput!
+  where: QrTokenWhereUniqueInput!
+}
+
+input QrTokenWhereInput {
+  AND: [QrTokenWhereInput!]
+  NOT: [QrTokenWhereInput!]
+  OR: [QrTokenWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  revoked: BoolFilter
+  token: StringFilter
+  updatedAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input QrTokenWhereUniqueInput {
+  AND: [QrTokenWhereInput!]
+  NOT: [QrTokenWhereInput!]
+  OR: [QrTokenWhereInput!]
+  createdAt: DateTimeFilter
+  id: String
+  revoked: BoolFilter
+  token: String
+  updatedAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
 }
 
 type Query {
@@ -1168,6 +4210,7 @@ type Query {
   listObjects(bucket: String!): [String!]!
   me: User!
   user(id: String!): User!
+  userByToken(token: String!): User!
   userPreference: UserPreference
   users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
   usersForAdmin(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
@@ -1178,6 +4221,237 @@ type Query {
 enum QueryMode {
   default
   insensitive
+}
+
+type Reaction {
+  createdAt: DateTime!
+  id: String!
+  message: Message!
+  messageId: String!
+  type: String!
+  user: User!
+  userId: String!
+}
+
+type ReactionCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  id: Int!
+  messageId: Int!
+  type: Int!
+  userId: Int!
+}
+
+input ReactionCreateManyMessageInput {
+  createdAt: DateTime
+  id: String
+  type: String!
+  userId: String!
+}
+
+input ReactionCreateManyMessageInputEnvelope {
+  data: [ReactionCreateManyMessageInput!]!
+  skipDuplicates: Boolean
+}
+
+input ReactionCreateManyUserInput {
+  createdAt: DateTime
+  id: String
+  messageId: String!
+  type: String!
+}
+
+input ReactionCreateManyUserInputEnvelope {
+  data: [ReactionCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input ReactionCreateNestedManyWithoutMessageInput {
+  connect: [ReactionWhereUniqueInput!]
+  connectOrCreate: [ReactionCreateOrConnectWithoutMessageInput!]
+  create: [ReactionCreateWithoutMessageInput!]
+  createMany: ReactionCreateManyMessageInputEnvelope
+}
+
+input ReactionCreateNestedManyWithoutUserInput {
+  connect: [ReactionWhereUniqueInput!]
+  connectOrCreate: [ReactionCreateOrConnectWithoutUserInput!]
+  create: [ReactionCreateWithoutUserInput!]
+  createMany: ReactionCreateManyUserInputEnvelope
+}
+
+input ReactionCreateOrConnectWithoutMessageInput {
+  create: ReactionCreateWithoutMessageInput!
+  where: ReactionWhereUniqueInput!
+}
+
+input ReactionCreateOrConnectWithoutUserInput {
+  create: ReactionCreateWithoutUserInput!
+  where: ReactionWhereUniqueInput!
+}
+
+input ReactionCreateWithoutMessageInput {
+  createdAt: DateTime
+  id: String
+  type: String!
+  user: UserCreateNestedOneWithoutReactionInput!
+}
+
+input ReactionCreateWithoutUserInput {
+  createdAt: DateTime
+  id: String
+  message: MessageCreateNestedOneWithoutReactionsInput!
+  type: String!
+}
+
+input ReactionListRelationFilter {
+  every: ReactionWhereInput
+  none: ReactionWhereInput
+  some: ReactionWhereInput
+}
+
+type ReactionMaxAggregate {
+  createdAt: DateTime
+  id: String
+  messageId: String
+  type: String
+  userId: String
+}
+
+input ReactionMessageIdUserIdTypeCompoundUniqueInput {
+  messageId: String!
+  type: String!
+  userId: String!
+}
+
+type ReactionMinAggregate {
+  createdAt: DateTime
+  id: String
+  messageId: String
+  type: String
+  userId: String
+}
+
+input ReactionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ReactionScalarWhereInput {
+  AND: [ReactionScalarWhereInput!]
+  NOT: [ReactionScalarWhereInput!]
+  OR: [ReactionScalarWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  messageId: StringFilter
+  type: StringFilter
+  userId: StringFilter
+}
+
+input ReactionUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  type: StringFieldUpdateOperationsInput
+}
+
+input ReactionUpdateManyWithWhereWithoutMessageInput {
+  data: ReactionUpdateManyMutationInput!
+  where: ReactionScalarWhereInput!
+}
+
+input ReactionUpdateManyWithWhereWithoutUserInput {
+  data: ReactionUpdateManyMutationInput!
+  where: ReactionScalarWhereInput!
+}
+
+input ReactionUpdateManyWithoutMessageNestedInput {
+  connect: [ReactionWhereUniqueInput!]
+  connectOrCreate: [ReactionCreateOrConnectWithoutMessageInput!]
+  create: [ReactionCreateWithoutMessageInput!]
+  createMany: ReactionCreateManyMessageInputEnvelope
+  delete: [ReactionWhereUniqueInput!]
+  deleteMany: [ReactionScalarWhereInput!]
+  disconnect: [ReactionWhereUniqueInput!]
+  set: [ReactionWhereUniqueInput!]
+  update: [ReactionUpdateWithWhereUniqueWithoutMessageInput!]
+  updateMany: [ReactionUpdateManyWithWhereWithoutMessageInput!]
+  upsert: [ReactionUpsertWithWhereUniqueWithoutMessageInput!]
+}
+
+input ReactionUpdateManyWithoutUserNestedInput {
+  connect: [ReactionWhereUniqueInput!]
+  connectOrCreate: [ReactionCreateOrConnectWithoutUserInput!]
+  create: [ReactionCreateWithoutUserInput!]
+  createMany: ReactionCreateManyUserInputEnvelope
+  delete: [ReactionWhereUniqueInput!]
+  deleteMany: [ReactionScalarWhereInput!]
+  disconnect: [ReactionWhereUniqueInput!]
+  set: [ReactionWhereUniqueInput!]
+  update: [ReactionUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [ReactionUpdateManyWithWhereWithoutUserInput!]
+  upsert: [ReactionUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input ReactionUpdateWithWhereUniqueWithoutMessageInput {
+  data: ReactionUpdateWithoutMessageInput!
+  where: ReactionWhereUniqueInput!
+}
+
+input ReactionUpdateWithWhereUniqueWithoutUserInput {
+  data: ReactionUpdateWithoutUserInput!
+  where: ReactionWhereUniqueInput!
+}
+
+input ReactionUpdateWithoutMessageInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  type: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutReactionNestedInput
+}
+
+input ReactionUpdateWithoutUserInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  message: MessageUpdateOneRequiredWithoutReactionsNestedInput
+  type: StringFieldUpdateOperationsInput
+}
+
+input ReactionUpsertWithWhereUniqueWithoutMessageInput {
+  create: ReactionCreateWithoutMessageInput!
+  update: ReactionUpdateWithoutMessageInput!
+  where: ReactionWhereUniqueInput!
+}
+
+input ReactionUpsertWithWhereUniqueWithoutUserInput {
+  create: ReactionCreateWithoutUserInput!
+  update: ReactionUpdateWithoutUserInput!
+  where: ReactionWhereUniqueInput!
+}
+
+input ReactionWhereInput {
+  AND: [ReactionWhereInput!]
+  NOT: [ReactionWhereInput!]
+  OR: [ReactionWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  message: MessageScalarRelationFilter
+  messageId: StringFilter
+  type: StringFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input ReactionWhereUniqueInput {
+  AND: [ReactionWhereInput!]
+  NOT: [ReactionWhereInput!]
+  OR: [ReactionWhereInput!]
+  createdAt: DateTimeFilter
+  id: String
+  message: MessageScalarRelationFilter
+  messageId: StringFilter
+  messageId_userId_type: ReactionMessageIdUserIdTypeCompoundUniqueInput
+  type: StringFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
 }
 
 type RefreshToken {
@@ -1340,6 +4614,834 @@ input RegisterInput {
   lastName: String
   password: String!
   username: String
+}
+
+type Review {
+  content: String!
+  createdAt: DateTime!
+  id: String!
+  rating: Int!
+  updatedAt: DateTime
+  user: User!
+  userId: String!
+}
+
+type ReviewAvgAggregate {
+  rating: Float
+}
+
+type ReviewCountAggregate {
+  _all: Int!
+  content: Int!
+  createdAt: Int!
+  id: Int!
+  rating: Int!
+  updatedAt: Int!
+  userId: Int!
+}
+
+input ReviewCreateManyUserInput {
+  content: String!
+  createdAt: DateTime
+  id: String
+  rating: Int
+  updatedAt: DateTime
+}
+
+input ReviewCreateManyUserInputEnvelope {
+  data: [ReviewCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input ReviewCreateNestedManyWithoutUserInput {
+  connect: [ReviewWhereUniqueInput!]
+  connectOrCreate: [ReviewCreateOrConnectWithoutUserInput!]
+  create: [ReviewCreateWithoutUserInput!]
+  createMany: ReviewCreateManyUserInputEnvelope
+}
+
+input ReviewCreateOrConnectWithoutUserInput {
+  create: ReviewCreateWithoutUserInput!
+  where: ReviewWhereUniqueInput!
+}
+
+input ReviewCreateWithoutUserInput {
+  content: String!
+  createdAt: DateTime
+  id: String
+  rating: Int
+  updatedAt: DateTime
+}
+
+input ReviewListRelationFilter {
+  every: ReviewWhereInput
+  none: ReviewWhereInput
+  some: ReviewWhereInput
+}
+
+type ReviewMaxAggregate {
+  content: String
+  createdAt: DateTime
+  id: String
+  rating: Int
+  updatedAt: DateTime
+  userId: String
+}
+
+type ReviewMinAggregate {
+  content: String
+  createdAt: DateTime
+  id: String
+  rating: Int
+  updatedAt: DateTime
+  userId: String
+}
+
+input ReviewOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ReviewScalarWhereInput {
+  AND: [ReviewScalarWhereInput!]
+  NOT: [ReviewScalarWhereInput!]
+  OR: [ReviewScalarWhereInput!]
+  content: StringFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  rating: IntFilter
+  updatedAt: DateTimeNullableFilter
+  userId: StringFilter
+}
+
+type ReviewSumAggregate {
+  rating: Int
+}
+
+input ReviewUpdateManyMutationInput {
+  content: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  rating: IntFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input ReviewUpdateManyWithWhereWithoutUserInput {
+  data: ReviewUpdateManyMutationInput!
+  where: ReviewScalarWhereInput!
+}
+
+input ReviewUpdateManyWithoutUserNestedInput {
+  connect: [ReviewWhereUniqueInput!]
+  connectOrCreate: [ReviewCreateOrConnectWithoutUserInput!]
+  create: [ReviewCreateWithoutUserInput!]
+  createMany: ReviewCreateManyUserInputEnvelope
+  delete: [ReviewWhereUniqueInput!]
+  deleteMany: [ReviewScalarWhereInput!]
+  disconnect: [ReviewWhereUniqueInput!]
+  set: [ReviewWhereUniqueInput!]
+  update: [ReviewUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [ReviewUpdateManyWithWhereWithoutUserInput!]
+  upsert: [ReviewUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input ReviewUpdateWithWhereUniqueWithoutUserInput {
+  data: ReviewUpdateWithoutUserInput!
+  where: ReviewWhereUniqueInput!
+}
+
+input ReviewUpdateWithoutUserInput {
+  content: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  rating: IntFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input ReviewUpsertWithWhereUniqueWithoutUserInput {
+  create: ReviewCreateWithoutUserInput!
+  update: ReviewUpdateWithoutUserInput!
+  where: ReviewWhereUniqueInput!
+}
+
+input ReviewWhereInput {
+  AND: [ReviewWhereInput!]
+  NOT: [ReviewWhereInput!]
+  OR: [ReviewWhereInput!]
+  content: StringFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  rating: IntFilter
+  updatedAt: DateTimeNullableFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input ReviewWhereUniqueInput {
+  AND: [ReviewWhereInput!]
+  NOT: [ReviewWhereInput!]
+  OR: [ReviewWhereInput!]
+  content: StringFilter
+  createdAt: DateTimeFilter
+  id: String
+  rating: IntFilter
+  updatedAt: DateTimeNullableFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+type Ride {
+  Attachment: [Attachment!]
+  Driver: User
+  Message: [Message!]
+  RideParticipant: [RideParticipant!]
+  _count: RideCount!
+  createdAt: DateTime!
+  driverId: String
+  finishedAt: DateTime
+  id: String!
+  positions: [Position!]
+  startedAt: DateTime
+  status: String!
+}
+
+type RideCount {
+  Attachment: Int!
+  Message: Int!
+  RideParticipant: Int!
+  positions: Int!
+}
+
+type RideCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  driverId: Int!
+  finishedAt: Int!
+  id: Int!
+  startedAt: Int!
+  status: Int!
+}
+
+input RideCreateManyDriverInput {
+  createdAt: DateTime
+  finishedAt: DateTime
+  id: String
+  startedAt: DateTime
+  status: String!
+}
+
+input RideCreateManyDriverInputEnvelope {
+  data: [RideCreateManyDriverInput!]!
+  skipDuplicates: Boolean
+}
+
+input RideCreateNestedManyWithoutDriverInput {
+  connect: [RideWhereUniqueInput!]
+  connectOrCreate: [RideCreateOrConnectWithoutDriverInput!]
+  create: [RideCreateWithoutDriverInput!]
+  createMany: RideCreateManyDriverInputEnvelope
+}
+
+input RideCreateNestedOneWithoutAttachmentInput {
+  connect: RideWhereUniqueInput
+  connectOrCreate: RideCreateOrConnectWithoutAttachmentInput
+  create: RideCreateWithoutAttachmentInput
+}
+
+input RideCreateNestedOneWithoutMessageInput {
+  connect: RideWhereUniqueInput
+  connectOrCreate: RideCreateOrConnectWithoutMessageInput
+  create: RideCreateWithoutMessageInput
+}
+
+input RideCreateNestedOneWithoutPositionsInput {
+  connect: RideWhereUniqueInput
+  connectOrCreate: RideCreateOrConnectWithoutPositionsInput
+  create: RideCreateWithoutPositionsInput
+}
+
+input RideCreateNestedOneWithoutRideParticipantInput {
+  connect: RideWhereUniqueInput
+  connectOrCreate: RideCreateOrConnectWithoutRideParticipantInput
+  create: RideCreateWithoutRideParticipantInput
+}
+
+input RideCreateOrConnectWithoutAttachmentInput {
+  create: RideCreateWithoutAttachmentInput!
+  where: RideWhereUniqueInput!
+}
+
+input RideCreateOrConnectWithoutDriverInput {
+  create: RideCreateWithoutDriverInput!
+  where: RideWhereUniqueInput!
+}
+
+input RideCreateOrConnectWithoutMessageInput {
+  create: RideCreateWithoutMessageInput!
+  where: RideWhereUniqueInput!
+}
+
+input RideCreateOrConnectWithoutPositionsInput {
+  create: RideCreateWithoutPositionsInput!
+  where: RideWhereUniqueInput!
+}
+
+input RideCreateOrConnectWithoutRideParticipantInput {
+  create: RideCreateWithoutRideParticipantInput!
+  where: RideWhereUniqueInput!
+}
+
+input RideCreateWithoutAttachmentInput {
+  Driver: UserCreateNestedOneWithoutRidesInput
+  Message: MessageCreateNestedManyWithoutRideInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutRideInput
+  createdAt: DateTime
+  finishedAt: DateTime
+  id: String
+  positions: PositionCreateNestedManyWithoutRideInput
+  startedAt: DateTime
+  status: String!
+}
+
+input RideCreateWithoutDriverInput {
+  Attachment: AttachmentCreateNestedManyWithoutRideInput
+  Message: MessageCreateNestedManyWithoutRideInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutRideInput
+  createdAt: DateTime
+  finishedAt: DateTime
+  id: String
+  positions: PositionCreateNestedManyWithoutRideInput
+  startedAt: DateTime
+  status: String!
+}
+
+input RideCreateWithoutMessageInput {
+  Attachment: AttachmentCreateNestedManyWithoutRideInput
+  Driver: UserCreateNestedOneWithoutRidesInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutRideInput
+  createdAt: DateTime
+  finishedAt: DateTime
+  id: String
+  positions: PositionCreateNestedManyWithoutRideInput
+  startedAt: DateTime
+  status: String!
+}
+
+input RideCreateWithoutPositionsInput {
+  Attachment: AttachmentCreateNestedManyWithoutRideInput
+  Driver: UserCreateNestedOneWithoutRidesInput
+  Message: MessageCreateNestedManyWithoutRideInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutRideInput
+  createdAt: DateTime
+  finishedAt: DateTime
+  id: String
+  startedAt: DateTime
+  status: String!
+}
+
+input RideCreateWithoutRideParticipantInput {
+  Attachment: AttachmentCreateNestedManyWithoutRideInput
+  Driver: UserCreateNestedOneWithoutRidesInput
+  Message: MessageCreateNestedManyWithoutRideInput
+  createdAt: DateTime
+  finishedAt: DateTime
+  id: String
+  positions: PositionCreateNestedManyWithoutRideInput
+  startedAt: DateTime
+  status: String!
+}
+
+input RideListRelationFilter {
+  every: RideWhereInput
+  none: RideWhereInput
+  some: RideWhereInput
+}
+
+type RideMaxAggregate {
+  createdAt: DateTime
+  driverId: String
+  finishedAt: DateTime
+  id: String
+  startedAt: DateTime
+  status: String
+}
+
+type RideMinAggregate {
+  createdAt: DateTime
+  driverId: String
+  finishedAt: DateTime
+  id: String
+  startedAt: DateTime
+  status: String
+}
+
+input RideNullableScalarRelationFilter {
+  is: RideWhereInput
+  isNot: RideWhereInput
+}
+
+input RideOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+type RideParticipant {
+  id: String!
+  joinedAt: DateTime!
+  ride: Ride!
+  rideId: String!
+  role: String!
+  user: User!
+  userId: String!
+}
+
+type RideParticipantCountAggregate {
+  _all: Int!
+  id: Int!
+  joinedAt: Int!
+  rideId: Int!
+  role: Int!
+  userId: Int!
+}
+
+input RideParticipantCreateManyRideInput {
+  id: String
+  joinedAt: DateTime
+  role: String!
+  userId: String!
+}
+
+input RideParticipantCreateManyRideInputEnvelope {
+  data: [RideParticipantCreateManyRideInput!]!
+  skipDuplicates: Boolean
+}
+
+input RideParticipantCreateManyUserInput {
+  id: String
+  joinedAt: DateTime
+  rideId: String!
+  role: String!
+}
+
+input RideParticipantCreateManyUserInputEnvelope {
+  data: [RideParticipantCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input RideParticipantCreateNestedManyWithoutRideInput {
+  connect: [RideParticipantWhereUniqueInput!]
+  connectOrCreate: [RideParticipantCreateOrConnectWithoutRideInput!]
+  create: [RideParticipantCreateWithoutRideInput!]
+  createMany: RideParticipantCreateManyRideInputEnvelope
+}
+
+input RideParticipantCreateNestedManyWithoutUserInput {
+  connect: [RideParticipantWhereUniqueInput!]
+  connectOrCreate: [RideParticipantCreateOrConnectWithoutUserInput!]
+  create: [RideParticipantCreateWithoutUserInput!]
+  createMany: RideParticipantCreateManyUserInputEnvelope
+}
+
+input RideParticipantCreateOrConnectWithoutRideInput {
+  create: RideParticipantCreateWithoutRideInput!
+  where: RideParticipantWhereUniqueInput!
+}
+
+input RideParticipantCreateOrConnectWithoutUserInput {
+  create: RideParticipantCreateWithoutUserInput!
+  where: RideParticipantWhereUniqueInput!
+}
+
+input RideParticipantCreateWithoutRideInput {
+  id: String
+  joinedAt: DateTime
+  role: String!
+  user: UserCreateNestedOneWithoutRideParticipantInput!
+}
+
+input RideParticipantCreateWithoutUserInput {
+  id: String
+  joinedAt: DateTime
+  ride: RideCreateNestedOneWithoutRideParticipantInput!
+  role: String!
+}
+
+input RideParticipantListRelationFilter {
+  every: RideParticipantWhereInput
+  none: RideParticipantWhereInput
+  some: RideParticipantWhereInput
+}
+
+type RideParticipantMaxAggregate {
+  id: String
+  joinedAt: DateTime
+  rideId: String
+  role: String
+  userId: String
+}
+
+type RideParticipantMinAggregate {
+  id: String
+  joinedAt: DateTime
+  rideId: String
+  role: String
+  userId: String
+}
+
+input RideParticipantOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input RideParticipantRideIdUserIdCompoundUniqueInput {
+  rideId: String!
+  userId: String!
+}
+
+input RideParticipantScalarWhereInput {
+  AND: [RideParticipantScalarWhereInput!]
+  NOT: [RideParticipantScalarWhereInput!]
+  OR: [RideParticipantScalarWhereInput!]
+  id: StringFilter
+  joinedAt: DateTimeFilter
+  rideId: StringFilter
+  role: StringFilter
+  userId: StringFilter
+}
+
+input RideParticipantUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  joinedAt: DateTimeFieldUpdateOperationsInput
+  role: StringFieldUpdateOperationsInput
+}
+
+input RideParticipantUpdateManyWithWhereWithoutRideInput {
+  data: RideParticipantUpdateManyMutationInput!
+  where: RideParticipantScalarWhereInput!
+}
+
+input RideParticipantUpdateManyWithWhereWithoutUserInput {
+  data: RideParticipantUpdateManyMutationInput!
+  where: RideParticipantScalarWhereInput!
+}
+
+input RideParticipantUpdateManyWithoutRideNestedInput {
+  connect: [RideParticipantWhereUniqueInput!]
+  connectOrCreate: [RideParticipantCreateOrConnectWithoutRideInput!]
+  create: [RideParticipantCreateWithoutRideInput!]
+  createMany: RideParticipantCreateManyRideInputEnvelope
+  delete: [RideParticipantWhereUniqueInput!]
+  deleteMany: [RideParticipantScalarWhereInput!]
+  disconnect: [RideParticipantWhereUniqueInput!]
+  set: [RideParticipantWhereUniqueInput!]
+  update: [RideParticipantUpdateWithWhereUniqueWithoutRideInput!]
+  updateMany: [RideParticipantUpdateManyWithWhereWithoutRideInput!]
+  upsert: [RideParticipantUpsertWithWhereUniqueWithoutRideInput!]
+}
+
+input RideParticipantUpdateManyWithoutUserNestedInput {
+  connect: [RideParticipantWhereUniqueInput!]
+  connectOrCreate: [RideParticipantCreateOrConnectWithoutUserInput!]
+  create: [RideParticipantCreateWithoutUserInput!]
+  createMany: RideParticipantCreateManyUserInputEnvelope
+  delete: [RideParticipantWhereUniqueInput!]
+  deleteMany: [RideParticipantScalarWhereInput!]
+  disconnect: [RideParticipantWhereUniqueInput!]
+  set: [RideParticipantWhereUniqueInput!]
+  update: [RideParticipantUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [RideParticipantUpdateManyWithWhereWithoutUserInput!]
+  upsert: [RideParticipantUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input RideParticipantUpdateWithWhereUniqueWithoutRideInput {
+  data: RideParticipantUpdateWithoutRideInput!
+  where: RideParticipantWhereUniqueInput!
+}
+
+input RideParticipantUpdateWithWhereUniqueWithoutUserInput {
+  data: RideParticipantUpdateWithoutUserInput!
+  where: RideParticipantWhereUniqueInput!
+}
+
+input RideParticipantUpdateWithoutRideInput {
+  id: StringFieldUpdateOperationsInput
+  joinedAt: DateTimeFieldUpdateOperationsInput
+  role: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutRideParticipantNestedInput
+}
+
+input RideParticipantUpdateWithoutUserInput {
+  id: StringFieldUpdateOperationsInput
+  joinedAt: DateTimeFieldUpdateOperationsInput
+  ride: RideUpdateOneRequiredWithoutRideParticipantNestedInput
+  role: StringFieldUpdateOperationsInput
+}
+
+input RideParticipantUpsertWithWhereUniqueWithoutRideInput {
+  create: RideParticipantCreateWithoutRideInput!
+  update: RideParticipantUpdateWithoutRideInput!
+  where: RideParticipantWhereUniqueInput!
+}
+
+input RideParticipantUpsertWithWhereUniqueWithoutUserInput {
+  create: RideParticipantCreateWithoutUserInput!
+  update: RideParticipantUpdateWithoutUserInput!
+  where: RideParticipantWhereUniqueInput!
+}
+
+input RideParticipantWhereInput {
+  AND: [RideParticipantWhereInput!]
+  NOT: [RideParticipantWhereInput!]
+  OR: [RideParticipantWhereInput!]
+  id: StringFilter
+  joinedAt: DateTimeFilter
+  ride: RideScalarRelationFilter
+  rideId: StringFilter
+  role: StringFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input RideParticipantWhereUniqueInput {
+  AND: [RideParticipantWhereInput!]
+  NOT: [RideParticipantWhereInput!]
+  OR: [RideParticipantWhereInput!]
+  id: String
+  joinedAt: DateTimeFilter
+  ride: RideScalarRelationFilter
+  rideId: StringFilter
+  rideId_userId: RideParticipantRideIdUserIdCompoundUniqueInput
+  role: StringFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+input RideScalarRelationFilter {
+  is: RideWhereInput
+  isNot: RideWhereInput
+}
+
+input RideScalarWhereInput {
+  AND: [RideScalarWhereInput!]
+  NOT: [RideScalarWhereInput!]
+  OR: [RideScalarWhereInput!]
+  createdAt: DateTimeFilter
+  driverId: StringNullableFilter
+  finishedAt: DateTimeNullableFilter
+  id: StringFilter
+  startedAt: DateTimeNullableFilter
+  status: StringFilter
+}
+
+input RideUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  finishedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  startedAt: NullableDateTimeFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+}
+
+input RideUpdateManyWithWhereWithoutDriverInput {
+  data: RideUpdateManyMutationInput!
+  where: RideScalarWhereInput!
+}
+
+input RideUpdateManyWithoutDriverNestedInput {
+  connect: [RideWhereUniqueInput!]
+  connectOrCreate: [RideCreateOrConnectWithoutDriverInput!]
+  create: [RideCreateWithoutDriverInput!]
+  createMany: RideCreateManyDriverInputEnvelope
+  delete: [RideWhereUniqueInput!]
+  deleteMany: [RideScalarWhereInput!]
+  disconnect: [RideWhereUniqueInput!]
+  set: [RideWhereUniqueInput!]
+  update: [RideUpdateWithWhereUniqueWithoutDriverInput!]
+  updateMany: [RideUpdateManyWithWhereWithoutDriverInput!]
+  upsert: [RideUpsertWithWhereUniqueWithoutDriverInput!]
+}
+
+input RideUpdateOneRequiredWithoutRideParticipantNestedInput {
+  connect: RideWhereUniqueInput
+  connectOrCreate: RideCreateOrConnectWithoutRideParticipantInput
+  create: RideCreateWithoutRideParticipantInput
+  update: RideUpdateToOneWithWhereWithoutRideParticipantInput
+  upsert: RideUpsertWithoutRideParticipantInput
+}
+
+input RideUpdateOneWithoutAttachmentNestedInput {
+  connect: RideWhereUniqueInput
+  connectOrCreate: RideCreateOrConnectWithoutAttachmentInput
+  create: RideCreateWithoutAttachmentInput
+  delete: RideWhereInput
+  disconnect: RideWhereInput
+  update: RideUpdateToOneWithWhereWithoutAttachmentInput
+  upsert: RideUpsertWithoutAttachmentInput
+}
+
+input RideUpdateOneWithoutMessageNestedInput {
+  connect: RideWhereUniqueInput
+  connectOrCreate: RideCreateOrConnectWithoutMessageInput
+  create: RideCreateWithoutMessageInput
+  delete: RideWhereInput
+  disconnect: RideWhereInput
+  update: RideUpdateToOneWithWhereWithoutMessageInput
+  upsert: RideUpsertWithoutMessageInput
+}
+
+input RideUpdateOneWithoutPositionsNestedInput {
+  connect: RideWhereUniqueInput
+  connectOrCreate: RideCreateOrConnectWithoutPositionsInput
+  create: RideCreateWithoutPositionsInput
+  delete: RideWhereInput
+  disconnect: RideWhereInput
+  update: RideUpdateToOneWithWhereWithoutPositionsInput
+  upsert: RideUpsertWithoutPositionsInput
+}
+
+input RideUpdateToOneWithWhereWithoutAttachmentInput {
+  data: RideUpdateWithoutAttachmentInput!
+  where: RideWhereInput
+}
+
+input RideUpdateToOneWithWhereWithoutMessageInput {
+  data: RideUpdateWithoutMessageInput!
+  where: RideWhereInput
+}
+
+input RideUpdateToOneWithWhereWithoutPositionsInput {
+  data: RideUpdateWithoutPositionsInput!
+  where: RideWhereInput
+}
+
+input RideUpdateToOneWithWhereWithoutRideParticipantInput {
+  data: RideUpdateWithoutRideParticipantInput!
+  where: RideWhereInput
+}
+
+input RideUpdateWithWhereUniqueWithoutDriverInput {
+  data: RideUpdateWithoutDriverInput!
+  where: RideWhereUniqueInput!
+}
+
+input RideUpdateWithoutAttachmentInput {
+  Driver: UserUpdateOneWithoutRidesNestedInput
+  Message: MessageUpdateManyWithoutRideNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutRideNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  finishedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  positions: PositionUpdateManyWithoutRideNestedInput
+  startedAt: NullableDateTimeFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+}
+
+input RideUpdateWithoutDriverInput {
+  Attachment: AttachmentUpdateManyWithoutRideNestedInput
+  Message: MessageUpdateManyWithoutRideNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutRideNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  finishedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  positions: PositionUpdateManyWithoutRideNestedInput
+  startedAt: NullableDateTimeFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+}
+
+input RideUpdateWithoutMessageInput {
+  Attachment: AttachmentUpdateManyWithoutRideNestedInput
+  Driver: UserUpdateOneWithoutRidesNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutRideNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  finishedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  positions: PositionUpdateManyWithoutRideNestedInput
+  startedAt: NullableDateTimeFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+}
+
+input RideUpdateWithoutPositionsInput {
+  Attachment: AttachmentUpdateManyWithoutRideNestedInput
+  Driver: UserUpdateOneWithoutRidesNestedInput
+  Message: MessageUpdateManyWithoutRideNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutRideNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  finishedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  startedAt: NullableDateTimeFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+}
+
+input RideUpdateWithoutRideParticipantInput {
+  Attachment: AttachmentUpdateManyWithoutRideNestedInput
+  Driver: UserUpdateOneWithoutRidesNestedInput
+  Message: MessageUpdateManyWithoutRideNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  finishedAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  positions: PositionUpdateManyWithoutRideNestedInput
+  startedAt: NullableDateTimeFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+}
+
+input RideUpsertWithWhereUniqueWithoutDriverInput {
+  create: RideCreateWithoutDriverInput!
+  update: RideUpdateWithoutDriverInput!
+  where: RideWhereUniqueInput!
+}
+
+input RideUpsertWithoutAttachmentInput {
+  create: RideCreateWithoutAttachmentInput!
+  update: RideUpdateWithoutAttachmentInput!
+  where: RideWhereInput
+}
+
+input RideUpsertWithoutMessageInput {
+  create: RideCreateWithoutMessageInput!
+  update: RideUpdateWithoutMessageInput!
+  where: RideWhereInput
+}
+
+input RideUpsertWithoutPositionsInput {
+  create: RideCreateWithoutPositionsInput!
+  update: RideUpdateWithoutPositionsInput!
+  where: RideWhereInput
+}
+
+input RideUpsertWithoutRideParticipantInput {
+  create: RideCreateWithoutRideParticipantInput!
+  update: RideUpdateWithoutRideParticipantInput!
+  where: RideWhereInput
+}
+
+input RideWhereInput {
+  AND: [RideWhereInput!]
+  Attachment: AttachmentListRelationFilter
+  Driver: UserNullableScalarRelationFilter
+  Message: MessageListRelationFilter
+  NOT: [RideWhereInput!]
+  OR: [RideWhereInput!]
+  RideParticipant: RideParticipantListRelationFilter
+  createdAt: DateTimeFilter
+  driverId: StringNullableFilter
+  finishedAt: DateTimeNullableFilter
+  id: StringFilter
+  positions: PositionListRelationFilter
+  startedAt: DateTimeNullableFilter
+  status: StringFilter
+}
+
+input RideWhereUniqueInput {
+  AND: [RideWhereInput!]
+  Attachment: AttachmentListRelationFilter
+  Driver: UserNullableScalarRelationFilter
+  Message: MessageListRelationFilter
+  NOT: [RideWhereInput!]
+  OR: [RideWhereInput!]
+  RideParticipant: RideParticipantListRelationFilter
+  createdAt: DateTimeFilter
+  driverId: StringNullableFilter
+  finishedAt: DateTimeNullableFilter
+  id: String
+  positions: PositionListRelationFilter
+  startedAt: DateTimeNullableFilter
+  status: StringFilter
 }
 
 type Role {
@@ -1512,6 +5614,12 @@ input UploadedFileRefInput {
 }
 
 type User {
+  ConversationParticipant: [ConversationParticipant!]
+  Message: [Message!]
+  MessageReadReceipt: [MessageReadReceipt!]
+  QrToken: [QrToken!]
+  Reaction: [Reaction!]
+  RideParticipant: [RideParticipant!]
   Role: [Role!]
   UserDocument: [UserDocument!]
   UserImage: [UserImage!]
@@ -1525,6 +5633,8 @@ type User {
   lastName: String
   password: String!
   phone: String
+  review: [Review!]
+  rides: [Ride!]
   tokens: [RefreshToken!]
   updatedAt: DateTime
   username: String
@@ -1532,9 +5642,17 @@ type User {
 }
 
 type UserCount {
+  ConversationParticipant: Int!
+  Message: Int!
+  MessageReadReceipt: Int!
+  QrToken: Int!
+  Reaction: Int!
+  RideParticipant: Int!
   Role: Int!
   UserDocument: Int!
   UserImage: Int!
+  review: Int!
+  rides: Int!
   tokens: Int!
   vehicles: Int!
 }
@@ -1554,6 +5672,12 @@ type UserCountAggregate {
 }
 
 input UserCreateInput {
+  ConversationParticipant: ConversationParticipantCreateNestedManyWithoutUserInput
+  Message: MessageCreateNestedManyWithoutSenderInput
+  MessageReadReceipt: MessageReadReceiptCreateNestedManyWithoutUserInput
+  QrToken: QrTokenCreateNestedManyWithoutUserInput
+  Reaction: ReactionCreateNestedManyWithoutUserInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutUserInput
   Role: RoleCreateNestedManyWithoutUsersInput
   UserDocument: UserDocumentCreateNestedManyWithoutUserInput
   UserImage: UserImageCreateNestedManyWithoutUserInput
@@ -1566,10 +5690,48 @@ input UserCreateInput {
   lastName: String
   password: String!
   phone: String
+  review: ReviewCreateNestedManyWithoutUserInput
+  rides: RideCreateNestedManyWithoutDriverInput
   tokens: RefreshTokenCreateNestedManyWithoutUserInput
   updatedAt: DateTime
   username: String
   vehicles: DriverVehicleCreateNestedManyWithoutUserInput
+}
+
+input UserCreateNestedOneWithoutConversationParticipantInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutConversationParticipantInput
+  create: UserCreateWithoutConversationParticipantInput
+}
+
+input UserCreateNestedOneWithoutMessageInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutMessageInput
+  create: UserCreateWithoutMessageInput
+}
+
+input UserCreateNestedOneWithoutMessageReadReceiptInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutMessageReadReceiptInput
+  create: UserCreateWithoutMessageReadReceiptInput
+}
+
+input UserCreateNestedOneWithoutReactionInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutReactionInput
+  create: UserCreateWithoutReactionInput
+}
+
+input UserCreateNestedOneWithoutRideParticipantInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutRideParticipantInput
+  create: UserCreateWithoutRideParticipantInput
+}
+
+input UserCreateNestedOneWithoutRidesInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutRidesInput
+  create: UserCreateWithoutRidesInput
 }
 
 input UserCreateNestedOneWithoutUserDocumentInput {
@@ -1596,6 +5758,36 @@ input UserCreateNestedOneWithoutVehiclesInput {
   create: UserCreateWithoutVehiclesInput
 }
 
+input UserCreateOrConnectWithoutConversationParticipantInput {
+  create: UserCreateWithoutConversationParticipantInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutMessageInput {
+  create: UserCreateWithoutMessageInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutMessageReadReceiptInput {
+  create: UserCreateWithoutMessageReadReceiptInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutReactionInput {
+  create: UserCreateWithoutReactionInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutRideParticipantInput {
+  create: UserCreateWithoutRideParticipantInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutRidesInput {
+  create: UserCreateWithoutRidesInput!
+  where: UserWhereUniqueInput!
+}
+
 input UserCreateOrConnectWithoutUserDocumentInput {
   create: UserCreateWithoutUserDocumentInput!
   where: UserWhereUniqueInput!
@@ -1616,7 +5808,169 @@ input UserCreateOrConnectWithoutVehiclesInput {
   where: UserWhereUniqueInput!
 }
 
+input UserCreateWithoutConversationParticipantInput {
+  Message: MessageCreateNestedManyWithoutSenderInput
+  MessageReadReceipt: MessageReadReceiptCreateNestedManyWithoutUserInput
+  QrToken: QrTokenCreateNestedManyWithoutUserInput
+  Reaction: ReactionCreateNestedManyWithoutUserInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutUserInput
+  Role: RoleCreateNestedManyWithoutUsersInput
+  UserDocument: UserDocumentCreateNestedManyWithoutUserInput
+  UserImage: UserImageCreateNestedManyWithoutUserInput
+  UserPreference: UserPreferenceCreateNestedOneWithoutUserInput
+  createdAt: DateTime
+  email: String!
+  firstName: String!
+  id: String
+  isVerified: Boolean
+  lastName: String
+  password: String!
+  phone: String
+  review: ReviewCreateNestedManyWithoutUserInput
+  rides: RideCreateNestedManyWithoutDriverInput
+  tokens: RefreshTokenCreateNestedManyWithoutUserInput
+  updatedAt: DateTime
+  username: String
+  vehicles: DriverVehicleCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutMessageInput {
+  ConversationParticipant: ConversationParticipantCreateNestedManyWithoutUserInput
+  MessageReadReceipt: MessageReadReceiptCreateNestedManyWithoutUserInput
+  QrToken: QrTokenCreateNestedManyWithoutUserInput
+  Reaction: ReactionCreateNestedManyWithoutUserInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutUserInput
+  Role: RoleCreateNestedManyWithoutUsersInput
+  UserDocument: UserDocumentCreateNestedManyWithoutUserInput
+  UserImage: UserImageCreateNestedManyWithoutUserInput
+  UserPreference: UserPreferenceCreateNestedOneWithoutUserInput
+  createdAt: DateTime
+  email: String!
+  firstName: String!
+  id: String
+  isVerified: Boolean
+  lastName: String
+  password: String!
+  phone: String
+  review: ReviewCreateNestedManyWithoutUserInput
+  rides: RideCreateNestedManyWithoutDriverInput
+  tokens: RefreshTokenCreateNestedManyWithoutUserInput
+  updatedAt: DateTime
+  username: String
+  vehicles: DriverVehicleCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutMessageReadReceiptInput {
+  ConversationParticipant: ConversationParticipantCreateNestedManyWithoutUserInput
+  Message: MessageCreateNestedManyWithoutSenderInput
+  QrToken: QrTokenCreateNestedManyWithoutUserInput
+  Reaction: ReactionCreateNestedManyWithoutUserInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutUserInput
+  Role: RoleCreateNestedManyWithoutUsersInput
+  UserDocument: UserDocumentCreateNestedManyWithoutUserInput
+  UserImage: UserImageCreateNestedManyWithoutUserInput
+  UserPreference: UserPreferenceCreateNestedOneWithoutUserInput
+  createdAt: DateTime
+  email: String!
+  firstName: String!
+  id: String
+  isVerified: Boolean
+  lastName: String
+  password: String!
+  phone: String
+  review: ReviewCreateNestedManyWithoutUserInput
+  rides: RideCreateNestedManyWithoutDriverInput
+  tokens: RefreshTokenCreateNestedManyWithoutUserInput
+  updatedAt: DateTime
+  username: String
+  vehicles: DriverVehicleCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutReactionInput {
+  ConversationParticipant: ConversationParticipantCreateNestedManyWithoutUserInput
+  Message: MessageCreateNestedManyWithoutSenderInput
+  MessageReadReceipt: MessageReadReceiptCreateNestedManyWithoutUserInput
+  QrToken: QrTokenCreateNestedManyWithoutUserInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutUserInput
+  Role: RoleCreateNestedManyWithoutUsersInput
+  UserDocument: UserDocumentCreateNestedManyWithoutUserInput
+  UserImage: UserImageCreateNestedManyWithoutUserInput
+  UserPreference: UserPreferenceCreateNestedOneWithoutUserInput
+  createdAt: DateTime
+  email: String!
+  firstName: String!
+  id: String
+  isVerified: Boolean
+  lastName: String
+  password: String!
+  phone: String
+  review: ReviewCreateNestedManyWithoutUserInput
+  rides: RideCreateNestedManyWithoutDriverInput
+  tokens: RefreshTokenCreateNestedManyWithoutUserInput
+  updatedAt: DateTime
+  username: String
+  vehicles: DriverVehicleCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutRideParticipantInput {
+  ConversationParticipant: ConversationParticipantCreateNestedManyWithoutUserInput
+  Message: MessageCreateNestedManyWithoutSenderInput
+  MessageReadReceipt: MessageReadReceiptCreateNestedManyWithoutUserInput
+  QrToken: QrTokenCreateNestedManyWithoutUserInput
+  Reaction: ReactionCreateNestedManyWithoutUserInput
+  Role: RoleCreateNestedManyWithoutUsersInput
+  UserDocument: UserDocumentCreateNestedManyWithoutUserInput
+  UserImage: UserImageCreateNestedManyWithoutUserInput
+  UserPreference: UserPreferenceCreateNestedOneWithoutUserInput
+  createdAt: DateTime
+  email: String!
+  firstName: String!
+  id: String
+  isVerified: Boolean
+  lastName: String
+  password: String!
+  phone: String
+  review: ReviewCreateNestedManyWithoutUserInput
+  rides: RideCreateNestedManyWithoutDriverInput
+  tokens: RefreshTokenCreateNestedManyWithoutUserInput
+  updatedAt: DateTime
+  username: String
+  vehicles: DriverVehicleCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutRidesInput {
+  ConversationParticipant: ConversationParticipantCreateNestedManyWithoutUserInput
+  Message: MessageCreateNestedManyWithoutSenderInput
+  MessageReadReceipt: MessageReadReceiptCreateNestedManyWithoutUserInput
+  QrToken: QrTokenCreateNestedManyWithoutUserInput
+  Reaction: ReactionCreateNestedManyWithoutUserInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutUserInput
+  Role: RoleCreateNestedManyWithoutUsersInput
+  UserDocument: UserDocumentCreateNestedManyWithoutUserInput
+  UserImage: UserImageCreateNestedManyWithoutUserInput
+  UserPreference: UserPreferenceCreateNestedOneWithoutUserInput
+  createdAt: DateTime
+  email: String!
+  firstName: String!
+  id: String
+  isVerified: Boolean
+  lastName: String
+  password: String!
+  phone: String
+  review: ReviewCreateNestedManyWithoutUserInput
+  tokens: RefreshTokenCreateNestedManyWithoutUserInput
+  updatedAt: DateTime
+  username: String
+  vehicles: DriverVehicleCreateNestedManyWithoutUserInput
+}
+
 input UserCreateWithoutUserDocumentInput {
+  ConversationParticipant: ConversationParticipantCreateNestedManyWithoutUserInput
+  Message: MessageCreateNestedManyWithoutSenderInput
+  MessageReadReceipt: MessageReadReceiptCreateNestedManyWithoutUserInput
+  QrToken: QrTokenCreateNestedManyWithoutUserInput
+  Reaction: ReactionCreateNestedManyWithoutUserInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutUserInput
   Role: RoleCreateNestedManyWithoutUsersInput
   UserImage: UserImageCreateNestedManyWithoutUserInput
   UserPreference: UserPreferenceCreateNestedOneWithoutUserInput
@@ -1628,6 +5982,8 @@ input UserCreateWithoutUserDocumentInput {
   lastName: String
   password: String!
   phone: String
+  review: ReviewCreateNestedManyWithoutUserInput
+  rides: RideCreateNestedManyWithoutDriverInput
   tokens: RefreshTokenCreateNestedManyWithoutUserInput
   updatedAt: DateTime
   username: String
@@ -1635,6 +5991,12 @@ input UserCreateWithoutUserDocumentInput {
 }
 
 input UserCreateWithoutUserImageInput {
+  ConversationParticipant: ConversationParticipantCreateNestedManyWithoutUserInput
+  Message: MessageCreateNestedManyWithoutSenderInput
+  MessageReadReceipt: MessageReadReceiptCreateNestedManyWithoutUserInput
+  QrToken: QrTokenCreateNestedManyWithoutUserInput
+  Reaction: ReactionCreateNestedManyWithoutUserInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutUserInput
   Role: RoleCreateNestedManyWithoutUsersInput
   UserDocument: UserDocumentCreateNestedManyWithoutUserInput
   UserPreference: UserPreferenceCreateNestedOneWithoutUserInput
@@ -1646,6 +6008,8 @@ input UserCreateWithoutUserImageInput {
   lastName: String
   password: String!
   phone: String
+  review: ReviewCreateNestedManyWithoutUserInput
+  rides: RideCreateNestedManyWithoutDriverInput
   tokens: RefreshTokenCreateNestedManyWithoutUserInput
   updatedAt: DateTime
   username: String
@@ -1653,6 +6017,12 @@ input UserCreateWithoutUserImageInput {
 }
 
 input UserCreateWithoutUserPreferenceInput {
+  ConversationParticipant: ConversationParticipantCreateNestedManyWithoutUserInput
+  Message: MessageCreateNestedManyWithoutSenderInput
+  MessageReadReceipt: MessageReadReceiptCreateNestedManyWithoutUserInput
+  QrToken: QrTokenCreateNestedManyWithoutUserInput
+  Reaction: ReactionCreateNestedManyWithoutUserInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutUserInput
   Role: RoleCreateNestedManyWithoutUsersInput
   UserDocument: UserDocumentCreateNestedManyWithoutUserInput
   UserImage: UserImageCreateNestedManyWithoutUserInput
@@ -1664,6 +6034,8 @@ input UserCreateWithoutUserPreferenceInput {
   lastName: String
   password: String!
   phone: String
+  review: ReviewCreateNestedManyWithoutUserInput
+  rides: RideCreateNestedManyWithoutDriverInput
   tokens: RefreshTokenCreateNestedManyWithoutUserInput
   updatedAt: DateTime
   username: String
@@ -1671,6 +6043,12 @@ input UserCreateWithoutUserPreferenceInput {
 }
 
 input UserCreateWithoutVehiclesInput {
+  ConversationParticipant: ConversationParticipantCreateNestedManyWithoutUserInput
+  Message: MessageCreateNestedManyWithoutSenderInput
+  MessageReadReceipt: MessageReadReceiptCreateNestedManyWithoutUserInput
+  QrToken: QrTokenCreateNestedManyWithoutUserInput
+  Reaction: ReactionCreateNestedManyWithoutUserInput
+  RideParticipant: RideParticipantCreateNestedManyWithoutUserInput
   Role: RoleCreateNestedManyWithoutUsersInput
   UserDocument: UserDocumentCreateNestedManyWithoutUserInput
   UserImage: UserImageCreateNestedManyWithoutUserInput
@@ -1683,6 +6061,8 @@ input UserCreateWithoutVehiclesInput {
   lastName: String
   password: String!
   phone: String
+  review: ReviewCreateNestedManyWithoutUserInput
+  rides: RideCreateNestedManyWithoutDriverInput
   tokens: RefreshTokenCreateNestedManyWithoutUserInput
   updatedAt: DateTime
   username: String
@@ -2168,7 +6548,18 @@ type UserMinAggregate {
   username: String
 }
 
+input UserNullableScalarRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
 input UserOrderByWithRelationInput {
+  ConversationParticipant: ConversationParticipantOrderByRelationAggregateInput
+  Message: MessageOrderByRelationAggregateInput
+  MessageReadReceipt: MessageReadReceiptOrderByRelationAggregateInput
+  QrToken: QrTokenOrderByRelationAggregateInput
+  Reaction: ReactionOrderByRelationAggregateInput
+  RideParticipant: RideParticipantOrderByRelationAggregateInput
   Role: RoleOrderByRelationAggregateInput
   UserDocument: UserDocumentOrderByRelationAggregateInput
   UserImage: UserImageOrderByRelationAggregateInput
@@ -2181,6 +6572,8 @@ input UserOrderByWithRelationInput {
   lastName: SortOrderInput
   password: SortOrder
   phone: SortOrderInput
+  review: ReviewOrderByRelationAggregateInput
+  rides: RideOrderByRelationAggregateInput
   tokens: RefreshTokenOrderByRelationAggregateInput
   updatedAt: SortOrderInput
   username: SortOrderInput
@@ -2524,6 +6917,73 @@ input UserScalarRelationFilter {
   isNot: UserWhereInput
 }
 
+input UserUpdateInput {
+  ConversationParticipant: ConversationParticipantUpdateManyWithoutUserNestedInput
+  Message: MessageUpdateManyWithoutSenderNestedInput
+  MessageReadReceipt: MessageReadReceiptUpdateManyWithoutUserNestedInput
+  QrToken: QrTokenUpdateManyWithoutUserNestedInput
+  Reaction: ReactionUpdateManyWithoutUserNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutUserNestedInput
+  Role: RoleUpdateManyWithoutUsersNestedInput
+  UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
+  UserImage: UserImageUpdateManyWithoutUserNestedInput
+  UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isVerified: BoolFieldUpdateOperationsInput
+  lastName: NullableStringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  review: ReviewUpdateManyWithoutUserNestedInput
+  rides: RideUpdateManyWithoutDriverNestedInput
+  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+  vehicles: DriverVehicleUpdateManyWithoutUserNestedInput
+}
+
+input UserUpdateOneRequiredWithoutConversationParticipantNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutConversationParticipantInput
+  create: UserCreateWithoutConversationParticipantInput
+  update: UserUpdateToOneWithWhereWithoutConversationParticipantInput
+  upsert: UserUpsertWithoutConversationParticipantInput
+}
+
+input UserUpdateOneRequiredWithoutMessageNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutMessageInput
+  create: UserCreateWithoutMessageInput
+  update: UserUpdateToOneWithWhereWithoutMessageInput
+  upsert: UserUpsertWithoutMessageInput
+}
+
+input UserUpdateOneRequiredWithoutMessageReadReceiptNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutMessageReadReceiptInput
+  create: UserCreateWithoutMessageReadReceiptInput
+  update: UserUpdateToOneWithWhereWithoutMessageReadReceiptInput
+  upsert: UserUpsertWithoutMessageReadReceiptInput
+}
+
+input UserUpdateOneRequiredWithoutReactionNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutReactionInput
+  create: UserCreateWithoutReactionInput
+  update: UserUpdateToOneWithWhereWithoutReactionInput
+  upsert: UserUpsertWithoutReactionInput
+}
+
+input UserUpdateOneRequiredWithoutRideParticipantNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutRideParticipantInput
+  create: UserCreateWithoutRideParticipantInput
+  update: UserUpdateToOneWithWhereWithoutRideParticipantInput
+  upsert: UserUpsertWithoutRideParticipantInput
+}
+
 input UserUpdateOneRequiredWithoutUserDocumentNestedInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutUserDocumentInput
@@ -2556,6 +7016,46 @@ input UserUpdateOneRequiredWithoutVehiclesNestedInput {
   upsert: UserUpsertWithoutVehiclesInput
 }
 
+input UserUpdateOneWithoutRidesNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutRidesInput
+  create: UserCreateWithoutRidesInput
+  delete: UserWhereInput
+  disconnect: UserWhereInput
+  update: UserUpdateToOneWithWhereWithoutRidesInput
+  upsert: UserUpsertWithoutRidesInput
+}
+
+input UserUpdateToOneWithWhereWithoutConversationParticipantInput {
+  data: UserUpdateWithoutConversationParticipantInput!
+  where: UserWhereInput
+}
+
+input UserUpdateToOneWithWhereWithoutMessageInput {
+  data: UserUpdateWithoutMessageInput!
+  where: UserWhereInput
+}
+
+input UserUpdateToOneWithWhereWithoutMessageReadReceiptInput {
+  data: UserUpdateWithoutMessageReadReceiptInput!
+  where: UserWhereInput
+}
+
+input UserUpdateToOneWithWhereWithoutReactionInput {
+  data: UserUpdateWithoutReactionInput!
+  where: UserWhereInput
+}
+
+input UserUpdateToOneWithWhereWithoutRideParticipantInput {
+  data: UserUpdateWithoutRideParticipantInput!
+  where: UserWhereInput
+}
+
+input UserUpdateToOneWithWhereWithoutRidesInput {
+  data: UserUpdateWithoutRidesInput!
+  where: UserWhereInput
+}
+
 input UserUpdateToOneWithWhereWithoutUserDocumentInput {
   data: UserUpdateWithoutUserDocumentInput!
   where: UserWhereInput
@@ -2576,7 +7076,169 @@ input UserUpdateToOneWithWhereWithoutVehiclesInput {
   where: UserWhereInput
 }
 
+input UserUpdateWithoutConversationParticipantInput {
+  Message: MessageUpdateManyWithoutSenderNestedInput
+  MessageReadReceipt: MessageReadReceiptUpdateManyWithoutUserNestedInput
+  QrToken: QrTokenUpdateManyWithoutUserNestedInput
+  Reaction: ReactionUpdateManyWithoutUserNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutUserNestedInput
+  Role: RoleUpdateManyWithoutUsersNestedInput
+  UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
+  UserImage: UserImageUpdateManyWithoutUserNestedInput
+  UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isVerified: BoolFieldUpdateOperationsInput
+  lastName: NullableStringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  review: ReviewUpdateManyWithoutUserNestedInput
+  rides: RideUpdateManyWithoutDriverNestedInput
+  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+  vehicles: DriverVehicleUpdateManyWithoutUserNestedInput
+}
+
+input UserUpdateWithoutMessageInput {
+  ConversationParticipant: ConversationParticipantUpdateManyWithoutUserNestedInput
+  MessageReadReceipt: MessageReadReceiptUpdateManyWithoutUserNestedInput
+  QrToken: QrTokenUpdateManyWithoutUserNestedInput
+  Reaction: ReactionUpdateManyWithoutUserNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutUserNestedInput
+  Role: RoleUpdateManyWithoutUsersNestedInput
+  UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
+  UserImage: UserImageUpdateManyWithoutUserNestedInput
+  UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isVerified: BoolFieldUpdateOperationsInput
+  lastName: NullableStringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  review: ReviewUpdateManyWithoutUserNestedInput
+  rides: RideUpdateManyWithoutDriverNestedInput
+  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+  vehicles: DriverVehicleUpdateManyWithoutUserNestedInput
+}
+
+input UserUpdateWithoutMessageReadReceiptInput {
+  ConversationParticipant: ConversationParticipantUpdateManyWithoutUserNestedInput
+  Message: MessageUpdateManyWithoutSenderNestedInput
+  QrToken: QrTokenUpdateManyWithoutUserNestedInput
+  Reaction: ReactionUpdateManyWithoutUserNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutUserNestedInput
+  Role: RoleUpdateManyWithoutUsersNestedInput
+  UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
+  UserImage: UserImageUpdateManyWithoutUserNestedInput
+  UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isVerified: BoolFieldUpdateOperationsInput
+  lastName: NullableStringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  review: ReviewUpdateManyWithoutUserNestedInput
+  rides: RideUpdateManyWithoutDriverNestedInput
+  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+  vehicles: DriverVehicleUpdateManyWithoutUserNestedInput
+}
+
+input UserUpdateWithoutReactionInput {
+  ConversationParticipant: ConversationParticipantUpdateManyWithoutUserNestedInput
+  Message: MessageUpdateManyWithoutSenderNestedInput
+  MessageReadReceipt: MessageReadReceiptUpdateManyWithoutUserNestedInput
+  QrToken: QrTokenUpdateManyWithoutUserNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutUserNestedInput
+  Role: RoleUpdateManyWithoutUsersNestedInput
+  UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
+  UserImage: UserImageUpdateManyWithoutUserNestedInput
+  UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isVerified: BoolFieldUpdateOperationsInput
+  lastName: NullableStringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  review: ReviewUpdateManyWithoutUserNestedInput
+  rides: RideUpdateManyWithoutDriverNestedInput
+  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+  vehicles: DriverVehicleUpdateManyWithoutUserNestedInput
+}
+
+input UserUpdateWithoutRideParticipantInput {
+  ConversationParticipant: ConversationParticipantUpdateManyWithoutUserNestedInput
+  Message: MessageUpdateManyWithoutSenderNestedInput
+  MessageReadReceipt: MessageReadReceiptUpdateManyWithoutUserNestedInput
+  QrToken: QrTokenUpdateManyWithoutUserNestedInput
+  Reaction: ReactionUpdateManyWithoutUserNestedInput
+  Role: RoleUpdateManyWithoutUsersNestedInput
+  UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
+  UserImage: UserImageUpdateManyWithoutUserNestedInput
+  UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isVerified: BoolFieldUpdateOperationsInput
+  lastName: NullableStringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  review: ReviewUpdateManyWithoutUserNestedInput
+  rides: RideUpdateManyWithoutDriverNestedInput
+  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+  vehicles: DriverVehicleUpdateManyWithoutUserNestedInput
+}
+
+input UserUpdateWithoutRidesInput {
+  ConversationParticipant: ConversationParticipantUpdateManyWithoutUserNestedInput
+  Message: MessageUpdateManyWithoutSenderNestedInput
+  MessageReadReceipt: MessageReadReceiptUpdateManyWithoutUserNestedInput
+  QrToken: QrTokenUpdateManyWithoutUserNestedInput
+  Reaction: ReactionUpdateManyWithoutUserNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutUserNestedInput
+  Role: RoleUpdateManyWithoutUsersNestedInput
+  UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
+  UserImage: UserImageUpdateManyWithoutUserNestedInput
+  UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isVerified: BoolFieldUpdateOperationsInput
+  lastName: NullableStringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  review: ReviewUpdateManyWithoutUserNestedInput
+  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+  vehicles: DriverVehicleUpdateManyWithoutUserNestedInput
+}
+
 input UserUpdateWithoutUserDocumentInput {
+  ConversationParticipant: ConversationParticipantUpdateManyWithoutUserNestedInput
+  Message: MessageUpdateManyWithoutSenderNestedInput
+  MessageReadReceipt: MessageReadReceiptUpdateManyWithoutUserNestedInput
+  QrToken: QrTokenUpdateManyWithoutUserNestedInput
+  Reaction: ReactionUpdateManyWithoutUserNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutUserNestedInput
   Role: RoleUpdateManyWithoutUsersNestedInput
   UserImage: UserImageUpdateManyWithoutUserNestedInput
   UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
@@ -2588,6 +7250,8 @@ input UserUpdateWithoutUserDocumentInput {
   lastName: NullableStringFieldUpdateOperationsInput
   password: StringFieldUpdateOperationsInput
   phone: NullableStringFieldUpdateOperationsInput
+  review: ReviewUpdateManyWithoutUserNestedInput
+  rides: RideUpdateManyWithoutDriverNestedInput
   tokens: RefreshTokenUpdateManyWithoutUserNestedInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
@@ -2595,6 +7259,12 @@ input UserUpdateWithoutUserDocumentInput {
 }
 
 input UserUpdateWithoutUserImageInput {
+  ConversationParticipant: ConversationParticipantUpdateManyWithoutUserNestedInput
+  Message: MessageUpdateManyWithoutSenderNestedInput
+  MessageReadReceipt: MessageReadReceiptUpdateManyWithoutUserNestedInput
+  QrToken: QrTokenUpdateManyWithoutUserNestedInput
+  Reaction: ReactionUpdateManyWithoutUserNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutUserNestedInput
   Role: RoleUpdateManyWithoutUsersNestedInput
   UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
   UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
@@ -2606,6 +7276,8 @@ input UserUpdateWithoutUserImageInput {
   lastName: NullableStringFieldUpdateOperationsInput
   password: StringFieldUpdateOperationsInput
   phone: NullableStringFieldUpdateOperationsInput
+  review: ReviewUpdateManyWithoutUserNestedInput
+  rides: RideUpdateManyWithoutDriverNestedInput
   tokens: RefreshTokenUpdateManyWithoutUserNestedInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
@@ -2613,6 +7285,12 @@ input UserUpdateWithoutUserImageInput {
 }
 
 input UserUpdateWithoutUserPreferenceInput {
+  ConversationParticipant: ConversationParticipantUpdateManyWithoutUserNestedInput
+  Message: MessageUpdateManyWithoutSenderNestedInput
+  MessageReadReceipt: MessageReadReceiptUpdateManyWithoutUserNestedInput
+  QrToken: QrTokenUpdateManyWithoutUserNestedInput
+  Reaction: ReactionUpdateManyWithoutUserNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutUserNestedInput
   Role: RoleUpdateManyWithoutUsersNestedInput
   UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
   UserImage: UserImageUpdateManyWithoutUserNestedInput
@@ -2624,6 +7302,8 @@ input UserUpdateWithoutUserPreferenceInput {
   lastName: NullableStringFieldUpdateOperationsInput
   password: StringFieldUpdateOperationsInput
   phone: NullableStringFieldUpdateOperationsInput
+  review: ReviewUpdateManyWithoutUserNestedInput
+  rides: RideUpdateManyWithoutDriverNestedInput
   tokens: RefreshTokenUpdateManyWithoutUserNestedInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
@@ -2631,6 +7311,12 @@ input UserUpdateWithoutUserPreferenceInput {
 }
 
 input UserUpdateWithoutVehiclesInput {
+  ConversationParticipant: ConversationParticipantUpdateManyWithoutUserNestedInput
+  Message: MessageUpdateManyWithoutSenderNestedInput
+  MessageReadReceipt: MessageReadReceiptUpdateManyWithoutUserNestedInput
+  QrToken: QrTokenUpdateManyWithoutUserNestedInput
+  Reaction: ReactionUpdateManyWithoutUserNestedInput
+  RideParticipant: RideParticipantUpdateManyWithoutUserNestedInput
   Role: RoleUpdateManyWithoutUsersNestedInput
   UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
   UserImage: UserImageUpdateManyWithoutUserNestedInput
@@ -2643,9 +7329,47 @@ input UserUpdateWithoutVehiclesInput {
   lastName: NullableStringFieldUpdateOperationsInput
   password: StringFieldUpdateOperationsInput
   phone: NullableStringFieldUpdateOperationsInput
+  review: ReviewUpdateManyWithoutUserNestedInput
+  rides: RideUpdateManyWithoutDriverNestedInput
   tokens: RefreshTokenUpdateManyWithoutUserNestedInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
+}
+
+input UserUpsertWithoutConversationParticipantInput {
+  create: UserCreateWithoutConversationParticipantInput!
+  update: UserUpdateWithoutConversationParticipantInput!
+  where: UserWhereInput
+}
+
+input UserUpsertWithoutMessageInput {
+  create: UserCreateWithoutMessageInput!
+  update: UserUpdateWithoutMessageInput!
+  where: UserWhereInput
+}
+
+input UserUpsertWithoutMessageReadReceiptInput {
+  create: UserCreateWithoutMessageReadReceiptInput!
+  update: UserUpdateWithoutMessageReadReceiptInput!
+  where: UserWhereInput
+}
+
+input UserUpsertWithoutReactionInput {
+  create: UserCreateWithoutReactionInput!
+  update: UserUpdateWithoutReactionInput!
+  where: UserWhereInput
+}
+
+input UserUpsertWithoutRideParticipantInput {
+  create: UserCreateWithoutRideParticipantInput!
+  update: UserUpdateWithoutRideParticipantInput!
+  where: UserWhereInput
+}
+
+input UserUpsertWithoutRidesInput {
+  create: UserCreateWithoutRidesInput!
+  update: UserUpdateWithoutRidesInput!
+  where: UserWhereInput
 }
 
 input UserUpsertWithoutUserDocumentInput {
@@ -2674,8 +7398,14 @@ input UserUpsertWithoutVehiclesInput {
 
 input UserWhereInput {
   AND: [UserWhereInput!]
+  ConversationParticipant: ConversationParticipantListRelationFilter
+  Message: MessageListRelationFilter
+  MessageReadReceipt: MessageReadReceiptListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  QrToken: QrTokenListRelationFilter
+  Reaction: ReactionListRelationFilter
+  RideParticipant: RideParticipantListRelationFilter
   Role: RoleListRelationFilter
   UserDocument: UserDocumentListRelationFilter
   UserImage: UserImageListRelationFilter
@@ -2688,6 +7418,8 @@ input UserWhereInput {
   lastName: StringNullableFilter
   password: StringFilter
   phone: StringNullableFilter
+  review: ReviewListRelationFilter
+  rides: RideListRelationFilter
   tokens: RefreshTokenListRelationFilter
   updatedAt: DateTimeNullableFilter
   username: StringNullableFilter
@@ -2696,8 +7428,14 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   AND: [UserWhereInput!]
+  ConversationParticipant: ConversationParticipantListRelationFilter
+  Message: MessageListRelationFilter
+  MessageReadReceipt: MessageReadReceiptListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  QrToken: QrTokenListRelationFilter
+  Reaction: ReactionListRelationFilter
+  RideParticipant: RideParticipantListRelationFilter
   Role: RoleListRelationFilter
   UserDocument: UserDocumentListRelationFilter
   UserImage: UserImageListRelationFilter
@@ -2710,6 +7448,8 @@ input UserWhereUniqueInput {
   lastName: StringNullableFilter
   password: StringFilter
   phone: StringNullableFilter
+  review: ReviewListRelationFilter
+  rides: RideListRelationFilter
   tokens: RefreshTokenListRelationFilter
   updatedAt: DateTimeNullableFilter
   username: String

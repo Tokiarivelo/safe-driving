@@ -1,12 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import {
-  FileCreateInput,
-  FileUpdateInput,
-  FindManyFileArgs,
-} from '../dtos/@generated';
+import { FileCreateInput, FindManyFileArgs } from '../dtos/@generated';
 import { File } from '../dtos/@generated';
 import { PrismaService } from 'src/prisma-module/prisma.service';
 import { S3Service } from 'src/s3/s3.service';
+import { CustomFileUpdateInput } from 'src/dtos/file/file.input';
 
 @Injectable()
 export class FileService {
@@ -23,7 +20,7 @@ export class FileService {
     return file;
   }
 
-  async update(id: string, input: FileUpdateInput): Promise<File> {
+  async update(id: string, input: CustomFileUpdateInput): Promise<File> {
     const file = await this.prisma.file.update({
       where: { id },
       data: input,

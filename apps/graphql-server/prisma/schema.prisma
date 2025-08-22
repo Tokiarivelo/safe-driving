@@ -66,6 +66,20 @@ model User {
   ConversationParticipant ConversationParticipant[]
   Reaction                Reaction[]
   MessageReadReceipt      MessageReadReceipt[]
+
+  QrToken QrToken[]
+}
+
+// --------------- Token -----------------------//
+model QrToken {
+  id         String   @id @default(uuid())
+  token      String   @unique   // token opaque long
+  userId     String
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  revoked    Boolean  @default(false)
+  // neverExpires boolean omitted since user asked "n'expire jamais"
+  user       User     @relation(fields: [userId], references: [id])
 }
 
 model Review {
@@ -159,7 +173,6 @@ model RefreshToken {
 model File {
   id              String            @id @default(uuid())
   url             String?
-  type            ImageType
   key             String            @unique
   originalName    String
   contentType     String?
@@ -170,6 +183,7 @@ model File {
   name            String?
   userId          String
   driverVehicleId String?
+  type            ImageType
   UserImage       UserImage[]
   UserDocument    UserDocument[]
   VehicleImage    VehicleImage[]

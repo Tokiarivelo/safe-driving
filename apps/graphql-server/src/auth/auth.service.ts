@@ -4,10 +4,12 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from '../user/users.service';
 import { LoginInput } from 'src/dtos/auth/login.input';
 import { RegisterInput } from 'src/dtos/auth/register.input';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly config: ConfigService,
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
@@ -52,8 +54,10 @@ export class AuthService {
       throw new UnauthorizedException('User not found.');
     }
 
+    const frontBaseUrl =
+      this.config.get<string>('FRONT_BASE_URL') || 'http://localhost:3000';
     // Logic to generate reset link and send email would go here
-    const resetLink = `https://example.com/reset-password?token=${user.id}`;
+    const resetLink = `${frontBaseUrl}/reset-password?token=${user.id}`;
     return { resetLink, email: user.email };
   }
 

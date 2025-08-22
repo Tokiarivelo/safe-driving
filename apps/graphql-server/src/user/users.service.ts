@@ -6,10 +6,14 @@ import { FindManyUserArgs } from 'src/dtos/@generated';
 import { DeleteOneUserArgs } from 'src/dtos/@generated';
 import { PrismaService } from 'src/prisma-module/prisma.service';
 import { SALT_ROUNDS } from 'src/auth/constants';
+import { QrService } from 'src/qr/qr.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly qrService: QrService,
+  ) {}
 
   async create(input: UserCreateInput): Promise<User> {
     const hash = await bcrypt.hash(input.password, SALT_ROUNDS);
@@ -103,6 +107,16 @@ export class UsersService {
 
     if (!user)
       throw new NotFoundException(`User ${JSON.stringify(where)} not found`);
+    return user;
+  }
+
+  async userByToken(token: string) {
+    const userId = await this.qrService.findUserIdByToken(token);
+    if (!userId) return null;
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
     return user;
   }
 }
