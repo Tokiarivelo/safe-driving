@@ -33,30 +33,53 @@ model Role {
 }
 
 enum ImageType {
+  MESSAGE
   USER
   PROFILE
+  COVER
   VEHICLE
   LANDING
 }
 
 model User {
-  id         String          @id @default(uuid())
-  email      String          @unique
+  id         String    @id @default(uuid())
+  email      String    @unique
   firstName  String
   lastName   String?
   phone      String?
-  username   String?         @unique
+  username   String?   @unique
   password   String
-  isVerified Boolean         @default(false)
-  tokens     RefreshToken[]
-  createdAt  DateTime        @default(now())
-  updatedAt  DateTime?       @updatedAt
-  Role       Role[]          @relation("UserRoles")
-  vehicles   DriverVehicle[]
+  isVerified Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
 
-  UserPreference UserPreference?
-  UserImage      UserImage[]
-  UserDocument   UserDocument[]
+  tokens                  RefreshToken[]
+  Role                    Role[]                    @relation("UserRoles")
+  vehicles                DriverVehicle[]
+  rides                   Ride[]
+  UserPreference          UserPreference?
+  UserImage               UserImage[]
+  UserDocument            UserDocument[]
+  review                  Review[]
+  RideParticipant         RideParticipant[]
+  Message                 Message[]
+  ConversationParticipant ConversationParticipant[]
+  Reaction                Reaction[]
+  MessageReadReceipt      MessageReadReceipt[]
+}
+
+model Review {
+  id        String    @id @default(uuid())
+  userId    String
+  content   String
+  rating    Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  user User @relation(fields: [userId], references: [id], map: "review_userId_relation")
+
+  @@index([userId], map: "review_userId_fkey")
+  @@map("review")
 }
 
 model UserImage {
@@ -151,6 +174,11 @@ model File {
   UserDocument    UserDocument[]
   VehicleImage    VehicleImage[]
   VehicleDocument VehicleDocument[]
+
+  // relation inverse : un File peut être référencé par plusieurs Attachments
+  Attachment Attachment[]
+
+  @@index([userId])
 }
 
 model VehicleType {
@@ -172,6 +200,228 @@ model DriverVehicle {
   type               VehicleType       @relation(fields: [vehicleTypeId], references: [id])
   VehicleImage       VehicleImage[]
   VehicleDocument    VehicleDocument[]
+  Position           Position[]
+  CurrentPosition    CurrentPosition[]
 
   @@index([userId], map: "DriverVehicle_userId_fkey")
+}
+
+model Ride {
+  id         String    @id @default(uuid())
+  driverId   String?
+  status     String // ex: REQUESTED, ONGOING, FINISHED
+  startedAt  DateTime?
+  finishedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  // optional relation to positions
+  positions       Position[]
+  Driver          User?             @relation(fields: [driverId], references: [id])
+  RideParticipant RideParticipant[]
+  Message         Message[]
+  Attachment      Attachment[]
+
+  @@index([driverId, createdAt])
+}
+
+model RideParticipant {
+  id       String   @id @default(uuid())
+  rideId   String
+  ride     Ride     @relation(fields: [rideId], references: [id])
+  userId   String
+  user     User     @relation(fields: [userId], references: [id])
+  role     String // ex: PASSENGER | GUIDE | OBSERVER
+  joinedAt DateTime @default(now())
+
+  @@unique([rideId, userId])
+  @@index([userId])
+}
+
+model Position {
+  id           String   @id @default(uuid())
+  vehicleId    String
+  rideId       String? // nullable: positions can be associated to a ride
+  recordedAt   DateTime @default(now()) // timestamp when the device recorded it
+  createdAt    DateTime @default(now()) // insert time in DB
+  // lat / lon as Decimal for precision (use Decimal on client)
+  latitude     Decimal  @db.Decimal(10, 7)
+  longitude    Decimal  @db.Decimal(10, 7)
+  altitude     Float? // meters
+  speed        Float? // m/s or km/h (standardize)
+  heading      Float? // degrees (0-360)
+  accuracy     Float? // meters
+  provider     String? // gps, fused, network
+  battery      Int? // battery percentage on device when reported
+  is_mock      Boolean  @default(false) // detect mock locations
+  clientTempId String? // optional pour idempotence côté client
+  // NOTE: geom column (PostGIS point) will be added by raw SQL migration for indexing
+  // geom      Unsupported("geometry(Point,4326)")?  // optional in Prisma as Unsupported
+  createdBy    String? // user id who submitted (if any)
+
+  vehicle DriverVehicle @relation(fields: [vehicleId], references: [id])
+  Ride    Ride?         @relation(fields: [rideId], references: [id])
+
+  @@index([vehicleId, recordedAt])
+  @@index([rideId, recordedAt])
+  @@index([recordedAt])
+}
+
+model CurrentPosition {
+  // table with one row per vehicle for fast reads
+  vehicleId  String   @id
+  latitude   Decimal  @db.Decimal(10, 7)
+  longitude  Decimal  @db.Decimal(10, 7)
+  altitude   Float?
+  speed      Float?
+  heading    Float?
+  accuracy   Float?
+  provider   String?
+  battery    Int?
+  recordedAt DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  vehicle DriverVehicle @relation(fields: [vehicleId], references: [id])
+  // optionally store a "geom" PostGIS point via raw SQL
+}
+
+/// Models de chat / message
+
+model Message {
+  id              String  @id @default(uuid())
+  conversationId  String? // nullable : message direct/group ou lié à une ride
+  rideId          String? // nullable : si message attaché à une course
+  senderId        String
+  content         String? // peut être null si message uniquement attachments
+  clientTempId    String? // id provisoire côté client pour idempotence
+  parentMessageId String? // pour threads / réponses
+
+  edited    Boolean   @default(false)
+  editedAt  DateTime?
+  deleted   Boolean   @default(false)
+  deletedAt DateTime?
+
+  createdAt   DateTime  @default(now())
+  sentAt      DateTime?
+  deliveredAt DateTime? // optionnel: timestamp global (ou gérer par readReceipts)
+
+  ride          Ride?                @relation(fields: [rideId], references: [id])
+  conversation  Conversation?        @relation(fields: [conversationId], references: [id])
+  sender        User                 @relation(fields: [senderId], references: [id])
+  state         MessageState         @default(SENT) // état global (utile pour UI)
+  parentMessage Message?             @relation("MessageParent", fields: [parentMessageId], references: [id])
+  replies       Message[]            @relation("MessageParent")
+  attachments   Attachment[] // fichiers, images, audio
+  reactions     Reaction[]
+  readReceipts  MessageReadReceipt[] // qui a lu (per-user)
+
+  // indexes pour requêtes fréquentes
+  @@index([conversationId, createdAt])
+  @@index([rideId, createdAt])
+  @@index([senderId, createdAt])
+  @@index([clientTempId])
+}
+
+model Conversation {
+  id        String   @id @default(uuid())
+  title     String?
+  // participants via table join (permet rôles, mute, joinedAt)
+  createdAt DateTime @default(now())
+
+  type         ConversationType          @default(DIRECT) // DIRECT | GROUP | RIDE_LINKED
+  participants ConversationParticipant[]
+  messages     Message[]
+
+  @@index([type])
+}
+
+model ConversationParticipant {
+  id             String   @id @default(uuid())
+  conversationId String
+  userId         String
+  role           String? // ex: ADMIN, MEMBER
+  isMuted        Boolean  @default(false)
+  joinedAt       DateTime @default(now())
+
+  user         User         @relation(fields: [userId], references: [id])
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+enum AttachmentType {
+  FILE
+  LINK
+  RIDE // ancien EVENT -> RIDE
+}
+
+model Attachment {
+  id        String         @id @default(uuid())
+  messageId String
+  message   Message        @relation(fields: [messageId], references: [id])
+  type      AttachmentType
+
+  // FILE-specific
+  fileId String?
+  file   File?   @relation(fields: [fileId], references: [id], onDelete: Restrict)
+
+  // LINK-specific
+  url           String?
+  linkTitle     String?
+  linkDesc      String?
+  linkThumbnail String?
+  linkMeta      Json?
+
+  // RIDE-specific (lien direct vers Ride)
+  rideId String?
+  ride   Ride?   @relation(fields: [rideId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([messageId])
+  @@index([fileId])
+  @@index([rideId])
+  @@index([type])
+}
+
+model Reaction {
+  id        String   @id @default(uuid())
+  messageId String
+  userId    String
+  type      String // ex: "❤️", "👍", "🚩" or a short code like "like", "laugh"
+  createdAt DateTime @default(now())
+
+  message Message @relation(fields: [messageId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([messageId, userId, type]) // un utilisateur peut réagir 1x par type (évite doublons)
+  @@index([messageId])
+  @@index([userId])
+}
+
+model MessageReadReceipt {
+  id        String   @id @default(uuid())
+  messageId String
+  userId    String
+  readAt    DateTime @default(now())
+
+  message Message @relation(fields: [messageId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([messageId, userId]) // un seul "read" par user/message
+  @@index([userId, readAt])
+  @@index([messageId])
+}
+
+enum MessageState {
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
+enum ConversationType {
+  DIRECT
+  GROUP
+  RIDE_LINKED
 }
