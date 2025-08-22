@@ -12,6 +12,7 @@ import { UserPreferenceModule } from 'src/preference/preference.module';
 import { DriverVehicle } from 'src/dtos/@generated';
 import { VehicleTypeModule } from 'src/vehicle-type/vehicle-type.module';
 import { FileModule } from 'src/file/file.module';
+import { QrModule } from 'src/qr/qr.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { FileModule } from 'src/file/file.module';
     DriverVehicle,
     VehicleTypeModule,
     FileModule,
+    QrModule,
   ],
 })
 export class AppModule {}
