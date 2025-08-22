@@ -1,0 +1,19 @@
+ors:
+  engine:
+    profiles:
+      driving-car:
+        enabled: true
+        build:
+          source_file: /home/ors/files/madagascar-latest.osm.pbf
+          encoder_options:
+            # Much more conservative speeds for Madagascar
+            speeds:
+              motorway: 60      # Even main roads are slower
+              trunk: 50
+              primary: 40
+              secondary: 30
+              tertiary: 25
+              residential: 20
+              service: 15
+            maximum_speed: 60   # Lower overall max speed
+            speed_factor: 0.6   # Apply an additional reduction factor
