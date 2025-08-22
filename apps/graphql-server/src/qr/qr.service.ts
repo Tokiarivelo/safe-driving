@@ -12,7 +12,11 @@ export class QrService {
     return randomBytes(32).toString('hex'); // 64 chars
   }
 
-  async createQrForUser(userId: string, baseUrl = process.env.FRONTEND_URL) {
+  async createQrForUser(
+    userId: string,
+    type: 'png' | 'svg' = 'png',
+    baseUrl = process.env.FRONTEND_URL,
+  ) {
     const token = this.generateToken();
     // stocke en DB
     await this.prisma.qrToken.create({
@@ -23,12 +27,41 @@ export class QrService {
     const targetUrl = `${baseUrl}?token=${encodeURIComponent(token)}`;
 
     // génère un data url PNG (si tu veux renvoyer image directement)
-    const dataUrl = await QRCode.toDataURL(targetUrl, {
+    const qrFunction = type === 'png' ? QRCode.toDataURL : QRCode.toString;
+    const dataUrl = await qrFunction(targetUrl, {
+      type,
+      errorCorrectionLevel: 'M',
+      margin: 1,
+    });
+
+    return { token, dataUrl, targetUrl };
+  }
+
+  async getUserQr(
+    userId: string,
+    type: 'png' | 'svg' = 'png',
+    baseUrl = process.env.FRONTEND_URL,
+  ) {
+    const tokenData = await this.prisma.qrToken.findFirst({
+      where: { userId, revoked: false },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (!tokenData) {
+      throw new Error('No valid QR token found for user');
+    }
+
+    // url encodée qui sera scannée
+    const targetUrl = `${baseUrl}?token=${encodeURIComponent(tokenData.token)}`;
+
+    // génère un data url PNG (si tu veux renvoyer image directement)
+    const qrFunction = type === 'png' ? QRCode.toDataURL : QRCode.toString;
+    const dataUrl = await qrFunction(targetUrl, {
+      type,
       errorCorrectionLevel: 'M',
       margin: 2,
     });
 
-    return { token, dataUrl, targetUrl };
+    return { token: tokenData.token, dataUrl, targetUrl };
   }
 
   async revokeToken(token: string) {

@@ -3465,7 +3465,7 @@ type Mutation {
   createDriverVehicle(input: CreateDriverVehicleInput!, vehicleId: String!): UserPreference!
   createFile(input: FileCreateInput!): File!
   createUser(input: UserCreateInput!): User!
-  createUserQr: String!
+  createUserQr(type: String): String!
   createVehicleType(input: VehicleTypeCreateInput!): VehicleType!
   deleteFilesByUserId: [File!]!
   deleteObject(key: String!): Boolean!
@@ -4207,6 +4207,7 @@ type Query {
   VehicleType(id: String!): VehicleType!
   file(id: String!): File!
   files(cursor: FileWhereUniqueInput, distinct: [FileScalarFieldEnum!], orderBy: [FileOrderByWithRelationInput!], skip: Int, take: Int, where: FileWhereInput): [File!]!
+  getUserQr(type: String): String!
   listObjects(bucket: String!): [String!]!
   me: User!
   user(id: String!): User!
