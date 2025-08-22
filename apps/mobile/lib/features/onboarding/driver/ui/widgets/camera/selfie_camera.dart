@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
+import 'package:safe_driving/features/onboarding/driver/services/driver_camera_service.dart';
 
 /// Selfie camera widget for driver onboarding
 class SelfieCamera extends StatefulWidget {
@@ -18,44 +20,20 @@ class SelfieCamera extends StatefulWidget {
 }
 
 class _SelfieCameraState extends State<SelfieCamera> {
-  bool _isCameraReady = false;
   bool _isCapturing = false;
   String? _capturedPhotoPath;
+  void Function()? _externalTakePicture;
 
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
-  }
-
-  Future<void> _initializeCamera() async {
-    // Simulate camera initialization
-    await Future.delayed(const Duration(seconds: 1));
-    if (mounted) {
-      setState(() {
-        _isCameraReady = true;
-      });
-    }
   }
 
   Future<void> _capturePhoto() async {
-    if (!_isCameraReady || _isCapturing) return;
-
-    setState(() {
-      _isCapturing = true;
-    });
-
-    // Simulate photo capture
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    final photoPath = 'selfie_${DateTime.now().millisecondsSinceEpoch}.jpg';
-
-    setState(() {
-      _capturedPhotoPath = photoPath;
-      _isCapturing = false;
-    });
-
-    widget.onPhotoTaken(photoPath);
+    if (_isCapturing) return;
+    setState(() => _isCapturing = true);
+    // Delegate to underlying camera service (real capture)
+    _externalTakePicture?.call();
   }
 
   void _retakePhoto() {
@@ -70,6 +48,7 @@ class _SelfieCameraState extends State<SelfieCamera> {
       children: [
         if (widget.showInstructions) _buildInstructions(),
         const SizedBox(height: 16),
+        // Aperçu caméra compact dans un carré
         Expanded(child: _buildCameraPreview()),
         const SizedBox(height: 16),
         _buildCameraControls(),
@@ -111,26 +90,7 @@ class _SelfieCameraState extends State<SelfieCamera> {
   }
 
   Widget _buildCameraPreview() {
-    if (!_isCameraReady) {
-      return Container(
-        margin: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 16),
-              Text('Initialisation de la caméra...'),
-            ],
-          ),
-        ),
-      );
-    }
-
+    // Show confirmation/info once a photo is captured
     if (_capturedPhotoPath != null) {
       return Container(
         margin: const EdgeInsets.all(16),
@@ -188,56 +148,43 @@ class _SelfieCameraState extends State<SelfieCamera> {
       );
     }
 
-    return Container(
-      margin: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Stack(
-        children: [
-          // Camera preview placeholder
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade800,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.person, color: Colors.white54, size: 100),
-                  SizedBox(height: 16),
-                  Text(
-                    'Aperçu de la caméra',
-                    style: TextStyle(color: Colors.white54),
-                  ),
-                ],
+    // Show the live camera preview in a large square (use as much space as possible)
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final available = math.min(constraints.maxWidth, constraints.maxHeight);
+        final size = available * 0.95; // use 95% of the smallest dimension
+        return Center(
+          child: SizedBox(
+            width: size,
+            height: size,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: DriverCameraService(
+                compact: true,
+                onProvideTakePicture: (invoker) {
+                  if (!mounted) return;
+                  setState(() {
+                    _externalTakePicture = () {
+                      invoker();
+                    };
+                  });
+                },
+                onPictureTaken: (path) {
+                  setState(() => _isCapturing = false);
+                  if (path != null) {
+                    setState(() => _capturedPhotoPath = path);
+                    widget.onPhotoTaken(path);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Capture échouée')),
+                    );
+                  }
+                },
               ),
             ),
           ),
-          // Camera overlay guidelines
-          Center(
-            child: Container(
-              width: 250,
-              height: 320,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 2),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Center(
-                child: Text(
-                  'Alignez votre visage\ndans ce cadre',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -275,34 +222,24 @@ class _SelfieCameraState extends State<SelfieCamera> {
       );
     }
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          GestureDetector(
-            onTap: _isCameraReady && !_isCapturing ? _capturePhoto : null,
-            child: Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _isCameraReady && !_isCapturing
-                    ? Colors.red
-                    : Colors.grey,
-                border: Border.all(color: Colors.white, width: 4),
-              ),
-              child: _isCapturing
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 3,
-                      ),
-                    )
-                  : const Icon(Icons.camera, color: Colors.white, size: 32),
-            ),
-          ),
-        ],
+    final isReady = _externalTakePicture != null;
+    return Center(
+      child: ElevatedButton.icon(
+        onPressed: isReady && !_isCapturing ? _capturePhoto : null,
+        icon: _isCapturing
+            ? const SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
+            : const Icon(Icons.camera_alt),
+        label: Text(_isCapturing ? 'Capture...' : 'Capturer'),
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        ),
       ),
     );
   }

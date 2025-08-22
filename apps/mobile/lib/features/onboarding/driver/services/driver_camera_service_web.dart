@@ -12,6 +12,8 @@ class PlatformDriverCameraService extends StatefulWidget {
   final String? title;
   final String? description;
   final bool showDocumentGuide;
+  final bool compact;
+  final void Function(void Function())? onProvideTakePicture;
 
   const PlatformDriverCameraService({
     super.key,
@@ -19,6 +21,8 @@ class PlatformDriverCameraService extends StatefulWidget {
     this.title,
     this.description,
     this.showDocumentGuide = false,
+    this.compact = false,
+    this.onProvideTakePicture,
   });
 
   @override
@@ -57,11 +61,16 @@ class DriverCameraServiceWebState extends State<PlatformDriverCameraService> {
       });
       _videoElement!.srcObject = _mediaStream;
       await _videoElement!.play();
+      // Provide external invoker once ready
+      widget.onProvideTakePicture?.call(takePicture);
       if (mounted) setState(() => _ready = true);
     } catch (e) {
       if (mounted) setState(() => _error = e.toString());
     }
   }
+
+  // Expose public method to trigger capture from outside
+  void takePicture() => _takePicture();
 
   void _takePicture() {
     if (!_ready || _videoElement!.videoWidth == 0) {
@@ -113,18 +122,29 @@ class DriverCameraServiceWebState extends State<PlatformDriverCameraService> {
     if (!_ready) {
       return const Center(child: CircularProgressIndicator());
     }
+    final preview = Stack(
+      children: [
+        HtmlElementView(viewType: _viewType),
+        if (!widget.compact && widget.showDocumentGuide)
+          _buildDocumentGuideOverlay(),
+      ],
+    );
+
+    if (widget.compact) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: preview,
+        ),
+      );
+    }
+
     return SizedBox(
       height: 350,
       child: Column(
         children: [
-          Expanded(
-            child: Stack(
-              children: [
-                HtmlElementView(viewType: _viewType),
-                if (widget.showDocumentGuide) _buildDocumentGuideOverlay(),
-              ],
-            ),
-          ),
+          Expanded(child: preview),
           const SizedBox(height: 8),
           Container(
             width: 100,

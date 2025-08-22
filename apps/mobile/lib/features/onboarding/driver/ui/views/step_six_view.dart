@@ -1,8 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
-import 'package:safe_driving/features/onboarding/driver/ui/widgets/camera/camera_interface.dart';
+import 'package:safe_driving/features/onboarding/driver/ui/widgets/camera/selfie_camera.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 
@@ -28,46 +27,44 @@ class StepSixView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
           Text(
             step.title,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 24,
+              fontSize: 22,
               fontWeight: FontWeight.w600,
               color: AppColors.textColor,
               fontFamily: 'Inder',
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           Text(
-            step.description!,
+            step.description ?? '',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               color: AppColors.textColor.withAlpha(180),
-              height: 1.5,
+              height: 1.4,
               fontFamily: 'Inder',
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 12),
 
           Expanded(
-            child: CameraInterface(
-              title: 'Selfie de vérification',
-              description:
+            child: SelfieCamera(
+              instruction:
                   'Positionnez-vous face à la caméra et assurez-vous que votre visage soit bien visible.',
-              onPictureTaken: (imagePath) {
-                if (imagePath != null) {
-                  coordinator.documentUploadViewModel.addCapturedPhoto(
-                    File(imagePath),
-                  );
-                }
+              onPhotoTaken: (imagePath) {
+                coordinator.documentUploadViewModel.onSelfieTaken(imagePath);
               },
+              showInstructions: false,
             ),
           ),
 
-          const SizedBox(height: 32),
+          const SizedBox(height: 16),
 
           ButtonRows.buttonRow(
             buttonTitles: ['Plus tard', 'Valider'],

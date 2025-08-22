@@ -10,6 +10,8 @@ class PlatformDriverCameraService extends StatefulWidget {
   final String? title;
   final String? description;
   final bool showDocumentGuide;
+  final bool compact;
+  final void Function(void Function())? onProvideTakePicture;
 
   const PlatformDriverCameraService({
     super.key,
@@ -17,6 +19,8 @@ class PlatformDriverCameraService extends StatefulWidget {
     this.title,
     this.description,
     this.showDocumentGuide = false,
+    this.compact = false,
+    this.onProvideTakePicture,
   });
 
   @override
@@ -53,6 +57,8 @@ class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> 
         enableAudio: false,
       );
       _initializeMobileControllerFuture = _mobileController!.initialize();
+      // Provide external takePicture invoker as soon as controller exists
+      widget.onProvideTakePicture?.call(takePicture);
       if (!mounted) return;
       setState(() {});
     } catch (e) {
@@ -61,6 +67,9 @@ class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> 
       }
     }
   }
+
+  // Expose public method to trigger capture from outside
+  void takePicture() => _takePicture();
 
   void _takePicture() async {
     if (_mobileController?.value.isInitialized != true) {
@@ -125,35 +134,47 @@ class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> 
         ),
       );
     }
+    final preview = FutureBuilder<void>(
+      future: _initializeMobileControllerFuture,
+      builder: (_, snap) {
+        if (snap.connectionState == ConnectionState.done) {
+          if (snap.hasError) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              SnackbarHelper.showError(
+                context,
+                'Erreur WebCam: ${snap.error}',
+              );
+            });
+            return const Center(child: CircularProgressIndicator());
+          }
+          return Stack(
+            children: [
+              CameraPreview(_mobileController!),
+              if (!widget.compact && widget.showDocumentGuide)
+                _buildDocumentGuideOverlay(),
+            ],
+          );
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
+    if (widget.compact) {
+      // Preview only, no internal button, intended to be wrapped in a square
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: preview,
+        ),
+      );
+    }
+
     return SizedBox(
       height: 350,
       child: Column(
         children: [
-          Expanded(
-            child: FutureBuilder<void>(
-              future: _initializeMobileControllerFuture,
-              builder: (_, snap) {
-                if (snap.connectionState == ConnectionState.done) {
-                  if (snap.hasError) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      SnackbarHelper.showError(
-                        context,
-                        'Erreur WebCam: ${snap.error}',
-                      );
-                    });
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  return Stack(
-                    children: [
-                      CameraPreview(_mobileController!),
-                      if (widget.showDocumentGuide) _buildDocumentGuideOverlay(),
-                    ],
-                  );
-                }
-                return const Center(child: CircularProgressIndicator());
-              },
-            ),
-          ),
+          Expanded(child: preview),
           const SizedBox(height: 8),
           Container(
             width: 100,

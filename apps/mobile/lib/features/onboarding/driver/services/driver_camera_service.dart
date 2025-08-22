@@ -8,6 +8,8 @@ class DriverCameraService extends StatelessWidget {
   final String? title;
   final String? description;
   final bool showDocumentGuide;
+  final bool compact; // Mode compact: preview seul, sans bouton interne
+  final void Function(void Function())? onProvideTakePicture; // Fournit l'invoker
 
   const DriverCameraService({
     super.key,
@@ -15,6 +17,8 @@ class DriverCameraService extends StatelessWidget {
     this.title,
     this.description,
     this.showDocumentGuide = false,
+    this.compact = false,
+    this.onProvideTakePicture,
   });
 
   @override
@@ -24,6 +28,8 @@ class DriverCameraService extends StatelessWidget {
       title: title,
       description: description,
       showDocumentGuide: showDocumentGuide,
+      compact: compact,
+      onProvideTakePicture: onProvideTakePicture,
     );
   }
 }

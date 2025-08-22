@@ -15,23 +15,12 @@ class DriverStepIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _buildCircularProgress(),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Transform.translate(
-            offset: const Offset(0, -5),
-            child: Container(
-              alignment: Alignment.centerLeft,
-              child: _buildDotDashProgress(),
-            ),
-          ),
-        ),
-      ],
+      children: [_buildCircularProgress()],
     );
   }
 
   Widget _buildCircularProgress() {
+    // Show 100% progress only when on the very last step (completion step)
     final progress = (currentStep + 1) / totalSteps;
 
     return SizedBox(
@@ -72,42 +61,6 @@ class DriverStepIndicator extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildDotDashProgress() {
-    return Row(
-      children: List.generate(totalSteps, (index) {
-        final isActive = index <= currentStep;
-        final isLast = index == totalSteps - 1;
-
-        return Row(
-          children: [
-            Container(
-              width: 8,
-              height: 8,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isActive
-                    ? AppColors.light
-                    : AppColors.light.withValues(alpha: 0.3),
-              ),
-            ),
-            if (!isLast)
-              Container(
-                width: 16,
-                height: 2,
-                margin: const EdgeInsets.symmetric(horizontal: 2),
-                decoration: BoxDecoration(
-                  color: isActive
-                      ? AppColors.light
-                      : AppColors.light.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(1),
-                ),
-              ),
-          ],
-        );
-      }),
     );
   }
 }
