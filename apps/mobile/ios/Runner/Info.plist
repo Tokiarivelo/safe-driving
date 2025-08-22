@@ -45,5 +45,29 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+<string>Nous avons besoin de votre position pour ...</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>Nous avons besoin de votre position même en arrière-plan pour ...</string>
+<!-- Autorisation pour la caméra -->
+<key>NSCameraUsageDescription</key>
+<string>Cette application a besoin d'accéder à la caméra pour prendre des photos ou des vidéos.</string>
+
+<!-- Autorisation pour le micro -->
+<key>NSMicrophoneUsageDescription</key>
+<string>Cette application a besoin d'accéder au micro pour enregistrer de l'audio.</string>
+<key>UIBackgroundModes</key>
+<array>
+  <string>remote-notification</string>
+</array>
+<key>FirebaseAppDelegateProxyEnabled</key>
+<false/>
+<key>NSAppTransportSecurity</key>
+<dict>
+  <key>NSAllowsArbitraryLoads</key>
+  <true/>
+</dict>
+
+
 </dict>
 </plist>

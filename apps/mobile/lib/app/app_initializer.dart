@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_driving/app/routes.dart';
+import 'package:safe_driving/api/graphql/graphql_client.dart';
+import 'package:safe_driving/shared/state_management/providers.dart';
+import 'package:safe_driving/shared/state_management/service_locator.dart';
+
+class SafeDriving extends StatelessWidget {
+  SafeDriving({super.key}) {
+    ServiceLocator.instance.setupDependencies();
+  }
+  final ValueNotifier<GraphQLClient> client = initGraphQLClient();
+
+  @override
+  Widget build(BuildContext context) {
+    return GraphQLProvider(
+      client: client,
+      child: Provider<GraphQLClientWrapper>.value(
+        value: GraphQLClientWrapper.instance,
+        child: MultiProvider(
+          providers: AppProviders.providers,
+          child: MaterialApp(
+            title: 'Safe Driving',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(fontFamily: 'Inder'),
+            initialRoute: AppRoutes.onboarding,
+            routes: AppRoutes.routes,
+          ),
+        ),
+      ),
+    );
+  }
+}

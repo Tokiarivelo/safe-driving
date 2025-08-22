@@ -1,0 +1,162 @@
+import 'package:flutter/material.dart';
+import 'user_onboarding_step_model.dart';
+
+class UserOnboardingData {
+  static const int totalSteps = 5;
+
+  static List<UserOnboardingStepModel> getUserSteps() {
+    return [
+      UserOnboardingStepModel(
+        stepNumber: 1,
+        title: 'Bienvenue chez Safe Driving !',
+        subtitle:
+            'Merci d\'avoir rejoint notre communauté ! Laissez-nous vous guider pour personnaliser votre expérience.',
+        stepType: UserStepType.welcome,
+        buttonTitles: ['Plus tard', 'Démarrer'],
+      ),
+      //Location/GPS
+      UserOnboardingStepModel(
+        stepNumber: 2,
+        title: 'Où êtes-vous ?',
+        subtitle:
+            'Pour vous proposer les véhicules les plus proches, autorisez l\'accès à votre position. C\'est rapide et sécurisé.',
+        stepType: UserStepType.location,
+        buttonTitles: ['Plus tard', 'Activer'],
+        additionalContent: {
+          'radioOptions': ['Plus tard', 'Activer'],
+        },
+      ),
+
+      //Notifications
+      UserOnboardingStepModel(
+        stepNumber: 3,
+        title: 'Restez informé',
+        subtitle:
+            'Choisissez de recevoir des alertes en temps réel sur l\'arrivée de votre chauffeur et l\'état de votre trajet.',
+        stepType: UserStepType.notifications,
+        buttonTitles: ['Plus tard', 'Activer'],
+        additionalContent: {
+          'radioOptions': ['Plus tard', 'Activer'],
+        },
+      ),
+
+      //Preferences
+      UserOnboardingStepModel(
+        stepNumber: 4,
+        title: 'Faites-le à votre façon',
+        subtitle:
+            'Sélectionnez vos modes de transport favoris et activez le thème sombre si vous préférez une expérience plus douce pour les yeux.',
+        stepType: UserStepType.preferences,
+        buttonTitles: ['Plus tard', 'Valider'],
+        additionalContent: {
+          'themeLabel': 'Thème',
+          'themeOptions': ['Clair', 'Sombre'],
+          'transportLabel': 'Type de transport',
+          'transportModes': ['Voiture', 'Moto', 'TukTuk', 'Vélo'],
+        },
+      ),
+
+      //Summary
+      UserOnboardingStepModel(
+        stepNumber: 5,
+        title: 'Tout est prêt !',
+        subtitle:
+            'Voilà un résumé de vos choix. Vous pouvez toujours les modifier plus tard dans les paramètres. Prêt·e à démarrer ?',
+        stepType: UserStepType.summary,
+        buttonTitles: ['Annuler', 'Commencer'],
+        additionalContent: {
+          'summaryLabels': {
+            'gps': 'GPS',
+            'notifications': 'Notifications',
+            'theme': 'Thème',
+            'transport': 'Transport(s)',
+            'language': 'Langue',
+            'noTransport': 'Aucun transport sélectionné',
+          },
+        },
+      ),
+    ];
+  }
+
+  static const List<StepInfo> steps = [
+    StepInfo(title: 'Bienvenue', emoji: '👋'),
+    StepInfo(title: 'GPS', icon: Icons.location_on),
+    StepInfo(title: 'Notifications', icon: Icons.notifications),
+    StepInfo(title: 'Préférences', icon: Icons.settings),
+    StepInfo(title: 'Récapitulatif', icon: Icons.check_circle),
+  ];
+
+  static const Map<int, String> stepTitles = {
+    1: 'Bienvenue',
+    2: 'GPS',
+    3: 'Notifications',
+    4: 'Préférences',
+    5: 'Récapitulatif',
+  };
+
+  static const List<String> transportModes = [
+    'Voiture',
+    'Moto',
+    'TukTuk',
+    'Vélo',
+  ];
+
+  static const Map<String, IconData> transportIcons = {
+    'Voiture': Icons.directions_car,
+    'Moto': Icons.motorcycle,
+    'TukTuk': Icons.electric_rickshaw,
+    'Vélo': Icons.pedal_bike,
+  };
+
+  static const Map<String, String> buttonTexts = {
+    'later': 'Plus tard',
+    'activate': 'Activer',
+    'start': 'Démarrer',
+    'validate': 'Valider',
+    'next': 'Suivant',
+    'cancel': 'Annuler',
+    'begin': 'Commencer',
+  };
+
+  static String getStepTitle(int step) {
+    return stepTitles[step] ?? 'Étape $step';
+  }
+
+  static UserOnboardingStepModel getStep(int index) {
+    final steps = getUserSteps();
+    if (index >= 0 && index < steps.length) {
+      return steps[index];
+    }
+    return steps[0];
+  }
+
+  static int getStepIndexByType(UserStepType type) {
+    final steps = getUserSteps();
+    for (int i = 0; i < steps.length; i++) {
+      if (steps[i].stepType == type) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
+  static bool isValidStep(int step) {
+    return step >= 1 && step <= totalSteps;
+  }
+
+  static bool isLastStep(int currentStep) {
+    return currentStep >= totalSteps - 1;
+  }
+
+  static double getProgress(int currentStep) {
+    return (currentStep + 1) / totalSteps;
+  }
+
+  static UserOnboardingStepModel getStepContent(int index) {
+    final steps = getUserSteps();
+    if (index >= 0 && index < steps.length) {
+      return steps[index];
+    }
+    return steps[0];
+  }
+}

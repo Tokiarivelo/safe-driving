@@ -8,7 +8,7 @@ arb-dir: lib/l10n
 template-arb-file: app_en.arb
 
 # Répertoire de sortie pour les fichiers générés
-output-dir: lib/generated
+output-dir: lib/l10n/generated
 
 # Nom de la classe générée pour les localisations
 output-class: AppLocalizations

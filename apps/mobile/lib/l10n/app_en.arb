@@ -516,8 +516,443 @@
     "description": "Bouton valider récapitulatif"
   },
 
+  "stepSummaryBegin": "Begin",
+  "@stepSummaryBegin": {
+    "description": "Bouton commencer récapitulatif"
+  },
+
   "next": "Next",
   "@next": {
     "description": "Bouton suivant"
+  },
+
+  "driverOnboardingWelcomeTitle": "Welcome to Safe Driving!",
+  "@driverOnboardingWelcomeTitle": {
+    "description": "Titre de bienvenue chauffeur onboarding"
+  },
+
+  "driverOnboardingWelcomeSubtitle": "Thank you for choosing Safe Driving. Let's start by setting up your profile so you can hit the road with peace of mind.",
+  "@driverOnboardingWelcomeSubtitle": {
+    "description": "Sous-titre de bienvenue chauffeur onboarding"
+  },
+
+  "driverOnboardingLater": "Later",
+  "@driverOnboardingLater": {
+    "description": "Bouton plus tard chauffeur"
+  },
+
+  "driverOnboardingStart": "Get Started",
+  "@driverOnboardingStart": {
+    "description": "Bouton démarrer chauffeur"
+  },
+
+  "driverDetailsTitle": "Tell us more about you",
+  "@driverDetailsTitle": {
+    "description": "Titre détails chauffeur"
+  },
+
+  "driverDetailsSubtitle": "Provide your contact information so we can reach you and verify your identity",
+  "@driverDetailsSubtitle": {
+    "description": "Sous-titre détails chauffeur"
+  },
+
+  "driverDetailsValidate": "Validate",
+  "@driverDetailsValidate": {
+    "description": "Bouton valider détails"
+  },
+
+  "driverDetailsFullName": "Full Name",
+  "@driverDetailsFullName": {
+    "description": "Label nom complet"
+  },
+
+  "driverDetailsFullNamePlaceholder": "John Doe",
+  "@driverDetailsFullNamePlaceholder": {
+    "description": "Placeholder nom complet"
+  },
+
+  "driverDetailsEmail": "Email",
+  "@driverDetailsEmail": {
+    "description": "Label email chauffeur"
+  },
+
+  "driverDetailsEmailPlaceholder": "example@email.com",
+  "@driverDetailsEmailPlaceholder": {
+    "description": "Placeholder email chauffeur"
+  },
+
+  "driverDetailsPhone": "Phone",
+  "@driverDetailsPhone": {
+    "description": "Label téléphone chauffeur"
+  },
+
+  "driverDetailsPhonePlaceholder": "+261...",
+  "@driverDetailsPhonePlaceholder": {
+    "description": "Placeholder téléphone chauffeur"
+  },
+
+  "driverIdentityVerificationTitle": "Identity Verification",
+  "@driverIdentityVerificationTitle": {
+    "description": "Titre vérification identité"
+  },
+
+  "driverIdentityVerificationSubtitle": "Upload your driver's license and ID card to ensure a fast and reliable registration.",
+  "@driverIdentityVerificationSubtitle": {
+    "description": "Sous-titre vérification identité"
+  },
+
+  "driverIdentityRecto": "Front",
+  "@driverIdentityRecto": {
+    "description": "Recto document"
+  },
+
+  "driverIdentityVerso": "Back",
+  "@driverIdentityVerso": {
+    "description": "Verso document"
+  },
+
+  "driverIdentityLicense": "Driver's License",
+  "@driverIdentityLicense": {
+    "description": "Permis de conduire"
+  },
+
+  "driverIdentityUploadText": "Drag a file to upload",
+  "@driverIdentityUploadText": {
+    "description": "Texte zone upload"
+  },
+
+  "driverIdentityChooseFile": "Choose a file",
+  "@driverIdentityChooseFile": {
+    "description": "Bouton choisir fichier"
+  },
+
+  "driverVehicleInfoTitle": "Tell us about your vehicle",
+  "@driverVehicleInfoTitle": {
+    "description": "Titre infos véhicule"
+  },
+
+  "driverVehicleInfoSubtitle": "To better identify you and ensure passenger safety, provide your car's characteristics.",
+  "@driverVehicleInfoSubtitle": {
+    "description": "Sous-titre infos véhicule"
+  },
+
+  "driverVehicleBrand": "Brand",
+  "@driverVehicleBrand": {
+    "description": "Label marque véhicule"
+  },
+
+  "driverVehicleBrandPlaceholder": "e.g. Peugeot",
+  "@driverVehicleBrandPlaceholder": {
+    "description": "Placeholder marque véhicule"
+  },
+
+  "driverVehicleModel": "Model",
+  "@driverVehicleModel": {
+    "description": "Label modèle véhicule"
+  },
+
+  "driverVehicleModelPlaceholder": "e.g. 404",
+  "@driverVehicleModelPlaceholder": {
+    "description": "Placeholder modèle véhicule"
+  },
+
+  "driverVehicleRegistration": "Registration Number",
+  "@driverVehicleRegistration": {
+    "description": "Label immatriculation"
+  },
+
+  "driverVehicleRegistrationPlaceholder": "e.g. AB-123-CD",
+  "@driverVehicleRegistrationPlaceholder": {
+    "description": "Placeholder immatriculation"
+  },
+
+  "driverVehicleSeats": "Number of Seats",
+  "@driverVehicleSeats": {
+    "description": "Label nombre places"
+  },
+
+  "driverVehicleSeatsPlaceholder": "e.g. 4",
+  "@driverVehicleSeatsPlaceholder": {
+    "description": "Placeholder nombre places"
+  },
+
+  "driverVehicleType": "Vehicle Type",
+  "@driverVehicleType": {
+    "description": "Label type véhicule"
+  },
+
+  "driverVehicleTypePlaceholder": "e.g. Car",
+  "@driverVehicleTypePlaceholder": {
+    "description": "Placeholder type véhicule"
+  },
+
+  "driverVehicleDocumentsTitle": "About your vehicle",
+  "@driverVehicleDocumentsTitle": {
+    "description": "Titre documents véhicule"
+  },
+
+  "driverVehicleDocumentsSubtitle": "Add your registration certificate, insurance certificate and some photos of the vehicle.",
+  "@driverVehicleDocumentsSubtitle": {
+    "description": "Sous-titre documents véhicule"
+  },
+
+  "driverVehicleAddPhotos": "Add more photos",
+  "@driverVehicleAddPhotos": {
+    "description": "Bouton ajouter photos"
+  },
+
+  "driverIdentityPhotoTitle": "Confirm your identity with a photo",
+  "@driverIdentityPhotoTitle": {
+    "description": "Titre photo identité"
+  },
+
+  "driverIdentityPhotoSubtitle": "Take a real-time selfie to finalize verification and strengthen community security.",
+  "@driverIdentityPhotoSubtitle": {
+    "description": "Sous-titre photo identité"
+  },
+
+  "driverLocationTitle": "Share your location",
+  "@driverLocationTitle": {
+    "description": "Titre localisation"
+  },
+
+  "driverLocationSubtitle": "Allow geolocation to receive nearby ride requests.",
+  "@driverLocationSubtitle": {
+    "description": "Sous-titre localisation"
+  },
+
+  "driverLocationEnable": "Enable",
+  "@driverLocationEnable": {
+    "description": "Bouton activer localisation"
+  },
+
+  "driverNotificationTitle": "Stay informed",
+  "@driverNotificationTitle": {
+    "description": "Titre notifications chauffeur"
+  },
+
+  "driverNotificationSubtitle": "Choose how you want to be alerted about new missions: push, SMS or email.",
+  "@driverNotificationSubtitle": {
+    "description": "Sous-titre notifications chauffeur"
+  },
+
+  "driverNotificationSms": "SMS",
+  "@driverNotificationSms": {
+    "description": "Option SMS"
+  },
+
+  "driverNotificationPush": "Mobile push notification",
+  "@driverNotificationPush": {
+    "description": "Option push notification"
+  },
+
+  "driverNotificationEmail": "Email",
+  "@driverNotificationEmail": {
+    "description": "Option email"
+  },
+
+  "driverCustomizeTitle": "Customize your experience",
+  "@driverCustomizeTitle": {
+    "description": "Titre personnalisation"
+  },
+
+  "driverCustomizeSubtitle": "Set your theme (light/dark), adjust alert volume and choose the app language.",
+  "@driverCustomizeSubtitle": {
+    "description": "Sous-titre personnalisation"
+  },
+
+  "driverCustomizeThemeLight": "Light",
+  "@driverCustomizeThemeLight": {
+    "description": "Thème clair"
+  },
+
+  "driverCustomizeThemeDark": "Dark",
+  "@driverCustomizeThemeDark": {
+    "description": "Thème sombre"
+  },
+
+  "driverCustomizeLanguageFr": "French",
+  "@driverCustomizeLanguageFr": {
+    "description": "Langue française"
+  },
+
+  "driverCustomizeLanguageEn": "English",
+  "@driverCustomizeLanguageEn": {
+    "description": "Langue anglaise"
+  },
+
+  "driverTermsTitle": "One last point before getting started",
+  "@driverTermsTitle": {
+    "description": "Titre conditions d'utilisation"
+  },
+
+  "driverTermsSubtitle": "Please read and accept our Terms of Service and Privacy Policy.",
+  "@driverTermsSubtitle": {
+    "description": "Sous-titre conditions d'utilisation"
+  },
+
+  "driverAcceptTerms": "I accept the Terms of Service",
+  "@driverAcceptTerms": {
+    "description": "Accepter CGU"
+  },
+
+  "driverAcceptPrivacy": "I accept the Privacy Policy",
+  "@driverAcceptPrivacy": {
+    "description": "Accepter politique confidentialité"
+  },
+
+  "driverCguTitle": "Safe Driving Terms of Service (ToS)",
+  "@driverCguTitle": {
+    "description": "Titre CGU"
+  },
+
+  "driverCguAccept": "I accept",
+  "@driverCguAccept": {
+    "description": "Bouton accepter CGU"
+  },
+
+  "driverPrivacyTitle": "🛡️ Privacy Policy – Safe Driving",
+  "@driverPrivacyTitle": {
+    "description": "Titre politique confidentialité"
+  },
+
+  "driverPrivacyAccept": "I accept",
+  "@driverPrivacyAccept": {
+    "description": "Bouton accepter politique confidentialité"
+  },
+
+  "driverSummaryTitle": "All set!",
+  "@driverSummaryTitle": {
+    "description": "Titre récapitulatif chauffeur"
+  },
+
+  "driverSummarySubtitle": "Check your information and choices before validating. You can always come back to modify your preferences later.",
+  "@driverSummarySubtitle": {
+    "description": "Sous-titre récapitulatif chauffeur"
+  },
+
+  "driverSummaryValidate": "Validate",
+  "@driverSummaryValidate": {
+    "description": "Bouton valider récapitulatif"
+  },
+
+  "driverSummaryPersonalInfo": "Personal Information",
+  "@driverSummaryPersonalInfo": {
+    "description": "Section infos personnelles"
+  },
+
+  "driverSummaryPersonalInfoName": "Name",
+  "@driverSummaryPersonalInfoName": {
+    "description": "Nom récapitulatif"
+  },
+
+  "driverSummaryPersonalInfoEmail": "Email",
+  "@driverSummaryPersonalInfoEmail": {
+    "description": "Email récapitulatif"
+  },
+
+  "driverSummaryPersonalInfoPhone": "Phone",
+  "@driverSummaryPersonalInfoPhone": {
+    "description": "Téléphone récapitulatif"
+  },
+
+  "driverSummaryPersonalInfoPhotos": "Uploaded photos",
+  "@driverSummaryPersonalInfoPhotos": {
+    "description": "Photos uploadées récapitulatif"
+  },
+
+  "driverSummaryVehicle": "Vehicle",
+  "@driverSummaryVehicle": {
+    "description": "Section véhicule récapitulatif"
+  },
+
+  "driverSummaryVehicleType": "Type",
+  "@driverSummaryVehicleType": {
+    "description": "Type véhicule récapitulatif"
+  },
+
+  "driverSummaryVehicleBrand": "Brand",
+  "@driverSummaryVehicleBrand": {
+    "description": "Marque véhicule récapitulatif"
+  },
+
+  "driverSummaryVehicleModel": "Model",
+  "@driverSummaryVehicleModel": {
+    "description": "Modèle véhicule récapitulatif"
+  },
+
+  "driverSummaryVehicleRegistration": "Registration",
+  "@driverSummaryVehicleRegistration": {
+    "description": "Immatriculation récapitulatif"
+  },
+
+  "driverSummaryVehicleSeats": "Number of seats",
+  "@driverSummaryVehicleSeats": {
+    "description": "Nombre places récapitulatif"
+  },
+
+  "driverSummaryVehiclePhotos": "Uploaded photos",
+  "@driverSummaryVehiclePhotos": {
+    "description": "Photos véhicule récapitulatif"
+  },
+
+  "driverSummaryGpsNotifications": "GPS & Notifications",
+  "@driverSummaryGpsNotifications": {
+    "description": "Section GPS et notifications"
+  },
+
+  "driverSummaryGps": "GPS",
+  "@driverSummaryGps": {
+    "description": "GPS récapitulatif"
+  },
+
+  "driverSummaryNotifications": "Notifications",
+  "@driverSummaryNotifications": {
+    "description": "Notifications récapitulatif"
+  },
+
+  "driverSummaryPreferences": "Preferences",
+  "@driverSummaryPreferences": {
+    "description": "Section préférences récapitulatif"
+  },
+
+  "driverSummaryTheme": "Theme",
+  "@driverSummaryTheme": {
+    "description": "Thème récapitulatif"
+  },
+
+  "driverSummaryLanguage": "Language",
+  "@driverSummaryLanguage": {
+    "description": "Langue récapitulatif"
+  },
+
+  "driverCompleteTitle": "🎉 Welcome aboard, ",
+  "@driverCompleteTitle": {
+    "description": "Titre bienvenue final"
+  },
+
+  "driverCompleteSubtitle": "Your profile has been completed and validated. You are now ready to use Safe Driving as a driver.",
+  "@driverCompleteSubtitle": {
+    "description": "Sous-titre bienvenue final"
+  },
+
+  "driverCompleteStart": "Let's go!",
+  "@driverCompleteStart": {
+    "description": "Bouton c'est parti"
+  },
+
+  "driverCompleteQrCodeSubtitle": "Your personal QR code has been generated:",
+  "@driverCompleteQrCodeSubtitle": {
+    "description": "Sous-titre QR code"
+  },
+
+  "driverCompleteQrCodeInstructions": "It will allow your passengers to identify you quickly and securely. You can view or download this QR code at any time in the My Account > My QR code menu.",
+  "@driverCompleteQrCodeInstructions": {
+    "description": "Instructions QR code"
+  },
+
+  "driverCompleteThankYou": "Thank you for being part of the Safe Driving community. We wish you safe travels!",
+  "@driverCompleteThankYou": {
+    "description": "Message de remerciement final"
   }
 }
