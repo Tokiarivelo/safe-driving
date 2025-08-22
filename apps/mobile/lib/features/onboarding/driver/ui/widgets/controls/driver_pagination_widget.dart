@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/shared/widgets/customs/animations/animation_widget.dart';
 
 class DriverPaginationStyle {
   final Color? primaryColor;
@@ -30,7 +28,8 @@ class DriverPaginationWidget extends StatefulWidget {
     int currentStep,
     VoidCallback nextStep,
     VoidCallback previousStep,
-  ) contentBuilder;
+  )
+  contentBuilder;
   final VoidCallback? onCompleted;
   final DriverPaginationStyle? style;
   final String? title;
@@ -66,8 +65,6 @@ class DriverPaginationWidgetState extends State<DriverPaginationWidget>
   late AnimationController _barAnimationController;
   late AnimationController _clickAnimationController;
   late Animation<double> _progressAnimation;
-  late Animation<double> _barSlideAnimation;
-  late Animation<double> _clickScaleAnimation;
   late PageController _pageController;
 
   @override
@@ -98,24 +95,13 @@ class DriverPaginationWidgetState extends State<DriverPaginationWidget>
     );
 
     // Animations
-    _progressAnimation = Tween<double>(
-      begin: 0.0,
-      end: _currentStep / widget.totalSteps,
-    ).animate(
-      CurvedAnimation(parent: _progressController, curve: Curves.easeInOut),
-    );
-
-
-    _barSlideAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _barAnimationController, curve: Curves.easeInOut),
-    );
-
-    _clickScaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-      CurvedAnimation(
-        parent: _clickAnimationController,
-        curve: Curves.easeInOut,
-      ),
-    );
+    _progressAnimation =
+        Tween<double>(
+          begin: 0.0,
+          end: _currentStep / widget.totalSteps,
+        ).animate(
+          CurvedAnimation(parent: _progressController, curve: Curves.easeInOut),
+        );
 
     // Démarrer les animations initiales
     _progressController.forward();
@@ -135,12 +121,13 @@ class DriverPaginationWidgetState extends State<DriverPaginationWidget>
   }
 
   void _updateProgressAnimation() {
-    _progressAnimation = Tween<double>(
-      begin: _progressAnimation.value,
-      end: _currentStep / widget.totalSteps,
-    ).animate(
-      CurvedAnimation(parent: _progressController, curve: Curves.easeInOut),
-    );
+    _progressAnimation =
+        Tween<double>(
+          begin: _progressAnimation.value,
+          end: _currentStep / widget.totalSteps,
+        ).animate(
+          CurvedAnimation(parent: _progressController, curve: Curves.easeInOut),
+        );
     _progressController.reset();
     _progressController.forward();
   }
@@ -196,180 +183,6 @@ class DriverPaginationWidgetState extends State<DriverPaginationWidget>
 
   void goToStep(int step) {
     _goToStep(step);
-  }
-
-  Widget buildCircularProgress() {
-    return AnimatedBuilder(
-      animation: _clickScaleAnimation,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _clickScaleAnimation.value,
-          child: GestureDetector(
-            onTap: _toggleProgressBar,
-            child: Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.forSmoothProgression,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.blur,
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Center(
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  child: _showProgressBar
-                      ? Transform.translate(
-                          offset: const Offset(0, -4),
-                          child: const Text(
-                            '—',
-                            key: ValueKey('dash'),
-                            style: TextStyle(
-                              color: AppColors.light,
-                              fontSize: 45,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
-                      : Text(
-                          '$_currentStep/${widget.totalSteps}',
-                          key: ValueKey('progress'),
-                          style: const TextStyle(
-                            color: AppColors.light,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget buildDotDashProgress() {
-    return PaginationAnimations.buildProgressBarAnimation(
-      animation: _barSlideAnimation,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final availableWidth = constraints.maxWidth - 16;
-          const dotSize = 10.0;
-          const minDashWidth = 18.0;
-          const maxDashWidth = 24.0;
-
-          double dashWidth =
-              (availableWidth - (widget.totalSteps * dotSize)) /
-              (widget.totalSteps - 1);
-          dashWidth = dashWidth.clamp(minDashWidth, maxDashWidth);
-
-          return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: _buildStepDotsAndDashes(dotSize, dashWidth),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  List<Widget> _buildStepDotsAndDashes(double dotSize, double dashWidth) {
-    final List<Widget> widgets = [];
-    for (int index = 0; index < widget.totalSteps; index++) {
-      final stepNumber = index + 1;
-      final isActive = stepNumber <= _currentStep;
-      final isCurrent = stepNumber == _currentStep;
-      final dashIsActive = stepNumber < _currentStep;
-
-      widgets.add(
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 24,
-                  child: isCurrent
-                      ? Container(
-                          margin: const EdgeInsets.only(bottom: 2),
-                          child: Text(
-                            'Étape $stepNumber',
-                            style: const TextStyle(
-                              color: AppColors.light,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                ),
-                PaginationAnimations.buildDotAnimation(
-                  isActive: isActive,
-                  isCurrent: isCurrent,
-                  size: dotSize,
-                  onTap: () => _goToStep(stepNumber),
-                ),
-              ],
-            ),
-            if (index < widget.totalSteps - 1)
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: Container(
-                  margin: EdgeInsets.only(bottom: (dotSize / 2)),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    width: dashWidth,
-                    height: 2,
-                    decoration: BoxDecoration(
-                      color: dashIsActive
-                          ? AppColors.progress
-                          : AppColors.light,
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      );
-    }
-    return widgets;
-  }
-
-  Widget buildPageView({
-    required Widget Function(int index) itemBuilder,
-    required int itemCount,
-    Function(int)? onPageChanged,
-  }) {
-    return PageView.builder(
-      controller: _pageController,
-      onPageChanged: (index) {
-        setState(() {
-          _currentStep = index + 1;
-        });
-        _updateProgressAnimation();
-        widget.onStepChanged?.call(_currentStep);
-        onPageChanged?.call(index);
-      },
-      itemCount: itemCount,
-      itemBuilder: (context, index) {
-        return itemBuilder(index);
-      },
-    );
   }
 
   int get currentStep => _currentStep;

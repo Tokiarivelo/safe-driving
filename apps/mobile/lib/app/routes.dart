@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/features/authentication/ui/screens/auth_screen.dart';
-import 'package:safe_driving/features/onboarding/driver/ui/views/driver_onboarding_screen.dart';
+import 'package:safe_driving/features/onboarding/driver/ui/screens/driver_onboarding_screen.dart';
 import 'package:safe_driving/features/onboarding/onboarding_screen.dart';
 
 import 'package:safe_driving/features/onboarding/user/ui/screens/user_onboarding_screen.dart';

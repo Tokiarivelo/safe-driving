@@ -10,7 +10,7 @@ class SwitchesAndRadios {
     return Switch(
       value: value,
       onChanged: onChanged,
-      activeColor: activeColor ?? AppColors.progress,
+      activeThumbColor: activeColor ?? AppColors.progress,
     );
   }
 
@@ -33,9 +33,8 @@ class SwitchesAndRadios {
         ),
       ),
       value: value,
-      groupValue: groupValue,
+
       activeColor: activeColor ?? AppColors.buttonWithoutBackGround,
-      onChanged: onChanged,
     );
   }
 

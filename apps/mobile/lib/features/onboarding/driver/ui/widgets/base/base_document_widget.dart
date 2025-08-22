@@ -48,18 +48,16 @@ abstract class BaseDocumentWidgetState<T extends BaseDocumentWidget>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.title,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
+        Text(widget.title, style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 16),
         Text(
           'Veuillez télécharger les documents suivants :',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 8),
-        ...widget.requiredDocuments
-            .map((doc) => _buildDocumentRequirement(doc)),
+        ...widget.requiredDocuments.map(
+          (doc) => _buildDocumentRequirement(doc),
+        ),
         const SizedBox(height: 24),
         if (_documents.isNotEmpty) ...[
           Text(
@@ -148,17 +146,17 @@ abstract class BaseDocumentWidgetState<T extends BaseDocumentWidget>
   }
 
   void _takePhoto() {
-    final mockPath = 
+    final mockPath =
         '${widget.documentType.toLowerCase()}_camera_${DateTime.now().millisecondsSinceEpoch}.jpg';
     addDocument(mockPath);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Photo prise avec succès')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Photo prise avec succès')));
   }
 
   void _pickFromGallery() {
-    final mockPath = 
+    final mockPath =
         '${widget.documentType.toLowerCase()}_gallery_${DateTime.now().millisecondsSinceEpoch}.jpg';
     addDocument(mockPath);
 
@@ -167,5 +165,6 @@ abstract class BaseDocumentWidgetState<T extends BaseDocumentWidget>
     );
   }
 
-  bool get hasAllRequiredDocuments => _documents.length >= widget.minimumRequiredCount;
+  bool get hasAllRequiredDocuments =>
+      _documents.length >= widget.minimumRequiredCount;
 }

@@ -97,7 +97,7 @@ class StepTwoView extends StatelessWidget {
           const SizedBox(height: 32),
 
           ButtonRows.buttonRow(
-            buttonTitles: ['Plus tard', 'Valider'],
+            buttonTitles: step.buttonTitles,
             onPressedList: [onSkip ?? () {}, onContinue],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             isLastButtonPrimary: true,
