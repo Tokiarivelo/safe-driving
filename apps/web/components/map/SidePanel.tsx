@@ -2,11 +2,24 @@
 
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
-import SearchBar from '@/components/map/SearchBar';
+import SearchFields from '@/components/map/SearchFields';
+import { Location } from '@/components/map/Location';
 
-export default function SidePanel() {
+export default function SidePanel({
+  locations,
+  updateLocation,
+  deleteLocation,
+  addLocation,
+  reorderLocations,
+}: {
+  locations: Location[];
+  updateLocation: (id: string, value: string, lat?: number, lon?: number) => void;
+  deleteLocation: (id: string) => void;
+  addLocation: () => void;
+  reorderLocations: (oldIndex: number, newIndex: number) => void;
+}) {
   const [open, setOpen] = useState(false);
-  const panelWidthPercent = 35; // panel width as percent of viewport
+  const panelWidthPercent = 35;
 
   return (
     <>
@@ -21,13 +34,20 @@ export default function SidePanel() {
           background: 'rgba(255, 255, 255, 0.2)',
           backdropFilter: 'blur(8px)',
           boxShadow: '-2px 0 8px rgba(0,0,0,0.2)',
+          borderLeft: '1px solid #ccc',
           transition: 'transform 0.3s ease',
           transform: open ? 'translateX(0)' : `translateX(${panelWidthPercent}vw)`,
           zIndex: 1000,
         }}
       >
         <div style={{ padding: '1rem' }}>
-          <SearchBar />
+          <SearchFields
+            locations={locations}
+            updateLocation={updateLocation}
+            deleteLocation={deleteLocation}
+            addLocation={addLocation}
+            reorderLocations={reorderLocations}
+          />
         </div>
       </div>
 

@@ -1,12 +1,16 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup, useMap, useMapEvents } from 'react-leaflet';
+import { MapContainer, Polyline, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import MapControls from '@/components/map/MapControls';
 import { MapPills } from '@/components/map/MapPill';
 import SidePanel from '@/components/map/SidePanel';
+import { Marker } from '@/components/map/Marker';
+import { Location } from '@/components/map/Location';
+import { arrayMove } from '@dnd-kit/sortable';
+import * as polyline from '@mapbox/polyline';
 
 // Fix Leaflet's default icon paths for Next.js
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -67,7 +71,42 @@ export default function Map({ coordinates }: Props) {
   );
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [isCenteredOnMyLocation, setIsCenteredOnMyLocation] = useState(false);
+
+  const [route, setRoute] = useState<[number, number][]>([]);
+
   const mapRef = useRef<L.Map | null>(null);
+
+  const [locations, setLocations] = useState<Location[]>([
+    { id: '1', placeholder: 'Origin', value: '' },
+    { id: '2', placeholder: 'Destination', value: '' },
+  ]);
+
+  const addLocation = () => {
+    const newLocation: Location = {
+      id: Date.now().toString(),
+      placeholder: `Stop ${locations.length - 1}`,
+      value: '',
+    };
+    const newLocations = [...locations];
+    newLocations.splice(-1, 0, newLocation);
+    setLocations(newLocations);
+  };
+
+  const updateLocation = (id: string, value: string, lat?: number, lon?: number) => {
+    setLocations(prev =>
+      prev.map(loc =>
+        loc.id === id ? { ...loc, value, lat, lon } : loc
+      ),
+    );
+  };
+
+  const deleteLocation = (id: string) => {
+    if (locations.length > 2) setLocations(prev => prev.filter(loc => loc.id !== id));
+  };
+
+  const reorderLocations = (oldIndex: number, newIndex: number) => {
+    setLocations(items => arrayMove(items, oldIndex, newIndex));
+  };
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -128,6 +167,32 @@ export default function Map({ coordinates }: Props) {
     }
   }, [coordinates]);
 
+  // inside your Map component
+  useEffect(() => {
+    const validLocations = locations.filter(loc => loc.lat != null && loc.lon != null);
+    if (validLocations.length >= 2) {
+      const coordinates = validLocations.map(loc => [loc.lon, loc.lat]); // ORS expects [lon, lat]
+
+      fetch("http://localhost:8085/ors/v2/directions/driving-car", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ coordinates }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          // Decode ORS polyline (geometry is encoded)
+          const coords = polyline.decode(data.routes[0].geometry) as [number, number][];
+          // ORS uses [lat, lon] format, Leaflet uses [lat, lon], so no swap needed
+          setRoute(coords); // store in state for Polyline
+        })
+        .catch(err => {
+          console.error("ORS request failed:", err);
+        });
+    } else {
+      setRoute([]);
+    }
+  }, [locations]);// run whenever locations change
+
   return (
     <div
       style={{
@@ -149,29 +214,42 @@ export default function Map({ coordinates }: Props) {
           attribution="&copy; <a href='https://osm.org/copyright'>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <CircleMarker
-          center={center}
-          radius={10} // circle size in pixels
-          pathOptions={{
-            color: 'blue', // border color
-            fillColor: 'blue', // inside color
-            fillOpacity: 0.5,
-          }}
-        >
-          <Popup>Hello from Paris!</Popup>
-        </CircleMarker>
+        {route.length > 0 && <Polyline positions={route} color="blue" weight={10} />}
+        {locations.map((location, index) =>
+          location.lat && location.lon ? (
+            <Marker
+              key={location.id}
+              position={[location.lat, location.lon]}
+              color={index === 0 ? 'blue' : index === locations.length - 1 ? 'red' : 'green'}
+            />
+          ) : null
+        )}
         {userLocation && (
-          <MapController
-            mapRef={mapRef}
-            userLocation={userLocation}
-            setIsCenteredOnMyLocation={setIsCenteredOnMyLocation}
-          />
+          <>
+            <Marker
+              position={userLocation}
+              color={isCenteredOnMyLocation ? "purple" : "gray"}
+              fillColor={isCenteredOnMyLocation ? "purple" : "gray"}
+              text="You are here"
+            />
+            <MapController
+              mapRef={mapRef}
+              userLocation={userLocation}
+              setIsCenteredOnMyLocation={setIsCenteredOnMyLocation}
+            />
+          </>
         )}
       </MapContainer>
 
       <MapPills mapRef={mapRef} />
 
-      <SidePanel />
+      <SidePanel
+        locations={locations}
+        updateLocation={updateLocation}
+        deleteLocation={deleteLocation}
+        addLocation={addLocation}
+        reorderLocations={reorderLocations}
+      />
 
       <MapControls
         getLocation={getLocation}
