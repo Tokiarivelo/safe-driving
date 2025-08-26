@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MapContainer, Polyline, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -11,6 +11,7 @@ import { Marker } from '@/components/map/Marker';
 import { Location } from '@/components/map/Location';
 import { arrayMove } from '@dnd-kit/sortable';
 import * as polyline from '@mapbox/polyline';
+import { TempMarker } from '@/components/map/TempMarker';
 
 // Fix Leaflet's default icon paths for Next.js
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -65,6 +66,34 @@ function MapController({
   return null;
 }
 
+async function reverseGeocode(lat: number, lon: number): Promise<string> {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
+      { headers: { "User-Agent": "mobix-app" } } // Nominatim requires UA
+    );
+    const data = await res.json();
+
+    if (!data.address) return "Unknown location";
+
+    const road = data.address.road || data.address.highway;
+    const neighbourhood =
+      data.address.neighbourhood ||
+      data.address.suburb ||
+      data.address.city_district;
+
+    // Format: road name above, neighbourhood below
+    if (road && neighbourhood) return `${road}, ${neighbourhood}`;
+    if (road) return road;
+    if (neighbourhood) return neighbourhood;
+
+    return data.display_name || "Unnamed place";
+  } catch (e) {
+    console.error("Reverse geocoding failed:", e);
+    return "Unknown location";
+  }
+}
+
 export default function Map({ coordinates }: Props) {
   const [center, setCenter] = useState<[number, number]>(
     coordinates || [-18.8792, 47.5079], // fallback
@@ -74,12 +103,16 @@ export default function Map({ coordinates }: Props) {
 
   const [route, setRoute] = useState<[number, number][]>([]);
 
+  const [tempMarker, setTempMarker] = useState<{ lat: number; lon: number } | null>(null);
+
   const mapRef = useRef<L.Map | null>(null);
 
   const [locations, setLocations] = useState<Location[]>([
     { id: '1', placeholder: 'Origin', value: '' },
     { id: '2', placeholder: 'Destination', value: '' },
   ]);
+
+  const [tempMarkerLabel, setTempMarkerLabel] = useState<string>("");
 
   const addLocation = () => {
     const newLocation: Location = {
@@ -93,11 +126,7 @@ export default function Map({ coordinates }: Props) {
   };
 
   const updateLocation = (id: string, value: string, lat?: number, lon?: number) => {
-    setLocations(prev =>
-      prev.map(loc =>
-        loc.id === id ? { ...loc, value, lat, lon } : loc
-      ),
-    );
+    setLocations(prev => prev.map(loc => (loc.id === id ? { ...loc, value, lat, lon } : loc)));
   };
 
   const deleteLocation = (id: string) => {
@@ -106,6 +135,27 @@ export default function Map({ coordinates }: Props) {
 
   const reorderLocations = (oldIndex: number, newIndex: number) => {
     setLocations(items => arrayMove(items, oldIndex, newIndex));
+  };
+
+  const addLocationAt = async (lat: number, lon: number) => {
+    const label = await reverseGeocode(lat, lon);
+
+    const firstEmpty = locations.find(loc => loc.value === '');
+    if (firstEmpty) {
+      updateLocation(firstEmpty.id, label, lat, lon);
+    } else {
+      const newLocation: Location = {
+        id: Date.now().toString(),
+        placeholder: `Stop ${locations.length - 1}`,
+        value: label,
+        lat,
+        lon,
+      };
+      const newLocations = [...locations];
+      newLocations.splice(newLocations.length - 1, 0, newLocation);
+      setLocations(newLocations);
+    }
+    setTempMarker(null); // remove after adding
   };
 
   const getLocation = () => {
@@ -162,6 +212,14 @@ export default function Map({ coordinates }: Props) {
   };
 
   useEffect(() => {
+    if (tempMarker) {
+      reverseGeocode(tempMarker.lat, tempMarker.lon).then(setTempMarkerLabel);
+    } else {
+      setTempMarkerLabel("");
+    }
+  }, [tempMarker]);
+
+  useEffect(() => {
     if (!coordinates) {
       getLocation();
     }
@@ -169,15 +227,13 @@ export default function Map({ coordinates }: Props) {
 
   // inside your Map component
   useEffect(() => {
-    console.log(locations);
-
     const validLocations = locations.filter(loc => loc.lat != null && loc.lon != null);
     if (validLocations.length >= 2) {
       const coordinates = validLocations.map(loc => [loc.lon, loc.lat]); // ORS expects [lon, lat]
 
-      fetch("http://localhost:8085/ors/v2/directions/driving-car", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      fetch('http://localhost:8085/ors/v2/directions/driving-car', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ coordinates }),
       })
         .then(res => res.json())
@@ -188,12 +244,12 @@ export default function Map({ coordinates }: Props) {
           setRoute(coords); // store in state for Polyline
         })
         .catch(err => {
-          console.error("ORS request failed:", err);
+          console.error('ORS request failed:', err);
         });
     } else {
       setRoute([]);
     }
-  }, [locations]);// run whenever locations change
+  }, [locations]); // run whenever locations change
 
   return (
     <div
@@ -204,7 +260,6 @@ export default function Map({ coordinates }: Props) {
         overflow: 'hidden',
       }}
     >
-
       <MapContainer
         center={center}
         zoom={13}
@@ -224,39 +279,41 @@ export default function Map({ coordinates }: Props) {
               position={[location.lat, location.lon]}
               color={index === 0 ? 'blue' : index === locations.length - 1 ? 'red' : 'green'}
             />
-          ) : null
+          ) : null,
         )}
         {userLocation && (
           <>
-            <Marker
-              position={userLocation}
-              color="purple"
-              fillColor="purple"
-              text="You are here"
-              addText="Add my current position"
-              onAdd={() => {
-                if (!userLocation) return;
+            {isCenteredOnMyLocation && (
+              <Marker
+                position={userLocation}
+                color="purple"
+                fillColor="purple"
+                text="You are here"
+                addText="Add my current position"
+                onAdd={() => {
+                  if (!userLocation) return;
 
-                // Find the first default empty location
-                const firstEmpty = locations.find(loc => loc.value === '');
-                if (firstEmpty) {
-                  updateLocation(firstEmpty.id, 'My Location', userLocation[0], userLocation[1]);
-                  return;
-                }
+                  // Find the first default empty location
+                  const firstEmpty = locations.find(loc => loc.value === '');
+                  if (firstEmpty) {
+                    updateLocation(firstEmpty.id, 'My Location', userLocation[0], userLocation[1]);
+                    return;
+                  }
 
-                // No empty default, insert new before last
-                const newLocation: Location = {
-                  id: Date.now().toString(),
-                  placeholder: `Stop ${locations.length - 1}`,
-                  value: 'My Location',
-                  lat: userLocation[0],
-                  lon: userLocation[1],
-                };
-                const newLocations = [...locations];
-                newLocations.splice(newLocations.length - 1, 0, newLocation);
-                setLocations(newLocations);
-              }}
-            />
+                  // No empty default, insert new before last
+                  const newLocation: Location = {
+                    id: Date.now().toString(),
+                    placeholder: `Stop ${locations.length - 1}`,
+                    value: 'My Location',
+                    lat: userLocation[0],
+                    lon: userLocation[1],
+                  };
+                  const newLocations = [...locations];
+                  newLocations.splice(newLocations.length - 1, 0, newLocation);
+                  setLocations(newLocations);
+                }}
+              />
+            )}
             <MapController
               mapRef={mapRef}
               userLocation={userLocation}
@@ -264,6 +321,20 @@ export default function Map({ coordinates }: Props) {
             />
           </>
         )}
+
+        {/* temporary marker on click */}
+        {tempMarker && (
+          <Marker
+            position={[tempMarker.lat, tempMarker.lon]}
+            color="orange"
+            fillColor="orange"
+            text={tempMarkerLabel || "Loading..."}
+            addText="Add this position"
+            onAdd={() => addLocationAt(tempMarker.lat, tempMarker.lon)}
+          />
+        )}
+
+        <TempMarker setTempMarker={setTempMarker} addLocationAt={addLocationAt} />
       </MapContainer>
 
       <MapPills mapRef={mapRef} />
