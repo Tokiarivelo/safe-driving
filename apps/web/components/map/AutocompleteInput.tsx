@@ -19,10 +19,19 @@ export const AutocompleteInput = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setQuery(location.value);
+  }, [location.value]);
+
+  useEffect(() => {
     if (!query) {
       setResults([]);
       return;
     }
+
+    if (query === 'My Location') {
+      return;
+    }
+
     const controller = new AbortController();
     setLoading(true);
 

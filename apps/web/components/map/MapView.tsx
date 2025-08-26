@@ -169,6 +169,8 @@ export default function Map({ coordinates }: Props) {
 
   // inside your Map component
   useEffect(() => {
+    console.log(locations);
+
     const validLocations = locations.filter(loc => loc.lat != null && loc.lon != null);
     if (validLocations.length >= 2) {
       const coordinates = validLocations.map(loc => [loc.lon, loc.lat]); // ORS expects [lon, lat]
@@ -214,7 +216,7 @@ export default function Map({ coordinates }: Props) {
           attribution="&copy; <a href='https://osm.org/copyright'>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {route.length > 0 && <Polyline positions={route} color="blue" weight={10} />}
+        {route.length > 0 && <Polyline positions={route} color="blue" weight={4} />}
         {locations.map((location, index) =>
           location.lat && location.lon ? (
             <Marker
@@ -228,9 +230,32 @@ export default function Map({ coordinates }: Props) {
           <>
             <Marker
               position={userLocation}
-              color={isCenteredOnMyLocation ? "purple" : "gray"}
-              fillColor={isCenteredOnMyLocation ? "purple" : "gray"}
+              color="purple"
+              fillColor="purple"
               text="You are here"
+              addText="Add my current position"
+              onAdd={() => {
+                if (!userLocation) return;
+
+                // Find the first default empty location
+                const firstEmpty = locations.find(loc => loc.value === '');
+                if (firstEmpty) {
+                  updateLocation(firstEmpty.id, 'My Location', userLocation[0], userLocation[1]);
+                  return;
+                }
+
+                // No empty default, insert new before last
+                const newLocation: Location = {
+                  id: Date.now().toString(),
+                  placeholder: `Stop ${locations.length - 1}`,
+                  value: 'My Location',
+                  lat: userLocation[0],
+                  lon: userLocation[1],
+                };
+                const newLocations = [...locations];
+                newLocations.splice(newLocations.length - 1, 0, newLocation);
+                setLocations(newLocations);
+              }}
             />
             <MapController
               mapRef={mapRef}
