@@ -52,6 +52,7 @@ flutter:
     - .env
     - lib/resources/assets/img/social/
     - lib/resources/assets/logo/
+    - lib/resources/assets/home/icons/
   fonts:
     - family: Inder
       fonts:

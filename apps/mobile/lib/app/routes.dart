@@ -4,12 +4,17 @@ import 'package:safe_driving/features/onboarding/driver/ui/screens/driver_onboar
 import 'package:safe_driving/features/onboarding/onboarding_screen.dart';
 
 import 'package:safe_driving/features/onboarding/user/ui/screens/user_onboarding_screen.dart';
+//-------
+import 'package:safe_driving/features/home/screens/home_screen.dart';
 
 class AppRoutes {
   static const String auth = '/auth';
   static const String onboarding = "/onboarding";
   static const String useronboarding = '/user_onboarding';
   static const String driveronboarding = '/driver_onboarding';
+  //------
+  static const String home = '/home';
+
   static Map<String, WidgetBuilder> routes = {
     auth: (context) => const AuthScreen(),
     onboarding: (context) => OnboardingScreen(
@@ -22,5 +27,6 @@ class AppRoutes {
     ),
     useronboarding: (context) => const UserOnboardingScreen(),
     driveronboarding: (context) => const DriverOnboardingScreen(),
+    home: (context) => const HomeScreen(),
   };
 }
