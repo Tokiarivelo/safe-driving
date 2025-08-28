@@ -53,6 +53,7 @@ export default function SearchFields({
     color: '#3b82f6',
     cursor: 'pointer',
     padding: '4px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
   };
 
   return (
@@ -77,10 +78,9 @@ export default function SearchFields({
 
       <div
         style={{
-          marginLeft: '3%',
           display: 'flex',
-          justifyContent: 'center',
-          gap: '25%',
+          justifyContent: 'right',
+          gap: '20px',
           width: '100%',
         }}
       >
