@@ -6,6 +6,7 @@ export interface Location {
   value: string;
   lat?: number;
   lon?: number;
+  source: 'user' | 'marker';
 }
 
 export type LocationsProps = {
@@ -14,3 +15,8 @@ export type LocationsProps = {
   updateLocation: (id: string, value: string, lat?: number, lon?: number) => void;
   deleteLocation: (id: string) => void;
 };
+
+export const defaultLocations: Location[] = [
+  { id: '1', placeholder: 'Origin', value: '', source: 'marker' },
+  { id: '2', placeholder: 'Destination', value: '', source: 'marker' },
+];

@@ -28,9 +28,8 @@ export const AutocompleteInput = ({
       return;
     }
 
-    if (query === 'My Location') {
-      return;
-    }
+    if (query === 'My Location') return;
+    if (location.source === 'marker') return;
 
     const controller = new AbortController();
     setLoading(true);

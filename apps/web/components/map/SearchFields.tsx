@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Plus } from 'lucide-react';
+import { ArrowUpDown, Plus, Trash2 } from 'lucide-react';
 import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Location } from '@/components/map/Location';
@@ -9,12 +9,16 @@ import { SortableLocationItem } from '@/components/map/SortableLocationItem';
 
 export default function SearchFields({
   locations,
+  cleanLocations,
+  reverseLocations,
   updateLocation,
   deleteLocation,
   addLocation,
   reorderLocations,
 }: {
   locations: Location[];
+  cleanLocations: () => void;
+  reverseLocations: () => void;
   updateLocation: (id: string, value: string, lat?: number, lon?: number) => void;
   deleteLocation: (id: string) => void;
   addLocation: () => void;
@@ -37,14 +41,18 @@ export default function SearchFields({
     gap: '16px',
     padding: '16px',
   };
-  const addButtonStyle: React.CSSProperties = {
+
+  const iconButtonStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
-    border: 'none',
-    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    border: '1px solid #ccc',
+    borderRadius: '8px',
+    backgroundColor: 'rgba(255,255,255,0.4)',
+    backdropFilter: 'blur(8px)',
     color: '#3b82f6',
     cursor: 'pointer',
+    padding: '4px',
   };
 
   return (
@@ -67,10 +75,25 @@ export default function SearchFields({
         </SortableContext>
       </DndContext>
 
-      <div style={{ marginLeft: '32px' }}>
-        <button onClick={addLocation} style={addButtonStyle}>
-          <Plus size={16} />
-          Add Stop
+      <div
+        style={{
+          marginLeft: '3%',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '25%',
+          width: '100%',
+        }}
+      >
+        <button onClick={addLocation} style={iconButtonStyle} title="Add Stop">
+          <Plus size={18} />
+        </button>
+
+        <button onClick={reverseLocations} style={iconButtonStyle} title="Reverse Locations">
+          <ArrowUpDown size={18} />
+        </button>
+
+        <button onClick={cleanLocations} style={iconButtonStyle} title="Clean Locations">
+          <Trash2 size={18} />
         </button>
       </div>
     </div>

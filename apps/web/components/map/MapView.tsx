@@ -8,7 +8,7 @@ import MapControls from '@/components/map/MapControls';
 import { MapPills } from '@/components/map/MapPill';
 import SidePanel from '@/components/map/SidePanel';
 import { Marker } from '@/components/map/Marker';
-import { Location } from '@/components/map/Location';
+import { defaultLocations, Location } from '@/components/map/Location';
 import { arrayMove } from '@dnd-kit/sortable';
 import * as polyline from '@mapbox/polyline';
 import { TempMarker } from '@/components/map/TempMarker';
@@ -70,27 +70,25 @@ async function reverseGeocode(lat: number, lon: number): Promise<string> {
   try {
     const res = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
-      { headers: { "User-Agent": "mobix-app" } } // Nominatim requires UA
+      { headers: { 'User-Agent': 'mobix-app' } }, // Nominatim requires UA
     );
     const data = await res.json();
 
-    if (!data.address) return "Unknown location";
+    if (!data.address) return 'Unknown location';
 
     const road = data.address.road || data.address.highway;
     const neighbourhood =
-      data.address.neighbourhood ||
-      data.address.suburb ||
-      data.address.city_district;
+      data.address.neighbourhood || data.address.suburb || data.address.city_district;
 
     // Format: road name above, neighbourhood below
     if (road && neighbourhood) return `${road}, ${neighbourhood}`;
     if (road) return road;
     if (neighbourhood) return neighbourhood;
 
-    return data.display_name || "Unnamed place";
+    return data.display_name || 'Unnamed place';
   } catch (e) {
-    console.error("Reverse geocoding failed:", e);
-    return "Unknown location";
+    console.error('Reverse geocoding failed:', e);
+    return 'Unknown location';
   }
 }
 
@@ -107,26 +105,30 @@ export default function Map({ coordinates }: Props) {
 
   const mapRef = useRef<L.Map | null>(null);
 
-  const [locations, setLocations] = useState<Location[]>([
-    { id: '1', placeholder: 'Origin', value: '' },
-    { id: '2', placeholder: 'Destination', value: '' },
-  ]);
+  const [locations, setLocations] = useState<Location[]>(defaultLocations);
 
-  const [tempMarkerLabel, setTempMarkerLabel] = useState<string>("");
+  const [tempMarkerLabel, setTempMarkerLabel] = useState<string>('');
 
   const addLocation = () => {
     const newLocation: Location = {
       id: Date.now().toString(),
       placeholder: `Stop ${locations.length - 1}`,
       value: '',
+      source: 'user',
     };
     const newLocations = [...locations];
     newLocations.splice(-1, 0, newLocation);
     setLocations(newLocations);
   };
 
-  const updateLocation = (id: string, value: string, lat?: number, lon?: number) => {
-    setLocations(prev => prev.map(loc => (loc.id === id ? { ...loc, value, lat, lon } : loc)));
+  const updateLocation = (
+    id: string,
+    value: string,
+    lat?: number,
+    lon?: number,
+    source: 'user' | 'marker' = 'user',
+  ) => {
+    setLocations(prev => prev.map(loc => (loc.id === id ? { ...loc, value, lat, lon, source } : loc)));
   };
 
   const deleteLocation = (id: string) => {
@@ -142,7 +144,7 @@ export default function Map({ coordinates }: Props) {
 
     const firstEmpty = locations.find(loc => loc.value === '');
     if (firstEmpty) {
-      updateLocation(firstEmpty.id, label, lat, lon);
+      updateLocation(firstEmpty.id, label, lat, lon, 'marker');
     } else {
       const newLocation: Location = {
         id: Date.now().toString(),
@@ -150,12 +152,21 @@ export default function Map({ coordinates }: Props) {
         value: label,
         lat,
         lon,
+        source: 'marker',
       };
       const newLocations = [...locations];
       newLocations.splice(newLocations.length - 1, 0, newLocation);
       setLocations(newLocations);
     }
     setTempMarker(null); // remove after adding
+  };
+
+  const cleanLocations = () => {
+    setLocations(defaultLocations);
+  }
+
+  const reverseLocations = () => {
+    setLocations(prev => [...prev].reverse());
   };
 
   const getLocation = () => {
@@ -215,7 +226,7 @@ export default function Map({ coordinates }: Props) {
     if (tempMarker) {
       reverseGeocode(tempMarker.lat, tempMarker.lon).then(setTempMarkerLabel);
     } else {
-      setTempMarkerLabel("");
+      setTempMarkerLabel('');
     }
   }, [tempMarker]);
 
@@ -277,6 +288,7 @@ export default function Map({ coordinates }: Props) {
             <Marker
               key={location.id}
               position={[location.lat, location.lon]}
+              text={location.value}
               color={index === 0 ? 'blue' : index === locations.length - 1 ? 'red' : 'green'}
             />
           ) : null,
@@ -307,6 +319,7 @@ export default function Map({ coordinates }: Props) {
                     value: 'My Location',
                     lat: userLocation[0],
                     lon: userLocation[1],
+                    source: 'marker',
                   };
                   const newLocations = [...locations];
                   newLocations.splice(newLocations.length - 1, 0, newLocation);
@@ -328,7 +341,7 @@ export default function Map({ coordinates }: Props) {
             position={[tempMarker.lat, tempMarker.lon]}
             color="orange"
             fillColor="orange"
-            text={tempMarkerLabel || "Loading..."}
+            text={tempMarkerLabel || 'Loading...'}
             addText="Add this position"
             onAdd={() => addLocationAt(tempMarker.lat, tempMarker.lon)}
           />
@@ -341,6 +354,8 @@ export default function Map({ coordinates }: Props) {
 
       <SidePanel
         locations={locations}
+        cleanLocations={cleanLocations}
+        reverseLocations={reverseLocations}
         updateLocation={updateLocation}
         deleteLocation={deleteLocation}
         addLocation={addLocation}
