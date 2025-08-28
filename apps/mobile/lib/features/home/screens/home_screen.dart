@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_driving/core/constants/colors/colors.dart';
 import '../view_models/home_view_model.dart';
 import '../widgets/home_header.dart';
 import '../widgets/home_logo.dart';
@@ -13,14 +14,14 @@ class HomeScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => HomeViewModel(),
       child: Scaffold(
-        backgroundColor: const Color(0xFFFFFFFF),
+        backgroundColor: AppColors.light,
         body: SafeArea(
           child: Column(
             children: [
               const HomeHeader(),
-              const SizedBox(height: 80),
+              const SizedBox(height: 45),
               const HomeLogo(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
               Expanded(
                 child: Consumer<HomeViewModel>(
                   builder: (context, viewModel, child) {

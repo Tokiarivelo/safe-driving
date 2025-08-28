@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_driving/core/constants/colors/colors.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
@@ -12,18 +13,26 @@ class HomeHeader extends StatelessWidget {
           Container(
             width: 50,
             height: 50,
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
-                width: 2,
+            child: ShaderMask(
+              shaderCallback: (bounds) => LinearGradient(
+                colors: [AppColors.color1, AppColors.color2],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ).createShader(bounds),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.light, width: 2),
+                  color: AppColors.dark.withValues(
+                    alpha: 0.2,
+                  ), // ton fond normal
+                ),
+                child: const Icon(
+                  Icons.person,
+                  color: AppColors.dark,
+                  size: 30,
+                ),
               ),
-            ),
-            child: const Icon(
-              Icons.person,
-              color: Color.fromARGB(255, 0, 0, 0),
-              size: 30,
             ),
           ),
           const SizedBox(width: 15),
@@ -31,7 +40,7 @@ class HomeHeader extends StatelessWidget {
             child: Text(
               'Safe Driving',
               style: TextStyle(
-                color: Color.fromARGB(255, 0, 0, 0),
+                color: AppColors.dark,
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
               ),

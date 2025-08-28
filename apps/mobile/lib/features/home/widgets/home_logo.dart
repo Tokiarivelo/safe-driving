@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_driving/core/constants/colors/colors.dart';
 
 class HomeLogo extends StatelessWidget {
   const HomeLogo({super.key});
@@ -6,7 +7,7 @@ class HomeLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       child: Image.asset(
         'lib/resources/assets/home/icons/Background.png',
         width: 150,
@@ -17,13 +18,13 @@ class HomeLogo extends StatelessWidget {
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              color: Colors.blue[100],
+              color: AppColors.snackbarInfo.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.directions_car,
               size: 50,
-              color: Colors.blue[700],
+              color: AppColors.snackbarInfo,
             ),
           );
         },
