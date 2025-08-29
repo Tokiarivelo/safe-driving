@@ -1,6 +1,6 @@
 services:
   ors:
-    image: openrouteservice/openrouteservice
+    image: openrouteservice/openrouteservice:latest
     container_name: ors
     ports:
       - "8085:8082"

@@ -70,7 +70,7 @@ async function reverseGeocode(lat: number, lon: number): Promise<string> {
   try {
     const res = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
-      { headers: { 'User-Agent': 'mobix-app' } }, // Nominatim requires UA
+      { headers: { 'User-Agent': 'safe-driving' } }, // Nominatim requires UA
     );
     const data = await res.json();
 
@@ -80,7 +80,7 @@ async function reverseGeocode(lat: number, lon: number): Promise<string> {
     const neighbourhood =
       data.address.neighbourhood || data.address.suburb || data.address.city_district;
 
-    // Format: road name above, neighbourhood below
+    // Format: road name above, neighborhood below
     if (road && neighbourhood) return `${road}, ${neighbourhood}`;
     if (road) return road;
     if (neighbourhood) return neighbourhood;
