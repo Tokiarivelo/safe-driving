@@ -28,19 +28,3 @@ docker run -d -p 8085:8082 --name ors `
 -v "C:\Users\razan\WebstormProject\safe-driving\apps\graphql-server\ors-data\configs\ors-config.yml:/home/ors/config/ors-config.yml" `
 -v "C:\Users\razan\WebstormProject\safe-driving\apps\graphql-server\ors-data\pbf\madagascar-latest.osm.pbf:/home/ors/files/madagascar-latest.osm.pbf" `
 openrouteservice/openrouteservice
-
--18.986066845134644,
-47.53289646220101
-
--18.982008730530882,
-47.54361700204373
-
--18.89824749221548,
-47.603258146638105
-
--18.872950348606203,
-47.549288356741485
-
--18.799068072763312,
-47.476230973251965
-

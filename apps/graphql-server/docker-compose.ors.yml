@@ -1,0 +1,13 @@
+services:
+  ors:
+    image: openrouteservice/openrouteservice
+    container_name: ors
+    ports:
+      - "8085:8082"
+    volumes:
+      - ./ors-data/graphs:/home/ors/graphs
+      - ./ors-data/elevation_cache:/home/ors/elevation_cache
+      - ./ors-data/configs:/home/ors/config
+      - ./ors-data/configs/ors-config.yml:/home/ors/config/ors-config.yml
+      - ./ors-data/pbf/madagascar-latest.osm.pbf:/home/ors/files/madagascar-latest.osm.pbf
+    restart: unless-stopped
