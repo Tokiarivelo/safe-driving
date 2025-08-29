@@ -19,6 +19,6 @@ import { ConfigModule } from '@nestjs/config';
     UsersModule, // Import UsersModule to use UsersService
   ],
   providers: [JwtStrategy, AuthService, AuthResolver, TokensService],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

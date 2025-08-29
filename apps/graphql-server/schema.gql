@@ -421,9 +421,11 @@ type CompleteUploadOutput {
 type Conversation {
   _count: ConversationCount!
   createdAt: DateTime!
+  directHash: String
   id: String!
   messages: [Message!]
   participants: [ConversationParticipant!]
+  rideId: String
   title: String
   type: ConversationType!
 }
@@ -436,7 +438,9 @@ type ConversationCount {
 type ConversationCountAggregate {
   _all: Int!
   createdAt: Int!
+  directHash: Int!
   id: Int!
+  rideId: Int!
   title: Int!
   type: Int!
 }
@@ -465,30 +469,38 @@ input ConversationCreateOrConnectWithoutParticipantsInput {
 
 input ConversationCreateWithoutMessagesInput {
   createdAt: DateTime
+  directHash: String
   id: String
   participants: ConversationParticipantCreateNestedManyWithoutConversationInput
+  rideId: String
   title: String
   type: ConversationType
 }
 
 input ConversationCreateWithoutParticipantsInput {
   createdAt: DateTime
+  directHash: String
   id: String
   messages: MessageCreateNestedManyWithoutConversationInput
+  rideId: String
   title: String
   type: ConversationType
 }
 
 type ConversationMaxAggregate {
   createdAt: DateTime
+  directHash: String
   id: String
+  rideId: String
   title: String
   type: ConversationType
 }
 
 type ConversationMinAggregate {
   createdAt: DateTime
+  directHash: String
   id: String
+  rideId: String
   title: String
   type: ConversationType
 }
@@ -783,16 +795,20 @@ input ConversationUpdateToOneWithWhereWithoutParticipantsInput {
 
 input ConversationUpdateWithoutMessagesInput {
   createdAt: DateTimeFieldUpdateOperationsInput
+  directHash: NullableStringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   participants: ConversationParticipantUpdateManyWithoutConversationNestedInput
+  rideId: NullableStringFieldUpdateOperationsInput
   title: NullableStringFieldUpdateOperationsInput
   type: EnumConversationTypeFieldUpdateOperationsInput
 }
 
 input ConversationUpdateWithoutParticipantsInput {
   createdAt: DateTimeFieldUpdateOperationsInput
+  directHash: NullableStringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutConversationNestedInput
+  rideId: NullableStringFieldUpdateOperationsInput
   title: NullableStringFieldUpdateOperationsInput
   type: EnumConversationTypeFieldUpdateOperationsInput
 }
@@ -814,9 +830,11 @@ input ConversationWhereInput {
   NOT: [ConversationWhereInput!]
   OR: [ConversationWhereInput!]
   createdAt: DateTimeFilter
+  directHash: StringNullableFilter
   id: StringFilter
   messages: MessageListRelationFilter
   participants: ConversationParticipantListRelationFilter
+  rideId: StringNullableFilter
   title: StringNullableFilter
   type: EnumConversationTypeFilter
 }
@@ -826,9 +844,11 @@ input ConversationWhereUniqueInput {
   NOT: [ConversationWhereInput!]
   OR: [ConversationWhereInput!]
   createdAt: DateTimeFilter
+  directHash: String
   id: String
   messages: MessageListRelationFilter
   participants: ConversationParticipantListRelationFilter
+  rideId: String
   title: StringNullableFilter
   type: EnumConversationTypeFilter
 }
@@ -2772,6 +2792,11 @@ input MessageOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
+type MessagePayload {
+  message: Message!
+  type: String!
+}
+
 type MessageReadReceipt {
   id: String!
   message: Message!
@@ -3474,8 +3499,10 @@ type Mutation {
   getPresignedUrl(contentType: String!, expiresIn: Float, key: String!): String!
   login(data: LoginInput!): LoginOutput
   logout: Boolean!
+  markMessageAsDelivered(messageId: String!): Message!
   register(data: RegisterInput!): User!
   resetPassword(newPassword: String!, sessionToken: String!): Boolean!
+  sendMessage(input: SendMessageInput!): Message!
   updateFile(id: String!, input: CustomFileUpdateInput!): File!
   updateUser(input: UserUpdateInput!): User!
   uploadFile(file: Upload!, path: String): FileUploadResult!
@@ -4210,6 +4237,7 @@ type Query {
   getUserQr(type: String): String!
   listObjects(bucket: String!): [String!]!
   me: User!
+  messages(conversationId: String, cursor: String, limit: Float! = 20, rideId: String): [Message!]!
   user(id: String!): User!
   userByToken(token: String!): User!
   userPreference: UserPreference
@@ -5563,6 +5591,15 @@ input RoleWhereUniqueInput {
   users: UserListRelationFilter
 }
 
+input SendMessageInput {
+  clientTempId: String
+  content: String!
+  conversationId: String
+  parentMessageId: String
+  recipientId: String
+  rideId: String
+}
+
 enum SortOrder {
   asc
   desc
@@ -5605,6 +5642,10 @@ input StringNullableFilter {
   not: NestedStringNullableFilter
   notIn: [String!]
   startsWith: String
+}
+
+type Subscription {
+  messageReceived(conversationId: String, rideId: String): MessagePayload!
 }
 
 """The `Upload` scalar type represents a file upload."""

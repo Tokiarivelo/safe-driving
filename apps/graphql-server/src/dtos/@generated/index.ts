@@ -291,6 +291,8 @@ export enum ConversationParticipantScalarFieldEnum {
 export enum ConversationScalarFieldEnum {
     id = "id",
     title = "title",
+    rideId = "rideId",
+    directHash = "directHash",
     createdAt = "createdAt",
     type = "type"
 }
@@ -2148,7 +2150,7 @@ export class ConversationAggregateArgs {
     @Field(() => [ConversationOrderByWithRelationInput], {nullable:true})
     orderBy?: Array<ConversationOrderByWithRelationInput>;
     @Field(() => ConversationWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    cursor?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
     @Field(() => Int, {nullable:true})
     take?: number;
     @Field(() => Int, {nullable:true})
@@ -2168,6 +2170,10 @@ export class ConversationCountAggregateInput {
     @Field(() => Boolean, {nullable:true})
     title?: true;
     @Field(() => Boolean, {nullable:true})
+    rideId?: true;
+    @Field(() => Boolean, {nullable:true})
+    directHash?: true;
+    @Field(() => Boolean, {nullable:true})
     createdAt?: true;
     @Field(() => Boolean, {nullable:true})
     type?: true;
@@ -2182,6 +2188,10 @@ export class ConversationCountAggregate {
     @Field(() => Int, {nullable:false})
     title!: number;
     @Field(() => Int, {nullable:false})
+    rideId!: number;
+    @Field(() => Int, {nullable:false})
+    directHash!: number;
+    @Field(() => Int, {nullable:false})
     createdAt!: number;
     @Field(() => Int, {nullable:false})
     type!: number;
@@ -2195,6 +2205,10 @@ export class ConversationCountOrderByAggregateInput {
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     title?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    rideId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    directHash?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -2215,6 +2229,10 @@ export class ConversationCreateManyInput {
     id?: string;
     @Field(() => String, {nullable:true})
     title?: string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    directHash?: string;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => ConversationType, {nullable:true})
@@ -2231,7 +2249,7 @@ export class ConversationCreateNestedOneWithoutMessagesInput {
     connectOrCreate?: InstanceType<typeof ConversationCreateOrConnectWithoutMessagesInput>;
     @Field(() => ConversationWhereUniqueInput, {nullable:true})
     @Type(() => ConversationWhereUniqueInput)
-    connect?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    connect?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
 }
 
 @InputType()
@@ -2244,14 +2262,14 @@ export class ConversationCreateNestedOneWithoutParticipantsInput {
     connectOrCreate?: InstanceType<typeof ConversationCreateOrConnectWithoutParticipantsInput>;
     @Field(() => ConversationWhereUniqueInput, {nullable:true})
     @Type(() => ConversationWhereUniqueInput)
-    connect?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    connect?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
 }
 
 @InputType()
 export class ConversationCreateOrConnectWithoutMessagesInput {
     @Field(() => ConversationWhereUniqueInput, {nullable:false})
     @Type(() => ConversationWhereUniqueInput)
-    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
     @Field(() => ConversationCreateWithoutMessagesInput, {nullable:false})
     @Type(() => ConversationCreateWithoutMessagesInput)
     create!: InstanceType<typeof ConversationCreateWithoutMessagesInput>;
@@ -2261,7 +2279,7 @@ export class ConversationCreateOrConnectWithoutMessagesInput {
 export class ConversationCreateOrConnectWithoutParticipantsInput {
     @Field(() => ConversationWhereUniqueInput, {nullable:false})
     @Type(() => ConversationWhereUniqueInput)
-    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
     @Field(() => ConversationCreateWithoutParticipantsInput, {nullable:false})
     @Type(() => ConversationCreateWithoutParticipantsInput)
     create!: InstanceType<typeof ConversationCreateWithoutParticipantsInput>;
@@ -2273,6 +2291,10 @@ export class ConversationCreateWithoutMessagesInput {
     id?: string;
     @Field(() => String, {nullable:true})
     title?: string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    directHash?: string;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => ConversationType, {nullable:true})
@@ -2287,6 +2309,10 @@ export class ConversationCreateWithoutParticipantsInput {
     id?: string;
     @Field(() => String, {nullable:true})
     title?: string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    directHash?: string;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => ConversationType, {nullable:true})
@@ -2301,6 +2327,10 @@ export class ConversationCreateInput {
     id?: string;
     @Field(() => String, {nullable:true})
     title?: string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    directHash?: string;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => ConversationType, {nullable:true})
@@ -2340,6 +2370,10 @@ export class ConversationGroupBy {
     id!: string;
     @Field(() => String, {nullable:true})
     title?: string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    directHash?: string;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
     @Field(() => ConversationType, {nullable:false})
@@ -2359,6 +2393,10 @@ export class ConversationMaxAggregateInput {
     @Field(() => Boolean, {nullable:true})
     title?: true;
     @Field(() => Boolean, {nullable:true})
+    rideId?: true;
+    @Field(() => Boolean, {nullable:true})
+    directHash?: true;
+    @Field(() => Boolean, {nullable:true})
     createdAt?: true;
     @Field(() => Boolean, {nullable:true})
     type?: true;
@@ -2370,6 +2408,10 @@ export class ConversationMaxAggregate {
     id?: string;
     @Field(() => String, {nullable:true})
     title?: string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    directHash?: string;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => ConversationType, {nullable:true})
@@ -2383,6 +2425,10 @@ export class ConversationMaxOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     title?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
+    rideId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    directHash?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     type?: `${SortOrder}`;
@@ -2395,6 +2441,10 @@ export class ConversationMinAggregateInput {
     @Field(() => Boolean, {nullable:true})
     title?: true;
     @Field(() => Boolean, {nullable:true})
+    rideId?: true;
+    @Field(() => Boolean, {nullable:true})
+    directHash?: true;
+    @Field(() => Boolean, {nullable:true})
     createdAt?: true;
     @Field(() => Boolean, {nullable:true})
     type?: true;
@@ -2406,6 +2456,10 @@ export class ConversationMinAggregate {
     id?: string;
     @Field(() => String, {nullable:true})
     title?: string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    directHash?: string;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => ConversationType, {nullable:true})
@@ -2418,6 +2472,10 @@ export class ConversationMinOrderByAggregateInput {
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     title?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    rideId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    directHash?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -2438,6 +2496,10 @@ export class ConversationOrderByWithAggregationInput {
     id?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     title?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    rideId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    directHash?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -2456,6 +2518,10 @@ export class ConversationOrderByWithRelationInput {
     id?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     title?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    rideId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    directHash?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     createdAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -2486,6 +2552,10 @@ export class ConversationScalarWhereWithAggregatesInput {
     id?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     title?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    rideId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    directHash?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
     @Field(() => EnumConversationTypeWithAggregatesFilter, {nullable:true})
@@ -2498,6 +2568,10 @@ export class ConversationUncheckedCreateWithoutMessagesInput {
     id?: string;
     @Field(() => String, {nullable:true})
     title?: string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    directHash?: string;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => ConversationType, {nullable:true})
@@ -2512,6 +2586,10 @@ export class ConversationUncheckedCreateWithoutParticipantsInput {
     id?: string;
     @Field(() => String, {nullable:true})
     title?: string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    directHash?: string;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => ConversationType, {nullable:true})
@@ -2526,6 +2604,10 @@ export class ConversationUncheckedCreateInput {
     id?: string;
     @Field(() => String, {nullable:true})
     title?: string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    directHash?: string;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => ConversationType, {nullable:true})
@@ -2542,6 +2624,10 @@ export class ConversationUncheckedUpdateManyInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    directHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumConversationTypeFieldUpdateOperationsInput, {nullable:true})
@@ -2554,6 +2640,10 @@ export class ConversationUncheckedUpdateWithoutMessagesInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    directHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumConversationTypeFieldUpdateOperationsInput, {nullable:true})
@@ -2568,6 +2658,10 @@ export class ConversationUncheckedUpdateWithoutParticipantsInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    directHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumConversationTypeFieldUpdateOperationsInput, {nullable:true})
@@ -2582,6 +2676,10 @@ export class ConversationUncheckedUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    directHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumConversationTypeFieldUpdateOperationsInput, {nullable:true})
@@ -2598,6 +2696,10 @@ export class ConversationUpdateManyMutationInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    directHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumConversationTypeFieldUpdateOperationsInput, {nullable:true})
@@ -2617,7 +2719,7 @@ export class ConversationUpdateOneRequiredWithoutParticipantsNestedInput {
     upsert?: InstanceType<typeof ConversationUpsertWithoutParticipantsInput>;
     @Field(() => ConversationWhereUniqueInput, {nullable:true})
     @Type(() => ConversationWhereUniqueInput)
-    connect?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    connect?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
     @Field(() => ConversationUpdateToOneWithWhereWithoutParticipantsInput, {nullable:true})
     @Type(() => ConversationUpdateToOneWithWhereWithoutParticipantsInput)
     update?: InstanceType<typeof ConversationUpdateToOneWithWhereWithoutParticipantsInput>;
@@ -2642,7 +2744,7 @@ export class ConversationUpdateOneWithoutMessagesNestedInput {
     delete?: InstanceType<typeof ConversationWhereInput>;
     @Field(() => ConversationWhereUniqueInput, {nullable:true})
     @Type(() => ConversationWhereUniqueInput)
-    connect?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    connect?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
     @Field(() => ConversationUpdateToOneWithWhereWithoutMessagesInput, {nullable:true})
     @Type(() => ConversationUpdateToOneWithWhereWithoutMessagesInput)
     update?: InstanceType<typeof ConversationUpdateToOneWithWhereWithoutMessagesInput>;
@@ -2674,6 +2776,10 @@ export class ConversationUpdateWithoutMessagesInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    directHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumConversationTypeFieldUpdateOperationsInput, {nullable:true})
@@ -2688,6 +2794,10 @@ export class ConversationUpdateWithoutParticipantsInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    directHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumConversationTypeFieldUpdateOperationsInput, {nullable:true})
@@ -2702,6 +2812,10 @@ export class ConversationUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    directHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumConversationTypeFieldUpdateOperationsInput, {nullable:true})
@@ -2742,6 +2856,10 @@ export class ConversationUpsertWithoutParticipantsInput {
 export class ConversationWhereUniqueInput {
     @Field(() => String, {nullable:true})
     id?: string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    directHash?: string;
     @Field(() => [ConversationWhereInput], {nullable:true})
     AND?: Array<ConversationWhereInput>;
     @Field(() => [ConversationWhereInput], {nullable:true})
@@ -2772,6 +2890,10 @@ export class ConversationWhereInput {
     id?: InstanceType<typeof StringFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     title?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    rideId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    directHash?: InstanceType<typeof StringNullableFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => EnumConversationTypeFilter, {nullable:true})
@@ -2788,6 +2910,10 @@ export class Conversation {
     id!: string;
     @Field(() => String, {nullable:true})
     title!: string | null;
+    @Field(() => String, {nullable:true})
+    rideId!: string | null;
+    @Field(() => String, {nullable:true})
+    directHash!: string | null;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
     @Field(() => ConversationType, {defaultValue:'DIRECT',nullable:false})
@@ -2829,7 +2955,7 @@ export class DeleteManyConversationArgs {
 export class DeleteOneConversationArgs {
     @Field(() => ConversationWhereUniqueInput, {nullable:false})
     @Type(() => ConversationWhereUniqueInput)
-    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
 }
 
 @ArgsType()
@@ -2840,7 +2966,7 @@ export class FindFirstConversationOrThrowArgs {
     @Field(() => [ConversationOrderByWithRelationInput], {nullable:true})
     orderBy?: Array<ConversationOrderByWithRelationInput>;
     @Field(() => ConversationWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    cursor?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
     @Field(() => Int, {nullable:true})
     take?: number;
     @Field(() => Int, {nullable:true})
@@ -2857,7 +2983,7 @@ export class FindFirstConversationArgs {
     @Field(() => [ConversationOrderByWithRelationInput], {nullable:true})
     orderBy?: Array<ConversationOrderByWithRelationInput>;
     @Field(() => ConversationWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    cursor?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
     @Field(() => Int, {nullable:true})
     take?: number;
     @Field(() => Int, {nullable:true})
@@ -2874,7 +3000,7 @@ export class FindManyConversationArgs {
     @Field(() => [ConversationOrderByWithRelationInput], {nullable:true})
     orderBy?: Array<ConversationOrderByWithRelationInput>;
     @Field(() => ConversationWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    cursor?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
     @Field(() => Int, {nullable:true})
     take?: number;
     @Field(() => Int, {nullable:true})
@@ -2887,14 +3013,14 @@ export class FindManyConversationArgs {
 export class FindUniqueConversationOrThrowArgs {
     @Field(() => ConversationWhereUniqueInput, {nullable:false})
     @Type(() => ConversationWhereUniqueInput)
-    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
 }
 
 @ArgsType()
 export class FindUniqueConversationArgs {
     @Field(() => ConversationWhereUniqueInput, {nullable:false})
     @Type(() => ConversationWhereUniqueInput)
-    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
 }
 
 @ArgsType()
@@ -2916,14 +3042,14 @@ export class UpdateOneConversationArgs {
     data!: InstanceType<typeof ConversationUpdateInput>;
     @Field(() => ConversationWhereUniqueInput, {nullable:false})
     @Type(() => ConversationWhereUniqueInput)
-    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
 }
 
 @ArgsType()
 export class UpsertOneConversationArgs {
     @Field(() => ConversationWhereUniqueInput, {nullable:false})
     @Type(() => ConversationWhereUniqueInput)
-    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id'>;
+    where!: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
     @Field(() => ConversationCreateInput, {nullable:false})
     @Type(() => ConversationCreateInput)
     create!: InstanceType<typeof ConversationCreateInput>;

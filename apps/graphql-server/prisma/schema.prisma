@@ -72,14 +72,14 @@ model User {
 
 // --------------- Token -----------------------//
 model QrToken {
-  id         String   @id @default(uuid())
-  token      String   @unique   // token opaque long
-  userId     String
-  updatedAt  DateTime @updatedAt
-  createdAt  DateTime @default(now())
-  revoked    Boolean  @default(false)
+  id        String   @id @default(uuid())
+  token     String   @unique // token opaque long
+  userId    String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  revoked   Boolean  @default(false)
   // neverExpires boolean omitted since user asked "n'expire jamais"
-  user       User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Review {
@@ -336,10 +336,12 @@ model Message {
 }
 
 model Conversation {
-  id        String   @id @default(uuid())
-  title     String?
+  id         String   @id @default(uuid())
+  title      String?
+  rideId     String?  @unique // si type == RIDE_LINKED, unique sur ride
+  directHash String?  @unique // ex: 'userA|userB' pour direct 1-1
   // participants via table join (permet rôles, mute, joinedAt)
-  createdAt DateTime @default(now())
+  createdAt  DateTime @default(now())
 
   type         ConversationType          @default(DIRECT) // DIRECT | GROUP | RIDE_LINKED
   participants ConversationParticipant[]
