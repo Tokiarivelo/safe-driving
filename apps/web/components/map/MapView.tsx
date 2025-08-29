@@ -100,8 +100,8 @@ export default function Map({ coordinates }: Props) {
   const [isCenteredOnMyLocation, setIsCenteredOnMyLocation] = useState(false);
 
   const [route, setRoute] = useState<[number, number][]>([]);
-  const [distKm, setDistKm] = useState<string>();
-  const [durationMin, setDurationMin] = useState<string>();
+  const [distKm, setDistKm] = useState<string>('-');
+  const [durationMin, setDurationMin] = useState<string>('-');
 
   const [tempMarker, setTempMarker] = useState<{ lat: number; lon: number } | null>(null);
 
@@ -130,7 +130,9 @@ export default function Map({ coordinates }: Props) {
     lon?: number,
     source: 'user' | 'marker' = 'user',
   ) => {
-    setLocations(prev => prev.map(loc => (loc.id === id ? { ...loc, value, lat, lon, source } : loc)));
+    setLocations(prev =>
+      prev.map(loc => (loc.id === id ? { ...loc, value, lat, lon, source } : loc)),
+    );
   };
 
   const deleteLocation = (id: string) => {
@@ -165,6 +167,14 @@ export default function Map({ coordinates }: Props) {
 
   const cleanLocations = () => {
     setLocations(defaultLocations);
+    setDurationMin('-');
+    setDistKm('-');
+  };
+
+  const cleanRouteInformation = () => {
+    setDistKm('-');
+    setDurationMin('-');
+    setRoute([]);
   }
 
   const reverseLocations = () => {
@@ -262,7 +272,7 @@ export default function Map({ coordinates }: Props) {
           console.error('ORS request failed:', err);
         });
     } else {
-      setRoute([]);
+      cleanRouteInformation();
     }
   }, [locations]); // run whenever locations change
 
