@@ -7,6 +7,8 @@ import { Location } from '@/components/map/Location';
 
 export default function SidePanel({
   locations,
+  distance,
+  duration,
   cleanLocations,
   reverseLocations,
   updateLocation,
@@ -15,6 +17,8 @@ export default function SidePanel({
   reorderLocations,
 }: {
   locations: Location[];
+  distance: string;
+  duration: string;
   cleanLocations: () => void;
   reverseLocations: () => void;
   updateLocation: (id: string, value: string, lat?: number, lon?: number) => void;
@@ -47,6 +51,8 @@ export default function SidePanel({
         <div style={{ padding: '1rem' }}>
           <SearchFields
             locations={locations}
+            distance={distance}
+            duration={duration}
             cleanLocations={cleanLocations}
             reverseLocations={reverseLocations}
             updateLocation={updateLocation}

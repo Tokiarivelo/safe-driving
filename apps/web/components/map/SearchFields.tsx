@@ -9,6 +9,8 @@ import { SortableLocationItem } from '@/components/map/SortableLocationItem';
 
 export default function SearchFields({
   locations,
+  distance,
+  duration,
   cleanLocations,
   reverseLocations,
   updateLocation,
@@ -17,6 +19,8 @@ export default function SearchFields({
   reorderLocations,
 }: {
   locations: Location[];
+  distance: string;
+  duration: string;
   cleanLocations: () => void;
   reverseLocations: () => void;
   updateLocation: (id: string, value: string, lat?: number, lon?: number) => void;
@@ -84,6 +88,12 @@ export default function SearchFields({
           width: '100%',
         }}
       >
+        <p>
+          <strong>Distance:</strong> {distance} km
+        </p>
+        <p>
+          <strong>Duration:</strong> {duration} min
+        </p>
         <button onClick={addLocation} style={iconButtonStyle} title="Add Stop">
           <Plus size={18} />
         </button>

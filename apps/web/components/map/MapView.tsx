@@ -100,6 +100,8 @@ export default function Map({ coordinates }: Props) {
   const [isCenteredOnMyLocation, setIsCenteredOnMyLocation] = useState(false);
 
   const [route, setRoute] = useState<[number, number][]>([]);
+  const [distKm, setDistKm] = useState<string>();
+  const [durationMin, setDurationMin] = useState<string>();
 
   const [tempMarker, setTempMarker] = useState<{ lat: number; lon: number } | null>(null);
 
@@ -249,10 +251,12 @@ export default function Map({ coordinates }: Props) {
       })
         .then(res => res.json())
         .then(data => {
-          // Decode ORS polyline (geometry is encoded)
           const coords = polyline.decode(data.routes[0].geometry) as [number, number][];
-          // ORS uses [lat, lon] format, Leaflet uses [lat, lon], so no swap needed
-          setRoute(coords); // store in state for Polyline
+          setRoute(coords);
+          const distance = (data.routes[0].summary.distance / 1000).toFixed(2);
+          setDistKm(distance);
+          const duration = (data.routes[0].summary.duration / 60).toFixed(2);
+          setDurationMin(duration);
         })
         .catch(err => {
           console.error('ORS request failed:', err);
@@ -354,6 +358,8 @@ export default function Map({ coordinates }: Props) {
 
       <SidePanel
         locations={locations}
+        distance={distKm || '-'}
+        duration={durationMin || '-'}
         cleanLocations={cleanLocations}
         reverseLocations={reverseLocations}
         updateLocation={updateLocation}
