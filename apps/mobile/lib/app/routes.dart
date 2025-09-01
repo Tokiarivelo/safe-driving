@@ -5,7 +5,7 @@ import 'package:safe_driving/features/onboarding/onboarding_screen.dart';
 
 import 'package:safe_driving/features/onboarding/user/ui/screens/user_onboarding_screen.dart';
 //-------
-import 'package:safe_driving/features/home/screens/home_screen.dart';
+import 'package:safe_driving/features/home/ui/screens/home_screen.dart';
 
 class AppRoutes {
   static const String auth = '/auth';
