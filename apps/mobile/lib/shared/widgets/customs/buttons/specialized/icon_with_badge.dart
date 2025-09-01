@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 
 class IconButtonWithBadge extends StatelessWidget {
@@ -51,7 +52,7 @@ class IconButtonWithBadge extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset(
+                SvgPicture.asset(
                   iconPath,
                   width: iconSize,
                   height: iconSize,
