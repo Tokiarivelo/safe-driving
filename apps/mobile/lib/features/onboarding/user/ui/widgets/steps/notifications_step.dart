@@ -4,28 +4,25 @@ class _NotificationsStep extends StatelessWidget {
   final UserOnboardingStepModel stepContent;
   final UserOnboardingViewModel viewModel;
 
-  const _NotificationsStep({required this.stepContent, required this.viewModel});
+  const _NotificationsStep({
+    required this.stepContent,
+    required this.viewModel,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final radioOptions = stepContent.additionalContent?['radioOptions'] ??
+    final radioOptions =
+        stepContent.additionalContent?['radioOptions'] ??
         ['Plus tard', 'Activer'];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          stepContent.title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AppColors.buttonWithoutBackGround,
-          ),
-        ),
+        Text(stepContent.title, style: AppTextStyles.h1),
         const SizedBox(height: 8),
         Text(
           stepContent.subtitle,
-          style: TextStyle(
+          style: AppTextStyles.body14.copyWith(
             color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
           ),
         ),
@@ -69,4 +66,3 @@ class _NotificationsStep extends StatelessWidget {
     );
   }
 }
-

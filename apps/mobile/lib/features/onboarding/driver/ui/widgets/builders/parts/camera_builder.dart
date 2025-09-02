@@ -13,7 +13,8 @@ class CameraBuilder {
     return SizedBox(
       height: 400,
       child: SelfieCamera(
-        instruction: (selfieData['description'] as String?) ??
+        instruction:
+            (selfieData['description'] as String?) ??
             'Positionnez-vous face à la caméra et assurez-vous que votre visage soit bien visible.',
         onPhotoTaken: (imagePath) async {
           // Utiliser le flux dédié au selfie (et non l'upload générique de documents)

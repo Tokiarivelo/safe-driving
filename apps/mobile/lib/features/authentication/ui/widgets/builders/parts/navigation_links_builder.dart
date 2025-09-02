@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safe_driving/features/authentication/models/auth_step_content_model.dart';
 
 import '../../../../../../core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 
 class NavigationLinksBuilder {
   static Widget buildNavigationLink({
@@ -11,14 +12,7 @@ class NavigationLinksBuilder {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          stepData.navigationPrefix,
-          style: const TextStyle(
-            fontFamily: 'Inder',
-            color: AppColors.textColor,
-            fontSize: 12,
-          ),
-        ),
+        Text(stepData.navigationPrefix, style: AppTextStyles.navPrefix12),
         GestureDetector(
           onTap: onTap,
           child: Container(
@@ -33,12 +27,7 @@ class NavigationLinksBuilder {
             ),
             child: Text(
               stepData.navigationLink,
-              style: TextStyle(
-                fontFamily: 'Inder',
-                color: AppColors.buttonWithoutBackGround,
-                fontSize: 9,
-                fontWeight: FontWeight.bold,
-              ),
+              style: AppTextStyles.link9Bold,
             ),
           ),
         ),

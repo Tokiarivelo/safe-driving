@@ -14,14 +14,7 @@ class VehicleInfoForm extends BaseFormWidget {
     DropdownFormFieldConfig<String>(
       key: 'vehicleType',
       label: 'Type de véhicule',
-      options: const [
-        'Voiture',
-        'Moto',
-        'Camion',
-        'Van',
-        'SUV',
-        'Autre',
-      ],
+      options: const ['Voiture', 'Moto', 'Camion', 'Van', 'SUV', 'Autre'],
       displayText: (type) => type,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -61,9 +54,7 @@ class VehicleInfoForm extends BaseFormWidget {
           return 'Veuillez entrer l\'année du véhicule';
         }
         final year = int.tryParse(value);
-        if (year == null ||
-            year < 1900 ||
-            year > DateTime.now().year + 1) {
+        if (year == null || year < 1900 || year > DateTime.now().year + 1) {
           return 'Veuillez entrer une année valide';
         }
         return null;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 
 class CustomInputField extends StatefulWidget {
   final String hint;
@@ -67,14 +68,7 @@ class CustomInputFieldState extends State<CustomInputField> {
           if (widget.showLabel && widget.label != null) ...[
             Padding(
               padding: const EdgeInsets.only(left: 8, bottom: 6),
-              child: Text(
-                widget.label!,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textColor,
-                ),
-              ),
+              child: Text(widget.label!, style: AppTextStyles.label14),
             ),
           ],
 
@@ -103,12 +97,11 @@ class CustomInputFieldState extends State<CustomInputField> {
                     ? null
                     : AppColors.inputTextBackground,
                 hintText: widget.hint,
-                hintStyle: TextStyle(
-                  color: widget.showLabel
-                      ? AppColors.textColor.withAlpha(128)
-                      : AppColors.placeHolderInput,
-                  fontSize: widget.showLabel ? 14 : 10,
-                ),
+                hintStyle: widget.showLabel
+                    ? AppTextStyles.hint14.copyWith(
+                        color: AppColors.textColor.withAlpha(128),
+                      )
+                    : AppTextStyles.hint10,
                 prefixIcon: Icon(
                   widget.icon,
                   color: widget.showLabel
@@ -184,14 +177,7 @@ class CustomInputFieldState extends State<CustomInputField> {
           if (hasError)
             Padding(
               padding: const EdgeInsets.only(top: 4.0, left: 8.0),
-              child: Text(
-                widget.errorMessage!,
-                style: const TextStyle(
-                  color: AppColors.error,
-                  fontSize: 10,
-                  fontFamily: 'Inder',
-                ),
-              ),
+              child: Text(widget.errorMessage!, style: AppTextStyles.error10),
             ),
         ],
       ),

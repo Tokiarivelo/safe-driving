@@ -21,4 +21,3 @@ mixin UserOnboardingValidationMixin on UserOnboardingContract {
     return null;
   }
 }
-

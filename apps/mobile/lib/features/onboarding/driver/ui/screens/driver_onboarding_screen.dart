@@ -98,9 +98,13 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                         ),
                         child: Container(
                           color: AppColors.secondBackgroundColor,
-                          child: _paginationKey.currentState?.pageController != null
+                          child:
+                              _paginationKey.currentState?.pageController !=
+                                  null
                               ? PageView.builder(
-                                  controller: _paginationKey.currentState!.pageController,
+                                  controller: _paginationKey
+                                      .currentState!
+                                      .pageController,
                                   itemCount: coordinator.steps.length,
                                   itemBuilder: (context, index) {
                                     return SingleChildScrollView(
@@ -117,7 +121,9 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                                     );
                                   },
                                 )
-                              : const Center(child: CircularProgressIndicator()),
+                              : const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
                         ),
                       ),
                     ),

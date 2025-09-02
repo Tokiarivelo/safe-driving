@@ -8,24 +8,18 @@ class _GpsStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radioOptions = stepContent.additionalContent?['radioOptions'] ??
+    final radioOptions =
+        stepContent.additionalContent?['radioOptions'] ??
         ['Plus tard', 'Activer'];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          stepContent.title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AppColors.buttonWithoutBackGround,
-          ),
-        ),
+        Text(stepContent.title, style: AppTextStyles.h1),
         const SizedBox(height: 8),
         Text(
           stepContent.subtitle,
-          style: TextStyle(
+          style: AppTextStyles.body14.copyWith(
             color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
           ),
         ),
@@ -37,11 +31,8 @@ class _GpsStep extends StatelessWidget {
                 title: radioOptions[0],
                 value: false,
                 groupValue: viewModel.appState.gpsEnabled,
-                onChanged: (value) => viewModel.updateGps(
-                  value!,
-                  context,
-                  shouldSave: false,
-                ),
+                onChanged: (value) =>
+                    viewModel.updateGps(value!, context, shouldSave: false),
               ),
             ),
             Expanded(
@@ -75,4 +66,3 @@ class _GpsStep extends StatelessWidget {
     );
   }
 }
-

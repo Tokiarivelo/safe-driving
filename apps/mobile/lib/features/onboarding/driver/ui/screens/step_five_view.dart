@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/specialized/upload_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/features/onboarding/driver/services/storage_service.dart';
@@ -63,22 +64,15 @@ class _StepFiveViewState extends State<StepFiveView> {
           const Text(
             'À propos de votre véhicule',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
-              fontFamily: 'Inder',
-            ),
+            style: AppTextStyles.h1,
           ),
           const SizedBox(height: 16),
           Text(
             'Ajoutez votre certificat d\'immatriculation, votre attestation d\'assurance et quelques photos du véhicule.',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
+            style: AppTextStyles.body16.copyWith(
               color: AppColors.textColor.withAlpha(180),
               height: 1.5,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 24),

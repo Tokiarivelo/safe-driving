@@ -15,4 +15,3 @@ abstract class IUserOnboardingService {
 
   Future<void> completeOnboarding(BuildContext context);
 }
-

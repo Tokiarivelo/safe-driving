@@ -15,14 +15,15 @@ class EmptyStateWidget extends StatelessWidget {
   });
 
   const EmptyStateWidget.noPhotos({super.key})
-      : icon = Icons.photo_library_outlined,
-        title = 'Aucune photo sélectionnée',
-        subtitle = null;
+    : icon = Icons.photo_library_outlined,
+      title = 'Aucune photo sélectionnée',
+      subtitle = null;
 
   const EmptyStateWidget.addPhotos({super.key})
-      : icon = Icons.photo_library_outlined,
-        title = 'Aucune photo sélectionnée',
-        subtitle = 'Appuyez sur le bouton "Gallery" ou "Caméra" pour ajouter des photos';
+    : icon = Icons.photo_library_outlined,
+      title = 'Aucune photo sélectionnée',
+      subtitle =
+          'Appuyez sur le bouton "Gallery" ou "Caméra" pour ajouter des photos';
 
   @override
   Widget build(BuildContext context) {

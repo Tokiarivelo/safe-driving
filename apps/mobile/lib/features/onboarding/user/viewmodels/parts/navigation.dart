@@ -49,4 +49,3 @@ mixin UserOnboardingNavigationMixin on UserOnboardingContract {
     notifyListeners();
   }
 }
-

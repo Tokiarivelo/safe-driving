@@ -33,4 +33,3 @@ mixin UserOnboardingStateMixin on UserOnboardingContract {
     notifyListeners();
   }
 }
-

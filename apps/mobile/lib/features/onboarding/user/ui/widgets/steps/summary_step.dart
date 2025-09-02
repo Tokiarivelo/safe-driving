@@ -10,31 +10,24 @@ class _SummaryStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final summaryLabels =
         (stepContent.additionalContent?['summaryLabels'] as Map?)
-                ?.cast<String, String>() ??
-            const {
-              'gps': 'GPS',
-              'notifications': 'Notifications',
-              'theme': 'Thème',
-              'transport': 'Transport(s)',
-              'language': 'Langue',
-              'noTransport': 'Aucun transport sélectionné',
-            };
+            ?.cast<String, String>() ??
+        const {
+          'gps': 'GPS',
+          'notifications': 'Notifications',
+          'theme': 'Thème',
+          'transport': 'Transport(s)',
+          'language': 'Langue',
+          'noTransport': 'Aucun transport sélectionné',
+        };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          stepContent.title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AppColors.buttonWithoutBackGround,
-          ),
-        ),
+        Text(stepContent.title, style: AppTextStyles.h1),
         const SizedBox(height: 8),
         Text(
           stepContent.subtitle,
-          style: TextStyle(
+          style: AppTextStyles.body14.copyWith(
             color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
           ),
         ),
@@ -48,9 +41,7 @@ class _SummaryStep extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               summaryLabels['gps']!,
-              style: const TextStyle(
-                color: AppColors.buttonWithoutBackGround,
-              ),
+              style: const TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
           ],
         ),
@@ -63,9 +54,7 @@ class _SummaryStep extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               summaryLabels['notifications']!,
-              style: const TextStyle(
-                color: AppColors.buttonWithoutBackGround,
-              ),
+              style: const TextStyle(color: AppColors.buttonWithoutBackGround),
             ),
           ],
         ),
@@ -119,8 +108,9 @@ class _SummaryStep extends StatelessWidget {
                           onDeleted: () => viewModel.removeTransport(transport),
                           backgroundColor: AppColors.secondBackgroundColor,
                           side: BorderSide(
-                            color: AppColors.fillButtonBackground
-                                .withValues(alpha: 0.5),
+                            color: AppColors.fillButtonBackground.withValues(
+                              alpha: 0.5,
+                            ),
                             width: 1,
                           ),
                         ),
@@ -131,8 +121,9 @@ class _SummaryStep extends StatelessWidget {
                 Text(
                   summaryLabels['noTransport']!,
                   style: TextStyle(
-                    color: AppColors.buttonWithoutBackGround
-                        .withValues(alpha: 0.6),
+                    color: AppColors.buttonWithoutBackGround.withValues(
+                      alpha: 0.6,
+                    ),
                     fontStyle: FontStyle.italic,
                   ),
                 ),
@@ -177,4 +168,3 @@ class _SummaryStep extends StatelessWidget {
     );
   }
 }
-

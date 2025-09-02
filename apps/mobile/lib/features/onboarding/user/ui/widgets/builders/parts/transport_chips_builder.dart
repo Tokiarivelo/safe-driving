@@ -31,4 +31,3 @@ Widget _buildTransportModeChips({
     ),
   );
 }
-

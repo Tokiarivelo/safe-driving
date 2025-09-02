@@ -50,9 +50,7 @@ class AuthNavigationLinks extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(isLogin 
-              ? 'Pas encore de compte? ' 
-              : 'Déjà un compte? '),
+            Text(isLogin ? 'Pas encore de compte? ' : 'Déjà un compte? '),
             TextButton(
               onPressed: isLogin ? onNavigateToRegister : onNavigateToLogin,
               child: Text(isLogin ? 'S\'inscrire' : 'Se connecter'),

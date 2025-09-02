@@ -69,10 +69,7 @@ class AuthForm extends StatelessWidget {
     );
   }
 
-  Widget _buildSubmitButton(
-    BuildContext context,
-    AuthFormViewModel viewModel,
-  ) {
+  Widget _buildSubmitButton(BuildContext context, AuthFormViewModel viewModel) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(

@@ -15,4 +15,3 @@ Widget _buildStepContainer({
     child: child,
   );
 }
-

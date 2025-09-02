@@ -142,13 +142,15 @@ fragment DriverFragment on Driver {
 }
 ''';
 
-const String getDriverOnboardingDataQuery = r'''
+const String getDriverOnboardingDataQuery =
+    r'''
 query GetDriverOnboardingData($userId: String!) {
   getDriverOnboardingData(userId: $userId) {
     ...DriverFragment
   }
 }
-''' + driverFragment;
+''' +
+    driverFragment;
 
 const String getDriverDocumentsQuery = r'''
 query GetDriverDocuments($userId: String!) {

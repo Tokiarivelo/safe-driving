@@ -18,4 +18,3 @@ class UserConstants {
     'language': 'Langue',
   };
 }
-

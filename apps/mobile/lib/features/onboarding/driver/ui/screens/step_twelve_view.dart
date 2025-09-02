@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
@@ -30,22 +31,18 @@ class StepTwelveView extends StatelessWidget {
           Text(
             '${step.title} ${coordinator.getFieldValue('Prénom et Nom').isNotEmpty && coordinator.getFieldValue('Prénom et Nom') != 'Non renseigné' ? coordinator.getFieldValue('Prénom et Nom') : 'Conducteur'}',
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: AppTextStyles.h1.copyWith(
               fontSize: 24,
               fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 16),
           Text(
             step.description!,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
+            style: AppTextStyles.body16.copyWith(
               color: AppColors.textColor.withAlpha(180),
               height: 1.5,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 24),
@@ -57,11 +54,8 @@ class StepTwelveView extends StatelessWidget {
               Text(
                 "Votre QR code personnel a été généré :",
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 16,
+                style: AppTextStyles.body16.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textColor,
-                  fontFamily: 'Inder',
                 ),
               ),
               const SizedBox(height: 16),
@@ -113,12 +107,9 @@ class StepTwelveView extends StatelessWidget {
                 child: Text(
                   "Merci de faire partie de la communauté Safe Driving. Nous vous souhaitons de bons trajets en toute sécurité !",
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: AppTextStyles.body14.copyWith(
                     fontWeight: FontWeight.w500,
-                    color: AppColors.textColor,
                     height: 1.4,
-                    fontFamily: 'Inder',
                   ),
                 ),
               ),

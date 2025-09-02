@@ -11,26 +11,19 @@ class _PreferencesStep extends StatelessWidget {
     final themeLabel = stepContent.additionalContent?['themeLabel'] ?? 'Thème';
     final themeOptions =
         (stepContent.additionalContent?['themeOptions'] as List<dynamic>?)
-                ?.cast<String>() ??
-            const ['Clair', 'Sombre'];
+            ?.cast<String>() ??
+        const ['Clair', 'Sombre'];
     final transportLabel =
         stepContent.additionalContent?['transportLabel'] ?? 'Type de transport';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          stepContent.title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AppColors.buttonWithoutBackGround,
-          ),
-        ),
+        Text(stepContent.title, style: AppTextStyles.h1),
         const SizedBox(height: 8),
         Text(
           stepContent.subtitle,
-          style: TextStyle(
+          style: AppTextStyles.body14.copyWith(
             color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
           ),
         ),
@@ -60,7 +53,8 @@ class _PreferencesStep extends StatelessWidget {
           onLaterPressed: viewModel.nextStepImmediate,
           onActionPressed: () {
             if (!viewModel.validateCurrentStep()) {
-              final msg = viewModel.getValidationError() ??
+              final msg =
+                  viewModel.getValidationError() ??
                   'Veuillez compléter les informations requises';
               SnackbarHelper.showWarning(
                 context,
@@ -81,4 +75,3 @@ class _PreferencesStep extends StatelessWidget {
     );
   }
 }
-

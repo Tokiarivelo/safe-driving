@@ -13,17 +13,13 @@ class _WelcomeStep extends StatelessWidget {
       children: [
         Text(
           stepContent.title,
-          style: const TextStyle(
-            color: AppColors.buttonWithoutBackGround,
-            fontWeight: FontWeight.w800,
-            fontSize: 18,
-          ),
+          style: AppTextStyles.h2,
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 8),
         Text(
           stepContent.subtitle,
-          style: TextStyle(
+          style: AppTextStyles.body14.copyWith(
             color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
           ),
           textAlign: TextAlign.center,
@@ -41,4 +37,3 @@ class _WelcomeStep extends StatelessWidget {
     );
   }
 }
-

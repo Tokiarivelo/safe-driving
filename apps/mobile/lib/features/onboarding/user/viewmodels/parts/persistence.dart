@@ -39,4 +39,3 @@ mixin UserOnboardingPersistenceMixin on UserOnboardingContract {
     }
   }
 }
-

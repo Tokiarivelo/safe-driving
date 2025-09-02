@@ -47,7 +47,7 @@ class DriverService implements IDriverService {
     if (!validatePersonalInfo(personalInfo)) {
       throw ArgumentError('Invalid personal info data');
     }
-    
+
     try {
       await _repository.savePersonalInfo(
         userId: 'temp_user_id',
@@ -177,11 +177,11 @@ class DriverService implements IDriverService {
     final name = data['name']?.toString() ?? '';
     final email = data['email']?.toString() ?? '';
     final phone = data['phone']?.toString() ?? '';
-    
+
     if (name.isEmpty || name.length < 2) return false;
     if (email.isEmpty || !_isValidEmail(email)) return false;
     if (phone.isEmpty || phone.length < 10) return false;
-    
+
     return true;
   }
 
@@ -190,11 +190,11 @@ class DriverService implements IDriverService {
     final marque = data['marque']?.toString() ?? '';
     final modele = data['modele']?.toString() ?? '';
     final immatriculation = data['immatriculation']?.toString() ?? '';
-    
+
     if (marque.isEmpty || marque.length < 2) return false;
     if (modele.isEmpty || modele.length < 2) return false;
     if (immatriculation.isEmpty || immatriculation.length < 6) return false;
-    
+
     return true;
   }
 

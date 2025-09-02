@@ -30,7 +30,8 @@ class SignInScreen extends StatelessWidget {
             onForgotPassword: onNavigateToForgotPassword,
             onSignIn: viewModel.handleSignIn,
             onGoogleSignIn: () => viewModel.handleGoogleSignIn(onGoogleSignIn),
-            onFacebookSignIn: () => viewModel.handleFacebookSignIn(onFacebookSignIn),
+            onFacebookSignIn: () =>
+                viewModel.handleFacebookSignIn(onFacebookSignIn),
             onNavigateToRegister: onNavigateToRegister,
           );
         },

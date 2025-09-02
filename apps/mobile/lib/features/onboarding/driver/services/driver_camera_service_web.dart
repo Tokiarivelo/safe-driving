@@ -133,10 +133,7 @@ class DriverCameraServiceWebState extends State<PlatformDriverCameraService> {
     if (widget.compact) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: preview,
-        ),
+        child: AspectRatio(aspectRatio: 1, child: preview),
       );
     }
 

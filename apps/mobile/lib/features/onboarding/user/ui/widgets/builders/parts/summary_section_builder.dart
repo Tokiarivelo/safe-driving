@@ -29,4 +29,3 @@ Widget _buildSummarySection({
     ),
   );
 }
-

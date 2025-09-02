@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
 
@@ -98,11 +99,7 @@ class OnboardingScreen extends StatelessWidget {
                         children: [
                           const Text(
                             'Vous êtes… ?',
-                            style: TextStyle(
-                              color: AppColors.buttonWithoutBackGround,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: AppTextStyles.title20Regular,
                           ),
                           const SizedBox(height: 20),
                           ButtonRows.roleChoiceButtons(

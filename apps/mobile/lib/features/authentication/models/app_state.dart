@@ -39,7 +39,9 @@ class AppState {
       language: json['language'] ?? 'fr',
       gpsEnabled: json['gpsEnabled'] ?? false,
       notificationsEnabled: json['notificationsEnabled'] ?? false,
-      transportPreferences: List<String>.from(json['transportPreferences'] ?? []),
+      transportPreferences: List<String>.from(
+        json['transportPreferences'] ?? [],
+      ),
       onboardingCompleted: json['onboardingCompleted'] ?? false,
     );
   }
@@ -63,7 +65,8 @@ class AppState {
         other.language == language &&
         other.gpsEnabled == gpsEnabled &&
         other.notificationsEnabled == notificationsEnabled &&
-        other.transportPreferences.toString() == transportPreferences.toString() &&
+        other.transportPreferences.toString() ==
+            transportPreferences.toString() &&
         other.onboardingCompleted == onboardingCompleted;
   }
 

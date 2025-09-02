@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
@@ -31,22 +32,18 @@ class StepSevenView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: AppTextStyles.h1.copyWith(
               fontSize: 24,
               fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 16),
           Text(
             step.description!,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
+            style: AppTextStyles.body16.copyWith(
               color: AppColors.textColor.withAlpha(180),
               height: 1.5,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 32),
@@ -64,7 +61,8 @@ class StepSevenView extends StatelessWidget {
                       groupValue: coordinator.preferencesViewModel.gpsEnabled
                           ? "Autoriser"
                           : "Plus tard",
-                      onChanged: (value) => coordinator.preferencesViewModel.setGpsEnabled(false),
+                      onChanged: (value) =>
+                          coordinator.preferencesViewModel.setGpsEnabled(false),
                       titleColor: AppColors.fillButtonBackground,
                       activeColor: AppColors.fillButtonBackground,
                     ),
@@ -76,8 +74,8 @@ class StepSevenView extends StatelessWidget {
                       groupValue: coordinator.preferencesViewModel.gpsEnabled
                           ? "Autoriser"
                           : "Plus tard",
-                      onChanged: (value) =>
-                          coordinator.preferencesViewModel.handleGpsPermission(context),
+                      onChanged: (value) => coordinator.preferencesViewModel
+                          .handleGpsPermission(context),
                       titleColor: AppColors.fillButtonBackground,
                       activeColor: AppColors.fillButtonBackground,
                     ),

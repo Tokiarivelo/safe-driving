@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/language_buttons.dart';
@@ -35,7 +36,10 @@ class UserStepContentWidget extends StatelessWidget {
       case 2:
         return _GpsStep(stepContent: stepContent, viewModel: viewModel);
       case 3:
-        return _NotificationsStep(stepContent: stepContent, viewModel: viewModel);
+        return _NotificationsStep(
+          stepContent: stepContent,
+          viewModel: viewModel,
+        );
       case 4:
         return _PreferencesStep(stepContent: stepContent, viewModel: viewModel);
       case 5:
@@ -45,4 +49,3 @@ class UserStepContentWidget extends StatelessWidget {
     }
   }
 }
-

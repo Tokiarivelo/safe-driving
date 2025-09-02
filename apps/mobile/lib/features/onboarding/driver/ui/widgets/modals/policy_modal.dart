@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 
 class PolicyModal extends StatefulWidget {
   final String titleContent;
@@ -49,12 +50,8 @@ class _PolicyModalState extends State<PolicyModal> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.titleContent, style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: AppColors.textColor,
-        ),),
-       
+      title: Text(widget.titleContent, style: AppTextStyles.h2BoldNeutral),
+
       content: SizedBox(
         width: double.maxFinite,
         height: MediaQuery.of(context).size.height * 0.6,
@@ -65,21 +62,9 @@ class _PolicyModalState extends State<PolicyModal> {
             controller: _scrollController,
             data: widget.content,
             styleSheet: MarkdownStyleSheet(
-              h1: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textColor,
-              ),
-              h2: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textColor,
-              ),
-              p: const TextStyle(
-                fontSize: 14,
-                height: 1.6,
-                color: AppColors.textColor,
-              ),
+              h1: AppTextStyles.h1BoldNeutral,
+              h2: AppTextStyles.h2BoldNeutral,
+              p: AppTextStyles.body14,
               listBullet: const TextStyle(
                 fontSize: 14,
                 color: AppColors.textColor,

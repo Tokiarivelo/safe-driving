@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 
 class PrimaryButton {
   static Widget primaryButton({
@@ -33,19 +34,15 @@ class PrimaryButton {
                 const SizedBox(width: 8),
                 Text(
                   text,
-                  style: TextStyle(
+                  style: AppTextStyles.button16.copyWith(
                     fontSize: fontSize ?? 16,
-                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
             )
           : Text(
               text,
-              style: TextStyle(
-                fontSize: fontSize ?? 16,
-                fontWeight: FontWeight.w500,
-              ),
+              style: AppTextStyles.button16.copyWith(fontSize: fontSize ?? 16),
             ),
     );
   }

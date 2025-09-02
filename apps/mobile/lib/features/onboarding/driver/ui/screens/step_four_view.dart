@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/core/utils/form/form_utils.dart';
@@ -61,22 +62,15 @@ class _StepFourViewState extends State<StepFourView> {
           const Text(
             'Dites-nous en plus sur votre véhicule',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
-              fontFamily: 'Inder',
-            ),
+            style: AppTextStyles.h1,
           ),
           const SizedBox(height: 16),
           Text(
             'Pour mieux vous identifier et garantir la sécurité de vos passagers, renseignez les caractéristiques de votre voiture.',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
+            style: AppTextStyles.body16.copyWith(
               color: AppColors.textColor.withAlpha(180),
               height: 1.5,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 32),

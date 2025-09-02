@@ -48,8 +48,9 @@ class UserInteractiveMenuWidget extends StatelessWidget {
               return Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 child: Theme(
-                  data:
-                      Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  data: Theme.of(
+                    context,
+                  ).copyWith(dividerColor: Colors.transparent),
                   child: ExpansionTile(
                     key: ValueKey('expansion_tile_${step}_$isExpanded'),
                     backgroundColor: AppColors.transparent,
@@ -58,11 +59,17 @@ class UserInteractiveMenuWidget extends StatelessWidget {
                     collapsedIconColor: AppColors.light,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
-                      side: const BorderSide(color: AppColors.light, width: 1.0),
+                      side: const BorderSide(
+                        color: AppColors.light,
+                        width: 1.0,
+                      ),
                     ),
                     collapsedShape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
-                      side: const BorderSide(color: AppColors.light, width: 1.0),
+                      side: const BorderSide(
+                        color: AppColors.light,
+                        width: 1.0,
+                      ),
                     ),
                     initiallyExpanded: isExpanded,
                     maintainState: true,
@@ -70,18 +77,25 @@ class UserInteractiveMenuWidget extends StatelessWidget {
                       viewModel.updateExpansionTile(step, expanded);
                     },
                     controlAffinity: ListTileControlAffinity.trailing,
-                    tilePadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    tilePadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     title: Row(
                       children: [
                         if (stepInfo.emoji != null)
-                          Text(stepInfo.emoji!,
-                              style: const TextStyle(fontSize: 24))
+                          Text(
+                            stepInfo.emoji!,
+                            style: const TextStyle(fontSize: 24),
+                          )
                         else if (stepInfo.icon != null)
                           Icon(stepInfo.icon!, color: AppColors.light, size: 24)
                         else
-                          const Icon(Icons.help,
-                              color: AppColors.light, size: 24),
+                          const Icon(
+                            Icons.help,
+                            color: AppColors.light,
+                            size: 24,
+                          ),
                         const SizedBox(width: 8),
                         Text(
                           stepInfo.title,

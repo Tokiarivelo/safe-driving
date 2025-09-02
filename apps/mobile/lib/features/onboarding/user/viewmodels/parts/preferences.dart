@@ -65,4 +65,3 @@ mixin UserOnboardingPreferencesMixin on UserOnboardingContract {
     notifyListeners();
   }
 }
-

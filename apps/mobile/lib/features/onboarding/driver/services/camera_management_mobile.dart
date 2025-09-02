@@ -146,7 +146,8 @@ class CameraManagementMobileState extends State<PlatformCameraManagement> {
                   return Stack(
                     children: [
                       CameraPreview(_mobileController!),
-                      if (widget.showDocumentGuide) _buildDocumentGuideOverlay(),
+                      if (widget.showDocumentGuide)
+                        _buildDocumentGuideOverlay(),
                     ],
                   );
                 }

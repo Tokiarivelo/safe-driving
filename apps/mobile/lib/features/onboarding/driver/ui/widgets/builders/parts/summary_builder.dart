@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 
 class SummaryBuilder {
@@ -38,11 +39,8 @@ class SummaryBuilder {
                   const SizedBox(width: 8),
                   Text(
                     titre,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: AppTextStyles.body16.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textColor,
-                      fontFamily: 'Inder',
                     ),
                   ),
                 ],
@@ -85,10 +83,8 @@ class SummaryBuilder {
             Expanded(
               child: Text(
                 '$element : $totalPhotos',
-                style: TextStyle(
-                  fontSize: 14,
+                style: AppTextStyles.body14.copyWith(
                   color: AppColors.textColor.withAlpha(200),
-                  fontFamily: 'Inder',
                 ),
               ),
             ),
@@ -116,19 +112,15 @@ class SummaryBuilder {
                 children: [
                   TextSpan(
                     text: '$element: ',
-                    style: TextStyle(
-                      fontSize: 14,
+                    style: AppTextStyles.body14.copyWith(
                       color: AppColors.textColor.withAlpha(200),
-                      fontFamily: 'Inder',
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   TextSpan(
                     text: fieldValue,
-                    style: TextStyle(
-                      fontSize: 14,
+                    style: AppTextStyles.body14.copyWith(
                       color: AppColors.textColor.withAlpha(160),
-                      fontFamily: 'Inder',
                     ),
                   ),
                 ],

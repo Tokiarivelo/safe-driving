@@ -29,5 +29,4 @@ class IdentityDocuments extends BaseDocumentWidget {
 }
 
 class _IdentityDocumentsState
-    extends BaseDocumentWidgetState<IdentityDocuments> {
-}
+    extends BaseDocumentWidgetState<IdentityDocuments> {}

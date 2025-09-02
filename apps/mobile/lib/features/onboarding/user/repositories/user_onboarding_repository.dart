@@ -8,7 +8,7 @@ class UserOnboardingRepository {
   final IUserOnboardingService _service;
 
   UserOnboardingRepository({IUserOnboardingService? service})
-      : _service = service ?? UserOnboardingService();
+    : _service = service ?? UserOnboardingService();
 
   // Standardized methods used by ViewModel
   Future<bool> requestGpsPermission(BuildContext context) {

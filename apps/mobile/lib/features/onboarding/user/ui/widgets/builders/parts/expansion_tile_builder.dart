@@ -84,4 +84,3 @@ Widget _buildExpansionTileContent(Widget content) {
     child: content,
   );
 }
-

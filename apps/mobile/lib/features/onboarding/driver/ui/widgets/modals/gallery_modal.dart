@@ -21,7 +21,8 @@ class PhotoManagementModal extends UnifiedPhotosModal {
   PhotoManagementModalState createState() => PhotoManagementModalState();
 }
 
-class PhotoManagementModalState extends UnifiedPhotosModalState<PhotoManagementModal> {
+class PhotoManagementModalState
+    extends UnifiedPhotosModalState<PhotoManagementModal> {
   @override
   Widget buildHeader() {
     return const ModalHeader(title: 'Ajouter de(s) photo(s)');

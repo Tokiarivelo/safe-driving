@@ -16,7 +16,10 @@ class AuthValidationHandler {
     }
   }
 
-  static String validateConfirmPassword(String password, String confirmPassword) {
+  static String validateConfirmPassword(
+    String password,
+    String confirmPassword,
+  ) {
     return password != confirmPassword
         ? "Les mots de passe ne correspondent pas"
         : "";
@@ -38,12 +41,12 @@ class AuthValidationHandler {
       return _validateSignInForm(context, email, password);
     } else {
       return _validateSignUpForm(
-        context, 
-        firstName, 
-        lastName, 
-        email, 
-        password, 
-        confirmPassword
+        context,
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
       );
     }
   }
@@ -60,7 +63,11 @@ class AuthValidationHandler {
     return true;
   }
 
-  static bool _validateSignInForm(BuildContext context, String email, String password) {
+  static bool _validateSignInForm(
+    BuildContext context,
+    String email,
+    String password,
+  ) {
     if (email.trim().isEmpty) {
       _showError(context, "Veuillez saisir votre email ou nom d'utilisateur");
       return false;
@@ -101,7 +108,10 @@ class AuthValidationHandler {
       return false;
     }
     if (password.trim().length < 8) {
-      _showError(context, "Le mot de passe doit contenir au moins 8 caractères");
+      _showError(
+        context,
+        "Le mot de passe doit contenir au moins 8 caractères",
+      );
       return false;
     }
     if (confirmPassword.trim().isEmpty) {

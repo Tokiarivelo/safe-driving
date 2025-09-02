@@ -24,10 +24,12 @@ class PlatformDriverCameraService extends StatefulWidget {
   });
 
   @override
-  DriverCameraServiceMobileState createState() => DriverCameraServiceMobileState();
+  DriverCameraServiceMobileState createState() =>
+      DriverCameraServiceMobileState();
 }
 
-class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> {
+class DriverCameraServiceMobileState
+    extends State<PlatformDriverCameraService> {
   CameraController? _mobileController;
   Future<void>? _initializeMobileControllerFuture;
   PermissionStatus? _permissionStatus;
@@ -140,10 +142,7 @@ class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> 
         if (snap.connectionState == ConnectionState.done) {
           if (snap.hasError) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              SnackbarHelper.showError(
-                context,
-                'Erreur WebCam: ${snap.error}',
-              );
+              SnackbarHelper.showError(context, 'Erreur WebCam: ${snap.error}');
             });
             return const Center(child: CircularProgressIndicator());
           }
@@ -163,10 +162,7 @@ class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> 
       // Preview only, no internal button, intended to be wrapped in a square
       return ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: preview,
-        ),
+        child: AspectRatio(aspectRatio: 1, child: preview),
       );
     }
 

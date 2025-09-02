@@ -66,5 +66,5 @@ class UserOnboardingViewModel extends UserOnboardingContract
   bool get isLastStep => _currentStep == UserOnboardingData.totalSteps;
 
   UserOnboardingViewModel({UserOnboardingRepository? repository})
-      : _repository = repository ?? UserOnboardingRepository();
+    : _repository = repository ?? UserOnboardingRepository();
 }

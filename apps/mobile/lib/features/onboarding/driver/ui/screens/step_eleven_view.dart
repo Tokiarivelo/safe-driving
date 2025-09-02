@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_summary_view_model.dart';
@@ -43,10 +44,8 @@ class StepElevenView extends StatelessWidget {
             Expanded(
               child: Text(
                 '$element : $totalPhotos',
-                style: TextStyle(
-                  fontSize: 14,
+                style: AppTextStyles.body14.copyWith(
                   color: AppColors.textColor.withAlpha(200),
-                  fontFamily: 'Inder',
                 ),
               ),
             ),
@@ -75,19 +74,15 @@ class StepElevenView extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: '$element: ',
-                    style: TextStyle(
-                      fontSize: 14,
+                    style: AppTextStyles.body14.copyWith(
                       color: AppColors.textColor.withAlpha(200),
-                      fontFamily: 'Inder',
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   TextSpan(
                     text: fieldValue,
-                    style: TextStyle(
-                      fontSize: 14,
+                    style: AppTextStyles.body14.copyWith(
                       color: AppColors.textColor.withAlpha(160),
-                      fontFamily: 'Inder',
                     ),
                   ),
                 ],
@@ -160,22 +155,18 @@ class StepElevenView extends StatelessWidget {
         Text(
           step.title,
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: AppTextStyles.h1.copyWith(
             fontSize: 24,
             fontWeight: FontWeight.w600,
-            color: AppColors.textColor,
-            fontFamily: 'Inder',
           ),
         ),
         const SizedBox(height: 16),
         Text(
           step.description ?? '',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
+          style: AppTextStyles.body16.copyWith(
             color: AppColors.textColor.withAlpha(180),
             height: 1.5,
-            fontFamily: 'Inder',
           ),
         ),
       ],
@@ -244,12 +235,7 @@ class StepElevenView extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           titre,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textColor,
-            fontFamily: 'Inder',
-          ),
+          style: AppTextStyles.body16.copyWith(fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -276,7 +262,7 @@ class StepElevenView extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8),
       child: Text(
         summaryViewModel.errorMessage!,
-        style: const TextStyle(color: Colors.red, fontSize: 14),
+        style: AppTextStyles.body14.copyWith(color: Colors.red),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/chips.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
@@ -35,18 +36,11 @@ class StepSixView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          stepContent.title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AppColors.buttonWithoutBackGround,
-          ),
-        ),
+        Text(stepContent.title, style: AppTextStyles.h1),
         const SizedBox(height: 8),
         Text(
           stepContent.subtitle,
-          style: TextStyle(
+          style: AppTextStyles.body14.copyWith(
             color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
           ),
         ),

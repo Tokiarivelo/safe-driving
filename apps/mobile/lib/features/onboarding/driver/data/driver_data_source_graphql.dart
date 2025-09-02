@@ -17,12 +17,7 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     required String phone,
   }) async {
     final variables = {
-      'input': {
-        'userId': userId,
-        'name': name,
-        'email': email,
-        'phone': phone,
-      },
+      'input': {'userId': userId, 'name': name, 'email': email, 'phone': phone},
     };
 
     final response = await _client.executeMutation(
@@ -88,10 +83,7 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     required String filePath,
   }) async {
     final variables = {
-      'input': {
-        'userId': userId,
-        'filePath': filePath,
-      },
+      'input': {'userId': userId, 'filePath': filePath},
     };
 
     final response = await _client.executeMutation(
@@ -107,10 +99,7 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     required Map<String, bool> preferences,
   }) async {
     final variables = {
-      'input': {
-        'userId': userId,
-        'preferences': preferences,
-      },
+      'input': {'userId': userId, 'preferences': preferences},
     };
 
     final response = await _client.executeMutation(
@@ -127,11 +116,7 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     required String language,
   }) async {
     final variables = {
-      'input': {
-        'userId': userId,
-        'theme': theme,
-        'language': language,
-      },
+      'input': {'userId': userId, 'theme': theme, 'language': language},
     };
 
     final response = await _client.executeMutation(
@@ -169,10 +154,7 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     required DriverOnboardingData data,
   }) async {
     final variables = {
-      'input': {
-        'userId': userId,
-        'data': data,
-      },
+      'input': {'userId': userId, 'data': data},
     };
 
     final response = await _client.executeMutation(
@@ -183,7 +165,9 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> getDocumentValidationStatus(String userId) async {
+  Future<Map<String, dynamic>> getDocumentValidationStatus(
+    String userId,
+  ) async {
     final variables = {'userId': userId};
 
     final response = await _client.executeQuery(
@@ -267,7 +251,7 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
         phone: personalInfo['phone'] ?? '',
       );
     }
-    
+
     if (vehicleInfo != null) {
       return await saveVehicleInfo(
         userId: userId,
@@ -278,7 +262,7 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
         annee: vehicleInfo['annee'] ?? 0,
       );
     }
-    
+
     if (preferences != null) {
       return await saveAppPreferences(
         userId: userId,
@@ -286,7 +270,7 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
         language: preferences['language'] ?? 'fr',
       );
     }
-    
+
     throw Exception('No data to update');
   }
 }

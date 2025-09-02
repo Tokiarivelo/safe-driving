@@ -44,12 +44,12 @@ class UserUIBuilder {
     required Widget content,
     required Function(bool) onExpansionChanged,
   }) => _buildExpansionTile(
-        step: step,
-        info: info,
-        isExpanded: isExpanded,
-        content: content,
-        onExpansionChanged: onExpansionChanged,
-      );
+    step: step,
+    info: info,
+    isExpanded: isExpanded,
+    content: content,
+    onExpansionChanged: onExpansionChanged,
+  );
 
   static Widget buildExpansionTileTitle(StepInfo info) =>
       _buildExpansionTileTitle(info);
@@ -63,11 +63,11 @@ class UserUIBuilder {
     Widget? additionalContent,
     List<Widget>? buttons,
   }) => _buildStepContent(
-        title: title,
-        subtitle: subtitle,
-        additionalContent: additionalContent,
-        buttons: buttons,
-      );
+    title: title,
+    subtitle: subtitle,
+    additionalContent: additionalContent,
+    buttons: buttons,
+  );
 
   static Widget buildTransportModeChips({
     required List<String> modes,
@@ -75,11 +75,11 @@ class UserUIBuilder {
     required Map<String, IconData> icons,
     required Function(String, bool) onSelectionChanged,
   }) => _buildTransportModeChips(
-        modes: modes,
-        selectedModes: selectedModes,
-        icons: icons,
-        onSelectionChanged: onSelectionChanged,
-      );
+    modes: modes,
+    selectedModes: selectedModes,
+    icons: icons,
+    onSelectionChanged: onSelectionChanged,
+  );
 
   static Widget buildSummarySection({
     required String title,

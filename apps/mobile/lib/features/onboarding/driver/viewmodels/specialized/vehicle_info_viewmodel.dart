@@ -7,9 +7,11 @@ class VehicleInfoViewModel extends ChangeNotifier {
   // Getters for specific controllers
   TextEditingController get marqueController => getController('marque');
   TextEditingController get modeleController => getController('modele');
-  TextEditingController get immatriculationController => getController('immatriculation');
+  TextEditingController get immatriculationController =>
+      getController('immatriculation');
   TextEditingController get placesController => getController('places');
-  TextEditingController get typeVehiculeController => getController('typeVehicule');
+  TextEditingController get typeVehiculeController =>
+      getController('typeVehicule');
 
   Map<String, dynamic> get formData => _formData;
 

@@ -128,7 +128,7 @@ abstract class UnifiedPhotosModalState<T extends UnifiedPhotosModal>
                       color: AppColors.fillButtonBackground,
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
+                                loadingProgress.expectedTotalBytes!
                           : null,
                     ),
                   );

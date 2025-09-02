@@ -14,15 +14,13 @@ class UpdateProfileRequest {
   });
 
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{
-      'userId': userId,
-    };
-    
+    final data = <String, dynamic>{'userId': userId};
+
     if (firstName != null) data['firstName'] = firstName;
     if (lastName != null) data['lastName'] = lastName;
     if (email != null) data['email'] = email;
     if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
-    
+
     return data;
   }
 }

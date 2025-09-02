@@ -11,7 +11,7 @@ class SigninViewModel extends ChangeNotifier {
 
   Future<void> handleSignIn(String email, String password) async {
     if (_context == null) return;
-    
+
     final auth = _context!.authVM;
 
     final success = await auth.signIn(email, password);
@@ -28,7 +28,7 @@ class SigninViewModel extends ChangeNotifier {
 
   void handleGoogleSignIn(VoidCallback? onGoogleSignIn) {
     if (_context == null) return;
-    
+
     if (onGoogleSignIn != null) {
       onGoogleSignIn();
     } else {
@@ -41,7 +41,7 @@ class SigninViewModel extends ChangeNotifier {
 
   void handleFacebookSignIn(VoidCallback? onFacebookSignIn) {
     if (_context == null) return;
-    
+
     if (onFacebookSignIn != null) {
       onFacebookSignIn();
     } else {

@@ -14,4 +14,3 @@ Widget _buildOnboardingLayout({
     ],
   );
 }
-

@@ -13,4 +13,3 @@ mixin UserOnboardingComputedMixin on UserOnboardingContract {
     return _currentStep / UserOnboardingData.totalSteps;
   }
 }
-

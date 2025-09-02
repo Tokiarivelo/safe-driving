@@ -6,11 +6,7 @@ class ModalHeader extends StatelessWidget {
   final String title;
   final VoidCallback? onClose;
 
-  const ModalHeader({
-    super.key,
-    required this.title,
-    this.onClose,
-  });
+  const ModalHeader({super.key, required this.title, this.onClose});
 
   @override
   Widget build(BuildContext context) {

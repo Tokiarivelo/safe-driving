@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/chips.dart';
@@ -37,22 +38,18 @@ class StepNineView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: AppTextStyles.h1.copyWith(
               fontSize: 24,
               fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 16),
           Text(
             step.description!,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
+            style: AppTextStyles.body16.copyWith(
               color: AppColors.textColor.withAlpha(180),
               height: 1.5,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 32),
@@ -62,14 +59,7 @@ class StepNineView extends StatelessWidget {
             children: [
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  'Thème',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textColor,
-                  ),
-                ),
+                child: Text('Thème', style: AppTextStyles.h2BoldNeutral),
               ),
               const SizedBox(height: 12),
               Row(
@@ -85,9 +75,14 @@ class StepNineView extends StatelessWidget {
                           Chips.customChoiceChip(
                             label: option['label']!,
                             selected:
-                                coordinator.preferencesViewModel.selectedTheme == option['value'],
+                                coordinator
+                                    .preferencesViewModel
+                                    .selectedTheme ==
+                                option['value'],
                             onSelected: (_) {
-                              coordinator.preferencesViewModel.setSelectedTheme(option['value']!);
+                              coordinator.preferencesViewModel.setSelectedTheme(
+                                option['value']!,
+                              );
                             },
                           ),
                           if (index < themeOptions.length - 1)
@@ -100,18 +95,12 @@ class StepNineView extends StatelessWidget {
               const SizedBox(height: 32),
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  'Langue',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textColor,
-                  ),
-                ),
+                child: Text('Langue', style: AppTextStyles.h2BoldNeutral),
               ),
               const SizedBox(height: 12),
               LanguageButtons.languageButtonContainer(
-                selectedLanguage: coordinator.preferencesViewModel.selectedLanguage,
+                selectedLanguage:
+                    coordinator.preferencesViewModel.selectedLanguage,
                 onLanguageChanged: (lang) {
                   coordinator.preferencesViewModel.setSelectedLanguage(lang);
                 },

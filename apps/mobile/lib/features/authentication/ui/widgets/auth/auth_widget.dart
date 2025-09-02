@@ -149,7 +149,10 @@ class AuthWidgetState extends State<AuthWidget> {
         }
       }),
       onFirstNameChanged: (value) => setState(() {
-        _firstNameError = AuthValidationHandler.validateField(value, 'username');
+        _firstNameError = AuthValidationHandler.validateField(
+          value,
+          'username',
+        );
       }),
       onLastNameChanged: (value) => setState(() {
         _lastNameError = AuthValidationHandler.validateField(value, 'username');
@@ -202,4 +205,3 @@ class AuthWidgetState extends State<AuthWidget> {
     );
   }
 }
-
