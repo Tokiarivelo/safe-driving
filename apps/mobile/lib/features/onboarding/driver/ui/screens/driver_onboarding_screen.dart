@@ -65,10 +65,10 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                                 ),
                               ),
 
-                              Transform.translate(
-                                offset: const Offset(0, -12),
-                                child: Expanded(
-                                  flex: 1,
+                              Expanded(
+                                flex: 1,
+                                child: Transform.translate(
+                                  offset: const Offset(0, -12),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 24,
@@ -105,6 +105,7 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                                   controller: _paginationKey
                                       .currentState!
                                       .pageController,
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: coordinator.steps.length,
                                   itemBuilder: (context, index) {
                                     return SingleChildScrollView(

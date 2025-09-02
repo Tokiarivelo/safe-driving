@@ -33,8 +33,7 @@ class SwitchesAndRadios {
         ),
       ),
       value: value,
-      groupValue: groupValue,
-      onChanged: onChanged,
+
       activeColor: activeColor ?? AppColors.buttonWithoutBackGround,
     );
   }
