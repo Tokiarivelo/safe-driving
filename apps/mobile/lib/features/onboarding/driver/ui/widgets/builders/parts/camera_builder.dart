@@ -8,8 +8,11 @@ class CameraBuilder {
     DriverOnboardingCoordinator coordinator,
     BuildContext context,
   ) {
-    // Occupy available vertical space to avoid overflow; rely on SelfieCamera's own controls
-    return Expanded(
+ 
+    final screenHeight = MediaQuery.of(context).size.height;
+    final cameraHeight = screenHeight * 0.5; // occupy half the screen
+    return SizedBox(
+      height: cameraHeight,
       child: SelfieCamera(
         instruction:
             (selfieData['description'] as String?) ??

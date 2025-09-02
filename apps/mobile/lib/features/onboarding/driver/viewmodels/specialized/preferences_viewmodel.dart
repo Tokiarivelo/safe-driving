@@ -53,7 +53,7 @@ class PreferencesViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> handleGpsPermission(BuildContext context) async {
+  Future<bool> handleGpsPermission(BuildContext context) async {
     final granted = await PermissionHandlers.handleGpsPermission(context);
     setGpsEnabled(granted);
     if (granted && context.mounted) {
@@ -62,6 +62,7 @@ class PreferencesViewModel extends ChangeNotifier {
         'Géolocalisation activée avec succès !',
       );
     }
+    return granted;
   }
 
   // Notifications methods

@@ -1,10 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class PermissionHandlers {
   static Future<bool> handleGpsPermission(BuildContext context) async {
+    if (kIsWeb) {
+      // On Web, the browser manages permissions; just request via Geolocator
+      try {
+        final permission = await Geolocator.requestPermission();
+        final granted = permission == LocationPermission.always ||
+            permission == LocationPermission.whileInUse;
+        if (!granted && context.mounted) {
+          SnackbarHelper.showError(
+            context,
+            'Permission de localisation refusée par le navigateur.',
+          );
+        }
+        return granted;
+      } catch (_) {
+        if (context.mounted) {
+          SnackbarHelper.showError(
+            context,
+            'Géolocalisation non supportée sur ce navigateur.',
+          );
+        }
+        return false;
+      }
+    }
+
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       if (context.mounted) {
@@ -49,7 +74,7 @@ class PermissionHandlers {
     BuildContext context,
     List<String> selectedNotifications,
   ) async {
-    bool needsPermission = selectedNotifications.any(
+    final needsPermission = selectedNotifications.any(
       (type) =>
           type.toLowerCase().contains('push') ||
           type.toLowerCase().contains('notification'),
@@ -60,6 +85,16 @@ class PermissionHandlers {
         SnackbarHelper.showSuccess(
           context,
           'Préférences de notifications sauvegardées !',
+        );
+      }
+      return true;
+    }
+
+    if (kIsWeb) {
+      if (context.mounted) {
+        SnackbarHelper.showSuccess(
+          context,
+          'Les notifications sont gérées par votre navigateur.',
         );
       }
       return true;
@@ -106,6 +141,16 @@ class PermissionHandlers {
   }
 
   static Future<bool> handleSmsPermission(BuildContext context) async {
+    if (kIsWeb) {
+      if (context.mounted) {
+        SnackbarHelper.showSuccess(
+          context,
+          'Les SMS ne nécessitent pas de permission sur le Web.',
+        );
+      }
+      return true;
+    }
+
     PermissionStatus permission = await Permission.sms.status;
 
     if (permission.isDenied) {

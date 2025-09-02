@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import 'dart:io';
 import 'package:safe_driving/features/onboarding/driver/services/driver_camera_service.dart';
+import 'package:safe_driving/features/onboarding/driver/ui/widgets/camera/widgets/captured_image_widget.dart';
 
 /// Selfie camera widget for driver onboarding
 class SelfieCamera extends StatefulWidget {
@@ -106,8 +106,8 @@ class _SelfieCameraState extends State<SelfieCamera> {
               height: size,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.file(
-                  File(_capturedPhotoPath!),
+                child: CapturedImageWidget(
+                  path: _capturedPhotoPath!,
                   fit: BoxFit.cover,
                 ),
               ),

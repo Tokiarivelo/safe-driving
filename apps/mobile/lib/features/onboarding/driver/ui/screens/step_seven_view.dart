@@ -50,48 +50,62 @@ class StepSevenView extends StatelessWidget {
 
           const Spacer(),
 
-          Column(
-            children: [
-              Row(
+          AnimatedBuilder(
+            animation: coordinator.preferencesViewModel,
+            builder: (context, _) {
+              final groupValue = coordinator.preferencesViewModel.gpsEnabled
+                  ? "Autoriser"
+                  : "Plus tard";
+              return Column(
                 children: [
-                  Expanded(
-                    child: SwitchesAndRadios.customRadio<String>(
-                      title: "Plus tard",
-                      value: "Plus tard",
-                      groupValue: coordinator.preferencesViewModel.gpsEnabled
-                          ? "Autoriser"
-                          : "Plus tard",
-                      onChanged: (value) =>
-                          coordinator.preferencesViewModel.setGpsEnabled(false),
-                      titleColor: AppColors.fillButtonBackground,
-                      activeColor: AppColors.fillButtonBackground,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SwitchesAndRadios.customRadio<String>(
+                          title: "Plus tard",
+                          value: "Plus tard",
+                          groupValue: groupValue,
+                          onChanged: (value) => coordinator.preferencesViewModel
+                              .setGpsEnabled(false),
+                          titleColor: AppColors.fillButtonBackground,
+                          activeColor: AppColors.fillButtonBackground,
+                        ),
+                      ),
+                      Expanded(
+                        child: SwitchesAndRadios.customRadio<String>(
+                          title: "Autoriser",
+                          value: "Autoriser",
+                          groupValue: groupValue,
+                          onChanged: (value) async {
+                            // Marquer comme sélectionné immédiatement pour un meilleur ressenti
+                            coordinator.preferencesViewModel.setGpsEnabled(true);
+                            final granted = await coordinator
+                                .preferencesViewModel
+                                .handleGpsPermission(context);
+                            if (!granted) {
+                              // Revenir à l'état précédent si refus
+                              coordinator.preferencesViewModel
+                                  .setGpsEnabled(false);
+                            }
+                          },
+                          titleColor: AppColors.fillButtonBackground,
+                          activeColor: AppColors.fillButtonBackground,
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    child: SwitchesAndRadios.customRadio<String>(
-                      title: "Autoriser",
-                      value: "Autoriser",
-                      groupValue: coordinator.preferencesViewModel.gpsEnabled
-                          ? "Autoriser"
-                          : "Plus tard",
-                      onChanged: (value) => coordinator.preferencesViewModel
-                          .handleGpsPermission(context),
-                      titleColor: AppColors.fillButtonBackground,
-                      activeColor: AppColors.fillButtonBackground,
+                  const SizedBox(height: 32),
+                  PrimaryButton.primaryButton(
+                    text: "Continuer",
+                    onPressed: onContinue,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 40,
                     ),
                   ),
                 ],
-              ),
-              const SizedBox(height: 32),
-              PrimaryButton.primaryButton(
-                text: "Continuer",
-                onPressed: onContinue,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 40,
-                ),
-              ),
-            ],
+              );
+            },
           ),
         ],
       ),

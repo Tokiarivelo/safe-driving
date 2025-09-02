@@ -20,7 +20,8 @@ class DriverStepIndicator extends StatelessWidget {
   }
 
   Widget _buildCircularProgress() {
-    final progress = (currentStep + 1) / (totalSteps + 1);
+
+    final progress = totalSteps > 0 ? (currentStep + 1) / totalSteps : 0.0;
 
     return SizedBox(
       width: 50,

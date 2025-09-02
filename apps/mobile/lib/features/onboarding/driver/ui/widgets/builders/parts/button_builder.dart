@@ -12,11 +12,12 @@ class ButtonBuilder {
     VoidCallback nextStep,
     BuildContext context,
   ) {
-    if (step.title == "Partagez votre position") {
+
+    if (step.stepType == DriverStepType.gps) {
       return PreferencesBuilder.buildGpsButtons(coordinator, nextStep, context);
     }
 
-    if (step.title == "Un dernier point avant de démarrer") {
+    if (step.stepType == DriverStepType.legal) {
       if (coordinator.legalViewModel.allCguAccepted) {
         return PrimaryButton.primaryButton(
           text: "Continuer",
