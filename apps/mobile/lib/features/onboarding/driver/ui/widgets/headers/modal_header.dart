@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 
-/// Reusable header widget for modals
 class ModalHeader extends StatelessWidget {
   final String title;
   final VoidCallback? onClose;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:io' show Platform;
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
@@ -65,6 +66,23 @@ class PermissionHandlers {
       }
       await Geolocator.openAppSettings();
       return false;
+    }
+
+    // Optionally escalate to background permission on Android if only WhileInUse is granted
+    if (Platform.isAndroid && permission == LocationPermission.whileInUse) {
+      final bgStatus = await Permission.locationAlways.status;
+      if (bgStatus.isDenied) {
+        final requested = await Permission.locationAlways.request();
+        if (!requested.isGranted) {
+          // Not critical for foreground usage; inform user if needed
+          if (context.mounted) {
+            SnackbarHelper.showError(
+              context,
+              'La localisation en arrière-plan n\'est pas activée. Certaines fonctionnalités peuvent être limitées.',
+            );
+          }
+        }
+      }
     }
 
     return true;

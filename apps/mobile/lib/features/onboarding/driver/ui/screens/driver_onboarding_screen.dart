@@ -41,7 +41,6 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
               contentBuilder: (currentStep, nextStep, previousStep) {
                 return Stack(
                   children: [
-                    // Header with logo and progress
                     Positioned(
                       top: 0,
                       left: 0,

@@ -52,7 +52,7 @@ class StepSevenView extends StatelessWidget {
 
           AnimatedBuilder(
             animation: coordinator.preferencesViewModel,
-            builder: (context, _) {
+            builder: (_, _) {
               final groupValue = coordinator.preferencesViewModel.gpsEnabled
                   ? "Autoriser"
                   : "Plus tard";
@@ -76,18 +76,8 @@ class StepSevenView extends StatelessWidget {
                           title: "Autoriser",
                           value: "Autoriser",
                           groupValue: groupValue,
-                          onChanged: (value) async {
-                            // Marquer comme sélectionné immédiatement pour un meilleur ressenti
-                            coordinator.preferencesViewModel.setGpsEnabled(true);
-                            final granted = await coordinator
-                                .preferencesViewModel
-                                .handleGpsPermission(context);
-                            if (!granted) {
-                              // Revenir à l'état précédent si refus
-                              coordinator.preferencesViewModel
-                                  .setGpsEnabled(false);
-                            }
-                          },
+                          onChanged: (value) => coordinator.preferencesViewModel
+                              .handleGpsPermission(context),
                           titleColor: AppColors.fillButtonBackground,
                           activeColor: AppColors.fillButtonBackground,
                         ),

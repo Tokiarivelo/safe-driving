@@ -1,9 +1,8 @@
 import 'driver_onboarding_step_model.dart';
 
 class DriverOnboardingData {
-  static const int totalSteps = 12;
+  static const int totalSteps = 13;
 
-  // Méthodes statiques pour accéder aux données CGU
   static dynamic getCguContent() {
     return cguContents[0][0]['additionalContent']['content'];
   }
