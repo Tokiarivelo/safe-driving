@@ -22,9 +22,10 @@ class StepTwelveView extends StatelessWidget {
 
   String _buildWelcomeTitle(BuildContext context) {
     final user = context.authVM.currentUser;
-    final name = (user?.fullName ?? user?.email ?? '').trim();
-    final displayName = name.isNotEmpty ? name : 'Conducteur';
-    return '${step.title} $displayName';
+    final raw = (user?.fullName ?? user?.email ?? '').trim();
+    final displayName = raw.isNotEmpty ? raw : 'Conducteur';
+    // Afficher exactement: "Bienvenue à bord, X"
+    return 'Bienvenue à bord, $displayName';
   }
 
   @override

@@ -22,9 +22,17 @@ class SwitchesAndRadios {
     Color? activeColor,
     Color? titleColor,
   }) {
-    return RadioListTile<T>(
+    final bool isSelected = value == groupValue;
+    final Color resolvedColor = activeColor ?? AppColors.buttonWithoutBackGround;
+
+    return ListTile(
       contentPadding: EdgeInsets.zero,
+      dense: true,
       visualDensity: const VisualDensity(horizontal: -4),
+      leading: Icon(
+        isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+        color: resolvedColor,
+      ),
       title: Text(
         title,
         style: TextStyle(
@@ -32,9 +40,7 @@ class SwitchesAndRadios {
           fontWeight: FontWeight.w600,
         ),
       ),
-      value: value,
-
-      activeColor: activeColor ?? AppColors.buttonWithoutBackGround,
+      onTap: () => onChanged(value),
     );
   }
 
