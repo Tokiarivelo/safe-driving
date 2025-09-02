@@ -25,7 +25,7 @@ function Pill({ label, onClick, active, iconName }: PillProps) {
         whiteSpace: 'nowrap',
         boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
         color: active ? 'white' : 'black',
-        border: 'none',
+        border: '1px solid #ccc',
         display: 'flex',
         alignItems: 'center',
         gap: '6px',
@@ -337,9 +337,6 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
       // Remove markers that are now out of bounds
       removeOutOfBoundsMarkers(newBounds);
 
-      // Set current bounds
-      setCurrentBounds(newBounds);
-
       // Debounce the fetch to avoid too many requests
       if (moveTimeoutRef.current) {
         clearTimeout(moveTimeoutRef.current);
@@ -397,7 +394,6 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
       {loading && (
         <ProgressPill
           label={`Loading ${loading}...`}
-          progress={progress}
         />
       )}
     </div>
