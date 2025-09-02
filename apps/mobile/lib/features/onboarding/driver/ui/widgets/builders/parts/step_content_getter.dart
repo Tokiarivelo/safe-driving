@@ -43,7 +43,6 @@ class StepContentGetter {
           ),
           const SizedBox(height: 24),
 
-          // Build additional content based on step type
           if (step.additionalContent != null)
             ContentBuilder.buildAdditionalContent(
               step.additionalContent!,

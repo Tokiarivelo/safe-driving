@@ -1,8 +1,8 @@
 import '../models/driver_onboarding_data.dart';
 import 'driver_data_source_interface.dart';
-import '../../../../api/graphql/graphql_client.dart';
-import '../../../../api/graphql/queries.dart';
-import '../../../../api/graphql/mutations.dart';
+import '../../../../api/graph-ql/graphql_client.dart';
+import '../../../../api/graph-ql/queries.dart';
+import '../../../../api/graph-ql/mutations.dart';
 
 class DriverDataSourceGraphQL implements IDriverDataSource {
   final GraphQLClientWrapper _client;

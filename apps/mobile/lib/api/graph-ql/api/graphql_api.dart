@@ -1,7 +1,4 @@
-export 'graphql_client.dart';
-
-export 'queries.dart';
-export 'mutations.dart';
+export '../client/graphql_client.dart';
 
 export 'package:graphql_flutter/graphql_flutter.dart'
     show
@@ -14,3 +11,4 @@ export 'package:graphql_flutter/graphql_flutter.dart'
         OperationException,
         WatchQueryOptions,
         SubscriptionOptions;
+

@@ -1,5 +1,5 @@
 import 'package:safe_driving/features/authentication/services/session_service.dart';
-import 'package:safe_driving/api/graphql/graphql_client.dart';
+import 'package:safe_driving/api/graph-ql/graphql_client.dart';
 import '../../features/authentication/data/auth_data_source_interface.dart';
 import '../../features/authentication/data/auth_data_source_graphql.dart';
 import '../../features/authentication/services/auth_service.dart';

@@ -1,5 +1,5 @@
 import 'user_data_source_interface.dart';
-import '../../../../api/graphql/graphql_client.dart';
+import '../../../../api/graph-ql/graphql_client.dart';
 
 class UserDataSourceGraphQL implements IUserDataSource {
   final GraphQLClientWrapper _client;

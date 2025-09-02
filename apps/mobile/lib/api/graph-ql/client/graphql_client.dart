@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'graphql_config.dart';
 
 class GraphQLClientWrapper {
   late GraphQLClient _client;
@@ -20,7 +20,7 @@ class GraphQLClientWrapper {
   }
 
   void _initializeClient() {
-    final httpLink = HttpLink(dotenv.env['GRAPHQL_ENDPOINT']!);
+    final httpLink = HttpLink(GraphQLConfig.endpoint);
 
     final authLink = AuthLink(
       getToken: () async =>
@@ -198,51 +198,16 @@ class GraphQLClientWrapper {
   }
 
   String _extractErrorMessage(OperationException? exception) {
-    if (exception?.graphqlErrors.isNotEmpty == true) {
-      return exception!.graphqlErrors.first.message;
+    if (exception == null) return 'Unknown error';
+
+    if (exception.graphqlErrors.isNotEmpty) {
+      return exception.graphqlErrors.map((e) => e.message).join('; ');
     }
-    if (exception?.linkException != null) {
-      return 'Network error: ${exception!.linkException}';
+
+    if (exception.linkException != null) {
+      return exception.linkException.toString();
     }
-    return exception?.toString() ?? 'Unknown GraphQL error';
+
+    return 'Unknown GraphQL error';
   }
-
-  GraphQLClient get client => _client;
-
-  void writeQuery(Request request, Map<String, dynamic> data) {
-    _client.cache.writeQuery(request, data: data);
-  }
-
-  Map<String, dynamic>? readQuery(Request request) {
-    try {
-      return _client.cache.readQuery(request);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  void clearCache() {
-    _client.cache.store.reset();
-  }
-
-  void dispose() {
-    _accessToken = null;
-    _refreshToken = null;
-    _onTokenRefresh = null;
-    _onError = null;
-  }
-
-  static void reset() {
-    _instance?.dispose();
-    _instance = null;
-  }
-}
-
-ValueNotifier<GraphQLClient> initGraphQLClient() {
-  return ValueNotifier(GraphQLClientWrapper.instance.client);
-}
-
-GraphQLClient createGraphQLClientWithToken(String? token) {
-  GraphQLClientWrapper.instance.updateTokens(accessToken: token);
-  return GraphQLClientWrapper.instance.client;
 }
