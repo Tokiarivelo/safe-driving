@@ -1,0 +1,180 @@
+part of '../user_step_content_widget.dart';
+
+class _SummaryStep extends StatelessWidget {
+  final UserOnboardingStepModel stepContent;
+  final UserOnboardingViewModel viewModel;
+
+  const _SummaryStep({required this.stepContent, required this.viewModel});
+
+  @override
+  Widget build(BuildContext context) {
+    final summaryLabels =
+        (stepContent.additionalContent?['summaryLabels'] as Map?)
+                ?.cast<String, String>() ??
+            const {
+              'gps': 'GPS',
+              'notifications': 'Notifications',
+              'theme': 'Thème',
+              'transport': 'Transport(s)',
+              'language': 'Langue',
+              'noTransport': 'Aucun transport sélectionné',
+            };
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          stepContent.title,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w800,
+            color: AppColors.buttonWithoutBackGround,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          stepContent.subtitle,
+          style: TextStyle(
+            color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            SwitchesAndRadios.customSwitch(
+              value: viewModel.appState.gpsEnabled,
+              onChanged: (v) => viewModel.updateGps(v, context),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              summaryLabels['gps']!,
+              style: const TextStyle(
+                color: AppColors.buttonWithoutBackGround,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            SwitchesAndRadios.customSwitch(
+              value: viewModel.appState.notifEnabled,
+              onChanged: (v) => viewModel.updateNotifications(v, context),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              summaryLabels['notifications']!,
+              style: const TextStyle(
+                color: AppColors.buttonWithoutBackGround,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Text(
+          '${summaryLabels['theme']} : ${viewModel.appState.selectedTheme}',
+          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          '${summaryLabels['transport']} :',
+          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: AppColors.fillButtonBackground.withValues(alpha: 0.3),
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (viewModel.appState.selectedTransports.isNotEmpty)
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: viewModel.appState.selectedTransports
+                      .map(
+                        (transport) => Chip(
+                          avatar: Icon(
+                            UserOnboardingData.transportIcons[transport],
+                            size: 16,
+                            color: AppColors.buttonWithoutBackGround,
+                          ),
+                          label: Text(
+                            transport,
+                            style: const TextStyle(
+                              color: AppColors.buttonWithoutBackGround,
+                              fontSize: 12,
+                            ),
+                          ),
+                          deleteIcon: const Icon(
+                            Icons.close,
+                            size: 18,
+                            color: AppColors.buttonWithoutBackGround,
+                          ),
+                          onDeleted: () => viewModel.removeTransport(transport),
+                          backgroundColor: AppColors.secondBackgroundColor,
+                          side: BorderSide(
+                            color: AppColors.fillButtonBackground
+                                .withValues(alpha: 0.5),
+                            width: 1,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                )
+              else
+                Text(
+                  summaryLabels['noTransport']!,
+                  style: TextStyle(
+                    color: AppColors.buttonWithoutBackGround
+                        .withValues(alpha: 0.6),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          '${summaryLabels['language']} :',
+          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        ),
+        const SizedBox(height: 8),
+        LanguageButtons.languageButtonContainer(
+          selectedLanguage: viewModel.appState.selectedLanguage,
+          onLanguageChanged: viewModel.updateLanguage,
+        ),
+        const SizedBox(height: 24),
+        ButtonRows.laterAndActionButtons(
+          onLaterPressed: () => viewModel.goToStep(1),
+          onActionPressed: () async {
+            final ok = await viewModel.completeOnboarding(context);
+            if (!context.mounted) return;
+            if (ok) {
+              SnackbarHelper.showSuccess(
+                context,
+                'Configuration terminée avec succès !',
+                duration: const Duration(seconds: 2),
+              );
+            } else {
+              SnackbarHelper.showError(
+                context,
+                viewModel.errorMessage ?? 'Erreur lors de la finalisation',
+              );
+            }
+          },
+          laterText: stepContent.buttonTitles[0],
+          actionText: stepContent.buttonTitles[1],
+          fontSize: 14,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+        ),
+      ],
+    );
+  }
+}
+

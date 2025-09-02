@@ -63,7 +63,7 @@ class UserOnboardingStepModel extends OnboardingStepBase {
   });
 
   @override
-  int get totalSteps => 6; // User onboarding has 6 steps
+  int get totalSteps => 5; // Aligned with UserOnboardingData.totalSteps
 
   @override
   UserOnboardingStepModel copyWith({

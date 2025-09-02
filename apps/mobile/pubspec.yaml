@@ -22,7 +22,7 @@ dependencies:
   percent_indicator: ^4.2.5
   smooth_page_indicator: ^1.2.1
   flutter_markdown: ^0.7.7+1
-  
+
   # for photos
   flutter_svg: ^2.2.0
   image_picker: ^1.1.2
@@ -34,7 +34,7 @@ dependencies:
   #for gps
   geolocator: ^14.0.2
   shared_preferences: ^2.5.3
-  
+
   # for file storage
   path_provider: ^2.1.5
   path: ^1.9.1

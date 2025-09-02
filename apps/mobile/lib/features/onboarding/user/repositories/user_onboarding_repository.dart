@@ -1,7 +1,43 @@
+import 'package:flutter/material.dart';
 import '../models/user_onboarding_data.dart';
-import '../models/app_state.dart';
+import '../models/user_onboarding_step_model.dart';
+import '../core/interfaces/user_service_interface.dart';
+import '../services/user_service.dart';
 
 class UserOnboardingRepository {
+  final IUserOnboardingService _service;
+
+  UserOnboardingRepository({IUserOnboardingService? service})
+      : _service = service ?? UserOnboardingService();
+
+  // Standardized methods used by ViewModel
+  Future<bool> requestGpsPermission(BuildContext context) {
+    return _service.requestGpsPermission(context);
+  }
+
+  Future<bool> requestNotificationPermission(
+    BuildContext context,
+    List<String> selectedNotifications,
+  ) {
+    return _service.requestNotificationPermission(
+      context,
+      selectedNotifications,
+    );
+  }
+
+  Future<void> saveUserPreferences(AppState state) {
+    return _service.saveUserPreferences(state);
+  }
+
+  Future<AppState?> loadUserPreferences() {
+    return _service.loadUserPreferences();
+  }
+
+  Future<void> completeOnboarding(BuildContext context) {
+    return _service.completeOnboarding(context);
+  }
+
+  // Legacy/stubbed methods for future expansion
   Future<void> saveGpsPreference(bool enabled) async {
     throw UnimplementedError('saveGpsPreference not implemented yet');
   }
@@ -22,7 +58,7 @@ class UserOnboardingRepository {
     throw UnimplementedError('saveLanguagePreference not implemented yet');
   }
 
-  Future<void> completeOnboarding(AppState appState) async {
+  Future<void> completeOnboardingLegacy(AppState appState) async {
     throw UnimplementedError('completeOnboarding not implemented yet');
   }
 

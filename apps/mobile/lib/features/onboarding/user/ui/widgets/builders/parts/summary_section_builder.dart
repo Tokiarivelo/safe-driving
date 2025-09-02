@@ -1,0 +1,32 @@
+part of '../user_ui_builder.dart';
+
+Widget _buildSummarySection({
+  required String title,
+  required List<Widget> items,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: AppColors.fillButtonBackground.withValues(alpha: 0.3),
+        width: 1,
+      ),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    padding: const EdgeInsets.all(12),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            color: AppColors.buttonWithoutBackGround,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 8),
+        ...items,
+      ],
+    ),
+  );
+}
+

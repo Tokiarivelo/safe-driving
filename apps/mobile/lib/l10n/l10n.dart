@@ -17,6 +17,7 @@ class L10n {
         return 'Français';
       default:
         return 'Français';
+        
     }
   }
 

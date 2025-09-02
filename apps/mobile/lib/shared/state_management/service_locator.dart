@@ -14,6 +14,12 @@ import '../../features/onboarding/driver/data/driver_data_source_interface.dart'
 import '../../features/onboarding/driver/data/driver_data_source_graphql.dart';
 import '../../features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import '../../features/onboarding/driver/viewmodels/driver_summary_view_model.dart';
+import '../../features/onboarding/user/data/user_data_source_interface.dart';
+import '../../features/onboarding/user/data/user_data_source_graphql.dart';
+import '../../features/onboarding/user/repositories/user_onboarding_repository.dart';
+import '../../features/onboarding/user/core/interfaces/user_service_interface.dart';
+import '../../features/onboarding/user/services/user_service.dart';
+import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart';
 
 typedef _FactoryFunc<T> = T Function();
 typedef _Disposer = void Function(dynamic);
@@ -169,6 +175,23 @@ class ServiceLocator {
 
     registerFactory<DriverSummaryViewModel>(
       () => DriverSummaryViewModel(get<IDriverService>()),
+    );
+
+    // User onboarding wiring
+    registerLazySingleton<IUserDataSource>(
+      () => UserDataSourceGraphQL(get<GraphQLClientWrapper>()),
+    );
+
+    registerLazySingleton<IUserOnboardingService>(
+      () => UserOnboardingService(get<IUserDataSource>()),
+    );
+
+    registerLazySingleton<UserOnboardingRepository>(
+      () => UserOnboardingRepository(service: get<IUserOnboardingService>()),
+    );
+
+    registerFactory<UserOnboardingViewModel>(
+      () => UserOnboardingViewModel(repository: get<UserOnboardingRepository>()),
     );
   }
 }
