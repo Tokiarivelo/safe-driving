@@ -45,11 +45,14 @@ class _SelfieCameraState extends State<SelfieCamera> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (widget.showInstructions) _buildInstructions(),
-        const SizedBox(height: 16),
-        // Aperçu caméra compact dans un carré
-        Expanded(child: _buildCameraPreview()),
+        if (widget.showInstructions) ...[
+          _buildInstructions(),
+          const SizedBox(height: 16),
+        ],
+        // Aperçu caméra compact dans un carré, centré
+        _buildCameraPreview(),
         const SizedBox(height: 16),
         _buildCameraControls(),
       ],
