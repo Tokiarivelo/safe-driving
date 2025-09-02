@@ -32,7 +32,12 @@ export class DriverVehicleResolver {
     return this.vehicleService.createDriverVehicle(user.id, input);
   }
 
+<<<<<<< HEAD
   @Mutation(() => DriverVehicle, { name: 'updateDriverVehicle' })
+=======
+  @UseGuards(JwtAuthGuard) // 👈 protège la route
+  @Mutation(() => DriverVehicle, { name: 'createDriverVehicle' })
+>>>>>>> f69f086 ([feat]: theme dark & light)
   async updateDriverVehicle(
     @CurrentUser() user: User,
     @Args('vehicleId') vehicleId: string,
