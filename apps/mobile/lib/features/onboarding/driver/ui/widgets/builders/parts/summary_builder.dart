@@ -37,10 +37,36 @@ class SummaryBuilder {
                     color: AppColors.fillButtonBackground,
                   ),
                   const SizedBox(width: 8),
-                  Text(
-                    titre,
-                    style: AppTextStyles.body16.copyWith(
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Text(
+                      titre,
+                      style: AppTextStyles.body16.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: AppColors.fillButtonBackground.withAlpha(20),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: AppColors.fillButtonBackground.withAlpha(100),
+                        width: 1,
+                      ),
+                    ),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.edit,
+                        size: 16,
+                        color: AppColors.fillButtonBackground,
+                      ),
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        navigateToStep(getStepIndexForSection(titre));
+                      },
                     ),
                   ),
                 ],
@@ -88,13 +114,36 @@ class SummaryBuilder {
                 ),
               ),
             ),
+            const SizedBox(width: 8),
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: AppColors.fillButtonBackground.withAlpha(20),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.fillButtonBackground.withAlpha(100),
+                  width: 1,
+                ),
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  size: 16,
+                  color: AppColors.fillButtonBackground,
+                ),
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  navigateToStep(getStepIndexForField(element));
+                },
+              ),
+            ),
           ],
         ),
       );
     }
 
     final fieldValue = coordinator.getFieldValue(element);
-    final stepIndex = getStepIndexForField(element);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -127,31 +176,6 @@ class SummaryBuilder {
               ),
             ),
           ),
-          const SizedBox(width: 8),
-          if (element != 'Photos uploadées')
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: AppColors.fillButtonBackground.withAlpha(20),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: AppColors.fillButtonBackground.withAlpha(100),
-                  width: 1,
-                ),
-              ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.edit,
-                  size: 16,
-                  color: AppColors.fillButtonBackground,
-                ),
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  navigateToStep(stepIndex);
-                },
-              ),
-            ),
         ],
       ),
     );
@@ -272,6 +296,7 @@ class SummaryBuilder {
   static IconData getSectionIcon(String sectionTitle) {
     switch (sectionTitle) {
       case 'Infos personnelles':
+      case 'Informations personnelles':
         return Icons.person;
       case 'Véhicule':
         return Icons.directions_car;
@@ -281,6 +306,22 @@ class SummaryBuilder {
         return Icons.tune;
       default:
         return Icons.info;
+    }
+  }
+
+  static int getStepIndexForSection(String sectionTitle) {
+    switch (sectionTitle) {
+      case 'Infos personnelles':
+      case 'Informations personnelles':
+        return 1;
+      case 'Véhicule':
+        return 3;
+      case 'GPS & Notifications':
+        return 6;
+      case 'Préférences':
+        return 8;
+      default:
+        return 0;
     }
   }
 
@@ -303,6 +344,8 @@ class SummaryBuilder {
       case 'Thème':
       case 'Langue':
         return 8;
+      case 'Photos uploadées':
+        return 4;
       default:
         return 0;
     }

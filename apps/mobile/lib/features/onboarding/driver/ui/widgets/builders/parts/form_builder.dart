@@ -35,6 +35,8 @@ class FormBuilder {
         showLabel: true,
         backgroundColor: AppColors.inputTextBackground,
         controller: coordinator.personalInfoViewModel.getController('name'),
+        readOnly: true,
+        enabled: false,
         validator: (value) => RegexFormatter.getNameValidationMessage(value!),
       ),
       const SizedBox(height: 16),
@@ -46,6 +48,8 @@ class FormBuilder {
         controller: coordinator.personalInfoViewModel.getController('email'),
         showLabel: true,
         backgroundColor: AppColors.inputTextBackground,
+        readOnly: true,
+        enabled: false,
       ),
       const SizedBox(height: 16),
       CustomInputField(

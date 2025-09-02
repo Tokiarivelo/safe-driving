@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'dart:io';
 import 'package:safe_driving/features/onboarding/driver/services/driver_camera_service.dart';
 
 /// Selfie camera widget for driver onboarding
@@ -45,15 +46,16 @@ class _SelfieCameraState extends State<SelfieCamera> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (widget.showInstructions) ...[
           _buildInstructions(),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
         ],
-        // Aperçu caméra compact dans un carré, centré
-        _buildCameraPreview(),
-        const SizedBox(height: 16),
+        // Utiliser l'espace disponible pour l'aperçu afin d'éviter tout overflow
+        Expanded(
+          child: _buildCameraPreview(),
+        ),
+        const SizedBox(height: 12),
         _buildCameraControls(),
       ],
     );
@@ -93,69 +95,32 @@ class _SelfieCameraState extends State<SelfieCamera> {
   }
 
   Widget _buildCameraPreview() {
-    // Show confirmation/info once a photo is captured
+    // When a photo is captured, show only the photo (no confirmation frame)
     if (_capturedPhotoPath != null) {
-      return Container(
-        margin: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade300,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Stack(
-          children: [
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.check_circle, color: Colors.green, size: 64),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Photo capturée !',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Votre selfie a été pris avec succès',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 16,
-              right: 16,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.check, color: Colors.white, size: 16),
-                    SizedBox(width: 4),
-                    Text(
-                      'Validé',
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  ],
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          final size = math.min(constraints.maxWidth, constraints.maxHeight);
+          return Center(
+            child: SizedBox(
+              width: size,
+              height: size,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.file(
+                  File(_capturedPhotoPath!),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-          ],
-        ),
+          );
+        },
       );
     }
 
-    // Show the live camera preview in a large square (use as much space as possible)
+    // Show the live camera preview in a square using the available space
     return LayoutBuilder(
       builder: (context, constraints) {
-        final available = math.min(constraints.maxWidth, constraints.maxHeight);
-        final size = available * 0.95; // use 95% of the smallest dimension
+        final size = math.min(constraints.maxWidth, constraints.maxHeight);
         return Center(
           child: SizedBox(
             width: size,
@@ -176,7 +141,7 @@ class _SelfieCameraState extends State<SelfieCamera> {
                   setState(() => _isCapturing = false);
                   if (path != null) {
                     setState(() => _capturedPhotoPath = path);
-                    widget.onPhotoTaken(path);
+                    // Do not call onPhotoTaken here; wait for user to validate
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Capture échouée')),
@@ -208,10 +173,9 @@ class _SelfieCameraState extends State<SelfieCamera> {
           ),
           ElevatedButton.icon(
             onPressed: () {
-              // Photo already taken, callback already called
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Photo validée !')));
+              if (_capturedPhotoPath != null) {
+                widget.onPhotoTaken(_capturedPhotoPath!);
+              }
             },
             icon: const Icon(Icons.check),
             label: const Text('Valider'),

@@ -16,6 +16,8 @@ class CustomInputField extends StatefulWidget {
   final bool showLabel;
   final EdgeInsets? padding;
   final Color? backgroundColor;
+  final bool readOnly;
+  final bool enabled;
 
   final String? Function(String?)? validator;
 
@@ -34,6 +36,8 @@ class CustomInputField extends StatefulWidget {
     this.showLabel = false,
     this.padding,
     this.backgroundColor,
+    this.readOnly = false,
+    this.enabled = true,
     this.validator,
   });
 
@@ -90,6 +94,8 @@ class CustomInputFieldState extends State<CustomInputField> {
                 fontSize: widget.showLabel ? 16 : 10,
                 color: AppColors.textColor,
               ),
+              readOnly: widget.readOnly,
+              enabled: widget.enabled,
               keyboardType: widget.keyboardType,
               decoration: InputDecoration(
                 filled: !widget.showLabel,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 abstract class BaseDocumentWidget extends StatefulWidget {
   final Function(List<String>) onDocumentsChanged;
@@ -22,6 +23,7 @@ abstract class BaseDocumentWidget extends StatefulWidget {
 abstract class BaseDocumentWidgetState<T extends BaseDocumentWidget>
     extends State<T> {
   List<String> _documents = [];
+  bool _hasShownUploadSnack = false;
 
   @override
   void initState() {
@@ -150,9 +152,10 @@ abstract class BaseDocumentWidgetState<T extends BaseDocumentWidget>
         '${widget.documentType.toLowerCase()}_camera_${DateTime.now().millisecondsSinceEpoch}.jpg';
     addDocument(mockPath);
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Photo prise avec succès')));
+    if (!_hasShownUploadSnack && mounted) {
+      SnackbarHelper.showSuccess(context, 'Photo prise avec succès');
+      _hasShownUploadSnack = true;
+    }
   }
 
   void _pickFromGallery() {
@@ -160,9 +163,10 @@ abstract class BaseDocumentWidgetState<T extends BaseDocumentWidget>
         '${widget.documentType.toLowerCase()}_gallery_${DateTime.now().millisecondsSinceEpoch}.jpg';
     addDocument(mockPath);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Document sélectionné depuis la galerie')),
-    );
+    if (!_hasShownUploadSnack && mounted) {
+      SnackbarHelper.showSuccess(context, 'Document sélectionné depuis la galerie');
+      _hasShownUploadSnack = true;
+    }
   }
 
   bool get hasAllRequiredDocuments =>

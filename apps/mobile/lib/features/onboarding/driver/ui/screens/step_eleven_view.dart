@@ -31,6 +31,7 @@ class StepElevenView extends StatelessWidget {
   ) {
     if (element == 'Photos uploadées') {
       final totalPhotos = summaryViewModel.getTotalUploadedPhotosCount();
+      final photosStepIndex = summaryViewModel.getStepIndexForField(element);
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: Row(
@@ -49,6 +50,30 @@ class StepElevenView extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(width: 8),
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: AppColors.fillButtonBackground.withAlpha(20),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.fillButtonBackground.withAlpha(100),
+                  width: 1,
+                ),
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  size: 16,
+                  color: AppColors.fillButtonBackground,
+                ),
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  onNavigateToStep(photosStepIndex);
+                },
+              ),
+            ),
           ],
         ),
       );
@@ -56,7 +81,6 @@ class StepElevenView extends StatelessWidget {
 
     final summaryData = coordinator.getSummaryData();
     final fieldValue = summaryViewModel.getFieldValue(element, summaryData);
-    final stepIndex = summaryViewModel.getStepIndexForField(element);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -89,31 +113,6 @@ class StepElevenView extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 8),
-          if (element != 'Photos uploadées')
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: AppColors.fillButtonBackground.withAlpha(20),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: AppColors.fillButtonBackground.withAlpha(100),
-                  width: 1,
-                ),
-              ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.edit,
-                  size: 16,
-                  color: AppColors.fillButtonBackground,
-                ),
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  onNavigateToStep(stepIndex);
-                },
-              ),
-            ),
         ],
       ),
     );
@@ -225,6 +224,7 @@ class StepElevenView extends StatelessWidget {
     DriverSummaryViewModel summaryViewModel,
     String titre,
   ) {
+    final stepIndex = summaryViewModel.getStepIndexForSection(titre);
     return Row(
       children: [
         Icon(
@@ -233,9 +233,35 @@ class StepElevenView extends StatelessWidget {
           color: AppColors.fillButtonBackground,
         ),
         const SizedBox(width: 8),
-        Text(
-          titre,
-          style: AppTextStyles.body16.copyWith(fontWeight: FontWeight.bold),
+        Expanded(
+          child: Text(
+            titre,
+            style: AppTextStyles.body16.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: AppColors.fillButtonBackground.withAlpha(20),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppColors.fillButtonBackground.withAlpha(100),
+              width: 1,
+            ),
+          ),
+          child: IconButton(
+            icon: Icon(
+              Icons.edit,
+              size: 16,
+              color: AppColors.fillButtonBackground,
+            ),
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              onNavigateToStep(stepIndex);
+            },
+          ),
         ),
       ],
     );

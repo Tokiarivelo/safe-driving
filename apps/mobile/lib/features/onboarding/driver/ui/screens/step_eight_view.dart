@@ -5,6 +5,7 @@ import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/utils/permission_handlers.dart';
 
 class StepEightView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -75,7 +76,28 @@ class StepEightView extends StatelessWidget {
 
           ButtonRows.buttonRow(
             buttonTitles: ['Plus tard', 'Valider'],
-            onPressedList: [onSkip ?? () {}, onContinue],
+            onPressedList: [
+              onSkip ?? () {},
+              () async {
+                final selected =
+                    coordinator.preferencesViewModel.selectedNotifications;
+
+                await PermissionHandlers.handleNotificationPermissions(
+                  context,
+                  selected,
+                );
+
+                if (!context.mounted) return;
+
+                if (selected.any((s) => s.toLowerCase().contains('sms'))) {
+                  await PermissionHandlers.handleSmsPermission(context);
+                }
+
+                if (!context.mounted) return;
+
+                onContinue();
+              },
+            ],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             isLastButtonPrimary: true,
             spacing: 8,

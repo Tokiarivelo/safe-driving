@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
+import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/core/utils/form/form_utils.dart';
@@ -9,12 +11,15 @@ class StepFourView extends StatefulWidget {
   final VoidCallback onNext;
   final VoidCallback onSkip;
   final Function(Map<String, String>) onDataChanged;
+  // Optionally inject the coordinator (falls back to Provider if null)
+  final DriverOnboardingCoordinator? coordinator;
 
   const StepFourView({
     super.key,
     required this.onNext,
     required this.onSkip,
     required this.onDataChanged,
+    this.coordinator,
   });
 
   @override
@@ -22,36 +27,28 @@ class StepFourView extends StatefulWidget {
 }
 
 class _StepFourViewState extends State<StepFourView> {
-  final TextEditingController _marqueController = TextEditingController();
-  final TextEditingController _modeleController = TextEditingController();
-  final TextEditingController _immatriculationController =
-      TextEditingController();
-  final TextEditingController _placesController = TextEditingController();
-  final TextEditingController _typeVehiculeController = TextEditingController();
-
-  @override
-  void dispose() {
-    _marqueController.dispose();
-    _modeleController.dispose();
-    _immatriculationController.dispose();
-    _placesController.dispose();
-    _typeVehiculeController.dispose();
-    super.dispose();
-  }
+  DriverOnboardingCoordinator get _coordinator =>
+      widget.coordinator ?? context.read<DriverOnboardingCoordinator>();
 
   void _handleNext() {
+    final vm = _coordinator.vehicleInfoViewModel;
+
+    // Propagate data to legacy callback while ensuring we use the shared controllers
     widget.onDataChanged({
-      'marque': _marqueController.text,
-      'modele': _modeleController.text,
-      'immatriculation': _immatriculationController.text,
-      'places': _placesController.text,
-      'typeVehicule': _typeVehiculeController.text,
+      'marque': vm.getController('marque').text,
+      'modele': vm.getController('modele').text,
+      'immatriculation': vm.getController('immatriculation').text,
+      'places': vm.getController('places').text,
+      'typeVehicule': vm.getController('typeVehicule').text,
     });
+
     widget.onNext();
   }
 
   @override
   Widget build(BuildContext context) {
+    final vm = _coordinator.vehicleInfoViewModel;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -84,7 +81,7 @@ class _StepFourViewState extends State<StepFourView> {
                     hint: 'ex: Peugeot',
                     icon: Icons.car_rental,
                     showLabel: true,
-                    controller: _marqueController,
+                    controller: vm.getController('marque'),
                     backgroundColor: AppColors.inputTextBackground,
                     validator: (value) =>
                         RegexFormatter.getVehicleNameValidationMessage(value!),
@@ -96,7 +93,7 @@ class _StepFourViewState extends State<StepFourView> {
                     hint: 'ex: 404',
                     icon: Icons.directions_car,
                     showLabel: true,
-                    controller: _modeleController,
+                    controller: vm.getController('modele'),
                     backgroundColor: AppColors.inputTextBackground,
                     validator: (value) =>
                         RegexFormatter.getVehicleNameValidationMessage(value!),
@@ -108,7 +105,7 @@ class _StepFourViewState extends State<StepFourView> {
                     hint: 'ex: AB-123-CD',
                     icon: Icons.confirmation_number,
                     showLabel: true,
-                    controller: _immatriculationController,
+                    controller: vm.getController('immatriculation'),
                     backgroundColor: AppColors.inputTextBackground,
                     validator: (value) =>
                         RegexFormatter.getLicensePlateValidationMessage(value!),
@@ -121,7 +118,7 @@ class _StepFourViewState extends State<StepFourView> {
                     icon: Icons.airline_seat_recline_normal,
                     keyboardType: TextInputType.number,
                     showLabel: true,
-                    controller: _placesController,
+                    controller: vm.getController('places'),
                     backgroundColor: AppColors.inputTextBackground,
                     validator: (value) =>
                         RegexFormatter.getSeatCountValidationMessage(value!),
@@ -133,7 +130,7 @@ class _StepFourViewState extends State<StepFourView> {
                     hint: 'ex: Voiture',
                     icon: Icons.local_taxi,
                     showLabel: true,
-                    controller: _typeVehiculeController,
+                    controller: vm.getController('typeVehicule'),
                     backgroundColor: AppColors.inputTextBackground,
                   ),
                 ],

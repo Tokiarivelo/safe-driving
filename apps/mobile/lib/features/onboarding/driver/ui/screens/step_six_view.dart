@@ -4,7 +4,6 @@ import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/camera/selfie_camera.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
-import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 
 class StepSixView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -54,24 +53,17 @@ class StepSixView extends StatelessWidget {
             child: SelfieCamera(
               instruction:
                   'Positionnez-vous face à la caméra et assurez-vous que votre visage soit bien visible.',
-              onPhotoTaken: (imagePath) {
-                coordinator.documentUploadViewModel.onSelfieTaken(imagePath);
+              onPhotoTaken: (imagePath) async {
+                await coordinator.documentUploadViewModel.onSelfieTaken(
+                  imagePath,
+                );
+                onContinue();
               },
               showInstructions: false,
             ),
           ),
 
           const SizedBox(height: 16),
-
-          ButtonRows.buttonRow(
-            buttonTitles: ['Plus tard', 'Valider'],
-            onPressedList: [onSkip ?? () {}, onContinue],
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            isLastButtonPrimary: true,
-            spacing: 8,
-            buttonPadding: const EdgeInsets.symmetric(vertical: 16),
-            fontSize: 16,
-          ),
         ],
       ),
     );

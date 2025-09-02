@@ -23,6 +23,7 @@ class PhotoManagementModal extends UnifiedPhotosModal {
 
 class PhotoManagementModalState
     extends UnifiedPhotosModalState<PhotoManagementModal> {
+  bool _hasShownUploadSnack = false;
   @override
   Widget buildHeader() {
     return const ModalHeader(title: 'Ajouter de(s) photo(s)');
@@ -92,8 +93,9 @@ class PhotoManagementModalState
 
       if (pickedFile != null && mounted) {
         addImage(File(pickedFile.path));
-        if (mounted) {
+        if (mounted && !_hasShownUploadSnack) {
           SnackbarHelper.showSuccess(context, 'Photo ajoutée avec succès');
+          _hasShownUploadSnack = true;
         }
       }
     } catch (e) {
@@ -116,7 +118,10 @@ class PhotoManagementModalState
           if (imagePath != null) {
             addImage(File(imagePath));
             Navigator.of(context).pop();
-            SnackbarHelper.showSuccess(context, 'Photo prise avec succès');
+            if (!_hasShownUploadSnack) {
+              SnackbarHelper.showSuccess(context, 'Photo prise avec succès');
+              _hasShownUploadSnack = true;
+            }
           } else {
             SnackbarHelper.showError(
               context,

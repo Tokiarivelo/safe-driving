@@ -81,34 +81,18 @@ class DocumentBuilder {
     final textCenter = sectionData['textCenter'] as String?;
     final bouton = sectionData['bouton'] as String?;
 
-    return UploadWidget(
+    return _UploadWithSingleSnackbar(
       title: title,
-      description: textCenter!,
-      buttonText: bouton!,
-      onPhotosChanged: (photos) async {
-        String storageType;
-        if (title.contains('Recto')) {
-          storageType = 'carteIdentiteRecto';
-        } else if (title.contains('Verso')) {
-          storageType = 'carteIdentiteVerso';
-        } else if (title.contains('Permis')) {
-          storageType = 'permisConduire';
-        } else {
-          storageType = 'unknown';
-        }
-
-        await coordinator.documentUploadViewModel.uploadPhotos(
-          photos.cast<File>(),
-          storageType,
-        );
-
-        if (context.mounted) {
-          SnackbarHelper.showSuccess(
-            context,
-            '${photos.length} photo${photos.length > 1 ? 's' : ''} sélectionnée${photos.length > 1 ? 's' : ''} pour $title',
-          );
-        }
+      description: textCenter ?? '',
+      buttonText: bouton ?? '',
+      coordinator: coordinator,
+      storageTypeResolver: () {
+        if (title.contains('Recto')) return 'carteIdentiteRecto';
+        if (title.contains('Verso')) return 'carteIdentiteVerso';
+        if (title.contains('Permis')) return 'permisConduire';
+        return 'unknown';
       },
+      sectionTitleForMessage: title,
     );
   }
 
@@ -125,38 +109,81 @@ class DocumentBuilder {
       final textCenter = uploadZone['textCenter'] as String?;
       final bouton = uploadZone['bouton'] as String?;
 
-      return UploadWidget(
+      return _UploadWithSingleSnackbar(
         title: defaultTitle,
-        description: textCenter!,
-        buttonText: bouton!,
+        description: textCenter ?? '',
+        buttonText: bouton ?? '',
         addMorePhotosText: ajoutPhoto,
-        onPhotosChanged: (photos) async {
-          String storageType;
-          if (defaultTitle.contains('Certificat')) {
-            storageType = 'certificatImmatriculation';
-          } else if (defaultTitle.contains('Attestation')) {
-            storageType = 'attestationAssurance';
-          } else if (defaultTitle.contains('Photos')) {
-            storageType = 'photosVehicule';
-          } else {
-            storageType = 'unknown';
-          }
-
-          await coordinator.documentUploadViewModel.uploadPhotos(
-            photos.cast<File>(),
-            storageType,
-          );
-
-          if (context.mounted) {
-            SnackbarHelper.showSuccess(
-              context,
-              '${photos.length} photo${photos.length > 1 ? 's' : ''} sélectionnée${photos.length > 1 ? 's' : ''} pour $defaultTitle',
-            );
-          }
+        coordinator: coordinator,
+        storageTypeResolver: () {
+          if (defaultTitle.contains('Certificat')) return 'certificatImmatriculation';
+          if (defaultTitle.contains('Attestation')) return 'attestationAssurance';
+          if (defaultTitle.contains('Photos')) return 'photosVehicule';
+          return 'unknown';
         },
+        sectionTitleForMessage: defaultTitle,
       );
     }
 
     return const SizedBox.shrink();
+  }
+}
+
+class _UploadWithSingleSnackbar extends StatefulWidget {
+  final String title;
+  final String description;
+  final String buttonText;
+  final String? addMorePhotosText;
+  final DriverOnboardingCoordinator coordinator;
+  final String Function() storageTypeResolver;
+  final String sectionTitleForMessage;
+
+  const _UploadWithSingleSnackbar({
+    required this.title,
+    required this.description,
+    required this.buttonText,
+    required this.coordinator,
+    required this.storageTypeResolver,
+    required this.sectionTitleForMessage,
+    this.addMorePhotosText,
+  });
+
+  @override
+  State<_UploadWithSingleSnackbar> createState() => _UploadWithSingleSnackbarState();
+}
+
+class _UploadWithSingleSnackbarState extends State<_UploadWithSingleSnackbar> {
+  bool _hasShownUploadSnack = false;
+  int _previousCount = 0;
+
+  Future<void> _onPhotosChanged(List<File> photos) async {
+    final storageType = widget.storageTypeResolver();
+
+    await widget.coordinator.documentUploadViewModel.uploadPhotos(
+      photos,
+      storageType,
+    );
+
+    if (!_hasShownUploadSnack && _previousCount == 0 && photos.isNotEmpty && mounted) {
+      final count = photos.length;
+      SnackbarHelper.showSuccess(
+        context,
+        '$count photo${count > 1 ? 's' : ''} sélectionnée${count > 1 ? 's' : ''} pour ${widget.sectionTitleForMessage}',
+      );
+      _hasShownUploadSnack = true;
+    }
+
+    _previousCount = photos.length;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return UploadWidget(
+      title: widget.title,
+      description: widget.description,
+      buttonText: widget.buttonText,
+      addMorePhotosText: widget.addMorePhotosText,
+      onPhotosChanged: _onPhotosChanged,
+    );
   }
 }

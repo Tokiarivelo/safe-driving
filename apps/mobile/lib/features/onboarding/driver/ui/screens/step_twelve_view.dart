@@ -3,6 +3,7 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
+import 'package:safe_driving/shared/state_management/providers.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 
 class StepTwelveView extends StatelessWidget {
@@ -19,6 +20,13 @@ class StepTwelveView extends StatelessWidget {
     this.onSkip,
   });
 
+  String _buildWelcomeTitle(BuildContext context) {
+    final user = context.authVM.currentUser;
+    final name = (user?.fullName ?? user?.email ?? '').trim();
+    final displayName = name.isNotEmpty ? name : 'Conducteur';
+    return '${step.title} $displayName';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,7 +37,7 @@ class StepTwelveView extends StatelessWidget {
         children: [
           const SizedBox(height: 20),
           Text(
-            '${step.title} ${coordinator.getFieldValue('Prénom et Nom').isNotEmpty && coordinator.getFieldValue('Prénom et Nom') != 'Non renseigné' ? coordinator.getFieldValue('Prénom et Nom') : 'Conducteur'}',
+            _buildWelcomeTitle(context),
             textAlign: TextAlign.center,
             style: AppTextStyles.h1.copyWith(
               fontSize: 24,

@@ -104,4 +104,44 @@ class PermissionHandlers {
 
     return false;
   }
+
+  static Future<bool> handleSmsPermission(BuildContext context) async {
+    PermissionStatus permission = await Permission.sms.status;
+
+    if (permission.isDenied) {
+      permission = await Permission.sms.request();
+      if (permission.isDenied) {
+        if (context.mounted) {
+          SnackbarHelper.showError(
+            context,
+            'Permission SMS refusée. Certaines fonctionnalités par SMS peuvent ne pas fonctionner.',
+          );
+        }
+        return false;
+      }
+    }
+
+    if (permission.isPermanentlyDenied) {
+      if (context.mounted) {
+        SnackbarHelper.showError(
+          context,
+          'Permission SMS refusée en permanence. Veuillez l\'activer dans les paramètres de l\'application.',
+        );
+        await openAppSettings();
+      }
+      return false;
+    }
+
+    if (permission.isGranted) {
+      if (context.mounted) {
+        SnackbarHelper.showSuccess(
+          context,
+          'Permission SMS accordée !',
+        );
+      }
+      return true;
+    }
+
+    return false;
+  }
 }

@@ -57,6 +57,8 @@ class StepTwoView extends StatelessWidget {
             showLabel: true,
             backgroundColor: AppColors.inputTextBackground,
             controller: coordinator.personalInfoViewModel.nameController,
+            readOnly: true,
+            enabled: false,
             onChanged: (value) => {},
             validator: (value) =>
                 RegexFormatter.getNameValidationMessage(value!),
@@ -71,6 +73,8 @@ class StepTwoView extends StatelessWidget {
             controller: coordinator.personalInfoViewModel.emailController,
             showLabel: true,
             backgroundColor: AppColors.inputTextBackground,
+            readOnly: true,
+            enabled: false,
           ),
           const SizedBox(height: 16),
 

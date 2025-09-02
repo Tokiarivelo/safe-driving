@@ -52,7 +52,7 @@ class VehicleInfoViewModel extends ChangeNotifier {
       'Nombre de places': getController('places').text.isNotEmpty
           ? getController('places').text
           : 'Non renseigné',
-      'Type de véhicule': getController('typeVehicule').text.isNotEmpty
+      'Type': getController('typeVehicule').text.isNotEmpty
           ? getController('typeVehicule').text
           : 'Non renseigné',
     };
