@@ -63,8 +63,7 @@ class StepTenView extends StatelessWidget {
                     context: context,
                     builder: (context) {
                       return PolicyModal(
-                        titleContent:
-                            "Conditions Générales d'Utilisation (CGU) de Safe Driving",
+                        titleContent: coordinator.legalViewModel.getCguTitle(),
                         content: coordinator.legalViewModel.getCguContent(),
                         onAccept: () {
                           coordinator.legalViewModel.setCguAccepted(0, true);
@@ -84,7 +83,7 @@ class StepTenView extends StatelessWidget {
                     context: context,
                     builder: (context) {
                       return PolicyModal(
-                        titleContent: "Politique de Confidentialité",
+                        titleContent: coordinator.legalViewModel.getPrivacyPolicyTitle(),
                         content: coordinator.legalViewModel
                             .getPrivacyPolicyContent(),
                         onAccept: () {

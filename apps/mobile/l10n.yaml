@@ -32,4 +32,4 @@ preferred-supported-locales: ['en', 'fr']
 nullable-getter: true
 
 # Génération des paramètres synthétiques
-synthetic-package: false
+#synthetic-package: false

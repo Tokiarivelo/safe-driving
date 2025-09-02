@@ -35,23 +35,48 @@ class LegalViewModel extends ChangeNotifier {
     return false;
   }
 
-  // Content retrieval methods
   String getCguContent() {
-    final steps = DriverOnboardingData.getDriverSteps();
-    final cguStep = steps.firstWhere(
-      (step) => step.title.contains('Conditions Générales'),
-      orElse: () => steps.length > 12 ? steps[12] : steps.first,
-    );
-    return cguStep.additionalContent?['content'] ?? '';
+    try {
+      return DriverOnboardingData.getCguContent();
+    } catch (e) {
+      return 'Erreur: Impossible de charger les conditions générales d\'utilisation.';
+    }
   }
 
   String getPrivacyPolicyContent() {
-    final steps = DriverOnboardingData.getDriverSteps();
-    final privacyStep = steps.firstWhere(
-      (step) => step.title.contains('Politique de Confidentialité'),
-      orElse: () => steps.length > 13 ? steps[13] : steps.first,
-    );
-    return privacyStep.additionalContent?['content'] ?? '';
+    try {
+      return DriverOnboardingData.getPrivacyPolicyContent();
+    } catch (e) {
+      return 'Erreur: Impossible de charger la politique de confidentialité.';
+    }
+  }
+
+  String getCguTitle() {
+    try {
+      return DriverOnboardingData.getCguTitle();
+    } catch (e) {
+      return 'Conditions Générales d\'Utilisation';
+    }
+  }
+
+  String getPrivacyPolicyTitle() {
+    try {
+      return DriverOnboardingData.getPrivacyPolicyTitle();
+    } catch (e) {
+      return 'Politique de Confidentialité';
+    }
+  }
+
+  Map<String, dynamic>? getLegalDocumentData(int index) {
+    try {
+      if (index >= 0 && index < DriverOnboardingData.cguContents[0].length) {
+        return DriverOnboardingData.cguContents[0][index]
+            as Map<String, dynamic>?;
+      }
+    } catch (e) {
+      // Ignore error and return null
+    }
+    return null;
   }
 
   bool validateLegalAcceptance() {

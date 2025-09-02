@@ -20,8 +20,7 @@ class DriverStepIndicator extends StatelessWidget {
   }
 
   Widget _buildCircularProgress() {
-    // Show 100% progress only when on the very last step (completion step)
-    final progress = (currentStep + 1) / totalSteps;
+    final progress = (currentStep + 1) / (totalSteps + 1);
 
     return SizedBox(
       width: 50,

@@ -73,14 +73,16 @@ abstract class BaseFormWidgetState<T extends BaseFormWidget> extends State<T> {
 
   void _initializeControllers() {
     final initialData = widget.initialData ?? {};
-    
+
     for (final config in widget.fieldConfigs) {
       if (config is TextFormFieldConfig) {
         _controllers[config.key] = TextEditingController(
-          text: initialData[config.key]?.toString() ?? config.initialValue ?? '',
+          text:
+              initialData[config.key]?.toString() ?? config.initialValue ?? '',
         );
       } else if (config is DropdownFormFieldConfig) {
-        _dropdownValues[config.key] = initialData[config.key] ?? config.initialOption;
+        _dropdownValues[config.key] =
+            initialData[config.key] ?? config.initialOption;
       }
     }
   }
@@ -95,7 +97,7 @@ abstract class BaseFormWidgetState<T extends BaseFormWidget> extends State<T> {
 
   void _onFieldChanged() {
     final data = <String, dynamic>{};
-    
+
     for (final config in widget.fieldConfigs) {
       if (config is TextFormFieldConfig) {
         final value = _controllers[config.key]?.text ?? '';
@@ -108,7 +110,7 @@ abstract class BaseFormWidgetState<T extends BaseFormWidget> extends State<T> {
         data[config.key] = _dropdownValues[config.key];
       }
     }
-    
+
     widget.onDataChanged(data);
   }
 
@@ -116,17 +118,13 @@ abstract class BaseFormWidgetState<T extends BaseFormWidget> extends State<T> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Column(
-        children: [
-          ...widget.fieldConfigs.map(_buildField),
-        ],
-      ),
+      child: Column(children: [...widget.fieldConfigs.map(_buildField)]),
     );
   }
 
   Widget _buildField(FormFieldConfig config) {
     Widget field;
-    
+
     if (config is TextFormFieldConfig) {
       field = _buildTextFormField(config);
     } else if (config is DropdownFormFieldConfig) {
@@ -135,10 +133,7 @@ abstract class BaseFormWidgetState<T extends BaseFormWidget> extends State<T> {
       field = const SizedBox.shrink();
     }
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: field,
-    );
+    return Padding(padding: const EdgeInsets.only(bottom: 16), child: field);
   }
 
   Widget _buildTextFormField(TextFormFieldConfig config) {
@@ -157,7 +152,7 @@ abstract class BaseFormWidgetState<T extends BaseFormWidget> extends State<T> {
 
   Widget _buildDropdownField(DropdownFormFieldConfig config) {
     return DropdownButtonFormField(
-      value: _dropdownValues[config.key],
+      initialValue: _dropdownValues[config.key],
       decoration: InputDecoration(
         labelText: config.label,
         border: const OutlineInputBorder(),
@@ -184,7 +179,7 @@ abstract class BaseFormWidgetState<T extends BaseFormWidget> extends State<T> {
 
   Map<String, dynamic> get formData {
     final data = <String, dynamic>{};
-    
+
     for (final config in widget.fieldConfigs) {
       if (config is TextFormFieldConfig) {
         final value = _controllers[config.key]?.text ?? '';
@@ -197,7 +192,7 @@ abstract class BaseFormWidgetState<T extends BaseFormWidget> extends State<T> {
         data[config.key] = _dropdownValues[config.key];
       }
     }
-    
+
     return data;
   }
 }

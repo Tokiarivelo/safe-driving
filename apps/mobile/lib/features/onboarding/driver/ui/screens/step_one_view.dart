@@ -48,11 +48,8 @@ class StepOneView extends StatelessWidget {
           const SizedBox(height: 32),
           const Spacer(),
           ButtonRows.buttonRow(
-            buttonTitles: ['Plus tard', 'Démarrer'],
-            onPressedList: [
-              onSkip ?? () {},
-              onContinue,
-            ],
+            buttonTitles: step.buttonTitles,
+            onPressedList: [onSkip ?? () {}, onContinue],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             isLastButtonPrimary: true,
             spacing: 8,

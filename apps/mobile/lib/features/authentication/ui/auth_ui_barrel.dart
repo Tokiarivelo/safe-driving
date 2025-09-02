@@ -2,8 +2,6 @@
 export 'screens/auth_screen.dart';
 export 'screens/sign_in_screen.dart';
 export 'screens/sign_up_screen.dart';
-export 'screens/forgot_password_screen.dart';
-export 'screens/reset_password_screen.dart';
 export 'screens/password/forgot_password_view.dart';
 export 'screens/password/reset_password_view.dart';
 

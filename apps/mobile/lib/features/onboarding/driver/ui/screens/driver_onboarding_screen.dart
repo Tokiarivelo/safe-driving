@@ -98,25 +98,26 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                         ),
                         child: Container(
                           color: AppColors.secondBackgroundColor,
-                          child:
-                              _paginationKey.currentState?.buildPageView(
-                                itemBuilder: (index) {
-                                  return SingleChildScrollView(
-                                    child: StepContentGetter.buildStepContent(
-                                      coordinator.steps[index],
-                                      coordinator,
-                                      nextStep,
-                                      (stepIndex) => _navigateToStep(
-                                        stepIndex,
+                          child: _paginationKey.currentState?.pageController != null
+                              ? PageView.builder(
+                                  controller: _paginationKey.currentState!.pageController,
+                                  itemCount: coordinator.steps.length,
+                                  itemBuilder: (context, index) {
+                                    return SingleChildScrollView(
+                                      child: StepContentGetter.buildStepContent(
+                                        coordinator.steps[index],
                                         coordinator,
+                                        nextStep,
+                                        (stepIndex) => _navigateToStep(
+                                          stepIndex,
+                                          coordinator,
+                                        ),
+                                        context,
                                       ),
-                                      context,
-                                    ),
-                                  );
-                                },
-                                itemCount: coordinator.steps.length,
-                              ) ??
-                              const Center(child: CircularProgressIndicator()),
+                                    );
+                                  },
+                                )
+                              : const Center(child: CircularProgressIndicator()),
                         ),
                       ),
                     ),

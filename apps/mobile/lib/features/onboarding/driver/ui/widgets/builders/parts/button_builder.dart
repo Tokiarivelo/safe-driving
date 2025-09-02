@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_data.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/modals/policy_modal.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
@@ -71,10 +70,9 @@ class ButtonBuilder {
             showDialog(
               context: context,
               builder: (context) {
-                final cguStep = DriverOnboardingData.getStep(12); // CGU step
                 return PolicyModal(
-                  titleContent: cguStep.title,
-                  content: cguStep.additionalContent?["content"] ?? "",
+                  titleContent: coordinator.legalViewModel.getCguTitle(),
+                  content: coordinator.legalViewModel.getCguContent(),
                   onAccept: () {
                     coordinator.legalViewModel.setCguAccepted(0, true);
                   },
@@ -92,12 +90,10 @@ class ButtonBuilder {
             showDialog(
               context: context,
               builder: (context) {
-                final privacyStep = DriverOnboardingData.getStep(
-                  13,
-                ); // Privacy step
                 return PolicyModal(
-                  titleContent: privacyStep.title,
-                  content: privacyStep.additionalContent?["content"] ?? "",
+                  titleContent: coordinator.legalViewModel
+                      .getPrivacyPolicyTitle(),
+                  content: coordinator.legalViewModel.getPrivacyPolicyContent(),
                   onAccept: () {
                     coordinator.legalViewModel.setCguAccepted(1, true);
                   },
