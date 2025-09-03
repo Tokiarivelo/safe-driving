@@ -40,7 +40,7 @@ class StepTwelveView extends StatelessWidget {
           Text(
             _buildWelcomeTitle(context),
             textAlign: TextAlign.center,
-            style: AppTextStyles.h1.copyWith(
+            style: AppTextStyles.h1(context).copyWith(
               fontSize: 24,
               fontWeight: FontWeight.w600,
             ),
@@ -49,7 +49,7 @@ class StepTwelveView extends StatelessWidget {
           Text(
             step.description!,
             textAlign: TextAlign.center,
-            style: AppTextStyles.body16.copyWith(
+            style: AppTextStyles.body16(context).copyWith(
               color: AppColors.textColor.withAlpha(180),
               height: 1.5,
             ),
@@ -63,7 +63,7 @@ class StepTwelveView extends StatelessWidget {
               Text(
                 "Votre QR code personnel a été généré :",
                 textAlign: TextAlign.center,
-                style: AppTextStyles.body16.copyWith(
+                style: AppTextStyles.body16(context).copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -116,7 +116,7 @@ class StepTwelveView extends StatelessWidget {
                 child: Text(
                   "Merci de faire partie de la communauté Safe Driving. Nous vous souhaitons de bons trajets en toute sécurité !",
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.body14.copyWith(
+                  style: AppTextStyles.body14(context).copyWith(
                     fontWeight: FontWeight.w500,
                     height: 1.4,
                   ),

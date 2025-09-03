@@ -72,7 +72,7 @@ class CustomInputFieldState extends State<CustomInputField> {
           if (widget.showLabel && widget.label != null) ...[
             Padding(
               padding: const EdgeInsets.only(left: 8, bottom: 6),
-              child: Text(widget.label!, style: AppTextStyles.label14),
+              child: Text(widget.label!, style: AppTextStyles.label14(context)),
             ),
           ],
 
@@ -104,10 +104,10 @@ class CustomInputFieldState extends State<CustomInputField> {
                     : AppColors.inputTextBackground,
                 hintText: widget.hint,
                 hintStyle: widget.showLabel
-                    ? AppTextStyles.hint14.copyWith(
+                    ? AppTextStyles.hint14(context).copyWith(
                         color: AppColors.textColor.withAlpha(128),
                       )
-                    : AppTextStyles.hint10,
+                    : AppTextStyles.hint10(context),
                 prefixIcon: Icon(
                   widget.icon,
                   color: widget.showLabel
@@ -183,7 +183,7 @@ class CustomInputFieldState extends State<CustomInputField> {
           if (hasError)
             Padding(
               padding: const EdgeInsets.only(top: 4.0, left: 8.0),
-              child: Text(widget.errorMessage!, style: AppTextStyles.error10),
+              child: Text(widget.errorMessage!, style: AppTextStyles.error10(context)),
             ),
         ],
       ),

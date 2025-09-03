@@ -81,6 +81,7 @@ class ContentBuilder {
         resumeData,
         coordinator,
         navigateToStep,
+        context,
       );
     }
 

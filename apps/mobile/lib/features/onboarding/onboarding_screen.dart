@@ -97,9 +97,9 @@ class OnboardingScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             'Vous êtes… ?',
-                            style: AppTextStyles.title20Regular,
+                            style: AppTextStyles.title20Regular(context),
                           ),
                           const SizedBox(height: 20),
                           ButtonRows.roleChoiceButtons(

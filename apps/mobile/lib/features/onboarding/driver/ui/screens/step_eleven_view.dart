@@ -25,6 +25,7 @@ class StepElevenView extends StatelessWidget {
   });
 
   Widget _buildResumeElement(
+    BuildContext context,
     DriverSummaryViewModel summaryViewModel,
     String element,
     String sectionTitle,
@@ -45,7 +46,7 @@ class StepElevenView extends StatelessWidget {
             Expanded(
               child: Text(
                 '$element : $totalPhotos',
-                style: AppTextStyles.body14.copyWith(
+                style: AppTextStyles.body14(context).copyWith(
                   color: AppColors.textColor.withAlpha(200),
                 ),
               ),
@@ -98,14 +99,14 @@ class StepElevenView extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: '$element: ',
-                    style: AppTextStyles.body14.copyWith(
+                    style: AppTextStyles.body14(context).copyWith(
                       color: AppColors.textColor.withAlpha(200),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   TextSpan(
                     text: fieldValue,
-                    style: AppTextStyles.body14.copyWith(
+                    style: AppTextStyles.body14(context).copyWith(
                       color: AppColors.textColor.withAlpha(160),
                     ),
                   ),
@@ -134,12 +135,12 @@ class StepElevenView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 20),
-                _buildHeader(),
+                _buildHeader(context),
                 const SizedBox(height: 24),
-                _buildSummaryContent(summaryViewModel, resumeData),
+                _buildSummaryContent(context, summaryViewModel, resumeData),
                 const SizedBox(height: 16),
                 _buildActionButton(summaryViewModel),
-                _buildErrorMessage(summaryViewModel),
+                _buildErrorMessage(context, summaryViewModel),
               ],
             ),
           );
@@ -148,13 +149,13 @@ class StepElevenView extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Column(
       children: [
         Text(
           step.title,
           textAlign: TextAlign.center,
-          style: AppTextStyles.h1.copyWith(
+          style: AppTextStyles.h1(context).copyWith(
             fontSize: 24,
             fontWeight: FontWeight.w600,
           ),
@@ -163,7 +164,7 @@ class StepElevenView extends StatelessWidget {
         Text(
           step.description ?? '',
           textAlign: TextAlign.center,
-          style: AppTextStyles.body16.copyWith(
+          style: AppTextStyles.body16(context).copyWith(
             color: AppColors.textColor.withAlpha(180),
             height: 1.5,
           ),
@@ -173,6 +174,7 @@ class StepElevenView extends StatelessWidget {
   }
 
   Widget _buildSummaryContent(
+    BuildContext context,
     DriverSummaryViewModel summaryViewModel,
     List<Map<String, dynamic>> resumeData,
   ) {
@@ -184,7 +186,7 @@ class StepElevenView extends StatelessWidget {
             final titre = section['titre'] as String;
             final elements = section['elements'] as List<String>;
 
-            return _buildSectionContainer(summaryViewModel, titre, elements);
+            return _buildSectionContainer(context, summaryViewModel, titre, elements);
           }).toList(),
         ),
       ),
@@ -192,6 +194,7 @@ class StepElevenView extends StatelessWidget {
   }
 
   Widget _buildSectionContainer(
+    BuildContext context,
     DriverSummaryViewModel summaryViewModel,
     String titre,
     List<String> elements,
@@ -210,10 +213,10 @@ class StepElevenView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader(summaryViewModel, titre),
+          _buildSectionHeader(context, summaryViewModel, titre),
           const SizedBox(height: 12),
           ...elements.map<Widget>((element) {
-            return _buildResumeElement(summaryViewModel, element, titre);
+            return _buildResumeElement(context, summaryViewModel, element, titre);
           }),
         ],
       ),
@@ -221,6 +224,7 @@ class StepElevenView extends StatelessWidget {
   }
 
   Widget _buildSectionHeader(
+    BuildContext context,
     DriverSummaryViewModel summaryViewModel,
     String titre,
   ) {
@@ -236,7 +240,7 @@ class StepElevenView extends StatelessWidget {
         Expanded(
           child: Text(
             titre,
-            style: AppTextStyles.body16.copyWith(fontWeight: FontWeight.bold),
+            style: AppTextStyles.body16(context).copyWith(fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(width: 8),
@@ -279,7 +283,7 @@ class StepElevenView extends StatelessWidget {
     );
   }
 
-  Widget _buildErrorMessage(DriverSummaryViewModel summaryViewModel) {
+  Widget _buildErrorMessage(BuildContext context, DriverSummaryViewModel summaryViewModel) {
     if (summaryViewModel.errorMessage == null) {
       return const SizedBox.shrink();
     }
@@ -288,7 +292,7 @@ class StepElevenView extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8),
       child: Text(
         summaryViewModel.errorMessage!,
-        style: AppTextStyles.body14.copyWith(color: Colors.red),
+        style: AppTextStyles.body14(context).copyWith(color: Colors.red),
       ),
     );
   }

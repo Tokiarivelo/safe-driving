@@ -19,11 +19,11 @@ class _PreferencesStep extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(stepContent.title, style: AppTextStyles.h1),
+        Text(stepContent.title, style: AppTextStyles.h1(context)),
         const SizedBox(height: 8),
         Text(
           stepContent.subtitle,
-          style: AppTextStyles.body14.copyWith(
+          style: AppTextStyles.body14(context).copyWith(
             color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
           ),
         ),

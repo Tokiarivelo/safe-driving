@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/core/theme/app_text_styles.dart';
 
 class SecondaryButton {
   static Widget secondaryButton({
@@ -37,7 +36,7 @@ class SecondaryButton {
                 const SizedBox(width: 8),
                 Text(
                   text,
-                  style: AppTextStyles.button16.copyWith(
+                  style: TextStyle(
                     fontSize: fontSize ?? 16,
                   ),
                 ),
@@ -45,7 +44,7 @@ class SecondaryButton {
             )
           : Text(
               text,
-              style: AppTextStyles.button16.copyWith(fontSize: fontSize ?? 16),
+              style: TextStyle(fontSize: fontSize ?? 16),
             ),
     );
   }
@@ -80,7 +79,7 @@ class SecondaryButton {
       child: icon == null
           ? Text(
               text,
-              style: AppTextStyles.button16.copyWith(fontSize: fontSize ?? 16),
+              style: TextStyle(fontSize: fontSize ?? 16),
             )
           : Row(
               mainAxisSize: MainAxisSize.min,
@@ -89,7 +88,7 @@ class SecondaryButton {
                 const SizedBox(width: 8),
                 Text(
                   text,
-                  style: AppTextStyles.button16.copyWith(
+                  style: TextStyle(
                     fontSize: fontSize ?? 16,
                   ),
                 ),

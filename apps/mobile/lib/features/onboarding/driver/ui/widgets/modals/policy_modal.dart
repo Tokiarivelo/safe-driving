@@ -50,7 +50,7 @@ class _PolicyModalState extends State<PolicyModal> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.titleContent, style: AppTextStyles.h2BoldNeutral),
+      title: Text(widget.titleContent, style: AppTextStyles.h2BoldNeutral(context)),
 
       content: SizedBox(
         width: double.maxFinite,
@@ -62,9 +62,9 @@ class _PolicyModalState extends State<PolicyModal> {
             controller: _scrollController,
             data: widget.content,
             styleSheet: MarkdownStyleSheet(
-              h1: AppTextStyles.h1BoldNeutral,
-              h2: AppTextStyles.h2BoldNeutral,
-              p: AppTextStyles.body14,
+              h1: AppTextStyles.h1BoldNeutral(context),
+              h2: AppTextStyles.h2BoldNeutral(context),
+              p: AppTextStyles.body14(context),
               listBullet: const TextStyle(
                 fontSize: 14,
                 color: AppColors.textColor,

@@ -6,13 +6,14 @@ import 'package:safe_driving/core/theme/app_text_styles.dart';
 
 class NavigationLinksBuilder {
   static Widget buildNavigationLink({
+    required BuildContext context,
     required AuthStepContent stepData,
     required VoidCallback? onTap,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(stepData.navigationPrefix, style: AppTextStyles.navPrefix12),
+        Text(stepData.navigationPrefix, style: AppTextStyles.navPrefix12(context)),
         GestureDetector(
           onTap: onTap,
           child: Container(
@@ -27,7 +28,7 @@ class NavigationLinksBuilder {
             ),
             child: Text(
               stepData.navigationLink,
-              style: AppTextStyles.link9Bold,
+              style: AppTextStyles.link9Bold(context),
             ),
           ),
         ),

@@ -1,137 +1,106 @@
 import 'package:flutter/material.dart';
 
-import '../constants/colors/colors.dart';
-
 class AppTextStyles {
   AppTextStyles._();
 
-  static const TextStyle h1 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 20,
-    fontWeight: FontWeight.w800,
-    color: AppColors.buttonWithoutBackGround,
-  );
+  static TextStyle h1(BuildContext context) => Theme.of(context)
+      .textTheme
+      .headlineSmall!
+      .copyWith(color: Theme.of(context).colorScheme.tertiary);
 
-  static const TextStyle h1Light = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 20,
-    fontWeight: FontWeight.w800,
-    color: AppColors.light,
-  );
+  static TextStyle h1Light(BuildContext context) => Theme.of(context)
+      .textTheme
+      .headlineSmall!
+      .copyWith(color: Theme.of(context).colorScheme.onPrimary);
 
-  static const TextStyle h1BoldNeutral = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-    color: AppColors.textColor,
-  );
+  static TextStyle h1BoldNeutral(BuildContext context) => Theme.of(context)
+      .textTheme
+      .headlineSmall!
+      .copyWith(color: Theme.of(context).colorScheme.onSurface);
 
-  static const TextStyle h2 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 18,
-    fontWeight: FontWeight.w700,
-    color: AppColors.buttonWithoutBackGround,
-  );
+  static TextStyle h2(BuildContext context) => Theme.of(context)
+      .textTheme
+      .titleMedium!
+      .copyWith(color: Theme.of(context).colorScheme.tertiary);
 
-  static const TextStyle h2BoldNeutral = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-    color: AppColors.textColor,
-  );
+  static TextStyle h2BoldNeutral(BuildContext context) => Theme.of(context)
+      .textTheme
+      .titleMedium!
+      .copyWith(color: Theme.of(context).colorScheme.onSurface);
 
-  static const TextStyle title20Regular = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 20,
-    fontWeight: FontWeight.w400,
-    color: AppColors.buttonWithoutBackGround,
-  );
+  static TextStyle title20Regular(BuildContext context) =>
+      Theme.of(context).textTheme.headlineSmall!.copyWith(
+        fontWeight: FontWeight.w400,
+        color: Theme.of(context).colorScheme.tertiary,
+      );
 
-  static const TextStyle body16 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 16,
-    color: AppColors.textColor,
-  );
+  // Body
+  static TextStyle body16(BuildContext context) => Theme.of(context)
+      .textTheme
+      .bodyMedium!
+      .copyWith(color: Theme.of(context).colorScheme.onSurface);
 
-  static const TextStyle body16Light = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 16,
-    color: AppColors.light,
-  );
+  static TextStyle body16Light(BuildContext context) => Theme.of(context)
+      .textTheme
+      .bodyMedium!
+      .copyWith(color: Theme.of(context).colorScheme.onPrimary);
 
-  static const TextStyle body14 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 14,
-    height: 1.6,
-    color: AppColors.textColor,
-  );
+  static TextStyle body14(BuildContext context) => Theme.of(context)
+      .textTheme
+      .bodySmall!
+      .copyWith(height: 1.6, color: Theme.of(context).colorScheme.onSurface);
 
-  static const TextStyle label14 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    color: AppColors.textColor,
-  );
+  static TextStyle label14(BuildContext context) => Theme.of(context)
+      .textTheme
+      .labelMedium!
+      .copyWith(color: Theme.of(context).colorScheme.onSurface);
 
-  static const TextStyle button16 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-  );
+  static TextStyle button16(BuildContext context) =>
+      Theme.of(context).textTheme.labelLarge!;
 
-  static const TextStyle caption12 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 12,
-    color: AppColors.textColor,
-  );
+  static TextStyle caption12(BuildContext context) => Theme.of(context)
+      .textTheme
+      .labelSmall!
+      .copyWith(color: Theme.of(context).colorScheme.onSurface);
 
-  static const TextStyle caption10 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 10,
-    color: AppColors.textColor,
-  );
+  static TextStyle caption10(BuildContext context) => Theme.of(context)
+      .textTheme
+      .labelSmall!
+      .copyWith(color: Theme.of(context).colorScheme.onSurface);
 
-  static const TextStyle error10 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 10,
-    color: AppColors.error,
-  );
+  static TextStyle error10(BuildContext context) => Theme.of(
+    context,
+  ).textTheme.labelSmall!.copyWith(color: Theme.of(context).colorScheme.error);
 
-  static const TextStyle hint14 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 14,
-    color: AppColors.placeHolderInput,
-  );
+  static TextStyle hint14(BuildContext context) => Theme.of(context)
+      .textTheme
+      .bodySmall!
+      .copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant);
 
-  static const TextStyle hint10 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 10,
-    color: AppColors.placeHolderInput,
-  );
+  static TextStyle hint10(BuildContext context) => Theme.of(context)
+      .textTheme
+      .labelSmall!
+      .copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant);
 
-  static const TextStyle link9Bold = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 9,
-    fontWeight: FontWeight.bold,
-    color: AppColors.buttonWithoutBackGround,
-  );
+  static TextStyle link9Bold(BuildContext context) =>
+      Theme.of(context).textTheme.labelSmall!.copyWith(
+        fontWeight: FontWeight.w700,
+        color: Theme.of(context).colorScheme.tertiary,
+      );
 
-  static const TextStyle navPrefix12 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 12,
-    color: AppColors.textColor,
-  );
+  static TextStyle navPrefix12(BuildContext context) => Theme.of(context)
+      .textTheme
+      .labelSmall!
+      .copyWith(color: Theme.of(context).colorScheme.onSurface);
 
-  static const TextStyle chip12 = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 12,
-    color: AppColors.buttonWithoutBackGround,
-  );
+  static TextStyle chip12(BuildContext context) => Theme.of(context)
+      .textTheme
+      .labelSmall!
+      .copyWith(color: Theme.of(context).colorScheme.tertiary);
 
-  static const TextStyle smallBoldLight = TextStyle(
-    fontFamily: 'Inder',
-    fontSize: 12,
-    fontWeight: FontWeight.bold,
-    color: AppColors.light,
-  );
+  static TextStyle smallBoldLight(BuildContext context) =>
+      Theme.of(context).textTheme.labelSmall!.copyWith(
+        fontWeight: FontWeight.w700,
+        color: Theme.of(context).colorScheme.onPrimary,
+      );
 }

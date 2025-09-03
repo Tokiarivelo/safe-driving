@@ -5,6 +5,7 @@ import 'package:safe_driving/core/theme/app_text_styles.dart';
 
 class HeaderBuilder {
   static Widget buildHeaderText({
+    required BuildContext context,
     required AuthStepContent stepData,
     required bool isForgotPassword,
   }) {
@@ -15,13 +16,13 @@ class HeaderBuilder {
         Text(
           stepData.title,
           textAlign: TextAlign.center,
-          style: AppTextStyles.h1Light,
+          style: AppTextStyles.h1Light(context),
         ),
         const SizedBox(height: 8),
         Text(
           stepData.subtitle,
           textAlign: TextAlign.center,
-          style: AppTextStyles.caption12.copyWith(
+          style: AppTextStyles.caption12(context).copyWith(
             color: AppColors.titleColor.withAlpha(220),
           ),
         ),

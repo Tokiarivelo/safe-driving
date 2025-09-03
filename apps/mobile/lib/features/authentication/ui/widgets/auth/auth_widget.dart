@@ -79,6 +79,7 @@ class AuthWidgetState extends State<AuthWidget> {
 
   Widget _buildHeaderText() {
     return AuthUIBuilder.buildHeaderText(
+      context: context,
       stepData: _getCurrentStepData(),
       isForgotPassword: widget.isForgotPassword,
     );

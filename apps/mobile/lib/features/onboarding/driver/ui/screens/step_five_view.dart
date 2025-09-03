@@ -61,16 +61,16 @@ class _StepFiveViewState extends State<StepFiveView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 20),
-          const Text(
+          Text(
             'À propos de votre véhicule',
             textAlign: TextAlign.center,
-            style: AppTextStyles.h1,
+            style: AppTextStyles.h1(context),
           ),
           const SizedBox(height: 16),
           Text(
             'Ajoutez votre certificat d\'immatriculation, votre attestation d\'assurance et quelques photos du véhicule.',
             textAlign: TextAlign.center,
-            style: AppTextStyles.body16.copyWith(
+            style: AppTextStyles.body16(context).copyWith(
               color: AppColors.textColor.withAlpha(180),
               height: 1.5,
             ),

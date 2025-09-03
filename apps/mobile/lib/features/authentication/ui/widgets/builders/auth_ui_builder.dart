@@ -12,10 +12,12 @@ import 'parts/step_data_getter.dart';
 
 class AuthUIBuilder {
   static Widget buildHeaderText({
+    required BuildContext context,
     required AuthStepContent stepData,
     required bool isForgotPassword,
   }) {
     return HeaderBuilder.buildHeaderText(
+      context: context,
       stepData: stepData,
       isForgotPassword: isForgotPassword,
     );
@@ -52,10 +54,12 @@ class AuthUIBuilder {
   }
 
   static Widget buildNavigationLink({
+    required BuildContext context,
     required AuthStepContent stepData,
     required VoidCallback? onTap,
   }) {
     return NavigationLinksBuilder.buildNavigationLink(
+      context: context,
       stepData: stepData,
       onTap: onTap,
     );

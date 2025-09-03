@@ -31,7 +31,7 @@ class StepSixView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.h1.copyWith(
+            style: AppTextStyles.h1(context).copyWith(
               fontSize: 22,
               fontWeight: FontWeight.w600,
             ),
@@ -42,7 +42,7 @@ class StepSixView extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-            style: AppTextStyles.body14.copyWith(
+            style: AppTextStyles.body14(context).copyWith(
               color: AppColors.textColor.withAlpha(180),
               height: 1.4,
             ),

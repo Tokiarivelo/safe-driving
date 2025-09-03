@@ -56,16 +56,16 @@ class _StepFourViewState extends State<StepFourView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 20),
-          const Text(
+          Text(
             'Dites-nous en plus sur votre véhicule',
             textAlign: TextAlign.center,
-            style: AppTextStyles.h1,
+            style: AppTextStyles.h1(context),
           ),
           const SizedBox(height: 16),
           Text(
             'Pour mieux vous identifier et garantir la sécurité de vos passagers, renseignez les caractéristiques de votre voiture.',
             textAlign: TextAlign.center,
-            style: AppTextStyles.body16.copyWith(
+            style: AppTextStyles.body16(context).copyWith(
               color: AppColors.textColor.withAlpha(180),
               height: 1.5,
             ),

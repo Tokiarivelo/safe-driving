@@ -8,6 +8,7 @@ class SummaryBuilder {
     List resumeData,
     DriverOnboardingCoordinator coordinator,
     Function(int) navigateToStep,
+    BuildContext context,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +41,7 @@ class SummaryBuilder {
                   Expanded(
                     child: Text(
                       titre,
-                      style: AppTextStyles.body16.copyWith(
+                      style: AppTextStyles.body16(context).copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -74,6 +75,7 @@ class SummaryBuilder {
               const SizedBox(height: 12),
               ...elements.map<Widget>((element) {
                 return buildResumeElement(
+                  context,
                   element,
                   titre,
                   coordinator,
@@ -88,6 +90,7 @@ class SummaryBuilder {
   }
 
   static Widget buildResumeElement(
+    BuildContext context,
     String element,
     String sectionTitle,
     DriverOnboardingCoordinator coordinator,
@@ -109,7 +112,7 @@ class SummaryBuilder {
             Expanded(
               child: Text(
                 '$element : $totalPhotos',
-                style: AppTextStyles.body14.copyWith(
+                style: AppTextStyles.body14(context).copyWith(
                   color: AppColors.textColor.withAlpha(200),
                 ),
               ),
@@ -161,14 +164,14 @@ class SummaryBuilder {
                 children: [
                   TextSpan(
                     text: '$element: ',
-                    style: AppTextStyles.body14.copyWith(
+                    style: AppTextStyles.body14(context).copyWith(
                       color: AppColors.textColor.withAlpha(200),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   TextSpan(
                     text: fieldValue,
-                    style: AppTextStyles.body14.copyWith(
+                    style: AppTextStyles.body14(context).copyWith(
                       color: AppColors.textColor.withAlpha(160),
                     ),
                   ),

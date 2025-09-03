@@ -74,6 +74,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               ),
               child: Center(
                 child: AuthUIBuilder.buildHeaderText(
+                  context: context,
                   stepData: stepData,
                   isForgotPassword: false,
                 ),

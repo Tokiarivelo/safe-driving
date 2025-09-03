@@ -38,7 +38,7 @@ class StepNineView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.h1.copyWith(
+            style: AppTextStyles.h1(context).copyWith(
               fontSize: 24,
               fontWeight: FontWeight.w600,
             ),
@@ -47,7 +47,7 @@ class StepNineView extends StatelessWidget {
           Text(
             step.description!,
             textAlign: TextAlign.center,
-            style: AppTextStyles.body16.copyWith(
+            style: AppTextStyles.body16(context).copyWith(
               color: AppColors.textColor.withAlpha(180),
               height: 1.5,
             ),
@@ -57,9 +57,9 @@ class StepNineView extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Thème', style: AppTextStyles.h2BoldNeutral),
+                child: Text('Thème', style: AppTextStyles.h2BoldNeutral(context)),
               ),
               const SizedBox(height: 12),
               Row(
@@ -93,9 +93,9 @@ class StepNineView extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 32),
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Langue', style: AppTextStyles.h2BoldNeutral),
+                child: Text('Langue', style: AppTextStyles.h2BoldNeutral(context)),
               ),
               const SizedBox(height: 12),
               LanguageButtons.languageButtonContainer(

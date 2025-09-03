@@ -184,6 +184,7 @@ class _AnimatedAuthContentState extends State<_AnimatedAuthContent>
               ),
               SizedBox(height: widget.isSmallScreen ? 15 : 20),
               NavigationLinksBuilder.buildNavigationLink(
+                context: context,
                 stepData: widget.stepData,
                 onTap: widget.isLogin
                     ? widget.onNavigateToRegister

@@ -21,11 +21,11 @@ class StepTwoView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(stepContent.title, style: AppTextStyles.h2),
+        Text(stepContent.title, style: AppTextStyles.h2(context)),
         const SizedBox(height: 8),
         Text(
           stepContent.subtitle,
-          style: AppTextStyles.body14.copyWith(
+          style: AppTextStyles.body14(context).copyWith(
             color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
           ),
           textAlign: TextAlign.center,
