@@ -271,22 +271,22 @@ class AppTheme {
 
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.inputTextBackgroundDark,
+        fillColor: AppColors.backgroundSecondary,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: AppColors.borderButtonDark,
+          borderSide: BorderSide(
+            color: AppColors.light.withValues(alpha: 0.2),
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: AppColors.borderButtonDark,
+          borderSide: BorderSide(
+            color: AppColors.light.withValues(alpha: 0.2),
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.borderInputField, width: 2),
+          borderSide: BorderSide(color: AppColors.light.withValues(alpha: 0.4), width: 2),
         ),
         errorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -297,11 +297,13 @@ class AppTheme {
           borderSide: BorderSide(color: AppColors.error, width: 2),
         ),
         hintStyle: _textTheme.bodySmall?.copyWith(
-          color: AppColors.placeHolderInputDark,
+          color: AppColors.light.withValues(alpha: 0.7),
         ),
         labelStyle: _textTheme.labelMedium?.copyWith(
-          color: AppColors.textColorDark,
+          color: AppColors.light,
         ),
+        prefixIconColor: AppColors.light,
+        suffixIconColor: AppColors.light,
         errorStyle: _textTheme.labelSmall?.copyWith(color: AppColors.error),
       ),
 

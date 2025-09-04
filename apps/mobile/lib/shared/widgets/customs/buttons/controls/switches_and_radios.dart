@@ -72,7 +72,7 @@ class SwitchesAndRadios {
         title: Text(
           title,
           style: TextStyle(
-            color: (titleColor ?? AppColors.textColor).adapt(context),
+            color: (titleColor ?? Theme.of(context).colorScheme.onSurface),
             fontFamily: 'Inder',
           ),
         ),
@@ -84,9 +84,9 @@ class SwitchesAndRadios {
         controlAffinity: ListTileControlAffinity.leading,
         contentPadding: EdgeInsets.zero,
         side: BorderSide(
-          color: AppColors.buttonWithoutBackGround
-              .adapt(context)
-              .withValues(alpha: 0.3),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppColors.light
+              : Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );

@@ -16,25 +16,25 @@ class ElegantAcceptanceButton {
           width: double.infinity,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppColors.light.adapt(context),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.backgroundSecondary
+                : AppColors.light,
             border: Border.all(
-              color: isAccepted
-                  ? AppColors.fillButtonBackground.adapt(context)
-                  : AppColors.fillButtonBackground
-                      .adapt(context)
-                      .withValues(alpha: 0.3),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.light
+                  : (isAccepted
+                      ? AppColors.fillButtonBackground
+                      : AppColors.fillButtonBackground.withValues(alpha: 0.3)),
               width: 2,
             ),
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: isAccepted
-                    ? AppColors.buttonWithoutBackGround
-                        .adapt(context)
-                        .withValues(alpha: 0.1)
-                    : AppColors.fillButtonBackground
-                        .adapt(context)
-                        .withValues(alpha: 0.1),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.light.withValues(alpha: 0.06)
+                    : (isAccepted
+                        ? AppColors.buttonWithoutBackGround.withValues(alpha: 0.1)
+                        : AppColors.fillButtonBackground.withValues(alpha: 0.1)),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -47,21 +47,24 @@ class ElegantAcceptanceButton {
                 curve: Curves.easeInOut,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isAccepted
-                      ? AppColors.buttonWithoutBackGround.adapt(context)
-                      : AppColors.fillButtonBackground.adapt(context),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.transparent
+                      : (isAccepted
+                          ? AppColors.buttonWithoutBackGround
+                          : AppColors.fillButtonBackground),
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: isAccepted
-                      ? [
-                          BoxShadow(
-                            color: AppColors.fillButtonBackground
-                                .adapt(context)
-                                .withValues(alpha: 0.3),
-                            blurRadius: 8,
-                            spreadRadius: 2,
-                          ),
-                        ]
-                      : [],
+                  boxShadow: Theme.of(context).brightness == Brightness.dark
+                      ? []
+                      : (isAccepted
+                          ? [
+                              BoxShadow(
+                                color: AppColors.fillButtonBackground
+                                    .withValues(alpha: 0.3),
+                                blurRadius: 8,
+                                spreadRadius: 2,
+                              ),
+                            ]
+                          : []),
                 ),
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
@@ -77,7 +80,7 @@ class ElegantAcceptanceButton {
                         ? Icons.check_circle
                         : Icons.article_outlined,
                     key: ValueKey<bool>(isAccepted),
-                    color: AppColors.light.adapt(context),
+                    color: AppColors.light,
                     size: 24,
                   ),
                 ),
@@ -92,7 +95,7 @@ class ElegantAcceptanceButton {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textColor.adapt(context),
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -100,8 +103,9 @@ class ElegantAcceptanceButton {
                       isAccepted ? "Accepté ✓" : subtitle,
                       style: TextStyle(
                         fontSize: 14,
-                        color: AppColors.textColor
-                            .adapt(context)
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
                             .withValues(alpha: 0.7),
                         fontWeight:
                             isAccepted ? FontWeight.w500 : FontWeight.normal,
@@ -113,7 +117,7 @@ class ElegantAcceptanceButton {
               if (!isAccepted)
                 Icon(
                   Icons.arrow_forward_ios,
-                  color: AppColors.fillButtonBackground.adapt(context),
+                  color: AppColors.light,
                   size: 20,
                 ),
             ],

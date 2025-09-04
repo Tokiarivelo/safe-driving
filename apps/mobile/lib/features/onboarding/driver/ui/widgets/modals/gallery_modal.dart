@@ -47,7 +47,7 @@ class PhotoManagementModalState
             icon: Icon(
               Icons.photo_library,
               size: 18,
-              color: AppColors.light.adapt(context),
+              color: AppColors.dark.adapt(context),
             ),
           ),
         ),
@@ -61,7 +61,7 @@ class PhotoManagementModalState
             icon: Icon(
               Icons.camera_alt,
               size: 18,
-              color: AppColors.buttonWithoutBackGround.adapt(context),
+              color: AppColors.light.adapt(context),
             ),
           ),
         ),

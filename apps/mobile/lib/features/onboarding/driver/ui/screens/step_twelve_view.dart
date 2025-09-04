@@ -43,6 +43,7 @@ class StepTwelveView extends StatelessWidget {
             style: AppTextStyles.h1(context).copyWith(
               fontSize: 24,
               fontWeight: FontWeight.w600,
+              color: AppColors.light,
             ),
           ),
           const SizedBox(height: 16),
@@ -50,7 +51,7 @@ class StepTwelveView extends StatelessWidget {
             step.description!,
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(context).copyWith(
-              color: AppColors.textColor.adapt(context).withAlpha(180),
+              color: AppColors.light,
               height: 1.5,
             ),
           ),
@@ -65,6 +66,7 @@ class StepTwelveView extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: AppTextStyles.body16(context).copyWith(
                   fontWeight: FontWeight.w600,
+                  color: AppColors.light,
                 ),
               ),
               const SizedBox(height: 16),
@@ -96,7 +98,7 @@ class StepTwelveView extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: AppColors.textColor.adapt(context).withAlpha(180),
+                  color: AppColors.light,
                   height: 1.4,
                   fontFamily: 'Inder',
                 ),
@@ -106,10 +108,12 @@ class StepTwelveView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.fillButtonBackground.adapt(context).withAlpha(20),
+                
+                  color: AppColors.backgroundSecondary,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppColors.fillButtonBackground.adapt(context).withAlpha(100),
+                    // Keep border light to ensure visibility in both themes
+                    color: AppColors.light,
                     width: 1,
                   ),
                 ),
@@ -119,6 +123,7 @@ class StepTwelveView extends StatelessWidget {
                   style: AppTextStyles.body14(context).copyWith(
                     fontWeight: FontWeight.w500,
                     height: 1.4,
+                    color: AppColors.light,
                   ),
                 ),
               ),

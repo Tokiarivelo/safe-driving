@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
@@ -8,6 +7,7 @@ import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_row
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/language_buttons.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/theme/theme_controller.dart';
+import 'package:safe_driving/core/constants/colors/colors.dart';
 
 class StepNineView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -25,8 +25,9 @@ class StepNineView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final themeController = context.watch<ThemeController>();
     final themeOptions = [
-      {'label': 'Automatique', 'value': 'auto'},
       {'label': 'Clair', 'value': 'clair'},
       {'label': 'Sombre', 'value': 'sombre'},
     ];
@@ -51,7 +52,7 @@ class StepNineView extends StatelessWidget {
             step.description!,
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(context).copyWith(
-              color: AppColors.textColor.adapt(context).withAlpha(180),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
               height: 1.5,
             ),
           ),
@@ -74,20 +75,21 @@ class StepNineView extends StatelessWidget {
                       .map((entry) {
                         final index = entry.key;
                         final option = entry.value;
+                        final current = themeController.mode == ThemeMode.dark ? 'sombre' : 'clair';
                         return [
                           Chips.customChoiceChip(
                             label: option['label']!,
-                            selected:
-                                coordinator
-                                    .preferencesViewModel
-                                    .selectedTheme ==
-                                option['value'],
+                            selected: current == option['value'],
                             onSelected: (_) {
                               final value = option['value']!;
                               coordinator.preferencesViewModel.setSelectedTheme(value);
                               final mode = ThemeController.fromLabel(value);
                               context.read<ThemeController>().setMode(mode);
                             },
+                            // In dark mode, force light text inside the chips as requested
+                            labelColor: Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.light
+                                : null,
                           ),
                           if (index < themeOptions.length - 1)
                             const SizedBox(width: 24),

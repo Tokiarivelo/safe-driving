@@ -17,12 +17,12 @@ class ModalHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            color: AppColors.textColor.adapt(context),
+            color: AppColors.dark.adapt(context),
             fontFamily: 'Inder',
           ),
         ),
         IconButton(
-          icon: Icon(Icons.close, color: AppColors.textColor.adapt(context)),
+          icon: Icon(Icons.close, color: AppColors.dark.adapt(context)),
           onPressed: onClose ?? () => Navigator.of(context).pop(),
         ),
       ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
@@ -35,17 +34,18 @@ class StepEightView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.h1(context).copyWith(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.h1(
+              context,
+            ).copyWith(fontSize: 24, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 16),
           Text(
             step.description!,
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(context).copyWith(
-              color: AppColors.textColor.adapt(context).withAlpha(180),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.75),
               height: 1.5,
             ),
           ),
@@ -66,7 +66,7 @@ class StepEightView extends StatelessWidget {
                   onChanged: (value) {
                     coordinator.preferencesViewModel.toggleNotification(option);
                   },
-                  titleColor: AppColors.fillButtonBackground.adapt(context),
+                  titleColor: Theme.of(context).colorScheme.onSurface,
                 ),
               );
             }).toList(),

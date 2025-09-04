@@ -56,20 +56,13 @@ class UploadWidgetState extends State<UploadWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.title.isNotEmpty) ...[
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppColors.softBackgroundColor.adapt(context),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              widget.title,
+          Text(
+            widget.title,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: AppColors.textColor.adapt(context),
+              color: Theme.of(context).colorScheme.onSurface,
               fontFamily: 'Inder',
-            ),
             ),
           ),
           const SizedBox(height: 8),
@@ -77,7 +70,9 @@ class UploadWidgetState extends State<UploadWidget> {
 
         CustomPaint(
           painter: DashedBorderPainter(
-            color: AppColors.fillButtonBackground.adapt(context),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.light
+                : AppColors.fillButtonBackground,
             strokeWidth: 2,
             dashWidth: 8,
             dashSpace: 4,
@@ -87,7 +82,9 @@ class UploadWidgetState extends State<UploadWidget> {
             padding: const EdgeInsets.all(32),
             margin: const EdgeInsets.all(2),
             decoration: BoxDecoration(
-              color: AppColors.softBackgroundColor.adapt(context),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.backgroundSecondary
+                  : AppColors.softBackgroundColor,
               borderRadius: BorderRadius.circular(12),
             ),
             child: _selectedImages.isNotEmpty
@@ -107,12 +104,16 @@ class UploadWidgetState extends State<UploadWidget> {
         Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.upload.adapt(context),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.backgroundSecondary
+                : AppColors.upload,
           ),
           padding: const EdgeInsets.all(16),
           child: Icon(
             Icons.cloud_upload_outlined,
-            color: AppColors.light.adapt(context),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.progress
+                : AppColors.light,
             size: 32,
           ),
         ),
@@ -124,7 +125,7 @@ class UploadWidgetState extends State<UploadWidget> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
-              color: AppColors.textColor.adapt(context).withAlpha(202),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
               fontFamily: 'Inder',
             ),
           ),

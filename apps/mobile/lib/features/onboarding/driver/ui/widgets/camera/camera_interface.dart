@@ -43,12 +43,12 @@ class CameraInterfaceState extends State<CameraInterface> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textColor.adapt(context),
+                    color: AppColors.dark.adapt(context),
                     fontFamily: 'Inder',
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.close, color: AppColors.textColor.adapt(context)),
+                  icon: Icon(Icons.close, color: AppColors.dark.adapt(context)),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -62,7 +62,7 @@ class CameraInterfaceState extends State<CameraInterface> {
               'Placez le document dans le carré et appuyez sur le bouton pour capturer',
               style: TextStyle(
                 fontSize: 14,
-                color: AppColors.textColor.adapt(context).withValues(alpha: 0.7),
+                color: AppColors.dark.adapt(context).withValues(alpha: 0.7),
                 fontFamily: 'Inder',
               ),
               textAlign: TextAlign.center,

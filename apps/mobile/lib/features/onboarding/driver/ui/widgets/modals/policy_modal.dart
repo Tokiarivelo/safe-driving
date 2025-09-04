@@ -49,6 +49,7 @@ class _PolicyModalState extends State<PolicyModal> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AlertDialog(
       title: Text(widget.titleContent, style: AppTextStyles.h2BoldNeutral(context)),
 
@@ -80,30 +81,26 @@ class _PolicyModalState extends State<PolicyModal> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(
-            "Annuler",
-            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+          style: TextButton.styleFrom(
+            foregroundColor: isDark ? AppColors.light : AppColors.dark,
           ),
+          child: const Text("Annuler"),
         ),
-        ElevatedButton(
+        TextButton(
           onPressed: _hasScrolledToBottom
               ? () {
                   widget.onAccept();
                   Navigator.of(context).pop();
                 }
               : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: _hasScrolledToBottom
-                ? AppColors.fillButtonBackground.adapt(context)
-                : AppColors.unclickable.adapt(context),
+          style: TextButton.styleFrom(
+            foregroundColor: isDark ? AppColors.light : AppColors.dark,
+            side: _hasScrolledToBottom && isDark
+                ? const BorderSide(color: AppColors.light)
+                : null,
           ),
           child: Text(
             _hasScrolledToBottom ? "J'accepte" : "Lisez d'abord le contenu",
-            style: TextStyle(
-              color: _hasScrolledToBottom
-                  ? AppColors.light.adapt(context)
-                  : AppColors.light.adapt(context).withValues(alpha: 0.7),
-            ),
           ),
         ),
       ],

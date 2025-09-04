@@ -40,14 +40,14 @@ class StepElevenView extends StatelessWidget {
             Icon(
               summaryViewModel.getFieldIcon(element),
               size: 16,
-              color: AppColors.fillButtonBackground.adapt(context),
+              color: AppColors.light,
             ),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
                 '$element : $totalPhotos',
                 style: AppTextStyles.body14(context).copyWith(
-                  color: AppColors.textColor.adapt(context).withAlpha(200),
+                  color: AppColors.light,
                 ),
               ),
             ),
@@ -56,10 +56,10 @@ class StepElevenView extends StatelessWidget {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                color: AppColors.fillButtonBackground.adapt(context).withAlpha(20),
+                color: AppColors.backgroundSecondary,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: AppColors.fillButtonBackground.adapt(context).withAlpha(100),
+                  color: AppColors.light,
                   width: 1,
                 ),
               ),
@@ -67,7 +67,7 @@ class StepElevenView extends StatelessWidget {
                 icon: Icon(
                   Icons.edit,
                   size: 16,
-                  color: AppColors.fillButtonBackground.adapt(context),
+                  color: AppColors.light,
                 ),
                 padding: EdgeInsets.zero,
                 onPressed: () {
@@ -90,7 +90,7 @@ class StepElevenView extends StatelessWidget {
           Icon(
             summaryViewModel.getFieldIcon(element),
             size: 16,
-            color: AppColors.fillButtonBackground.adapt(context),
+            color: AppColors.light,
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -100,14 +100,14 @@ class StepElevenView extends StatelessWidget {
                   TextSpan(
                     text: '$element: ',
                     style: AppTextStyles.body14(context).copyWith(
-                      color: AppColors.textColor.adapt(context).withAlpha(200),
+                      color: AppColors.light,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   TextSpan(
                     text: fieldValue,
                     style: AppTextStyles.body14(context).copyWith(
-                      color: AppColors.textColor.adapt(context).withAlpha(160),
+                      color: AppColors.light,
                     ),
                   ),
                 ],
@@ -158,15 +158,16 @@ class StepElevenView extends StatelessWidget {
           style: AppTextStyles.h1(context).copyWith(
             fontSize: 24,
             fontWeight: FontWeight.w600,
+            color: AppColors.light,
           ),
         ),
         const SizedBox(height: 16),
         Text(
           step.description ?? '',
           textAlign: TextAlign.center,
-            style: AppTextStyles.body16(context).copyWith(
-            color: AppColors.textColor.adapt(context).withAlpha(180),
+          style: AppTextStyles.body16(context).copyWith(
             height: 1.5,
+            color: AppColors.light,
           ),
         ),
       ],
@@ -203,10 +204,10 @@ class StepElevenView extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.inputTextBackground.adapt(context).withAlpha(50),
+        color: AppColors.backgroundSecondary,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.fillButtonBackground.adapt(context).withAlpha(100),
+          color: AppColors.light,
           width: 1,
         ),
       ),
@@ -234,13 +235,16 @@ class StepElevenView extends StatelessWidget {
         Icon(
           summaryViewModel.getSectionIcon(titre),
           size: 20,
-          color: AppColors.fillButtonBackground.adapt(context),
+          color: AppColors.light,
         ),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             titre,
-            style: AppTextStyles.body16(context).copyWith(fontWeight: FontWeight.bold),
+            style: AppTextStyles.body16(context).copyWith(
+              fontWeight: FontWeight.bold,
+              color: AppColors.light,
+            ),
           ),
         ),
         const SizedBox(width: 8),
@@ -248,18 +252,18 @@ class StepElevenView extends StatelessWidget {
           width: 32,
           height: 32,
           decoration: BoxDecoration(
-            color: AppColors.fillButtonBackground.adapt(context).withAlpha(20),
+            color: AppColors.backgroundSecondary,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppColors.fillButtonBackground.adapt(context).withAlpha(100),
+              color: AppColors.light,
               width: 1,
             ),
           ),
           child: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.edit,
               size: 16,
-              color: AppColors.fillButtonBackground.adapt(context),
+              color: AppColors.light,
             ),
             padding: EdgeInsets.zero,
             onPressed: () {

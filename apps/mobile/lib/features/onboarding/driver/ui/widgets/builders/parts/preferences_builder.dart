@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_driving/core/theme/theme_controller.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
@@ -34,7 +35,7 @@ class PreferencesBuilder {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: AppColors.textColor.adapt(context),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),
@@ -43,20 +44,29 @@ class PreferencesBuilder {
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Chips.customChoiceChip(
-            label: 'Clair',
-            selected: coordinator.preferencesViewModel.selectedTheme == 'clair',
-            onSelected: (_) {
-              coordinator.preferencesViewModel.setTheme('clair');
-            },
-          ),
-          const SizedBox(width: 24),
-          Chips.customChoiceChip(
-            label: 'Sombre',
-            selected:
-                coordinator.preferencesViewModel.selectedTheme == 'sombre',
-            onSelected: (_) {
-              coordinator.preferencesViewModel.setTheme('sombre');
+          Builder(
+            builder: (context) {
+              return Row(
+                children: [
+                  Chips.customChoiceChip(
+                    label: 'Clair',
+                    selected: context.read<ThemeController>().mode != ThemeMode.dark,
+                    onSelected: (_) {
+                      coordinator.preferencesViewModel.setTheme('clair');
+                      context.read<ThemeController>().setMode(ThemeMode.light);
+                    },
+                  ),
+                  const SizedBox(width: 24),
+                  Chips.customChoiceChip(
+                    label: 'Sombre',
+                    selected: context.read<ThemeController>().mode == ThemeMode.dark,
+                    onSelected: (_) {
+                      coordinator.preferencesViewModel.setTheme('sombre');
+                      context.read<ThemeController>().setMode(ThemeMode.dark);
+                    },
+                  ),
+                ],
+              );
             },
           ),
         ],
@@ -77,7 +87,7 @@ class PreferencesBuilder {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: AppColors.textColor.adapt(context),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),
@@ -112,7 +122,7 @@ class PreferencesBuilder {
               onChanged: (value) {
                 coordinator.preferencesViewModel.toggleNotification(option);
               },
-              titleColor: AppColors.fillButtonBackground.adapt(context),
+              titleColor: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         );
@@ -138,8 +148,6 @@ class PreferencesBuilder {
                     : "Plus tard",
                 onChanged: (value) =>
                     coordinator.preferencesViewModel.setGpsEnabled(false),
-                titleColor: AppColors.fillButtonBackground.adapt(context),
-                activeColor: AppColors.fillButtonBackground.adapt(context),
               ),
             ),
             Expanded(
@@ -163,8 +171,6 @@ class PreferencesBuilder {
                     coordinator.preferencesViewModel.setGpsEnabled(false);
                   }
                 },
-                titleColor: AppColors.fillButtonBackground.adapt(context),
-                activeColor: AppColors.fillButtonBackground.adapt(context),
               ),
             ),
           ],

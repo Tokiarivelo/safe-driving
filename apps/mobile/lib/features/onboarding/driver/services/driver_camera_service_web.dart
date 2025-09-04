@@ -147,7 +147,7 @@ class DriverCameraServiceWebState extends State<PlatformDriverCameraService> {
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              color: AppColors.buttonWithoutBackGround.adapt(context),
+              color: AppColors.dark.adapt(context),
               borderRadius: BorderRadius.circular(100),
               boxShadow: [
                 BoxShadow(

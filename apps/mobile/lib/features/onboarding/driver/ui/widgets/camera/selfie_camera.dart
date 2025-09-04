@@ -141,7 +141,8 @@ class _SelfieCameraState extends State<SelfieCamera> {
                   setState(() => _isCapturing = false);
                   if (path != null) {
                     setState(() => _capturedPhotoPath = path);
-                    // Do not call onPhotoTaken here; wait for user to validate
+                    // Appel immédiat: validation automatique de la capture
+                    widget.onPhotoTaken(path);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Capture échouée')),
@@ -158,34 +159,17 @@ class _SelfieCameraState extends State<SelfieCamera> {
 
   Widget _buildCameraControls() {
     if (_capturedPhotoPath != null) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ElevatedButton.icon(
-            onPressed: _retakePhoto,
-            icon: const Icon(Icons.refresh),
-            label: const Text('Reprendre'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            ),
+      return Center(
+        child: ElevatedButton.icon(
+          onPressed: _retakePhoto,
+          icon: const Icon(Icons.refresh),
+          label: const Text('Reprendre'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.orange,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           ),
-          ElevatedButton.icon(
-            onPressed: () {
-              if (_capturedPhotoPath != null) {
-                widget.onPhotoTaken(_capturedPhotoPath!);
-              }
-            },
-            icon: const Icon(Icons.check),
-            label: const Text('Valider'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            ),
-          ),
-        ],
+        ),
       );
     }
 

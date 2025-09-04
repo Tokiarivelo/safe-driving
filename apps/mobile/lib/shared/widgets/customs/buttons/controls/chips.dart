@@ -25,6 +25,10 @@ class Chips {
         selectedColor:
             (selectedColor ?? AppColors.fillButtonBackground).adapt(context),
         selectedShadowColor: AppColors.light.adapt(context),
+        side: BorderSide(
+          color: ColorsWidget.subtleBorderColor(context),
+          width: 1,
+        ),
       ),
     );
   }
