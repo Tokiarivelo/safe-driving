@@ -34,7 +34,7 @@ class StepThreeView extends StatelessWidget {
         Text(
           stepContent.subtitle,
           style: AppTextStyles.body14(context).copyWith(
-            color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
+            color: AppColors.buttonWithoutBackGround.adapt(context).withValues(alpha: 0.75),
           ),
         ),
         const SizedBox(height: 16),

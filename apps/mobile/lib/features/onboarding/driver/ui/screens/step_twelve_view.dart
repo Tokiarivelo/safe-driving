@@ -50,7 +50,7 @@ class StepTwelveView extends StatelessWidget {
             step.description!,
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(context).copyWith(
-              color: AppColors.textColor.withAlpha(180),
+              color: AppColors.textColor.adapt(context).withAlpha(180),
               height: 1.5,
             ),
           ),
@@ -74,18 +74,18 @@ class StepTwelveView extends StatelessWidget {
                 width: 150,
                 height: 150,
                 decoration: BoxDecoration(
-                  color: AppColors.inputTextBackground.withAlpha(100),
+                  color: AppColors.inputTextBackground.adapt(context).withAlpha(100),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppColors.fillButtonBackground.withAlpha(100),
+                    color: AppColors.fillButtonBackground.adapt(context).withAlpha(100),
                     width: 2,
                   ),
                 ),
-                child: const Center(
+                child: Center(
                   child: Icon(
                     Icons.qr_code,
                     size: 80,
-                    color: AppColors.fillButtonBackground,
+                    color: AppColors.fillButtonBackground.adapt(context),
                   ),
                 ),
               ),
@@ -96,7 +96,7 @@ class StepTwelveView extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: AppColors.textColor.withAlpha(180),
+                  color: AppColors.textColor.adapt(context).withAlpha(180),
                   height: 1.4,
                   fontFamily: 'Inder',
                 ),
@@ -106,10 +106,10 @@ class StepTwelveView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.fillButtonBackground.withAlpha(20),
+                  color: AppColors.fillButtonBackground.adapt(context).withAlpha(20),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppColors.fillButtonBackground.withAlpha(100),
+                    color: AppColors.fillButtonBackground.adapt(context).withAlpha(100),
                     width: 1,
                   ),
                 ),

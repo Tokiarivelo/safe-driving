@@ -34,14 +34,14 @@ class EmptyStateWidget extends StatelessWidget {
           Icon(
             icon,
             size: 64,
-            color: AppColors.textColor.withValues(alpha: 0.5),
+            color: AppColors.textColor.adapt(context).withValues(alpha: 0.5),
           ),
           const SizedBox(height: 16),
           Text(
             title,
             style: TextStyle(
               fontSize: 18,
-              color: AppColors.textColor.withValues(alpha: 0.7),
+              color: AppColors.textColor.adapt(context).withValues(alpha: 0.7),
               fontFamily: 'Inder',
             ),
           ),
@@ -51,7 +51,7 @@ class EmptyStateWidget extends StatelessWidget {
               subtitle!,
               style: TextStyle(
                 fontSize: 14,
-                color: AppColors.textColor.withValues(alpha: 0.5),
+                color: AppColors.textColor.adapt(context).withValues(alpha: 0.5),
                 fontFamily: 'Inder',
               ),
               textAlign: TextAlign.center,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import '../../models/user_onboarding_data.dart';
@@ -26,7 +25,9 @@ class StepTwoView extends StatelessWidget {
         Text(
           stepContent.subtitle,
           style: AppTextStyles.body14(context).copyWith(
-            color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.75),
           ),
           textAlign: TextAlign.center,
         ),

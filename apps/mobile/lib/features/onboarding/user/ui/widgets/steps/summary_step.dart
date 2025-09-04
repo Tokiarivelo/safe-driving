@@ -28,7 +28,7 @@ class _SummaryStep extends StatelessWidget {
         Text(
           stepContent.subtitle,
           style: AppTextStyles.body14(context).copyWith(
-            color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
           ),
         ),
         const SizedBox(height: 16),
@@ -39,9 +39,11 @@ class _SummaryStep extends StatelessWidget {
               onChanged: (v) => viewModel.updateGps(v, context),
             ),
             const SizedBox(width: 8),
-            Text(
-              summaryLabels['gps']!,
-              style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+            Builder(
+              builder: (context) => Text(
+                summaryLabels['gps']!,
+                style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              ),
             ),
           ],
         ),
@@ -52,27 +54,33 @@ class _SummaryStep extends StatelessWidget {
               onChanged: (v) => viewModel.updateNotifications(v, context),
             ),
             const SizedBox(width: 8),
-            Text(
-              summaryLabels['notifications']!,
-              style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+            Builder(
+              builder: (context) => Text(
+                summaryLabels['notifications']!,
+                style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              ),
             ),
           ],
         ),
         const SizedBox(height: 16),
-        Text(
-          '${summaryLabels['theme']} : ${viewModel.appState.selectedTheme}',
-          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        Builder(
+          builder: (context) => Text(
+            '${summaryLabels['theme']} : ${viewModel.appState.selectedTheme}',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+          ),
         ),
         const SizedBox(height: 8),
-        Text(
-          '${summaryLabels['transport']} :',
-          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        Builder(
+          builder: (context) => Text(
+            '${summaryLabels['transport']} :',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+          ),
         ),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: AppColors.fillButtonBackground.withValues(alpha: 0.3),
+              color: ColorsWidget.subtleBorderColor(context),
               width: 1,
             ),
             borderRadius: BorderRadius.circular(8),
@@ -91,26 +99,25 @@ class _SummaryStep extends StatelessWidget {
                           avatar: Icon(
                             UserOnboardingData.transportIcons[transport],
                             size: 16,
-                            color: AppColors.buttonWithoutBackGround,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                           label: Text(
                             transport,
-                            style: const TextStyle(
-                              color: AppColors.buttonWithoutBackGround,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
                               fontSize: 12,
                             ),
                           ),
-                          deleteIcon: const Icon(
+                          deleteIcon: Icon(
                             Icons.close,
                             size: 18,
-                            color: AppColors.buttonWithoutBackGround,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                           onDeleted: () => viewModel.removeTransport(transport),
-                          backgroundColor: AppColors.secondBackgroundColor,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
                           side: BorderSide(
-                            color: AppColors.fillButtonBackground.withValues(
-                              alpha: 0.5,
-                            ),
+                            color: ColorsWidget.subtleBorderColor(context),
                             width: 1,
                           ),
                         ),
@@ -121,9 +128,7 @@ class _SummaryStep extends StatelessWidget {
                 Text(
                   summaryLabels['noTransport']!,
                   style: TextStyle(
-                    color: AppColors.buttonWithoutBackGround.withValues(
-                      alpha: 0.6,
-                    ),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
                     fontStyle: FontStyle.italic,
                   ),
                 ),
@@ -131,9 +136,11 @@ class _SummaryStep extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        Text(
-          '${summaryLabels['language']} :',
-          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        Builder(
+          builder: (context) => Text(
+            '${summaryLabels['language']} :',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+          ),
         ),
         const SizedBox(height: 8),
         LanguageButtons.languageButtonContainer(

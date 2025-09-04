@@ -15,20 +15,33 @@ class UserThemeSelectorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Supprimer toute option "Automatique"/"System" si elle arrive via les données
+    final options = themeOptions.where((t) {
+      final l = t.trim().toLowerCase();
+      return !(l == 'automatique' || l == 'auto' || l == 'system' || l == 'système' || l == 'systeme' || l == 'automatic');
+    }).toList();
+
+    final theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final borderColor = isDark ? AppColors.borderButtonDark : AppColors.borderButtonLight;
+
     return Row(
       children: [
-        ...themeOptions.map(
-          (theme) => Padding(
+        ...options.map(
+          (opt) => Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: ChoiceChip(
-              label: Text(theme),
-              selected: selectedTheme == theme,
-              onSelected: (_) => onThemeSelected(theme),
-              selectedColor: AppColors.fillButtonBackground,
+              label: Text(opt),
+              selected: selectedTheme == opt,
+              onSelected: (_) => onThemeSelected(opt),
+              selectedColor: AppColors.fillButtonBackground.adapt(context),
+              side: BorderSide(color: borderColor),
               labelStyle: TextStyle(
-                color: selectedTheme == theme
+                color: selectedTheme == opt
                     ? AppColors.light
-                    : AppColors.buttonWithoutBackGround,
+                    : (isDark
+                        ? theme.colorScheme.onSurface
+                        : AppColors.buttonWithoutBackGround),
               ),
             ),
           ),

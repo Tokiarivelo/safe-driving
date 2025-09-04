@@ -47,10 +47,10 @@ class ResetPasswordContainer extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: AppColors.secondBackgroundColor,
+        color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: AppColors.blur,
+            color: AppColors.blur.adapt(context),
             blurRadius: 6,
             spreadRadius: 6,
             offset: const Offset(0, -2),
@@ -63,7 +63,7 @@ class ResetPasswordContainer extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             decoration: BoxDecoration(
-              color: AppColors.secondBackgroundColor.withAlpha(100),
+              color: Theme.of(context).colorScheme.surface.withAlpha(100),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(

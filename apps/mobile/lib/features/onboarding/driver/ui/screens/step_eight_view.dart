@@ -45,7 +45,7 @@ class StepEightView extends StatelessWidget {
             step.description!,
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(context).copyWith(
-              color: AppColors.textColor.withAlpha(180),
+              color: AppColors.textColor.adapt(context).withAlpha(180),
               height: 1.5,
             ),
           ),
@@ -66,7 +66,7 @@ class StepEightView extends StatelessWidget {
                   onChanged: (value) {
                     coordinator.preferencesViewModel.toggleNotification(option);
                   },
-                  titleColor: AppColors.fillButtonBackground,
+                  titleColor: AppColors.fillButtonBackground.adapt(context),
                 ),
               );
             }).toList(),

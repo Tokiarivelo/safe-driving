@@ -10,7 +10,10 @@ class SnackbarHelper {
   }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: const TextStyle(color: Colors.white)),
+        content: Text(
+          message,
+          style: const TextStyle(color: AppColors.light),
+        ),
         backgroundColor: backgroundColor,
         duration: duration,
         behavior: SnackBarBehavior.floating,
@@ -25,7 +28,12 @@ class SnackbarHelper {
     String message, {
     Duration duration = const Duration(seconds: 4),
   }) {
-    _showSnackBar(context, message, AppColors.error, duration: duration);
+    _showSnackBar(
+      context,
+      message,
+      AppColors.error.adapt(context),
+      duration: duration,
+    );
   }
 
   static void showSuccess(
@@ -36,7 +44,7 @@ class SnackbarHelper {
     _showSnackBar(
       context,
       message,
-      AppColors.snackbarSuccess,
+      AppColors.snackbarSuccess.adapt(context),
       duration: duration,
     );
   }
@@ -49,7 +57,7 @@ class SnackbarHelper {
     _showSnackBar(
       context,
       message,
-      AppColors.snackbarWarning,
+      AppColors.snackbarWarning.adapt(context),
       duration: duration,
     );
   }
@@ -59,6 +67,11 @@ class SnackbarHelper {
     String message, {
     Duration duration = const Duration(seconds: 3),
   }) {
-    _showSnackBar(context, message, AppColors.snackbarInfo, duration: duration);
+    _showSnackBar(
+      context,
+      message,
+      AppColors.snackbarInfo.adapt(context),
+      duration: duration,
+    );
   }
 }

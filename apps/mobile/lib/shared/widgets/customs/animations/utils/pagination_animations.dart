@@ -40,32 +40,38 @@ class PaginationAnimations {
     required VoidCallback onTap,
     required double size,
   }) {
-    return ClipOval(
-      child: Material(
-        color: AppColors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          splashColor: AppColors.fillButtonBackground.withAlpha(77),
-          highlightColor: AppColors.placeHolderInput.withAlpha(51),
-          child: Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: isActive ? AppColors.progress : AppColors.light,
-              border: Border.all(
-                color: AppColors.light,
-                width: isCurrent ? 2.0 : (isActive ? 1.0 : 0.5),
+    return Builder(
+      builder: (context) => ClipOval(
+        child: Material(
+          color: AppColors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            splashColor:
+                AppColors.fillButtonBackground.adapt(context).withAlpha(77),
+            highlightColor:
+                AppColors.placeHolderInput.adapt(context).withAlpha(51),
+            child: Container(
+              width: size,
+              height: size,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isActive
+                    ? AppColors.progress.adapt(context)
+                    : AppColors.light.adapt(context),
+                border: Border.all(
+                  color: AppColors.light.adapt(context),
+                  width: isCurrent ? 2.0 : (isActive ? 1.0 : 0.5),
+                ),
+                boxShadow: isCurrent
+                    ? [
+                        BoxShadow(
+                          color: AppColors.light.adapt(context),
+                          blurRadius: 2,
+                          spreadRadius: 1,
+                        ),
+                      ]
+                    : null,
               ),
-              boxShadow: isCurrent
-                  ? [
-                      BoxShadow(
-                        color: AppColors.light,
-                        blurRadius: 2,
-                        spreadRadius: 1,
-                      ),
-                    ]
-                  : null,
             ),
           ),
         ),

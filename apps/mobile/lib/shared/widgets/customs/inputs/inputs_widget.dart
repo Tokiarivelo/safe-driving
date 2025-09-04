@@ -54,8 +54,8 @@ class CustomInputFieldState extends State<CustomInputField> {
     bool isVisible = widget.isPassword
         ? _isPasswordVisible
         : widget.isConfirmPassword
-        ? _isConfirmPasswordVisible
-        : false;
+            ? _isConfirmPasswordVisible
+            : false;
 
     final screenHeight = MediaQuery.of(context).size.height;
     final bool isSmallScreen = screenHeight < 700;
@@ -63,8 +63,7 @@ class CustomInputFieldState extends State<CustomInputField> {
         widget.errorMessage != null && widget.errorMessage!.isNotEmpty;
 
     return Padding(
-      padding:
-          widget.padding ??
+      padding: widget.padding ??
           EdgeInsets.symmetric(vertical: isSmallScreen ? 4.0 : 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,11 +79,12 @@ class CustomInputFieldState extends State<CustomInputField> {
           Container(
             decoration: widget.showLabel
                 ? BoxDecoration(
-                    color:
-                        widget.backgroundColor ?? AppColors.softBackgroundColor,
+                    color: (widget.backgroundColor?.adapt(context)) ??
+                        AppColors.softBackgroundColor.adapt(context),
                     borderRadius: BorderRadius.circular(2),
                     border: Border.all(
-                      color: AppColors.borderInputField.withAlpha(100),
+                      color:
+                          AppColors.borderInputField.adapt(context).withAlpha(100),
                       width: 1,
                     ),
                   )
@@ -92,7 +92,7 @@ class CustomInputFieldState extends State<CustomInputField> {
             child: TextFormField(
               style: TextStyle(
                 fontSize: widget.showLabel ? 16 : 10,
-                color: AppColors.textColor,
+                color: AppColors.textColor.adapt(context),
               ),
               readOnly: widget.readOnly,
               enabled: widget.enabled,
@@ -101,18 +101,19 @@ class CustomInputFieldState extends State<CustomInputField> {
                 filled: !widget.showLabel,
                 fillColor: widget.showLabel
                     ? null
-                    : AppColors.inputTextBackground,
+                    : AppColors.inputTextBackground.adapt(context),
                 hintText: widget.hint,
                 hintStyle: widget.showLabel
                     ? AppTextStyles.hint14(context).copyWith(
-                        color: AppColors.textColor.withAlpha(128),
+                        color:
+                            AppColors.textColor.adapt(context).withAlpha(128),
                       )
                     : AppTextStyles.hint10(context),
                 prefixIcon: Icon(
                   widget.icon,
                   color: widget.showLabel
-                      ? AppColors.textColor.withAlpha(200)
-                      : AppColors.icon,
+                      ? AppColors.textColor.adapt(context).withAlpha(200)
+                      : AppColors.icon.adapt(context),
                   size: widget.showLabel ? 20 : 24,
                 ),
                 contentPadding: EdgeInsets.symmetric(
@@ -124,8 +125,8 @@ class CustomInputFieldState extends State<CustomInputField> {
                     : OutlineInputBorder(
                         borderSide: BorderSide(
                           color: hasError
-                              ? AppColors.error
-                              : AppColors.borderInputField,
+                              ? AppColors.error.adapt(context)
+                              : AppColors.borderInputField.adapt(context),
                           width: hasError ? 2 : 1,
                         ),
                         borderRadius: BorderRadius.circular(5),
@@ -135,8 +136,8 @@ class CustomInputFieldState extends State<CustomInputField> {
                     : OutlineInputBorder(
                         borderSide: BorderSide(
                           color: hasError
-                              ? AppColors.error
-                              : AppColors.borderInputField,
+                              ? AppColors.error.adapt(context)
+                              : AppColors.borderInputField.adapt(context),
                           width: hasError ? 2 : 1,
                         ),
                         borderRadius: BorderRadius.circular(5),
@@ -146,8 +147,8 @@ class CustomInputFieldState extends State<CustomInputField> {
                     : OutlineInputBorder(
                         borderSide: BorderSide(
                           color: hasError
-                              ? AppColors.error
-                              : AppColors.borderInputField,
+                              ? AppColors.error.adapt(context)
+                              : AppColors.borderInputField.adapt(context),
                           width: 2,
                         ),
                         borderRadius: BorderRadius.circular(5),
@@ -155,9 +156,11 @@ class CustomInputFieldState extends State<CustomInputField> {
                 suffixIcon: widget.obscureText
                     ? IconButton(
                         icon: Icon(
-                          isVisible ? Icons.visibility_off : Icons.visibility,
+                          isVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                         ),
-                        color: AppColors.icon,
+                        color: AppColors.icon.adapt(context),
                         onPressed: () {
                           setState(() {
                             if (widget.isPassword) {
@@ -183,7 +186,8 @@ class CustomInputFieldState extends State<CustomInputField> {
           if (hasError)
             Padding(
               padding: const EdgeInsets.only(top: 4.0, left: 8.0),
-              child: Text(widget.errorMessage!, style: AppTextStyles.error10(context)),
+              child: Text(widget.errorMessage!,
+                  style: AppTextStyles.error10(context)),
             ),
         ],
       ),

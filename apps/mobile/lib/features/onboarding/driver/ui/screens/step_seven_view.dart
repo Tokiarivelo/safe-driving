@@ -42,7 +42,7 @@ class StepSevenView extends StatelessWidget {
             step.description!,
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(context).copyWith(
-              color: AppColors.textColor.withAlpha(180),
+              color: AppColors.textColor.adapt(context).withAlpha(180),
               height: 1.5,
             ),
           ),
@@ -67,8 +67,8 @@ class StepSevenView extends StatelessWidget {
                           groupValue: groupValue,
                           onChanged: (value) => coordinator.preferencesViewModel
                               .setGpsEnabled(false),
-                          titleColor: AppColors.fillButtonBackground,
-                          activeColor: AppColors.fillButtonBackground,
+                          titleColor: AppColors.fillButtonBackground.adapt(context),
+                          activeColor: AppColors.fillButtonBackground.adapt(context),
                         ),
                       ),
                       Expanded(
@@ -78,8 +78,8 @@ class StepSevenView extends StatelessWidget {
                           groupValue: groupValue,
                           onChanged: (value) => coordinator.preferencesViewModel
                               .handleGpsPermission(context),
-                          titleColor: AppColors.fillButtonBackground,
-                          activeColor: AppColors.fillButtonBackground,
+                          titleColor: AppColors.fillButtonBackground.adapt(context),
+                          activeColor: AppColors.fillButtonBackground.adapt(context),
                         ),
                       ),
                     ],

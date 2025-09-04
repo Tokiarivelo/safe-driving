@@ -51,79 +51,81 @@ class UserInteractiveMenuWidget extends StatelessWidget {
                   data: Theme.of(
                     context,
                   ).copyWith(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                    key: ValueKey('expansion_tile_${step}_$isExpanded'),
-                    backgroundColor: AppColors.transparent,
-                    collapsedBackgroundColor: AppColors.transparent,
-                    iconColor: AppColors.light,
-                    collapsedIconColor: AppColors.light,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: const BorderSide(
-                        color: AppColors.light,
-                        width: 1.0,
+                  child: Builder(
+                    builder: (context) => ExpansionTile(
+                      key: ValueKey('expansion_tile_${step}_$isExpanded'),
+                      backgroundColor: AppColors.transparent,
+                      collapsedBackgroundColor: AppColors.transparent,
+                      iconColor: AppColors.light.adapt(context),
+                      collapsedIconColor: AppColors.light.adapt(context),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(
+                          color: AppColors.light.adapt(context),
+                          width: 1.0,
+                        ),
                       ),
-                    ),
-                    collapsedShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: const BorderSide(
-                        color: AppColors.light,
-                        width: 1.0,
+                      collapsedShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(
+                          color: AppColors.light.adapt(context),
+                          width: 1.0,
+                        ),
                       ),
-                    ),
-                    initiallyExpanded: isExpanded,
-                    maintainState: true,
-                    onExpansionChanged: (bool expanded) {
-                      viewModel.updateExpansionTile(step, expanded);
-                    },
-                    controlAffinity: ListTileControlAffinity.trailing,
-                    tilePadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    title: Row(
-                      children: [
-                        if (stepInfo.emoji != null)
+                      initiallyExpanded: isExpanded,
+                      maintainState: true,
+                      onExpansionChanged: (bool expanded) {
+                        viewModel.updateExpansionTile(step, expanded);
+                      },
+                      controlAffinity: ListTileControlAffinity.trailing,
+                      tilePadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      title: Row(
+                        children: [
+                          if (stepInfo.emoji != null)
+                            Text(
+                              stepInfo.emoji!,
+                              style: const TextStyle(fontSize: 24),
+                            )
+                          else if (stepInfo.icon != null)
+                            Icon(stepInfo.icon!, color: AppColors.light.adapt(context), size: 24)
+                          else
+                            Icon(
+                              Icons.help,
+                              color: AppColors.light.adapt(context),
+                              size: 24,
+                            ),
+                          const SizedBox(width: 8),
                           Text(
-                            stepInfo.emoji!,
-                            style: const TextStyle(fontSize: 24),
-                          )
-                        else if (stepInfo.icon != null)
-                          Icon(stepInfo.icon!, color: AppColors.light, size: 24)
-                        else
-                          const Icon(
-                            Icons.help,
-                            color: AppColors.light,
-                            size: 24,
+                            stepInfo.title,
+                            style: TextStyle(
+                              color: AppColors.light.adapt(context),
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16,
+                            ),
                           ),
-                        const SizedBox(width: 8),
-                        Text(
-                          stepInfo.title,
-                          style: const TextStyle(
-                            color: AppColors.light,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16,
+                        ],
+                      ),
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(12),
+                              bottomRight: Radius.circular(12),
+                            ),
+                            border: Border(
+                              top: BorderSide(color: AppColors.light.adapt(context), width: 1),
+                            ),
                           ),
+                          padding: const EdgeInsets.all(16),
+                          child: UserStepContentWidget(step: step),
                         ),
                       ],
                     ),
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                          color: AppColors.secondBackgroundColor,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(12),
-                            bottomRight: Radius.circular(12),
-                          ),
-                          border: Border(
-                            top: BorderSide(color: AppColors.light, width: 1),
-                          ),
-                        ),
-                        padding: const EdgeInsets.all(16),
-                        child: UserStepContentWidget(step: step),
-                      ),
-                    ],
                   ),
                 ),
               );

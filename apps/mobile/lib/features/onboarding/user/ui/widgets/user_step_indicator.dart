@@ -25,14 +25,14 @@ class UserStepIndicator extends StatelessWidget {
           children: [
             CircularProgressIndicator(
               value: currentStep / totalSteps,
-              backgroundColor: AppColors.light,
-              valueColor: AlwaysStoppedAnimation(AppColors.progress),
+              backgroundColor: AppColors.light.adapt(context),
+              valueColor: AlwaysStoppedAnimation(AppColors.progress.adapt(context)),
               strokeWidth: 4,
             ),
             Text(
               '$currentStep/$totalSteps',
-              style: const TextStyle(
-                color: AppColors.light,
+              style: TextStyle(
+                color: AppColors.light.adapt(context),
                 fontWeight: FontWeight.bold,
               ),
             ),

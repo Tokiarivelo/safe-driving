@@ -9,23 +9,27 @@ Widget _buildStepContent({
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      Text(
-        title,
-        style: const TextStyle(
-          color: AppColors.buttonWithoutBackGround,
-          fontWeight: FontWeight.w800,
-          fontSize: 18,
+      Builder(
+        builder: (context) => Text(
+          title,
+          style: TextStyle(
+            color: AppColors.buttonWithoutBackGround.adapt(context),
+            fontWeight: FontWeight.w800,
+            fontSize: 18,
+          ),
+          textAlign: TextAlign.center,
         ),
-        textAlign: TextAlign.center,
       ),
       if (subtitle.isNotEmpty) ...[
         const SizedBox(height: 8),
-        Text(
-          subtitle,
-          style: TextStyle(
-            color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
+        Builder(
+          builder: (context) => Text(
+            subtitle,
+            style: TextStyle(
+              color: AppColors.buttonWithoutBackGround.adapt(context).withValues(alpha: 0.75),
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
         ),
       ],
       if (additionalContent != null) ...[

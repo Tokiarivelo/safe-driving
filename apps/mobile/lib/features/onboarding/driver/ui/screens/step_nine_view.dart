@@ -6,6 +6,8 @@ import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboar
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/chips.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/language_buttons.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_driving/core/theme/theme_controller.dart';
 
 class StepNineView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -24,6 +26,7 @@ class StepNineView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeOptions = [
+      {'label': 'Automatique', 'value': 'auto'},
       {'label': 'Clair', 'value': 'clair'},
       {'label': 'Sombre', 'value': 'sombre'},
     ];
@@ -48,7 +51,7 @@ class StepNineView extends StatelessWidget {
             step.description!,
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(context).copyWith(
-              color: AppColors.textColor.withAlpha(180),
+              color: AppColors.textColor.adapt(context).withAlpha(180),
               height: 1.5,
             ),
           ),
@@ -80,9 +83,10 @@ class StepNineView extends StatelessWidget {
                                     .selectedTheme ==
                                 option['value'],
                             onSelected: (_) {
-                              coordinator.preferencesViewModel.setSelectedTheme(
-                                option['value']!,
-                              );
+                              final value = option['value']!;
+                              coordinator.preferencesViewModel.setSelectedTheme(value);
+                              final mode = ThemeController.fromLabel(value);
+                              context.read<ThemeController>().setMode(mode);
                             },
                           ),
                           if (index < themeOptions.length - 1)

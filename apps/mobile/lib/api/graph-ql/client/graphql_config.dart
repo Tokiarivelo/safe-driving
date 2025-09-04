@@ -4,11 +4,23 @@ class GraphQLConfig {
   const GraphQLConfig._();
 
   static String get endpoint {
-    final value = dotenv.env['GRAPHQL_ENDPOINT'];
-    if (value == null || value.trim().isEmpty) {
-      throw Exception('GRAPHQL_ENDPOINT is not configured in .env file');
+    const define = String.fromEnvironment('GRAPHQL_ENDPOINT');
+    if (define.isNotEmpty) return define;
+
+    String? value;
+    try {
+      if (dotenv.isInitialized) {
+        value = dotenv.env['GRAPHQL_ENDPOINT'];
+      }
+    } catch (_) {
+      value = null;
     }
-    return value;
+    if (value == null || value.trim().isEmpty) {
+      throw Exception(
+        'GRAPHQL_ENDPOINT is not configured (use --dart-define or .env)',
+      );
+    }
+    return value.trim();
   }
 
   static Map<String, String> headers({String? accessToken}) {
@@ -21,14 +33,22 @@ class GraphQLConfig {
   }
 
   static void validateConfiguration() {
-    final requiredVars = [
-      'GRAPHQL_ENDPOINT',
-    ];
+    const define = String.fromEnvironment('GRAPHQL_ENDPOINT');
+    if (define.isNotEmpty) return;
+
+    final requiredVars = ['GRAPHQL_ENDPOINT'];
 
     final missingVars = <String>[];
 
     for (final varName in requiredVars) {
-      final value = dotenv.env[varName];
+      String? value;
+      try {
+        if (dotenv.isInitialized) {
+          value = dotenv.env[varName];
+        }
+      } catch (_) {
+        value = null;
+      }
       if (value == null || value.trim().isEmpty) {
         missingVars.add(varName);
       }
@@ -36,7 +56,7 @@ class GraphQLConfig {
 
     if (missingVars.isNotEmpty) {
       throw Exception(
-        'Missing required environment variables: ${missingVars.join(', ')}'
+        'Missing required environment variables: ${missingVars.join(', ')} (or set via --dart-define)',
       );
     }
   }
@@ -50,4 +70,3 @@ class GraphQLConfig {
     }
   }
 }
-

@@ -13,74 +13,82 @@ Widget _buildExpansionTile({
       data: Theme.of(
         NavigationService.navigatorKey.currentContext!,
       ).copyWith(dividerColor: Colors.transparent),
-      child: ExpansionTile(
-        key: ValueKey('expansion_tile_${step}_$isExpanded'),
-        backgroundColor: AppColors.transparent,
-        collapsedBackgroundColor: AppColors.transparent,
-        iconColor: AppColors.light,
-        collapsedIconColor: AppColors.light,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: AppColors.light, width: 1.0),
+      child: Builder(
+        builder: (context) => ExpansionTile(
+          key: ValueKey('expansion_tile_${step}_$isExpanded'),
+          backgroundColor: AppColors.transparent,
+          collapsedBackgroundColor: AppColors.transparent,
+          iconColor: AppColors.light.adapt(context),
+          collapsedIconColor: AppColors.light.adapt(context),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: AppColors.light.adapt(context), width: 1.0),
+          ),
+          collapsedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: AppColors.light.adapt(context), width: 1.0),
+          ),
+          initiallyExpanded: isExpanded,
+          maintainState: true,
+          onExpansionChanged: onExpansionChanged,
+          controlAffinity: ListTileControlAffinity.trailing,
+          tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          title: _buildExpansionTileTitle(info),
+          children: [
+            slideSmoothAnimation(child: _buildExpansionTileContent(content)),
+          ],
         ),
-        collapsedShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: AppColors.light, width: 1.0),
-        ),
-        initiallyExpanded: isExpanded,
-        maintainState: true,
-        onExpansionChanged: onExpansionChanged,
-        controlAffinity: ListTileControlAffinity.trailing,
-        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        title: _buildExpansionTileTitle(info),
-        children: [
-          slideSmoothAnimation(child: _buildExpansionTileContent(content)),
-        ],
       ),
-    ),
+      ),
   );
 }
 
 Widget _buildExpansionTileTitle(StepInfo info) {
-  return Row(
-    children: [
-      if (info.emoji != null)
-        Transform.translate(
-          offset: const Offset(-4, 0),
-          child: Container(
-            width: 24,
-            height: 30,
-            alignment: Alignment.centerLeft,
-            child: Text(info.emoji!, style: const TextStyle(fontSize: 20)),
+  return Builder(
+    builder: (context) => Row(
+      children: [
+        if (info.emoji != null)
+          Transform.translate(
+            offset: const Offset(-4, 0),
+            child: Container(
+              width: 24,
+              height: 30,
+              alignment: Alignment.centerLeft,
+              child: Text(info.emoji!, style: const TextStyle(fontSize: 20)),
+            ),
+          )
+        else if (info.icon != null)
+          Icon(info.icon, color: AppColors.light.adapt(context), size: 24)
+        else
+          const SizedBox.shrink(),
+        const SizedBox(width: 8),
+        Text(
+          info.title,
+          style: TextStyle(
+            color: AppColors.light.adapt(context),
+            fontWeight: FontWeight.normal,
+            fontSize: 16,
           ),
-        )
-      else if (info.icon != null)
-        Icon(info.icon, color: AppColors.light, size: 24),
-      const SizedBox(width: 8),
-      Text(
-        info.title,
-        style: const TextStyle(
-          color: AppColors.light,
-          fontWeight: FontWeight.normal,
-          fontSize: 16,
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }
 
 Widget _buildExpansionTileContent(Widget content) {
-  return Container(
-    width: double.infinity,
-    decoration: const BoxDecoration(
-      color: AppColors.secondBackgroundColor,
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(12),
-        bottomRight: Radius.circular(12),
+  return Builder(
+    builder: (context) => Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(12),
+          bottomRight: Radius.circular(12),
+        ),
+        border: Border(top: BorderSide(color: AppColors.light.adapt(context), width: 1)),
       ),
-      border: Border(top: BorderSide(color: AppColors.light, width: 1)),
+      padding: const EdgeInsets.all(16),
+      child: content,
     ),
-    padding: const EdgeInsets.all(16),
-    child: content,
   );
 }

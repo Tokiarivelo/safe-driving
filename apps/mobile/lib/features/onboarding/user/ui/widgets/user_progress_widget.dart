@@ -27,14 +27,14 @@ class UserProgressWidget extends StatelessWidget {
               children: [
                 CircularProgressIndicator(
                   value: currentStep / totalSteps,
-                  backgroundColor: AppColors.light,
-                  valueColor: AlwaysStoppedAnimation(AppColors.progress),
+                  backgroundColor: AppColors.light.adapt(context),
+                  valueColor: AlwaysStoppedAnimation(AppColors.progress.adapt(context)),
                   strokeWidth: 4,
                 ),
                 Text(
                   '$currentStep/$totalSteps',
-                  style: const TextStyle(
-                    color: AppColors.light,
+                  style: TextStyle(
+                    color: AppColors.light.adapt(context),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -45,7 +45,7 @@ class UserProgressWidget extends StatelessWidget {
           Expanded(
             child: Text(
               stepTitle,
-              style: const TextStyle(color: AppColors.light, fontSize: 16),
+              style: TextStyle(color: AppColors.light.adapt(context), fontSize: 16),
             ),
           ),
         ],

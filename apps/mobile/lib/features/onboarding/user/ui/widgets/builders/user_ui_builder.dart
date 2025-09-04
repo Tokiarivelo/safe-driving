@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/shared/widgets/customs/animations/animation_widget.dart';
+import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
 import '../../../models/user_onboarding_step_model.dart';
 import '../user_step_indicator.dart';
 

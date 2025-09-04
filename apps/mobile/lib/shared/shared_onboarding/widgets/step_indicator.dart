@@ -131,7 +131,7 @@ class HorizontalStepIndicator extends StatelessWidget {
               ? Icon(
                   Icons.check,
                   size: defaultDotSize * 0.6,
-                  color: AppColors.light,
+                  color: AppColors.light.adapt(context),
                 )
               : null,
         );

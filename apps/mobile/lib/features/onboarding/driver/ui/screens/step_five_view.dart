@@ -71,7 +71,7 @@ class _StepFiveViewState extends State<StepFiveView> {
             'Ajoutez votre certificat d\'immatriculation, votre attestation d\'assurance et quelques photos du véhicule.',
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(context).copyWith(
-              color: AppColors.textColor.withAlpha(180),
+              color: AppColors.textColor.adapt(context).withAlpha(180),
               height: 1.5,
             ),
           ),

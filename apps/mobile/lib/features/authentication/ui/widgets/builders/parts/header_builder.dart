@@ -23,7 +23,7 @@ class HeaderBuilder {
           stepData.subtitle,
           textAlign: TextAlign.center,
           style: AppTextStyles.caption12(context).copyWith(
-            color: AppColors.titleColor.withAlpha(220),
+            color: AppColors.titleColor.adapt(context).withAlpha(220),
           ),
         ),
         if (!isForgotPassword && stepData.subSubtitle.isNotEmpty) ...[
@@ -35,7 +35,7 @@ class HeaderBuilder {
               fontFamily: 'Inder',
               fontSize: 12,
               fontWeight: FontWeight.w200,
-              color: AppColors.titleColor.withAlpha(220),
+              color: AppColors.titleColor.adapt(context).withAlpha(220),
             ),
           ),
         ],

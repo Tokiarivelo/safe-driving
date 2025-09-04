@@ -23,7 +23,7 @@ class AuthLayout extends StatelessWidget {
 
     return Container(
       height: double.infinity,
-      decoration: ColorsWidget.background,
+      decoration: ColorsWidget.background(context),
       child: SafeArea(
         child: isRegister
             ? _buildRegisterLayout(isSmallScreen)

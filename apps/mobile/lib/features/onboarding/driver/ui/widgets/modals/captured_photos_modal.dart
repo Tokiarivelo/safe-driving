@@ -38,10 +38,10 @@ class CapturedPhotosModalState
       onPressed: showDeleteAllConfirmation,
       fontSize: 14,
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-      textColor: AppColors.buttonWithoutBackGround,
-      borderColor: AppColors.light,
+      textColor: AppColors.buttonWithoutBackGround.adapt(context),
+      borderColor: AppColors.light.adapt(context),
       elevation: 2,
-      icon: const Icon(Icons.delete, color: AppColors.buttonWithoutBackGround),
+      icon: Icon(Icons.delete, color: AppColors.buttonWithoutBackGround.adapt(context)),
     );
   }
 }

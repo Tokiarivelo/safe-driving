@@ -24,9 +24,9 @@ class BaseModalLayout extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
       padding: const EdgeInsets.all(16.0),
-      decoration: const BoxDecoration(
-        color: AppColors.light,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: AppColors.light.adapt(context),
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
         ),

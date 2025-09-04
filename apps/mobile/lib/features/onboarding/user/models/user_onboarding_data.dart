@@ -50,7 +50,7 @@ class UserOnboardingData {
         buttonTitles: ['Plus tard', 'Valider'],
         additionalContent: {
           'themeLabel': 'Thème',
-          'themeOptions': ['Clair', 'Sombre'],
+'themeOptions': ['Automatique', 'Clair', 'Sombre'],
           'transportLabel': 'Type de transport',
           'transportModes': ['Voiture', 'Moto', 'TukTuk', 'Vélo'],
         },

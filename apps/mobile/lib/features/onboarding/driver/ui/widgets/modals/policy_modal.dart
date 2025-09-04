@@ -65,13 +65,13 @@ class _PolicyModalState extends State<PolicyModal> {
               h1: AppTextStyles.h1BoldNeutral(context),
               h2: AppTextStyles.h2BoldNeutral(context),
               p: AppTextStyles.body14(context),
-              listBullet: const TextStyle(
+              listBullet: TextStyle(
                 fontSize: 14,
-                color: AppColors.textColor,
+                color: AppColors.textColor.adapt(context),
               ),
-              strong: const TextStyle(
+              strong: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: AppColors.textColor,
+                color: AppColors.textColor.adapt(context),
               ),
             ),
           ),
@@ -80,9 +80,9 @@ class _PolicyModalState extends State<PolicyModal> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text(
+          child: Text(
             "Annuler",
-            style: TextStyle(color: AppColors.buttonWithoutBackGround),
+            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
           ),
         ),
         ElevatedButton(
@@ -94,15 +94,15 @@ class _PolicyModalState extends State<PolicyModal> {
               : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: _hasScrolledToBottom
-                ? AppColors.fillButtonBackground
-                : AppColors.unclickable,
+                ? AppColors.fillButtonBackground.adapt(context)
+                : AppColors.unclickable.adapt(context),
           ),
           child: Text(
             _hasScrolledToBottom ? "J'accepte" : "Lisez d'abord le contenu",
             style: TextStyle(
               color: _hasScrolledToBottom
-                  ? AppColors.light
-                  : AppColors.light.withValues(alpha: 0.7),
+                  ? AppColors.light.adapt(context)
+                  : AppColors.light.adapt(context).withValues(alpha: 0.7),
             ),
           ),
         ),

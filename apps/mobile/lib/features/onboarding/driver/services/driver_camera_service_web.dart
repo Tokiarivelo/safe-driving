@@ -91,14 +91,14 @@ class DriverCameraServiceWebState extends State<PlatformDriverCameraService> {
         width: 350,
         height: 300,
         decoration: BoxDecoration(
-          border: Border.all(color: AppColors.fillButtonBackground, width: 3),
+          border: Border.all(color: AppColors.fillButtonBackground.adapt(context), width: 3),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Container(
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             border: Border.all(
-              color: AppColors.fillButtonBackground.withValues(alpha: 0.5),
+              color: AppColors.fillButtonBackground.adapt(context).withValues(alpha: 0.5),
               width: 0.2,
             ),
             borderRadius: BorderRadius.circular(8),
@@ -147,11 +147,11 @@ class DriverCameraServiceWebState extends State<PlatformDriverCameraService> {
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              color: AppColors.buttonWithoutBackGround,
+              color: AppColors.buttonWithoutBackGround.adapt(context),
               borderRadius: BorderRadius.circular(100),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.dark.withValues(alpha: 0.6),
+                  color: AppColors.dark.adapt(context).withValues(alpha: 0.6),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -159,7 +159,7 @@ class DriverCameraServiceWebState extends State<PlatformDriverCameraService> {
             ),
             child: IconButton(
               iconSize: 50,
-              color: AppColors.light,
+              color: AppColors.light.adapt(context),
               onPressed: _takePicture,
               icon: const Icon(Icons.camera_alt),
             ),

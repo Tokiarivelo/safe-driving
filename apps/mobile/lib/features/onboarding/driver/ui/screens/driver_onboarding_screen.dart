@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/controls/driver_pagination_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
 
@@ -34,7 +33,7 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
 
         return Scaffold(
           body: Container(
-            decoration: ColorsWidget.background,
+            decoration: ColorsWidget.background(context),
             child: DriverPaginationWidget(
               key: _paginationKey,
               totalSteps: coordinator.steps.length,
@@ -48,7 +47,7 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                       height: headerHeight,
                       child: Container(
                         width: double.infinity,
-                        decoration: ColorsWidget.background,
+                        decoration: ColorsWidget.background(context),
                         child: SafeArea(
                           child: Column(
                             children: [
@@ -96,7 +95,7 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                           topRight: Radius.circular(24),
                         ),
                         child: Container(
-                          color: AppColors.secondBackgroundColor,
+                          color: ColorsWidget.surface(context),
                           child:
                               _paginationKey.currentState?.pageController !=
                                   null

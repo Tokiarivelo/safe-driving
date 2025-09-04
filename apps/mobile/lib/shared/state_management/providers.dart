@@ -4,19 +4,42 @@ import '../../features/authentication/viewmodels/auth_view_model.dart';
 import '../../features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart';
 import 'service_locator.dart';
+import 'package:safe_driving/core/theme/theme_controller.dart';
+import 'package:safe_driving/api/graph-ql/client/graphql_config.dart';
 
 class AppProviders {
-  static List<ChangeNotifierProvider> get providers => [
-    ChangeNotifierProvider<AuthViewModel>(
-      create: (_) => ServiceLocator.instance.get<AuthViewModel>(),
-    ),
-    ChangeNotifierProvider<DriverOnboardingCoordinator>(
-      create: (_) => ServiceLocator.instance.get<DriverOnboardingCoordinator>(),
-    ),
-    ChangeNotifierProvider<UserOnboardingViewModel>(
-      create: (_) => ServiceLocator.instance.get<UserOnboardingViewModel>(),
-    ),
-  ];
+  static List<ChangeNotifierProvider> get providers {
+    final sl = ServiceLocator.instance;
+    final list = <ChangeNotifierProvider>[];
+
+    if (GraphQLConfig.isConfigured) {
+      list.add(
+        ChangeNotifierProvider<AuthViewModel>(
+          create: (_) => sl.get<AuthViewModel>(),
+        ),
+      );
+    }
+
+    list.add(
+      ChangeNotifierProvider<DriverOnboardingCoordinator>(
+        create: (_) => sl.get<DriverOnboardingCoordinator>(),
+      ),
+    );
+
+    list.add(
+      ChangeNotifierProvider<UserOnboardingViewModel>(
+        create: (_) => sl.get<UserOnboardingViewModel>(),
+      ),
+    );
+
+    list.add(
+      ChangeNotifierProvider<ThemeController>(
+        create: (_) => sl.get<ThemeController>(),
+      ),
+    );
+
+    return list;
+  }
 }
 
 extension AppContext on BuildContext {
@@ -30,4 +53,6 @@ extension AppContext on BuildContext {
       read<UserOnboardingViewModel>();
   UserOnboardingViewModel get userOnboardingVMWatch =>
       watch<UserOnboardingViewModel>();
+  ThemeController get themeController => read<ThemeController>();
+  ThemeController get themeControllerWatch => watch<ThemeController>();
 }

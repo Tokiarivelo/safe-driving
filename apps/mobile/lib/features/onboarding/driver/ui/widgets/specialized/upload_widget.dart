@@ -59,17 +59,17 @@ class UploadWidgetState extends State<UploadWidget> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              color: AppColors.softBackgroundColor,
+              color: AppColors.softBackgroundColor.adapt(context),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               widget.title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textColor,
-                fontFamily: 'Inder',
-              ),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textColor.adapt(context),
+              fontFamily: 'Inder',
+            ),
             ),
           ),
           const SizedBox(height: 8),
@@ -77,7 +77,7 @@ class UploadWidgetState extends State<UploadWidget> {
 
         CustomPaint(
           painter: DashedBorderPainter(
-            color: AppColors.fillButtonBackground,
+            color: AppColors.fillButtonBackground.adapt(context),
             strokeWidth: 2,
             dashWidth: 8,
             dashSpace: 4,
@@ -87,7 +87,7 @@ class UploadWidgetState extends State<UploadWidget> {
             padding: const EdgeInsets.all(32),
             margin: const EdgeInsets.all(2),
             decoration: BoxDecoration(
-              color: AppColors.softBackgroundColor,
+              color: AppColors.softBackgroundColor.adapt(context),
               borderRadius: BorderRadius.circular(12),
             ),
             child: _selectedImages.isNotEmpty
@@ -107,12 +107,12 @@ class UploadWidgetState extends State<UploadWidget> {
         Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.upload,
+            color: AppColors.upload.adapt(context),
           ),
           padding: const EdgeInsets.all(16),
-          child: const Icon(
+          child: Icon(
             Icons.cloud_upload_outlined,
-            color: AppColors.light,
+            color: AppColors.light.adapt(context),
             size: 32,
           ),
         ),
@@ -121,10 +121,10 @@ class UploadWidgetState extends State<UploadWidget> {
           Text(
             widget.description,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
-              color: Color.fromARGB(202, 130, 32, 114),
+              color: AppColors.textColor.adapt(context).withAlpha(202),
               fontFamily: 'Inder',
             ),
           ),
@@ -147,21 +147,21 @@ class UploadWidgetState extends State<UploadWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.color1,
+            color: AppColors.color1.adapt(context),
           ),
           padding: const EdgeInsets.all(16),
-          child: const Icon(Icons.check, color: AppColors.light, size: 32),
+          child: Icon(Icons.check, color: AppColors.light.adapt(context), size: 32),
         ),
         const SizedBox(height: 16),
         Text(
           "${_selectedImages.length} photo${_selectedImages.length > 1 ? 's' : ''} sélectionnée${_selectedImages.length > 1 ? 's' : ''}",
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: AppColors.textColor,
+            color: AppColors.textColor.adapt(context),
             fontFamily: 'Inder',
           ),
         ),
@@ -173,13 +173,13 @@ class UploadWidgetState extends State<UploadWidget> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: AppColors.fillButtonBackground,
+                color: AppColors.fillButtonBackground.adapt(context),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 widget.addMorePhotosText!,
-                style: const TextStyle(
-                  color: AppColors.light,
+                style: TextStyle(
+                  color: AppColors.light.adapt(context),
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
@@ -192,13 +192,13 @@ class UploadWidgetState extends State<UploadWidget> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: AppColors.fillButtonBackground,
+                color: AppColors.fillButtonBackground.adapt(context),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Text(
+              child: Text(
                 "Gérer les photos",
                 style: TextStyle(
-                  color: AppColors.light,
+                  color: AppColors.light.adapt(context),
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),

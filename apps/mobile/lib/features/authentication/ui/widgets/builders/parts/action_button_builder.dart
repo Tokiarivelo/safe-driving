@@ -10,21 +10,23 @@ class ActionButtonBuilder {
     required String buttonText,
     required VoidCallback onPressed,
   }) {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.fillButtonBackground,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        ),
-        child: Text(
-          buttonText,
-          style: const TextStyle(
-            fontFamily: 'Inder',
-            color: AppColors.titleColor,
-            fontSize: 13,
+    return Builder(
+      builder: (context) => SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.fillButtonBackground.adapt(context),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          ),
+          child: Text(
+            buttonText,
+            style: TextStyle(
+              fontFamily: 'Inder',
+              color: AppColors.titleColor.adapt(context),
+              fontSize: 13,
+            ),
           ),
         ),
       ),
@@ -170,11 +172,13 @@ class _AnimatedAuthContentState extends State<_AnimatedAuthContent>
             ),
             SizedBox(height: widget.isSmallScreen ? 12 : 16),
             if (!widget.isForgotPassword) ...[
-              Text(
-                widget.stepData.socialText,
-                style: const TextStyle(
-                  fontFamily: 'Inder',
-                  color: AppColors.textColor,
+              Builder(
+                builder: (context) => Text(
+                  widget.stepData.socialText,
+                  style: TextStyle(
+                    fontFamily: 'Inder',
+                    color: AppColors.textColor.adapt(context),
+                  ),
                 ),
               ),
               SizedBox(height: widget.isSmallScreen ? 10 : 15),

@@ -14,7 +14,7 @@ class AppTheme {
       fontWeight: FontWeight.w400,
       height: 1.6,
     ),
-    labelLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w500), // Buttons
+    labelLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
     labelMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
     labelSmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
   );
@@ -75,8 +75,8 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.buttonWithoutBackGround,
           side: const BorderSide(
-            color: AppColors.buttonWithoutBackGround,
-            width: 2,
+            color: AppColors.borderButtonLight,
+            width: 1,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -179,7 +179,7 @@ class AppTheme {
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return AppColors.color1;
+            return AppColors.progress; // Vert comme le CircularProgressBar
           }
           return AppColors.unclickable.withValues(alpha: 0.3);
         }),
@@ -213,26 +213,22 @@ class AppTheme {
       colorScheme: ColorScheme.dark(
         primary: AppColors.color1,
         secondary: AppColors.color2,
-        surface: AppColors.dark,
+        surface: AppColors.backgroundSecondary,
         error: AppColors.error,
         onPrimary: AppColors.light,
         onSecondary: AppColors.light,
-        onSurface: AppColors.light,
+        onSurface: AppColors.textColorDark,
         onError: AppColors.light,
-        primaryContainer: AppColors.buttonWithoutBackGround.withValues(
-          alpha: 0.3,
-        ),
-        secondaryContainer: AppColors.buttonWithoutBackGround.withValues(
-          alpha: 0.2,
-        ),
+        primaryContainer: AppColors.backgroundSoft,
+        secondaryContainer: AppColors.backgroundSoft,
         tertiary: AppColors.color1,
-        outline: AppColors.color1.withValues(alpha: 0.5),
+        outline: AppColors.borderButtonDark,
       ),
 
-      scaffoldBackgroundColor: AppColors.dark,
+      scaffoldBackgroundColor: AppColors.backgroundPrimary,
 
       appBarTheme: AppBarTheme(
-        backgroundColor: AppColors.dark,
+        backgroundColor: AppColors.backgroundPrimary,
         foregroundColor: AppColors.light,
         elevation: 0,
         centerTitle: true,
@@ -260,8 +256,8 @@ class AppTheme {
 
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.color1,
-          side: const BorderSide(color: AppColors.color1, width: 2),
+          foregroundColor: AppColors.buttonWithoutBackGroundDark,
+          side: const BorderSide(color: AppColors.borderButtonDark, width: 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -270,66 +266,64 @@ class AppTheme {
       ),
 
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(foregroundColor: AppColors.color1),
+        style: TextButton.styleFrom(foregroundColor: AppColors.buttonWithoutBackGroundDark),
       ),
 
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.dark,
+        fillColor: AppColors.inputTextBackgroundDark,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: AppColors.color1.withValues(alpha: 0.3),
+          borderSide: const BorderSide(
+            color: AppColors.borderButtonDark,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: AppColors.color1.withValues(alpha: 0.3),
+          borderSide: const BorderSide(
+            color: AppColors.borderButtonDark,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.color1, width: 2),
+          borderSide: const BorderSide(color: AppColors.borderInputField, width: 2),
         ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.error),
+        errorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: AppColors.error),
         ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.error, width: 2),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: AppColors.error, width: 2),
         ),
         hintStyle: _textTheme.bodySmall?.copyWith(
-          color: AppColors.light.withValues(alpha: 0.5),
+          color: AppColors.placeHolderInputDark,
         ),
         labelStyle: _textTheme.labelMedium?.copyWith(
-          color: AppColors.light.withValues(alpha: 0.8),
+          color: AppColors.textColorDark,
         ),
         errorStyle: _textTheme.labelSmall?.copyWith(color: AppColors.error),
       ),
 
-      iconTheme: const IconThemeData(color: AppColors.color1),
+      iconTheme: const IconThemeData(color: AppColors.iconDark),
 
       cardTheme: CardThemeData(
-        color: AppColors.dark,
+        color: AppColors.backgroundSoft,
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
 
       chipTheme: ChipThemeData(
-        backgroundColor: AppColors.buttonWithoutBackGround.withValues(
-          alpha: 0.2,
-        ),
+        backgroundColor: AppColors.backgroundSoft,
         selectedColor: AppColors.color1,
         disabledColor: AppColors.unclickable.withValues(alpha: 0.3),
-        labelStyle: _textTheme.labelSmall?.copyWith(color: AppColors.light),
+        labelStyle: _textTheme.labelSmall?.copyWith(color: AppColors.textColorDark),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
 
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: AppColors.dark,
+        backgroundColor: AppColors.backgroundSecondary,
         selectedItemColor: AppColors.color1,
         unselectedItemColor: AppColors.unclickable,
         showUnselectedLabels: true,
@@ -337,26 +331,22 @@ class AppTheme {
       ),
 
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: AppColors.dark,
+        backgroundColor: AppColors.backgroundSecondary,
         contentTextStyle: _textTheme.bodyMedium?.copyWith(
-          color: AppColors.light,
+          color: AppColors.textColorDark,
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         behavior: SnackBarBehavior.floating,
       ),
 
       progressIndicatorTheme: ProgressIndicatorThemeData(
-        color: AppColors.color1,
-        linearTrackColor: AppColors.buttonWithoutBackGround.withValues(
-          alpha: 0.2,
-        ),
-        circularTrackColor: AppColors.buttonWithoutBackGround.withValues(
-          alpha: 0.2,
-        ),
+        color: AppColors.progress,
+        linearTrackColor: AppColors.backgroundSoft,
+        circularTrackColor: AppColors.backgroundSoft,
       ),
 
       dividerTheme: DividerThemeData(
-        color: AppColors.light.withValues(alpha: 0.1),
+        color: AppColors.borderButtonDark.withValues(alpha: 0.3),
         thickness: 1,
       ),
 
@@ -369,7 +359,7 @@ class AppTheme {
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return AppColors.color1;
+            return AppColors.progress; // Vert comme le CircularProgressBar
           }
           return AppColors.unclickable.withValues(alpha: 0.3);
         }),
@@ -381,12 +371,12 @@ class AppTheme {
       ),
 
       dialogTheme: DialogThemeData(
-        backgroundColor: AppColors.dark,
+        backgroundColor: AppColors.backgroundSecondary,
         titleTextStyle: _textTheme.headlineSmall?.copyWith(
-          color: AppColors.light,
+          color: AppColors.textColorDark,
         ),
         contentTextStyle: _textTheme.bodyMedium?.copyWith(
-          color: AppColors.light.withValues(alpha: 0.9),
+          color: AppColors.textColorDark,
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
@@ -398,11 +388,8 @@ class AppTheme {
       case ThemeMode.dark:
         return darkTheme;
       case ThemeMode.light:
+      case ThemeMode.system: // Le mode automatique est supprimé: fallback => light
         return lightTheme;
-      case ThemeMode.system:
-        final brightness =
-            WidgetsBinding.instance.platformDispatcher.platformBrightness;
-        return brightness == Brightness.dark ? darkTheme : lightTheme;
     }
   }
 }

@@ -31,23 +31,25 @@ class InputBuilder {
     required String forgotText,
     required VoidCallback? onTap,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: AppColors.buttonWithoutBackGround),
+    return Builder(
+      builder: (context) => GestureDetector(
+        onTap: onTap,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: AppColors.buttonWithoutBackGround.adapt(context)),
+              ),
             ),
-          ),
-          child: Text(
-            forgotText,
-            style: TextStyle(
-              fontFamily: 'Inder',
-              color: AppColors.buttonWithoutBackGround,
-              fontWeight: FontWeight.bold,
-              fontSize: 10,
+            child: Text(
+              forgotText,
+              style: TextStyle(
+                fontFamily: 'Inder',
+                color: AppColors.buttonWithoutBackGround.adapt(context),
+                fontWeight: FontWeight.bold,
+                fontSize: 10,
+              ),
             ),
           ),
         ),

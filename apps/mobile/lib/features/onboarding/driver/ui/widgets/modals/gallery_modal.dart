@@ -44,10 +44,10 @@ class PhotoManagementModalState
             onPressed: () => _pickImage(ImageSource.gallery),
             fontSize: 14,
             padding: const EdgeInsets.symmetric(vertical: 16),
-            icon: const Icon(
+            icon: Icon(
               Icons.photo_library,
               size: 18,
-              color: AppColors.light,
+              color: AppColors.light.adapt(context),
             ),
           ),
         ),
@@ -61,7 +61,7 @@ class PhotoManagementModalState
             icon: Icon(
               Icons.camera_alt,
               size: 18,
-              color: AppColors.buttonWithoutBackGround,
+              color: AppColors.buttonWithoutBackGround.adapt(context),
             ),
           ),
         ),
@@ -74,8 +74,8 @@ class PhotoManagementModalState
               onPressed: showDeleteAllConfirmation,
               fontSize: 14,
               padding: const EdgeInsets.symmetric(vertical: 12),
-              textColor: AppColors.error,
-              borderColor: AppColors.error,
+              textColor: AppColors.error.adapt(context),
+              borderColor: AppColors.error.adapt(context),
             ),
           ),
       ],

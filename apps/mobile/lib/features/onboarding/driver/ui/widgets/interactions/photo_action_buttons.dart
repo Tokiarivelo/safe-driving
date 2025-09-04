@@ -28,10 +28,10 @@ class PhotoActionButtons extends StatelessWidget {
             onPressed: onPickFromGallery,
             fontSize: 14,
             padding: const EdgeInsets.symmetric(vertical: 16),
-            icon: const Icon(
+            icon: Icon(
               Icons.photo_library,
               size: 18,
-              color: AppColors.light,
+              color: AppColors.light.adapt(context),
             ),
           ),
         ),
@@ -45,7 +45,7 @@ class PhotoActionButtons extends StatelessWidget {
             icon: Icon(
               Icons.camera_alt,
               size: 18,
-              color: AppColors.buttonWithoutBackGround,
+              color: AppColors.buttonWithoutBackGround.adapt(context),
             ),
           ),
         ),
@@ -60,7 +60,7 @@ class PhotoActionButtons extends StatelessWidget {
               icon: Icon(
                 Icons.delete_sweep,
                 size: 18,
-                color: AppColors.buttonWithoutBackGround,
+                color: AppColors.buttonWithoutBackGround.adapt(context),
               ),
             ),
           ),

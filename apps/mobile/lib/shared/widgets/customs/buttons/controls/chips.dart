@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
 
 class Chips {
   static Widget customChoiceChip({
@@ -9,18 +10,22 @@ class Chips {
     Color? selectedColor,
     Color? labelColor,
   }) {
-    return FilterChip(
-      label: Text(
-        label,
-        style: TextStyle(
-          color:
-              labelColor ?? (selected ? AppColors.light : AppColors.textColor),
+    return Builder(
+      builder: (context) => FilterChip(
+        label: Text(
+          label,
+          style: TextStyle(
+            color: (labelColor ??
+                    (selected ? AppColors.light : AppColors.textColor))
+                .adapt(context),
+          ),
         ),
+        selected: selected,
+        onSelected: onSelected,
+        selectedColor:
+            (selectedColor ?? AppColors.fillButtonBackground).adapt(context),
+        selectedShadowColor: AppColors.light.adapt(context),
       ),
-      selected: selected,
-      onSelected: onSelected,
-      selectedColor: selectedColor ?? AppColors.fillButtonBackground,
-      selectedShadowColor: AppColors.light,
     );
   }
 
@@ -35,33 +40,38 @@ class Chips {
     Color? labelColor,
     Color? selectedLabelColor,
   }) {
-    return FilterChip(
-      avatar: avatarIcon != null
-          ? Icon(
-              avatarIcon,
-              size: 18,
-              color: selected
-                  ? (selectedLabelColor ?? AppColors.light)
-                  : (labelColor ?? AppColors.buttonWithoutBackGround),
-            )
-          : null,
-      label: Text(
-        label,
-        style: TextStyle(
-          color: selected
-              ? (selectedLabelColor ?? AppColors.light)
-              : (labelColor ?? AppColors.buttonWithoutBackGround),
+    return Builder(
+      builder: (context) => FilterChip(
+        avatar: avatarIcon != null
+            ? Icon(
+                avatarIcon,
+                size: 18,
+                color: selected
+                    ? ((selectedLabelColor ?? AppColors.light).adapt(context))
+                    : ((labelColor ?? AppColors.buttonWithoutBackGround)
+                        .adapt(context)),
+              )
+            : null,
+        label: Text(
+          label,
+          style: TextStyle(
+            color: selected
+                ? ((selectedLabelColor ?? AppColors.light).adapt(context))
+                : ((labelColor ?? AppColors.buttonWithoutBackGround)
+                    .adapt(context)),
+          ),
         ),
-      ),
-      selected: selected,
-      onSelected: onSelected,
-      selectedColor: selectedColor ?? AppColors.fillButtonBackground,
-      checkmarkColor: checkmarkColor ?? AppColors.light,
-      backgroundColor: backgroundColor,
-      side: BorderSide(
-        color: selected
-            ? (selectedColor ?? AppColors.fillButtonBackground)
-            : AppColors.buttonWithoutBackGround.withValues(alpha: 0.3),
+        selected: selected,
+        onSelected: onSelected,
+        selectedColor:
+            (selectedColor ?? AppColors.fillButtonBackground).adapt(context),
+        checkmarkColor: (checkmarkColor ?? AppColors.light).adapt(context),
+        backgroundColor: backgroundColor,
+        side: BorderSide(
+          color: selected
+              ? ((selectedColor ?? AppColors.fillButtonBackground).adapt(context))
+              : ColorsWidget.subtleBorderColor(context),
+        ),
       ),
     );
   }
@@ -77,29 +87,33 @@ class Chips {
     double? fontSize,
     double? deleteIconSize,
   }) {
-    return Chip(
-      avatar: avatar,
-      label: Text(
-        label,
-        style: TextStyle(
-          color: labelColor ?? AppColors.buttonWithoutBackGround,
-          fontSize: fontSize ?? 12,
+    return Builder(
+      builder: (context) => Chip(
+        avatar: avatar,
+        label: Text(
+          label,
+          style: TextStyle(
+            color:
+                (labelColor ?? AppColors.buttonWithoutBackGround).adapt(context),
+            fontSize: fontSize ?? 12,
+          ),
         ),
-      ),
-      deleteIcon: onDeleted != null
-          ? Icon(
-              Icons.close,
-              size: deleteIconSize ?? 18,
-              color: deleteIconColor ?? AppColors.buttonWithoutBackGround,
-            )
-          : null,
-      onDeleted: onDeleted,
-      backgroundColor: backgroundColor ?? AppColors.secondBackgroundColor,
-      side: BorderSide(
-        color:
-            borderColor ??
-            AppColors.fillButtonBackground.withValues(alpha: 0.5),
-        width: 1,
+        deleteIcon: onDeleted != null
+            ? Icon(
+                Icons.close,
+                size: deleteIconSize ?? 18,
+                color: (deleteIconColor ?? AppColors.buttonWithoutBackGround)
+                    .adapt(context),
+              )
+            : null,
+        onDeleted: onDeleted,
+        backgroundColor: backgroundColor,
+        side: BorderSide(
+          color: borderColor != null
+              ? borderColor.adapt(context)
+              : ColorsWidget.subtleBorderColor(context),
+          width: 1,
+        ),
       ),
     );
   }

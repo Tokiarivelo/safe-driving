@@ -24,10 +24,10 @@ class AuthContainerBuilder {
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
         ),
-        color: AppColors.secondBackgroundColor,
+        color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: AppColors.blur,
+            color: AppColors.blur.adapt(context),
             blurRadius: 4,
             spreadRadius: 4,
             offset: const Offset(0, -2),

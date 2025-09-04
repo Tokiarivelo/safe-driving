@@ -26,14 +26,16 @@ class PreferencesBuilder {
     DriverOnboardingCoordinator coordinator,
   ) {
     return [
-      const Align(
+      Align(
         alignment: Alignment.centerLeft,
-        child: Text(
-          'Thème',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textColor,
+        child: Builder(
+          builder: (context) => Text(
+            'Thème',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textColor.adapt(context),
+            ),
           ),
         ),
       ),
@@ -67,14 +69,16 @@ class PreferencesBuilder {
     DriverOnboardingCoordinator coordinator,
   ) {
     return [
-      const Align(
+      Align(
         alignment: Alignment.centerLeft,
-        child: Text(
-          'Langue',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textColor,
+        child: Builder(
+          builder: (context) => Text(
+            'Langue',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textColor.adapt(context),
+            ),
           ),
         ),
       ),
@@ -100,14 +104,16 @@ class PreferencesBuilder {
           padding: EdgeInsets.only(
             bottom: idx < checkboxOptions.length - 1 ? 8.0 : 0,
           ),
-          child: SwitchesAndRadios.customCheckbox(
-            title: option,
-            value: coordinator.preferencesViewModel.selectedNotifications
-                .contains(option),
-            onChanged: (value) {
-              coordinator.preferencesViewModel.toggleNotification(option);
-            },
-            titleColor: AppColors.fillButtonBackground,
+          child: Builder(
+            builder: (context) => SwitchesAndRadios.customCheckbox(
+              title: option,
+              value: coordinator.preferencesViewModel.selectedNotifications
+                  .contains(option),
+              onChanged: (value) {
+                coordinator.preferencesViewModel.toggleNotification(option);
+              },
+              titleColor: AppColors.fillButtonBackground.adapt(context),
+            ),
           ),
         );
       }).toList(),
@@ -132,8 +138,8 @@ class PreferencesBuilder {
                     : "Plus tard",
                 onChanged: (value) =>
                     coordinator.preferencesViewModel.setGpsEnabled(false),
-                titleColor: AppColors.fillButtonBackground,
-                activeColor: AppColors.fillButtonBackground,
+                titleColor: AppColors.fillButtonBackground.adapt(context),
+                activeColor: AppColors.fillButtonBackground.adapt(context),
               ),
             ),
             Expanded(
@@ -157,8 +163,8 @@ class PreferencesBuilder {
                     coordinator.preferencesViewModel.setGpsEnabled(false);
                   }
                 },
-                titleColor: AppColors.fillButtonBackground,
-                activeColor: AppColors.fillButtonBackground,
+                titleColor: AppColors.fillButtonBackground.adapt(context),
+                activeColor: AppColors.fillButtonBackground.adapt(context),
               ),
             ),
           ],

@@ -117,12 +117,17 @@ class PreferencesViewModel extends ChangeNotifier {
 
   // Summary methods
   Map<String, String> getPreferencesSummary() {
+    final themeLabel = _selectedTheme == 'clair'
+        ? 'Clair'
+        : _selectedTheme == 'sombre'
+            ? 'Sombre'
+            : 'Automatique';
     return {
       'GPS': _gpsEnabled ? 'Activé' : 'Désactivé',
       'Notifications': _selectedNotifications.isNotEmpty
           ? _selectedNotifications.join(', ')
           : 'Aucune',
-      'Thème': _selectedTheme == 'clair' ? 'Clair' : 'Sombre',
+      'Thème': themeLabel,
       'Langue': _selectedLanguage == 'fr' ? 'Français' : 'Anglais',
     };
   }

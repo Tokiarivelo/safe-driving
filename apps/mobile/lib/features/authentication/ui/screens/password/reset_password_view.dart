@@ -62,7 +62,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
 
     return Container(
       height: double.infinity,
-      decoration: ColorsWidget.background,
+      decoration: ColorsWidget.background(context),
       child: SafeArea(
         child: Column(
           children: [

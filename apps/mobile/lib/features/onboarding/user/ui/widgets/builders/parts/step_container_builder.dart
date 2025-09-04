@@ -9,7 +9,9 @@ Widget _buildStepContainer({
     width: width ?? 330,
     padding: padding ?? const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: AppColors.secondBackgroundColor,
+      color: Theme.of(NavigationService.navigatorKey.currentContext!)
+          .colorScheme
+          .surface,
       borderRadius: BorderRadius.circular(5),
     ),
     child: child,

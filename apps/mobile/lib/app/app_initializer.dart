@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/app/routes.dart';
-import 'package:safe_driving/api/graph-ql/graphql_client.dart';
+
 import 'package:safe_driving/api/graph-ql/client/graphql_config.dart';
+
 import 'package:safe_driving/shared/state_management/providers.dart';
 import 'package:safe_driving/shared/state_management/service_locator.dart';
+import 'package:safe_driving/core/theme/app_theme.dart';
+import 'package:safe_driving/core/theme/theme_controller.dart';
 
 class SafeDriving extends StatelessWidget {
   SafeDriving({super.key}) {
@@ -14,6 +17,7 @@ class SafeDriving extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     final httpLink = HttpLink(GraphQLConfig.endpoint);
     final client = ValueNotifier(
       GraphQLClient(
@@ -36,8 +40,34 @@ class SafeDriving extends StatelessWidget {
             initialRoute: AppRoutes.home,
             routes: AppRoutes.routes,
           ),
+=======
+    Widget app = MultiProvider(
+      providers: AppProviders.providers,
+      child: Builder(
+        builder: (context) => MaterialApp(
+          title: 'Safe Driving',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: context.watch<ThemeController>().mode,
+          initialRoute: AppRoutes.onboarding,
+          routes: AppRoutes.routes,
+>>>>>>> fc4ccdc (feat: operational dark mode on user onboarding)
         ),
       ),
     );
+
+    if (GraphQLConfig.isConfigured) {
+      final httpLink = HttpLink(GraphQLConfig.endpoint);
+      final client = ValueNotifier(
+        GraphQLClient(
+          link: httpLink,
+          cache: GraphQLCache(store: HiveStore()),
+        ),
+      );
+      app = GraphQLProvider(client: client, child: app);
+    }
+
+    return app;
   }
 }

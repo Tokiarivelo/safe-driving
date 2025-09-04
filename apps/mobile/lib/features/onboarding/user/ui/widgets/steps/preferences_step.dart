@@ -24,23 +24,27 @@ class _PreferencesStep extends StatelessWidget {
         Text(
           stepContent.subtitle,
           style: AppTextStyles.body14(context).copyWith(
-            color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
           ),
         ),
         const SizedBox(height: 16),
         Text(
           themeLabel,
-          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
         ),
         UserThemeSelectorWidget(
           selectedTheme: viewModel.appState.selectedTheme,
           themeOptions: themeOptions,
-          onThemeSelected: viewModel.updateTheme,
+          onThemeSelected: (theme) {
+            viewModel.updateTheme(theme);
+            final mode = ThemeController.fromLabel(theme);
+            context.read<ThemeController>().setMode(mode);
+          },
         ),
         const SizedBox(height: 16),
         Text(
           transportLabel,
-          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
         ),
         const SizedBox(height: 8),
         UserTransportSelectorWidget(

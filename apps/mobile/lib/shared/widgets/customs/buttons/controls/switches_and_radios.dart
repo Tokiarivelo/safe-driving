@@ -7,10 +7,13 @@ class SwitchesAndRadios {
     required ValueChanged<bool> onChanged,
     Color? activeColor,
   }) {
-    return Switch(
-      value: value,
-      onChanged: onChanged,
-      activeThumbColor: activeColor ?? AppColors.progress,
+    return Builder(
+      builder: (context) => Switch(
+        value: value,
+        onChanged: onChanged,
+        activeThumbColor: AppColors.light,
+        activeTrackColor: (activeColor ?? AppColors.progress).adapt(context),
+      ),
     );
   }
 
@@ -22,25 +25,37 @@ class SwitchesAndRadios {
     Color? activeColor,
     Color? titleColor,
   }) {
-    final bool isSelected = value == groupValue;
-    final Color resolvedColor = activeColor ?? AppColors.buttonWithoutBackGround;
+    return Builder(
+      builder: (context) {
+        final bool isSelected = value == groupValue;
+        final bool isDark = Theme.of(context).brightness == Brightness.dark;
+        final Color resolvedIconColor = isDark
+            ? AppColors.textColorDark
+            : (activeColor ?? AppColors.buttonWithoutBackGround).adapt(context);
+        final Color resolvedTitleColor = isDark
+            ? AppColors.textColorDark
+            : (titleColor ?? AppColors.buttonWithoutBackGround).adapt(context);
 
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      dense: true,
-      visualDensity: const VisualDensity(horizontal: -4),
-      leading: Icon(
-        isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-        color: resolvedColor,
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          color: titleColor ?? AppColors.buttonWithoutBackGround,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      onTap: () => onChanged(value),
+        return ListTile(
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          visualDensity: const VisualDensity(horizontal: -4),
+          leading: Icon(
+            isSelected
+                ? Icons.radio_button_checked
+                : Icons.radio_button_unchecked,
+            color: resolvedIconColor,
+          ),
+          title: Text(
+            title,
+            style: TextStyle(
+              color: resolvedTitleColor,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          onTap: () => onChanged(value),
+        );
+      },
     );
   }
 
@@ -52,22 +67,27 @@ class SwitchesAndRadios {
     Color? checkColor,
     Color? titleColor,
   }) {
-    return CheckboxListTile(
-      title: Text(
-        title,
-        style: TextStyle(
-          color: titleColor ?? AppColors.textColor,
-          fontFamily: 'Inder',
+    return Builder(
+      builder: (context) => CheckboxListTile(
+        title: Text(
+          title,
+          style: TextStyle(
+            color: (titleColor ?? AppColors.textColor).adapt(context),
+            fontFamily: 'Inder',
+          ),
         ),
-      ),
-      value: value,
-      onChanged: onChanged,
-      activeColor: activeColor ?? AppColors.buttonWithoutBackGround,
-      checkColor: checkColor ?? AppColors.light,
-      controlAffinity: ListTileControlAffinity.leading,
-      contentPadding: EdgeInsets.zero,
-      side: BorderSide(
-        color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.3),
+        value: value,
+        onChanged: onChanged,
+        activeColor:
+            (activeColor ?? AppColors.buttonWithoutBackGround).adapt(context),
+        checkColor: (checkColor ?? AppColors.light).adapt(context),
+        controlAffinity: ListTileControlAffinity.leading,
+        contentPadding: EdgeInsets.zero,
+        side: BorderSide(
+          color: AppColors.buttonWithoutBackGround
+              .adapt(context)
+              .withValues(alpha: 0.3),
+        ),
       ),
     );
   }

@@ -14,15 +14,15 @@ class ModalHeader extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            color: AppColors.textColor,
+            color: AppColors.textColor.adapt(context),
             fontFamily: 'Inder',
           ),
         ),
         IconButton(
-          icon: const Icon(Icons.close, color: AppColors.textColor),
+          icon: Icon(Icons.close, color: AppColors.textColor.adapt(context)),
           onPressed: onClose ?? () => Navigator.of(context).pop(),
         ),
       ],
