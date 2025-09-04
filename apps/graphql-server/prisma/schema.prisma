@@ -32,13 +32,15 @@ model Role {
   users User[] @relation("UserRoles")
 }
 
-enum ImageType {
-  MESSAGE
-  USER
-  PROFILE
-  COVER
-  VEHICLE
-  LANDING
+model UserCover {
+  id        String    @id @default(uuid())
+  userId    String    @unique
+  fileId    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  file File @relation(fields: [fileId], references: [id])
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -51,6 +53,8 @@ model User {
   password   String
   isVerified Boolean   @default(false)
   createdAt  DateTime  @default(now())
+  avatarId   String? // relation vers File
+  avatar     File?     @relation(fields: [avatarId], references: [id])
   updatedAt  DateTime? @updatedAt
 
   tokens                  RefreshToken[]
@@ -67,7 +71,9 @@ model User {
   Reaction                Reaction[]
   MessageReadReceipt      MessageReadReceipt[]
 
-  QrToken QrToken[]
+  QrToken     QrToken[]
+  userCoverId String?
+  UserCover   UserCover?
 }
 
 // --------------- Token -----------------------//
@@ -107,12 +113,21 @@ model UserImage {
   User User @relation(fields: [userId], references: [id])
 }
 
+enum UserDocumentType {
+  ID_CARD
+  DRIVER_LICENSE
+  PASSPORT
+  OTHER
+}
+
 model UserDocument {
-  id        String    @id @default(uuid())
-  userId    String
-  fileId    String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  id           String           @id @default(uuid())
+  name         String?
+  documentType UserDocumentType
+  userId       String
+  fileId       String
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime?        @updatedAt
 
   file File @relation(fields: [fileId], references: [id])
   User User @relation(fields: [userId], references: [id])
@@ -129,12 +144,21 @@ model VehicleImage {
   DriverVehicle DriverVehicle? @relation(fields: [driverVehicleId], references: [id])
 }
 
+enum VehicleDocumentType {
+  REGISTRATION
+  INSURANCE
+  CONTROL
+  OTHER
+}
+
 model VehicleDocument {
-  id              String    @id @default(uuid())
+  id              String              @id @default(uuid())
+  name            String?
+  documentType    VehicleDocumentType
   driverVehicleId String
   fileId          String
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime? @updatedAt
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime?           @updatedAt
 
   file          File           @relation(fields: [fileId], references: [id])
   DriverVehicle DriverVehicle? @relation(fields: [driverVehicleId], references: [id])
@@ -170,6 +194,15 @@ model RefreshToken {
   @@index([userId], map: "RefreshToken_userId_fkey")
 }
 
+enum FileType {
+  MESSAGE
+  USER
+  AVATAR
+  COVER
+  VEHICLE
+  LANDING
+}
+
 model File {
   id              String            @id @default(uuid())
   url             String?
@@ -183,7 +216,7 @@ model File {
   name            String?
   userId          String
   driverVehicleId String?
-  type            ImageType
+  type            FileType
   UserImage       UserImage[]
   UserDocument    UserDocument[]
   VehicleImage    VehicleImage[]
@@ -191,6 +224,8 @@ model File {
 
   // relation inverse : un File peut être référencé par plusieurs Attachments
   Attachment Attachment[]
+  User       User[]
+  UserCover  UserCover[]
 
   @@index([userId])
 }
@@ -208,7 +243,7 @@ model DriverVehicle {
   user               User              @relation(fields: [userId], references: [id], onDelete: Cascade, map: "DriverCar_userId_relation")
   brand              String?
   model              String?
-  registrationNumber String?
+  registrationNumber String?           @unique
   place              Int
   vehicleTypeId      String
   type               VehicleType       @relation(fields: [vehicleTypeId], references: [id])

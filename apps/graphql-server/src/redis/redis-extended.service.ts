@@ -256,7 +256,11 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
     stop: number,
     withScores?: 'WITHSCORES',
   ): Promise<string[]> {
-    return await this.cache.zrevrange(key, start, stop, withScores);
+    if (withScores) {
+      return await this.cache.zrevrange(key, start, stop, 'WITHSCORES');
+    } else {
+      return await this.cache.zrevrange(key, start, stop);
+    }
   }
 
   async zcard(key: string): Promise<number> {
@@ -338,7 +342,7 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
 
     // Détecter si on a des commandes JSON.SET (module) dans le batch
     const hasJsonModuleCmd = normalized.some(
-      ([cmd]) => typeof cmd === 'string' && cmd.toLowerCase() === 'json.set',
+      ([cmd]) => typeof cmd === 'string' && cmd.toLowerCase().includes('json'),
     );
 
     // Si on a pas de JSON.SET, on peut utiliser le pipeline array optimisé de ioredis
@@ -362,6 +366,7 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
     }
 
     const results = await p.exec();
+
     return results.map(([err, result]) => {
       if (err) throw err;
       return result;
@@ -546,5 +551,93 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
       this.cache.quit(),
     ]);
     this.logger.log('All Redis connections closed');
+  }
+
+  async cleanupOrphanSockets(batch = 500) {
+    this.logger.log('Starting cleanup of orphan sockets...');
+    // itérer sur les keys user:*:sockets
+    let cursor = '0';
+    do {
+      const res = await this.cache.scan(
+        cursor,
+        'MATCH',
+        'user:*:sockets',
+        'COUNT',
+        1000,
+      );
+      cursor = res[0];
+      const keys: string[] = res[1];
+
+      for (const key of keys) {
+        // récupérer membres par batch (SSCAN si set gros)
+        let sscanCursor = '0';
+        do {
+          const [next, members] = await this.cache.sscan(
+            key,
+            sscanCursor,
+            'COUNT',
+            batch,
+          );
+          sscanCursor = next;
+          if (!members || members.length === 0) continue;
+
+          const pipeline = this.cache.pipeline();
+          // check existence de chaque socket:<id>
+          for (const sid of members) pipeline.exists(`socket:${sid}`);
+          const existsRes = await pipeline.exec();
+          // existsRes est array [[null, 1],[null,0],...]
+          const pipelineRem = this.cache.pipeline();
+          for (let i = 0; i < members.length; i++) {
+            const sid = members[i];
+            const exists = existsRes[i][1] as number;
+            if (!exists) {
+              // supprime l'id orphelin du set
+              pipelineRem.srem(key, sid);
+              // supprime la clé socket:... au cas où
+              pipelineRem.del(`socket:${sid}`);
+              this.logger.debug(`Removed orphan socket ${sid} from ${key}`);
+            }
+          }
+          if (pipelineRem.length) await pipelineRem.exec();
+        } while (sscanCursor !== '0');
+      }
+    } while (cursor !== '0');
+
+    // après nettoyage, recalcule online_users : on enlève users sans sockets
+    await this.recalcOnlineUsers();
+    this.logger.log('Finished cleanup of orphan sockets.');
+  }
+
+  async recalcOnlineUsers() {
+    this.logger.log('Recalculating online_users set...');
+    const tempSet = `online_users_temp:${Date.now()}`;
+    let cursor = '0';
+    do {
+      const res = await this.cache.scan(
+        cursor,
+        'MATCH',
+        'user:*:sockets',
+        'COUNT',
+        1000,
+      );
+      cursor = res[0];
+      const keys: string[] = res[1];
+      for (const key of keys) {
+        const userId = key.split(':')[1]; // user:<id>:sockets
+        const cardinal = await this.cache.scard(key);
+        if (cardinal > 0) {
+          await this.cache.sadd(tempSet, userId);
+        }
+      }
+    } while (cursor !== '0');
+
+    // remplacer l'ancien online_users par le nouveau atomiquement
+    await this.cache
+      .multi()
+      .del('online_users')
+      .sunionstore('online_users', tempSet)
+      .del(tempSet)
+      .exec();
+    this.logger.log('Recalculated online_users.');
   }
 }

@@ -1,4 +1,5 @@
 import { Logger, UseGuards } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt/dist/jwt.service';
 import {
   WebSocketGateway,
   WebSocketServer,
@@ -33,11 +34,40 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private messageService: MessageService,
     private redisService: RedisExtendedService,
     private chatCache: ChatCacheService,
+    private readonly jwtService: JwtService,
   ) {}
+
+  onModuleInit() {
+    this.chatCache.cleanupOrphanSockets();
+  }
+
+  afterInit() {
+    // middleware exécuté au handshake
+    this.server.use((socket: Socket, next) => {
+      try {
+        const handshake = (socket as any).handshake || {};
+        const raw =
+          handshake.auth?.token ||
+          handshake.headers?.authorization ||
+          handshake.query?.token;
+        if (!raw) return next(new Error('Missing token'));
+        const token =
+          typeof raw === 'string' && raw.startsWith('Bearer ')
+            ? raw.slice(7)
+            : raw;
+        const payload = this.jwtService.verify(token); // throw si invalide
+        socket.data.user = payload; // ATTACHE l'user avant handleConnection
+        return next();
+      } catch (err) {
+        this.logger.error('WebSocket authentication error:', err);
+        return next(new Error('Unauthorized'));
+      }
+    });
+  }
 
   async handleConnection(client: Socket) {
     try {
-      const userId = client.data.user?.id;
+      const userId = client.data.user?.sub;
       const userName = client.data.user?.name;
 
       if (!userId) {
@@ -50,6 +80,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       // Récupérer les salles précédentes de l'utilisateur
       const previousRooms = await this.chatCache.getUserRooms(userId);
+
       for (const roomId of previousRooms) {
         client.join(roomId);
         // Notifier les autres utilisateurs de la room
@@ -82,7 +113,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleDisconnect(client: Socket) {
     try {
-      const userId = client.data.user?.id;
+      const userId = client.data.user?.sub;
       const userName = client.data.user?.name;
 
       if (!userId) return;
@@ -103,6 +134,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       // Vérifier si l'utilisateur est toujours en ligne (autres connexions)
       const isStillOnline = await this.chatCache.isUserOnline(userId);
+
       if (!isStillOnline) {
         this.server.emit('userOffline', {
           userId,
@@ -123,12 +155,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() data: { conversationId?: string; rideId?: string },
   ) {
     try {
-      const userId = client.data.user.id;
+      const userId = client.data.user?.sub;
       const userName = client.data.user.name;
 
       // Vérifier le rate limit
       const rateLimitResult =
         await this.chatCache.checkRoomJoinRateLimit(userId);
+
       if (!rateLimitResult.allowed) {
         client.emit('error', {
           type: 'RATE_LIMIT',
@@ -194,7 +227,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() data: { conversationId?: string; rideId?: string },
   ) {
     try {
-      const userId = client.data.user.id;
+      const userId = client.data.user?.sub;
       const userName = client.data.user.name;
 
       const roomName = data.conversationId
@@ -232,8 +265,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     },
   ) {
     try {
-      const userId = client.data.user.id;
-      const userName = client.data.user.name;
+      const userId = client.data.user?.sub;
+      const userName = client.data.user.username;
 
       const roomName = data.conversationId
         ? `conversation_${data.conversationId}`
@@ -265,7 +298,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     },
   ) {
     try {
-      const userId = client.data.user.id;
+      const userId = client.data.user?.sub;
 
       // Utiliser un lock distribué pour éviter les conflits
       const lockKey = `read_${data.messageId}_${userId}`;

@@ -8,15 +8,17 @@ import { MessagePayload } from 'src/dtos/message/message.output';
 import { RedisService } from 'src/redis/redis.service';
 import { MessageService } from './messages.service';
 import { CurrentUser } from 'src/auth/current-user.decorator';
+import { WsJwtGuard } from 'src/auth/guards/ws-jwt.guard';
+import { GraphqlWsJwtGuard } from 'src/auth/guards/graphql-ws-jwt.guard';
 
 @Resolver(() => Message)
-@UseGuards(JwtAuthGuard)
 export class MessageResolver {
   constructor(
     private messageService: MessageService,
     private redisService: RedisService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Query(() => [Message])
   async messages(
     @Args('conversationId', { nullable: true }) conversationId?: string,
@@ -32,6 +34,7 @@ export class MessageResolver {
     );
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Message)
   async sendMessage(
     @Args('input') input: SendMessageInput,
@@ -41,6 +44,17 @@ export class MessageResolver {
     return this.messageService.sendMessage(userId, input);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => Message)
+  async editMessage(
+    @Args('messageId') messageId: string,
+    @Args('content') content: string,
+    @CurrentUser() user: User,
+  ): Promise<Message> {
+    return this.messageService.editMessage(messageId, content, user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Message)
   async markMessageAsDelivered(
     @Args('messageId') messageId: string,
@@ -48,10 +62,21 @@ export class MessageResolver {
     return this.messageService.markAsDelivered(messageId);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => Message)
+  async deleteMessage(
+    @Args('messageId') messageId: string,
+    @CurrentUser() user: User,
+  ): Promise<Message> {
+    return this.messageService.deleteMessage(messageId, user.id);
+  }
+
+  @UseGuards(GraphqlWsJwtGuard)
   @Subscription(() => MessagePayload, {
     filter: (payload, variables) => {
       // Filtrer les messages selon la conversation/ride
       const message = payload.messageReceived.message;
+
       if (variables.conversationId) {
         return message.conversationId === variables.conversationId;
       }

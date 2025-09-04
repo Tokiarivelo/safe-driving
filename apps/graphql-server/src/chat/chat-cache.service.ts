@@ -49,6 +49,8 @@ export class ChatCacheService {
     await this.redis.srem(`user:${userId}:sockets`, socketId);
     await this.redis.del(socketKey);
 
+    const online = await this.redis.smembers('online_users');
+
     // Vérifier s'il reste des sockets pour cet utilisateur
     const remainingSockets = await this.redis.scard(`user:${userId}:sockets`);
 
@@ -162,8 +164,9 @@ export class ChatCacheService {
     limit = 50,
   ): Promise<MessageCache[]> {
     const roomKey = `${type}:${roomId}:messages`;
-    const messageIds = await this.redis.zrevrange(roomKey, 0, limit - 1);
 
+    // get des ids de 0 à limit-1 (les plus récents)
+    const messageIds = await this.redis.zrevrange(roomKey, 0, limit - 1);
     if (messageIds.length === 0) return [];
 
     const pipeline: [string, ...any[]][] = messageIds.map((id) => [
@@ -268,5 +271,8 @@ export class ChatCacheService {
         }
       }
     }
+  }
+  async cleanupOrphanSockets(): Promise<void> {
+    return this.redis.cleanupOrphanSockets();
   }
 }

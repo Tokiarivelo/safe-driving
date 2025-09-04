@@ -30,8 +30,14 @@ import { MessageModule } from 'src/message/message.module';
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       subscriptions: {
         'graphql-ws': true,
+        'subscriptions-transport-ws': true,
       },
-      context: ({ req, res }: any) => ({ req, res }),
+      context: ({ req, connection, res }) => {
+        if (connection) {
+          return { req: connection.context, res };
+        }
+        return { req, res };
+      },
     }),
     PrismaModule,
     SeedModule,

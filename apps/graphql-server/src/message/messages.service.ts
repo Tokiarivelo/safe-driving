@@ -8,6 +8,7 @@ import { MessagePayload } from 'src/dtos/message/message.output';
 
 import { PrismaService } from 'src/prisma-module/prisma.service';
 import { RedisExtendedService } from 'src/redis/redis-extended.service';
+import { normalizeDates } from 'src/utils/normalize-dates';
 
 @Injectable()
 export class MessageService {
@@ -290,7 +291,8 @@ export class MessageService {
     const cached = await this.redisService.get(cacheKey);
 
     if (cached) {
-      return JSON.parse(cached);
+      const jsonCached = JSON.parse(cached);
+      return normalizeDates<Message[]>(jsonCached);
     }
 
     const messages = await this.prisma.message.findMany({

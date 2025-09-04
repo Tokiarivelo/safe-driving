@@ -22,6 +22,10 @@ export class WsJwtGuard implements CanActivate {
     // 1) Try to get socket (Socket.IO)
     const client = context.switchToWs().getClient<Socket>();
 
+    if (!client) {
+      throw new WsException('No socket client');
+    }
+
     let token: string | undefined;
 
     try {

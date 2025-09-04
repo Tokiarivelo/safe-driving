@@ -12,7 +12,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { FileMetaInput } from 'src/dtos/upload/upload.input';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { UseGuards } from '@nestjs/common';
-import { ImageType, User } from 'src/dtos/@generated';
+import { FileType, User } from 'src/dtos/@generated';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => FileUploadResult)
@@ -52,7 +52,7 @@ export class UploadResolver {
   @Mutation(() => [PresignedUrl], { name: 'createBatchPresignedUrls' })
   async createBatchPresignedUrls(
     @CurrentUser() user: User,
-    @Args('type', { type: () => ImageType }) type: ImageType,
+    @Args('type', { type: () => FileType }) type: FileType,
     @Args('files', { type: () => [FileMetaInput] })
     files: FileMetaInput[],
   ): Promise<PresignedUrl[]> {
@@ -64,7 +64,7 @@ export class UploadResolver {
   async completeUploadBulk(
     @CurrentUser() user: User,
     @Args('keys', { type: () => [String] }) keys: string[],
-    @Args('type', { type: () => ImageType }) type: ImageType,
+    @Args('type', { type: () => FileType }) type: FileType,
   ): Promise<CompleteUploadOutput[]> {
     const userId = user.id;
     return this.uploadService.completeUploadBulk(userId, keys, type);
