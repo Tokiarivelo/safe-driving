@@ -1,7 +1,7 @@
 // lib/apollo-provider.tsx
 'use client';
 
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/react';
 import client from './apollo-client';
 
 export default function ApolloWrapper({ children }: { children: React.ReactNode }) {

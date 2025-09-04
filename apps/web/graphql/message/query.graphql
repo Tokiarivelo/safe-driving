@@ -1,0 +1,5 @@
+query GetMessages($conversationId: String, $rideId: String, $cursor: String, $limit: Float) {
+  messages(conversationId: $conversationId, rideId: $rideId, cursor: $cursor, limit: $limit) {
+    ...messageFragment
+  }
+}

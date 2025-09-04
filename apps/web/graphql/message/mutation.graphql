@@ -1,0 +1,30 @@
+mutation SendMessage($input: SendMessageInput!) {
+  sendMessage(input: $input) {
+    ...mutationMessageFragment
+  }
+}
+
+mutation EditMessage($messageId: String!, $content: String!) {
+  editMessage(messageId: $messageId, content: $content) {
+    id
+    content
+    edited
+    editedAt
+  }
+}
+
+mutation MarkMessageDelivered($messageId: String!) {
+  markMessageAsDelivered(messageId: $messageId) {
+    id
+    deliveredAt
+    state
+  }
+}
+
+mutation DeleteMessage($messageId: String!) {
+  deleteMessage(messageId: $messageId) {
+    id
+    deleted
+    deletedAt
+  }
+}

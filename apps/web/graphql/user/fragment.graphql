@@ -25,3 +25,15 @@ fragment userFragment on User {
     name
   }
 }
+
+fragment userMessageFragment on User {
+  id
+  firstName
+  lastName
+  email
+  phone
+  username
+  UserImage {
+    ...Image
+  }
+}

@@ -1,6 +1,4 @@
-'use client';
 import styles from './auth.module.css';
-import { motion } from 'framer-motion';
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.auth_container}>

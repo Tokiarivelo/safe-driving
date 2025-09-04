@@ -1,0 +1,69 @@
+fragment messageFragment on Message {
+  id
+  content
+  senderId
+  clientTempId
+  parentMessageId
+  edited
+  editedAt
+  deleted
+  deletedAt
+  createdAt
+  sentAt
+  deliveredAt
+  state
+  sender {
+    ...userMessageFragment
+  }
+  replies {
+    id
+    content
+    senderId
+    createdAt
+    sender {
+      ...userMessageFragment
+    }
+  }
+}
+
+fragment mutationMessageFragment on Message {
+  id
+  content
+  senderId
+  clientTempId
+  parentMessageId
+  createdAt
+  sentAt
+  state
+  sender {
+    ...userMessageFragment
+  }
+}
+
+fragment subscriptionMessageFragment on Message {
+  id
+  content
+  senderId
+  clientTempId
+  parentMessageId
+  edited
+  editedAt
+  deleted
+  deletedAt
+  createdAt
+  sentAt
+  deliveredAt
+  state
+  sender {
+    ...userMessageFragment
+  }
+  replies {
+    id
+    content
+    senderId
+    createdAt
+    sender {
+      ...userMessageFragment
+    }
+  }
+}

@@ -1,0 +1,8 @@
+subscription MessageReceived($conversationId: String, $rideId: String) {
+  messageReceived(conversationId: $conversationId, rideId: $rideId) {
+    message {
+      ...subscriptionMessageFragment
+    }
+    type
+  }
+}
