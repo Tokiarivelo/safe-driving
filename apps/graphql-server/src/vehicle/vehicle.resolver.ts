@@ -24,7 +24,6 @@ export class DriverVehicleResolver {
     return this.vehicleService.findAllVehiclesByUserId(user.id);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Mutation(() => DriverVehicle, { name: 'createDriverVehicle' })
   async createDriverVehicle(
     @CurrentUser() user: User,
@@ -33,12 +32,11 @@ export class DriverVehicleResolver {
     return this.vehicleService.createDriverVehicle(user.id, input);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Mutation(() => DriverVehicle, { name: 'updateDriverVehicle' })
   async updateDriverVehicle(
     @CurrentUser() user: User,
     @Args('vehicleId') vehicleId: string,
-    @Args('input') input: UpdateDriverVehicleInput,
+    @Args('input') input: CreateDriverVehicleInput,
   ): Promise<DriverVehicle> {
     return this.vehicleService.updateDriverVehicle(user.id, vehicleId, input);
   }

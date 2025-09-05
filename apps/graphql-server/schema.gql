@@ -5857,27 +5857,6 @@ input RoleUpdateWithWhereUniqueWithoutUsersInput {
 input RoleUpdateWithoutUsersInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
-type Mutation {
-  completeUploadBulk(keys: [String!]!, type: ImageType!): [CompleteUploadOutput!]!
-  createBatchPresignedUrls(files: [FileMetaInput!]!, type: ImageType!): [PresignedUrl!]!
-  createDriverVehicle(input: CreateDriverVehicleInput!): DriverVehicle!
-  createFile(input: FileCreateInput!): File!
-  createUser(input: UserCreateInput!): User!
-  createVehicleType(input: VehicleTypeCreateInput!): VehicleType!
-  deleteFilesByUserId: [File!]!
-  deleteObject(key: String!): Boolean!
-  deleteVehicleType(id: String!): VehicleType!
-  forgotPassword(email: String!): ForgotPasswordOutput!
-  getPresignedUrl(contentType: String!, expiresIn: Float, key: String!): String!
-  login(data: LoginInput!): LoginOutput
-  logout: Boolean!
-  register(data: RegisterInput!): User!
-  resetPassword(newPassword: String!, sessionToken: String!): Boolean!
-  updateDriverVehicle(input: UpdateDriverVehicleInput!, vehicleId: String!): DriverVehicle!
-  updateFile(id: String!, input: FileUpdateInput!): File!
-  updateUser(input: UserUpdateInput!): User!
-  uploadFile(file: Upload!, path: String): FileUploadResult!
-  upsertUserPreference(input: UserPreferenceUpsertInput!): UserPreference!
 }
 
 input RoleUpsertWithWhereUniqueWithoutUsersInput {
@@ -6472,20 +6451,6 @@ input UserCreateOrConnectWithoutUserPreferenceInput {
   create: UserCreateWithoutUserPreferenceInput!
   where: UserWhereUniqueInput!
 }
-input UpdateDriverVehicleInput {
-  brand: String
-  deleteDocumentsByKeys: [String!]
-  deleteImagesByKeys: [String!]
-  model: String
-  place: Float
-  registrationNumber: String
-  uploadDocuments: [UploadedFileRefInput!]
-  uploadImages: [UploadedFileRefInput!]
-  vehicleTypeId: String
-}
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
 
 input UserCreateOrConnectWithoutVehiclesInput {
   create: UserCreateWithoutVehiclesInput!
@@ -7894,25 +7859,6 @@ input UserUpdateOneRequiredWithoutUserCoverNestedInput {
   create: UserCreateWithoutUserCoverInput
   update: UserUpdateToOneWithWhereWithoutUserCoverInput
   upsert: UserUpsertWithoutUserCoverInput
-}
-
-input UserUpdateInput {
-  Role: RoleUpdateManyWithoutUsersNestedInput
-  UserDocument: UserDocumentUpdateManyWithoutUserNestedInput
-  UserImage: UserImageUpdateManyWithoutUserNestedInput
-  UserPreference: UserPreferenceUpdateOneWithoutUserNestedInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  email: StringFieldUpdateOperationsInput
-  firstName: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  isVerified: BoolFieldUpdateOperationsInput
-  lastName: NullableStringFieldUpdateOperationsInput
-  password: StringFieldUpdateOperationsInput
-  phone: NullableStringFieldUpdateOperationsInput
-  tokens: RefreshTokenUpdateManyWithoutUserNestedInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
-  username: NullableStringFieldUpdateOperationsInput
-  vehicles: DriverVehicleUpdateManyWithoutUserNestedInput
 }
 
 input UserUpdateOneRequiredWithoutUserDocumentNestedInput {
