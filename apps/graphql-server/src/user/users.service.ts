@@ -95,6 +95,10 @@ export class UsersService {
         UserPreference: {
           include: { preferedvelicles: true },
         },
+        UserImage: { include: { file: true } },
+        avatar: true,
+        UserCover: { include: { file: true } },
+        UserDocument: { include: { file: true } },
       },
     });
     if (!user) throw new NotFoundException(`User ${id} not found`);
@@ -129,7 +133,7 @@ export class UsersService {
           connect: { key: avatarKey },
         },
       },
-      include: { Role: true },
+      include: { Role: true, avatar: true },
     });
     if (!user) throw new NotFoundException(`User ${userId} not found`);
     return user;
@@ -143,7 +147,7 @@ export class UsersService {
           disconnect: true,
         },
       },
-      include: { Role: true },
+      include: { Role: true, avatar: true },
     });
     if (!user) throw new NotFoundException(`User ${userId} not found`);
     return user;
@@ -166,7 +170,12 @@ export class UsersService {
           })),
         },
       },
-      include: { Role: true, UserDocument: true },
+      include: {
+        Role: true,
+        UserDocument: {
+          include: { file: true },
+        },
+      },
     });
     if (!user) throw new NotFoundException(`User ${userId} not found`);
     return user;
@@ -185,7 +194,12 @@ export class UsersService {
           deleteMany: { fileId: file.id },
         },
       },
-      include: { Role: true, UserDocument: true },
+      include: {
+        Role: true,
+        UserDocument: {
+          include: { file: true },
+        },
+      },
     });
     if (!user) throw new NotFoundException(`User ${userId} not found`);
 
@@ -219,7 +233,12 @@ export class UsersService {
           },
         },
       },
-      include: { Role: true },
+      include: {
+        Role: true,
+        UserCover: {
+          include: { file: true },
+        },
+      },
     });
     if (!user) throw new NotFoundException(`User ${userId} not found`);
     return user;
@@ -265,7 +284,12 @@ export class UsersService {
           })),
         },
       },
-      include: { Role: true, UserImage: true },
+      include: {
+        Role: true,
+        UserImage: {
+          include: { file: true },
+        },
+      },
     });
     if (!user) throw new NotFoundException(`User ${userId} not found`);
     return user;
@@ -284,7 +308,12 @@ export class UsersService {
           deleteMany: { fileId: file.id },
         },
       },
-      include: { Role: true, UserImage: true },
+      include: {
+        Role: true,
+        UserImage: {
+          include: { file: true },
+        },
+      },
     });
     if (!user) throw new NotFoundException(`User ${userId} not found`);
 

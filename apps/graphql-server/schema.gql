@@ -6849,9 +6849,14 @@ input UserDocumentScalarWhereInput {
 
 enum UserDocumentType {
   DRIVER_LICENSE
+  DRIVER_LICENSE_BACK
+  DRIVER_LICENSE_FRONT
   ID_CARD
+  ID_CARD_BACK
+  ID_CARD_FRONT
   OTHER
   PASSPORT
+  PROOF_OF_ADDRESS
 }
 
 input UserDocumentUpdateManyMutationInput {
