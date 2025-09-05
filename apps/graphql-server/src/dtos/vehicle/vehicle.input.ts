@@ -1,7 +1,13 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
 import { UploadedFileRefInput } from '../upload/upload.input';
+import { VehicleDocumentType } from '../@generated';
 
+@InputType()
+export class UploadVehicleDocumentsInput {
+  @Field(() => VehicleDocumentType) documentType: VehicleDocumentType;
+  @Field({ nullable: true }) name?: string;
+  @Field(() => UploadedFileRefInput) file: UploadedFileRefInput;
+}
 @InputType()
 export class CreateDriverVehicleInput {
   @Field({ nullable: true }) brand?: string;
@@ -10,9 +16,9 @@ export class CreateDriverVehicleInput {
   @Field() place: number;
   @Field() vehicleTypeId: string;
 
-  // Après upload client fournit l'url/key/uniqueId pour les fichiers
-  @Field(() => [UploadedFileRefInput], { nullable: true })
-  uploadDocuments?: UploadedFileRefInput[];
+  // nouveaux fichiers uploadés (client fournit uniqueId/url/type)
+  @Field(() => [UploadVehicleDocumentsInput], { nullable: true })
+  uploadDocuments?: UploadVehicleDocumentsInput[];
   @Field(() => [UploadedFileRefInput], { nullable: true })
   uploadImages?: UploadedFileRefInput[];
 }
@@ -26,8 +32,8 @@ export class UpdateDriverVehicleInput {
   @Field({ nullable: true }) vehicleTypeId?: string;
 
   // nouveaux fichiers uploadés (client fournit uniqueId/url/type)
-  @Field(() => [UploadedFileRefInput], { nullable: true })
-  uploadDocuments?: UploadedFileRefInput[];
+  @Field(() => [UploadVehicleDocumentsInput], { nullable: true })
+  uploadDocuments?: UploadVehicleDocumentsInput[];
   @Field(() => [UploadedFileRefInput], { nullable: true })
   uploadImages?: UploadedFileRefInput[];
 

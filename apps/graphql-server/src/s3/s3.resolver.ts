@@ -8,7 +8,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/auth/current-user.decorator';
-import { ImageType, User } from 'src/dtos/@generated';
+import { FileType, User } from 'src/dtos/@generated';
 import { FileMetaInput } from 'src/dtos/upload/upload.input';
 
 @Resolver()
@@ -42,7 +42,7 @@ export class S3Resolver {
   @Mutation(() => [PresignedUrl])
   async s3CreateBatchPresignedUrls(
     @CurrentUser() user: User,
-    @Args('type', { type: () => ImageType }) type: ImageType,
+    @Args('type', { type: () => FileType }) type: FileType,
     @Args('files', { type: () => [FileMetaInput] })
     files: FileMetaInput[],
   ): Promise<PresignedUrl[]> {
@@ -53,7 +53,7 @@ export class S3Resolver {
   async completeUploadBulk(
     @CurrentUser() user: User,
     @Args('keys', { type: () => [String] }) keys: string[],
-    @Args('type', { type: () => ImageType }) type: ImageType,
+    @Args('type', { type: () => FileType }) type: FileType,
   ) {
     return this.s3.completeUploadBulk(user.id, keys, type);
   }

@@ -13,6 +13,8 @@ import { DriverVehicle } from 'src/dtos/@generated';
 import { VehicleTypeModule } from 'src/vehicle-type/vehicle-type.module';
 import { FileModule } from 'src/file/file.module';
 import { QrModule } from 'src/qr/qr.module';
+import { RedisModule } from 'src/redis/redis.module';
+import { MessageModule } from 'src/message/message.module';
 
 @Module({
   imports: [
@@ -28,8 +30,14 @@ import { QrModule } from 'src/qr/qr.module';
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       subscriptions: {
         'graphql-ws': true,
+        'subscriptions-transport-ws': true,
       },
-      context: ({ req, res }: any) => ({ req, res }),
+      context: ({ req, connection, res }) => {
+        if (connection) {
+          return { req: connection.context, res };
+        }
+        return { req, res };
+      },
     }),
     PrismaModule,
     SeedModule,
@@ -41,6 +49,8 @@ import { QrModule } from 'src/qr/qr.module';
     VehicleTypeModule,
     FileModule,
     QrModule,
+    RedisModule,
+    MessageModule,
   ],
 })
 export class AppModule {}

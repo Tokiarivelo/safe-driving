@@ -10,6 +10,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UploadUserDocumentsInput } from 'src/dtos/user/user.input';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -58,5 +59,72 @@ export class UsersResolver {
   async create(@Args('input') input: UserCreateInput): Promise<User> {
     const user = await this.usersService.create(input);
     return user;
+  }
+
+  @UseGuards(JwtAuthGuard) // 👈 protège la route
+  @Mutation(() => User, { name: 'uploadAvatar' })
+  async uploadAvatar(
+    @Args('key') key: string,
+    @CurrentUser() user: User,
+  ): Promise<User> {
+    return this.usersService.uploadAvatar(user.id, key);
+  }
+
+  @UseGuards(JwtAuthGuard) // 👈 protège la route
+  @Mutation(() => User, { name: 'uploadCover' })
+  async uploadCover(
+    @Args('key') key: string,
+    @CurrentUser() user: User,
+  ): Promise<User> {
+    return this.usersService.uploadCover(user.id, key);
+  }
+
+  @UseGuards(JwtAuthGuard) // 👈 protège la route
+  @Mutation(() => User, { name: 'removeAvatar' })
+  async removeAvatar(@CurrentUser() user: User): Promise<User> {
+    return this.usersService.removeAvatar(user.id);
+  }
+
+  @UseGuards(JwtAuthGuard) // 👈 protège la route
+  @Mutation(() => User, { name: 'deleteCover' })
+  async removeCover(@CurrentUser() user: User): Promise<User> {
+    return this.usersService.deleteCover(user.id);
+  }
+
+  @UseGuards(JwtAuthGuard) // 👈 protège la route
+  @Mutation(() => User, { name: 'uploadUserDocument' })
+  async uploadUserDocument(
+    @Args('input', { type: () => [UploadUserDocumentsInput] })
+    input: UploadUserDocumentsInput[],
+    @CurrentUser() user: User,
+  ): Promise<User> {
+    return this.usersService.uploadUserDocument(user.id, input);
+  }
+
+  @UseGuards(JwtAuthGuard) // 👈 protège la route
+  @Mutation(() => User, { name: 'deleteUserDocumentByKey' })
+  async deleteUserDocumentByKey(
+    @Args('documentId') documentId: string,
+    @CurrentUser() user: User,
+  ): Promise<User> {
+    return this.usersService.deleteUserDocumentByKey(user.id, documentId);
+  }
+
+  @UseGuards(JwtAuthGuard) // 👈 protège la route
+  @Mutation(() => User, { name: 'uploadUserImages' })
+  async uploadUserImages(
+    @Args('keys', { type: () => [String] }) keys: string[],
+    @CurrentUser() user: User,
+  ): Promise<User> {
+    return this.usersService.uploadUserImages(user.id, keys);
+  }
+
+  @UseGuards(JwtAuthGuard) // 👈 protège la route
+  @Mutation(() => User, { name: 'deleteUserImageByKey' })
+  async deleteUserImageByKey(
+    @Args('key') key: string,
+    @CurrentUser() user: User,
+  ): Promise<User> {
+    return this.usersService.deleteUserImageByKey(user.id, key);
   }
 }

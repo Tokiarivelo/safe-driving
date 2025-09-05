@@ -1,4 +1,4 @@
-import { ImageType } from '@/graphql/generated/graphql';
+import { FileType } from '@/graphql/generated/graphql';
 
 export type FileMeta = {
   originalName: string;
@@ -7,7 +7,7 @@ export type FileMeta = {
 };
 
 export interface UploadComponentProps {
-  imageType?: ImageType;
+  fileType?: FileType;
   fileTypes?: string[];
   concurrency?: number;
   maxRetries?: number;

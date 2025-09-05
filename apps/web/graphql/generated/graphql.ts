@@ -16,8 +16,413 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   DateTime: { input: any; output: any; }
+  Decimal: { input: any; output: any; }
   JSON: { input: any; output: any; }
   Upload: { input: any; output: any; }
+};
+
+export type Attachment = {
+  __typename?: 'Attachment';
+  createdAt: Scalars['DateTime']['output'];
+  file?: Maybe<File>;
+  fileId?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  linkDesc?: Maybe<Scalars['String']['output']>;
+  linkMeta?: Maybe<Scalars['JSON']['output']>;
+  linkThumbnail?: Maybe<Scalars['String']['output']>;
+  linkTitle?: Maybe<Scalars['String']['output']>;
+  message: Message;
+  messageId: Scalars['String']['output'];
+  ride?: Maybe<Ride>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  type: AttachmentType;
+  url?: Maybe<Scalars['String']['output']>;
+};
+
+export type AttachmentCountAggregate = {
+  __typename?: 'AttachmentCountAggregate';
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  fileId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  linkDesc: Scalars['Int']['output'];
+  linkMeta: Scalars['Int']['output'];
+  linkThumbnail: Scalars['Int']['output'];
+  linkTitle: Scalars['Int']['output'];
+  messageId: Scalars['Int']['output'];
+  rideId: Scalars['Int']['output'];
+  type: Scalars['Int']['output'];
+  url: Scalars['Int']['output'];
+};
+
+export type AttachmentCreateManyFileInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  linkDesc?: InputMaybe<Scalars['String']['input']>;
+  linkMeta?: InputMaybe<Scalars['JSON']['input']>;
+  linkThumbnail?: InputMaybe<Scalars['String']['input']>;
+  linkTitle?: InputMaybe<Scalars['String']['input']>;
+  messageId: Scalars['String']['input'];
+  rideId?: InputMaybe<Scalars['String']['input']>;
+  type: AttachmentType;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AttachmentCreateManyFileInputEnvelope = {
+  data: Array<AttachmentCreateManyFileInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type AttachmentCreateManyMessageInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  fileId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  linkDesc?: InputMaybe<Scalars['String']['input']>;
+  linkMeta?: InputMaybe<Scalars['JSON']['input']>;
+  linkThumbnail?: InputMaybe<Scalars['String']['input']>;
+  linkTitle?: InputMaybe<Scalars['String']['input']>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+  type: AttachmentType;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AttachmentCreateManyMessageInputEnvelope = {
+  data: Array<AttachmentCreateManyMessageInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type AttachmentCreateManyRideInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  fileId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  linkDesc?: InputMaybe<Scalars['String']['input']>;
+  linkMeta?: InputMaybe<Scalars['JSON']['input']>;
+  linkThumbnail?: InputMaybe<Scalars['String']['input']>;
+  linkTitle?: InputMaybe<Scalars['String']['input']>;
+  messageId: Scalars['String']['input'];
+  type: AttachmentType;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AttachmentCreateManyRideInputEnvelope = {
+  data: Array<AttachmentCreateManyRideInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type AttachmentCreateNestedManyWithoutFileInput = {
+  connect?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<AttachmentCreateOrConnectWithoutFileInput>>;
+  create?: InputMaybe<Array<AttachmentCreateWithoutFileInput>>;
+  createMany?: InputMaybe<AttachmentCreateManyFileInputEnvelope>;
+};
+
+export type AttachmentCreateNestedManyWithoutMessageInput = {
+  connect?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<AttachmentCreateOrConnectWithoutMessageInput>>;
+  create?: InputMaybe<Array<AttachmentCreateWithoutMessageInput>>;
+  createMany?: InputMaybe<AttachmentCreateManyMessageInputEnvelope>;
+};
+
+export type AttachmentCreateNestedManyWithoutRideInput = {
+  connect?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<AttachmentCreateOrConnectWithoutRideInput>>;
+  create?: InputMaybe<Array<AttachmentCreateWithoutRideInput>>;
+  createMany?: InputMaybe<AttachmentCreateManyRideInputEnvelope>;
+};
+
+export type AttachmentCreateOrConnectWithoutFileInput = {
+  create: AttachmentCreateWithoutFileInput;
+  where: AttachmentWhereUniqueInput;
+};
+
+export type AttachmentCreateOrConnectWithoutMessageInput = {
+  create: AttachmentCreateWithoutMessageInput;
+  where: AttachmentWhereUniqueInput;
+};
+
+export type AttachmentCreateOrConnectWithoutRideInput = {
+  create: AttachmentCreateWithoutRideInput;
+  where: AttachmentWhereUniqueInput;
+};
+
+export type AttachmentCreateWithoutFileInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  linkDesc?: InputMaybe<Scalars['String']['input']>;
+  linkMeta?: InputMaybe<Scalars['JSON']['input']>;
+  linkThumbnail?: InputMaybe<Scalars['String']['input']>;
+  linkTitle?: InputMaybe<Scalars['String']['input']>;
+  message: MessageCreateNestedOneWithoutAttachmentsInput;
+  ride?: InputMaybe<RideCreateNestedOneWithoutAttachmentInput>;
+  type: AttachmentType;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AttachmentCreateWithoutMessageInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  file?: InputMaybe<FileCreateNestedOneWithoutAttachmentInput>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  linkDesc?: InputMaybe<Scalars['String']['input']>;
+  linkMeta?: InputMaybe<Scalars['JSON']['input']>;
+  linkThumbnail?: InputMaybe<Scalars['String']['input']>;
+  linkTitle?: InputMaybe<Scalars['String']['input']>;
+  ride?: InputMaybe<RideCreateNestedOneWithoutAttachmentInput>;
+  type: AttachmentType;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AttachmentCreateWithoutRideInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  file?: InputMaybe<FileCreateNestedOneWithoutAttachmentInput>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  linkDesc?: InputMaybe<Scalars['String']['input']>;
+  linkMeta?: InputMaybe<Scalars['JSON']['input']>;
+  linkThumbnail?: InputMaybe<Scalars['String']['input']>;
+  linkTitle?: InputMaybe<Scalars['String']['input']>;
+  message: MessageCreateNestedOneWithoutAttachmentsInput;
+  type: AttachmentType;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AttachmentListRelationFilter = {
+  every?: InputMaybe<AttachmentWhereInput>;
+  none?: InputMaybe<AttachmentWhereInput>;
+  some?: InputMaybe<AttachmentWhereInput>;
+};
+
+export type AttachmentMaxAggregate = {
+  __typename?: 'AttachmentMaxAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  fileId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  linkDesc?: Maybe<Scalars['String']['output']>;
+  linkThumbnail?: Maybe<Scalars['String']['output']>;
+  linkTitle?: Maybe<Scalars['String']['output']>;
+  messageId?: Maybe<Scalars['String']['output']>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<AttachmentType>;
+  url?: Maybe<Scalars['String']['output']>;
+};
+
+export type AttachmentMinAggregate = {
+  __typename?: 'AttachmentMinAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  fileId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  linkDesc?: Maybe<Scalars['String']['output']>;
+  linkThumbnail?: Maybe<Scalars['String']['output']>;
+  linkTitle?: Maybe<Scalars['String']['output']>;
+  messageId?: Maybe<Scalars['String']['output']>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<AttachmentType>;
+  url?: Maybe<Scalars['String']['output']>;
+};
+
+export type AttachmentOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type AttachmentScalarWhereInput = {
+  AND?: InputMaybe<Array<AttachmentScalarWhereInput>>;
+  NOT?: InputMaybe<Array<AttachmentScalarWhereInput>>;
+  OR?: InputMaybe<Array<AttachmentScalarWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  fileId?: InputMaybe<StringNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  linkDesc?: InputMaybe<StringNullableFilter>;
+  linkMeta?: InputMaybe<JsonNullableFilter>;
+  linkThumbnail?: InputMaybe<StringNullableFilter>;
+  linkTitle?: InputMaybe<StringNullableFilter>;
+  messageId?: InputMaybe<StringFilter>;
+  rideId?: InputMaybe<StringNullableFilter>;
+  type?: InputMaybe<EnumAttachmentTypeFilter>;
+  url?: InputMaybe<StringNullableFilter>;
+};
+
+export enum AttachmentType {
+  FILE = 'FILE',
+  LINK = 'LINK',
+  RIDE = 'RIDE'
+}
+
+export type AttachmentUpdateManyMutationInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  linkDesc?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  linkMeta?: InputMaybe<Scalars['JSON']['input']>;
+  linkThumbnail?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  linkTitle?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumAttachmentTypeFieldUpdateOperationsInput>;
+  url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+};
+
+export type AttachmentUpdateManyWithWhereWithoutFileInput = {
+  data: AttachmentUpdateManyMutationInput;
+  where: AttachmentScalarWhereInput;
+};
+
+export type AttachmentUpdateManyWithWhereWithoutMessageInput = {
+  data: AttachmentUpdateManyMutationInput;
+  where: AttachmentScalarWhereInput;
+};
+
+export type AttachmentUpdateManyWithWhereWithoutRideInput = {
+  data: AttachmentUpdateManyMutationInput;
+  where: AttachmentScalarWhereInput;
+};
+
+export type AttachmentUpdateManyWithoutFileNestedInput = {
+  connect?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<AttachmentCreateOrConnectWithoutFileInput>>;
+  create?: InputMaybe<Array<AttachmentCreateWithoutFileInput>>;
+  createMany?: InputMaybe<AttachmentCreateManyFileInputEnvelope>;
+  delete?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<AttachmentScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  set?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  update?: InputMaybe<Array<AttachmentUpdateWithWhereUniqueWithoutFileInput>>;
+  updateMany?: InputMaybe<Array<AttachmentUpdateManyWithWhereWithoutFileInput>>;
+  upsert?: InputMaybe<Array<AttachmentUpsertWithWhereUniqueWithoutFileInput>>;
+};
+
+export type AttachmentUpdateManyWithoutMessageNestedInput = {
+  connect?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<AttachmentCreateOrConnectWithoutMessageInput>>;
+  create?: InputMaybe<Array<AttachmentCreateWithoutMessageInput>>;
+  createMany?: InputMaybe<AttachmentCreateManyMessageInputEnvelope>;
+  delete?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<AttachmentScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  set?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  update?: InputMaybe<Array<AttachmentUpdateWithWhereUniqueWithoutMessageInput>>;
+  updateMany?: InputMaybe<Array<AttachmentUpdateManyWithWhereWithoutMessageInput>>;
+  upsert?: InputMaybe<Array<AttachmentUpsertWithWhereUniqueWithoutMessageInput>>;
+};
+
+export type AttachmentUpdateManyWithoutRideNestedInput = {
+  connect?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<AttachmentCreateOrConnectWithoutRideInput>>;
+  create?: InputMaybe<Array<AttachmentCreateWithoutRideInput>>;
+  createMany?: InputMaybe<AttachmentCreateManyRideInputEnvelope>;
+  delete?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<AttachmentScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  set?: InputMaybe<Array<AttachmentWhereUniqueInput>>;
+  update?: InputMaybe<Array<AttachmentUpdateWithWhereUniqueWithoutRideInput>>;
+  updateMany?: InputMaybe<Array<AttachmentUpdateManyWithWhereWithoutRideInput>>;
+  upsert?: InputMaybe<Array<AttachmentUpsertWithWhereUniqueWithoutRideInput>>;
+};
+
+export type AttachmentUpdateWithWhereUniqueWithoutFileInput = {
+  data: AttachmentUpdateWithoutFileInput;
+  where: AttachmentWhereUniqueInput;
+};
+
+export type AttachmentUpdateWithWhereUniqueWithoutMessageInput = {
+  data: AttachmentUpdateWithoutMessageInput;
+  where: AttachmentWhereUniqueInput;
+};
+
+export type AttachmentUpdateWithWhereUniqueWithoutRideInput = {
+  data: AttachmentUpdateWithoutRideInput;
+  where: AttachmentWhereUniqueInput;
+};
+
+export type AttachmentUpdateWithoutFileInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  linkDesc?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  linkMeta?: InputMaybe<Scalars['JSON']['input']>;
+  linkThumbnail?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  linkTitle?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  message?: InputMaybe<MessageUpdateOneRequiredWithoutAttachmentsNestedInput>;
+  ride?: InputMaybe<RideUpdateOneWithoutAttachmentNestedInput>;
+  type?: InputMaybe<EnumAttachmentTypeFieldUpdateOperationsInput>;
+  url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+};
+
+export type AttachmentUpdateWithoutMessageInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  file?: InputMaybe<FileUpdateOneWithoutAttachmentNestedInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  linkDesc?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  linkMeta?: InputMaybe<Scalars['JSON']['input']>;
+  linkThumbnail?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  linkTitle?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  ride?: InputMaybe<RideUpdateOneWithoutAttachmentNestedInput>;
+  type?: InputMaybe<EnumAttachmentTypeFieldUpdateOperationsInput>;
+  url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+};
+
+export type AttachmentUpdateWithoutRideInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  file?: InputMaybe<FileUpdateOneWithoutAttachmentNestedInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  linkDesc?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  linkMeta?: InputMaybe<Scalars['JSON']['input']>;
+  linkThumbnail?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  linkTitle?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  message?: InputMaybe<MessageUpdateOneRequiredWithoutAttachmentsNestedInput>;
+  type?: InputMaybe<EnumAttachmentTypeFieldUpdateOperationsInput>;
+  url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+};
+
+export type AttachmentUpsertWithWhereUniqueWithoutFileInput = {
+  create: AttachmentCreateWithoutFileInput;
+  update: AttachmentUpdateWithoutFileInput;
+  where: AttachmentWhereUniqueInput;
+};
+
+export type AttachmentUpsertWithWhereUniqueWithoutMessageInput = {
+  create: AttachmentCreateWithoutMessageInput;
+  update: AttachmentUpdateWithoutMessageInput;
+  where: AttachmentWhereUniqueInput;
+};
+
+export type AttachmentUpsertWithWhereUniqueWithoutRideInput = {
+  create: AttachmentCreateWithoutRideInput;
+  update: AttachmentUpdateWithoutRideInput;
+  where: AttachmentWhereUniqueInput;
+};
+
+export type AttachmentWhereInput = {
+  AND?: InputMaybe<Array<AttachmentWhereInput>>;
+  NOT?: InputMaybe<Array<AttachmentWhereInput>>;
+  OR?: InputMaybe<Array<AttachmentWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  file?: InputMaybe<FileNullableScalarRelationFilter>;
+  fileId?: InputMaybe<StringNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  linkDesc?: InputMaybe<StringNullableFilter>;
+  linkMeta?: InputMaybe<JsonNullableFilter>;
+  linkThumbnail?: InputMaybe<StringNullableFilter>;
+  linkTitle?: InputMaybe<StringNullableFilter>;
+  message?: InputMaybe<MessageScalarRelationFilter>;
+  messageId?: InputMaybe<StringFilter>;
+  ride?: InputMaybe<RideNullableScalarRelationFilter>;
+  rideId?: InputMaybe<StringNullableFilter>;
+  type?: InputMaybe<EnumAttachmentTypeFilter>;
+  url?: InputMaybe<StringNullableFilter>;
+};
+
+export type AttachmentWhereUniqueInput = {
+  AND?: InputMaybe<Array<AttachmentWhereInput>>;
+  NOT?: InputMaybe<Array<AttachmentWhereInput>>;
+  OR?: InputMaybe<Array<AttachmentWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  file?: InputMaybe<FileNullableScalarRelationFilter>;
+  fileId?: InputMaybe<StringNullableFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  linkDesc?: InputMaybe<StringNullableFilter>;
+  linkMeta?: InputMaybe<JsonNullableFilter>;
+  linkThumbnail?: InputMaybe<StringNullableFilter>;
+  linkTitle?: InputMaybe<StringNullableFilter>;
+  message?: InputMaybe<MessageScalarRelationFilter>;
+  messageId?: InputMaybe<StringFilter>;
+  ride?: InputMaybe<RideNullableScalarRelationFilter>;
+  rideId?: InputMaybe<StringNullableFilter>;
+  type?: InputMaybe<EnumAttachmentTypeFilter>;
+  url?: InputMaybe<StringNullableFilter>;
 };
 
 export type BoolFieldUpdateOperationsInput = {
@@ -37,14 +442,716 @@ export type CompleteUploadOutput = {
   size?: Maybe<Scalars['Int']['output']>;
 };
 
+export type Conversation = {
+  __typename?: 'Conversation';
+  _count: ConversationCount;
+  createdAt: Scalars['DateTime']['output'];
+  directHash?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  messages?: Maybe<Array<Message>>;
+  participants?: Maybe<Array<ConversationParticipant>>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  type: ConversationType;
+};
+
+export type ConversationCount = {
+  __typename?: 'ConversationCount';
+  messages: Scalars['Int']['output'];
+  participants: Scalars['Int']['output'];
+};
+
+export type ConversationCountAggregate = {
+  __typename?: 'ConversationCountAggregate';
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  directHash: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  rideId: Scalars['Int']['output'];
+  title: Scalars['Int']['output'];
+  type: Scalars['Int']['output'];
+};
+
+export type ConversationCreateNestedOneWithoutMessagesInput = {
+  connect?: InputMaybe<ConversationWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<ConversationCreateOrConnectWithoutMessagesInput>;
+  create?: InputMaybe<ConversationCreateWithoutMessagesInput>;
+};
+
+export type ConversationCreateNestedOneWithoutParticipantsInput = {
+  connect?: InputMaybe<ConversationWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<ConversationCreateOrConnectWithoutParticipantsInput>;
+  create?: InputMaybe<ConversationCreateWithoutParticipantsInput>;
+};
+
+export type ConversationCreateOrConnectWithoutMessagesInput = {
+  create: ConversationCreateWithoutMessagesInput;
+  where: ConversationWhereUniqueInput;
+};
+
+export type ConversationCreateOrConnectWithoutParticipantsInput = {
+  create: ConversationCreateWithoutParticipantsInput;
+  where: ConversationWhereUniqueInput;
+};
+
+export type ConversationCreateWithoutMessagesInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  directHash?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  participants?: InputMaybe<ConversationParticipantCreateNestedManyWithoutConversationInput>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<ConversationType>;
+};
+
+export type ConversationCreateWithoutParticipantsInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  directHash?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  messages?: InputMaybe<MessageCreateNestedManyWithoutConversationInput>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<ConversationType>;
+};
+
+export type ConversationMaxAggregate = {
+  __typename?: 'ConversationMaxAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  directHash?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<ConversationType>;
+};
+
+export type ConversationMinAggregate = {
+  __typename?: 'ConversationMinAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  directHash?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<ConversationType>;
+};
+
+export type ConversationNullableScalarRelationFilter = {
+  is?: InputMaybe<ConversationWhereInput>;
+  isNot?: InputMaybe<ConversationWhereInput>;
+};
+
+export type ConversationParticipant = {
+  __typename?: 'ConversationParticipant';
+  conversation: Conversation;
+  conversationId: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  isMuted: Scalars['Boolean']['output'];
+  joinedAt: Scalars['DateTime']['output'];
+  role?: Maybe<Scalars['String']['output']>;
+  user: User;
+  userId: Scalars['String']['output'];
+};
+
+export type ConversationParticipantConversationIdUserIdCompoundUniqueInput = {
+  conversationId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+export type ConversationParticipantCountAggregate = {
+  __typename?: 'ConversationParticipantCountAggregate';
+  _all: Scalars['Int']['output'];
+  conversationId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  isMuted: Scalars['Int']['output'];
+  joinedAt: Scalars['Int']['output'];
+  role: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+};
+
+export type ConversationParticipantCreateManyConversationInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  isMuted?: InputMaybe<Scalars['Boolean']['input']>;
+  joinedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  role?: InputMaybe<Scalars['String']['input']>;
+  userId: Scalars['String']['input'];
+};
+
+export type ConversationParticipantCreateManyConversationInputEnvelope = {
+  data: Array<ConversationParticipantCreateManyConversationInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type ConversationParticipantCreateManyUserInput = {
+  conversationId: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  isMuted?: InputMaybe<Scalars['Boolean']['input']>;
+  joinedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  role?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ConversationParticipantCreateManyUserInputEnvelope = {
+  data: Array<ConversationParticipantCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type ConversationParticipantCreateNestedManyWithoutConversationInput = {
+  connect?: InputMaybe<Array<ConversationParticipantWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ConversationParticipantCreateOrConnectWithoutConversationInput>>;
+  create?: InputMaybe<Array<ConversationParticipantCreateWithoutConversationInput>>;
+  createMany?: InputMaybe<ConversationParticipantCreateManyConversationInputEnvelope>;
+};
+
+export type ConversationParticipantCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<ConversationParticipantWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ConversationParticipantCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<ConversationParticipantCreateWithoutUserInput>>;
+  createMany?: InputMaybe<ConversationParticipantCreateManyUserInputEnvelope>;
+};
+
+export type ConversationParticipantCreateOrConnectWithoutConversationInput = {
+  create: ConversationParticipantCreateWithoutConversationInput;
+  where: ConversationParticipantWhereUniqueInput;
+};
+
+export type ConversationParticipantCreateOrConnectWithoutUserInput = {
+  create: ConversationParticipantCreateWithoutUserInput;
+  where: ConversationParticipantWhereUniqueInput;
+};
+
+export type ConversationParticipantCreateWithoutConversationInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  isMuted?: InputMaybe<Scalars['Boolean']['input']>;
+  joinedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  role?: InputMaybe<Scalars['String']['input']>;
+  user: UserCreateNestedOneWithoutConversationParticipantInput;
+};
+
+export type ConversationParticipantCreateWithoutUserInput = {
+  conversation: ConversationCreateNestedOneWithoutParticipantsInput;
+  id?: InputMaybe<Scalars['String']['input']>;
+  isMuted?: InputMaybe<Scalars['Boolean']['input']>;
+  joinedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  role?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ConversationParticipantListRelationFilter = {
+  every?: InputMaybe<ConversationParticipantWhereInput>;
+  none?: InputMaybe<ConversationParticipantWhereInput>;
+  some?: InputMaybe<ConversationParticipantWhereInput>;
+};
+
+export type ConversationParticipantMaxAggregate = {
+  __typename?: 'ConversationParticipantMaxAggregate';
+  conversationId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  isMuted?: Maybe<Scalars['Boolean']['output']>;
+  joinedAt?: Maybe<Scalars['DateTime']['output']>;
+  role?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ConversationParticipantMinAggregate = {
+  __typename?: 'ConversationParticipantMinAggregate';
+  conversationId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  isMuted?: Maybe<Scalars['Boolean']['output']>;
+  joinedAt?: Maybe<Scalars['DateTime']['output']>;
+  role?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ConversationParticipantOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type ConversationParticipantScalarWhereInput = {
+  AND?: InputMaybe<Array<ConversationParticipantScalarWhereInput>>;
+  NOT?: InputMaybe<Array<ConversationParticipantScalarWhereInput>>;
+  OR?: InputMaybe<Array<ConversationParticipantScalarWhereInput>>;
+  conversationId?: InputMaybe<StringFilter>;
+  id?: InputMaybe<StringFilter>;
+  isMuted?: InputMaybe<BoolFilter>;
+  joinedAt?: InputMaybe<DateTimeFilter>;
+  role?: InputMaybe<StringNullableFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type ConversationParticipantUpdateManyMutationInput = {
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isMuted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  joinedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  role?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+};
+
+export type ConversationParticipantUpdateManyWithWhereWithoutConversationInput = {
+  data: ConversationParticipantUpdateManyMutationInput;
+  where: ConversationParticipantScalarWhereInput;
+};
+
+export type ConversationParticipantUpdateManyWithWhereWithoutUserInput = {
+  data: ConversationParticipantUpdateManyMutationInput;
+  where: ConversationParticipantScalarWhereInput;
+};
+
+export type ConversationParticipantUpdateManyWithoutConversationNestedInput = {
+  connect?: InputMaybe<Array<ConversationParticipantWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ConversationParticipantCreateOrConnectWithoutConversationInput>>;
+  create?: InputMaybe<Array<ConversationParticipantCreateWithoutConversationInput>>;
+  createMany?: InputMaybe<ConversationParticipantCreateManyConversationInputEnvelope>;
+  delete?: InputMaybe<Array<ConversationParticipantWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<ConversationParticipantScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<ConversationParticipantWhereUniqueInput>>;
+  set?: InputMaybe<Array<ConversationParticipantWhereUniqueInput>>;
+  update?: InputMaybe<Array<ConversationParticipantUpdateWithWhereUniqueWithoutConversationInput>>;
+  updateMany?: InputMaybe<Array<ConversationParticipantUpdateManyWithWhereWithoutConversationInput>>;
+  upsert?: InputMaybe<Array<ConversationParticipantUpsertWithWhereUniqueWithoutConversationInput>>;
+};
+
+export type ConversationParticipantUpdateManyWithoutUserNestedInput = {
+  connect?: InputMaybe<Array<ConversationParticipantWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ConversationParticipantCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<ConversationParticipantCreateWithoutUserInput>>;
+  createMany?: InputMaybe<ConversationParticipantCreateManyUserInputEnvelope>;
+  delete?: InputMaybe<Array<ConversationParticipantWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<ConversationParticipantScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<ConversationParticipantWhereUniqueInput>>;
+  set?: InputMaybe<Array<ConversationParticipantWhereUniqueInput>>;
+  update?: InputMaybe<Array<ConversationParticipantUpdateWithWhereUniqueWithoutUserInput>>;
+  updateMany?: InputMaybe<Array<ConversationParticipantUpdateManyWithWhereWithoutUserInput>>;
+  upsert?: InputMaybe<Array<ConversationParticipantUpsertWithWhereUniqueWithoutUserInput>>;
+};
+
+export type ConversationParticipantUpdateWithWhereUniqueWithoutConversationInput = {
+  data: ConversationParticipantUpdateWithoutConversationInput;
+  where: ConversationParticipantWhereUniqueInput;
+};
+
+export type ConversationParticipantUpdateWithWhereUniqueWithoutUserInput = {
+  data: ConversationParticipantUpdateWithoutUserInput;
+  where: ConversationParticipantWhereUniqueInput;
+};
+
+export type ConversationParticipantUpdateWithoutConversationInput = {
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isMuted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  joinedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  role?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  user?: InputMaybe<UserUpdateOneRequiredWithoutConversationParticipantNestedInput>;
+};
+
+export type ConversationParticipantUpdateWithoutUserInput = {
+  conversation?: InputMaybe<ConversationUpdateOneRequiredWithoutParticipantsNestedInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isMuted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  joinedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  role?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+};
+
+export type ConversationParticipantUpsertWithWhereUniqueWithoutConversationInput = {
+  create: ConversationParticipantCreateWithoutConversationInput;
+  update: ConversationParticipantUpdateWithoutConversationInput;
+  where: ConversationParticipantWhereUniqueInput;
+};
+
+export type ConversationParticipantUpsertWithWhereUniqueWithoutUserInput = {
+  create: ConversationParticipantCreateWithoutUserInput;
+  update: ConversationParticipantUpdateWithoutUserInput;
+  where: ConversationParticipantWhereUniqueInput;
+};
+
+export type ConversationParticipantWhereInput = {
+  AND?: InputMaybe<Array<ConversationParticipantWhereInput>>;
+  NOT?: InputMaybe<Array<ConversationParticipantWhereInput>>;
+  OR?: InputMaybe<Array<ConversationParticipantWhereInput>>;
+  conversation?: InputMaybe<ConversationScalarRelationFilter>;
+  conversationId?: InputMaybe<StringFilter>;
+  id?: InputMaybe<StringFilter>;
+  isMuted?: InputMaybe<BoolFilter>;
+  joinedAt?: InputMaybe<DateTimeFilter>;
+  role?: InputMaybe<StringNullableFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type ConversationParticipantWhereUniqueInput = {
+  AND?: InputMaybe<Array<ConversationParticipantWhereInput>>;
+  NOT?: InputMaybe<Array<ConversationParticipantWhereInput>>;
+  OR?: InputMaybe<Array<ConversationParticipantWhereInput>>;
+  conversation?: InputMaybe<ConversationScalarRelationFilter>;
+  conversationId?: InputMaybe<StringFilter>;
+  conversationId_userId?: InputMaybe<ConversationParticipantConversationIdUserIdCompoundUniqueInput>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  isMuted?: InputMaybe<BoolFilter>;
+  joinedAt?: InputMaybe<DateTimeFilter>;
+  role?: InputMaybe<StringNullableFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type ConversationScalarRelationFilter = {
+  is?: InputMaybe<ConversationWhereInput>;
+  isNot?: InputMaybe<ConversationWhereInput>;
+};
+
+export enum ConversationType {
+  DIRECT = 'DIRECT',
+  GROUP = 'GROUP',
+  RIDE_LINKED = 'RIDE_LINKED'
+}
+
+export type ConversationUpdateOneRequiredWithoutParticipantsNestedInput = {
+  connect?: InputMaybe<ConversationWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<ConversationCreateOrConnectWithoutParticipantsInput>;
+  create?: InputMaybe<ConversationCreateWithoutParticipantsInput>;
+  update?: InputMaybe<ConversationUpdateToOneWithWhereWithoutParticipantsInput>;
+  upsert?: InputMaybe<ConversationUpsertWithoutParticipantsInput>;
+};
+
+export type ConversationUpdateOneWithoutMessagesNestedInput = {
+  connect?: InputMaybe<ConversationWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<ConversationCreateOrConnectWithoutMessagesInput>;
+  create?: InputMaybe<ConversationCreateWithoutMessagesInput>;
+  delete?: InputMaybe<ConversationWhereInput>;
+  disconnect?: InputMaybe<ConversationWhereInput>;
+  update?: InputMaybe<ConversationUpdateToOneWithWhereWithoutMessagesInput>;
+  upsert?: InputMaybe<ConversationUpsertWithoutMessagesInput>;
+};
+
+export type ConversationUpdateToOneWithWhereWithoutMessagesInput = {
+  data: ConversationUpdateWithoutMessagesInput;
+  where?: InputMaybe<ConversationWhereInput>;
+};
+
+export type ConversationUpdateToOneWithWhereWithoutParticipantsInput = {
+  data: ConversationUpdateWithoutParticipantsInput;
+  where?: InputMaybe<ConversationWhereInput>;
+};
+
+export type ConversationUpdateWithoutMessagesInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  directHash?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  participants?: InputMaybe<ConversationParticipantUpdateManyWithoutConversationNestedInput>;
+  rideId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  title?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumConversationTypeFieldUpdateOperationsInput>;
+};
+
+export type ConversationUpdateWithoutParticipantsInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  directHash?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  messages?: InputMaybe<MessageUpdateManyWithoutConversationNestedInput>;
+  rideId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  title?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumConversationTypeFieldUpdateOperationsInput>;
+};
+
+export type ConversationUpsertWithoutMessagesInput = {
+  create: ConversationCreateWithoutMessagesInput;
+  update: ConversationUpdateWithoutMessagesInput;
+  where?: InputMaybe<ConversationWhereInput>;
+};
+
+export type ConversationUpsertWithoutParticipantsInput = {
+  create: ConversationCreateWithoutParticipantsInput;
+  update: ConversationUpdateWithoutParticipantsInput;
+  where?: InputMaybe<ConversationWhereInput>;
+};
+
+export type ConversationWhereInput = {
+  AND?: InputMaybe<Array<ConversationWhereInput>>;
+  NOT?: InputMaybe<Array<ConversationWhereInput>>;
+  OR?: InputMaybe<Array<ConversationWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  directHash?: InputMaybe<StringNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  messages?: InputMaybe<MessageListRelationFilter>;
+  participants?: InputMaybe<ConversationParticipantListRelationFilter>;
+  rideId?: InputMaybe<StringNullableFilter>;
+  title?: InputMaybe<StringNullableFilter>;
+  type?: InputMaybe<EnumConversationTypeFilter>;
+};
+
+export type ConversationWhereUniqueInput = {
+  AND?: InputMaybe<Array<ConversationWhereInput>>;
+  NOT?: InputMaybe<Array<ConversationWhereInput>>;
+  OR?: InputMaybe<Array<ConversationWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  directHash?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  messages?: InputMaybe<MessageListRelationFilter>;
+  participants?: InputMaybe<ConversationParticipantListRelationFilter>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<StringNullableFilter>;
+  type?: InputMaybe<EnumConversationTypeFilter>;
+};
+
 export type CreateDriverVehicleInput = {
   brand?: InputMaybe<Scalars['String']['input']>;
   model?: InputMaybe<Scalars['String']['input']>;
   place: Scalars['Float']['input'];
   registrationNumber?: InputMaybe<Scalars['String']['input']>;
-  uploadDocuments?: InputMaybe<Array<UploadedFileRefInput>>;
+  uploadDocuments?: InputMaybe<Array<UploadVehicleDocumentsInput>>;
   uploadImages?: InputMaybe<Array<UploadedFileRefInput>>;
   vehicleTypeId: Scalars['String']['input'];
+};
+
+export type CurrentPosition = {
+  __typename?: 'CurrentPosition';
+  accuracy?: Maybe<Scalars['Float']['output']>;
+  altitude?: Maybe<Scalars['Float']['output']>;
+  battery?: Maybe<Scalars['Int']['output']>;
+  heading?: Maybe<Scalars['Float']['output']>;
+  latitude: Scalars['Decimal']['output'];
+  longitude: Scalars['Decimal']['output'];
+  provider?: Maybe<Scalars['String']['output']>;
+  recordedAt: Scalars['DateTime']['output'];
+  speed?: Maybe<Scalars['Float']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+  vehicle: DriverVehicle;
+  vehicleId: Scalars['String']['output'];
+};
+
+export type CurrentPositionAvgAggregate = {
+  __typename?: 'CurrentPositionAvgAggregate';
+  accuracy?: Maybe<Scalars['Float']['output']>;
+  altitude?: Maybe<Scalars['Float']['output']>;
+  battery?: Maybe<Scalars['Float']['output']>;
+  heading?: Maybe<Scalars['Float']['output']>;
+  latitude?: Maybe<Scalars['Decimal']['output']>;
+  longitude?: Maybe<Scalars['Decimal']['output']>;
+  speed?: Maybe<Scalars['Float']['output']>;
+};
+
+export type CurrentPositionCountAggregate = {
+  __typename?: 'CurrentPositionCountAggregate';
+  _all: Scalars['Int']['output'];
+  accuracy: Scalars['Int']['output'];
+  altitude: Scalars['Int']['output'];
+  battery: Scalars['Int']['output'];
+  heading: Scalars['Int']['output'];
+  latitude: Scalars['Int']['output'];
+  longitude: Scalars['Int']['output'];
+  provider: Scalars['Int']['output'];
+  recordedAt: Scalars['Int']['output'];
+  speed: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
+  vehicleId: Scalars['Int']['output'];
+};
+
+export type CurrentPositionCreateManyVehicleInput = {
+  accuracy?: InputMaybe<Scalars['Float']['input']>;
+  altitude?: InputMaybe<Scalars['Float']['input']>;
+  battery?: InputMaybe<Scalars['Int']['input']>;
+  heading?: InputMaybe<Scalars['Float']['input']>;
+  latitude: Scalars['Decimal']['input'];
+  longitude: Scalars['Decimal']['input'];
+  provider?: InputMaybe<Scalars['String']['input']>;
+  recordedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  speed?: InputMaybe<Scalars['Float']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type CurrentPositionCreateManyVehicleInputEnvelope = {
+  data: Array<CurrentPositionCreateManyVehicleInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type CurrentPositionCreateNestedManyWithoutVehicleInput = {
+  connect?: InputMaybe<Array<CurrentPositionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<CurrentPositionCreateOrConnectWithoutVehicleInput>>;
+  create?: InputMaybe<Array<CurrentPositionCreateWithoutVehicleInput>>;
+  createMany?: InputMaybe<CurrentPositionCreateManyVehicleInputEnvelope>;
+};
+
+export type CurrentPositionCreateOrConnectWithoutVehicleInput = {
+  create: CurrentPositionCreateWithoutVehicleInput;
+  where: CurrentPositionWhereUniqueInput;
+};
+
+export type CurrentPositionCreateWithoutVehicleInput = {
+  accuracy?: InputMaybe<Scalars['Float']['input']>;
+  altitude?: InputMaybe<Scalars['Float']['input']>;
+  battery?: InputMaybe<Scalars['Int']['input']>;
+  heading?: InputMaybe<Scalars['Float']['input']>;
+  latitude: Scalars['Decimal']['input'];
+  longitude: Scalars['Decimal']['input'];
+  provider?: InputMaybe<Scalars['String']['input']>;
+  recordedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  speed?: InputMaybe<Scalars['Float']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type CurrentPositionListRelationFilter = {
+  every?: InputMaybe<CurrentPositionWhereInput>;
+  none?: InputMaybe<CurrentPositionWhereInput>;
+  some?: InputMaybe<CurrentPositionWhereInput>;
+};
+
+export type CurrentPositionMaxAggregate = {
+  __typename?: 'CurrentPositionMaxAggregate';
+  accuracy?: Maybe<Scalars['Float']['output']>;
+  altitude?: Maybe<Scalars['Float']['output']>;
+  battery?: Maybe<Scalars['Int']['output']>;
+  heading?: Maybe<Scalars['Float']['output']>;
+  latitude?: Maybe<Scalars['Decimal']['output']>;
+  longitude?: Maybe<Scalars['Decimal']['output']>;
+  provider?: Maybe<Scalars['String']['output']>;
+  recordedAt?: Maybe<Scalars['DateTime']['output']>;
+  speed?: Maybe<Scalars['Float']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  vehicleId?: Maybe<Scalars['String']['output']>;
+};
+
+export type CurrentPositionMinAggregate = {
+  __typename?: 'CurrentPositionMinAggregate';
+  accuracy?: Maybe<Scalars['Float']['output']>;
+  altitude?: Maybe<Scalars['Float']['output']>;
+  battery?: Maybe<Scalars['Int']['output']>;
+  heading?: Maybe<Scalars['Float']['output']>;
+  latitude?: Maybe<Scalars['Decimal']['output']>;
+  longitude?: Maybe<Scalars['Decimal']['output']>;
+  provider?: Maybe<Scalars['String']['output']>;
+  recordedAt?: Maybe<Scalars['DateTime']['output']>;
+  speed?: Maybe<Scalars['Float']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  vehicleId?: Maybe<Scalars['String']['output']>;
+};
+
+export type CurrentPositionScalarWhereInput = {
+  AND?: InputMaybe<Array<CurrentPositionScalarWhereInput>>;
+  NOT?: InputMaybe<Array<CurrentPositionScalarWhereInput>>;
+  OR?: InputMaybe<Array<CurrentPositionScalarWhereInput>>;
+  accuracy?: InputMaybe<FloatNullableFilter>;
+  altitude?: InputMaybe<FloatNullableFilter>;
+  battery?: InputMaybe<IntNullableFilter>;
+  heading?: InputMaybe<FloatNullableFilter>;
+  latitude?: InputMaybe<DecimalFilter>;
+  longitude?: InputMaybe<DecimalFilter>;
+  provider?: InputMaybe<StringNullableFilter>;
+  recordedAt?: InputMaybe<DateTimeFilter>;
+  speed?: InputMaybe<FloatNullableFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  vehicleId?: InputMaybe<StringFilter>;
+};
+
+export type CurrentPositionSumAggregate = {
+  __typename?: 'CurrentPositionSumAggregate';
+  accuracy?: Maybe<Scalars['Float']['output']>;
+  altitude?: Maybe<Scalars['Float']['output']>;
+  battery?: Maybe<Scalars['Int']['output']>;
+  heading?: Maybe<Scalars['Float']['output']>;
+  latitude?: Maybe<Scalars['Decimal']['output']>;
+  longitude?: Maybe<Scalars['Decimal']['output']>;
+  speed?: Maybe<Scalars['Float']['output']>;
+};
+
+export type CurrentPositionUpdateManyMutationInput = {
+  accuracy?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  altitude?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  battery?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  heading?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  latitude?: InputMaybe<DecimalFieldUpdateOperationsInput>;
+  longitude?: InputMaybe<DecimalFieldUpdateOperationsInput>;
+  provider?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  recordedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  speed?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+};
+
+export type CurrentPositionUpdateManyWithWhereWithoutVehicleInput = {
+  data: CurrentPositionUpdateManyMutationInput;
+  where: CurrentPositionScalarWhereInput;
+};
+
+export type CurrentPositionUpdateManyWithoutVehicleNestedInput = {
+  connect?: InputMaybe<Array<CurrentPositionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<CurrentPositionCreateOrConnectWithoutVehicleInput>>;
+  create?: InputMaybe<Array<CurrentPositionCreateWithoutVehicleInput>>;
+  createMany?: InputMaybe<CurrentPositionCreateManyVehicleInputEnvelope>;
+  delete?: InputMaybe<Array<CurrentPositionWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<CurrentPositionScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<CurrentPositionWhereUniqueInput>>;
+  set?: InputMaybe<Array<CurrentPositionWhereUniqueInput>>;
+  update?: InputMaybe<Array<CurrentPositionUpdateWithWhereUniqueWithoutVehicleInput>>;
+  updateMany?: InputMaybe<Array<CurrentPositionUpdateManyWithWhereWithoutVehicleInput>>;
+  upsert?: InputMaybe<Array<CurrentPositionUpsertWithWhereUniqueWithoutVehicleInput>>;
+};
+
+export type CurrentPositionUpdateWithWhereUniqueWithoutVehicleInput = {
+  data: CurrentPositionUpdateWithoutVehicleInput;
+  where: CurrentPositionWhereUniqueInput;
+};
+
+export type CurrentPositionUpdateWithoutVehicleInput = {
+  accuracy?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  altitude?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  battery?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  heading?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  latitude?: InputMaybe<DecimalFieldUpdateOperationsInput>;
+  longitude?: InputMaybe<DecimalFieldUpdateOperationsInput>;
+  provider?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  recordedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  speed?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+};
+
+export type CurrentPositionUpsertWithWhereUniqueWithoutVehicleInput = {
+  create: CurrentPositionCreateWithoutVehicleInput;
+  update: CurrentPositionUpdateWithoutVehicleInput;
+  where: CurrentPositionWhereUniqueInput;
+};
+
+export type CurrentPositionWhereInput = {
+  AND?: InputMaybe<Array<CurrentPositionWhereInput>>;
+  NOT?: InputMaybe<Array<CurrentPositionWhereInput>>;
+  OR?: InputMaybe<Array<CurrentPositionWhereInput>>;
+  accuracy?: InputMaybe<FloatNullableFilter>;
+  altitude?: InputMaybe<FloatNullableFilter>;
+  battery?: InputMaybe<IntNullableFilter>;
+  heading?: InputMaybe<FloatNullableFilter>;
+  latitude?: InputMaybe<DecimalFilter>;
+  longitude?: InputMaybe<DecimalFilter>;
+  provider?: InputMaybe<StringNullableFilter>;
+  recordedAt?: InputMaybe<DateTimeFilter>;
+  speed?: InputMaybe<FloatNullableFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  vehicle?: InputMaybe<DriverVehicleScalarRelationFilter>;
+  vehicleId?: InputMaybe<StringFilter>;
+};
+
+export type CurrentPositionWhereUniqueInput = {
+  AND?: InputMaybe<Array<CurrentPositionWhereInput>>;
+  NOT?: InputMaybe<Array<CurrentPositionWhereInput>>;
+  OR?: InputMaybe<Array<CurrentPositionWhereInput>>;
+  accuracy?: InputMaybe<FloatNullableFilter>;
+  altitude?: InputMaybe<FloatNullableFilter>;
+  battery?: InputMaybe<IntNullableFilter>;
+  heading?: InputMaybe<FloatNullableFilter>;
+  latitude?: InputMaybe<DecimalFilter>;
+  longitude?: InputMaybe<DecimalFilter>;
+  provider?: InputMaybe<StringNullableFilter>;
+  recordedAt?: InputMaybe<DateTimeFilter>;
+  speed?: InputMaybe<FloatNullableFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  vehicle?: InputMaybe<DriverVehicleScalarRelationFilter>;
+  vehicleId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CustomFileUpdateInput = {
+  contentType?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  driverVehicleId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  etag?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  key?: InputMaybe<StringFieldUpdateOperationsInput>;
+  meta?: InputMaybe<Scalars['JSON']['input']>;
+  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  originalName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  size?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  status?: InputMaybe<StringFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumFileTypeFieldUpdateOperationsInput>;
+  url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  userId?: InputMaybe<StringFieldUpdateOperationsInput>;
 };
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -73,8 +1180,29 @@ export type DateTimeNullableFilter = {
   notIn?: InputMaybe<Array<Scalars['DateTime']['input']>>;
 };
 
+export type DecimalFieldUpdateOperationsInput = {
+  decrement?: InputMaybe<Scalars['Decimal']['input']>;
+  divide?: InputMaybe<Scalars['Decimal']['input']>;
+  increment?: InputMaybe<Scalars['Decimal']['input']>;
+  multiply?: InputMaybe<Scalars['Decimal']['input']>;
+  set?: InputMaybe<Scalars['Decimal']['input']>;
+};
+
+export type DecimalFilter = {
+  equals?: InputMaybe<Scalars['Decimal']['input']>;
+  gt?: InputMaybe<Scalars['Decimal']['input']>;
+  gte?: InputMaybe<Scalars['Decimal']['input']>;
+  in?: InputMaybe<Array<Scalars['Decimal']['input']>>;
+  lt?: InputMaybe<Scalars['Decimal']['input']>;
+  lte?: InputMaybe<Scalars['Decimal']['input']>;
+  not?: InputMaybe<NestedDecimalFilter>;
+  notIn?: InputMaybe<Array<Scalars['Decimal']['input']>>;
+};
+
 export type DriverVehicle = {
   __typename?: 'DriverVehicle';
+  CurrentPosition?: Maybe<Array<CurrentPosition>>;
+  Position?: Maybe<Array<Position>>;
   VehicleDocument?: Maybe<Array<VehicleDocument>>;
   VehicleImage?: Maybe<Array<VehicleImage>>;
   _count: DriverVehicleCount;
@@ -96,6 +1224,8 @@ export type DriverVehicleAvgAggregate = {
 
 export type DriverVehicleCount = {
   __typename?: 'DriverVehicleCount';
+  CurrentPosition: Scalars['Int']['output'];
+  Position: Scalars['Int']['output'];
   VehicleDocument: Scalars['Int']['output'];
   VehicleImage: Scalars['Int']['output'];
 };
@@ -154,6 +1284,12 @@ export type DriverVehicleCreateNestedManyWithoutUserInput = {
   createMany?: InputMaybe<DriverVehicleCreateManyUserInputEnvelope>;
 };
 
+export type DriverVehicleCreateNestedOneWithoutPositionInput = {
+  connect?: InputMaybe<DriverVehicleWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<DriverVehicleCreateOrConnectWithoutPositionInput>;
+  create?: InputMaybe<DriverVehicleCreateWithoutPositionInput>;
+};
+
 export type DriverVehicleCreateNestedOneWithoutVehicleDocumentInput = {
   connect?: InputMaybe<DriverVehicleWhereUniqueInput>;
   connectOrCreate?: InputMaybe<DriverVehicleCreateOrConnectWithoutVehicleDocumentInput>;
@@ -164,6 +1300,11 @@ export type DriverVehicleCreateNestedOneWithoutVehicleImageInput = {
   connect?: InputMaybe<DriverVehicleWhereUniqueInput>;
   connectOrCreate?: InputMaybe<DriverVehicleCreateOrConnectWithoutVehicleImageInput>;
   create?: InputMaybe<DriverVehicleCreateWithoutVehicleImageInput>;
+};
+
+export type DriverVehicleCreateOrConnectWithoutPositionInput = {
+  create: DriverVehicleCreateWithoutPositionInput;
+  where: DriverVehicleWhereUniqueInput;
 };
 
 export type DriverVehicleCreateOrConnectWithoutTypeInput = {
@@ -186,7 +1327,22 @@ export type DriverVehicleCreateOrConnectWithoutVehicleImageInput = {
   where: DriverVehicleWhereUniqueInput;
 };
 
+export type DriverVehicleCreateWithoutPositionInput = {
+  CurrentPosition?: InputMaybe<CurrentPositionCreateNestedManyWithoutVehicleInput>;
+  VehicleDocument?: InputMaybe<VehicleDocumentCreateNestedManyWithoutDriverVehicleInput>;
+  VehicleImage?: InputMaybe<VehicleImageCreateNestedManyWithoutDriverVehicleInput>;
+  brand?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  model?: InputMaybe<Scalars['String']['input']>;
+  place: Scalars['Int']['input'];
+  registrationNumber?: InputMaybe<Scalars['String']['input']>;
+  type: VehicleTypeCreateNestedOneWithoutVehiclesInput;
+  user: UserCreateNestedOneWithoutVehiclesInput;
+};
+
 export type DriverVehicleCreateWithoutTypeInput = {
+  CurrentPosition?: InputMaybe<CurrentPositionCreateNestedManyWithoutVehicleInput>;
+  Position?: InputMaybe<PositionCreateNestedManyWithoutVehicleInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentCreateNestedManyWithoutDriverVehicleInput>;
   VehicleImage?: InputMaybe<VehicleImageCreateNestedManyWithoutDriverVehicleInput>;
   brand?: InputMaybe<Scalars['String']['input']>;
@@ -198,6 +1354,8 @@ export type DriverVehicleCreateWithoutTypeInput = {
 };
 
 export type DriverVehicleCreateWithoutUserInput = {
+  CurrentPosition?: InputMaybe<CurrentPositionCreateNestedManyWithoutVehicleInput>;
+  Position?: InputMaybe<PositionCreateNestedManyWithoutVehicleInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentCreateNestedManyWithoutDriverVehicleInput>;
   VehicleImage?: InputMaybe<VehicleImageCreateNestedManyWithoutDriverVehicleInput>;
   brand?: InputMaybe<Scalars['String']['input']>;
@@ -209,6 +1367,8 @@ export type DriverVehicleCreateWithoutUserInput = {
 };
 
 export type DriverVehicleCreateWithoutVehicleDocumentInput = {
+  CurrentPosition?: InputMaybe<CurrentPositionCreateNestedManyWithoutVehicleInput>;
+  Position?: InputMaybe<PositionCreateNestedManyWithoutVehicleInput>;
   VehicleImage?: InputMaybe<VehicleImageCreateNestedManyWithoutDriverVehicleInput>;
   brand?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
@@ -220,6 +1380,8 @@ export type DriverVehicleCreateWithoutVehicleDocumentInput = {
 };
 
 export type DriverVehicleCreateWithoutVehicleImageInput = {
+  CurrentPosition?: InputMaybe<CurrentPositionCreateNestedManyWithoutVehicleInput>;
+  Position?: InputMaybe<PositionCreateNestedManyWithoutVehicleInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentCreateNestedManyWithoutDriverVehicleInput>;
   brand?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
@@ -265,6 +1427,11 @@ export type DriverVehicleNullableScalarRelationFilter = {
 
 export type DriverVehicleOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
+};
+
+export type DriverVehicleScalarRelationFilter = {
+  is?: InputMaybe<DriverVehicleWhereInput>;
+  isNot?: InputMaybe<DriverVehicleWhereInput>;
 };
 
 export type DriverVehicleScalarWhereInput = {
@@ -331,6 +1498,14 @@ export type DriverVehicleUpdateManyWithoutUserNestedInput = {
   upsert?: InputMaybe<Array<DriverVehicleUpsertWithWhereUniqueWithoutUserInput>>;
 };
 
+export type DriverVehicleUpdateOneRequiredWithoutPositionNestedInput = {
+  connect?: InputMaybe<DriverVehicleWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<DriverVehicleCreateOrConnectWithoutPositionInput>;
+  create?: InputMaybe<DriverVehicleCreateWithoutPositionInput>;
+  update?: InputMaybe<DriverVehicleUpdateToOneWithWhereWithoutPositionInput>;
+  upsert?: InputMaybe<DriverVehicleUpsertWithoutPositionInput>;
+};
+
 export type DriverVehicleUpdateOneWithoutVehicleDocumentNestedInput = {
   connect?: InputMaybe<DriverVehicleWhereUniqueInput>;
   connectOrCreate?: InputMaybe<DriverVehicleCreateOrConnectWithoutVehicleDocumentInput>;
@@ -349,6 +1524,11 @@ export type DriverVehicleUpdateOneWithoutVehicleImageNestedInput = {
   disconnect?: InputMaybe<DriverVehicleWhereInput>;
   update?: InputMaybe<DriverVehicleUpdateToOneWithWhereWithoutVehicleImageInput>;
   upsert?: InputMaybe<DriverVehicleUpsertWithoutVehicleImageInput>;
+};
+
+export type DriverVehicleUpdateToOneWithWhereWithoutPositionInput = {
+  data: DriverVehicleUpdateWithoutPositionInput;
+  where?: InputMaybe<DriverVehicleWhereInput>;
 };
 
 export type DriverVehicleUpdateToOneWithWhereWithoutVehicleDocumentInput = {
@@ -371,7 +1551,22 @@ export type DriverVehicleUpdateWithWhereUniqueWithoutUserInput = {
   where: DriverVehicleWhereUniqueInput;
 };
 
+export type DriverVehicleUpdateWithoutPositionInput = {
+  CurrentPosition?: InputMaybe<CurrentPositionUpdateManyWithoutVehicleNestedInput>;
+  VehicleDocument?: InputMaybe<VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput>;
+  VehicleImage?: InputMaybe<VehicleImageUpdateManyWithoutDriverVehicleNestedInput>;
+  brand?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  model?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  place?: InputMaybe<IntFieldUpdateOperationsInput>;
+  registrationNumber?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  type?: InputMaybe<VehicleTypeUpdateOneRequiredWithoutVehiclesNestedInput>;
+  user?: InputMaybe<UserUpdateOneRequiredWithoutVehiclesNestedInput>;
+};
+
 export type DriverVehicleUpdateWithoutTypeInput = {
+  CurrentPosition?: InputMaybe<CurrentPositionUpdateManyWithoutVehicleNestedInput>;
+  Position?: InputMaybe<PositionUpdateManyWithoutVehicleNestedInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput>;
   VehicleImage?: InputMaybe<VehicleImageUpdateManyWithoutDriverVehicleNestedInput>;
   brand?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -383,6 +1578,8 @@ export type DriverVehicleUpdateWithoutTypeInput = {
 };
 
 export type DriverVehicleUpdateWithoutUserInput = {
+  CurrentPosition?: InputMaybe<CurrentPositionUpdateManyWithoutVehicleNestedInput>;
+  Position?: InputMaybe<PositionUpdateManyWithoutVehicleNestedInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput>;
   VehicleImage?: InputMaybe<VehicleImageUpdateManyWithoutDriverVehicleNestedInput>;
   brand?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -394,6 +1591,8 @@ export type DriverVehicleUpdateWithoutUserInput = {
 };
 
 export type DriverVehicleUpdateWithoutVehicleDocumentInput = {
+  CurrentPosition?: InputMaybe<CurrentPositionUpdateManyWithoutVehicleNestedInput>;
+  Position?: InputMaybe<PositionUpdateManyWithoutVehicleNestedInput>;
   VehicleImage?: InputMaybe<VehicleImageUpdateManyWithoutDriverVehicleNestedInput>;
   brand?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
@@ -405,6 +1604,8 @@ export type DriverVehicleUpdateWithoutVehicleDocumentInput = {
 };
 
 export type DriverVehicleUpdateWithoutVehicleImageInput = {
+  CurrentPosition?: InputMaybe<CurrentPositionUpdateManyWithoutVehicleNestedInput>;
+  Position?: InputMaybe<PositionUpdateManyWithoutVehicleNestedInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentUpdateManyWithoutDriverVehicleNestedInput>;
   brand?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
@@ -427,6 +1628,12 @@ export type DriverVehicleUpsertWithWhereUniqueWithoutUserInput = {
   where: DriverVehicleWhereUniqueInput;
 };
 
+export type DriverVehicleUpsertWithoutPositionInput = {
+  create: DriverVehicleCreateWithoutPositionInput;
+  update: DriverVehicleUpdateWithoutPositionInput;
+  where?: InputMaybe<DriverVehicleWhereInput>;
+};
+
 export type DriverVehicleUpsertWithoutVehicleDocumentInput = {
   create: DriverVehicleCreateWithoutVehicleDocumentInput;
   update: DriverVehicleUpdateWithoutVehicleDocumentInput;
@@ -441,8 +1648,10 @@ export type DriverVehicleUpsertWithoutVehicleImageInput = {
 
 export type DriverVehicleWhereInput = {
   AND?: InputMaybe<Array<DriverVehicleWhereInput>>;
+  CurrentPosition?: InputMaybe<CurrentPositionListRelationFilter>;
   NOT?: InputMaybe<Array<DriverVehicleWhereInput>>;
   OR?: InputMaybe<Array<DriverVehicleWhereInput>>;
+  Position?: InputMaybe<PositionListRelationFilter>;
   VehicleDocument?: InputMaybe<VehicleDocumentListRelationFilter>;
   VehicleImage?: InputMaybe<VehicleImageListRelationFilter>;
   brand?: InputMaybe<StringNullableFilter>;
@@ -458,8 +1667,10 @@ export type DriverVehicleWhereInput = {
 
 export type DriverVehicleWhereUniqueInput = {
   AND?: InputMaybe<Array<DriverVehicleWhereInput>>;
+  CurrentPosition?: InputMaybe<CurrentPositionListRelationFilter>;
   NOT?: InputMaybe<Array<DriverVehicleWhereInput>>;
   OR?: InputMaybe<Array<DriverVehicleWhereInput>>;
+  Position?: InputMaybe<PositionListRelationFilter>;
   VehicleDocument?: InputMaybe<VehicleDocumentListRelationFilter>;
   VehicleImage?: InputMaybe<VehicleImageListRelationFilter>;
   brand?: InputMaybe<StringNullableFilter>;
@@ -473,19 +1684,77 @@ export type DriverVehicleWhereUniqueInput = {
   vehicleTypeId?: InputMaybe<StringFilter>;
 };
 
-export type EnumImageTypeFieldUpdateOperationsInput = {
-  set?: InputMaybe<ImageType>;
+export type EnumAttachmentTypeFieldUpdateOperationsInput = {
+  set?: InputMaybe<AttachmentType>;
 };
 
-export type EnumImageTypeFilter = {
-  equals?: InputMaybe<ImageType>;
-  in?: InputMaybe<Array<ImageType>>;
-  not?: InputMaybe<NestedEnumImageTypeFilter>;
-  notIn?: InputMaybe<Array<ImageType>>;
+export type EnumAttachmentTypeFilter = {
+  equals?: InputMaybe<AttachmentType>;
+  in?: InputMaybe<Array<AttachmentType>>;
+  not?: InputMaybe<NestedEnumAttachmentTypeFilter>;
+  notIn?: InputMaybe<Array<AttachmentType>>;
+};
+
+export type EnumConversationTypeFieldUpdateOperationsInput = {
+  set?: InputMaybe<ConversationType>;
+};
+
+export type EnumConversationTypeFilter = {
+  equals?: InputMaybe<ConversationType>;
+  in?: InputMaybe<Array<ConversationType>>;
+  not?: InputMaybe<NestedEnumConversationTypeFilter>;
+  notIn?: InputMaybe<Array<ConversationType>>;
+};
+
+export type EnumFileTypeFieldUpdateOperationsInput = {
+  set?: InputMaybe<FileType>;
+};
+
+export type EnumFileTypeFilter = {
+  equals?: InputMaybe<FileType>;
+  in?: InputMaybe<Array<FileType>>;
+  not?: InputMaybe<NestedEnumFileTypeFilter>;
+  notIn?: InputMaybe<Array<FileType>>;
+};
+
+export type EnumMessageStateFieldUpdateOperationsInput = {
+  set?: InputMaybe<MessageState>;
+};
+
+export type EnumMessageStateFilter = {
+  equals?: InputMaybe<MessageState>;
+  in?: InputMaybe<Array<MessageState>>;
+  not?: InputMaybe<NestedEnumMessageStateFilter>;
+  notIn?: InputMaybe<Array<MessageState>>;
+};
+
+export type EnumUserDocumentTypeFieldUpdateOperationsInput = {
+  set?: InputMaybe<UserDocumentType>;
+};
+
+export type EnumUserDocumentTypeFilter = {
+  equals?: InputMaybe<UserDocumentType>;
+  in?: InputMaybe<Array<UserDocumentType>>;
+  not?: InputMaybe<NestedEnumUserDocumentTypeFilter>;
+  notIn?: InputMaybe<Array<UserDocumentType>>;
+};
+
+export type EnumVehicleDocumentTypeFieldUpdateOperationsInput = {
+  set?: InputMaybe<VehicleDocumentType>;
+};
+
+export type EnumVehicleDocumentTypeFilter = {
+  equals?: InputMaybe<VehicleDocumentType>;
+  in?: InputMaybe<Array<VehicleDocumentType>>;
+  not?: InputMaybe<NestedEnumVehicleDocumentTypeFilter>;
+  notIn?: InputMaybe<Array<VehicleDocumentType>>;
 };
 
 export type File = {
   __typename?: 'File';
+  Attachment?: Maybe<Array<Attachment>>;
+  User?: Maybe<Array<User>>;
+  UserCover?: Maybe<Array<UserCover>>;
   UserDocument?: Maybe<Array<UserDocument>>;
   UserImage?: Maybe<Array<UserImage>>;
   VehicleDocument?: Maybe<Array<VehicleDocument>>;
@@ -501,7 +1770,7 @@ export type File = {
   originalName: Scalars['String']['output'];
   size?: Maybe<Scalars['Int']['output']>;
   status: Scalars['String']['output'];
-  type: ImageType;
+  type: FileType;
   url?: Maybe<Scalars['String']['output']>;
   userId: Scalars['String']['output'];
 };
@@ -513,6 +1782,9 @@ export type FileAvgAggregate = {
 
 export type FileCount = {
   __typename?: 'FileCount';
+  Attachment: Scalars['Int']['output'];
+  User: Scalars['Int']['output'];
+  UserCover: Scalars['Int']['output'];
   UserDocument: Scalars['Int']['output'];
   UserImage: Scalars['Int']['output'];
   VehicleDocument: Scalars['Int']['output'];
@@ -538,6 +1810,9 @@ export type FileCountAggregate = {
 };
 
 export type FileCreateInput = {
+  Attachment?: InputMaybe<AttachmentCreateNestedManyWithoutFileInput>;
+  User?: InputMaybe<UserCreateNestedManyWithoutAvatarInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedManyWithoutFileInput>;
   UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutFileInput>;
   UserImage?: InputMaybe<UserImageCreateNestedManyWithoutFileInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentCreateNestedManyWithoutFileInput>;
@@ -552,9 +1827,21 @@ export type FileCreateInput = {
   originalName: Scalars['String']['input'];
   size?: InputMaybe<Scalars['Int']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
-  type: ImageType;
+  type: FileType;
   url?: InputMaybe<Scalars['String']['input']>;
   userId: Scalars['String']['input'];
+};
+
+export type FileCreateNestedOneWithoutAttachmentInput = {
+  connect?: InputMaybe<FileWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<FileCreateOrConnectWithoutAttachmentInput>;
+  create?: InputMaybe<FileCreateWithoutAttachmentInput>;
+};
+
+export type FileCreateNestedOneWithoutUserCoverInput = {
+  connect?: InputMaybe<FileWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<FileCreateOrConnectWithoutUserCoverInput>;
+  create?: InputMaybe<FileCreateWithoutUserCoverInput>;
 };
 
 export type FileCreateNestedOneWithoutUserDocumentInput = {
@@ -569,6 +1856,12 @@ export type FileCreateNestedOneWithoutUserImageInput = {
   create?: InputMaybe<FileCreateWithoutUserImageInput>;
 };
 
+export type FileCreateNestedOneWithoutUserInput = {
+  connect?: InputMaybe<FileWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<FileCreateOrConnectWithoutUserInput>;
+  create?: InputMaybe<FileCreateWithoutUserInput>;
+};
+
 export type FileCreateNestedOneWithoutVehicleDocumentInput = {
   connect?: InputMaybe<FileWhereUniqueInput>;
   connectOrCreate?: InputMaybe<FileCreateOrConnectWithoutVehicleDocumentInput>;
@@ -581,6 +1874,16 @@ export type FileCreateNestedOneWithoutVehicleImageInput = {
   create?: InputMaybe<FileCreateWithoutVehicleImageInput>;
 };
 
+export type FileCreateOrConnectWithoutAttachmentInput = {
+  create: FileCreateWithoutAttachmentInput;
+  where: FileWhereUniqueInput;
+};
+
+export type FileCreateOrConnectWithoutUserCoverInput = {
+  create: FileCreateWithoutUserCoverInput;
+  where: FileWhereUniqueInput;
+};
+
 export type FileCreateOrConnectWithoutUserDocumentInput = {
   create: FileCreateWithoutUserDocumentInput;
   where: FileWhereUniqueInput;
@@ -588,6 +1891,11 @@ export type FileCreateOrConnectWithoutUserDocumentInput = {
 
 export type FileCreateOrConnectWithoutUserImageInput = {
   create: FileCreateWithoutUserImageInput;
+  where: FileWhereUniqueInput;
+};
+
+export type FileCreateOrConnectWithoutUserInput = {
+  create: FileCreateWithoutUserInput;
   where: FileWhereUniqueInput;
 };
 
@@ -601,7 +1909,10 @@ export type FileCreateOrConnectWithoutVehicleImageInput = {
   where: FileWhereUniqueInput;
 };
 
-export type FileCreateWithoutUserDocumentInput = {
+export type FileCreateWithoutAttachmentInput = {
+  User?: InputMaybe<UserCreateNestedManyWithoutAvatarInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedManyWithoutFileInput>;
+  UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutFileInput>;
   UserImage?: InputMaybe<UserImageCreateNestedManyWithoutFileInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentCreateNestedManyWithoutFileInput>;
   VehicleImage?: InputMaybe<VehicleImageCreateNestedManyWithoutFileInput>;
@@ -615,12 +1926,59 @@ export type FileCreateWithoutUserDocumentInput = {
   originalName: Scalars['String']['input'];
   size?: InputMaybe<Scalars['Int']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
-  type: ImageType;
+  type: FileType;
+  url?: InputMaybe<Scalars['String']['input']>;
+  userId: Scalars['String']['input'];
+};
+
+export type FileCreateWithoutUserCoverInput = {
+  Attachment?: InputMaybe<AttachmentCreateNestedManyWithoutFileInput>;
+  User?: InputMaybe<UserCreateNestedManyWithoutAvatarInput>;
+  UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutFileInput>;
+  UserImage?: InputMaybe<UserImageCreateNestedManyWithoutFileInput>;
+  VehicleDocument?: InputMaybe<VehicleDocumentCreateNestedManyWithoutFileInput>;
+  VehicleImage?: InputMaybe<VehicleImageCreateNestedManyWithoutFileInput>;
+  contentType?: InputMaybe<Scalars['String']['input']>;
+  driverVehicleId?: InputMaybe<Scalars['String']['input']>;
+  etag?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  key: Scalars['String']['input'];
+  meta?: InputMaybe<Scalars['JSON']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  originalName: Scalars['String']['input'];
+  size?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  type: FileType;
+  url?: InputMaybe<Scalars['String']['input']>;
+  userId: Scalars['String']['input'];
+};
+
+export type FileCreateWithoutUserDocumentInput = {
+  Attachment?: InputMaybe<AttachmentCreateNestedManyWithoutFileInput>;
+  User?: InputMaybe<UserCreateNestedManyWithoutAvatarInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedManyWithoutFileInput>;
+  UserImage?: InputMaybe<UserImageCreateNestedManyWithoutFileInput>;
+  VehicleDocument?: InputMaybe<VehicleDocumentCreateNestedManyWithoutFileInput>;
+  VehicleImage?: InputMaybe<VehicleImageCreateNestedManyWithoutFileInput>;
+  contentType?: InputMaybe<Scalars['String']['input']>;
+  driverVehicleId?: InputMaybe<Scalars['String']['input']>;
+  etag?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  key: Scalars['String']['input'];
+  meta?: InputMaybe<Scalars['JSON']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  originalName: Scalars['String']['input'];
+  size?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  type: FileType;
   url?: InputMaybe<Scalars['String']['input']>;
   userId: Scalars['String']['input'];
 };
 
 export type FileCreateWithoutUserImageInput = {
+  Attachment?: InputMaybe<AttachmentCreateNestedManyWithoutFileInput>;
+  User?: InputMaybe<UserCreateNestedManyWithoutAvatarInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedManyWithoutFileInput>;
   UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutFileInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentCreateNestedManyWithoutFileInput>;
   VehicleImage?: InputMaybe<VehicleImageCreateNestedManyWithoutFileInput>;
@@ -634,12 +1992,37 @@ export type FileCreateWithoutUserImageInput = {
   originalName: Scalars['String']['input'];
   size?: InputMaybe<Scalars['Int']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
-  type: ImageType;
+  type: FileType;
+  url?: InputMaybe<Scalars['String']['input']>;
+  userId: Scalars['String']['input'];
+};
+
+export type FileCreateWithoutUserInput = {
+  Attachment?: InputMaybe<AttachmentCreateNestedManyWithoutFileInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedManyWithoutFileInput>;
+  UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutFileInput>;
+  UserImage?: InputMaybe<UserImageCreateNestedManyWithoutFileInput>;
+  VehicleDocument?: InputMaybe<VehicleDocumentCreateNestedManyWithoutFileInput>;
+  VehicleImage?: InputMaybe<VehicleImageCreateNestedManyWithoutFileInput>;
+  contentType?: InputMaybe<Scalars['String']['input']>;
+  driverVehicleId?: InputMaybe<Scalars['String']['input']>;
+  etag?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  key: Scalars['String']['input'];
+  meta?: InputMaybe<Scalars['JSON']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  originalName: Scalars['String']['input'];
+  size?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  type: FileType;
   url?: InputMaybe<Scalars['String']['input']>;
   userId: Scalars['String']['input'];
 };
 
 export type FileCreateWithoutVehicleDocumentInput = {
+  Attachment?: InputMaybe<AttachmentCreateNestedManyWithoutFileInput>;
+  User?: InputMaybe<UserCreateNestedManyWithoutAvatarInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedManyWithoutFileInput>;
   UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutFileInput>;
   UserImage?: InputMaybe<UserImageCreateNestedManyWithoutFileInput>;
   VehicleImage?: InputMaybe<VehicleImageCreateNestedManyWithoutFileInput>;
@@ -653,12 +2036,15 @@ export type FileCreateWithoutVehicleDocumentInput = {
   originalName: Scalars['String']['input'];
   size?: InputMaybe<Scalars['Int']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
-  type: ImageType;
+  type: FileType;
   url?: InputMaybe<Scalars['String']['input']>;
   userId: Scalars['String']['input'];
 };
 
 export type FileCreateWithoutVehicleImageInput = {
+  Attachment?: InputMaybe<AttachmentCreateNestedManyWithoutFileInput>;
+  User?: InputMaybe<UserCreateNestedManyWithoutAvatarInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedManyWithoutFileInput>;
   UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutFileInput>;
   UserImage?: InputMaybe<UserImageCreateNestedManyWithoutFileInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentCreateNestedManyWithoutFileInput>;
@@ -672,7 +2058,7 @@ export type FileCreateWithoutVehicleImageInput = {
   originalName: Scalars['String']['input'];
   size?: InputMaybe<Scalars['Int']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
-  type: ImageType;
+  type: FileType;
   url?: InputMaybe<Scalars['String']['input']>;
   userId: Scalars['String']['input'];
 };
@@ -688,7 +2074,7 @@ export type FileMaxAggregate = {
   originalName?: Maybe<Scalars['String']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
   status?: Maybe<Scalars['String']['output']>;
-  type?: Maybe<ImageType>;
+  type?: Maybe<FileType>;
   url?: Maybe<Scalars['String']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
 };
@@ -710,12 +2096,20 @@ export type FileMinAggregate = {
   originalName?: Maybe<Scalars['String']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
   status?: Maybe<Scalars['String']['output']>;
-  type?: Maybe<ImageType>;
+  type?: Maybe<FileType>;
   url?: Maybe<Scalars['String']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
 };
 
+export type FileNullableScalarRelationFilter = {
+  is?: InputMaybe<FileWhereInput>;
+  isNot?: InputMaybe<FileWhereInput>;
+};
+
 export type FileOrderByWithRelationInput = {
+  Attachment?: InputMaybe<AttachmentOrderByRelationAggregateInput>;
+  User?: InputMaybe<UserOrderByRelationAggregateInput>;
+  UserCover?: InputMaybe<UserCoverOrderByRelationAggregateInput>;
   UserDocument?: InputMaybe<UserDocumentOrderByRelationAggregateInput>;
   UserImage?: InputMaybe<UserImageOrderByRelationAggregateInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentOrderByRelationAggregateInput>;
@@ -761,24 +2155,21 @@ export type FileSumAggregate = {
   size?: Maybe<Scalars['Int']['output']>;
 };
 
-export type FileUpdateInput = {
-  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutFileNestedInput>;
-  UserImage?: InputMaybe<UserImageUpdateManyWithoutFileNestedInput>;
-  VehicleDocument?: InputMaybe<VehicleDocumentUpdateManyWithoutFileNestedInput>;
-  VehicleImage?: InputMaybe<VehicleImageUpdateManyWithoutFileNestedInput>;
-  contentType?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  driverVehicleId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  etag?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  id?: InputMaybe<StringFieldUpdateOperationsInput>;
-  key?: InputMaybe<StringFieldUpdateOperationsInput>;
-  meta?: InputMaybe<Scalars['JSON']['input']>;
-  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  originalName?: InputMaybe<StringFieldUpdateOperationsInput>;
-  size?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
-  status?: InputMaybe<StringFieldUpdateOperationsInput>;
-  type?: InputMaybe<EnumImageTypeFieldUpdateOperationsInput>;
-  url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  userId?: InputMaybe<StringFieldUpdateOperationsInput>;
+export enum FileType {
+  AVATAR = 'AVATAR',
+  COVER = 'COVER',
+  LANDING = 'LANDING',
+  MESSAGE = 'MESSAGE',
+  USER = 'USER',
+  VEHICLE = 'VEHICLE'
+}
+
+export type FileUpdateOneRequiredWithoutUserCoverNestedInput = {
+  connect?: InputMaybe<FileWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<FileCreateOrConnectWithoutUserCoverInput>;
+  create?: InputMaybe<FileCreateWithoutUserCoverInput>;
+  update?: InputMaybe<FileUpdateToOneWithWhereWithoutUserCoverInput>;
+  upsert?: InputMaybe<FileUpsertWithoutUserCoverInput>;
 };
 
 export type FileUpdateOneRequiredWithoutUserDocumentNestedInput = {
@@ -813,6 +2204,36 @@ export type FileUpdateOneRequiredWithoutVehicleImageNestedInput = {
   upsert?: InputMaybe<FileUpsertWithoutVehicleImageInput>;
 };
 
+export type FileUpdateOneWithoutAttachmentNestedInput = {
+  connect?: InputMaybe<FileWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<FileCreateOrConnectWithoutAttachmentInput>;
+  create?: InputMaybe<FileCreateWithoutAttachmentInput>;
+  delete?: InputMaybe<FileWhereInput>;
+  disconnect?: InputMaybe<FileWhereInput>;
+  update?: InputMaybe<FileUpdateToOneWithWhereWithoutAttachmentInput>;
+  upsert?: InputMaybe<FileUpsertWithoutAttachmentInput>;
+};
+
+export type FileUpdateOneWithoutUserNestedInput = {
+  connect?: InputMaybe<FileWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<FileCreateOrConnectWithoutUserInput>;
+  create?: InputMaybe<FileCreateWithoutUserInput>;
+  delete?: InputMaybe<FileWhereInput>;
+  disconnect?: InputMaybe<FileWhereInput>;
+  update?: InputMaybe<FileUpdateToOneWithWhereWithoutUserInput>;
+  upsert?: InputMaybe<FileUpsertWithoutUserInput>;
+};
+
+export type FileUpdateToOneWithWhereWithoutAttachmentInput = {
+  data: FileUpdateWithoutAttachmentInput;
+  where?: InputMaybe<FileWhereInput>;
+};
+
+export type FileUpdateToOneWithWhereWithoutUserCoverInput = {
+  data: FileUpdateWithoutUserCoverInput;
+  where?: InputMaybe<FileWhereInput>;
+};
+
 export type FileUpdateToOneWithWhereWithoutUserDocumentInput = {
   data: FileUpdateWithoutUserDocumentInput;
   where?: InputMaybe<FileWhereInput>;
@@ -820,6 +2241,11 @@ export type FileUpdateToOneWithWhereWithoutUserDocumentInput = {
 
 export type FileUpdateToOneWithWhereWithoutUserImageInput = {
   data: FileUpdateWithoutUserImageInput;
+  where?: InputMaybe<FileWhereInput>;
+};
+
+export type FileUpdateToOneWithWhereWithoutUserInput = {
+  data: FileUpdateWithoutUserInput;
   where?: InputMaybe<FileWhereInput>;
 };
 
@@ -833,7 +2259,10 @@ export type FileUpdateToOneWithWhereWithoutVehicleImageInput = {
   where?: InputMaybe<FileWhereInput>;
 };
 
-export type FileUpdateWithoutUserDocumentInput = {
+export type FileUpdateWithoutAttachmentInput = {
+  User?: InputMaybe<UserUpdateManyWithoutAvatarNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateManyWithoutFileNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutFileNestedInput>;
   UserImage?: InputMaybe<UserImageUpdateManyWithoutFileNestedInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentUpdateManyWithoutFileNestedInput>;
   VehicleImage?: InputMaybe<VehicleImageUpdateManyWithoutFileNestedInput>;
@@ -847,12 +2276,59 @@ export type FileUpdateWithoutUserDocumentInput = {
   originalName?: InputMaybe<StringFieldUpdateOperationsInput>;
   size?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   status?: InputMaybe<StringFieldUpdateOperationsInput>;
-  type?: InputMaybe<EnumImageTypeFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumFileTypeFieldUpdateOperationsInput>;
+  url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  userId?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type FileUpdateWithoutUserCoverInput = {
+  Attachment?: InputMaybe<AttachmentUpdateManyWithoutFileNestedInput>;
+  User?: InputMaybe<UserUpdateManyWithoutAvatarNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutFileNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutFileNestedInput>;
+  VehicleDocument?: InputMaybe<VehicleDocumentUpdateManyWithoutFileNestedInput>;
+  VehicleImage?: InputMaybe<VehicleImageUpdateManyWithoutFileNestedInput>;
+  contentType?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  driverVehicleId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  etag?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  key?: InputMaybe<StringFieldUpdateOperationsInput>;
+  meta?: InputMaybe<Scalars['JSON']['input']>;
+  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  originalName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  size?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  status?: InputMaybe<StringFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumFileTypeFieldUpdateOperationsInput>;
+  url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  userId?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type FileUpdateWithoutUserDocumentInput = {
+  Attachment?: InputMaybe<AttachmentUpdateManyWithoutFileNestedInput>;
+  User?: InputMaybe<UserUpdateManyWithoutAvatarNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateManyWithoutFileNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutFileNestedInput>;
+  VehicleDocument?: InputMaybe<VehicleDocumentUpdateManyWithoutFileNestedInput>;
+  VehicleImage?: InputMaybe<VehicleImageUpdateManyWithoutFileNestedInput>;
+  contentType?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  driverVehicleId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  etag?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  key?: InputMaybe<StringFieldUpdateOperationsInput>;
+  meta?: InputMaybe<Scalars['JSON']['input']>;
+  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  originalName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  size?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  status?: InputMaybe<StringFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumFileTypeFieldUpdateOperationsInput>;
   url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<StringFieldUpdateOperationsInput>;
 };
 
 export type FileUpdateWithoutUserImageInput = {
+  Attachment?: InputMaybe<AttachmentUpdateManyWithoutFileNestedInput>;
+  User?: InputMaybe<UserUpdateManyWithoutAvatarNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateManyWithoutFileNestedInput>;
   UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutFileNestedInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentUpdateManyWithoutFileNestedInput>;
   VehicleImage?: InputMaybe<VehicleImageUpdateManyWithoutFileNestedInput>;
@@ -866,12 +2342,37 @@ export type FileUpdateWithoutUserImageInput = {
   originalName?: InputMaybe<StringFieldUpdateOperationsInput>;
   size?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   status?: InputMaybe<StringFieldUpdateOperationsInput>;
-  type?: InputMaybe<EnumImageTypeFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumFileTypeFieldUpdateOperationsInput>;
+  url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  userId?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type FileUpdateWithoutUserInput = {
+  Attachment?: InputMaybe<AttachmentUpdateManyWithoutFileNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateManyWithoutFileNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutFileNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutFileNestedInput>;
+  VehicleDocument?: InputMaybe<VehicleDocumentUpdateManyWithoutFileNestedInput>;
+  VehicleImage?: InputMaybe<VehicleImageUpdateManyWithoutFileNestedInput>;
+  contentType?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  driverVehicleId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  etag?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  key?: InputMaybe<StringFieldUpdateOperationsInput>;
+  meta?: InputMaybe<Scalars['JSON']['input']>;
+  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  originalName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  size?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  status?: InputMaybe<StringFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumFileTypeFieldUpdateOperationsInput>;
   url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<StringFieldUpdateOperationsInput>;
 };
 
 export type FileUpdateWithoutVehicleDocumentInput = {
+  Attachment?: InputMaybe<AttachmentUpdateManyWithoutFileNestedInput>;
+  User?: InputMaybe<UserUpdateManyWithoutAvatarNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateManyWithoutFileNestedInput>;
   UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutFileNestedInput>;
   UserImage?: InputMaybe<UserImageUpdateManyWithoutFileNestedInput>;
   VehicleImage?: InputMaybe<VehicleImageUpdateManyWithoutFileNestedInput>;
@@ -885,12 +2386,15 @@ export type FileUpdateWithoutVehicleDocumentInput = {
   originalName?: InputMaybe<StringFieldUpdateOperationsInput>;
   size?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   status?: InputMaybe<StringFieldUpdateOperationsInput>;
-  type?: InputMaybe<EnumImageTypeFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumFileTypeFieldUpdateOperationsInput>;
   url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<StringFieldUpdateOperationsInput>;
 };
 
 export type FileUpdateWithoutVehicleImageInput = {
+  Attachment?: InputMaybe<AttachmentUpdateManyWithoutFileNestedInput>;
+  User?: InputMaybe<UserUpdateManyWithoutAvatarNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateManyWithoutFileNestedInput>;
   UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutFileNestedInput>;
   UserImage?: InputMaybe<UserImageUpdateManyWithoutFileNestedInput>;
   VehicleDocument?: InputMaybe<VehicleDocumentUpdateManyWithoutFileNestedInput>;
@@ -904,7 +2408,7 @@ export type FileUpdateWithoutVehicleImageInput = {
   originalName?: InputMaybe<StringFieldUpdateOperationsInput>;
   size?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   status?: InputMaybe<StringFieldUpdateOperationsInput>;
-  type?: InputMaybe<EnumImageTypeFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumFileTypeFieldUpdateOperationsInput>;
   url?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<StringFieldUpdateOperationsInput>;
 };
@@ -912,6 +2416,18 @@ export type FileUpdateWithoutVehicleImageInput = {
 export type FileUploadResult = {
   __typename?: 'FileUploadResult';
   url: Scalars['String']['output'];
+};
+
+export type FileUpsertWithoutAttachmentInput = {
+  create: FileCreateWithoutAttachmentInput;
+  update: FileUpdateWithoutAttachmentInput;
+  where?: InputMaybe<FileWhereInput>;
+};
+
+export type FileUpsertWithoutUserCoverInput = {
+  create: FileCreateWithoutUserCoverInput;
+  update: FileUpdateWithoutUserCoverInput;
+  where?: InputMaybe<FileWhereInput>;
 };
 
 export type FileUpsertWithoutUserDocumentInput = {
@@ -923,6 +2439,12 @@ export type FileUpsertWithoutUserDocumentInput = {
 export type FileUpsertWithoutUserImageInput = {
   create: FileCreateWithoutUserImageInput;
   update: FileUpdateWithoutUserImageInput;
+  where?: InputMaybe<FileWhereInput>;
+};
+
+export type FileUpsertWithoutUserInput = {
+  create: FileCreateWithoutUserInput;
+  update: FileUpdateWithoutUserInput;
   where?: InputMaybe<FileWhereInput>;
 };
 
@@ -940,8 +2462,11 @@ export type FileUpsertWithoutVehicleImageInput = {
 
 export type FileWhereInput = {
   AND?: InputMaybe<Array<FileWhereInput>>;
+  Attachment?: InputMaybe<AttachmentListRelationFilter>;
   NOT?: InputMaybe<Array<FileWhereInput>>;
   OR?: InputMaybe<Array<FileWhereInput>>;
+  User?: InputMaybe<UserListRelationFilter>;
+  UserCover?: InputMaybe<UserCoverListRelationFilter>;
   UserDocument?: InputMaybe<UserDocumentListRelationFilter>;
   UserImage?: InputMaybe<UserImageListRelationFilter>;
   VehicleDocument?: InputMaybe<VehicleDocumentListRelationFilter>;
@@ -956,15 +2481,18 @@ export type FileWhereInput = {
   originalName?: InputMaybe<StringFilter>;
   size?: InputMaybe<IntNullableFilter>;
   status?: InputMaybe<StringFilter>;
-  type?: InputMaybe<EnumImageTypeFilter>;
+  type?: InputMaybe<EnumFileTypeFilter>;
   url?: InputMaybe<StringNullableFilter>;
   userId?: InputMaybe<StringFilter>;
 };
 
 export type FileWhereUniqueInput = {
   AND?: InputMaybe<Array<FileWhereInput>>;
+  Attachment?: InputMaybe<AttachmentListRelationFilter>;
   NOT?: InputMaybe<Array<FileWhereInput>>;
   OR?: InputMaybe<Array<FileWhereInput>>;
+  User?: InputMaybe<UserListRelationFilter>;
+  UserCover?: InputMaybe<UserCoverListRelationFilter>;
   UserDocument?: InputMaybe<UserDocumentListRelationFilter>;
   UserImage?: InputMaybe<UserImageListRelationFilter>;
   VehicleDocument?: InputMaybe<VehicleDocumentListRelationFilter>;
@@ -979,9 +2507,20 @@ export type FileWhereUniqueInput = {
   originalName?: InputMaybe<StringFilter>;
   size?: InputMaybe<IntNullableFilter>;
   status?: InputMaybe<StringFilter>;
-  type?: InputMaybe<EnumImageTypeFilter>;
+  type?: InputMaybe<EnumFileTypeFilter>;
   url?: InputMaybe<StringNullableFilter>;
   userId?: InputMaybe<StringFilter>;
+};
+
+export type FloatNullableFilter = {
+  equals?: InputMaybe<Scalars['Float']['input']>;
+  gt?: InputMaybe<Scalars['Float']['input']>;
+  gte?: InputMaybe<Scalars['Float']['input']>;
+  in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  lt?: InputMaybe<Scalars['Float']['input']>;
+  lte?: InputMaybe<Scalars['Float']['input']>;
+  not?: InputMaybe<NestedFloatNullableFilter>;
+  notIn?: InputMaybe<Array<Scalars['Float']['input']>>;
 };
 
 export type ForgotPasswordOutput = {
@@ -989,13 +2528,6 @@ export type ForgotPasswordOutput = {
   email: Scalars['String']['output'];
   resetLink: Scalars['String']['output'];
 };
-
-export enum ImageType {
-  LANDING = 'LANDING',
-  PROFILE = 'PROFILE',
-  USER = 'USER',
-  VEHICLE = 'VEHICLE'
-}
 
 export type IntFieldUpdateOperationsInput = {
   decrement?: InputMaybe<Scalars['Int']['input']>;
@@ -1055,38 +2587,1210 @@ export type LoginOutput = {
   user?: Maybe<User>;
 };
 
+export type Message = {
+  __typename?: 'Message';
+  _count: MessageCount;
+  attachments?: Maybe<Array<Attachment>>;
+  clientTempId?: Maybe<Scalars['String']['output']>;
+  content?: Maybe<Scalars['String']['output']>;
+  conversation?: Maybe<Conversation>;
+  conversationId?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  deleted: Scalars['Boolean']['output'];
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  deliveredAt?: Maybe<Scalars['DateTime']['output']>;
+  edited: Scalars['Boolean']['output'];
+  editedAt?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['String']['output'];
+  parentMessage?: Maybe<Message>;
+  parentMessageId?: Maybe<Scalars['String']['output']>;
+  reactions?: Maybe<Array<Reaction>>;
+  readReceipts?: Maybe<Array<MessageReadReceipt>>;
+  replies?: Maybe<Array<Message>>;
+  ride?: Maybe<Ride>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  sender: User;
+  senderId: Scalars['String']['output'];
+  sentAt?: Maybe<Scalars['DateTime']['output']>;
+  state: MessageState;
+};
+
+export type MessageCount = {
+  __typename?: 'MessageCount';
+  attachments: Scalars['Int']['output'];
+  reactions: Scalars['Int']['output'];
+  readReceipts: Scalars['Int']['output'];
+  replies: Scalars['Int']['output'];
+};
+
+export type MessageCountAggregate = {
+  __typename?: 'MessageCountAggregate';
+  _all: Scalars['Int']['output'];
+  clientTempId: Scalars['Int']['output'];
+  content: Scalars['Int']['output'];
+  conversationId: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  deleted: Scalars['Int']['output'];
+  deletedAt: Scalars['Int']['output'];
+  deliveredAt: Scalars['Int']['output'];
+  edited: Scalars['Int']['output'];
+  editedAt: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  parentMessageId: Scalars['Int']['output'];
+  rideId: Scalars['Int']['output'];
+  senderId: Scalars['Int']['output'];
+  sentAt: Scalars['Int']['output'];
+  state: Scalars['Int']['output'];
+};
+
+export type MessageCreateManyConversationInput = {
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  parentMessageId?: InputMaybe<Scalars['String']['input']>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+  senderId: Scalars['String']['input'];
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageCreateManyConversationInputEnvelope = {
+  data: Array<MessageCreateManyConversationInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type MessageCreateManyParentMessageInput = {
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  conversationId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+  senderId: Scalars['String']['input'];
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageCreateManyParentMessageInputEnvelope = {
+  data: Array<MessageCreateManyParentMessageInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type MessageCreateManyRideInput = {
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  conversationId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  parentMessageId?: InputMaybe<Scalars['String']['input']>;
+  senderId: Scalars['String']['input'];
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageCreateManyRideInputEnvelope = {
+  data: Array<MessageCreateManyRideInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type MessageCreateManySenderInput = {
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  conversationId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  parentMessageId?: InputMaybe<Scalars['String']['input']>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageCreateManySenderInputEnvelope = {
+  data: Array<MessageCreateManySenderInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type MessageCreateNestedManyWithoutConversationInput = {
+  connect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageCreateOrConnectWithoutConversationInput>>;
+  create?: InputMaybe<Array<MessageCreateWithoutConversationInput>>;
+  createMany?: InputMaybe<MessageCreateManyConversationInputEnvelope>;
+};
+
+export type MessageCreateNestedManyWithoutParentMessageInput = {
+  connect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageCreateOrConnectWithoutParentMessageInput>>;
+  create?: InputMaybe<Array<MessageCreateWithoutParentMessageInput>>;
+  createMany?: InputMaybe<MessageCreateManyParentMessageInputEnvelope>;
+};
+
+export type MessageCreateNestedManyWithoutRideInput = {
+  connect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageCreateOrConnectWithoutRideInput>>;
+  create?: InputMaybe<Array<MessageCreateWithoutRideInput>>;
+  createMany?: InputMaybe<MessageCreateManyRideInputEnvelope>;
+};
+
+export type MessageCreateNestedManyWithoutSenderInput = {
+  connect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageCreateOrConnectWithoutSenderInput>>;
+  create?: InputMaybe<Array<MessageCreateWithoutSenderInput>>;
+  createMany?: InputMaybe<MessageCreateManySenderInputEnvelope>;
+};
+
+export type MessageCreateNestedOneWithoutAttachmentsInput = {
+  connect?: InputMaybe<MessageWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MessageCreateOrConnectWithoutAttachmentsInput>;
+  create?: InputMaybe<MessageCreateWithoutAttachmentsInput>;
+};
+
+export type MessageCreateNestedOneWithoutReactionsInput = {
+  connect?: InputMaybe<MessageWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MessageCreateOrConnectWithoutReactionsInput>;
+  create?: InputMaybe<MessageCreateWithoutReactionsInput>;
+};
+
+export type MessageCreateNestedOneWithoutReadReceiptsInput = {
+  connect?: InputMaybe<MessageWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MessageCreateOrConnectWithoutReadReceiptsInput>;
+  create?: InputMaybe<MessageCreateWithoutReadReceiptsInput>;
+};
+
+export type MessageCreateNestedOneWithoutRepliesInput = {
+  connect?: InputMaybe<MessageWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MessageCreateOrConnectWithoutRepliesInput>;
+  create?: InputMaybe<MessageCreateWithoutRepliesInput>;
+};
+
+export type MessageCreateOrConnectWithoutAttachmentsInput = {
+  create: MessageCreateWithoutAttachmentsInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageCreateOrConnectWithoutConversationInput = {
+  create: MessageCreateWithoutConversationInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageCreateOrConnectWithoutParentMessageInput = {
+  create: MessageCreateWithoutParentMessageInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageCreateOrConnectWithoutReactionsInput = {
+  create: MessageCreateWithoutReactionsInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageCreateOrConnectWithoutReadReceiptsInput = {
+  create: MessageCreateWithoutReadReceiptsInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageCreateOrConnectWithoutRepliesInput = {
+  create: MessageCreateWithoutRepliesInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageCreateOrConnectWithoutRideInput = {
+  create: MessageCreateWithoutRideInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageCreateOrConnectWithoutSenderInput = {
+  create: MessageCreateWithoutSenderInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageCreateWithoutAttachmentsInput = {
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  conversation?: InputMaybe<ConversationCreateNestedOneWithoutMessagesInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  parentMessage?: InputMaybe<MessageCreateNestedOneWithoutRepliesInput>;
+  reactions?: InputMaybe<ReactionCreateNestedManyWithoutMessageInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutMessageInput>;
+  replies?: InputMaybe<MessageCreateNestedManyWithoutParentMessageInput>;
+  ride?: InputMaybe<RideCreateNestedOneWithoutMessageInput>;
+  sender: UserCreateNestedOneWithoutMessageInput;
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageCreateWithoutConversationInput = {
+  attachments?: InputMaybe<AttachmentCreateNestedManyWithoutMessageInput>;
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  parentMessage?: InputMaybe<MessageCreateNestedOneWithoutRepliesInput>;
+  reactions?: InputMaybe<ReactionCreateNestedManyWithoutMessageInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutMessageInput>;
+  replies?: InputMaybe<MessageCreateNestedManyWithoutParentMessageInput>;
+  ride?: InputMaybe<RideCreateNestedOneWithoutMessageInput>;
+  sender: UserCreateNestedOneWithoutMessageInput;
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageCreateWithoutParentMessageInput = {
+  attachments?: InputMaybe<AttachmentCreateNestedManyWithoutMessageInput>;
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  conversation?: InputMaybe<ConversationCreateNestedOneWithoutMessagesInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  reactions?: InputMaybe<ReactionCreateNestedManyWithoutMessageInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutMessageInput>;
+  replies?: InputMaybe<MessageCreateNestedManyWithoutParentMessageInput>;
+  ride?: InputMaybe<RideCreateNestedOneWithoutMessageInput>;
+  sender: UserCreateNestedOneWithoutMessageInput;
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageCreateWithoutReactionsInput = {
+  attachments?: InputMaybe<AttachmentCreateNestedManyWithoutMessageInput>;
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  conversation?: InputMaybe<ConversationCreateNestedOneWithoutMessagesInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  parentMessage?: InputMaybe<MessageCreateNestedOneWithoutRepliesInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutMessageInput>;
+  replies?: InputMaybe<MessageCreateNestedManyWithoutParentMessageInput>;
+  ride?: InputMaybe<RideCreateNestedOneWithoutMessageInput>;
+  sender: UserCreateNestedOneWithoutMessageInput;
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageCreateWithoutReadReceiptsInput = {
+  attachments?: InputMaybe<AttachmentCreateNestedManyWithoutMessageInput>;
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  conversation?: InputMaybe<ConversationCreateNestedOneWithoutMessagesInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  parentMessage?: InputMaybe<MessageCreateNestedOneWithoutRepliesInput>;
+  reactions?: InputMaybe<ReactionCreateNestedManyWithoutMessageInput>;
+  replies?: InputMaybe<MessageCreateNestedManyWithoutParentMessageInput>;
+  ride?: InputMaybe<RideCreateNestedOneWithoutMessageInput>;
+  sender: UserCreateNestedOneWithoutMessageInput;
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageCreateWithoutRepliesInput = {
+  attachments?: InputMaybe<AttachmentCreateNestedManyWithoutMessageInput>;
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  conversation?: InputMaybe<ConversationCreateNestedOneWithoutMessagesInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  parentMessage?: InputMaybe<MessageCreateNestedOneWithoutRepliesInput>;
+  reactions?: InputMaybe<ReactionCreateNestedManyWithoutMessageInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutMessageInput>;
+  ride?: InputMaybe<RideCreateNestedOneWithoutMessageInput>;
+  sender: UserCreateNestedOneWithoutMessageInput;
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageCreateWithoutRideInput = {
+  attachments?: InputMaybe<AttachmentCreateNestedManyWithoutMessageInput>;
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  conversation?: InputMaybe<ConversationCreateNestedOneWithoutMessagesInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  parentMessage?: InputMaybe<MessageCreateNestedOneWithoutRepliesInput>;
+  reactions?: InputMaybe<ReactionCreateNestedManyWithoutMessageInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutMessageInput>;
+  replies?: InputMaybe<MessageCreateNestedManyWithoutParentMessageInput>;
+  sender: UserCreateNestedOneWithoutMessageInput;
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageCreateWithoutSenderInput = {
+  attachments?: InputMaybe<AttachmentCreateNestedManyWithoutMessageInput>;
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  conversation?: InputMaybe<ConversationCreateNestedOneWithoutMessagesInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deliveredAt?: InputMaybe<Scalars['DateTime']['input']>;
+  edited?: InputMaybe<Scalars['Boolean']['input']>;
+  editedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  parentMessage?: InputMaybe<MessageCreateNestedOneWithoutRepliesInput>;
+  reactions?: InputMaybe<ReactionCreateNestedManyWithoutMessageInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutMessageInput>;
+  replies?: InputMaybe<MessageCreateNestedManyWithoutParentMessageInput>;
+  ride?: InputMaybe<RideCreateNestedOneWithoutMessageInput>;
+  sentAt?: InputMaybe<Scalars['DateTime']['input']>;
+  state?: InputMaybe<MessageState>;
+};
+
+export type MessageListRelationFilter = {
+  every?: InputMaybe<MessageWhereInput>;
+  none?: InputMaybe<MessageWhereInput>;
+  some?: InputMaybe<MessageWhereInput>;
+};
+
+export type MessageMaxAggregate = {
+  __typename?: 'MessageMaxAggregate';
+  clientTempId?: Maybe<Scalars['String']['output']>;
+  content?: Maybe<Scalars['String']['output']>;
+  conversationId?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  deleted?: Maybe<Scalars['Boolean']['output']>;
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  deliveredAt?: Maybe<Scalars['DateTime']['output']>;
+  edited?: Maybe<Scalars['Boolean']['output']>;
+  editedAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  parentMessageId?: Maybe<Scalars['String']['output']>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  senderId?: Maybe<Scalars['String']['output']>;
+  sentAt?: Maybe<Scalars['DateTime']['output']>;
+  state?: Maybe<MessageState>;
+};
+
+export type MessageMinAggregate = {
+  __typename?: 'MessageMinAggregate';
+  clientTempId?: Maybe<Scalars['String']['output']>;
+  content?: Maybe<Scalars['String']['output']>;
+  conversationId?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  deleted?: Maybe<Scalars['Boolean']['output']>;
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  deliveredAt?: Maybe<Scalars['DateTime']['output']>;
+  edited?: Maybe<Scalars['Boolean']['output']>;
+  editedAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  parentMessageId?: Maybe<Scalars['String']['output']>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  senderId?: Maybe<Scalars['String']['output']>;
+  sentAt?: Maybe<Scalars['DateTime']['output']>;
+  state?: Maybe<MessageState>;
+};
+
+export type MessageNullableScalarRelationFilter = {
+  is?: InputMaybe<MessageWhereInput>;
+  isNot?: InputMaybe<MessageWhereInput>;
+};
+
+export type MessageOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type MessagePayload = {
+  __typename?: 'MessagePayload';
+  message: Message;
+  type: Scalars['String']['output'];
+};
+
+export type MessageReadReceipt = {
+  __typename?: 'MessageReadReceipt';
+  id: Scalars['String']['output'];
+  message: Message;
+  messageId: Scalars['String']['output'];
+  readAt: Scalars['DateTime']['output'];
+  user: User;
+  userId: Scalars['String']['output'];
+};
+
+export type MessageReadReceiptCountAggregate = {
+  __typename?: 'MessageReadReceiptCountAggregate';
+  _all: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  messageId: Scalars['Int']['output'];
+  readAt: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+};
+
+export type MessageReadReceiptCreateManyMessageInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  readAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userId: Scalars['String']['input'];
+};
+
+export type MessageReadReceiptCreateManyMessageInputEnvelope = {
+  data: Array<MessageReadReceiptCreateManyMessageInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type MessageReadReceiptCreateManyUserInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  messageId: Scalars['String']['input'];
+  readAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type MessageReadReceiptCreateManyUserInputEnvelope = {
+  data: Array<MessageReadReceiptCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type MessageReadReceiptCreateNestedManyWithoutMessageInput = {
+  connect?: InputMaybe<Array<MessageReadReceiptWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageReadReceiptCreateOrConnectWithoutMessageInput>>;
+  create?: InputMaybe<Array<MessageReadReceiptCreateWithoutMessageInput>>;
+  createMany?: InputMaybe<MessageReadReceiptCreateManyMessageInputEnvelope>;
+};
+
+export type MessageReadReceiptCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<MessageReadReceiptWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageReadReceiptCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<MessageReadReceiptCreateWithoutUserInput>>;
+  createMany?: InputMaybe<MessageReadReceiptCreateManyUserInputEnvelope>;
+};
+
+export type MessageReadReceiptCreateOrConnectWithoutMessageInput = {
+  create: MessageReadReceiptCreateWithoutMessageInput;
+  where: MessageReadReceiptWhereUniqueInput;
+};
+
+export type MessageReadReceiptCreateOrConnectWithoutUserInput = {
+  create: MessageReadReceiptCreateWithoutUserInput;
+  where: MessageReadReceiptWhereUniqueInput;
+};
+
+export type MessageReadReceiptCreateWithoutMessageInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  readAt?: InputMaybe<Scalars['DateTime']['input']>;
+  user: UserCreateNestedOneWithoutMessageReadReceiptInput;
+};
+
+export type MessageReadReceiptCreateWithoutUserInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  message: MessageCreateNestedOneWithoutReadReceiptsInput;
+  readAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type MessageReadReceiptListRelationFilter = {
+  every?: InputMaybe<MessageReadReceiptWhereInput>;
+  none?: InputMaybe<MessageReadReceiptWhereInput>;
+  some?: InputMaybe<MessageReadReceiptWhereInput>;
+};
+
+export type MessageReadReceiptMaxAggregate = {
+  __typename?: 'MessageReadReceiptMaxAggregate';
+  id?: Maybe<Scalars['String']['output']>;
+  messageId?: Maybe<Scalars['String']['output']>;
+  readAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type MessageReadReceiptMessageIdUserIdCompoundUniqueInput = {
+  messageId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+export type MessageReadReceiptMinAggregate = {
+  __typename?: 'MessageReadReceiptMinAggregate';
+  id?: Maybe<Scalars['String']['output']>;
+  messageId?: Maybe<Scalars['String']['output']>;
+  readAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type MessageReadReceiptOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type MessageReadReceiptScalarWhereInput = {
+  AND?: InputMaybe<Array<MessageReadReceiptScalarWhereInput>>;
+  NOT?: InputMaybe<Array<MessageReadReceiptScalarWhereInput>>;
+  OR?: InputMaybe<Array<MessageReadReceiptScalarWhereInput>>;
+  id?: InputMaybe<StringFilter>;
+  messageId?: InputMaybe<StringFilter>;
+  readAt?: InputMaybe<DateTimeFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type MessageReadReceiptUpdateManyMutationInput = {
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  readAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+};
+
+export type MessageReadReceiptUpdateManyWithWhereWithoutMessageInput = {
+  data: MessageReadReceiptUpdateManyMutationInput;
+  where: MessageReadReceiptScalarWhereInput;
+};
+
+export type MessageReadReceiptUpdateManyWithWhereWithoutUserInput = {
+  data: MessageReadReceiptUpdateManyMutationInput;
+  where: MessageReadReceiptScalarWhereInput;
+};
+
+export type MessageReadReceiptUpdateManyWithoutMessageNestedInput = {
+  connect?: InputMaybe<Array<MessageReadReceiptWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageReadReceiptCreateOrConnectWithoutMessageInput>>;
+  create?: InputMaybe<Array<MessageReadReceiptCreateWithoutMessageInput>>;
+  createMany?: InputMaybe<MessageReadReceiptCreateManyMessageInputEnvelope>;
+  delete?: InputMaybe<Array<MessageReadReceiptWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<MessageReadReceiptScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<MessageReadReceiptWhereUniqueInput>>;
+  set?: InputMaybe<Array<MessageReadReceiptWhereUniqueInput>>;
+  update?: InputMaybe<Array<MessageReadReceiptUpdateWithWhereUniqueWithoutMessageInput>>;
+  updateMany?: InputMaybe<Array<MessageReadReceiptUpdateManyWithWhereWithoutMessageInput>>;
+  upsert?: InputMaybe<Array<MessageReadReceiptUpsertWithWhereUniqueWithoutMessageInput>>;
+};
+
+export type MessageReadReceiptUpdateManyWithoutUserNestedInput = {
+  connect?: InputMaybe<Array<MessageReadReceiptWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageReadReceiptCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<MessageReadReceiptCreateWithoutUserInput>>;
+  createMany?: InputMaybe<MessageReadReceiptCreateManyUserInputEnvelope>;
+  delete?: InputMaybe<Array<MessageReadReceiptWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<MessageReadReceiptScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<MessageReadReceiptWhereUniqueInput>>;
+  set?: InputMaybe<Array<MessageReadReceiptWhereUniqueInput>>;
+  update?: InputMaybe<Array<MessageReadReceiptUpdateWithWhereUniqueWithoutUserInput>>;
+  updateMany?: InputMaybe<Array<MessageReadReceiptUpdateManyWithWhereWithoutUserInput>>;
+  upsert?: InputMaybe<Array<MessageReadReceiptUpsertWithWhereUniqueWithoutUserInput>>;
+};
+
+export type MessageReadReceiptUpdateWithWhereUniqueWithoutMessageInput = {
+  data: MessageReadReceiptUpdateWithoutMessageInput;
+  where: MessageReadReceiptWhereUniqueInput;
+};
+
+export type MessageReadReceiptUpdateWithWhereUniqueWithoutUserInput = {
+  data: MessageReadReceiptUpdateWithoutUserInput;
+  where: MessageReadReceiptWhereUniqueInput;
+};
+
+export type MessageReadReceiptUpdateWithoutMessageInput = {
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  readAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  user?: InputMaybe<UserUpdateOneRequiredWithoutMessageReadReceiptNestedInput>;
+};
+
+export type MessageReadReceiptUpdateWithoutUserInput = {
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  message?: InputMaybe<MessageUpdateOneRequiredWithoutReadReceiptsNestedInput>;
+  readAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+};
+
+export type MessageReadReceiptUpsertWithWhereUniqueWithoutMessageInput = {
+  create: MessageReadReceiptCreateWithoutMessageInput;
+  update: MessageReadReceiptUpdateWithoutMessageInput;
+  where: MessageReadReceiptWhereUniqueInput;
+};
+
+export type MessageReadReceiptUpsertWithWhereUniqueWithoutUserInput = {
+  create: MessageReadReceiptCreateWithoutUserInput;
+  update: MessageReadReceiptUpdateWithoutUserInput;
+  where: MessageReadReceiptWhereUniqueInput;
+};
+
+export type MessageReadReceiptWhereInput = {
+  AND?: InputMaybe<Array<MessageReadReceiptWhereInput>>;
+  NOT?: InputMaybe<Array<MessageReadReceiptWhereInput>>;
+  OR?: InputMaybe<Array<MessageReadReceiptWhereInput>>;
+  id?: InputMaybe<StringFilter>;
+  message?: InputMaybe<MessageScalarRelationFilter>;
+  messageId?: InputMaybe<StringFilter>;
+  readAt?: InputMaybe<DateTimeFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type MessageReadReceiptWhereUniqueInput = {
+  AND?: InputMaybe<Array<MessageReadReceiptWhereInput>>;
+  NOT?: InputMaybe<Array<MessageReadReceiptWhereInput>>;
+  OR?: InputMaybe<Array<MessageReadReceiptWhereInput>>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  message?: InputMaybe<MessageScalarRelationFilter>;
+  messageId?: InputMaybe<StringFilter>;
+  messageId_userId?: InputMaybe<MessageReadReceiptMessageIdUserIdCompoundUniqueInput>;
+  readAt?: InputMaybe<DateTimeFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type MessageScalarRelationFilter = {
+  is?: InputMaybe<MessageWhereInput>;
+  isNot?: InputMaybe<MessageWhereInput>;
+};
+
+export type MessageScalarWhereInput = {
+  AND?: InputMaybe<Array<MessageScalarWhereInput>>;
+  NOT?: InputMaybe<Array<MessageScalarWhereInput>>;
+  OR?: InputMaybe<Array<MessageScalarWhereInput>>;
+  clientTempId?: InputMaybe<StringNullableFilter>;
+  content?: InputMaybe<StringNullableFilter>;
+  conversationId?: InputMaybe<StringNullableFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  deleted?: InputMaybe<BoolFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  deliveredAt?: InputMaybe<DateTimeNullableFilter>;
+  edited?: InputMaybe<BoolFilter>;
+  editedAt?: InputMaybe<DateTimeNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  parentMessageId?: InputMaybe<StringNullableFilter>;
+  rideId?: InputMaybe<StringNullableFilter>;
+  senderId?: InputMaybe<StringFilter>;
+  sentAt?: InputMaybe<DateTimeNullableFilter>;
+  state?: InputMaybe<EnumMessageStateFilter>;
+};
+
+export enum MessageState {
+  DELIVERED = 'DELIVERED',
+  FAILED = 'FAILED',
+  READ = 'READ',
+  SENT = 'SENT'
+}
+
+export type MessageUpdateManyMutationInput = {
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  content?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  deleted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deliveredAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  edited?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  editedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  sentAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  state?: InputMaybe<EnumMessageStateFieldUpdateOperationsInput>;
+};
+
+export type MessageUpdateManyWithWhereWithoutConversationInput = {
+  data: MessageUpdateManyMutationInput;
+  where: MessageScalarWhereInput;
+};
+
+export type MessageUpdateManyWithWhereWithoutParentMessageInput = {
+  data: MessageUpdateManyMutationInput;
+  where: MessageScalarWhereInput;
+};
+
+export type MessageUpdateManyWithWhereWithoutRideInput = {
+  data: MessageUpdateManyMutationInput;
+  where: MessageScalarWhereInput;
+};
+
+export type MessageUpdateManyWithWhereWithoutSenderInput = {
+  data: MessageUpdateManyMutationInput;
+  where: MessageScalarWhereInput;
+};
+
+export type MessageUpdateManyWithoutConversationNestedInput = {
+  connect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageCreateOrConnectWithoutConversationInput>>;
+  create?: InputMaybe<Array<MessageCreateWithoutConversationInput>>;
+  createMany?: InputMaybe<MessageCreateManyConversationInputEnvelope>;
+  delete?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<MessageScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  set?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  update?: InputMaybe<Array<MessageUpdateWithWhereUniqueWithoutConversationInput>>;
+  updateMany?: InputMaybe<Array<MessageUpdateManyWithWhereWithoutConversationInput>>;
+  upsert?: InputMaybe<Array<MessageUpsertWithWhereUniqueWithoutConversationInput>>;
+};
+
+export type MessageUpdateManyWithoutParentMessageNestedInput = {
+  connect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageCreateOrConnectWithoutParentMessageInput>>;
+  create?: InputMaybe<Array<MessageCreateWithoutParentMessageInput>>;
+  createMany?: InputMaybe<MessageCreateManyParentMessageInputEnvelope>;
+  delete?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<MessageScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  set?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  update?: InputMaybe<Array<MessageUpdateWithWhereUniqueWithoutParentMessageInput>>;
+  updateMany?: InputMaybe<Array<MessageUpdateManyWithWhereWithoutParentMessageInput>>;
+  upsert?: InputMaybe<Array<MessageUpsertWithWhereUniqueWithoutParentMessageInput>>;
+};
+
+export type MessageUpdateManyWithoutRideNestedInput = {
+  connect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageCreateOrConnectWithoutRideInput>>;
+  create?: InputMaybe<Array<MessageCreateWithoutRideInput>>;
+  createMany?: InputMaybe<MessageCreateManyRideInputEnvelope>;
+  delete?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<MessageScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  set?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  update?: InputMaybe<Array<MessageUpdateWithWhereUniqueWithoutRideInput>>;
+  updateMany?: InputMaybe<Array<MessageUpdateManyWithWhereWithoutRideInput>>;
+  upsert?: InputMaybe<Array<MessageUpsertWithWhereUniqueWithoutRideInput>>;
+};
+
+export type MessageUpdateManyWithoutSenderNestedInput = {
+  connect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MessageCreateOrConnectWithoutSenderInput>>;
+  create?: InputMaybe<Array<MessageCreateWithoutSenderInput>>;
+  createMany?: InputMaybe<MessageCreateManySenderInputEnvelope>;
+  delete?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<MessageScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  set?: InputMaybe<Array<MessageWhereUniqueInput>>;
+  update?: InputMaybe<Array<MessageUpdateWithWhereUniqueWithoutSenderInput>>;
+  updateMany?: InputMaybe<Array<MessageUpdateManyWithWhereWithoutSenderInput>>;
+  upsert?: InputMaybe<Array<MessageUpsertWithWhereUniqueWithoutSenderInput>>;
+};
+
+export type MessageUpdateOneRequiredWithoutAttachmentsNestedInput = {
+  connect?: InputMaybe<MessageWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MessageCreateOrConnectWithoutAttachmentsInput>;
+  create?: InputMaybe<MessageCreateWithoutAttachmentsInput>;
+  update?: InputMaybe<MessageUpdateToOneWithWhereWithoutAttachmentsInput>;
+  upsert?: InputMaybe<MessageUpsertWithoutAttachmentsInput>;
+};
+
+export type MessageUpdateOneRequiredWithoutReactionsNestedInput = {
+  connect?: InputMaybe<MessageWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MessageCreateOrConnectWithoutReactionsInput>;
+  create?: InputMaybe<MessageCreateWithoutReactionsInput>;
+  update?: InputMaybe<MessageUpdateToOneWithWhereWithoutReactionsInput>;
+  upsert?: InputMaybe<MessageUpsertWithoutReactionsInput>;
+};
+
+export type MessageUpdateOneRequiredWithoutReadReceiptsNestedInput = {
+  connect?: InputMaybe<MessageWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MessageCreateOrConnectWithoutReadReceiptsInput>;
+  create?: InputMaybe<MessageCreateWithoutReadReceiptsInput>;
+  update?: InputMaybe<MessageUpdateToOneWithWhereWithoutReadReceiptsInput>;
+  upsert?: InputMaybe<MessageUpsertWithoutReadReceiptsInput>;
+};
+
+export type MessageUpdateOneWithoutRepliesNestedInput = {
+  connect?: InputMaybe<MessageWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MessageCreateOrConnectWithoutRepliesInput>;
+  create?: InputMaybe<MessageCreateWithoutRepliesInput>;
+  delete?: InputMaybe<MessageWhereInput>;
+  disconnect?: InputMaybe<MessageWhereInput>;
+  update?: InputMaybe<MessageUpdateToOneWithWhereWithoutRepliesInput>;
+  upsert?: InputMaybe<MessageUpsertWithoutRepliesInput>;
+};
+
+export type MessageUpdateToOneWithWhereWithoutAttachmentsInput = {
+  data: MessageUpdateWithoutAttachmentsInput;
+  where?: InputMaybe<MessageWhereInput>;
+};
+
+export type MessageUpdateToOneWithWhereWithoutReactionsInput = {
+  data: MessageUpdateWithoutReactionsInput;
+  where?: InputMaybe<MessageWhereInput>;
+};
+
+export type MessageUpdateToOneWithWhereWithoutReadReceiptsInput = {
+  data: MessageUpdateWithoutReadReceiptsInput;
+  where?: InputMaybe<MessageWhereInput>;
+};
+
+export type MessageUpdateToOneWithWhereWithoutRepliesInput = {
+  data: MessageUpdateWithoutRepliesInput;
+  where?: InputMaybe<MessageWhereInput>;
+};
+
+export type MessageUpdateWithWhereUniqueWithoutConversationInput = {
+  data: MessageUpdateWithoutConversationInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageUpdateWithWhereUniqueWithoutParentMessageInput = {
+  data: MessageUpdateWithoutParentMessageInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageUpdateWithWhereUniqueWithoutRideInput = {
+  data: MessageUpdateWithoutRideInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageUpdateWithWhereUniqueWithoutSenderInput = {
+  data: MessageUpdateWithoutSenderInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageUpdateWithoutAttachmentsInput = {
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  content?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  conversation?: InputMaybe<ConversationUpdateOneWithoutMessagesNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  deleted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deliveredAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  edited?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  editedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  parentMessage?: InputMaybe<MessageUpdateOneWithoutRepliesNestedInput>;
+  reactions?: InputMaybe<ReactionUpdateManyWithoutMessageNestedInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptUpdateManyWithoutMessageNestedInput>;
+  replies?: InputMaybe<MessageUpdateManyWithoutParentMessageNestedInput>;
+  ride?: InputMaybe<RideUpdateOneWithoutMessageNestedInput>;
+  sender?: InputMaybe<UserUpdateOneRequiredWithoutMessageNestedInput>;
+  sentAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  state?: InputMaybe<EnumMessageStateFieldUpdateOperationsInput>;
+};
+
+export type MessageUpdateWithoutConversationInput = {
+  attachments?: InputMaybe<AttachmentUpdateManyWithoutMessageNestedInput>;
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  content?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  deleted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deliveredAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  edited?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  editedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  parentMessage?: InputMaybe<MessageUpdateOneWithoutRepliesNestedInput>;
+  reactions?: InputMaybe<ReactionUpdateManyWithoutMessageNestedInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptUpdateManyWithoutMessageNestedInput>;
+  replies?: InputMaybe<MessageUpdateManyWithoutParentMessageNestedInput>;
+  ride?: InputMaybe<RideUpdateOneWithoutMessageNestedInput>;
+  sender?: InputMaybe<UserUpdateOneRequiredWithoutMessageNestedInput>;
+  sentAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  state?: InputMaybe<EnumMessageStateFieldUpdateOperationsInput>;
+};
+
+export type MessageUpdateWithoutParentMessageInput = {
+  attachments?: InputMaybe<AttachmentUpdateManyWithoutMessageNestedInput>;
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  content?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  conversation?: InputMaybe<ConversationUpdateOneWithoutMessagesNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  deleted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deliveredAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  edited?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  editedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  reactions?: InputMaybe<ReactionUpdateManyWithoutMessageNestedInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptUpdateManyWithoutMessageNestedInput>;
+  replies?: InputMaybe<MessageUpdateManyWithoutParentMessageNestedInput>;
+  ride?: InputMaybe<RideUpdateOneWithoutMessageNestedInput>;
+  sender?: InputMaybe<UserUpdateOneRequiredWithoutMessageNestedInput>;
+  sentAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  state?: InputMaybe<EnumMessageStateFieldUpdateOperationsInput>;
+};
+
+export type MessageUpdateWithoutReactionsInput = {
+  attachments?: InputMaybe<AttachmentUpdateManyWithoutMessageNestedInput>;
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  content?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  conversation?: InputMaybe<ConversationUpdateOneWithoutMessagesNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  deleted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deliveredAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  edited?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  editedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  parentMessage?: InputMaybe<MessageUpdateOneWithoutRepliesNestedInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptUpdateManyWithoutMessageNestedInput>;
+  replies?: InputMaybe<MessageUpdateManyWithoutParentMessageNestedInput>;
+  ride?: InputMaybe<RideUpdateOneWithoutMessageNestedInput>;
+  sender?: InputMaybe<UserUpdateOneRequiredWithoutMessageNestedInput>;
+  sentAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  state?: InputMaybe<EnumMessageStateFieldUpdateOperationsInput>;
+};
+
+export type MessageUpdateWithoutReadReceiptsInput = {
+  attachments?: InputMaybe<AttachmentUpdateManyWithoutMessageNestedInput>;
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  content?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  conversation?: InputMaybe<ConversationUpdateOneWithoutMessagesNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  deleted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deliveredAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  edited?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  editedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  parentMessage?: InputMaybe<MessageUpdateOneWithoutRepliesNestedInput>;
+  reactions?: InputMaybe<ReactionUpdateManyWithoutMessageNestedInput>;
+  replies?: InputMaybe<MessageUpdateManyWithoutParentMessageNestedInput>;
+  ride?: InputMaybe<RideUpdateOneWithoutMessageNestedInput>;
+  sender?: InputMaybe<UserUpdateOneRequiredWithoutMessageNestedInput>;
+  sentAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  state?: InputMaybe<EnumMessageStateFieldUpdateOperationsInput>;
+};
+
+export type MessageUpdateWithoutRepliesInput = {
+  attachments?: InputMaybe<AttachmentUpdateManyWithoutMessageNestedInput>;
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  content?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  conversation?: InputMaybe<ConversationUpdateOneWithoutMessagesNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  deleted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deliveredAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  edited?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  editedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  parentMessage?: InputMaybe<MessageUpdateOneWithoutRepliesNestedInput>;
+  reactions?: InputMaybe<ReactionUpdateManyWithoutMessageNestedInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptUpdateManyWithoutMessageNestedInput>;
+  ride?: InputMaybe<RideUpdateOneWithoutMessageNestedInput>;
+  sender?: InputMaybe<UserUpdateOneRequiredWithoutMessageNestedInput>;
+  sentAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  state?: InputMaybe<EnumMessageStateFieldUpdateOperationsInput>;
+};
+
+export type MessageUpdateWithoutRideInput = {
+  attachments?: InputMaybe<AttachmentUpdateManyWithoutMessageNestedInput>;
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  content?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  conversation?: InputMaybe<ConversationUpdateOneWithoutMessagesNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  deleted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deliveredAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  edited?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  editedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  parentMessage?: InputMaybe<MessageUpdateOneWithoutRepliesNestedInput>;
+  reactions?: InputMaybe<ReactionUpdateManyWithoutMessageNestedInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptUpdateManyWithoutMessageNestedInput>;
+  replies?: InputMaybe<MessageUpdateManyWithoutParentMessageNestedInput>;
+  sender?: InputMaybe<UserUpdateOneRequiredWithoutMessageNestedInput>;
+  sentAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  state?: InputMaybe<EnumMessageStateFieldUpdateOperationsInput>;
+};
+
+export type MessageUpdateWithoutSenderInput = {
+  attachments?: InputMaybe<AttachmentUpdateManyWithoutMessageNestedInput>;
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  content?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  conversation?: InputMaybe<ConversationUpdateOneWithoutMessagesNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  deleted?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deliveredAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  edited?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  editedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  parentMessage?: InputMaybe<MessageUpdateOneWithoutRepliesNestedInput>;
+  reactions?: InputMaybe<ReactionUpdateManyWithoutMessageNestedInput>;
+  readReceipts?: InputMaybe<MessageReadReceiptUpdateManyWithoutMessageNestedInput>;
+  replies?: InputMaybe<MessageUpdateManyWithoutParentMessageNestedInput>;
+  ride?: InputMaybe<RideUpdateOneWithoutMessageNestedInput>;
+  sentAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  state?: InputMaybe<EnumMessageStateFieldUpdateOperationsInput>;
+};
+
+export type MessageUpsertWithWhereUniqueWithoutConversationInput = {
+  create: MessageCreateWithoutConversationInput;
+  update: MessageUpdateWithoutConversationInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageUpsertWithWhereUniqueWithoutParentMessageInput = {
+  create: MessageCreateWithoutParentMessageInput;
+  update: MessageUpdateWithoutParentMessageInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageUpsertWithWhereUniqueWithoutRideInput = {
+  create: MessageCreateWithoutRideInput;
+  update: MessageUpdateWithoutRideInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageUpsertWithWhereUniqueWithoutSenderInput = {
+  create: MessageCreateWithoutSenderInput;
+  update: MessageUpdateWithoutSenderInput;
+  where: MessageWhereUniqueInput;
+};
+
+export type MessageUpsertWithoutAttachmentsInput = {
+  create: MessageCreateWithoutAttachmentsInput;
+  update: MessageUpdateWithoutAttachmentsInput;
+  where?: InputMaybe<MessageWhereInput>;
+};
+
+export type MessageUpsertWithoutReactionsInput = {
+  create: MessageCreateWithoutReactionsInput;
+  update: MessageUpdateWithoutReactionsInput;
+  where?: InputMaybe<MessageWhereInput>;
+};
+
+export type MessageUpsertWithoutReadReceiptsInput = {
+  create: MessageCreateWithoutReadReceiptsInput;
+  update: MessageUpdateWithoutReadReceiptsInput;
+  where?: InputMaybe<MessageWhereInput>;
+};
+
+export type MessageUpsertWithoutRepliesInput = {
+  create: MessageCreateWithoutRepliesInput;
+  update: MessageUpdateWithoutRepliesInput;
+  where?: InputMaybe<MessageWhereInput>;
+};
+
+export type MessageWhereInput = {
+  AND?: InputMaybe<Array<MessageWhereInput>>;
+  NOT?: InputMaybe<Array<MessageWhereInput>>;
+  OR?: InputMaybe<Array<MessageWhereInput>>;
+  attachments?: InputMaybe<AttachmentListRelationFilter>;
+  clientTempId?: InputMaybe<StringNullableFilter>;
+  content?: InputMaybe<StringNullableFilter>;
+  conversation?: InputMaybe<ConversationNullableScalarRelationFilter>;
+  conversationId?: InputMaybe<StringNullableFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  deleted?: InputMaybe<BoolFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  deliveredAt?: InputMaybe<DateTimeNullableFilter>;
+  edited?: InputMaybe<BoolFilter>;
+  editedAt?: InputMaybe<DateTimeNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  parentMessage?: InputMaybe<MessageNullableScalarRelationFilter>;
+  parentMessageId?: InputMaybe<StringNullableFilter>;
+  reactions?: InputMaybe<ReactionListRelationFilter>;
+  readReceipts?: InputMaybe<MessageReadReceiptListRelationFilter>;
+  replies?: InputMaybe<MessageListRelationFilter>;
+  ride?: InputMaybe<RideNullableScalarRelationFilter>;
+  rideId?: InputMaybe<StringNullableFilter>;
+  sender?: InputMaybe<UserScalarRelationFilter>;
+  senderId?: InputMaybe<StringFilter>;
+  sentAt?: InputMaybe<DateTimeNullableFilter>;
+  state?: InputMaybe<EnumMessageStateFilter>;
+};
+
+export type MessageWhereUniqueInput = {
+  AND?: InputMaybe<Array<MessageWhereInput>>;
+  NOT?: InputMaybe<Array<MessageWhereInput>>;
+  OR?: InputMaybe<Array<MessageWhereInput>>;
+  attachments?: InputMaybe<AttachmentListRelationFilter>;
+  clientTempId?: InputMaybe<StringNullableFilter>;
+  content?: InputMaybe<StringNullableFilter>;
+  conversation?: InputMaybe<ConversationNullableScalarRelationFilter>;
+  conversationId?: InputMaybe<StringNullableFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  deleted?: InputMaybe<BoolFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  deliveredAt?: InputMaybe<DateTimeNullableFilter>;
+  edited?: InputMaybe<BoolFilter>;
+  editedAt?: InputMaybe<DateTimeNullableFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  parentMessage?: InputMaybe<MessageNullableScalarRelationFilter>;
+  parentMessageId?: InputMaybe<StringNullableFilter>;
+  reactions?: InputMaybe<ReactionListRelationFilter>;
+  readReceipts?: InputMaybe<MessageReadReceiptListRelationFilter>;
+  replies?: InputMaybe<MessageListRelationFilter>;
+  ride?: InputMaybe<RideNullableScalarRelationFilter>;
+  rideId?: InputMaybe<StringNullableFilter>;
+  sender?: InputMaybe<UserScalarRelationFilter>;
+  senderId?: InputMaybe<StringFilter>;
+  sentAt?: InputMaybe<DateTimeNullableFilter>;
+  state?: InputMaybe<EnumMessageStateFilter>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   completeUploadBulk: Array<CompleteUploadOutput>;
   createBatchPresignedUrls: Array<PresignedUrl>;
-  createDriverVehicle: UserPreference;
+  createDriverVehicle: DriverVehicle;
   createFile: File;
   createUser: User;
+  createUserQr: Scalars['String']['output'];
   createVehicleType: VehicleType;
+  deleteCover: User;
   deleteFilesByUserId: Array<File>;
+  deleteMessage: Message;
   deleteObject: Scalars['Boolean']['output'];
+  deleteUserDocumentByKey: User;
+  deleteUserImageByKey: User;
+  deleteVehicleDocumentByKey: VehicleDocument;
+  deleteVehicleImageByKey: VehicleImage;
   deleteVehicleType: VehicleType;
+  editMessage: Message;
   forgotPassword: ForgotPasswordOutput;
   getPresignedUrl: Scalars['String']['output'];
   login?: Maybe<LoginOutput>;
   logout: Scalars['Boolean']['output'];
+  markMessageAsDelivered: Message;
   register: User;
+  removeAvatar: User;
   resetPassword: Scalars['Boolean']['output'];
+  sendMessage: Message;
   updateFile: File;
+  updateUser: User;
+  uploadAvatar: User;
+  uploadCover: User;
   uploadFile: FileUploadResult;
+  uploadUserDocument: User;
+  uploadUserImages: User;
+  uploadVehicleDocuments: Array<VehicleDocument>;
+  uploadVehicleImages: Array<VehicleImage>;
   upsertUserPreference: UserPreference;
 };
 
 
 export type MutationCompleteUploadBulkArgs = {
   keys: Array<Scalars['String']['input']>;
-  type: ImageType;
+  type: FileType;
 };
 
 
 export type MutationCreateBatchPresignedUrlsArgs = {
   files: Array<FileMetaInput>;
-  type: ImageType;
+  type: FileType;
 };
 
 
@@ -1106,8 +3810,18 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationCreateUserQrArgs = {
+  type?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type MutationCreateVehicleTypeArgs = {
   input: VehicleTypeCreateInput;
+};
+
+
+export type MutationDeleteMessageArgs = {
+  messageId: Scalars['String']['input'];
 };
 
 
@@ -1116,8 +3830,36 @@ export type MutationDeleteObjectArgs = {
 };
 
 
+export type MutationDeleteUserDocumentByKeyArgs = {
+  documentId: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteUserImageByKeyArgs = {
+  key: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteVehicleDocumentByKeyArgs = {
+  key: Scalars['String']['input'];
+  vehicleId: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteVehicleImageByKeyArgs = {
+  key: Scalars['String']['input'];
+  vehicleId: Scalars['String']['input'];
+};
+
+
 export type MutationDeleteVehicleTypeArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type MutationEditMessageArgs = {
+  content: Scalars['String']['input'];
+  messageId: Scalars['String']['input'];
 };
 
 
@@ -1138,6 +3880,11 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationMarkMessageAsDeliveredArgs = {
+  messageId: Scalars['String']['input'];
+};
+
+
 export type MutationRegisterArgs = {
   data: RegisterInput;
 };
@@ -1149,15 +3896,57 @@ export type MutationResetPasswordArgs = {
 };
 
 
+export type MutationSendMessageArgs = {
+  input: SendMessageInput;
+};
+
+
 export type MutationUpdateFileArgs = {
   id: Scalars['String']['input'];
-  input: FileUpdateInput;
+  input: CustomFileUpdateInput;
+};
+
+
+export type MutationUpdateUserArgs = {
+  input: UserUpdateInput;
+};
+
+
+export type MutationUploadAvatarArgs = {
+  key: Scalars['String']['input'];
+};
+
+
+export type MutationUploadCoverArgs = {
+  key: Scalars['String']['input'];
 };
 
 
 export type MutationUploadFileArgs = {
   file: Scalars['Upload']['input'];
   path?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationUploadUserDocumentArgs = {
+  input: Array<UploadUserDocumentsInput>;
+};
+
+
+export type MutationUploadUserImagesArgs = {
+  keys: Array<Scalars['String']['input']>;
+};
+
+
+export type MutationUploadVehicleDocumentsArgs = {
+  input: Array<UploadVehicleDocumentsInput>;
+  vehicleId: Scalars['String']['input'];
+};
+
+
+export type MutationUploadVehicleImagesArgs = {
+  keys: Array<Scalars['String']['input']>;
+  vehicleId: Scalars['String']['input'];
 };
 
 
@@ -1192,11 +3981,68 @@ export type NestedDateTimeNullableFilter = {
   notIn?: InputMaybe<Array<Scalars['DateTime']['input']>>;
 };
 
-export type NestedEnumImageTypeFilter = {
-  equals?: InputMaybe<ImageType>;
-  in?: InputMaybe<Array<ImageType>>;
-  not?: InputMaybe<NestedEnumImageTypeFilter>;
-  notIn?: InputMaybe<Array<ImageType>>;
+export type NestedDecimalFilter = {
+  equals?: InputMaybe<Scalars['Decimal']['input']>;
+  gt?: InputMaybe<Scalars['Decimal']['input']>;
+  gte?: InputMaybe<Scalars['Decimal']['input']>;
+  in?: InputMaybe<Array<Scalars['Decimal']['input']>>;
+  lt?: InputMaybe<Scalars['Decimal']['input']>;
+  lte?: InputMaybe<Scalars['Decimal']['input']>;
+  not?: InputMaybe<NestedDecimalFilter>;
+  notIn?: InputMaybe<Array<Scalars['Decimal']['input']>>;
+};
+
+export type NestedEnumAttachmentTypeFilter = {
+  equals?: InputMaybe<AttachmentType>;
+  in?: InputMaybe<Array<AttachmentType>>;
+  not?: InputMaybe<NestedEnumAttachmentTypeFilter>;
+  notIn?: InputMaybe<Array<AttachmentType>>;
+};
+
+export type NestedEnumConversationTypeFilter = {
+  equals?: InputMaybe<ConversationType>;
+  in?: InputMaybe<Array<ConversationType>>;
+  not?: InputMaybe<NestedEnumConversationTypeFilter>;
+  notIn?: InputMaybe<Array<ConversationType>>;
+};
+
+export type NestedEnumFileTypeFilter = {
+  equals?: InputMaybe<FileType>;
+  in?: InputMaybe<Array<FileType>>;
+  not?: InputMaybe<NestedEnumFileTypeFilter>;
+  notIn?: InputMaybe<Array<FileType>>;
+};
+
+export type NestedEnumMessageStateFilter = {
+  equals?: InputMaybe<MessageState>;
+  in?: InputMaybe<Array<MessageState>>;
+  not?: InputMaybe<NestedEnumMessageStateFilter>;
+  notIn?: InputMaybe<Array<MessageState>>;
+};
+
+export type NestedEnumUserDocumentTypeFilter = {
+  equals?: InputMaybe<UserDocumentType>;
+  in?: InputMaybe<Array<UserDocumentType>>;
+  not?: InputMaybe<NestedEnumUserDocumentTypeFilter>;
+  notIn?: InputMaybe<Array<UserDocumentType>>;
+};
+
+export type NestedEnumVehicleDocumentTypeFilter = {
+  equals?: InputMaybe<VehicleDocumentType>;
+  in?: InputMaybe<Array<VehicleDocumentType>>;
+  not?: InputMaybe<NestedEnumVehicleDocumentTypeFilter>;
+  notIn?: InputMaybe<Array<VehicleDocumentType>>;
+};
+
+export type NestedFloatNullableFilter = {
+  equals?: InputMaybe<Scalars['Float']['input']>;
+  gt?: InputMaybe<Scalars['Float']['input']>;
+  gte?: InputMaybe<Scalars['Float']['input']>;
+  in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  lt?: InputMaybe<Scalars['Float']['input']>;
+  lte?: InputMaybe<Scalars['Float']['input']>;
+  not?: InputMaybe<NestedFloatNullableFilter>;
+  notIn?: InputMaybe<Array<Scalars['Float']['input']>>;
 };
 
 export type NestedIntFilter = {
@@ -1253,6 +4099,14 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
+export type NullableFloatFieldUpdateOperationsInput = {
+  decrement?: InputMaybe<Scalars['Float']['input']>;
+  divide?: InputMaybe<Scalars['Float']['input']>;
+  increment?: InputMaybe<Scalars['Float']['input']>;
+  multiply?: InputMaybe<Scalars['Float']['input']>;
+  set?: InputMaybe<Scalars['Float']['input']>;
+};
+
 export type NullableIntFieldUpdateOperationsInput = {
   decrement?: InputMaybe<Scalars['Int']['input']>;
   divide?: InputMaybe<Scalars['Int']['input']>;
@@ -1270,6 +4124,406 @@ export enum NullsOrder {
   LAST = 'last'
 }
 
+export type Position = {
+  __typename?: 'Position';
+  Ride?: Maybe<Ride>;
+  accuracy?: Maybe<Scalars['Float']['output']>;
+  altitude?: Maybe<Scalars['Float']['output']>;
+  battery?: Maybe<Scalars['Int']['output']>;
+  clientTempId?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  createdBy?: Maybe<Scalars['String']['output']>;
+  heading?: Maybe<Scalars['Float']['output']>;
+  id: Scalars['String']['output'];
+  is_mock: Scalars['Boolean']['output'];
+  latitude: Scalars['Decimal']['output'];
+  longitude: Scalars['Decimal']['output'];
+  provider?: Maybe<Scalars['String']['output']>;
+  recordedAt: Scalars['DateTime']['output'];
+  rideId?: Maybe<Scalars['String']['output']>;
+  speed?: Maybe<Scalars['Float']['output']>;
+  vehicle: DriverVehicle;
+  vehicleId: Scalars['String']['output'];
+};
+
+export type PositionAvgAggregate = {
+  __typename?: 'PositionAvgAggregate';
+  accuracy?: Maybe<Scalars['Float']['output']>;
+  altitude?: Maybe<Scalars['Float']['output']>;
+  battery?: Maybe<Scalars['Float']['output']>;
+  heading?: Maybe<Scalars['Float']['output']>;
+  latitude?: Maybe<Scalars['Decimal']['output']>;
+  longitude?: Maybe<Scalars['Decimal']['output']>;
+  speed?: Maybe<Scalars['Float']['output']>;
+};
+
+export type PositionCountAggregate = {
+  __typename?: 'PositionCountAggregate';
+  _all: Scalars['Int']['output'];
+  accuracy: Scalars['Int']['output'];
+  altitude: Scalars['Int']['output'];
+  battery: Scalars['Int']['output'];
+  clientTempId: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  createdBy: Scalars['Int']['output'];
+  heading: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  is_mock: Scalars['Int']['output'];
+  latitude: Scalars['Int']['output'];
+  longitude: Scalars['Int']['output'];
+  provider: Scalars['Int']['output'];
+  recordedAt: Scalars['Int']['output'];
+  rideId: Scalars['Int']['output'];
+  speed: Scalars['Int']['output'];
+  vehicleId: Scalars['Int']['output'];
+};
+
+export type PositionCreateManyRideInput = {
+  accuracy?: InputMaybe<Scalars['Float']['input']>;
+  altitude?: InputMaybe<Scalars['Float']['input']>;
+  battery?: InputMaybe<Scalars['Int']['input']>;
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  heading?: InputMaybe<Scalars['Float']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  is_mock?: InputMaybe<Scalars['Boolean']['input']>;
+  latitude: Scalars['Decimal']['input'];
+  longitude: Scalars['Decimal']['input'];
+  provider?: InputMaybe<Scalars['String']['input']>;
+  recordedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  speed?: InputMaybe<Scalars['Float']['input']>;
+  vehicleId: Scalars['String']['input'];
+};
+
+export type PositionCreateManyRideInputEnvelope = {
+  data: Array<PositionCreateManyRideInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type PositionCreateManyVehicleInput = {
+  accuracy?: InputMaybe<Scalars['Float']['input']>;
+  altitude?: InputMaybe<Scalars['Float']['input']>;
+  battery?: InputMaybe<Scalars['Int']['input']>;
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  heading?: InputMaybe<Scalars['Float']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  is_mock?: InputMaybe<Scalars['Boolean']['input']>;
+  latitude: Scalars['Decimal']['input'];
+  longitude: Scalars['Decimal']['input'];
+  provider?: InputMaybe<Scalars['String']['input']>;
+  recordedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+  speed?: InputMaybe<Scalars['Float']['input']>;
+};
+
+export type PositionCreateManyVehicleInputEnvelope = {
+  data: Array<PositionCreateManyVehicleInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type PositionCreateNestedManyWithoutRideInput = {
+  connect?: InputMaybe<Array<PositionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<PositionCreateOrConnectWithoutRideInput>>;
+  create?: InputMaybe<Array<PositionCreateWithoutRideInput>>;
+  createMany?: InputMaybe<PositionCreateManyRideInputEnvelope>;
+};
+
+export type PositionCreateNestedManyWithoutVehicleInput = {
+  connect?: InputMaybe<Array<PositionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<PositionCreateOrConnectWithoutVehicleInput>>;
+  create?: InputMaybe<Array<PositionCreateWithoutVehicleInput>>;
+  createMany?: InputMaybe<PositionCreateManyVehicleInputEnvelope>;
+};
+
+export type PositionCreateOrConnectWithoutRideInput = {
+  create: PositionCreateWithoutRideInput;
+  where: PositionWhereUniqueInput;
+};
+
+export type PositionCreateOrConnectWithoutVehicleInput = {
+  create: PositionCreateWithoutVehicleInput;
+  where: PositionWhereUniqueInput;
+};
+
+export type PositionCreateWithoutRideInput = {
+  accuracy?: InputMaybe<Scalars['Float']['input']>;
+  altitude?: InputMaybe<Scalars['Float']['input']>;
+  battery?: InputMaybe<Scalars['Int']['input']>;
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  heading?: InputMaybe<Scalars['Float']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  is_mock?: InputMaybe<Scalars['Boolean']['input']>;
+  latitude: Scalars['Decimal']['input'];
+  longitude: Scalars['Decimal']['input'];
+  provider?: InputMaybe<Scalars['String']['input']>;
+  recordedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  speed?: InputMaybe<Scalars['Float']['input']>;
+  vehicle: DriverVehicleCreateNestedOneWithoutPositionInput;
+};
+
+export type PositionCreateWithoutVehicleInput = {
+  Ride?: InputMaybe<RideCreateNestedOneWithoutPositionsInput>;
+  accuracy?: InputMaybe<Scalars['Float']['input']>;
+  altitude?: InputMaybe<Scalars['Float']['input']>;
+  battery?: InputMaybe<Scalars['Int']['input']>;
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  heading?: InputMaybe<Scalars['Float']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  is_mock?: InputMaybe<Scalars['Boolean']['input']>;
+  latitude: Scalars['Decimal']['input'];
+  longitude: Scalars['Decimal']['input'];
+  provider?: InputMaybe<Scalars['String']['input']>;
+  recordedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  speed?: InputMaybe<Scalars['Float']['input']>;
+};
+
+export type PositionListRelationFilter = {
+  every?: InputMaybe<PositionWhereInput>;
+  none?: InputMaybe<PositionWhereInput>;
+  some?: InputMaybe<PositionWhereInput>;
+};
+
+export type PositionMaxAggregate = {
+  __typename?: 'PositionMaxAggregate';
+  accuracy?: Maybe<Scalars['Float']['output']>;
+  altitude?: Maybe<Scalars['Float']['output']>;
+  battery?: Maybe<Scalars['Int']['output']>;
+  clientTempId?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdBy?: Maybe<Scalars['String']['output']>;
+  heading?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  is_mock?: Maybe<Scalars['Boolean']['output']>;
+  latitude?: Maybe<Scalars['Decimal']['output']>;
+  longitude?: Maybe<Scalars['Decimal']['output']>;
+  provider?: Maybe<Scalars['String']['output']>;
+  recordedAt?: Maybe<Scalars['DateTime']['output']>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  speed?: Maybe<Scalars['Float']['output']>;
+  vehicleId?: Maybe<Scalars['String']['output']>;
+};
+
+export type PositionMinAggregate = {
+  __typename?: 'PositionMinAggregate';
+  accuracy?: Maybe<Scalars['Float']['output']>;
+  altitude?: Maybe<Scalars['Float']['output']>;
+  battery?: Maybe<Scalars['Int']['output']>;
+  clientTempId?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdBy?: Maybe<Scalars['String']['output']>;
+  heading?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  is_mock?: Maybe<Scalars['Boolean']['output']>;
+  latitude?: Maybe<Scalars['Decimal']['output']>;
+  longitude?: Maybe<Scalars['Decimal']['output']>;
+  provider?: Maybe<Scalars['String']['output']>;
+  recordedAt?: Maybe<Scalars['DateTime']['output']>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  speed?: Maybe<Scalars['Float']['output']>;
+  vehicleId?: Maybe<Scalars['String']['output']>;
+};
+
+export type PositionScalarWhereInput = {
+  AND?: InputMaybe<Array<PositionScalarWhereInput>>;
+  NOT?: InputMaybe<Array<PositionScalarWhereInput>>;
+  OR?: InputMaybe<Array<PositionScalarWhereInput>>;
+  accuracy?: InputMaybe<FloatNullableFilter>;
+  altitude?: InputMaybe<FloatNullableFilter>;
+  battery?: InputMaybe<IntNullableFilter>;
+  clientTempId?: InputMaybe<StringNullableFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  createdBy?: InputMaybe<StringNullableFilter>;
+  heading?: InputMaybe<FloatNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  is_mock?: InputMaybe<BoolFilter>;
+  latitude?: InputMaybe<DecimalFilter>;
+  longitude?: InputMaybe<DecimalFilter>;
+  provider?: InputMaybe<StringNullableFilter>;
+  recordedAt?: InputMaybe<DateTimeFilter>;
+  rideId?: InputMaybe<StringNullableFilter>;
+  speed?: InputMaybe<FloatNullableFilter>;
+  vehicleId?: InputMaybe<StringFilter>;
+};
+
+export type PositionSumAggregate = {
+  __typename?: 'PositionSumAggregate';
+  accuracy?: Maybe<Scalars['Float']['output']>;
+  altitude?: Maybe<Scalars['Float']['output']>;
+  battery?: Maybe<Scalars['Int']['output']>;
+  heading?: Maybe<Scalars['Float']['output']>;
+  latitude?: Maybe<Scalars['Decimal']['output']>;
+  longitude?: Maybe<Scalars['Decimal']['output']>;
+  speed?: Maybe<Scalars['Float']['output']>;
+};
+
+export type PositionUpdateManyMutationInput = {
+  accuracy?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  altitude?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  battery?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  createdBy?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  heading?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  is_mock?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  latitude?: InputMaybe<DecimalFieldUpdateOperationsInput>;
+  longitude?: InputMaybe<DecimalFieldUpdateOperationsInput>;
+  provider?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  recordedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  speed?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+};
+
+export type PositionUpdateManyWithWhereWithoutRideInput = {
+  data: PositionUpdateManyMutationInput;
+  where: PositionScalarWhereInput;
+};
+
+export type PositionUpdateManyWithWhereWithoutVehicleInput = {
+  data: PositionUpdateManyMutationInput;
+  where: PositionScalarWhereInput;
+};
+
+export type PositionUpdateManyWithoutRideNestedInput = {
+  connect?: InputMaybe<Array<PositionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<PositionCreateOrConnectWithoutRideInput>>;
+  create?: InputMaybe<Array<PositionCreateWithoutRideInput>>;
+  createMany?: InputMaybe<PositionCreateManyRideInputEnvelope>;
+  delete?: InputMaybe<Array<PositionWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<PositionScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<PositionWhereUniqueInput>>;
+  set?: InputMaybe<Array<PositionWhereUniqueInput>>;
+  update?: InputMaybe<Array<PositionUpdateWithWhereUniqueWithoutRideInput>>;
+  updateMany?: InputMaybe<Array<PositionUpdateManyWithWhereWithoutRideInput>>;
+  upsert?: InputMaybe<Array<PositionUpsertWithWhereUniqueWithoutRideInput>>;
+};
+
+export type PositionUpdateManyWithoutVehicleNestedInput = {
+  connect?: InputMaybe<Array<PositionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<PositionCreateOrConnectWithoutVehicleInput>>;
+  create?: InputMaybe<Array<PositionCreateWithoutVehicleInput>>;
+  createMany?: InputMaybe<PositionCreateManyVehicleInputEnvelope>;
+  delete?: InputMaybe<Array<PositionWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<PositionScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<PositionWhereUniqueInput>>;
+  set?: InputMaybe<Array<PositionWhereUniqueInput>>;
+  update?: InputMaybe<Array<PositionUpdateWithWhereUniqueWithoutVehicleInput>>;
+  updateMany?: InputMaybe<Array<PositionUpdateManyWithWhereWithoutVehicleInput>>;
+  upsert?: InputMaybe<Array<PositionUpsertWithWhereUniqueWithoutVehicleInput>>;
+};
+
+export type PositionUpdateWithWhereUniqueWithoutRideInput = {
+  data: PositionUpdateWithoutRideInput;
+  where: PositionWhereUniqueInput;
+};
+
+export type PositionUpdateWithWhereUniqueWithoutVehicleInput = {
+  data: PositionUpdateWithoutVehicleInput;
+  where: PositionWhereUniqueInput;
+};
+
+export type PositionUpdateWithoutRideInput = {
+  accuracy?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  altitude?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  battery?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  createdBy?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  heading?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  is_mock?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  latitude?: InputMaybe<DecimalFieldUpdateOperationsInput>;
+  longitude?: InputMaybe<DecimalFieldUpdateOperationsInput>;
+  provider?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  recordedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  speed?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  vehicle?: InputMaybe<DriverVehicleUpdateOneRequiredWithoutPositionNestedInput>;
+};
+
+export type PositionUpdateWithoutVehicleInput = {
+  Ride?: InputMaybe<RideUpdateOneWithoutPositionsNestedInput>;
+  accuracy?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  altitude?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  battery?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  clientTempId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  createdBy?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  heading?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  is_mock?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  latitude?: InputMaybe<DecimalFieldUpdateOperationsInput>;
+  longitude?: InputMaybe<DecimalFieldUpdateOperationsInput>;
+  provider?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  recordedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  speed?: InputMaybe<NullableFloatFieldUpdateOperationsInput>;
+};
+
+export type PositionUpsertWithWhereUniqueWithoutRideInput = {
+  create: PositionCreateWithoutRideInput;
+  update: PositionUpdateWithoutRideInput;
+  where: PositionWhereUniqueInput;
+};
+
+export type PositionUpsertWithWhereUniqueWithoutVehicleInput = {
+  create: PositionCreateWithoutVehicleInput;
+  update: PositionUpdateWithoutVehicleInput;
+  where: PositionWhereUniqueInput;
+};
+
+export type PositionWhereInput = {
+  AND?: InputMaybe<Array<PositionWhereInput>>;
+  NOT?: InputMaybe<Array<PositionWhereInput>>;
+  OR?: InputMaybe<Array<PositionWhereInput>>;
+  Ride?: InputMaybe<RideNullableScalarRelationFilter>;
+  accuracy?: InputMaybe<FloatNullableFilter>;
+  altitude?: InputMaybe<FloatNullableFilter>;
+  battery?: InputMaybe<IntNullableFilter>;
+  clientTempId?: InputMaybe<StringNullableFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  createdBy?: InputMaybe<StringNullableFilter>;
+  heading?: InputMaybe<FloatNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  is_mock?: InputMaybe<BoolFilter>;
+  latitude?: InputMaybe<DecimalFilter>;
+  longitude?: InputMaybe<DecimalFilter>;
+  provider?: InputMaybe<StringNullableFilter>;
+  recordedAt?: InputMaybe<DateTimeFilter>;
+  rideId?: InputMaybe<StringNullableFilter>;
+  speed?: InputMaybe<FloatNullableFilter>;
+  vehicle?: InputMaybe<DriverVehicleScalarRelationFilter>;
+  vehicleId?: InputMaybe<StringFilter>;
+};
+
+export type PositionWhereUniqueInput = {
+  AND?: InputMaybe<Array<PositionWhereInput>>;
+  NOT?: InputMaybe<Array<PositionWhereInput>>;
+  OR?: InputMaybe<Array<PositionWhereInput>>;
+  Ride?: InputMaybe<RideNullableScalarRelationFilter>;
+  accuracy?: InputMaybe<FloatNullableFilter>;
+  altitude?: InputMaybe<FloatNullableFilter>;
+  battery?: InputMaybe<IntNullableFilter>;
+  clientTempId?: InputMaybe<StringNullableFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  createdBy?: InputMaybe<StringNullableFilter>;
+  heading?: InputMaybe<FloatNullableFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  is_mock?: InputMaybe<BoolFilter>;
+  latitude?: InputMaybe<DecimalFilter>;
+  longitude?: InputMaybe<DecimalFilter>;
+  provider?: InputMaybe<StringNullableFilter>;
+  recordedAt?: InputMaybe<DateTimeFilter>;
+  rideId?: InputMaybe<StringNullableFilter>;
+  speed?: InputMaybe<FloatNullableFilter>;
+  vehicle?: InputMaybe<DriverVehicleScalarRelationFilter>;
+  vehicleId?: InputMaybe<StringFilter>;
+};
+
 export type PresignedUrl = {
   __typename?: 'PresignedUrl';
   expiresIn: Scalars['Float']['output'];
@@ -1277,14 +4531,186 @@ export type PresignedUrl = {
   url: Scalars['String']['output'];
 };
 
+export type QrToken = {
+  __typename?: 'QrToken';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['String']['output'];
+  revoked: Scalars['Boolean']['output'];
+  token: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  user: User;
+  userId: Scalars['String']['output'];
+};
+
+export type QrTokenCountAggregate = {
+  __typename?: 'QrTokenCountAggregate';
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  revoked: Scalars['Int']['output'];
+  token: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+};
+
+export type QrTokenCreateManyUserInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  revoked?: InputMaybe<Scalars['Boolean']['input']>;
+  token: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type QrTokenCreateManyUserInputEnvelope = {
+  data: Array<QrTokenCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type QrTokenCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<QrTokenWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<QrTokenCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<QrTokenCreateWithoutUserInput>>;
+  createMany?: InputMaybe<QrTokenCreateManyUserInputEnvelope>;
+};
+
+export type QrTokenCreateOrConnectWithoutUserInput = {
+  create: QrTokenCreateWithoutUserInput;
+  where: QrTokenWhereUniqueInput;
+};
+
+export type QrTokenCreateWithoutUserInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  revoked?: InputMaybe<Scalars['Boolean']['input']>;
+  token: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type QrTokenListRelationFilter = {
+  every?: InputMaybe<QrTokenWhereInput>;
+  none?: InputMaybe<QrTokenWhereInput>;
+  some?: InputMaybe<QrTokenWhereInput>;
+};
+
+export type QrTokenMaxAggregate = {
+  __typename?: 'QrTokenMaxAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  revoked?: Maybe<Scalars['Boolean']['output']>;
+  token?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type QrTokenMinAggregate = {
+  __typename?: 'QrTokenMinAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  revoked?: Maybe<Scalars['Boolean']['output']>;
+  token?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type QrTokenOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type QrTokenScalarWhereInput = {
+  AND?: InputMaybe<Array<QrTokenScalarWhereInput>>;
+  NOT?: InputMaybe<Array<QrTokenScalarWhereInput>>;
+  OR?: InputMaybe<Array<QrTokenScalarWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  id?: InputMaybe<StringFilter>;
+  revoked?: InputMaybe<BoolFilter>;
+  token?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type QrTokenUpdateManyMutationInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  revoked?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  token?: InputMaybe<StringFieldUpdateOperationsInput>;
+  updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+};
+
+export type QrTokenUpdateManyWithWhereWithoutUserInput = {
+  data: QrTokenUpdateManyMutationInput;
+  where: QrTokenScalarWhereInput;
+};
+
+export type QrTokenUpdateManyWithoutUserNestedInput = {
+  connect?: InputMaybe<Array<QrTokenWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<QrTokenCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<QrTokenCreateWithoutUserInput>>;
+  createMany?: InputMaybe<QrTokenCreateManyUserInputEnvelope>;
+  delete?: InputMaybe<Array<QrTokenWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<QrTokenScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<QrTokenWhereUniqueInput>>;
+  set?: InputMaybe<Array<QrTokenWhereUniqueInput>>;
+  update?: InputMaybe<Array<QrTokenUpdateWithWhereUniqueWithoutUserInput>>;
+  updateMany?: InputMaybe<Array<QrTokenUpdateManyWithWhereWithoutUserInput>>;
+  upsert?: InputMaybe<Array<QrTokenUpsertWithWhereUniqueWithoutUserInput>>;
+};
+
+export type QrTokenUpdateWithWhereUniqueWithoutUserInput = {
+  data: QrTokenUpdateWithoutUserInput;
+  where: QrTokenWhereUniqueInput;
+};
+
+export type QrTokenUpdateWithoutUserInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  revoked?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  token?: InputMaybe<StringFieldUpdateOperationsInput>;
+  updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+};
+
+export type QrTokenUpsertWithWhereUniqueWithoutUserInput = {
+  create: QrTokenCreateWithoutUserInput;
+  update: QrTokenUpdateWithoutUserInput;
+  where: QrTokenWhereUniqueInput;
+};
+
+export type QrTokenWhereInput = {
+  AND?: InputMaybe<Array<QrTokenWhereInput>>;
+  NOT?: InputMaybe<Array<QrTokenWhereInput>>;
+  OR?: InputMaybe<Array<QrTokenWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  id?: InputMaybe<StringFilter>;
+  revoked?: InputMaybe<BoolFilter>;
+  token?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type QrTokenWhereUniqueInput = {
+  AND?: InputMaybe<Array<QrTokenWhereInput>>;
+  NOT?: InputMaybe<Array<QrTokenWhereInput>>;
+  OR?: InputMaybe<Array<QrTokenWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  revoked?: InputMaybe<BoolFilter>;
+  token?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
 export type Query = {
   __typename?: 'Query';
   VehicleType: VehicleType;
   file: File;
   files: Array<File>;
+  getUserQr: Scalars['String']['output'];
   listObjects: Array<Scalars['String']['output']>;
   me: User;
+  messages: Array<Message>;
   user: User;
+  userByToken: User;
   userPreference?: Maybe<UserPreference>;
   users: Array<User>;
   usersForAdmin: Array<User>;
@@ -1313,13 +4739,31 @@ export type QueryFilesArgs = {
 };
 
 
+export type QueryGetUserQrArgs = {
+  type?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type QueryListObjectsArgs = {
   bucket: Scalars['String']['input'];
 };
 
 
+export type QueryMessagesArgs = {
+  conversationId?: InputMaybe<Scalars['String']['input']>;
+  cursor?: InputMaybe<Scalars['String']['input']>;
+  limit?: Scalars['Float']['input'];
+  rideId?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type QueryUserArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type QueryUserByTokenArgs = {
+  token: Scalars['String']['input'];
 };
 
 
@@ -1356,6 +4800,241 @@ export enum QueryMode {
   DEFAULT = 'default',
   INSENSITIVE = 'insensitive'
 }
+
+export type Reaction = {
+  __typename?: 'Reaction';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['String']['output'];
+  message: Message;
+  messageId: Scalars['String']['output'];
+  type: Scalars['String']['output'];
+  user: User;
+  userId: Scalars['String']['output'];
+};
+
+export type ReactionCountAggregate = {
+  __typename?: 'ReactionCountAggregate';
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  messageId: Scalars['Int']['output'];
+  type: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+};
+
+export type ReactionCreateManyMessageInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  type: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+export type ReactionCreateManyMessageInputEnvelope = {
+  data: Array<ReactionCreateManyMessageInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type ReactionCreateManyUserInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  messageId: Scalars['String']['input'];
+  type: Scalars['String']['input'];
+};
+
+export type ReactionCreateManyUserInputEnvelope = {
+  data: Array<ReactionCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type ReactionCreateNestedManyWithoutMessageInput = {
+  connect?: InputMaybe<Array<ReactionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ReactionCreateOrConnectWithoutMessageInput>>;
+  create?: InputMaybe<Array<ReactionCreateWithoutMessageInput>>;
+  createMany?: InputMaybe<ReactionCreateManyMessageInputEnvelope>;
+};
+
+export type ReactionCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<ReactionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ReactionCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<ReactionCreateWithoutUserInput>>;
+  createMany?: InputMaybe<ReactionCreateManyUserInputEnvelope>;
+};
+
+export type ReactionCreateOrConnectWithoutMessageInput = {
+  create: ReactionCreateWithoutMessageInput;
+  where: ReactionWhereUniqueInput;
+};
+
+export type ReactionCreateOrConnectWithoutUserInput = {
+  create: ReactionCreateWithoutUserInput;
+  where: ReactionWhereUniqueInput;
+};
+
+export type ReactionCreateWithoutMessageInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  type: Scalars['String']['input'];
+  user: UserCreateNestedOneWithoutReactionInput;
+};
+
+export type ReactionCreateWithoutUserInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  message: MessageCreateNestedOneWithoutReactionsInput;
+  type: Scalars['String']['input'];
+};
+
+export type ReactionListRelationFilter = {
+  every?: InputMaybe<ReactionWhereInput>;
+  none?: InputMaybe<ReactionWhereInput>;
+  some?: InputMaybe<ReactionWhereInput>;
+};
+
+export type ReactionMaxAggregate = {
+  __typename?: 'ReactionMaxAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  messageId?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ReactionMessageIdUserIdTypeCompoundUniqueInput = {
+  messageId: Scalars['String']['input'];
+  type: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+export type ReactionMinAggregate = {
+  __typename?: 'ReactionMinAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  messageId?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ReactionOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type ReactionScalarWhereInput = {
+  AND?: InputMaybe<Array<ReactionScalarWhereInput>>;
+  NOT?: InputMaybe<Array<ReactionScalarWhereInput>>;
+  OR?: InputMaybe<Array<ReactionScalarWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  id?: InputMaybe<StringFilter>;
+  messageId?: InputMaybe<StringFilter>;
+  type?: InputMaybe<StringFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type ReactionUpdateManyMutationInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  type?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type ReactionUpdateManyWithWhereWithoutMessageInput = {
+  data: ReactionUpdateManyMutationInput;
+  where: ReactionScalarWhereInput;
+};
+
+export type ReactionUpdateManyWithWhereWithoutUserInput = {
+  data: ReactionUpdateManyMutationInput;
+  where: ReactionScalarWhereInput;
+};
+
+export type ReactionUpdateManyWithoutMessageNestedInput = {
+  connect?: InputMaybe<Array<ReactionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ReactionCreateOrConnectWithoutMessageInput>>;
+  create?: InputMaybe<Array<ReactionCreateWithoutMessageInput>>;
+  createMany?: InputMaybe<ReactionCreateManyMessageInputEnvelope>;
+  delete?: InputMaybe<Array<ReactionWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<ReactionScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<ReactionWhereUniqueInput>>;
+  set?: InputMaybe<Array<ReactionWhereUniqueInput>>;
+  update?: InputMaybe<Array<ReactionUpdateWithWhereUniqueWithoutMessageInput>>;
+  updateMany?: InputMaybe<Array<ReactionUpdateManyWithWhereWithoutMessageInput>>;
+  upsert?: InputMaybe<Array<ReactionUpsertWithWhereUniqueWithoutMessageInput>>;
+};
+
+export type ReactionUpdateManyWithoutUserNestedInput = {
+  connect?: InputMaybe<Array<ReactionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ReactionCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<ReactionCreateWithoutUserInput>>;
+  createMany?: InputMaybe<ReactionCreateManyUserInputEnvelope>;
+  delete?: InputMaybe<Array<ReactionWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<ReactionScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<ReactionWhereUniqueInput>>;
+  set?: InputMaybe<Array<ReactionWhereUniqueInput>>;
+  update?: InputMaybe<Array<ReactionUpdateWithWhereUniqueWithoutUserInput>>;
+  updateMany?: InputMaybe<Array<ReactionUpdateManyWithWhereWithoutUserInput>>;
+  upsert?: InputMaybe<Array<ReactionUpsertWithWhereUniqueWithoutUserInput>>;
+};
+
+export type ReactionUpdateWithWhereUniqueWithoutMessageInput = {
+  data: ReactionUpdateWithoutMessageInput;
+  where: ReactionWhereUniqueInput;
+};
+
+export type ReactionUpdateWithWhereUniqueWithoutUserInput = {
+  data: ReactionUpdateWithoutUserInput;
+  where: ReactionWhereUniqueInput;
+};
+
+export type ReactionUpdateWithoutMessageInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  type?: InputMaybe<StringFieldUpdateOperationsInput>;
+  user?: InputMaybe<UserUpdateOneRequiredWithoutReactionNestedInput>;
+};
+
+export type ReactionUpdateWithoutUserInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  message?: InputMaybe<MessageUpdateOneRequiredWithoutReactionsNestedInput>;
+  type?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type ReactionUpsertWithWhereUniqueWithoutMessageInput = {
+  create: ReactionCreateWithoutMessageInput;
+  update: ReactionUpdateWithoutMessageInput;
+  where: ReactionWhereUniqueInput;
+};
+
+export type ReactionUpsertWithWhereUniqueWithoutUserInput = {
+  create: ReactionCreateWithoutUserInput;
+  update: ReactionUpdateWithoutUserInput;
+  where: ReactionWhereUniqueInput;
+};
+
+export type ReactionWhereInput = {
+  AND?: InputMaybe<Array<ReactionWhereInput>>;
+  NOT?: InputMaybe<Array<ReactionWhereInput>>;
+  OR?: InputMaybe<Array<ReactionWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  id?: InputMaybe<StringFilter>;
+  message?: InputMaybe<MessageScalarRelationFilter>;
+  messageId?: InputMaybe<StringFilter>;
+  type?: InputMaybe<StringFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type ReactionWhereUniqueInput = {
+  AND?: InputMaybe<Array<ReactionWhereInput>>;
+  NOT?: InputMaybe<Array<ReactionWhereInput>>;
+  OR?: InputMaybe<Array<ReactionWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  message?: InputMaybe<MessageScalarRelationFilter>;
+  messageId?: InputMaybe<StringFilter>;
+  messageId_userId_type?: InputMaybe<ReactionMessageIdUserIdTypeCompoundUniqueInput>;
+  type?: InputMaybe<StringFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
 
 export type RefreshToken = {
   __typename?: 'RefreshToken';
@@ -1523,6 +5202,849 @@ export type RegisterInput = {
   username?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type Review = {
+  __typename?: 'Review';
+  content: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['String']['output'];
+  rating: Scalars['Int']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  user: User;
+  userId: Scalars['String']['output'];
+};
+
+export type ReviewAvgAggregate = {
+  __typename?: 'ReviewAvgAggregate';
+  rating?: Maybe<Scalars['Float']['output']>;
+};
+
+export type ReviewCountAggregate = {
+  __typename?: 'ReviewCountAggregate';
+  _all: Scalars['Int']['output'];
+  content: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  rating: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+};
+
+export type ReviewCreateManyUserInput = {
+  content: Scalars['String']['input'];
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  rating?: InputMaybe<Scalars['Int']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type ReviewCreateManyUserInputEnvelope = {
+  data: Array<ReviewCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type ReviewCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<ReviewWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ReviewCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<ReviewCreateWithoutUserInput>>;
+  createMany?: InputMaybe<ReviewCreateManyUserInputEnvelope>;
+};
+
+export type ReviewCreateOrConnectWithoutUserInput = {
+  create: ReviewCreateWithoutUserInput;
+  where: ReviewWhereUniqueInput;
+};
+
+export type ReviewCreateWithoutUserInput = {
+  content: Scalars['String']['input'];
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  rating?: InputMaybe<Scalars['Int']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type ReviewListRelationFilter = {
+  every?: InputMaybe<ReviewWhereInput>;
+  none?: InputMaybe<ReviewWhereInput>;
+  some?: InputMaybe<ReviewWhereInput>;
+};
+
+export type ReviewMaxAggregate = {
+  __typename?: 'ReviewMaxAggregate';
+  content?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  rating?: Maybe<Scalars['Int']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ReviewMinAggregate = {
+  __typename?: 'ReviewMinAggregate';
+  content?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  rating?: Maybe<Scalars['Int']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ReviewOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type ReviewScalarWhereInput = {
+  AND?: InputMaybe<Array<ReviewScalarWhereInput>>;
+  NOT?: InputMaybe<Array<ReviewScalarWhereInput>>;
+  OR?: InputMaybe<Array<ReviewScalarWhereInput>>;
+  content?: InputMaybe<StringFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  id?: InputMaybe<StringFilter>;
+  rating?: InputMaybe<IntFilter>;
+  updatedAt?: InputMaybe<DateTimeNullableFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type ReviewSumAggregate = {
+  __typename?: 'ReviewSumAggregate';
+  rating?: Maybe<Scalars['Int']['output']>;
+};
+
+export type ReviewUpdateManyMutationInput = {
+  content?: InputMaybe<StringFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  rating?: InputMaybe<IntFieldUpdateOperationsInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+};
+
+export type ReviewUpdateManyWithWhereWithoutUserInput = {
+  data: ReviewUpdateManyMutationInput;
+  where: ReviewScalarWhereInput;
+};
+
+export type ReviewUpdateManyWithoutUserNestedInput = {
+  connect?: InputMaybe<Array<ReviewWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ReviewCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<ReviewCreateWithoutUserInput>>;
+  createMany?: InputMaybe<ReviewCreateManyUserInputEnvelope>;
+  delete?: InputMaybe<Array<ReviewWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<ReviewScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<ReviewWhereUniqueInput>>;
+  set?: InputMaybe<Array<ReviewWhereUniqueInput>>;
+  update?: InputMaybe<Array<ReviewUpdateWithWhereUniqueWithoutUserInput>>;
+  updateMany?: InputMaybe<Array<ReviewUpdateManyWithWhereWithoutUserInput>>;
+  upsert?: InputMaybe<Array<ReviewUpsertWithWhereUniqueWithoutUserInput>>;
+};
+
+export type ReviewUpdateWithWhereUniqueWithoutUserInput = {
+  data: ReviewUpdateWithoutUserInput;
+  where: ReviewWhereUniqueInput;
+};
+
+export type ReviewUpdateWithoutUserInput = {
+  content?: InputMaybe<StringFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  rating?: InputMaybe<IntFieldUpdateOperationsInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+};
+
+export type ReviewUpsertWithWhereUniqueWithoutUserInput = {
+  create: ReviewCreateWithoutUserInput;
+  update: ReviewUpdateWithoutUserInput;
+  where: ReviewWhereUniqueInput;
+};
+
+export type ReviewWhereInput = {
+  AND?: InputMaybe<Array<ReviewWhereInput>>;
+  NOT?: InputMaybe<Array<ReviewWhereInput>>;
+  OR?: InputMaybe<Array<ReviewWhereInput>>;
+  content?: InputMaybe<StringFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  id?: InputMaybe<StringFilter>;
+  rating?: InputMaybe<IntFilter>;
+  updatedAt?: InputMaybe<DateTimeNullableFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type ReviewWhereUniqueInput = {
+  AND?: InputMaybe<Array<ReviewWhereInput>>;
+  NOT?: InputMaybe<Array<ReviewWhereInput>>;
+  OR?: InputMaybe<Array<ReviewWhereInput>>;
+  content?: InputMaybe<StringFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  rating?: InputMaybe<IntFilter>;
+  updatedAt?: InputMaybe<DateTimeNullableFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type Ride = {
+  __typename?: 'Ride';
+  Attachment?: Maybe<Array<Attachment>>;
+  Driver?: Maybe<User>;
+  Message?: Maybe<Array<Message>>;
+  RideParticipant?: Maybe<Array<RideParticipant>>;
+  _count: RideCount;
+  createdAt: Scalars['DateTime']['output'];
+  driverId?: Maybe<Scalars['String']['output']>;
+  finishedAt?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['String']['output'];
+  positions?: Maybe<Array<Position>>;
+  startedAt?: Maybe<Scalars['DateTime']['output']>;
+  status: Scalars['String']['output'];
+};
+
+export type RideCount = {
+  __typename?: 'RideCount';
+  Attachment: Scalars['Int']['output'];
+  Message: Scalars['Int']['output'];
+  RideParticipant: Scalars['Int']['output'];
+  positions: Scalars['Int']['output'];
+};
+
+export type RideCountAggregate = {
+  __typename?: 'RideCountAggregate';
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  driverId: Scalars['Int']['output'];
+  finishedAt: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  startedAt: Scalars['Int']['output'];
+  status: Scalars['Int']['output'];
+};
+
+export type RideCreateManyDriverInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  finishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  startedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  status: Scalars['String']['input'];
+};
+
+export type RideCreateManyDriverInputEnvelope = {
+  data: Array<RideCreateManyDriverInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type RideCreateNestedManyWithoutDriverInput = {
+  connect?: InputMaybe<Array<RideWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<RideCreateOrConnectWithoutDriverInput>>;
+  create?: InputMaybe<Array<RideCreateWithoutDriverInput>>;
+  createMany?: InputMaybe<RideCreateManyDriverInputEnvelope>;
+};
+
+export type RideCreateNestedOneWithoutAttachmentInput = {
+  connect?: InputMaybe<RideWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<RideCreateOrConnectWithoutAttachmentInput>;
+  create?: InputMaybe<RideCreateWithoutAttachmentInput>;
+};
+
+export type RideCreateNestedOneWithoutMessageInput = {
+  connect?: InputMaybe<RideWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<RideCreateOrConnectWithoutMessageInput>;
+  create?: InputMaybe<RideCreateWithoutMessageInput>;
+};
+
+export type RideCreateNestedOneWithoutPositionsInput = {
+  connect?: InputMaybe<RideWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<RideCreateOrConnectWithoutPositionsInput>;
+  create?: InputMaybe<RideCreateWithoutPositionsInput>;
+};
+
+export type RideCreateNestedOneWithoutRideParticipantInput = {
+  connect?: InputMaybe<RideWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<RideCreateOrConnectWithoutRideParticipantInput>;
+  create?: InputMaybe<RideCreateWithoutRideParticipantInput>;
+};
+
+export type RideCreateOrConnectWithoutAttachmentInput = {
+  create: RideCreateWithoutAttachmentInput;
+  where: RideWhereUniqueInput;
+};
+
+export type RideCreateOrConnectWithoutDriverInput = {
+  create: RideCreateWithoutDriverInput;
+  where: RideWhereUniqueInput;
+};
+
+export type RideCreateOrConnectWithoutMessageInput = {
+  create: RideCreateWithoutMessageInput;
+  where: RideWhereUniqueInput;
+};
+
+export type RideCreateOrConnectWithoutPositionsInput = {
+  create: RideCreateWithoutPositionsInput;
+  where: RideWhereUniqueInput;
+};
+
+export type RideCreateOrConnectWithoutRideParticipantInput = {
+  create: RideCreateWithoutRideParticipantInput;
+  where: RideWhereUniqueInput;
+};
+
+export type RideCreateWithoutAttachmentInput = {
+  Driver?: InputMaybe<UserCreateNestedOneWithoutRidesInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutRideInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutRideInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  finishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  positions?: InputMaybe<PositionCreateNestedManyWithoutRideInput>;
+  startedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  status: Scalars['String']['input'];
+};
+
+export type RideCreateWithoutDriverInput = {
+  Attachment?: InputMaybe<AttachmentCreateNestedManyWithoutRideInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutRideInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutRideInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  finishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  positions?: InputMaybe<PositionCreateNestedManyWithoutRideInput>;
+  startedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  status: Scalars['String']['input'];
+};
+
+export type RideCreateWithoutMessageInput = {
+  Attachment?: InputMaybe<AttachmentCreateNestedManyWithoutRideInput>;
+  Driver?: InputMaybe<UserCreateNestedOneWithoutRidesInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutRideInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  finishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  positions?: InputMaybe<PositionCreateNestedManyWithoutRideInput>;
+  startedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  status: Scalars['String']['input'];
+};
+
+export type RideCreateWithoutPositionsInput = {
+  Attachment?: InputMaybe<AttachmentCreateNestedManyWithoutRideInput>;
+  Driver?: InputMaybe<UserCreateNestedOneWithoutRidesInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutRideInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutRideInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  finishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  startedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  status: Scalars['String']['input'];
+};
+
+export type RideCreateWithoutRideParticipantInput = {
+  Attachment?: InputMaybe<AttachmentCreateNestedManyWithoutRideInput>;
+  Driver?: InputMaybe<UserCreateNestedOneWithoutRidesInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutRideInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  finishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  positions?: InputMaybe<PositionCreateNestedManyWithoutRideInput>;
+  startedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  status: Scalars['String']['input'];
+};
+
+export type RideListRelationFilter = {
+  every?: InputMaybe<RideWhereInput>;
+  none?: InputMaybe<RideWhereInput>;
+  some?: InputMaybe<RideWhereInput>;
+};
+
+export type RideMaxAggregate = {
+  __typename?: 'RideMaxAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  driverId?: Maybe<Scalars['String']['output']>;
+  finishedAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  startedAt?: Maybe<Scalars['DateTime']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+};
+
+export type RideMinAggregate = {
+  __typename?: 'RideMinAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  driverId?: Maybe<Scalars['String']['output']>;
+  finishedAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  startedAt?: Maybe<Scalars['DateTime']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+};
+
+export type RideNullableScalarRelationFilter = {
+  is?: InputMaybe<RideWhereInput>;
+  isNot?: InputMaybe<RideWhereInput>;
+};
+
+export type RideOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type RideParticipant = {
+  __typename?: 'RideParticipant';
+  id: Scalars['String']['output'];
+  joinedAt: Scalars['DateTime']['output'];
+  ride: Ride;
+  rideId: Scalars['String']['output'];
+  role: Scalars['String']['output'];
+  user: User;
+  userId: Scalars['String']['output'];
+};
+
+export type RideParticipantCountAggregate = {
+  __typename?: 'RideParticipantCountAggregate';
+  _all: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  joinedAt: Scalars['Int']['output'];
+  rideId: Scalars['Int']['output'];
+  role: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+};
+
+export type RideParticipantCreateManyRideInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  joinedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  role: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+export type RideParticipantCreateManyRideInputEnvelope = {
+  data: Array<RideParticipantCreateManyRideInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type RideParticipantCreateManyUserInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  joinedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  rideId: Scalars['String']['input'];
+  role: Scalars['String']['input'];
+};
+
+export type RideParticipantCreateManyUserInputEnvelope = {
+  data: Array<RideParticipantCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type RideParticipantCreateNestedManyWithoutRideInput = {
+  connect?: InputMaybe<Array<RideParticipantWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<RideParticipantCreateOrConnectWithoutRideInput>>;
+  create?: InputMaybe<Array<RideParticipantCreateWithoutRideInput>>;
+  createMany?: InputMaybe<RideParticipantCreateManyRideInputEnvelope>;
+};
+
+export type RideParticipantCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<RideParticipantWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<RideParticipantCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<RideParticipantCreateWithoutUserInput>>;
+  createMany?: InputMaybe<RideParticipantCreateManyUserInputEnvelope>;
+};
+
+export type RideParticipantCreateOrConnectWithoutRideInput = {
+  create: RideParticipantCreateWithoutRideInput;
+  where: RideParticipantWhereUniqueInput;
+};
+
+export type RideParticipantCreateOrConnectWithoutUserInput = {
+  create: RideParticipantCreateWithoutUserInput;
+  where: RideParticipantWhereUniqueInput;
+};
+
+export type RideParticipantCreateWithoutRideInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  joinedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  role: Scalars['String']['input'];
+  user: UserCreateNestedOneWithoutRideParticipantInput;
+};
+
+export type RideParticipantCreateWithoutUserInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  joinedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  ride: RideCreateNestedOneWithoutRideParticipantInput;
+  role: Scalars['String']['input'];
+};
+
+export type RideParticipantListRelationFilter = {
+  every?: InputMaybe<RideParticipantWhereInput>;
+  none?: InputMaybe<RideParticipantWhereInput>;
+  some?: InputMaybe<RideParticipantWhereInput>;
+};
+
+export type RideParticipantMaxAggregate = {
+  __typename?: 'RideParticipantMaxAggregate';
+  id?: Maybe<Scalars['String']['output']>;
+  joinedAt?: Maybe<Scalars['DateTime']['output']>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  role?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type RideParticipantMinAggregate = {
+  __typename?: 'RideParticipantMinAggregate';
+  id?: Maybe<Scalars['String']['output']>;
+  joinedAt?: Maybe<Scalars['DateTime']['output']>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  role?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type RideParticipantOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type RideParticipantRideIdUserIdCompoundUniqueInput = {
+  rideId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+export type RideParticipantScalarWhereInput = {
+  AND?: InputMaybe<Array<RideParticipantScalarWhereInput>>;
+  NOT?: InputMaybe<Array<RideParticipantScalarWhereInput>>;
+  OR?: InputMaybe<Array<RideParticipantScalarWhereInput>>;
+  id?: InputMaybe<StringFilter>;
+  joinedAt?: InputMaybe<DateTimeFilter>;
+  rideId?: InputMaybe<StringFilter>;
+  role?: InputMaybe<StringFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type RideParticipantUpdateManyMutationInput = {
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  joinedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  role?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type RideParticipantUpdateManyWithWhereWithoutRideInput = {
+  data: RideParticipantUpdateManyMutationInput;
+  where: RideParticipantScalarWhereInput;
+};
+
+export type RideParticipantUpdateManyWithWhereWithoutUserInput = {
+  data: RideParticipantUpdateManyMutationInput;
+  where: RideParticipantScalarWhereInput;
+};
+
+export type RideParticipantUpdateManyWithoutRideNestedInput = {
+  connect?: InputMaybe<Array<RideParticipantWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<RideParticipantCreateOrConnectWithoutRideInput>>;
+  create?: InputMaybe<Array<RideParticipantCreateWithoutRideInput>>;
+  createMany?: InputMaybe<RideParticipantCreateManyRideInputEnvelope>;
+  delete?: InputMaybe<Array<RideParticipantWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<RideParticipantScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<RideParticipantWhereUniqueInput>>;
+  set?: InputMaybe<Array<RideParticipantWhereUniqueInput>>;
+  update?: InputMaybe<Array<RideParticipantUpdateWithWhereUniqueWithoutRideInput>>;
+  updateMany?: InputMaybe<Array<RideParticipantUpdateManyWithWhereWithoutRideInput>>;
+  upsert?: InputMaybe<Array<RideParticipantUpsertWithWhereUniqueWithoutRideInput>>;
+};
+
+export type RideParticipantUpdateManyWithoutUserNestedInput = {
+  connect?: InputMaybe<Array<RideParticipantWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<RideParticipantCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<RideParticipantCreateWithoutUserInput>>;
+  createMany?: InputMaybe<RideParticipantCreateManyUserInputEnvelope>;
+  delete?: InputMaybe<Array<RideParticipantWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<RideParticipantScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<RideParticipantWhereUniqueInput>>;
+  set?: InputMaybe<Array<RideParticipantWhereUniqueInput>>;
+  update?: InputMaybe<Array<RideParticipantUpdateWithWhereUniqueWithoutUserInput>>;
+  updateMany?: InputMaybe<Array<RideParticipantUpdateManyWithWhereWithoutUserInput>>;
+  upsert?: InputMaybe<Array<RideParticipantUpsertWithWhereUniqueWithoutUserInput>>;
+};
+
+export type RideParticipantUpdateWithWhereUniqueWithoutRideInput = {
+  data: RideParticipantUpdateWithoutRideInput;
+  where: RideParticipantWhereUniqueInput;
+};
+
+export type RideParticipantUpdateWithWhereUniqueWithoutUserInput = {
+  data: RideParticipantUpdateWithoutUserInput;
+  where: RideParticipantWhereUniqueInput;
+};
+
+export type RideParticipantUpdateWithoutRideInput = {
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  joinedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  role?: InputMaybe<StringFieldUpdateOperationsInput>;
+  user?: InputMaybe<UserUpdateOneRequiredWithoutRideParticipantNestedInput>;
+};
+
+export type RideParticipantUpdateWithoutUserInput = {
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  joinedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  ride?: InputMaybe<RideUpdateOneRequiredWithoutRideParticipantNestedInput>;
+  role?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type RideParticipantUpsertWithWhereUniqueWithoutRideInput = {
+  create: RideParticipantCreateWithoutRideInput;
+  update: RideParticipantUpdateWithoutRideInput;
+  where: RideParticipantWhereUniqueInput;
+};
+
+export type RideParticipantUpsertWithWhereUniqueWithoutUserInput = {
+  create: RideParticipantCreateWithoutUserInput;
+  update: RideParticipantUpdateWithoutUserInput;
+  where: RideParticipantWhereUniqueInput;
+};
+
+export type RideParticipantWhereInput = {
+  AND?: InputMaybe<Array<RideParticipantWhereInput>>;
+  NOT?: InputMaybe<Array<RideParticipantWhereInput>>;
+  OR?: InputMaybe<Array<RideParticipantWhereInput>>;
+  id?: InputMaybe<StringFilter>;
+  joinedAt?: InputMaybe<DateTimeFilter>;
+  ride?: InputMaybe<RideScalarRelationFilter>;
+  rideId?: InputMaybe<StringFilter>;
+  role?: InputMaybe<StringFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type RideParticipantWhereUniqueInput = {
+  AND?: InputMaybe<Array<RideParticipantWhereInput>>;
+  NOT?: InputMaybe<Array<RideParticipantWhereInput>>;
+  OR?: InputMaybe<Array<RideParticipantWhereInput>>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  joinedAt?: InputMaybe<DateTimeFilter>;
+  ride?: InputMaybe<RideScalarRelationFilter>;
+  rideId?: InputMaybe<StringFilter>;
+  rideId_userId?: InputMaybe<RideParticipantRideIdUserIdCompoundUniqueInput>;
+  role?: InputMaybe<StringFilter>;
+  user?: InputMaybe<UserScalarRelationFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type RideScalarRelationFilter = {
+  is?: InputMaybe<RideWhereInput>;
+  isNot?: InputMaybe<RideWhereInput>;
+};
+
+export type RideScalarWhereInput = {
+  AND?: InputMaybe<Array<RideScalarWhereInput>>;
+  NOT?: InputMaybe<Array<RideScalarWhereInput>>;
+  OR?: InputMaybe<Array<RideScalarWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  driverId?: InputMaybe<StringNullableFilter>;
+  finishedAt?: InputMaybe<DateTimeNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  startedAt?: InputMaybe<DateTimeNullableFilter>;
+  status?: InputMaybe<StringFilter>;
+};
+
+export type RideUpdateManyMutationInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  finishedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  startedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type RideUpdateManyWithWhereWithoutDriverInput = {
+  data: RideUpdateManyMutationInput;
+  where: RideScalarWhereInput;
+};
+
+export type RideUpdateManyWithoutDriverNestedInput = {
+  connect?: InputMaybe<Array<RideWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<RideCreateOrConnectWithoutDriverInput>>;
+  create?: InputMaybe<Array<RideCreateWithoutDriverInput>>;
+  createMany?: InputMaybe<RideCreateManyDriverInputEnvelope>;
+  delete?: InputMaybe<Array<RideWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<RideScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<RideWhereUniqueInput>>;
+  set?: InputMaybe<Array<RideWhereUniqueInput>>;
+  update?: InputMaybe<Array<RideUpdateWithWhereUniqueWithoutDriverInput>>;
+  updateMany?: InputMaybe<Array<RideUpdateManyWithWhereWithoutDriverInput>>;
+  upsert?: InputMaybe<Array<RideUpsertWithWhereUniqueWithoutDriverInput>>;
+};
+
+export type RideUpdateOneRequiredWithoutRideParticipantNestedInput = {
+  connect?: InputMaybe<RideWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<RideCreateOrConnectWithoutRideParticipantInput>;
+  create?: InputMaybe<RideCreateWithoutRideParticipantInput>;
+  update?: InputMaybe<RideUpdateToOneWithWhereWithoutRideParticipantInput>;
+  upsert?: InputMaybe<RideUpsertWithoutRideParticipantInput>;
+};
+
+export type RideUpdateOneWithoutAttachmentNestedInput = {
+  connect?: InputMaybe<RideWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<RideCreateOrConnectWithoutAttachmentInput>;
+  create?: InputMaybe<RideCreateWithoutAttachmentInput>;
+  delete?: InputMaybe<RideWhereInput>;
+  disconnect?: InputMaybe<RideWhereInput>;
+  update?: InputMaybe<RideUpdateToOneWithWhereWithoutAttachmentInput>;
+  upsert?: InputMaybe<RideUpsertWithoutAttachmentInput>;
+};
+
+export type RideUpdateOneWithoutMessageNestedInput = {
+  connect?: InputMaybe<RideWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<RideCreateOrConnectWithoutMessageInput>;
+  create?: InputMaybe<RideCreateWithoutMessageInput>;
+  delete?: InputMaybe<RideWhereInput>;
+  disconnect?: InputMaybe<RideWhereInput>;
+  update?: InputMaybe<RideUpdateToOneWithWhereWithoutMessageInput>;
+  upsert?: InputMaybe<RideUpsertWithoutMessageInput>;
+};
+
+export type RideUpdateOneWithoutPositionsNestedInput = {
+  connect?: InputMaybe<RideWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<RideCreateOrConnectWithoutPositionsInput>;
+  create?: InputMaybe<RideCreateWithoutPositionsInput>;
+  delete?: InputMaybe<RideWhereInput>;
+  disconnect?: InputMaybe<RideWhereInput>;
+  update?: InputMaybe<RideUpdateToOneWithWhereWithoutPositionsInput>;
+  upsert?: InputMaybe<RideUpsertWithoutPositionsInput>;
+};
+
+export type RideUpdateToOneWithWhereWithoutAttachmentInput = {
+  data: RideUpdateWithoutAttachmentInput;
+  where?: InputMaybe<RideWhereInput>;
+};
+
+export type RideUpdateToOneWithWhereWithoutMessageInput = {
+  data: RideUpdateWithoutMessageInput;
+  where?: InputMaybe<RideWhereInput>;
+};
+
+export type RideUpdateToOneWithWhereWithoutPositionsInput = {
+  data: RideUpdateWithoutPositionsInput;
+  where?: InputMaybe<RideWhereInput>;
+};
+
+export type RideUpdateToOneWithWhereWithoutRideParticipantInput = {
+  data: RideUpdateWithoutRideParticipantInput;
+  where?: InputMaybe<RideWhereInput>;
+};
+
+export type RideUpdateWithWhereUniqueWithoutDriverInput = {
+  data: RideUpdateWithoutDriverInput;
+  where: RideWhereUniqueInput;
+};
+
+export type RideUpdateWithoutAttachmentInput = {
+  Driver?: InputMaybe<UserUpdateOneWithoutRidesNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutRideNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutRideNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  finishedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  positions?: InputMaybe<PositionUpdateManyWithoutRideNestedInput>;
+  startedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type RideUpdateWithoutDriverInput = {
+  Attachment?: InputMaybe<AttachmentUpdateManyWithoutRideNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutRideNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutRideNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  finishedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  positions?: InputMaybe<PositionUpdateManyWithoutRideNestedInput>;
+  startedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type RideUpdateWithoutMessageInput = {
+  Attachment?: InputMaybe<AttachmentUpdateManyWithoutRideNestedInput>;
+  Driver?: InputMaybe<UserUpdateOneWithoutRidesNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutRideNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  finishedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  positions?: InputMaybe<PositionUpdateManyWithoutRideNestedInput>;
+  startedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type RideUpdateWithoutPositionsInput = {
+  Attachment?: InputMaybe<AttachmentUpdateManyWithoutRideNestedInput>;
+  Driver?: InputMaybe<UserUpdateOneWithoutRidesNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutRideNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutRideNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  finishedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  startedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type RideUpdateWithoutRideParticipantInput = {
+  Attachment?: InputMaybe<AttachmentUpdateManyWithoutRideNestedInput>;
+  Driver?: InputMaybe<UserUpdateOneWithoutRidesNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutRideNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  finishedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  positions?: InputMaybe<PositionUpdateManyWithoutRideNestedInput>;
+  startedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type RideUpsertWithWhereUniqueWithoutDriverInput = {
+  create: RideCreateWithoutDriverInput;
+  update: RideUpdateWithoutDriverInput;
+  where: RideWhereUniqueInput;
+};
+
+export type RideUpsertWithoutAttachmentInput = {
+  create: RideCreateWithoutAttachmentInput;
+  update: RideUpdateWithoutAttachmentInput;
+  where?: InputMaybe<RideWhereInput>;
+};
+
+export type RideUpsertWithoutMessageInput = {
+  create: RideCreateWithoutMessageInput;
+  update: RideUpdateWithoutMessageInput;
+  where?: InputMaybe<RideWhereInput>;
+};
+
+export type RideUpsertWithoutPositionsInput = {
+  create: RideCreateWithoutPositionsInput;
+  update: RideUpdateWithoutPositionsInput;
+  where?: InputMaybe<RideWhereInput>;
+};
+
+export type RideUpsertWithoutRideParticipantInput = {
+  create: RideCreateWithoutRideParticipantInput;
+  update: RideUpdateWithoutRideParticipantInput;
+  where?: InputMaybe<RideWhereInput>;
+};
+
+export type RideWhereInput = {
+  AND?: InputMaybe<Array<RideWhereInput>>;
+  Attachment?: InputMaybe<AttachmentListRelationFilter>;
+  Driver?: InputMaybe<UserNullableScalarRelationFilter>;
+  Message?: InputMaybe<MessageListRelationFilter>;
+  NOT?: InputMaybe<Array<RideWhereInput>>;
+  OR?: InputMaybe<Array<RideWhereInput>>;
+  RideParticipant?: InputMaybe<RideParticipantListRelationFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  driverId?: InputMaybe<StringNullableFilter>;
+  finishedAt?: InputMaybe<DateTimeNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  positions?: InputMaybe<PositionListRelationFilter>;
+  startedAt?: InputMaybe<DateTimeNullableFilter>;
+  status?: InputMaybe<StringFilter>;
+};
+
+export type RideWhereUniqueInput = {
+  AND?: InputMaybe<Array<RideWhereInput>>;
+  Attachment?: InputMaybe<AttachmentListRelationFilter>;
+  Driver?: InputMaybe<UserNullableScalarRelationFilter>;
+  Message?: InputMaybe<MessageListRelationFilter>;
+  NOT?: InputMaybe<Array<RideWhereInput>>;
+  OR?: InputMaybe<Array<RideWhereInput>>;
+  RideParticipant?: InputMaybe<RideParticipantListRelationFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  driverId?: InputMaybe<StringNullableFilter>;
+  finishedAt?: InputMaybe<DateTimeNullableFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  positions?: InputMaybe<PositionListRelationFilter>;
+  startedAt?: InputMaybe<DateTimeNullableFilter>;
+  status?: InputMaybe<StringFilter>;
+};
+
 export type Role = {
   __typename?: 'Role';
   _count: RoleCount;
@@ -1646,6 +6168,15 @@ export type RoleWhereUniqueInput = {
   users?: InputMaybe<UserListRelationFilter>;
 };
 
+export type SendMessageInput = {
+  clientTempId?: InputMaybe<Scalars['String']['input']>;
+  content: Scalars['String']['input'];
+  conversationId?: InputMaybe<Scalars['String']['input']>;
+  parentMessageId?: InputMaybe<Scalars['String']['input']>;
+  recipientId?: InputMaybe<Scalars['String']['input']>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export enum SortOrder {
   ASC = 'asc',
   DESC = 'desc'
@@ -1690,17 +6221,49 @@ export type StringNullableFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  messageReceived: MessagePayload;
+};
+
+
+export type SubscriptionMessageReceivedArgs = {
+  conversationId?: InputMaybe<Scalars['String']['input']>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UploadUserDocumentsInput = {
+  documentType: UserDocumentType;
+  file: UploadedFileRefInput;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UploadVehicleDocumentsInput = {
+  documentType: VehicleDocumentType;
+  file: UploadedFileRefInput;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UploadedFileRefInput = {
   key: Scalars['String']['input'];
 };
 
 export type User = {
   __typename?: 'User';
+  ConversationParticipant?: Maybe<Array<ConversationParticipant>>;
+  Message?: Maybe<Array<Message>>;
+  MessageReadReceipt?: Maybe<Array<MessageReadReceipt>>;
+  QrToken?: Maybe<Array<QrToken>>;
+  Reaction?: Maybe<Array<Reaction>>;
+  RideParticipant?: Maybe<Array<RideParticipant>>;
   Role?: Maybe<Array<Role>>;
+  UserCover?: Maybe<UserCover>;
   UserDocument?: Maybe<Array<UserDocument>>;
   UserImage?: Maybe<Array<UserImage>>;
   UserPreference?: Maybe<UserPreference>;
   _count: UserCount;
+  avatar?: Maybe<File>;
+  avatarId?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
   email: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
@@ -1709,17 +6272,28 @@ export type User = {
   lastName?: Maybe<Scalars['String']['output']>;
   password: Scalars['String']['output'];
   phone?: Maybe<Scalars['String']['output']>;
+  review?: Maybe<Array<Review>>;
+  rides?: Maybe<Array<Ride>>;
   tokens?: Maybe<Array<RefreshToken>>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userCoverId?: Maybe<Scalars['String']['output']>;
   username?: Maybe<Scalars['String']['output']>;
   vehicles?: Maybe<Array<DriverVehicle>>;
 };
 
 export type UserCount = {
   __typename?: 'UserCount';
+  ConversationParticipant: Scalars['Int']['output'];
+  Message: Scalars['Int']['output'];
+  MessageReadReceipt: Scalars['Int']['output'];
+  QrToken: Scalars['Int']['output'];
+  Reaction: Scalars['Int']['output'];
+  RideParticipant: Scalars['Int']['output'];
   Role: Scalars['Int']['output'];
   UserDocument: Scalars['Int']['output'];
   UserImage: Scalars['Int']['output'];
+  review: Scalars['Int']['output'];
+  rides: Scalars['Int']['output'];
   tokens: Scalars['Int']['output'];
   vehicles: Scalars['Int']['output'];
 };
@@ -1727,6 +6301,7 @@ export type UserCount = {
 export type UserCountAggregate = {
   __typename?: 'UserCountAggregate';
   _all: Scalars['Int']['output'];
+  avatarId: Scalars['Int']['output'];
   createdAt: Scalars['Int']['output'];
   email: Scalars['Int']['output'];
   firstName: Scalars['Int']['output'];
@@ -1736,14 +6311,244 @@ export type UserCountAggregate = {
   password: Scalars['Int']['output'];
   phone: Scalars['Int']['output'];
   updatedAt: Scalars['Int']['output'];
+  userCoverId: Scalars['Int']['output'];
   username: Scalars['Int']['output'];
 };
 
+export type UserCover = {
+  __typename?: 'UserCover';
+  User: User;
+  createdAt: Scalars['DateTime']['output'];
+  file: File;
+  fileId: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId: Scalars['String']['output'];
+};
+
+export type UserCoverCountAggregate = {
+  __typename?: 'UserCoverCountAggregate';
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  fileId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+};
+
+export type UserCoverCreateManyFileInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userId: Scalars['String']['input'];
+};
+
+export type UserCoverCreateManyFileInputEnvelope = {
+  data: Array<UserCoverCreateManyFileInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type UserCoverCreateNestedManyWithoutFileInput = {
+  connect?: InputMaybe<Array<UserCoverWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<UserCoverCreateOrConnectWithoutFileInput>>;
+  create?: InputMaybe<Array<UserCoverCreateWithoutFileInput>>;
+  createMany?: InputMaybe<UserCoverCreateManyFileInputEnvelope>;
+};
+
+export type UserCoverCreateNestedOneWithoutUserInput = {
+  connect?: InputMaybe<UserCoverWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCoverCreateOrConnectWithoutUserInput>;
+  create?: InputMaybe<UserCoverCreateWithoutUserInput>;
+};
+
+export type UserCoverCreateOrConnectWithoutFileInput = {
+  create: UserCoverCreateWithoutFileInput;
+  where: UserCoverWhereUniqueInput;
+};
+
+export type UserCoverCreateOrConnectWithoutUserInput = {
+  create: UserCoverCreateWithoutUserInput;
+  where: UserCoverWhereUniqueInput;
+};
+
+export type UserCoverCreateWithoutFileInput = {
+  User: UserCreateNestedOneWithoutUserCoverInput;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type UserCoverCreateWithoutUserInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  file: FileCreateNestedOneWithoutUserCoverInput;
+  id?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type UserCoverListRelationFilter = {
+  every?: InputMaybe<UserCoverWhereInput>;
+  none?: InputMaybe<UserCoverWhereInput>;
+  some?: InputMaybe<UserCoverWhereInput>;
+};
+
+export type UserCoverMaxAggregate = {
+  __typename?: 'UserCoverMaxAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  fileId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type UserCoverMinAggregate = {
+  __typename?: 'UserCoverMinAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  fileId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type UserCoverNullableScalarRelationFilter = {
+  is?: InputMaybe<UserCoverWhereInput>;
+  isNot?: InputMaybe<UserCoverWhereInput>;
+};
+
+export type UserCoverOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type UserCoverOrderByWithRelationInput = {
+  User?: InputMaybe<UserOrderByWithRelationInput>;
+  createdAt?: InputMaybe<SortOrder>;
+  file?: InputMaybe<FileOrderByWithRelationInput>;
+  fileId?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  updatedAt?: InputMaybe<SortOrderInput>;
+  userId?: InputMaybe<SortOrder>;
+};
+
+export type UserCoverScalarWhereInput = {
+  AND?: InputMaybe<Array<UserCoverScalarWhereInput>>;
+  NOT?: InputMaybe<Array<UserCoverScalarWhereInput>>;
+  OR?: InputMaybe<Array<UserCoverScalarWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  fileId?: InputMaybe<StringFilter>;
+  id?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeNullableFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type UserCoverUpdateManyMutationInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+};
+
+export type UserCoverUpdateManyWithWhereWithoutFileInput = {
+  data: UserCoverUpdateManyMutationInput;
+  where: UserCoverScalarWhereInput;
+};
+
+export type UserCoverUpdateManyWithoutFileNestedInput = {
+  connect?: InputMaybe<Array<UserCoverWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<UserCoverCreateOrConnectWithoutFileInput>>;
+  create?: InputMaybe<Array<UserCoverCreateWithoutFileInput>>;
+  createMany?: InputMaybe<UserCoverCreateManyFileInputEnvelope>;
+  delete?: InputMaybe<Array<UserCoverWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<UserCoverScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<UserCoverWhereUniqueInput>>;
+  set?: InputMaybe<Array<UserCoverWhereUniqueInput>>;
+  update?: InputMaybe<Array<UserCoverUpdateWithWhereUniqueWithoutFileInput>>;
+  updateMany?: InputMaybe<Array<UserCoverUpdateManyWithWhereWithoutFileInput>>;
+  upsert?: InputMaybe<Array<UserCoverUpsertWithWhereUniqueWithoutFileInput>>;
+};
+
+export type UserCoverUpdateOneWithoutUserNestedInput = {
+  connect?: InputMaybe<UserCoverWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCoverCreateOrConnectWithoutUserInput>;
+  create?: InputMaybe<UserCoverCreateWithoutUserInput>;
+  delete?: InputMaybe<UserCoverWhereInput>;
+  disconnect?: InputMaybe<UserCoverWhereInput>;
+  update?: InputMaybe<UserCoverUpdateToOneWithWhereWithoutUserInput>;
+  upsert?: InputMaybe<UserCoverUpsertWithoutUserInput>;
+};
+
+export type UserCoverUpdateToOneWithWhereWithoutUserInput = {
+  data: UserCoverUpdateWithoutUserInput;
+  where?: InputMaybe<UserCoverWhereInput>;
+};
+
+export type UserCoverUpdateWithWhereUniqueWithoutFileInput = {
+  data: UserCoverUpdateWithoutFileInput;
+  where: UserCoverWhereUniqueInput;
+};
+
+export type UserCoverUpdateWithoutFileInput = {
+  User?: InputMaybe<UserUpdateOneRequiredWithoutUserCoverNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+};
+
+export type UserCoverUpdateWithoutUserInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  file?: InputMaybe<FileUpdateOneRequiredWithoutUserCoverNestedInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+};
+
+export type UserCoverUpsertWithWhereUniqueWithoutFileInput = {
+  create: UserCoverCreateWithoutFileInput;
+  update: UserCoverUpdateWithoutFileInput;
+  where: UserCoverWhereUniqueInput;
+};
+
+export type UserCoverUpsertWithoutUserInput = {
+  create: UserCoverCreateWithoutUserInput;
+  update: UserCoverUpdateWithoutUserInput;
+  where?: InputMaybe<UserCoverWhereInput>;
+};
+
+export type UserCoverWhereInput = {
+  AND?: InputMaybe<Array<UserCoverWhereInput>>;
+  NOT?: InputMaybe<Array<UserCoverWhereInput>>;
+  OR?: InputMaybe<Array<UserCoverWhereInput>>;
+  User?: InputMaybe<UserScalarRelationFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  file?: InputMaybe<FileScalarRelationFilter>;
+  fileId?: InputMaybe<StringFilter>;
+  id?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeNullableFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type UserCoverWhereUniqueInput = {
+  AND?: InputMaybe<Array<UserCoverWhereInput>>;
+  NOT?: InputMaybe<Array<UserCoverWhereInput>>;
+  OR?: InputMaybe<Array<UserCoverWhereInput>>;
+  User?: InputMaybe<UserScalarRelationFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  file?: InputMaybe<FileScalarRelationFilter>;
+  fileId?: InputMaybe<StringFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<DateTimeNullableFilter>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UserCreateInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
   Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
   UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
   UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
   UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email: Scalars['String']['input'];
   firstName: Scalars['String']['input'];
@@ -1752,10 +6557,81 @@ export type UserCreateInput = {
   lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
   phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
   tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
   vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
+};
+
+export type UserCreateManyAvatarInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  isVerified?: InputMaybe<Scalars['Boolean']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UserCreateManyAvatarInputEnvelope = {
+  data: Array<UserCreateManyAvatarInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type UserCreateNestedManyWithoutAvatarInput = {
+  connect?: InputMaybe<Array<UserWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<UserCreateOrConnectWithoutAvatarInput>>;
+  create?: InputMaybe<Array<UserCreateWithoutAvatarInput>>;
+  createMany?: InputMaybe<UserCreateManyAvatarInputEnvelope>;
+};
+
+export type UserCreateNestedOneWithoutConversationParticipantInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutConversationParticipantInput>;
+  create?: InputMaybe<UserCreateWithoutConversationParticipantInput>;
+};
+
+export type UserCreateNestedOneWithoutMessageInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutMessageInput>;
+  create?: InputMaybe<UserCreateWithoutMessageInput>;
+};
+
+export type UserCreateNestedOneWithoutMessageReadReceiptInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutMessageReadReceiptInput>;
+  create?: InputMaybe<UserCreateWithoutMessageReadReceiptInput>;
+};
+
+export type UserCreateNestedOneWithoutReactionInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutReactionInput>;
+  create?: InputMaybe<UserCreateWithoutReactionInput>;
+};
+
+export type UserCreateNestedOneWithoutRideParticipantInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutRideParticipantInput>;
+  create?: InputMaybe<UserCreateWithoutRideParticipantInput>;
+};
+
+export type UserCreateNestedOneWithoutRidesInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutRidesInput>;
+  create?: InputMaybe<UserCreateWithoutRidesInput>;
+};
+
+export type UserCreateNestedOneWithoutUserCoverInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutUserCoverInput>;
+  create?: InputMaybe<UserCreateWithoutUserCoverInput>;
 };
 
 export type UserCreateNestedOneWithoutUserDocumentInput = {
@@ -1782,6 +6658,46 @@ export type UserCreateNestedOneWithoutVehiclesInput = {
   create?: InputMaybe<UserCreateWithoutVehiclesInput>;
 };
 
+export type UserCreateOrConnectWithoutAvatarInput = {
+  create: UserCreateWithoutAvatarInput;
+  where: UserWhereUniqueInput;
+};
+
+export type UserCreateOrConnectWithoutConversationParticipantInput = {
+  create: UserCreateWithoutConversationParticipantInput;
+  where: UserWhereUniqueInput;
+};
+
+export type UserCreateOrConnectWithoutMessageInput = {
+  create: UserCreateWithoutMessageInput;
+  where: UserWhereUniqueInput;
+};
+
+export type UserCreateOrConnectWithoutMessageReadReceiptInput = {
+  create: UserCreateWithoutMessageReadReceiptInput;
+  where: UserWhereUniqueInput;
+};
+
+export type UserCreateOrConnectWithoutReactionInput = {
+  create: UserCreateWithoutReactionInput;
+  where: UserWhereUniqueInput;
+};
+
+export type UserCreateOrConnectWithoutRideParticipantInput = {
+  create: UserCreateWithoutRideParticipantInput;
+  where: UserWhereUniqueInput;
+};
+
+export type UserCreateOrConnectWithoutRidesInput = {
+  create: UserCreateWithoutRidesInput;
+  where: UserWhereUniqueInput;
+};
+
+export type UserCreateOrConnectWithoutUserCoverInput = {
+  create: UserCreateWithoutUserCoverInput;
+  where: UserWhereUniqueInput;
+};
+
 export type UserCreateOrConnectWithoutUserDocumentInput = {
   create: UserCreateWithoutUserDocumentInput;
   where: UserWhereUniqueInput;
@@ -1802,8 +6718,16 @@ export type UserCreateOrConnectWithoutVehiclesInput = {
   where: UserWhereUniqueInput;
 };
 
-export type UserCreateWithoutUserDocumentInput = {
+export type UserCreateWithoutAvatarInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
   Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
+  UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
   UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
   UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -1814,16 +6738,259 @@ export type UserCreateWithoutUserDocumentInput = {
   lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
   phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
   tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
+};
+
+export type UserCreateWithoutConversationParticipantInput = {
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
+  Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
+  UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
+  UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
+  UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  isVerified?: InputMaybe<Scalars['Boolean']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
+  tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
+};
+
+export type UserCreateWithoutMessageInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
+  Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
+  UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
+  UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
+  UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  isVerified?: InputMaybe<Scalars['Boolean']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
+  tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
+};
+
+export type UserCreateWithoutMessageReadReceiptInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
+  Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
+  UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
+  UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
+  UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  isVerified?: InputMaybe<Scalars['Boolean']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
+  tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
+};
+
+export type UserCreateWithoutReactionInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
+  Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
+  UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
+  UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
+  UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  isVerified?: InputMaybe<Scalars['Boolean']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
+  tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
+};
+
+export type UserCreateWithoutRideParticipantInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
+  UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
+  UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
+  UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  isVerified?: InputMaybe<Scalars['Boolean']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
+  tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
+};
+
+export type UserCreateWithoutRidesInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
+  Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
+  UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
+  UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
+  UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  isVerified?: InputMaybe<Scalars['Boolean']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
+};
+
+export type UserCreateWithoutUserCoverInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
+  Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
+  UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
+  UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  isVerified?: InputMaybe<Scalars['Boolean']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
+  tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
+};
+
+export type UserCreateWithoutUserDocumentInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
+  Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
+  UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
+  UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  isVerified?: InputMaybe<Scalars['Boolean']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
+  tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
   vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
 };
 
 export type UserCreateWithoutUserImageInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
   Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
   UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
   UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email: Scalars['String']['input'];
   firstName: Scalars['String']['input'];
@@ -1832,16 +6999,27 @@ export type UserCreateWithoutUserImageInput = {
   lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
   phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
   tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
   vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
 };
 
 export type UserCreateWithoutUserPreferenceInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
   Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
   UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
   UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email: Scalars['String']['input'];
   firstName: Scalars['String']['input'];
@@ -1850,17 +7028,28 @@ export type UserCreateWithoutUserPreferenceInput = {
   lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
   phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
   tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
   vehicles?: InputMaybe<DriverVehicleCreateNestedManyWithoutUserInput>;
 };
 
 export type UserCreateWithoutVehiclesInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantCreateNestedManyWithoutUserInput>;
+  Message?: InputMaybe<MessageCreateNestedManyWithoutSenderInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptCreateNestedManyWithoutUserInput>;
+  QrToken?: InputMaybe<QrTokenCreateNestedManyWithoutUserInput>;
+  Reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  RideParticipant?: InputMaybe<RideParticipantCreateNestedManyWithoutUserInput>;
   Role?: InputMaybe<RoleCreateNestedManyWithoutUsersInput>;
+  UserCover?: InputMaybe<UserCoverCreateNestedOneWithoutUserInput>;
   UserDocument?: InputMaybe<UserDocumentCreateNestedManyWithoutUserInput>;
   UserImage?: InputMaybe<UserImageCreateNestedManyWithoutUserInput>;
   UserPreference?: InputMaybe<UserPreferenceCreateNestedOneWithoutUserInput>;
+  avatar?: InputMaybe<FileCreateNestedOneWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email: Scalars['String']['input'];
   firstName: Scalars['String']['input'];
@@ -1869,8 +7058,11 @@ export type UserCreateWithoutVehiclesInput = {
   lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
   phone?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<ReviewCreateNestedManyWithoutUserInput>;
+  rides?: InputMaybe<RideCreateNestedManyWithoutDriverInput>;
   tokens?: InputMaybe<RefreshTokenCreateNestedManyWithoutUserInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  userCoverId?: InputMaybe<Scalars['String']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1878,9 +7070,11 @@ export type UserDocument = {
   __typename?: 'UserDocument';
   User: User;
   createdAt: Scalars['DateTime']['output'];
+  documentType: UserDocumentType;
   file: File;
   fileId: Scalars['String']['output'];
   id: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   userId: Scalars['String']['output'];
 };
@@ -1889,15 +7083,19 @@ export type UserDocumentCountAggregate = {
   __typename?: 'UserDocumentCountAggregate';
   _all: Scalars['Int']['output'];
   createdAt: Scalars['Int']['output'];
+  documentType: Scalars['Int']['output'];
   fileId: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  name: Scalars['Int']['output'];
   updatedAt: Scalars['Int']['output'];
   userId: Scalars['Int']['output'];
 };
 
 export type UserDocumentCreateManyFileInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  documentType: UserDocumentType;
   id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   userId: Scalars['String']['input'];
 };
@@ -1909,8 +7107,10 @@ export type UserDocumentCreateManyFileInputEnvelope = {
 
 export type UserDocumentCreateManyUserInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  documentType: UserDocumentType;
   fileId: Scalars['String']['input'];
   id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -1946,14 +7146,18 @@ export type UserDocumentCreateOrConnectWithoutUserInput = {
 export type UserDocumentCreateWithoutFileInput = {
   User: UserCreateNestedOneWithoutUserDocumentInput;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  documentType: UserDocumentType;
   id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type UserDocumentCreateWithoutUserInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  documentType: UserDocumentType;
   file: FileCreateNestedOneWithoutUserDocumentInput;
   id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -1966,8 +7170,10 @@ export type UserDocumentListRelationFilter = {
 export type UserDocumentMaxAggregate = {
   __typename?: 'UserDocumentMaxAggregate';
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  documentType?: Maybe<UserDocumentType>;
   fileId?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
 };
@@ -1975,8 +7181,10 @@ export type UserDocumentMaxAggregate = {
 export type UserDocumentMinAggregate = {
   __typename?: 'UserDocumentMinAggregate';
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  documentType?: Maybe<UserDocumentType>;
   fileId?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
 };
@@ -1990,15 +7198,26 @@ export type UserDocumentScalarWhereInput = {
   NOT?: InputMaybe<Array<UserDocumentScalarWhereInput>>;
   OR?: InputMaybe<Array<UserDocumentScalarWhereInput>>;
   createdAt?: InputMaybe<DateTimeFilter>;
+  documentType?: InputMaybe<EnumUserDocumentTypeFilter>;
   fileId?: InputMaybe<StringFilter>;
   id?: InputMaybe<StringFilter>;
+  name?: InputMaybe<StringNullableFilter>;
   updatedAt?: InputMaybe<DateTimeNullableFilter>;
   userId?: InputMaybe<StringFilter>;
 };
 
+export enum UserDocumentType {
+  DRIVER_LICENSE = 'DRIVER_LICENSE',
+  ID_CARD = 'ID_CARD',
+  OTHER = 'OTHER',
+  PASSPORT = 'PASSPORT'
+}
+
 export type UserDocumentUpdateManyMutationInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  documentType?: InputMaybe<EnumUserDocumentTypeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
 };
 
@@ -2053,14 +7272,18 @@ export type UserDocumentUpdateWithWhereUniqueWithoutUserInput = {
 export type UserDocumentUpdateWithoutFileInput = {
   User?: InputMaybe<UserUpdateOneRequiredWithoutUserDocumentNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  documentType?: InputMaybe<EnumUserDocumentTypeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
 };
 
 export type UserDocumentUpdateWithoutUserInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  documentType?: InputMaybe<EnumUserDocumentTypeFieldUpdateOperationsInput>;
   file?: InputMaybe<FileUpdateOneRequiredWithoutUserDocumentNestedInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
 };
 
@@ -2082,9 +7305,11 @@ export type UserDocumentWhereInput = {
   OR?: InputMaybe<Array<UserDocumentWhereInput>>;
   User?: InputMaybe<UserScalarRelationFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
+  documentType?: InputMaybe<EnumUserDocumentTypeFilter>;
   file?: InputMaybe<FileScalarRelationFilter>;
   fileId?: InputMaybe<StringFilter>;
   id?: InputMaybe<StringFilter>;
+  name?: InputMaybe<StringNullableFilter>;
   updatedAt?: InputMaybe<DateTimeNullableFilter>;
   userId?: InputMaybe<StringFilter>;
 };
@@ -2095,9 +7320,11 @@ export type UserDocumentWhereUniqueInput = {
   OR?: InputMaybe<Array<UserDocumentWhereInput>>;
   User?: InputMaybe<UserScalarRelationFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
+  documentType?: InputMaybe<EnumUserDocumentTypeFilter>;
   file?: InputMaybe<FileScalarRelationFilter>;
   fileId?: InputMaybe<StringFilter>;
   id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<StringNullableFilter>;
   updatedAt?: InputMaybe<DateTimeNullableFilter>;
   userId?: InputMaybe<StringFilter>;
 };
@@ -2338,6 +7565,7 @@ export type UserListRelationFilter = {
 
 export type UserMaxAggregate = {
   __typename?: 'UserMaxAggregate';
+  avatarId?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   firstName?: Maybe<Scalars['String']['output']>;
@@ -2347,11 +7575,13 @@ export type UserMaxAggregate = {
   password?: Maybe<Scalars['String']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userCoverId?: Maybe<Scalars['String']['output']>;
   username?: Maybe<Scalars['String']['output']>;
 };
 
 export type UserMinAggregate = {
   __typename?: 'UserMinAggregate';
+  avatarId?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   firstName?: Maybe<Scalars['String']['output']>;
@@ -2361,14 +7591,33 @@ export type UserMinAggregate = {
   password?: Maybe<Scalars['String']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userCoverId?: Maybe<Scalars['String']['output']>;
   username?: Maybe<Scalars['String']['output']>;
 };
 
+export type UserNullableScalarRelationFilter = {
+  is?: InputMaybe<UserWhereInput>;
+  isNot?: InputMaybe<UserWhereInput>;
+};
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
 export type UserOrderByWithRelationInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantOrderByRelationAggregateInput>;
+  Message?: InputMaybe<MessageOrderByRelationAggregateInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptOrderByRelationAggregateInput>;
+  QrToken?: InputMaybe<QrTokenOrderByRelationAggregateInput>;
+  Reaction?: InputMaybe<ReactionOrderByRelationAggregateInput>;
+  RideParticipant?: InputMaybe<RideParticipantOrderByRelationAggregateInput>;
   Role?: InputMaybe<RoleOrderByRelationAggregateInput>;
+  UserCover?: InputMaybe<UserCoverOrderByWithRelationInput>;
   UserDocument?: InputMaybe<UserDocumentOrderByRelationAggregateInput>;
   UserImage?: InputMaybe<UserImageOrderByRelationAggregateInput>;
   UserPreference?: InputMaybe<UserPreferenceOrderByWithRelationInput>;
+  avatar?: InputMaybe<FileOrderByWithRelationInput>;
+  avatarId?: InputMaybe<SortOrderInput>;
   createdAt?: InputMaybe<SortOrder>;
   email?: InputMaybe<SortOrder>;
   firstName?: InputMaybe<SortOrder>;
@@ -2377,8 +7626,11 @@ export type UserOrderByWithRelationInput = {
   lastName?: InputMaybe<SortOrderInput>;
   password?: InputMaybe<SortOrder>;
   phone?: InputMaybe<SortOrderInput>;
+  review?: InputMaybe<ReviewOrderByRelationAggregateInput>;
+  rides?: InputMaybe<RideOrderByRelationAggregateInput>;
   tokens?: InputMaybe<RefreshTokenOrderByRelationAggregateInput>;
   updatedAt?: InputMaybe<SortOrderInput>;
+  userCoverId?: InputMaybe<SortOrderInput>;
   username?: InputMaybe<SortOrderInput>;
   vehicles?: InputMaybe<DriverVehicleOrderByRelationAggregateInput>;
 };
@@ -2708,6 +7960,7 @@ export type UserPreferenceWhereUniqueInput = {
 };
 
 export enum UserScalarFieldEnum {
+  AVATARID = 'avatarId',
   CREATEDAT = 'createdAt',
   EMAIL = 'email',
   FIRSTNAME = 'firstName',
@@ -2717,12 +7970,142 @@ export enum UserScalarFieldEnum {
   PASSWORD = 'password',
   PHONE = 'phone',
   UPDATEDAT = 'updatedAt',
+  USERCOVERID = 'userCoverId',
   USERNAME = 'username'
 }
 
 export type UserScalarRelationFilter = {
   is?: InputMaybe<UserWhereInput>;
   isNot?: InputMaybe<UserWhereInput>;
+};
+
+export type UserScalarWhereInput = {
+  AND?: InputMaybe<Array<UserScalarWhereInput>>;
+  NOT?: InputMaybe<Array<UserScalarWhereInput>>;
+  OR?: InputMaybe<Array<UserScalarWhereInput>>;
+  avatarId?: InputMaybe<StringNullableFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  email?: InputMaybe<StringFilter>;
+  firstName?: InputMaybe<StringFilter>;
+  id?: InputMaybe<StringFilter>;
+  isVerified?: InputMaybe<BoolFilter>;
+  lastName?: InputMaybe<StringNullableFilter>;
+  password?: InputMaybe<StringFilter>;
+  phone?: InputMaybe<StringNullableFilter>;
+  updatedAt?: InputMaybe<DateTimeNullableFilter>;
+  userCoverId?: InputMaybe<StringNullableFilter>;
+  username?: InputMaybe<StringNullableFilter>;
+};
+
+export type UserUpdateInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
+  Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
+  UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  email?: InputMaybe<StringFieldUpdateOperationsInput>;
+  firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isVerified?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  password?: InputMaybe<StringFieldUpdateOperationsInput>;
+  phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
+  tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
+};
+
+export type UserUpdateManyMutationInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  email?: InputMaybe<StringFieldUpdateOperationsInput>;
+  firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isVerified?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  password?: InputMaybe<StringFieldUpdateOperationsInput>;
+  phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+};
+
+export type UserUpdateManyWithWhereWithoutAvatarInput = {
+  data: UserUpdateManyMutationInput;
+  where: UserScalarWhereInput;
+};
+
+export type UserUpdateManyWithoutAvatarNestedInput = {
+  connect?: InputMaybe<Array<UserWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<UserCreateOrConnectWithoutAvatarInput>>;
+  create?: InputMaybe<Array<UserCreateWithoutAvatarInput>>;
+  createMany?: InputMaybe<UserCreateManyAvatarInputEnvelope>;
+  delete?: InputMaybe<Array<UserWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<UserScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<UserWhereUniqueInput>>;
+  set?: InputMaybe<Array<UserWhereUniqueInput>>;
+  update?: InputMaybe<Array<UserUpdateWithWhereUniqueWithoutAvatarInput>>;
+  updateMany?: InputMaybe<Array<UserUpdateManyWithWhereWithoutAvatarInput>>;
+  upsert?: InputMaybe<Array<UserUpsertWithWhereUniqueWithoutAvatarInput>>;
+};
+
+export type UserUpdateOneRequiredWithoutConversationParticipantNestedInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutConversationParticipantInput>;
+  create?: InputMaybe<UserCreateWithoutConversationParticipantInput>;
+  update?: InputMaybe<UserUpdateToOneWithWhereWithoutConversationParticipantInput>;
+  upsert?: InputMaybe<UserUpsertWithoutConversationParticipantInput>;
+};
+
+export type UserUpdateOneRequiredWithoutMessageNestedInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutMessageInput>;
+  create?: InputMaybe<UserCreateWithoutMessageInput>;
+  update?: InputMaybe<UserUpdateToOneWithWhereWithoutMessageInput>;
+  upsert?: InputMaybe<UserUpsertWithoutMessageInput>;
+};
+
+export type UserUpdateOneRequiredWithoutMessageReadReceiptNestedInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutMessageReadReceiptInput>;
+  create?: InputMaybe<UserCreateWithoutMessageReadReceiptInput>;
+  update?: InputMaybe<UserUpdateToOneWithWhereWithoutMessageReadReceiptInput>;
+  upsert?: InputMaybe<UserUpsertWithoutMessageReadReceiptInput>;
+};
+
+export type UserUpdateOneRequiredWithoutReactionNestedInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutReactionInput>;
+  create?: InputMaybe<UserCreateWithoutReactionInput>;
+  update?: InputMaybe<UserUpdateToOneWithWhereWithoutReactionInput>;
+  upsert?: InputMaybe<UserUpsertWithoutReactionInput>;
+};
+
+export type UserUpdateOneRequiredWithoutRideParticipantNestedInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutRideParticipantInput>;
+  create?: InputMaybe<UserCreateWithoutRideParticipantInput>;
+  update?: InputMaybe<UserUpdateToOneWithWhereWithoutRideParticipantInput>;
+  upsert?: InputMaybe<UserUpsertWithoutRideParticipantInput>;
+};
+
+export type UserUpdateOneRequiredWithoutUserCoverNestedInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutUserCoverInput>;
+  create?: InputMaybe<UserCreateWithoutUserCoverInput>;
+  update?: InputMaybe<UserUpdateToOneWithWhereWithoutUserCoverInput>;
+  upsert?: InputMaybe<UserUpsertWithoutUserCoverInput>;
 };
 
 export type UserUpdateOneRequiredWithoutUserDocumentNestedInput = {
@@ -2757,6 +8140,51 @@ export type UserUpdateOneRequiredWithoutVehiclesNestedInput = {
   upsert?: InputMaybe<UserUpsertWithoutVehiclesInput>;
 };
 
+export type UserUpdateOneWithoutRidesNestedInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutRidesInput>;
+  create?: InputMaybe<UserCreateWithoutRidesInput>;
+  delete?: InputMaybe<UserWhereInput>;
+  disconnect?: InputMaybe<UserWhereInput>;
+  update?: InputMaybe<UserUpdateToOneWithWhereWithoutRidesInput>;
+  upsert?: InputMaybe<UserUpsertWithoutRidesInput>;
+};
+
+export type UserUpdateToOneWithWhereWithoutConversationParticipantInput = {
+  data: UserUpdateWithoutConversationParticipantInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpdateToOneWithWhereWithoutMessageInput = {
+  data: UserUpdateWithoutMessageInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpdateToOneWithWhereWithoutMessageReadReceiptInput = {
+  data: UserUpdateWithoutMessageReadReceiptInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpdateToOneWithWhereWithoutReactionInput = {
+  data: UserUpdateWithoutReactionInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpdateToOneWithWhereWithoutRideParticipantInput = {
+  data: UserUpdateWithoutRideParticipantInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpdateToOneWithWhereWithoutRidesInput = {
+  data: UserUpdateWithoutRidesInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpdateToOneWithWhereWithoutUserCoverInput = {
+  data: UserUpdateWithoutUserCoverInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
 export type UserUpdateToOneWithWhereWithoutUserDocumentInput = {
   data: UserUpdateWithoutUserDocumentInput;
   where?: InputMaybe<UserWhereInput>;
@@ -2777,8 +8205,21 @@ export type UserUpdateToOneWithWhereWithoutVehiclesInput = {
   where?: InputMaybe<UserWhereInput>;
 };
 
-export type UserUpdateWithoutUserDocumentInput = {
+export type UserUpdateWithWhereUniqueWithoutAvatarInput = {
+  data: UserUpdateWithoutAvatarInput;
+  where: UserWhereUniqueInput;
+};
+
+export type UserUpdateWithoutAvatarInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
   Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
   UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
   UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
@@ -2789,16 +8230,259 @@ export type UserUpdateWithoutUserDocumentInput = {
   lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   password?: InputMaybe<StringFieldUpdateOperationsInput>;
   phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
   tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
   updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
+};
+
+export type UserUpdateWithoutConversationParticipantInput = {
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
+  Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
+  UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  email?: InputMaybe<StringFieldUpdateOperationsInput>;
+  firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isVerified?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  password?: InputMaybe<StringFieldUpdateOperationsInput>;
+  phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
+  tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
+};
+
+export type UserUpdateWithoutMessageInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
+  Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
+  UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  email?: InputMaybe<StringFieldUpdateOperationsInput>;
+  firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isVerified?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  password?: InputMaybe<StringFieldUpdateOperationsInput>;
+  phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
+  tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
+};
+
+export type UserUpdateWithoutMessageReadReceiptInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
+  Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
+  UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  email?: InputMaybe<StringFieldUpdateOperationsInput>;
+  firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isVerified?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  password?: InputMaybe<StringFieldUpdateOperationsInput>;
+  phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
+  tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
+};
+
+export type UserUpdateWithoutReactionInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
+  Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
+  UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  email?: InputMaybe<StringFieldUpdateOperationsInput>;
+  firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isVerified?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  password?: InputMaybe<StringFieldUpdateOperationsInput>;
+  phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
+  tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
+};
+
+export type UserUpdateWithoutRideParticipantInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
+  UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  email?: InputMaybe<StringFieldUpdateOperationsInput>;
+  firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isVerified?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  password?: InputMaybe<StringFieldUpdateOperationsInput>;
+  phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
+  tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
+};
+
+export type UserUpdateWithoutRidesInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
+  Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
+  UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  email?: InputMaybe<StringFieldUpdateOperationsInput>;
+  firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isVerified?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  password?: InputMaybe<StringFieldUpdateOperationsInput>;
+  phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
+};
+
+export type UserUpdateWithoutUserCoverInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
+  Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
+  UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  email?: InputMaybe<StringFieldUpdateOperationsInput>;
+  firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isVerified?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  password?: InputMaybe<StringFieldUpdateOperationsInput>;
+  phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
+  tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
+};
+
+export type UserUpdateWithoutUserDocumentInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
+  Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
+  UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
+  UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  email?: InputMaybe<StringFieldUpdateOperationsInput>;
+  firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  isVerified?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  password?: InputMaybe<StringFieldUpdateOperationsInput>;
+  phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
+  tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
+  updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
 };
 
 export type UserUpdateWithoutUserImageInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
   Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
   UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
   UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
@@ -2807,16 +8491,27 @@ export type UserUpdateWithoutUserImageInput = {
   lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   password?: InputMaybe<StringFieldUpdateOperationsInput>;
   phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
   tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
   updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
 };
 
 export type UserUpdateWithoutUserPreferenceInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
   Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
   UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
   UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
@@ -2825,17 +8520,28 @@ export type UserUpdateWithoutUserPreferenceInput = {
   lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   password?: InputMaybe<StringFieldUpdateOperationsInput>;
   phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
   tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
   updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   vehicles?: InputMaybe<DriverVehicleUpdateManyWithoutUserNestedInput>;
 };
 
 export type UserUpdateWithoutVehiclesInput = {
+  ConversationParticipant?: InputMaybe<ConversationParticipantUpdateManyWithoutUserNestedInput>;
+  Message?: InputMaybe<MessageUpdateManyWithoutSenderNestedInput>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+  QrToken?: InputMaybe<QrTokenUpdateManyWithoutUserNestedInput>;
+  Reaction?: InputMaybe<ReactionUpdateManyWithoutUserNestedInput>;
+  RideParticipant?: InputMaybe<RideParticipantUpdateManyWithoutUserNestedInput>;
   Role?: InputMaybe<RoleUpdateManyWithoutUsersNestedInput>;
+  UserCover?: InputMaybe<UserCoverUpdateOneWithoutUserNestedInput>;
   UserDocument?: InputMaybe<UserDocumentUpdateManyWithoutUserNestedInput>;
   UserImage?: InputMaybe<UserImageUpdateManyWithoutUserNestedInput>;
   UserPreference?: InputMaybe<UserPreferenceUpdateOneWithoutUserNestedInput>;
+  avatar?: InputMaybe<FileUpdateOneWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   firstName?: InputMaybe<StringFieldUpdateOperationsInput>;
@@ -2844,9 +8550,60 @@ export type UserUpdateWithoutVehiclesInput = {
   lastName?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   password?: InputMaybe<StringFieldUpdateOperationsInput>;
   phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  review?: InputMaybe<ReviewUpdateManyWithoutUserNestedInput>;
+  rides?: InputMaybe<RideUpdateManyWithoutDriverNestedInput>;
   tokens?: InputMaybe<RefreshTokenUpdateManyWithoutUserNestedInput>;
   updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  userCoverId?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   username?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+};
+
+export type UserUpsertWithWhereUniqueWithoutAvatarInput = {
+  create: UserCreateWithoutAvatarInput;
+  update: UserUpdateWithoutAvatarInput;
+  where: UserWhereUniqueInput;
+};
+
+export type UserUpsertWithoutConversationParticipantInput = {
+  create: UserCreateWithoutConversationParticipantInput;
+  update: UserUpdateWithoutConversationParticipantInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpsertWithoutMessageInput = {
+  create: UserCreateWithoutMessageInput;
+  update: UserUpdateWithoutMessageInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpsertWithoutMessageReadReceiptInput = {
+  create: UserCreateWithoutMessageReadReceiptInput;
+  update: UserUpdateWithoutMessageReadReceiptInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpsertWithoutReactionInput = {
+  create: UserCreateWithoutReactionInput;
+  update: UserUpdateWithoutReactionInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpsertWithoutRideParticipantInput = {
+  create: UserCreateWithoutRideParticipantInput;
+  update: UserUpdateWithoutRideParticipantInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpsertWithoutRidesInput = {
+  create: UserCreateWithoutRidesInput;
+  update: UserUpdateWithoutRidesInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+export type UserUpsertWithoutUserCoverInput = {
+  create: UserCreateWithoutUserCoverInput;
+  update: UserUpdateWithoutUserCoverInput;
+  where?: InputMaybe<UserWhereInput>;
 };
 
 export type UserUpsertWithoutUserDocumentInput = {
@@ -2875,12 +8632,21 @@ export type UserUpsertWithoutVehiclesInput = {
 
 export type UserWhereInput = {
   AND?: InputMaybe<Array<UserWhereInput>>;
+  ConversationParticipant?: InputMaybe<ConversationParticipantListRelationFilter>;
+  Message?: InputMaybe<MessageListRelationFilter>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptListRelationFilter>;
   NOT?: InputMaybe<Array<UserWhereInput>>;
   OR?: InputMaybe<Array<UserWhereInput>>;
+  QrToken?: InputMaybe<QrTokenListRelationFilter>;
+  Reaction?: InputMaybe<ReactionListRelationFilter>;
+  RideParticipant?: InputMaybe<RideParticipantListRelationFilter>;
   Role?: InputMaybe<RoleListRelationFilter>;
+  UserCover?: InputMaybe<UserCoverNullableScalarRelationFilter>;
   UserDocument?: InputMaybe<UserDocumentListRelationFilter>;
   UserImage?: InputMaybe<UserImageListRelationFilter>;
   UserPreference?: InputMaybe<UserPreferenceNullableScalarRelationFilter>;
+  avatar?: InputMaybe<FileNullableScalarRelationFilter>;
+  avatarId?: InputMaybe<StringNullableFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   email?: InputMaybe<StringFilter>;
   firstName?: InputMaybe<StringFilter>;
@@ -2889,20 +8655,32 @@ export type UserWhereInput = {
   lastName?: InputMaybe<StringNullableFilter>;
   password?: InputMaybe<StringFilter>;
   phone?: InputMaybe<StringNullableFilter>;
+  review?: InputMaybe<ReviewListRelationFilter>;
+  rides?: InputMaybe<RideListRelationFilter>;
   tokens?: InputMaybe<RefreshTokenListRelationFilter>;
   updatedAt?: InputMaybe<DateTimeNullableFilter>;
+  userCoverId?: InputMaybe<StringNullableFilter>;
   username?: InputMaybe<StringNullableFilter>;
   vehicles?: InputMaybe<DriverVehicleListRelationFilter>;
 };
 
 export type UserWhereUniqueInput = {
   AND?: InputMaybe<Array<UserWhereInput>>;
+  ConversationParticipant?: InputMaybe<ConversationParticipantListRelationFilter>;
+  Message?: InputMaybe<MessageListRelationFilter>;
+  MessageReadReceipt?: InputMaybe<MessageReadReceiptListRelationFilter>;
   NOT?: InputMaybe<Array<UserWhereInput>>;
   OR?: InputMaybe<Array<UserWhereInput>>;
+  QrToken?: InputMaybe<QrTokenListRelationFilter>;
+  Reaction?: InputMaybe<ReactionListRelationFilter>;
+  RideParticipant?: InputMaybe<RideParticipantListRelationFilter>;
   Role?: InputMaybe<RoleListRelationFilter>;
+  UserCover?: InputMaybe<UserCoverNullableScalarRelationFilter>;
   UserDocument?: InputMaybe<UserDocumentListRelationFilter>;
   UserImage?: InputMaybe<UserImageListRelationFilter>;
   UserPreference?: InputMaybe<UserPreferenceNullableScalarRelationFilter>;
+  avatar?: InputMaybe<FileNullableScalarRelationFilter>;
+  avatarId?: InputMaybe<StringNullableFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   email?: InputMaybe<Scalars['String']['input']>;
   firstName?: InputMaybe<StringFilter>;
@@ -2911,8 +8689,11 @@ export type UserWhereUniqueInput = {
   lastName?: InputMaybe<StringNullableFilter>;
   password?: InputMaybe<StringFilter>;
   phone?: InputMaybe<StringNullableFilter>;
+  review?: InputMaybe<ReviewListRelationFilter>;
+  rides?: InputMaybe<RideListRelationFilter>;
   tokens?: InputMaybe<RefreshTokenListRelationFilter>;
   updatedAt?: InputMaybe<DateTimeNullableFilter>;
+  userCoverId?: InputMaybe<StringNullableFilter>;
   username?: InputMaybe<Scalars['String']['input']>;
   vehicles?: InputMaybe<DriverVehicleListRelationFilter>;
 };
@@ -2921,10 +8702,12 @@ export type VehicleDocument = {
   __typename?: 'VehicleDocument';
   DriverVehicle?: Maybe<DriverVehicle>;
   createdAt: Scalars['DateTime']['output'];
+  documentType: VehicleDocumentType;
   driverVehicleId: Scalars['String']['output'];
   file: File;
   fileId: Scalars['String']['output'];
   id: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -2932,16 +8715,20 @@ export type VehicleDocumentCountAggregate = {
   __typename?: 'VehicleDocumentCountAggregate';
   _all: Scalars['Int']['output'];
   createdAt: Scalars['Int']['output'];
+  documentType: Scalars['Int']['output'];
   driverVehicleId: Scalars['Int']['output'];
   fileId: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  name: Scalars['Int']['output'];
   updatedAt: Scalars['Int']['output'];
 };
 
 export type VehicleDocumentCreateManyDriverVehicleInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  documentType: VehicleDocumentType;
   fileId: Scalars['String']['input'];
   id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -2952,8 +8739,10 @@ export type VehicleDocumentCreateManyDriverVehicleInputEnvelope = {
 
 export type VehicleDocumentCreateManyFileInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  documentType: VehicleDocumentType;
   driverVehicleId: Scalars['String']['input'];
   id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -2988,15 +8777,19 @@ export type VehicleDocumentCreateOrConnectWithoutFileInput = {
 
 export type VehicleDocumentCreateWithoutDriverVehicleInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  documentType: VehicleDocumentType;
   file: FileCreateNestedOneWithoutVehicleDocumentInput;
   id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type VehicleDocumentCreateWithoutFileInput = {
   DriverVehicle?: InputMaybe<DriverVehicleCreateNestedOneWithoutVehicleDocumentInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  documentType: VehicleDocumentType;
   id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -3009,18 +8802,22 @@ export type VehicleDocumentListRelationFilter = {
 export type VehicleDocumentMaxAggregate = {
   __typename?: 'VehicleDocumentMaxAggregate';
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  documentType?: Maybe<VehicleDocumentType>;
   driverVehicleId?: Maybe<Scalars['String']['output']>;
   fileId?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type VehicleDocumentMinAggregate = {
   __typename?: 'VehicleDocumentMinAggregate';
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  documentType?: Maybe<VehicleDocumentType>;
   driverVehicleId?: Maybe<Scalars['String']['output']>;
   fileId?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -3033,15 +8830,26 @@ export type VehicleDocumentScalarWhereInput = {
   NOT?: InputMaybe<Array<VehicleDocumentScalarWhereInput>>;
   OR?: InputMaybe<Array<VehicleDocumentScalarWhereInput>>;
   createdAt?: InputMaybe<DateTimeFilter>;
+  documentType?: InputMaybe<EnumVehicleDocumentTypeFilter>;
   driverVehicleId?: InputMaybe<StringFilter>;
   fileId?: InputMaybe<StringFilter>;
   id?: InputMaybe<StringFilter>;
+  name?: InputMaybe<StringNullableFilter>;
   updatedAt?: InputMaybe<DateTimeNullableFilter>;
 };
 
+export enum VehicleDocumentType {
+  CONTROL = 'CONTROL',
+  INSURANCE = 'INSURANCE',
+  OTHER = 'OTHER',
+  REGISTRATION = 'REGISTRATION'
+}
+
 export type VehicleDocumentUpdateManyMutationInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  documentType?: InputMaybe<EnumVehicleDocumentTypeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
 };
 
@@ -3095,15 +8903,19 @@ export type VehicleDocumentUpdateWithWhereUniqueWithoutFileInput = {
 
 export type VehicleDocumentUpdateWithoutDriverVehicleInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  documentType?: InputMaybe<EnumVehicleDocumentTypeFieldUpdateOperationsInput>;
   file?: InputMaybe<FileUpdateOneRequiredWithoutVehicleDocumentNestedInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
 };
 
 export type VehicleDocumentUpdateWithoutFileInput = {
   DriverVehicle?: InputMaybe<DriverVehicleUpdateOneWithoutVehicleDocumentNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  documentType?: InputMaybe<EnumVehicleDocumentTypeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
 };
 
@@ -3125,10 +8937,12 @@ export type VehicleDocumentWhereInput = {
   NOT?: InputMaybe<Array<VehicleDocumentWhereInput>>;
   OR?: InputMaybe<Array<VehicleDocumentWhereInput>>;
   createdAt?: InputMaybe<DateTimeFilter>;
+  documentType?: InputMaybe<EnumVehicleDocumentTypeFilter>;
   driverVehicleId?: InputMaybe<StringFilter>;
   file?: InputMaybe<FileScalarRelationFilter>;
   fileId?: InputMaybe<StringFilter>;
   id?: InputMaybe<StringFilter>;
+  name?: InputMaybe<StringNullableFilter>;
   updatedAt?: InputMaybe<DateTimeNullableFilter>;
 };
 
@@ -3138,10 +8952,12 @@ export type VehicleDocumentWhereUniqueInput = {
   NOT?: InputMaybe<Array<VehicleDocumentWhereInput>>;
   OR?: InputMaybe<Array<VehicleDocumentWhereInput>>;
   createdAt?: InputMaybe<DateTimeFilter>;
+  documentType?: InputMaybe<EnumVehicleDocumentTypeFilter>;
   driverVehicleId?: InputMaybe<StringFilter>;
   file?: InputMaybe<FileScalarRelationFilter>;
   fileId?: InputMaybe<StringFilter>;
   id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<StringNullableFilter>;
   updatedAt?: InputMaybe<DateTimeNullableFilter>;
 };
 
@@ -3597,17 +9413,70 @@ export type ForgotPasswordMutationVariables = Exact<{
 
 export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: { __typename?: 'ForgotPasswordOutput', resetLink: string, email: string } };
 
-export type DocumentFragment = { __typename?: 'UserDocument', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: ImageType, status: string, size?: number | null, originalName: string } };
+export type DocumentFragment = { __typename?: 'UserDocument', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } };
 
-export type FileFragmentFragment = { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: ImageType, status: string, size?: number | null, originalName: string };
+export type FileFragmentFragment = { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string };
 
-export type ImageFragment = { __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: ImageType, status: string, size?: number | null, originalName: string } };
+export type ImageFragment = { __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } };
+
+export type MessageFragmentFragment = { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } }> | null };
+
+export type MutationMessageFragmentFragment = { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, createdAt: any, sentAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } };
+
+export type SubscriptionMessageFragmentFragment = { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } }> | null };
+
+export type SendMessageMutationVariables = Exact<{
+  input: SendMessageInput;
+}>;
+
+
+export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, createdAt: any, sentAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } } };
+
+export type EditMessageMutationVariables = Exact<{
+  messageId: Scalars['String']['input'];
+  content: Scalars['String']['input'];
+}>;
+
+
+export type EditMessageMutation = { __typename?: 'Mutation', editMessage: { __typename?: 'Message', id: string, content?: string | null, edited: boolean, editedAt?: any | null } };
+
+export type MarkMessageDeliveredMutationVariables = Exact<{
+  messageId: Scalars['String']['input'];
+}>;
+
+
+export type MarkMessageDeliveredMutation = { __typename?: 'Mutation', markMessageAsDelivered: { __typename?: 'Message', id: string, deliveredAt?: any | null, state: MessageState } };
+
+export type DeleteMessageMutationVariables = Exact<{
+  messageId: Scalars['String']['input'];
+}>;
+
+
+export type DeleteMessageMutation = { __typename?: 'Mutation', deleteMessage: { __typename?: 'Message', id: string, deleted: boolean, deletedAt?: any | null } };
+
+export type GetMessagesQueryVariables = Exact<{
+  conversationId?: InputMaybe<Scalars['String']['input']>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+  cursor?: InputMaybe<Scalars['String']['input']>;
+  limit?: InputMaybe<Scalars['Float']['input']>;
+}>;
+
+
+export type GetMessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } }> | null }> };
+
+export type MessageReceivedSubscriptionVariables = Exact<{
+  conversationId?: InputMaybe<Scalars['String']['input']>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type MessageReceivedSubscription = { __typename?: 'Subscription', messageReceived: { __typename?: 'MessagePayload', type: string, message: { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } }> | null } } };
 
 export type PresignedUrlFragment = { __typename?: 'PresignedUrl', key: string, url: string, expiresIn: number };
 
 export type CreateBatchPresignedUrlsMutationVariables = Exact<{
   files: Array<FileMetaInput> | FileMetaInput;
-  type: ImageType;
+  type: FileType;
 }>;
 
 
@@ -3615,32 +9484,34 @@ export type CreateBatchPresignedUrlsMutation = { __typename?: 'Mutation', create
 
 export type CompleteUploadBulkMutationVariables = Exact<{
   keys: Array<Scalars['String']['input']> | Scalars['String']['input'];
-  type: ImageType;
+  type: FileType;
 }>;
 
 
 export type CompleteUploadBulkMutation = { __typename?: 'Mutation', completeUploadBulk: Array<{ __typename?: 'CompleteUploadOutput', key: string, size?: number | null, etag?: string | null, contentType?: string | null }> };
 
-export type UserFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: ImageType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: ImageType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null };
+export type UserFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null };
+
+export type UserMessageFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null };
 
 export type CreateUserMutationVariables = Exact<{
   input: UserCreateInput;
 }>;
 
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: ImageType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: ImageType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: ImageType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: ImageType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
+export type GetUserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: ImageType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: ImageType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
 
 export const FileFragmentFragmentDoc = gql`
     fragment FileFragment on File {
@@ -3663,13 +9534,6 @@ export const DocumentFragmentDoc = gql`
   }
 }
     ${FileFragmentFragmentDoc}`;
-export const PresignedUrlFragmentDoc = gql`
-    fragment PresignedUrl on PresignedUrl {
-  key
-  url
-  expiresIn
-}
-    `;
 export const ImageFragmentDoc = gql`
     fragment Image on UserImage {
   id
@@ -3679,6 +9543,99 @@ export const ImageFragmentDoc = gql`
   }
 }
     ${FileFragmentFragmentDoc}`;
+export const UserMessageFragmentFragmentDoc = gql`
+    fragment userMessageFragment on User {
+  id
+  firstName
+  lastName
+  email
+  phone
+  username
+  UserImage {
+    ...Image
+  }
+}
+    ${ImageFragmentDoc}`;
+export const MessageFragmentFragmentDoc = gql`
+    fragment messageFragment on Message {
+  id
+  content
+  senderId
+  clientTempId
+  parentMessageId
+  edited
+  editedAt
+  deleted
+  deletedAt
+  createdAt
+  sentAt
+  deliveredAt
+  state
+  sender {
+    ...userMessageFragment
+  }
+  replies {
+    id
+    content
+    senderId
+    createdAt
+    sender {
+      ...userMessageFragment
+    }
+  }
+}
+    ${UserMessageFragmentFragmentDoc}`;
+export const MutationMessageFragmentFragmentDoc = gql`
+    fragment mutationMessageFragment on Message {
+  id
+  content
+  senderId
+  clientTempId
+  parentMessageId
+  createdAt
+  sentAt
+  state
+  sender {
+    ...userMessageFragment
+  }
+}
+    ${UserMessageFragmentFragmentDoc}`;
+export const SubscriptionMessageFragmentFragmentDoc = gql`
+    fragment subscriptionMessageFragment on Message {
+  id
+  content
+  senderId
+  clientTempId
+  parentMessageId
+  edited
+  editedAt
+  deleted
+  deletedAt
+  createdAt
+  sentAt
+  deliveredAt
+  state
+  sender {
+    ...userMessageFragment
+  }
+  replies {
+    id
+    content
+    senderId
+    createdAt
+    sender {
+      ...userMessageFragment
+    }
+  }
+}
+    ${UserMessageFragmentFragmentDoc}`;
+export const PresignedUrlFragmentDoc = gql`
+    fragment PresignedUrl on PresignedUrl {
+  key
+  url
+  expiresIn
+}
+    `;
 export const UserFragmentFragmentDoc = gql`
     fragment userFragment on User {
   id
@@ -3849,8 +9806,230 @@ export function useForgotPasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswordMutation>;
 export type ForgotPasswordMutationResult = Apollo.MutationResult<ForgotPasswordMutation>;
 export type ForgotPasswordMutationOptions = Apollo.BaseMutationOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
+export const SendMessageDocument = gql`
+    mutation SendMessage($input: SendMessageInput!) {
+  sendMessage(input: $input) {
+    ...mutationMessageFragment
+  }
+}
+    ${MutationMessageFragmentFragmentDoc}`;
+export type SendMessageMutationFn = Apollo.MutationFunction<SendMessageMutation, SendMessageMutationVariables>;
+
+/**
+ * __useSendMessageMutation__
+ *
+ * To run a mutation, you first call `useSendMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendMessageMutation, { data, loading, error }] = useSendMessageMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSendMessageMutation(baseOptions?: Apollo.MutationHookOptions<SendMessageMutation, SendMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendMessageMutation, SendMessageMutationVariables>(SendMessageDocument, options);
+      }
+export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMutation>;
+export type SendMessageMutationResult = Apollo.MutationResult<SendMessageMutation>;
+export type SendMessageMutationOptions = Apollo.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
+export const EditMessageDocument = gql`
+    mutation EditMessage($messageId: String!, $content: String!) {
+  editMessage(messageId: $messageId, content: $content) {
+    id
+    content
+    edited
+    editedAt
+  }
+}
+    `;
+export type EditMessageMutationFn = Apollo.MutationFunction<EditMessageMutation, EditMessageMutationVariables>;
+
+/**
+ * __useEditMessageMutation__
+ *
+ * To run a mutation, you first call `useEditMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editMessageMutation, { data, loading, error }] = useEditMessageMutation({
+ *   variables: {
+ *      messageId: // value for 'messageId'
+ *      content: // value for 'content'
+ *   },
+ * });
+ */
+export function useEditMessageMutation(baseOptions?: Apollo.MutationHookOptions<EditMessageMutation, EditMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditMessageMutation, EditMessageMutationVariables>(EditMessageDocument, options);
+      }
+export type EditMessageMutationHookResult = ReturnType<typeof useEditMessageMutation>;
+export type EditMessageMutationResult = Apollo.MutationResult<EditMessageMutation>;
+export type EditMessageMutationOptions = Apollo.BaseMutationOptions<EditMessageMutation, EditMessageMutationVariables>;
+export const MarkMessageDeliveredDocument = gql`
+    mutation MarkMessageDelivered($messageId: String!) {
+  markMessageAsDelivered(messageId: $messageId) {
+    id
+    deliveredAt
+    state
+  }
+}
+    `;
+export type MarkMessageDeliveredMutationFn = Apollo.MutationFunction<MarkMessageDeliveredMutation, MarkMessageDeliveredMutationVariables>;
+
+/**
+ * __useMarkMessageDeliveredMutation__
+ *
+ * To run a mutation, you first call `useMarkMessageDeliveredMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMarkMessageDeliveredMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [markMessageDeliveredMutation, { data, loading, error }] = useMarkMessageDeliveredMutation({
+ *   variables: {
+ *      messageId: // value for 'messageId'
+ *   },
+ * });
+ */
+export function useMarkMessageDeliveredMutation(baseOptions?: Apollo.MutationHookOptions<MarkMessageDeliveredMutation, MarkMessageDeliveredMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MarkMessageDeliveredMutation, MarkMessageDeliveredMutationVariables>(MarkMessageDeliveredDocument, options);
+      }
+export type MarkMessageDeliveredMutationHookResult = ReturnType<typeof useMarkMessageDeliveredMutation>;
+export type MarkMessageDeliveredMutationResult = Apollo.MutationResult<MarkMessageDeliveredMutation>;
+export type MarkMessageDeliveredMutationOptions = Apollo.BaseMutationOptions<MarkMessageDeliveredMutation, MarkMessageDeliveredMutationVariables>;
+export const DeleteMessageDocument = gql`
+    mutation DeleteMessage($messageId: String!) {
+  deleteMessage(messageId: $messageId) {
+    id
+    deleted
+    deletedAt
+  }
+}
+    `;
+export type DeleteMessageMutationFn = Apollo.MutationFunction<DeleteMessageMutation, DeleteMessageMutationVariables>;
+
+/**
+ * __useDeleteMessageMutation__
+ *
+ * To run a mutation, you first call `useDeleteMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMessageMutation, { data, loading, error }] = useDeleteMessageMutation({
+ *   variables: {
+ *      messageId: // value for 'messageId'
+ *   },
+ * });
+ */
+export function useDeleteMessageMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMessageMutation, DeleteMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteMessageMutation, DeleteMessageMutationVariables>(DeleteMessageDocument, options);
+      }
+export type DeleteMessageMutationHookResult = ReturnType<typeof useDeleteMessageMutation>;
+export type DeleteMessageMutationResult = Apollo.MutationResult<DeleteMessageMutation>;
+export type DeleteMessageMutationOptions = Apollo.BaseMutationOptions<DeleteMessageMutation, DeleteMessageMutationVariables>;
+export const GetMessagesDocument = gql`
+    query GetMessages($conversationId: String, $rideId: String, $cursor: String, $limit: Float) {
+  messages(
+    conversationId: $conversationId
+    rideId: $rideId
+    cursor: $cursor
+    limit: $limit
+  ) {
+    ...messageFragment
+  }
+}
+    ${MessageFragmentFragmentDoc}`;
+
+/**
+ * __useGetMessagesQuery__
+ *
+ * To run a query within a React component, call `useGetMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMessagesQuery({
+ *   variables: {
+ *      conversationId: // value for 'conversationId'
+ *      rideId: // value for 'rideId'
+ *      cursor: // value for 'cursor'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetMessagesQuery(baseOptions?: Apollo.QueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, options);
+      }
+export function useGetMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, options);
+        }
+export function useGetMessagesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, options);
+        }
+export type GetMessagesQueryHookResult = ReturnType<typeof useGetMessagesQuery>;
+export type GetMessagesLazyQueryHookResult = ReturnType<typeof useGetMessagesLazyQuery>;
+export type GetMessagesSuspenseQueryHookResult = ReturnType<typeof useGetMessagesSuspenseQuery>;
+export type GetMessagesQueryResult = Apollo.QueryResult<GetMessagesQuery, GetMessagesQueryVariables>;
+export const MessageReceivedDocument = gql`
+    subscription MessageReceived($conversationId: String, $rideId: String) {
+  messageReceived(conversationId: $conversationId, rideId: $rideId) {
+    message {
+      ...subscriptionMessageFragment
+    }
+    type
+  }
+}
+    ${SubscriptionMessageFragmentFragmentDoc}`;
+
+/**
+ * __useMessageReceivedSubscription__
+ *
+ * To run a query within a React component, call `useMessageReceivedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useMessageReceivedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMessageReceivedSubscription({
+ *   variables: {
+ *      conversationId: // value for 'conversationId'
+ *      rideId: // value for 'rideId'
+ *   },
+ * });
+ */
+export function useMessageReceivedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<MessageReceivedSubscription, MessageReceivedSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<MessageReceivedSubscription, MessageReceivedSubscriptionVariables>(MessageReceivedDocument, options);
+      }
+export type MessageReceivedSubscriptionHookResult = ReturnType<typeof useMessageReceivedSubscription>;
+export type MessageReceivedSubscriptionResult = Apollo.SubscriptionResult<MessageReceivedSubscription>;
 export const CreateBatchPresignedUrlsDocument = gql`
-    mutation createBatchPresignedUrls($files: [FileMetaInput!]!, $type: ImageType!) {
+    mutation createBatchPresignedUrls($files: [FileMetaInput!]!, $type: FileType!) {
   createBatchPresignedUrls(files: $files, type: $type) {
     ...PresignedUrl
   }
@@ -3884,7 +10063,7 @@ export type CreateBatchPresignedUrlsMutationHookResult = ReturnType<typeof useCr
 export type CreateBatchPresignedUrlsMutationResult = Apollo.MutationResult<CreateBatchPresignedUrlsMutation>;
 export type CreateBatchPresignedUrlsMutationOptions = Apollo.BaseMutationOptions<CreateBatchPresignedUrlsMutation, CreateBatchPresignedUrlsMutationVariables>;
 export const CompleteUploadBulkDocument = gql`
-    mutation completeUploadBulk($keys: [String!]!, $type: ImageType!) {
+    mutation completeUploadBulk($keys: [String!]!, $type: FileType!) {
   completeUploadBulk(keys: $keys, type: $type) {
     key
     size

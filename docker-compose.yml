@@ -169,7 +169,30 @@ services:
       - "5601:5601"
     depends_on:
       - localstack
-
+  redis:
+    image: redis:8.2.1
+    container_name: redis_pubsub
+    restart: unless-stopped
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-safe-driving-redis-password}
+    command:
+      - redis-server
+      - --appendonly
+      - yes
+      - --appendfilename
+      - appendonly.aof
+      - --requirepass
+      - ${REDIS_PASSWORD:-safe-driving-redis-password}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"   # en dev uniquement; retirer en production
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-safe-driving-redis-password}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
       
 volumes:
   pgadmin_data:
@@ -179,3 +202,4 @@ volumes:
   localstack_data:
     driver: local
   elasticsearch-data:
+  redis_data:

@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import {
-  EnumImageTypeFieldUpdateOperationsInput,
+  EnumFileTypeFieldUpdateOperationsInput,
   NullableIntFieldUpdateOperationsInput,
   NullableStringFieldUpdateOperationsInput,
   StringFieldUpdateOperationsInput,
@@ -35,6 +35,6 @@ export class CustomFileUpdateInput {
   driverVehicleId?: InstanceType<
     typeof NullableStringFieldUpdateOperationsInput
   >;
-  @Field(() => EnumImageTypeFieldUpdateOperationsInput, { nullable: true })
-  type?: InstanceType<typeof EnumImageTypeFieldUpdateOperationsInput>;
+  @Field(() => EnumFileTypeFieldUpdateOperationsInput, { nullable: true })
+  type?: InstanceType<typeof EnumFileTypeFieldUpdateOperationsInput>;
 }

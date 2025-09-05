@@ -24,7 +24,7 @@ import {
 } from 'src/dtos/upload/upload.output';
 import { FileMetaInput } from 'src/dtos/upload/upload.input';
 import { PrismaService } from 'src/prisma-module/prisma.service';
-import { ImageType } from 'src/dtos/@generated';
+import { FileType } from 'src/dtos/@generated';
 
 @Injectable()
 export class S3Service {
@@ -142,7 +142,7 @@ export class S3Service {
   async makeKey(
     userId: string,
     originalName: string,
-    type: ImageType,
+    type: FileType,
     uniqueId?: string,
   ) {
     const uid = uniqueId ?? uuidv4();
@@ -167,7 +167,7 @@ export class S3Service {
   // génération batch : input = [{ originalName, contentType, uniqueId? }]
   async createBatchPresignedUrls(
     userId: string,
-    type: ImageType,
+    type: FileType,
     files: FileMetaInput[],
   ): Promise<PresignedUrl[]> {
     if (!files || files.length === 0)
@@ -210,7 +210,7 @@ export class S3Service {
   async completeUpload(
     userId: string,
     key: string,
-    type: ImageType,
+    type: FileType,
   ): Promise<CompleteUploadOutput> {
     // Basic authorization check: the key must belong to the user prefix
     if (!key.startsWith(`users/${userId}/`)) {
@@ -259,7 +259,7 @@ export class S3Service {
     };
   }
 
-  async completeUploadBulk(userId: string, keys: string[], type: ImageType) {
+  async completeUploadBulk(userId: string, keys: string[], type: FileType) {
     if (!Array.isArray(keys) || keys.length === 0)
       throw new BadRequestException('keys required');
     // limiter le nombre pour éviter abus

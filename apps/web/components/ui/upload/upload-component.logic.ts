@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { fileKey, uploadMultipleWithLimit } from './upload-component.service';
 import {
-  ImageType,
+  FileType,
   PresignedUrl,
   useCompleteUploadBulkMutation,
   useCreateBatchPresignedUrlsMutation,
@@ -10,13 +10,7 @@ import { FileMeta, UploadComponentProps } from './upload-component.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 export const useUploadComponent = (props: UploadComponentProps) => {
-  const {
-    imageType = ImageType.USER,
-    concurrency = 3,
-    maxRetries = 3,
-    onComplete,
-    onError,
-  } = props;
+  const { fileType = FileType.USER, concurrency = 3, maxRetries = 3, onComplete, onError } = props;
 
   // Logic for the upload component
   const [files, setFiles] = useState<File[]>([]);
@@ -42,7 +36,7 @@ export const useUploadComponent = (props: UploadComponentProps) => {
       }));
       const { data } = await createPresignedUrls({
         variables: {
-          type: imageType,
+          type: fileType,
           files: fileMetas,
         },
       });
@@ -63,7 +57,7 @@ export const useUploadComponent = (props: UploadComponentProps) => {
         await completeUploadBulk({
           variables: {
             keys: susscessResults.map(r => r.key || ''),
-            type: imageType,
+            type: fileType,
           },
         });
       }

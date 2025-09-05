@@ -1,11 +1,12 @@
-import { useAuthStore } from '@/components/auth/stores/useAuthStore';
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloLink, HttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getSession } from 'next-auth/react';
+import { createClient } from 'graphql-ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 
 // 1. Le lien d’upload à la place de HttpLink
-const uploadLink = createUploadLink({
+const uploadLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_API_URL,
   credentials: 'include',
 });
@@ -22,9 +23,37 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
-// 3. On concatène : authLink BEFORE uploadLink
+// 3. Web socket link pour les subscriptions (graphql-ws)
+const wsClient = new GraphQLWsLink(
+  createClient({
+    url: process.env.NEXT_PUBLIC_GRAPHQL_WS_URL!,
+    connectionParams: async () => {
+      const session = await getSession();
+      const token = session?.accessToken;
+      return {
+        headers: {
+          authorization: token ? `Bearer ${token}` : '',
+        },
+      };
+    },
+  }),
+);
+// Use ApolloLink.split to route subscription ops to wsLink, others to http (with auth)
+const splitLink =
+  typeof window !== 'undefined' && wsClient
+    ? ApolloLink.split(
+        operation => {
+          const def = getMainDefinition(operation.query);
+          return def.kind === 'OperationDefinition' && def.operation === 'subscription';
+        },
+        wsClient as unknown as ApolloLink,
+        authLink.concat(uploadLink),
+      )
+    : authLink.concat(uploadLink);
+
+// 4. On concatène : authLink BEFORE uploadLink
 const client = new ApolloClient({
-  link: authLink.concat(uploadLink),
+  link: splitLink,
   cache: new InMemoryCache(),
 });
 

@@ -1,10 +1,10 @@
-mutation createBatchPresignedUrls($files: [FileMetaInput!]!, $type: ImageType!) {
+mutation createBatchPresignedUrls($files: [FileMetaInput!]!, $type: FileType!) {
   createBatchPresignedUrls(files: $files, type: $type) {
     ...PresignedUrl
   }
 }
 
-mutation completeUploadBulk($keys: [String!]!, $type: ImageType!) {
+mutation completeUploadBulk($keys: [String!]!, $type: FileType!) {
   completeUploadBulk(keys: $keys, type: $type) {
     key
     size

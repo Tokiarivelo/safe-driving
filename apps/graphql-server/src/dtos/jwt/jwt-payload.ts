@@ -8,6 +8,8 @@ export class JwtPayload {
   sub?: string; // correspond généralement à l'ID utilisateur
   email?: string;
   username?: string;
+  firstName?: string;
+  lastName?: string;
   roles?: string[]; // ou Role[] si tu utilises un enum
   iat?: number; // Issued At (optionnel, généré automatiquement par JWT)
   exp?: number; // Expiration Time (optionnel)
