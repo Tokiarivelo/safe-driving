@@ -3754,6 +3754,7 @@ type Mutation {
   sendMessage(input: SendMessageInput!): Message!
   updateConversation(conversationId: String!, input: UpdateConversationInput!): UserConversation!
   updateDriverVehicle(input: CreateDriverVehicleInput!, vehicleId: String!): DriverVehicle!
+  updateDriverVehicle(input: UpdateDriverVehicleInput!, vehicleId: String!): DriverVehicle!
   updateFile(id: String!, input: CustomFileUpdateInput!): File!
   updateUser(input: UserUpdateInput!): User!
   uploadAvatar(key: String!): User!
@@ -5944,6 +5945,18 @@ type Subscription {
 
 input UpdateConversationInput {
   title: String
+}
+
+input UpdateDriverVehicleInput {
+  brand: String
+  deleteDocumentsByKeys: [String!]
+  deleteImagesByKeys: [String!]
+  model: String
+  place: Float
+  registrationNumber: String
+  uploadDocuments: [UploadVehicleDocumentsInput!]
+  uploadImages: [UploadedFileRefInput!]
+  vehicleTypeId: String
 }
 
 """The `Upload` scalar type represents a file upload."""
