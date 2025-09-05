@@ -40,6 +40,10 @@ class DriverSummaryViewModel extends ChangeNotifier {
     return DriverSummaryService.getStepIndexForField(fieldName);
   }
 
+  int getStepIndexForSection(String sectionTitle) {
+    return DriverSummaryService.getStepIndexForSection(sectionTitle);
+  }
+
   String getFieldValue(String fieldName, Map<String, String> formData) {
     return formData[fieldName] ?? 'Non renseigné';
   }

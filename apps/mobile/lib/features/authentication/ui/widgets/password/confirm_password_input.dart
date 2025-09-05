@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 import '../../../../../shared/widgets/customs/inputs/inputs_widget.dart';
 
 class ConfirmPasswordInput extends StatelessWidget {
@@ -18,7 +19,7 @@ class ConfirmPasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomInputField(
-      hint: "Confirmer le mot de passe",
+      hint: context.l10n.confirmPassword,
       icon: Icons.lock_outlined,
       obscureText: true,
       isConfirmPassword: true,

@@ -9,10 +9,8 @@ class UserOnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: ColorsWidget.background,
-        child: const SafeArea(
-          child: UserInteractiveMenuWidget(),
-        ),
+        decoration: ColorsWidget.background(context),
+        child: const SafeArea(child: UserInteractiveMenuWidget()),
       ),
     );
   }

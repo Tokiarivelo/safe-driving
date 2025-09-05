@@ -15,6 +15,7 @@ class DriverSummaryService {
           'Modèle',
           'Immatriculation',
           'Nombre de places',
+          'Photos uploadées',
         ],
       },
       {
@@ -81,20 +82,38 @@ class DriverSummaryService {
       case 'Nom':
       case 'E-mail':
       case 'Téléphone':
-        return 1;
+        return 1; // Personal info step index
       case 'Type':
       case 'Marque':
       case 'Modèle':
       case 'Immatriculation':
       case 'Nombre de places':
-        return 3;
+        return 3; // Vehicle info step index
       case 'GPS':
-        return 6;
+        return 6; // GPS step index
       case 'Notifications':
-        return 7;
+        return 7; // Notifications step index
       case 'Thème':
       case 'Langue':
-        return 8;
+        return 8; // Preferences step index
+      case 'Photos uploadées':
+        return 4; // Documents/photos step index (vehicle documents hub)
+      default:
+        return 0;
+    }
+  }
+
+  static int getStepIndexForSection(String sectionTitle) {
+    switch (sectionTitle) {
+      case 'Informations personnelles':
+      case 'Infos personnelles':
+        return 1; // Personal info
+      case 'Véhicule':
+        return 3; // Vehicle info
+      case 'GPS & Notifications':
+        return 6; // Start at GPS
+      case 'Préférences':
+        return 8; // Preferences
       default:
         return 0;
     }

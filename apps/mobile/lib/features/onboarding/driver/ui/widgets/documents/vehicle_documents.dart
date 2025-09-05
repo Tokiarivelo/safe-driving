@@ -28,5 +28,5 @@ class VehicleDocuments extends BaseDocumentWidget {
   BaseDocumentWidgetState createState() => _VehicleDocumentsState();
 }
 
-class _VehicleDocumentsState extends BaseDocumentWidgetState<VehicleDocuments> {
-}
+class _VehicleDocumentsState
+    extends BaseDocumentWidgetState<VehicleDocuments> {}

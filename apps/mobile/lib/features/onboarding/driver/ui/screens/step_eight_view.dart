@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
+import 'package:safe_driving/shared/widgets/customs/buttons/utils/permission_handlers.dart';
 
 class StepEightView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -33,22 +34,19 @@ class StepEightView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
-              fontFamily: 'Inder',
-            ),
+            style: AppTextStyles.h1(
+              context,
+            ).copyWith(fontSize: 24, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 16),
           Text(
             step.description!,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.textColor.withAlpha(180),
+            style: AppTextStyles.body16(context).copyWith(
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.75),
               height: 1.5,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 32),
@@ -63,11 +61,12 @@ class StepEightView extends StatelessWidget {
                 ),
                 child: SwitchesAndRadios.customCheckbox(
                   title: option,
-                  value: coordinator.preferencesViewModel.selectedNotifications.contains(option),
+                  value: coordinator.preferencesViewModel.selectedNotifications
+                      .contains(option),
                   onChanged: (value) {
                     coordinator.preferencesViewModel.toggleNotification(option);
                   },
-                  titleColor: AppColors.fillButtonBackground,
+                  titleColor: Theme.of(context).colorScheme.onSurface,
                 ),
               );
             }).toList(),
@@ -77,7 +76,28 @@ class StepEightView extends StatelessWidget {
 
           ButtonRows.buttonRow(
             buttonTitles: ['Plus tard', 'Valider'],
-            onPressedList: [onSkip ?? () {}, onContinue],
+            onPressedList: [
+              onSkip ?? () {},
+              () async {
+                final selected =
+                    coordinator.preferencesViewModel.selectedNotifications;
+
+                await PermissionHandlers.handleNotificationPermissions(
+                  context,
+                  selected,
+                );
+
+                if (!context.mounted) return;
+
+                if (selected.any((s) => s.toLowerCase().contains('sms'))) {
+                  await PermissionHandlers.handleSmsPermission(context);
+                }
+
+                if (!context.mounted) return;
+
+                onContinue();
+              },
+            ],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             isLastButtonPrimary: true,
             spacing: 8,

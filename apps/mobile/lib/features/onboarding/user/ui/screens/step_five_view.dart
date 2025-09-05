@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/chips.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
@@ -35,19 +36,12 @@ class StepSixView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          stepContent.title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AppColors.buttonWithoutBackGround,
-          ),
-        ),
+        Text(stepContent.title, style: AppTextStyles.h1(context)),
         const SizedBox(height: 8),
         Text(
           stepContent.subtitle,
-          style: TextStyle(
-            color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
+          style: AppTextStyles.body14(context).copyWith(
+            color: AppColors.buttonWithoutBackGround.adapt(context).withValues(alpha: 0.75),
           ),
         ),
         const SizedBox(height: 16),
@@ -59,9 +53,11 @@ class StepSixView extends StatelessWidget {
               onChanged: onGpsChanged,
             ),
             const SizedBox(width: 8),
-            Text(
-              summaryLabels['gps'],
-              style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+            Builder(
+              builder: (context) => Text(
+                summaryLabels['gps'],
+                style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+              ),
             ),
           ],
         ),
@@ -73,31 +69,37 @@ class StepSixView extends StatelessWidget {
               onChanged: onNotificationsChanged,
             ),
             const SizedBox(width: 8),
-            Text(
-              summaryLabels['notifications'],
-              style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+            Builder(
+              builder: (context) => Text(
+                summaryLabels['notifications'],
+                style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+              ),
             ),
           ],
         ),
 
         const SizedBox(height: 16),
 
-        Text(
-          '${summaryLabels['theme']} : ${appState.selectedTheme}',
-          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        Builder(
+          builder: (context) => Text(
+            '${summaryLabels['theme']} : ${appState.selectedTheme}',
+            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+          ),
         ),
 
         const SizedBox(height: 8),
 
-        Text(
-          '${summaryLabels['transport']} :',
-          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        Builder(
+          builder: (context) => Text(
+            '${summaryLabels['transport']} :',
+            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+          ),
         ),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: AppColors.fillButtonBackground.withValues(alpha: 0.3),
+              color: AppColors.fillButtonBackground.adapt(context).withValues(alpha: 0.3),
               width: 1,
             ),
             borderRadius: BorderRadius.circular(8),
@@ -116,7 +118,7 @@ class StepSixView extends StatelessWidget {
                       avatar: Icon(
                         UserOnboardingData.transportIcons[transport],
                         size: 16,
-                        color: AppColors.buttonWithoutBackGround,
+                        color: AppColors.buttonWithoutBackGround.adapt(context),
                       ),
                       onDeleted: () => onTransportRemoved(transport),
                     );
@@ -126,7 +128,7 @@ class StepSixView extends StatelessWidget {
                 Text(
                   summaryLabels['noTransport'],
                   style: TextStyle(
-                    color: AppColors.buttonWithoutBackGround.withValues(
+                    color: AppColors.buttonWithoutBackGround.adapt(context).withValues(
                       alpha: 0.6,
                     ),
                     fontStyle: FontStyle.italic,
@@ -138,9 +140,11 @@ class StepSixView extends StatelessWidget {
 
         const SizedBox(height: 16),
 
-        Text(
-          '${summaryLabels['language']} :',
-          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        Builder(
+          builder: (context) => Text(
+            '${summaryLabels['language']} :',
+            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+          ),
         ),
         const SizedBox(height: 8),
         LanguageButtons.languageButtonContainer(

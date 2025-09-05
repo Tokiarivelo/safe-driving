@@ -36,9 +36,9 @@ abstract class BasePhotosModalState<T extends BasePhotosModal>
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
       padding: const EdgeInsets.all(16.0),
-      decoration: const BoxDecoration(
-        color: AppColors.light,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: AppColors.light.adapt(context),
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
         ),
@@ -71,11 +71,11 @@ abstract class BasePhotosModalState<T extends BasePhotosModal>
           right: 16,
           child: Container(
             decoration: BoxDecoration(
-              color: AppColors.dark.withValues(alpha: 0.6),
+              color: AppColors.dark.adapt(context).withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(20),
             ),
             child: IconButton(
-              icon: const Icon(Icons.delete, color: AppColors.light),
+              icon: Icon(Icons.delete, color: AppColors.light.adapt(context)),
               onPressed: () => deleteImageAt(_currentIndex),
             ),
           ),
@@ -96,8 +96,8 @@ abstract class BasePhotosModalState<T extends BasePhotosModal>
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: index == _currentIndex
-                ? AppColors.fillButtonBackground
-                : AppColors.fillButtonBackground.withValues(alpha: 0.3),
+                ? AppColors.fillButtonBackground.adapt(context)
+                : AppColors.fillButtonBackground.adapt(context).withValues(alpha: 0.3),
           ),
         ),
       ),
@@ -137,9 +137,9 @@ abstract class BasePhotosModalState<T extends BasePhotosModal>
                 Navigator.of(context).pop();
                 deleteAllImages();
               },
-              child: const Text(
+              child: Text(
                 'Supprimer',
-                style: TextStyle(color: AppColors.error),
+                style: TextStyle(color: AppColors.error.adapt(context)),
               ),
             ),
           ],
@@ -158,7 +158,7 @@ abstract class BasePhotosModalState<T extends BasePhotosModal>
 
   Widget buildWebGallery() {
     return Container(
-      color: AppColors.softBackgroundColor,
+      color: AppColors.softBackgroundColor.adapt(context),
       child: PageView.builder(
         controller: _pageController,
         itemCount: _localImages.length,
@@ -169,7 +169,7 @@ abstract class BasePhotosModalState<T extends BasePhotosModal>
         },
         itemBuilder: (context, index) {
           return Container(
-            color: AppColors.softBackgroundColor,
+            color: AppColors.softBackgroundColor.adapt(context),
             child: Center(
               child: Image.network(
                 _localImages[index].path,
@@ -180,7 +180,7 @@ abstract class BasePhotosModalState<T extends BasePhotosModal>
                   }
                   return Center(
                     child: CircularProgressIndicator(
-                      color: AppColors.fillButtonBackground,
+                      color: AppColors.fillButtonBackground.adapt(context),
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded /
                                 loadingProgress.expectedTotalBytes!
@@ -201,7 +201,7 @@ abstract class BasePhotosModalState<T extends BasePhotosModal>
 
   Widget buildMobileGallery() {
     return Container(
-      color: AppColors.softBackgroundColor,
+      color: AppColors.softBackgroundColor.adapt(context),
       child: PageView.builder(
         controller: _pageController,
         itemCount: _localImages.length,
@@ -212,7 +212,7 @@ abstract class BasePhotosModalState<T extends BasePhotosModal>
         },
         itemBuilder: (context, index) {
           return Container(
-            color: AppColors.softBackgroundColor,
+            color: AppColors.softBackgroundColor.adapt(context),
             child: Center(
               child: Image.file(
                 _localImages[index],
@@ -235,13 +235,13 @@ abstract class BasePhotosModalState<T extends BasePhotosModal>
         Icon(
           Icons.broken_image,
           size: 64,
-          color: AppColors.textColor.withValues(alpha: 0.5),
+          color: AppColors.textColor.adapt(context).withValues(alpha: 0.5),
         ),
         const SizedBox(height: 8),
         Text(
           'Erreur de chargement image',
           style: TextStyle(
-            color: AppColors.textColor.withValues(alpha: 0.7),
+            color: AppColors.textColor.adapt(context).withValues(alpha: 0.7),
             fontSize: 14,
           ),
         ),
@@ -249,7 +249,7 @@ abstract class BasePhotosModalState<T extends BasePhotosModal>
         Text(
           'Path: ${_localImages[index].path}',
           style: TextStyle(
-            color: AppColors.textColor.withValues(alpha: 0.5),
+            color: AppColors.textColor.adapt(context).withValues(alpha: 0.5),
             fontSize: 10,
           ),
           textAlign: TextAlign.center,

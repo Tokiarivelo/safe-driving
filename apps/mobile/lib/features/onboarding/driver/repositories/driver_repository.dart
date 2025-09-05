@@ -4,7 +4,7 @@ import '../../../../core/repositories/repository_interface.dart';
 
 class DriverRepository implements RepositoryInterface {
   final IDriverDataSource _dataSource;
-  
+
   DriverRepository(this._dataSource);
 
   @override

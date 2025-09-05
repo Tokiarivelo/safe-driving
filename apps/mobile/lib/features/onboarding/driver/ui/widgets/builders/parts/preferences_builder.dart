@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_driving/core/theme/theme_controller.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class PreferencesBuilder {
   static Widget buildPreferences(
@@ -26,14 +28,16 @@ class PreferencesBuilder {
     DriverOnboardingCoordinator coordinator,
   ) {
     return [
-      const Align(
+      Align(
         alignment: Alignment.centerLeft,
-        child: Text(
-          'Thème',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textColor,
+        child: Builder(
+          builder: (context) => Text(
+            context.l10n.stepPreferencesTheme,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
         ),
       ),
@@ -41,20 +45,29 @@ class PreferencesBuilder {
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Chips.customChoiceChip(
-            label: 'Clair',
-            selected: coordinator.preferencesViewModel.selectedTheme == 'clair',
-            onSelected: (_) {
-              coordinator.preferencesViewModel.setTheme('clair');
-            },
-          ),
-          const SizedBox(width: 24),
-          Chips.customChoiceChip(
-            label: 'Sombre',
-            selected:
-                coordinator.preferencesViewModel.selectedTheme == 'sombre',
-            onSelected: (_) {
-              coordinator.preferencesViewModel.setTheme('sombre');
+          Builder(
+            builder: (context) {
+              return Row(
+                children: [
+                  Chips.customChoiceChip(
+                    label: context.l10n.stepPreferencesThemeLight,
+                    selected: context.read<ThemeController>().mode != ThemeMode.dark,
+                    onSelected: (_) {
+                      coordinator.preferencesViewModel.setTheme('clair');
+                      context.read<ThemeController>().setMode(ThemeMode.light);
+                    },
+                  ),
+                  const SizedBox(width: 24),
+                  Chips.customChoiceChip(
+                    label: context.l10n.stepPreferencesThemeDark,
+                    selected: context.read<ThemeController>().mode == ThemeMode.dark,
+                    onSelected: (_) {
+                      coordinator.preferencesViewModel.setTheme('sombre');
+                      context.read<ThemeController>().setMode(ThemeMode.dark);
+                    },
+                  ),
+                ],
+              );
             },
           ),
         ],
@@ -67,14 +80,16 @@ class PreferencesBuilder {
     DriverOnboardingCoordinator coordinator,
   ) {
     return [
-      const Align(
+      Align(
         alignment: Alignment.centerLeft,
-        child: Text(
-          'Langue',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textColor,
+        child: Builder(
+          builder: (context) => Text(
+            context.l10n.language,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
         ),
       ),
@@ -100,14 +115,24 @@ class PreferencesBuilder {
           padding: EdgeInsets.only(
             bottom: idx < checkboxOptions.length - 1 ? 8.0 : 0,
           ),
-          child: SwitchesAndRadios.customCheckbox(
-            title: option,
-            value: coordinator.preferencesViewModel.selectedNotifications
-                .contains(option),
-            onChanged: (value) {
-              coordinator.preferencesViewModel.toggleNotification(option);
+          child: Builder(
+            builder: (context) {
+              String localizedOption = option;
+              if (option == 'SMS') localizedOption = context.l10n.driverNotificationSms;
+              if (option == 'Push notification mobile') {
+                localizedOption = context.l10n.driverNotificationPush;
+              }
+              if (option == 'E-mail') localizedOption = context.l10n.driverNotificationEmail;
+              return SwitchesAndRadios.customCheckbox(
+                title: localizedOption,
+                value: coordinator.preferencesViewModel.selectedNotifications
+                    .contains(option),
+                onChanged: (value) {
+                  coordinator.preferencesViewModel.toggleNotification(option);
+                },
+                titleColor: Theme.of(context).colorScheme.onSurface,
+              );
             },
-            titleColor: AppColors.fillButtonBackground,
           ),
         );
       }).toList(),
@@ -125,47 +150,43 @@ class PreferencesBuilder {
           children: [
             Expanded(
               child: SwitchesAndRadios.customRadio<String>(
-                title: "Plus tard",
-                value: "Plus tard",
+                title: context.l10n.driverOnboardingLater,
+                value: context.l10n.driverOnboardingLater,
                 groupValue: coordinator.preferencesViewModel.gpsEnabled
-                    ? "Autoriser"
-                    : "Plus tard",
+                    ? context.l10n.driverLocationEnable
+                    : context.l10n.driverOnboardingLater,
                 onChanged: (value) =>
                     coordinator.preferencesViewModel.setGpsEnabled(false),
-                titleColor: AppColors.fillButtonBackground,
-                activeColor: AppColors.fillButtonBackground,
               ),
             ),
             Expanded(
               child: SwitchesAndRadios.customRadio<String>(
-                title: "Autoriser",
-                value: "Autoriser",
+                title: context.l10n.driverLocationEnable,
+                value: context.l10n.driverLocationEnable,
                 groupValue: coordinator.preferencesViewModel.gpsEnabled
-                    ? "Autoriser"
-                    : "Plus tard",
+                    ? context.l10n.driverLocationEnable
+                    : context.l10n.driverOnboardingLater,
                 onChanged: (value) async {
-                  if (value == "Autoriser") {
+                  if (value == context.l10n.driverLocationEnable) {
                     final granted = await coordinator.preferencesViewModel
                         .requestGpsPermission();
-                    if (context.mounted && granted) {
+                      if (context.mounted && granted) {
                       SnackbarHelper.showSuccess(
                         context,
-                        'Géolocalisation activée avec succès !',
+                        context.l10n.driverLocationEnable,
                       );
                     }
                   } else {
                     coordinator.preferencesViewModel.setGpsEnabled(false);
                   }
                 },
-                titleColor: AppColors.fillButtonBackground,
-                activeColor: AppColors.fillButtonBackground,
               ),
             ),
           ],
         ),
         const SizedBox(height: 32),
         PrimaryButton.primaryButton(
-          text: "Continuer",
+          text: context.l10n.next,
           onPressed: nextStep,
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
         ),

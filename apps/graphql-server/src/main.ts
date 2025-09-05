@@ -19,7 +19,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
+<<<<<<< HEAD
     origin: [ /http:\/\/localhost:\d{2,4}/,], // ton front React
+=======
+    origin: ['http://localhost:3000'], // ton front React
+>>>>>>> a956c7b (feat: Add Android background location permission in AndroidManifest and update GPS handler to support 'always' permission after 'whileInUse' is granted.)
     credentials: true,
   });
 

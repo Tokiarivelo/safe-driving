@@ -6,16 +6,25 @@ class SocialButtonsBuilder {
     required VoidCallback? onTap,
     required String imagePath,
   }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: AppColors.buttonWithoutBackGround),
-      ),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Image.asset(imagePath, height: 40),
-      ),
+    return Builder(
+      builder: (context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: isDark
+                  ? AppColors.light
+                  : AppColors.buttonWithoutBackGround.adapt(context),
+            ),
+          ),
+          child: GestureDetector(
+            onTap: onTap,
+            child: Image.asset(imagePath, height: 40),
+          ),
+        );
+      },
     );
   }
 

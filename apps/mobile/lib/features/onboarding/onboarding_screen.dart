@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class OnboardingScreen extends StatelessWidget {
   final VoidCallback onUserPressed;
@@ -14,7 +16,7 @@ class OnboardingScreen extends StatelessWidget {
     required this.onDriverPressed,
   });
 
-  Widget _buildProgressCircle() {
+  Widget _buildProgressCircle(BuildContext context) {
     return SizedBox(
       width: 60,
       height: 60,
@@ -23,14 +25,16 @@ class OnboardingScreen extends StatelessWidget {
         children: [
           CircularProgressIndicator(
             value: 1 / 6,
-            backgroundColor: AppColors.light,
-            valueColor: AlwaysStoppedAnimation(AppColors.progress),
+            backgroundColor: AppColors.light.adapt(context),
+            valueColor: AlwaysStoppedAnimation(
+              AppColors.progress.adapt(context),
+            ),
             strokeWidth: 4,
           ),
-          const Text(
+          Text(
             '1/6',
             style: TextStyle(
-              color: AppColors.light,
+              color: AppColors.light.adapt(context),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -43,7 +47,7 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: ColorsWidget.background,
+        decoration: ColorsWidget.background(context),
         child: Column(
           children: [
             // Logo
@@ -63,12 +67,15 @@ class OnboardingScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 children: [
-                  _buildProgressCircle(),
+                  _buildProgressCircle(context),
                   const SizedBox(width: 8),
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Choix du rôle',
-                      style: TextStyle(color: AppColors.light, fontSize: 16),
+                      context.l10n.onboardingRole,
+                      style: TextStyle(
+                        color: AppColors.light.adapt(context),
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ],
@@ -90,19 +97,19 @@ class OnboardingScreen extends StatelessWidget {
                       width: 330,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppColors.secondBackgroundColor,
-                        borderRadius: BorderRadius.circular(2),
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: ColorsWidget.subtleBorderColor(context),
+                          width: 1.0,
+                        ),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            'Vous êtes… ?',
-                            style: TextStyle(
-                              color: AppColors.buttonWithoutBackGround,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                            ),
+                          Text(
+                            context.l10n.stepRoleTitle,
+                            style: AppTextStyles.title20Regular(context),
                           ),
                           const SizedBox(height: 20),
                           ButtonRows.roleChoiceButtons(

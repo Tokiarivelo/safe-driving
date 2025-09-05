@@ -79,6 +79,7 @@ class AuthWidgetState extends State<AuthWidget> {
 
   Widget _buildHeaderText() {
     return AuthUIBuilder.buildHeaderText(
+      context: context,
       stepData: _getCurrentStepData(),
       isForgotPassword: widget.isForgotPassword,
     );
@@ -137,25 +138,31 @@ class AuthWidgetState extends State<AuthWidget> {
       lastNameError: _lastNameError,
       confirmPasswordError: _confirmPasswordError,
       onEmailChanged: (value) => setState(() {
-        _emailError = AuthValidationHandler.validateField(value, 'email');
+        _emailError = AuthValidationHandler.validateField(context, value, 'email');
       }),
       onPasswordChanged: (value) => setState(() {
-        _passwordError = AuthValidationHandler.validateField(value, 'password');
+        _passwordError = AuthValidationHandler.validateField(context, value, 'password');
         if (!widget.isLogin && _confirmPasswordController.text.isNotEmpty) {
           _confirmPasswordError = AuthValidationHandler.validateConfirmPassword(
+            context,
             value,
             _confirmPasswordController.text,
           );
         }
       }),
       onFirstNameChanged: (value) => setState(() {
-        _firstNameError = AuthValidationHandler.validateField(value, 'username');
+        _firstNameError = AuthValidationHandler.validateField(
+          context,
+          value,
+          'username',
+        );
       }),
       onLastNameChanged: (value) => setState(() {
-        _lastNameError = AuthValidationHandler.validateField(value, 'username');
+        _lastNameError = AuthValidationHandler.validateField(context, value, 'username');
       }),
       onConfirmPasswordChanged: (value) => setState(() {
         _confirmPasswordError = AuthValidationHandler.validateConfirmPassword(
+          context,
           _passwordController.text,
           value,
         );
@@ -197,9 +204,9 @@ class AuthWidgetState extends State<AuthWidget> {
 
   AuthStepContent _getCurrentStepData() {
     return AuthUIBuilder.getStepData(
+      context: context,
       isLogin: widget.isLogin,
       isForgotPassword: widget.isForgotPassword,
     );
   }
 }
-

@@ -24,10 +24,12 @@ class PlatformDriverCameraService extends StatefulWidget {
   });
 
   @override
-  DriverCameraServiceMobileState createState() => DriverCameraServiceMobileState();
+  DriverCameraServiceMobileState createState() =>
+      DriverCameraServiceMobileState();
 }
 
-class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> {
+class DriverCameraServiceMobileState
+    extends State<PlatformDriverCameraService> {
   CameraController? _mobileController;
   Future<void>? _initializeMobileControllerFuture;
   PermissionStatus? _permissionStatus;
@@ -97,14 +99,14 @@ class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> 
         width: 350,
         height: 300,
         decoration: BoxDecoration(
-          border: Border.all(color: AppColors.fillButtonBackground, width: 3),
+          border: Border.all(color: AppColors.fillButtonBackground.adapt(context), width: 3),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Container(
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             border: Border.all(
-              color: AppColors.fillButtonBackground.withValues(alpha: 0.5),
+              color: AppColors.fillButtonBackground.adapt(context).withValues(alpha: 0.5),
               width: 0.2,
             ),
             borderRadius: BorderRadius.circular(8),
@@ -140,10 +142,7 @@ class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> 
         if (snap.connectionState == ConnectionState.done) {
           if (snap.hasError) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              SnackbarHelper.showError(
-                context,
-                'Erreur WebCam: ${snap.error}',
-              );
+              SnackbarHelper.showError(context, 'Erreur WebCam: ${snap.error}');
             });
             return const Center(child: CircularProgressIndicator());
           }
@@ -163,10 +162,7 @@ class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> 
       // Preview only, no internal button, intended to be wrapped in a square
       return ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: preview,
-        ),
+        child: AspectRatio(aspectRatio: 1, child: preview),
       );
     }
 
@@ -180,11 +176,11 @@ class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> 
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              color: AppColors.buttonWithoutBackGround,
+              color: AppColors.dark.adapt(context),
               borderRadius: BorderRadius.circular(100),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.dark.withValues(alpha: 0.6),
+                  color: AppColors.dark.adapt(context).withValues(alpha: 0.6),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -192,7 +188,7 @@ class DriverCameraServiceMobileState extends State<PlatformDriverCameraService> 
             ),
             child: IconButton(
               iconSize: 50,
-              color: AppColors.light,
+              color: AppColors.light.adapt(context),
               onPressed: _takePicture,
               icon: const Icon(Icons.camera_alt),
             ),

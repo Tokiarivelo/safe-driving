@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class PolicyModal extends StatefulWidget {
   final String titleContent;
@@ -48,13 +50,10 @@ class _PolicyModalState extends State<PolicyModal> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AlertDialog(
-      title: Text(widget.titleContent, style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: AppColors.textColor,
-        ),),
-       
+      title: Text(widget.titleContent, style: AppTextStyles.h2BoldNeutral(context)),
+
       content: SizedBox(
         width: double.maxFinite,
         height: MediaQuery.of(context).size.height * 0.6,
@@ -65,28 +64,16 @@ class _PolicyModalState extends State<PolicyModal> {
             controller: _scrollController,
             data: widget.content,
             styleSheet: MarkdownStyleSheet(
-              h1: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textColor,
-              ),
-              h2: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textColor,
-              ),
-              p: const TextStyle(
+              h1: AppTextStyles.h1BoldNeutral(context),
+              h2: AppTextStyles.h2BoldNeutral(context),
+              p: AppTextStyles.body14(context),
+              listBullet: TextStyle(
                 fontSize: 14,
-                height: 1.6,
-                color: AppColors.textColor,
+                color: AppColors.textColor.adapt(context),
               ),
-              listBullet: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textColor,
-              ),
-              strong: const TextStyle(
+              strong: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: AppColors.textColor,
+                color: AppColors.textColor.adapt(context),
               ),
             ),
           ),
@@ -95,29 +82,27 @@ class _PolicyModalState extends State<PolicyModal> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text(
-            "Annuler",
-            style: TextStyle(color: AppColors.buttonWithoutBackGround),
+          style: TextButton.styleFrom(
+            foregroundColor: isDark ? AppColors.light : AppColors.dark,
           ),
+          child: Builder(builder: (context) => Text(context.l10n.cancel)),
         ),
-        ElevatedButton(
+        TextButton(
           onPressed: _hasScrolledToBottom
               ? () {
                   widget.onAccept();
                   Navigator.of(context).pop();
                 }
               : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: _hasScrolledToBottom
-                ? AppColors.fillButtonBackground
-                : AppColors.unclickable,
+          style: TextButton.styleFrom(
+            foregroundColor: isDark ? AppColors.light : AppColors.dark,
+            side: _hasScrolledToBottom && isDark
+                ? const BorderSide(color: AppColors.light)
+                : null,
           ),
-          child: Text(
-            _hasScrolledToBottom ? "J'accepte" : "Lisez d'abord le contenu",
-            style: TextStyle(
-              color: _hasScrolledToBottom
-                  ? AppColors.light
-                  : AppColors.light.withValues(alpha: 0.7),
+          child: Builder(
+            builder: (context) => Text(
+              context.l10n.driverCguAccept,
             ),
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../basic/primary_button.dart';
 import '../basic/secondary_button.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class ButtonRows {
   static Widget buttonRow({
@@ -61,22 +62,26 @@ class ButtonRows {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
-          child: PrimaryButton.primaryButton(
-            text: 'Je suis utilisateur',
-            onPressed: onUserPressed,
-            fontSize: 10,
-            borderRadius: 2,
-            padding: const EdgeInsets.symmetric(vertical: 15),
+          child: Builder(
+            builder: (context) => PrimaryButton.primaryButton(
+              text: context.l10n.stepRoleUser,
+              onPressed: onUserPressed,
+              fontSize: 10,
+              borderRadius: 2,
+              padding: const EdgeInsets.symmetric(vertical: 15),
+            ),
           ),
         ),
         SizedBox(width: spacing ?? 50),
         Expanded(
-          child: PrimaryButton.primaryButton(
-            text: 'Je suis un chauffeur',
-            onPressed: onDriverPressed,
-            fontSize: 10,
-            borderRadius: 2,
-            padding: const EdgeInsets.symmetric(vertical: 15),
+          child: Builder(
+            builder: (context) => PrimaryButton.primaryButton(
+              text: context.l10n.stepRoleDriver,
+              onPressed: onDriverPressed,
+              fontSize: 10,
+              borderRadius: 2,
+              padding: const EdgeInsets.symmetric(vertical: 15),
+            ),
           ),
         ),
       ],

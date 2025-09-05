@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:safe_driving/l10n/generated/app_localizations.dart';
 
@@ -55,7 +56,13 @@ extension AppLocalizationsX on BuildContext {
 }
 
 class LocaleProvider with ChangeNotifier {
+  static const String _prefsKey = 'app_locale';
+
   Locale _locale = L10n.defaultLocale;
+
+  LocaleProvider() {
+    _loadLocale();
+  }
 
   Locale get locale => _locale;
 
@@ -65,8 +72,10 @@ class LocaleProvider with ChangeNotifier {
     }
 
     _locale = locale;
-
     notifyListeners();
+
+    // Persist the chosen locale
+    _persistLocale(locale.languageCode);
   }
 
   void setLocaleFromCode(String languageCode) {
@@ -77,5 +86,27 @@ class LocaleProvider with ChangeNotifier {
     final currentIndex = L10n.supportedLocales.indexOf(_locale);
     final nextIndex = (currentIndex + 1) % L10n.supportedLocales.length;
     setLocale(L10n.supportedLocales[nextIndex]);
+  }
+
+  Future<void> _loadLocale() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final code = prefs.getString(_prefsKey);
+      if (code != null && L10n.isSupported(code)) {
+        _locale = Locale(code);
+        notifyListeners();
+      }
+    } catch (_) {
+      // Ignore loading errors; keep default locale
+    }
+  }
+
+  Future<void> _persistLocale(String code) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_prefsKey, code);
+    } catch (_) {
+      // Ignore persistence errors
+    }
   }
 }

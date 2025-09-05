@@ -1,6 +1,6 @@
-// KEEP your imports
 import 'package:safe_driving/features/authentication/services/session_service.dart';
-import 'package:safe_driving/api/graphql/graphql_client.dart';
+import 'package:safe_driving/api/graph-ql/graphql_client.dart';
+import 'package:safe_driving/api/graph-ql/client/graphql_config.dart';
 import '../../features/authentication/data/auth_data_source_interface.dart';
 import '../../features/authentication/data/auth_data_source_graphql.dart';
 import '../../features/authentication/services/auth_service.dart';
@@ -12,8 +12,16 @@ import '../../features/onboarding/driver/services/storage_service.dart';
 import '../../features/onboarding/driver/repositories/driver_repository.dart';
 import '../../features/onboarding/driver/data/driver_data_source_interface.dart';
 import '../../features/onboarding/driver/data/driver_data_source_graphql.dart';
+import '../../features/onboarding/driver/data/driver_data_source_local.dart';
 import '../../features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import '../../features/onboarding/driver/viewmodels/driver_summary_view_model.dart';
+import '../../features/onboarding/user/data/user_data_source_interface.dart';
+import '../../features/onboarding/user/data/user_data_source_graphql.dart';
+import '../../features/onboarding/user/repositories/user_onboarding_repository.dart';
+import '../../features/onboarding/user/core/interfaces/user_service_interface.dart';
+import '../../features/onboarding/user/services/user_service.dart';
+import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart';
+import 'package:safe_driving/core/theme/theme_controller.dart';
 
 typedef _FactoryFunc<T> = T Function();
 typedef _Disposer = void Function(dynamic);
@@ -30,7 +38,6 @@ class ServiceLocator {
   final Map<Type, _FactoryFunc<dynamic>> _factories = {};
   final Map<Type, _Disposer> _disposers = {};
 
-  //Registration
   void registerSingleton<T>(T instance, {void Function(T)? dispose}) {
     _ensureNotRegistered<T>();
     _services[T] = instance;
@@ -51,7 +58,6 @@ class ServiceLocator {
     _factories[T] = factory;
   }
 
-  //Retrieval
   T get<T>() {
     if (_services.containsKey(T)) return _services[T] as T;
 
@@ -73,7 +79,6 @@ class ServiceLocator {
     );
   }
 
-  //Utilities
   bool isRegistered<T>() =>
       _services.containsKey(T) ||
       _lazyFactories.containsKey(T) ||
@@ -119,41 +124,56 @@ class ServiceLocator {
     }
   }
 
-  //Wiring
   void setupDependencies() {
-    registerSingleton<GraphQLClientWrapper>(GraphQLClientWrapper.instance);
+    // Register GraphQL only if configured
+    if (GraphQLConfig.isConfigured) {
+      registerSingleton<GraphQLClientWrapper>(GraphQLClientWrapper.instance);
+      get<GraphQLClientWrapper>().configure(
+        onTokenRefresh: (newToken) {},
+        onError: (error) {},
+      );
+    }
 
-    get<GraphQLClientWrapper>().configure(
-      onTokenRefresh: (newToken) {},
-      onError: (error) {},
-    );
+    // Theme controller
+    registerLazySingleton<ThemeController>(() => ThemeController());
 
-    //Auth
-    registerLazySingleton<IAuthDataSource>(
-      () => AuthDataSourceGraphQL(get<GraphQLClientWrapper>()),
-    );
-
+    // Session service is always available
     registerLazySingleton<SessionService>(() => SessionService());
 
-    registerLazySingleton<UserRepository>(
-      () => UserRepository(get<GraphQLClientWrapper>()),
-    );
+    // Auth stack (only when GraphQL is configured)
+    if (GraphQLConfig.isConfigured) {
+      registerLazySingleton<IAuthDataSource>(
+        () => AuthDataSourceGraphQL(get<GraphQLClientWrapper>()),
+      );
 
-    registerLazySingleton<AuthService>(
-      () => AuthService(
-        get<IAuthDataSource>(),
-        get<SessionService>(),
-        get<UserRepository>(),
-      ),
-    );
+      registerLazySingleton<UserRepository>(
+        () => UserRepository(get<GraphQLClientWrapper>()),
+      );
 
-    registerFactory<AuthViewModel>(() => AuthViewModel(get<AuthService>()));
+      registerLazySingleton<AuthService>(
+        () => AuthService(
+          get<IAuthDataSource>(),
+          get<SessionService>(),
+          get<UserRepository>(),
+        ),
+      );
 
+      registerFactory<AuthViewModel>(() => AuthViewModel(get<AuthService>()));
+    }
+
+    // Storage service for local files
     registerLazySingleton<StorageService>(() => StorageService());
 
-    registerLazySingleton<IDriverDataSource>(
-      () => DriverDataSourceGraphQL(get<GraphQLClientWrapper>()),
-    );
+    // Driver data source: GraphQL when available, otherwise local
+    if (GraphQLConfig.isConfigured) {
+      registerLazySingleton<IDriverDataSource>(
+        () => DriverDataSourceGraphQL(get<GraphQLClientWrapper>()),
+      );
+    } else {
+      registerLazySingleton<IDriverDataSource>(
+        () => DriverDataSourceLocal(),
+      );
+    }
 
     registerLazySingleton<DriverRepository>(
       () => DriverRepository(get<IDriverDataSource>()),
@@ -169,6 +189,30 @@ class ServiceLocator {
 
     registerFactory<DriverSummaryViewModel>(
       () => DriverSummaryViewModel(get<IDriverService>()),
+    );
+
+    // User onboarding stack
+    if (GraphQLConfig.isConfigured) {
+      registerLazySingleton<IUserDataSource>(
+        () => UserDataSourceGraphQL(get<GraphQLClientWrapper>()),
+      );
+      registerLazySingleton<IUserOnboardingService>(
+        () => UserOnboardingService(get<IUserDataSource>()),
+      );
+    } else {
+      // Register a service without remote data source to allow UI to work offline / without backend
+      registerLazySingleton<IUserOnboardingService>(
+        () => UserOnboardingService(),
+      );
+    }
+
+    registerLazySingleton<UserOnboardingRepository>(
+      () => UserOnboardingRepository(service: get<IUserOnboardingService>()),
+    );
+
+    registerFactory<UserOnboardingViewModel>(
+      () =>
+          UserOnboardingViewModel(repository: get<UserOnboardingRepository>()),
     );
   }
 }

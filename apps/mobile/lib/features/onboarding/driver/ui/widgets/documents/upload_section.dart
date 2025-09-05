@@ -26,6 +26,7 @@ class UploadSection extends StatefulWidget {
 class _UploadSectionState extends State<UploadSection> {
   List<String> _uploadedDocuments = [];
   bool _isUploading = false;
+  bool _hasShownUploadSnack = false;
 
   @override
   void initState() {
@@ -66,10 +67,13 @@ class _UploadSectionState extends State<UploadSection> {
     final mockPath = 'upload_${DateTime.now().millisecondsSinceEpoch}.jpg';
     _addDocument(mockPath);
 
-    if (mounted) {
+    if (mounted && !_hasShownUploadSnack) {
+      // Show success only once after the first successful upload
+      ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Document téléchargé avec succès')),
       );
+      _hasShownUploadSnack = true;
     }
   }
 

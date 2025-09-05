@@ -23,9 +23,9 @@ class CameraInterfaceState extends State<CameraInterface> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.9,
-      decoration: const BoxDecoration(
-        color: AppColors.light,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: AppColors.light.adapt(context),
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
         ),
@@ -38,17 +38,17 @@ class CameraInterfaceState extends State<CameraInterface> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Capture de document',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textColor,
+                    color: AppColors.dark.adapt(context),
                     fontFamily: 'Inder',
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.close, color: AppColors.textColor),
+                  icon: Icon(Icons.close, color: AppColors.dark.adapt(context)),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -62,7 +62,7 @@ class CameraInterfaceState extends State<CameraInterface> {
               'Placez le document dans le carré et appuyez sur le bouton pour capturer',
               style: TextStyle(
                 fontSize: 14,
-                color: AppColors.textColor.withValues(alpha: 0.7),
+                color: AppColors.dark.adapt(context).withValues(alpha: 0.7),
                 fontFamily: 'Inder',
               ),
               textAlign: TextAlign.center,
@@ -74,7 +74,7 @@ class CameraInterfaceState extends State<CameraInterface> {
             flex: 1,
             child: Container(
               width: double.infinity,
-              color: AppColors.softBackgroundColor,
+              color: AppColors.softBackgroundColor.adapt(context),
               child: DriverCameraService(
                 onPictureTaken: widget.onPictureTaken,
                 title: 'Capture de document',

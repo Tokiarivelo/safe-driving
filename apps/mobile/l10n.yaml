@@ -31,5 +31,3 @@ preferred-supported-locales: ['en', 'fr']
 # Générer les méthodes nullables
 nullable-getter: true
 
-# Génération des paramètres synthétiques
-#synthetic-package: false

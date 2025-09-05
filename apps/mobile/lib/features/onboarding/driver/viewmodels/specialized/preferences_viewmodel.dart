@@ -53,7 +53,7 @@ class PreferencesViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> handleGpsPermission(BuildContext context) async {
+  Future<bool> handleGpsPermission(BuildContext context) async {
     final granted = await PermissionHandlers.handleGpsPermission(context);
     setGpsEnabled(granted);
     if (granted && context.mounted) {
@@ -62,6 +62,7 @@ class PreferencesViewModel extends ChangeNotifier {
         'Géolocalisation activée avec succès !',
       );
     }
+    return granted;
   }
 
   // Notifications methods
@@ -105,23 +106,30 @@ class PreferencesViewModel extends ChangeNotifier {
 
   // Language methods
   void setLanguage(String language) {
-    _selectedLanguage = language;
+    final code = _normalizeLanguage(language);
+    _selectedLanguage = code;
     notifyListeners();
   }
 
   void setSelectedLanguage(String language) {
-    _selectedLanguage = language;
+    final code = _normalizeLanguage(language);
+    _selectedLanguage = code;
     notifyListeners();
   }
 
   // Summary methods
   Map<String, String> getPreferencesSummary() {
+    final themeLabel = _selectedTheme == 'clair'
+        ? 'Clair'
+        : _selectedTheme == 'sombre'
+            ? 'Sombre'
+            : 'Automatique';
     return {
       'GPS': _gpsEnabled ? 'Activé' : 'Désactivé',
       'Notifications': _selectedNotifications.isNotEmpty
           ? _selectedNotifications.join(', ')
           : 'Aucune',
-      'Thème': _selectedTheme == 'clair' ? 'Clair' : 'Sombre',
+      'Thème': themeLabel,
       'Langue': _selectedLanguage == 'fr' ? 'Français' : 'Anglais',
     };
   }
@@ -141,6 +149,13 @@ class PreferencesViewModel extends ChangeNotifier {
     _selectedTheme = 'clair';
     _selectedLanguage = 'fr';
     notifyListeners();
+  }
+
+  String _normalizeLanguage(String language) {
+    final lower = language.toLowerCase();
+    if (lower == 'fr' || lower == 'français' || lower == 'francais') return 'fr';
+    if (lower == 'en' || lower == 'english' || lower == 'anglais') return 'en';
+    return 'fr';
   }
 
   void clearError() {

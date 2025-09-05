@@ -950,9 +950,48 @@
   "@driverCompleteQrCodeInstructions": {
     "description": "Instructions QR code"
   },
-
   "driverCompleteThankYou": "Thank you for being part of the Safe Driving community. We wish you safe travels!",
   "@driverCompleteThankYou": {
     "description": "Message de remerciement final"
+  },
+
+  "sendCode": "Send code",
+  "@sendCode": {
+    "description": "Bouton envoyer le code (mot de passe oublié)"
+  },
+
+  "resetCodeSent": "A reset code has been sent to your email address",
+  "@resetCodeSent": {
+    "description": "Message succès: code de réinitialisation envoyé"
+  },
+
+  "readAndAcceptTerms": "Read and accept the Terms",
+  "@readAndAcceptTerms": {
+    "description": "Texte: lire et accepter les CGU"
+  },
+
+  "readAndAcceptPolicy": "Read and accept the policy",
+  "@readAndAcceptPolicy": {
+    "description": "Texte: lire et accepter la politique de confidentialité"
+  },
+
+  "registrationSuccess": "Registration successful! You can now sign in.",
+  "@registrationSuccess": {
+    "description": "Succès inscription"
+  },
+
+  "registrationError": "Error during registration",
+  "@registrationError": {
+    "description": "Erreur lors de l'inscription"
+  },
+
+  "googleSignInNotImplemented": "Google sign-in not implemented yet",
+  "@googleSignInNotImplemented": {
+    "description": "Message: Google Sign-In non implémenté"
+  },
+
+  "facebookSignInNotImplemented": "Facebook sign-in not implemented yet",
+  "@facebookSignInNotImplemented": {
+    "description": "Message: Facebook Sign-In non implémenté"
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/chips.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
@@ -33,27 +34,22 @@ class StepFiveView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          stepContent.title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AppColors.buttonWithoutBackGround,
-          ),
-        ),
+        Text(stepContent.title, style: AppTextStyles.h1(context)),
         const SizedBox(height: 8),
         Text(
           stepContent.subtitle,
-          style: TextStyle(
-            color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
+          style: AppTextStyles.body14(context).copyWith(
+            color: AppColors.buttonWithoutBackGround.adapt(context).withValues(alpha: 0.75),
           ),
         ),
         const SizedBox(height: 16),
 
         // Thème
-        Text(
-          themeLabel,
-          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        Builder(
+          builder: (context) => Text(
+            themeLabel,
+            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+          ),
         ),
         Row(
           children: [
@@ -73,15 +69,17 @@ class StepFiveView extends StatelessWidget {
 
         const SizedBox(height: 16),
 
-        Text(
-          transportLabel,
-          style: const TextStyle(color: AppColors.buttonWithoutBackGround),
+        Builder(
+          builder: (context) => Text(
+            transportLabel,
+            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+          ),
         ),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: AppColors.fillButtonBackground.withValues(alpha: 0.3),
+              color: AppColors.fillButtonBackground.adapt(context).withValues(alpha: 0.3),
               width: 1,
             ),
             borderRadius: BorderRadius.circular(8),
@@ -96,8 +94,8 @@ class StepFiveView extends StatelessWidget {
                 label: mode,
                 selected: isSelected,
                 onSelected: (selected) => onTransportChanged(mode, selected),
-                selectedLabelColor: AppColors.light,
-                labelColor: AppColors.buttonWithoutBackGround,
+                selectedLabelColor: AppColors.light.adapt(context),
+                labelColor: AppColors.buttonWithoutBackGround.adapt(context),
               );
             }).toList(),
           ),

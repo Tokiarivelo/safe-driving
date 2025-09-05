@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
@@ -31,69 +31,67 @@ class StepSevenView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
-              fontFamily: 'Inder',
-            ),
+            style: AppTextStyles.h1(
+              context,
+            ).copyWith(fontSize: 24, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 16),
           Text(
             step.description!,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.textColor.withAlpha(180),
+            style: AppTextStyles.body16(context).copyWith(
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.75),
               height: 1.5,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 32),
 
           const Spacer(),
 
-          Column(
-            children: [
-              Row(
+          AnimatedBuilder(
+            animation: coordinator.preferencesViewModel,
+            builder: (_, _) {
+              final groupValue = coordinator.preferencesViewModel.gpsEnabled
+                  ? "Autoriser"
+                  : "Plus tard";
+              return Column(
                 children: [
-                  Expanded(
-                    child: SwitchesAndRadios.customRadio<String>(
-                      title: "Plus tard",
-                      value: "Plus tard",
-                      groupValue: coordinator.preferencesViewModel.gpsEnabled
-                          ? "Autoriser"
-                          : "Plus tard",
-                      onChanged: (value) => coordinator.preferencesViewModel.setGpsEnabled(false),
-                      titleColor: AppColors.fillButtonBackground,
-                      activeColor: AppColors.fillButtonBackground,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SwitchesAndRadios.customRadio<String>(
+                          title: "Plus tard",
+                          value: "Plus tard",
+                          groupValue: groupValue,
+                          onChanged: (value) => coordinator.preferencesViewModel
+                              .setGpsEnabled(false),
+                        ),
+                      ),
+                      Expanded(
+                        child: SwitchesAndRadios.customRadio<String>(
+                          title: "Autoriser",
+                          value: "Autoriser",
+                          groupValue: groupValue,
+                          onChanged: (value) => coordinator.preferencesViewModel
+                              .handleGpsPermission(context),
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    child: SwitchesAndRadios.customRadio<String>(
-                      title: "Autoriser",
-                      value: "Autoriser",
-                      groupValue: coordinator.preferencesViewModel.gpsEnabled
-                          ? "Autoriser"
-                          : "Plus tard",
-                      onChanged: (value) =>
-                          coordinator.preferencesViewModel.handleGpsPermission(context),
-                      titleColor: AppColors.fillButtonBackground,
-                      activeColor: AppColors.fillButtonBackground,
+                  const SizedBox(height: 32),
+                  PrimaryButton.primaryButton(
+                    text: "Continuer",
+                    onPressed: onContinue,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 40,
                     ),
                   ),
                 ],
-              ),
-              const SizedBox(height: 32),
-              PrimaryButton.primaryButton(
-                text: "Continuer",
-                onPressed: onContinue,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 40,
-                ),
-              ),
-            ],
+              );
+            },
           ),
         ],
       ),

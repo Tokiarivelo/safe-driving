@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 
 class DriverStepIndicator extends StatelessWidget {
-  final int currentStep;
+  final int currentStep; // 1-based index (1..totalSteps)
   final int totalSteps;
 
   const DriverStepIndicator({
@@ -15,12 +15,21 @@ class DriverStepIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [_buildCircularProgress()],
+      children: [_buildCircularProgress(context)],
     );
   }
 
-  Widget _buildCircularProgress() {
-    final progress = (currentStep + 1) / (totalSteps + 1);
+  Widget _buildCircularProgress(BuildContext context) {
+    // Progress should start at 0% on the first step and reach 100% on the last step.
+    // currentStep is 1-based, so use (currentStep - 1) / (totalSteps - 1).
+    double progress;
+    if (totalSteps <= 1) {
+      progress = 0.0;
+    } else {
+      progress = (currentStep - 1) / (totalSteps - 1);
+    }
+    // Clamp just in case
+    progress = progress.clamp(0.0, 1.0);
 
     return SizedBox(
       width: 50,
@@ -32,9 +41,9 @@ class DriverStepIndicator extends StatelessWidget {
           Container(
             width: 50,
             height: 50,
-            decoration: BoxDecoration(
+              decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.light.withValues(alpha: 0.2),
+              color: AppColors.light.adapt(context).withValues(alpha: 0.2),
             ),
           ),
           // Progress circle
@@ -44,15 +53,15 @@ class DriverStepIndicator extends StatelessWidget {
             child: CircularProgressIndicator(
               value: progress,
               strokeWidth: 3,
-              backgroundColor: AppColors.light.withValues(alpha: 0.3),
-              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.light),
+              backgroundColor: AppColors.light.adapt(context).withValues(alpha: 0.3),
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors.light.adapt(context)),
             ),
           ),
-          // Step text
+          // Step text (displayed from 2 to 13 as per spec)
           Text(
             '${currentStep + 1}',
-            style: const TextStyle(
-              color: AppColors.light,
+            style: TextStyle(
+              color: AppColors.light.adapt(context),
               fontSize: 16,
               fontWeight: FontWeight.bold,
               fontFamily: 'Inder',

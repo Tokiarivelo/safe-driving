@@ -11,7 +11,8 @@ class OnboardingFlowViewModel extends ChangeNotifier {
   int get currentStep => _currentStep;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
-  List<DriverOnboardingStepModel> get steps => DriverOnboardingData.getDriverSteps();
+  List<DriverOnboardingStepModel> get steps =>
+      DriverOnboardingData.getDriverSteps();
 
   void _setLoading(bool loading) {
     _isLoading = loading;

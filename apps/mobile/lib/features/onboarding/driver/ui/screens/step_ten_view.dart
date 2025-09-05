@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/modals/policy_modal.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/specialized/elegant_acceptance_button.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class StepTenView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -32,22 +33,17 @@ class StepTenView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
-              fontFamily: 'Inder',
-            ),
+            style: AppTextStyles.h1(
+              context,
+            ).copyWith(fontSize: 24, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 16),
           Text(
             step.description!,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.textColor.withAlpha(180),
+            style: AppTextStyles.body16(context).copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
               height: 1.5,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 32),
@@ -55,16 +51,16 @@ class StepTenView extends StatelessWidget {
           Column(
             children: [
               ElegantAcceptanceButton.elegantAcceptanceButton(
-                text: "Conditions Générales d'Utilisation",
-                subtitle: "Lire et accepter les CGU",
+                text: context.l10n.driverCguTitle,
+                subtitle: context.l10n.readAndAcceptTerms,
                 isAccepted: coordinator.legalViewModel.cguAccepted[0],
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (context) {
                       return PolicyModal(
-                        titleContent: coordinator.legalViewModel.getCguTitle(),
-                        content: coordinator.legalViewModel.getCguContent(),
+                        titleContent: context.l10n.driverCguTitle,
+                        content: coordinator.legalViewModel.getCguContent(context),
                         onAccept: () {
                           coordinator.legalViewModel.setCguAccepted(0, true);
                         },
@@ -75,17 +71,17 @@ class StepTenView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ElegantAcceptanceButton.elegantAcceptanceButton(
-                text: "Politique de Confidentialité",
-                subtitle: "Lire et accepter la politique",
+                text: context.l10n.driverPrivacyTitle,
+                subtitle: context.l10n.readAndAcceptPolicy,
                 isAccepted: coordinator.legalViewModel.cguAccepted[1],
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (context) {
                       return PolicyModal(
-                        titleContent: coordinator.legalViewModel.getPrivacyPolicyTitle(),
+                        titleContent: context.l10n.driverPrivacyTitle,
                         content: coordinator.legalViewModel
-                            .getPrivacyPolicyContent(),
+                            .getPrivacyPolicyContent(context),
                         onAccept: () {
                           coordinator.legalViewModel.setCguAccepted(1, true);
                         },
@@ -99,7 +95,7 @@ class StepTenView extends StatelessWidget {
                 (accepted) => accepted,
               ))
                 PrimaryButton.nextButton(
-                  text: "Continuer",
+                  text: context.l10n.next,
                   onPressed: onContinue,
                   padding: const EdgeInsets.symmetric(
                     vertical: 16,

@@ -10,24 +10,31 @@ class ActionButtonBuilder {
     required String buttonText,
     required VoidCallback onPressed,
   }) {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.fillButtonBackground,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        ),
-        child: Text(
-          buttonText,
-          style: const TextStyle(
-            fontFamily: 'Inder',
-            color: AppColors.titleColor,
-            fontSize: 13,
+    return Builder(
+      builder: (context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        return SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor:
+                  isDark ? AppColors.color1 : AppColors.fillButtonBackground,
+              shape:
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+            ),
+            child: Text(
+              buttonText,
+              style: const TextStyle(
+                fontFamily: 'Inder',
+                color: AppColors.light,
+                fontSize: 13,
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -153,6 +160,7 @@ class _AnimatedAuthContentState extends State<_AnimatedAuthContent>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SlideTransition(
       position: _slideAnimation,
       child: FadeTransition(
@@ -170,11 +178,13 @@ class _AnimatedAuthContentState extends State<_AnimatedAuthContent>
             ),
             SizedBox(height: widget.isSmallScreen ? 12 : 16),
             if (!widget.isForgotPassword) ...[
-              Text(
-                widget.stepData.socialText,
-                style: const TextStyle(
-                  fontFamily: 'Inder',
-                  color: AppColors.textColor,
+              Builder(
+                builder: (context) => Text(
+                  widget.stepData.socialText,
+                  style: TextStyle(
+                    fontFamily: 'Inder',
+                    color: isDark ? AppColors.light : AppColors.textColor.adapt(context),
+                  ),
                 ),
               ),
               SizedBox(height: widget.isSmallScreen ? 10 : 15),
@@ -184,6 +194,7 @@ class _AnimatedAuthContentState extends State<_AnimatedAuthContent>
               ),
               SizedBox(height: widget.isSmallScreen ? 15 : 20),
               NavigationLinksBuilder.buildNavigationLink(
+                context: context,
                 stepData: widget.stepData,
                 onTap: widget.isLogin
                     ? widget.onNavigateToRegister

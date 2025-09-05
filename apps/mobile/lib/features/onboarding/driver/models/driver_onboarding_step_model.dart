@@ -24,7 +24,7 @@ class DriverOnboardingStepModel extends OnboardingStepBase {
   });
 
   @override
-  int get totalSteps => 14; // Driver onboarding has 14 steps
+  int get totalSteps => 12; // Driver onboarding has 12 steps
 
   @override
   DriverOnboardingStepModel copyWith({

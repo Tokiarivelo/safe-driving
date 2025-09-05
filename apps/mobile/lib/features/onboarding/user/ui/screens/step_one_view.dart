@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import '../../models/user_onboarding_data.dart';
 
@@ -20,19 +20,14 @@ class StepTwoView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          stepContent.title,
-          style: const TextStyle(
-            color: AppColors.buttonWithoutBackGround,
-            fontWeight: FontWeight.w800,
-            fontSize: 18,
-          ),
-        ),
+        Text(stepContent.title, style: AppTextStyles.h2(context)),
         const SizedBox(height: 8),
         Text(
           stepContent.subtitle,
-          style: TextStyle(
-            color: AppColors.buttonWithoutBackGround.withValues(alpha: 0.75),
+          style: AppTextStyles.body14(context).copyWith(
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.75),
           ),
           textAlign: TextAlign.center,
         ),

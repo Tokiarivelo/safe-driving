@@ -24,14 +24,16 @@ class DriverCommonButton extends StatelessWidget {
         text: text,
         onPressed: onPressed,
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
-        icon: icon != null ? Icon(icon, color: AppColors.light) : null,
+        icon: icon != null ? Icon(icon, color: AppColors.light.adapt(context)) : null,
       );
     }
     return SecondaryButton.secondaryButton(
       text: text,
       onPressed: onPressed,
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
-      icon: icon != null ? Icon(icon, color: AppColors.buttonWithoutBackGround) : null,
+      icon: icon != null
+          ? Icon(icon, color: AppColors.buttonWithoutBackGround.adapt(context))
+          : null,
     );
   }
 }

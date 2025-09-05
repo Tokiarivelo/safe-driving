@@ -1,9 +1,9 @@
 import 'package:safe_driving/features/authentication/models/change_password_request_model.dart';
 import 'package:safe_driving/features/authentication/models/reset_password_request_model.dart';
 import 'package:safe_driving/features/authentication/models/update_profile_request_model.dart';
-import 'package:safe_driving/api/graphql/graphql_client.dart';
-import '../../../api/graphql/mutations.dart';
-import '../../../api/graphql/queries.dart';
+import 'package:safe_driving/api/graph-ql/graphql_client.dart';
+import '../../../api/graph-ql/mutations.dart';
+import '../../../api/graph-ql/queries.dart';
 
 import 'auth_data_source_interface.dart';
 import '../models/auth_request.dart';

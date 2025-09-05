@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/controls/driver_pagination_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
 
@@ -21,7 +20,8 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
       GlobalKey<DriverPaginationWidgetState>();
 
   void _navigateToStep(int stepIndex, DriverOnboardingCoordinator coordinator) {
-    _paginationKey.currentState?.goToStep(stepIndex);
+
+    _paginationKey.currentState?.goToStep(stepIndex + 1);
     coordinator.goToStep(stepIndex);
   }
 
@@ -34,14 +34,13 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
 
         return Scaffold(
           body: Container(
-            decoration: ColorsWidget.background,
+            decoration: ColorsWidget.background(context),
             child: DriverPaginationWidget(
               key: _paginationKey,
               totalSteps: coordinator.steps.length,
               contentBuilder: (currentStep, nextStep, previousStep) {
                 return Stack(
                   children: [
-                    // Header with logo and progress
                     Positioned(
                       top: 0,
                       left: 0,
@@ -49,7 +48,7 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                       height: headerHeight,
                       child: Container(
                         width: double.infinity,
-                        decoration: ColorsWidget.background,
+                        decoration: ColorsWidget.background(context),
                         child: SafeArea(
                           child: Column(
                             children: [
@@ -65,10 +64,10 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                                 ),
                               ),
 
-                              Transform.translate(
-                                offset: const Offset(0, -12),
-                                child: Expanded(
-                                  flex: 1,
+                              Expanded(
+                                flex: 1,
+                                child: Transform.translate(
+                                  offset: const Offset(0, -12),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 24,
@@ -97,10 +96,15 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                           topRight: Radius.circular(24),
                         ),
                         child: Container(
-                          color: AppColors.secondBackgroundColor,
-                          child: _paginationKey.currentState?.pageController != null
+                          color: ColorsWidget.surface(context),
+                          child:
+                              _paginationKey.currentState?.pageController !=
+                                  null
                               ? PageView.builder(
-                                  controller: _paginationKey.currentState!.pageController,
+                                  controller: _paginationKey
+                                      .currentState!
+                                      .pageController,
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: coordinator.steps.length,
                                   itemBuilder: (context, index) {
                                     return SingleChildScrollView(
@@ -117,7 +121,9 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                                     );
                                   },
                                 )
-                              : const Center(child: CircularProgressIndicator()),
+                              : const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
                         ),
                       ),
                     ),

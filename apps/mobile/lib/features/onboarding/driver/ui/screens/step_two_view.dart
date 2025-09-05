@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
@@ -32,22 +33,18 @@ class StepTwoView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: AppTextStyles.h1(context).copyWith(
               fontSize: 24,
               fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 16),
           Text(
             step.description ?? '',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.textColor.withAlpha(180),
+            style: AppTextStyles.body16(context).copyWith(
+              color: AppColors.textColor.adapt(context).withAlpha(180),
               height: 1.5,
-              fontFamily: 'Inder',
             ),
           ),
           const SizedBox(height: 24),
@@ -60,6 +57,8 @@ class StepTwoView extends StatelessWidget {
             showLabel: true,
             backgroundColor: AppColors.inputTextBackground,
             controller: coordinator.personalInfoViewModel.nameController,
+            readOnly: true,
+            enabled: false,
             onChanged: (value) => {},
             validator: (value) =>
                 RegexFormatter.getNameValidationMessage(value!),
@@ -74,6 +73,8 @@ class StepTwoView extends StatelessWidget {
             controller: coordinator.personalInfoViewModel.emailController,
             showLabel: true,
             backgroundColor: AppColors.inputTextBackground,
+            readOnly: true,
+            enabled: false,
           ),
           const SizedBox(height: 16),
 

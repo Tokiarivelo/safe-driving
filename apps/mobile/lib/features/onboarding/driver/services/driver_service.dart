@@ -47,7 +47,7 @@ class DriverService implements IDriverService {
     if (!validatePersonalInfo(personalInfo)) {
       throw ArgumentError('Invalid personal info data');
     }
-    
+
     try {
       await _repository.savePersonalInfo(
         userId: 'temp_user_id',
@@ -173,15 +173,54 @@ class DriverService implements IDriverService {
   }
 
   @override
+  int getPersonalUploadedPhotosCount() {
+    try {
+   
+      final types = <String>[
+        'carteIdentiteRecto', 'carte_identite_recto',
+        'carteIdentiteVerso', 'carte_identite_verso',
+        'permisConduire', 'permis_conduire',
+        StorageService.selfieType,
+      ];
+      int total = 0;
+      for (final t in types) {
+        total += _storageService.getPhotosForType(t).length;
+      }
+      return total;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  @override
+  int getVehicleUploadedPhotosCount() {
+    try {
+   
+      final types = <String>[
+        'certificatImmatriculation', 'certificat_immatriculation',
+        'attestationAssurance', 'attestation_assurance',
+        'photosVehicule', 'photos_vehicule',
+      ];
+      int total = 0;
+      for (final t in types) {
+        total += _storageService.getPhotosForType(t).length;
+      }
+      return total;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  @override
   bool validatePersonalInfo(Map<String, dynamic> data) {
     final name = data['name']?.toString() ?? '';
     final email = data['email']?.toString() ?? '';
     final phone = data['phone']?.toString() ?? '';
-    
+
     if (name.isEmpty || name.length < 2) return false;
     if (email.isEmpty || !_isValidEmail(email)) return false;
     if (phone.isEmpty || phone.length < 10) return false;
-    
+
     return true;
   }
 
@@ -190,11 +229,11 @@ class DriverService implements IDriverService {
     final marque = data['marque']?.toString() ?? '';
     final modele = data['modele']?.toString() ?? '';
     final immatriculation = data['immatriculation']?.toString() ?? '';
-    
+
     if (marque.isEmpty || marque.length < 2) return false;
     if (modele.isEmpty || modele.length < 2) return false;
     if (immatriculation.isEmpty || immatriculation.length < 6) return false;
-    
+
     return true;
   }
 

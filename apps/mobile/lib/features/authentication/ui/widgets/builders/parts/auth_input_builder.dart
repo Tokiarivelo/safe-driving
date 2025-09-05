@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 import 'input_builder.dart';
 
 class AuthInputBuilder {
@@ -36,68 +37,80 @@ class AuthInputBuilder {
       key: ValueKey(fieldsState),
       children: [
         if (!isForgotPassword) ...[
-          InputBuilder.buildInputFieldWithValidation(
-            hint: isLogin ? "Email ou Nom d'utilisateur" : "Nom",
-            icon: isLogin ? Icons.person_outline : Icons.badge_outlined,
-            controller: isLogin ? emailController : firstNameController,
-            errorMessage: isLogin ? null : firstNameError,
-            onChanged: (value) {
-              if (!isLogin) {
-                onFirstNameChanged(value);
-              }
-            },
-            isSmallScreen: isSmallScreen,
-          ),
-          if (!isLogin)
-            InputBuilder.buildInputFieldWithValidation(
-              hint: "Prénom",
-              icon: Icons.badge_outlined,
-              controller: lastNameController,
-              errorMessage: lastNameError,
-              onChanged: onLastNameChanged,
+          Builder(
+            builder: (context) => InputBuilder.buildInputFieldWithValidation(
+              hint: isLogin ? context.l10n.emailOrUsername : context.l10n.firstName,
+              icon: isLogin ? Icons.person_outline : Icons.badge_outlined,
+              controller: isLogin ? emailController : firstNameController,
+              errorMessage: isLogin ? null : firstNameError,
+              onChanged: (value) {
+                if (!isLogin) {
+                  onFirstNameChanged(value);
+                }
+              },
               isSmallScreen: isSmallScreen,
             ),
+          ),
           if (!isLogin)
-            InputBuilder.buildInputFieldWithValidation(
-              hint: "Email",
+            Builder(
+              builder: (context) => InputBuilder.buildInputFieldWithValidation(
+                hint: context.l10n.lastName,
+                icon: Icons.badge_outlined,
+                controller: lastNameController,
+                errorMessage: lastNameError,
+                onChanged: onLastNameChanged,
+                isSmallScreen: isSmallScreen,
+              ),
+            ),
+          if (!isLogin)
+            Builder(
+              builder: (context) => InputBuilder.buildInputFieldWithValidation(
+                hint: context.l10n.email,
+                icon: Icons.email_outlined,
+                controller: emailController,
+                errorMessage: emailError,
+                onChanged: onEmailChanged,
+                isSmallScreen: isSmallScreen,
+              ),
+            ),
+          Builder(
+            builder: (context) => InputBuilder.buildInputFieldWithValidation(
+              hint: context.l10n.password,
+              icon: Icons.lock_outlined,
+              obscureText: true,
+              isPassword: true,
+              controller: passwordController,
+              errorMessage: passwordError,
+              onChanged: onPasswordChanged,
+              isSmallScreen: isSmallScreen,
+            ),
+          ),
+          if (!isLogin)
+            Builder(
+              builder: (context) => InputBuilder.buildInputFieldWithValidation(
+                hint: context.l10n.confirmPassword,
+                icon: Icons.lock_outlined,
+                obscureText: true,
+                isConfirmPassword: true,
+                controller: confirmPasswordController,
+                errorMessage: confirmPasswordError,
+                onChanged: onConfirmPasswordChanged,
+                isSmallScreen: isSmallScreen,
+              ),
+            ),
+          SizedBox(height: isSmallScreen ? 2 : 5),
+          if (isLogin) _buildForgotPasswordLink(onForgotPassword),
+        ],
+        if (isForgotPassword) ...[
+          Builder(
+            builder: (context) => InputBuilder.buildInputFieldWithValidation(
+              hint: context.l10n.email,
               icon: Icons.email_outlined,
               controller: emailController,
               errorMessage: emailError,
               onChanged: onEmailChanged,
               isSmallScreen: isSmallScreen,
             ),
-          InputBuilder.buildInputFieldWithValidation(
-            hint: "Mot de passe",
-            icon: Icons.lock_outlined,
-            obscureText: true,
-            isPassword: true,
-            controller: passwordController,
-            errorMessage: passwordError,
-            onChanged: onPasswordChanged,
-            isSmallScreen: isSmallScreen,
-          ),
-          if (!isLogin)
-            InputBuilder.buildInputFieldWithValidation(
-              hint: "Confirmer le mot de passe",
-              icon: Icons.lock_outlined,
-              obscureText: true,
-              isConfirmPassword: true,
-              controller: confirmPasswordController,
-              errorMessage: confirmPasswordError,
-              onChanged: onConfirmPasswordChanged,
-              isSmallScreen: isSmallScreen,
-            ),
-          SizedBox(height: isSmallScreen ? 2 : 5),
-          if (isLogin) _buildForgotPasswordLink(onForgotPassword),
-        ],
-        if (isForgotPassword) ...[
-          InputBuilder.buildInputFieldWithValidation(
-            hint: "Adresse email",
-            icon: Icons.email_outlined,
-            controller: emailController,
-            errorMessage: emailError,
-            onChanged: onEmailChanged,
-            isSmallScreen: isSmallScreen,
           ),
         ],
       ],
@@ -105,9 +118,11 @@ class AuthInputBuilder {
   }
 
   static Widget _buildForgotPasswordLink(VoidCallback? onTap) {
-    return InputBuilder.buildForgotPasswordLink(
-      forgotText: "Mot de passe oublié ?",
-      onTap: onTap,
+    return Builder(
+      builder: (context) => InputBuilder.buildForgotPasswordLink(
+        forgotText: context.l10n.forgotPassword,
+        onTap: onTap,
+      ),
     );
   }
 }

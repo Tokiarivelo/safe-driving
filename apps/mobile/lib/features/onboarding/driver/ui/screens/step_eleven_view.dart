@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_summary_view_model.dart';
 import 'package:safe_driving/shared/state_management/service_locator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class StepElevenView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -23,13 +25,69 @@ class StepElevenView extends StatelessWidget {
     required this.onNavigateToStep,
   });
 
+  String _localizeFieldLabel(BuildContext context, String fieldKey) {
+    switch (fieldKey) {
+      case 'Nom':
+        return context.l10n.driverSummaryPersonalInfoName;
+      case 'E-mail':
+        return context.l10n.driverSummaryPersonalInfoEmail;
+      case 'Téléphone':
+        return context.l10n.driverSummaryPersonalInfoPhone;
+      case 'Photos uploadées':
+        return context.l10n.driverSummaryPersonalInfoPhotos;
+      case 'Type':
+        return context.l10n.driverSummaryVehicleType;
+      case 'Marque':
+        return context.l10n.driverSummaryVehicleBrand;
+      case 'Modèle':
+        return context.l10n.driverSummaryVehicleModel;
+      case 'Immatriculation':
+        return context.l10n.driverSummaryVehicleRegistration;
+      case 'Nombre de places':
+        return context.l10n.driverSummaryVehicleSeats;
+      case 'GPS':
+        return context.l10n.driverSummaryGps;
+      case 'Notifications':
+        return context.l10n.driverSummaryNotifications;
+      case 'Thème':
+        return context.l10n.driverSummaryTheme;
+      case 'Langue':
+        return context.l10n.driverSummaryLanguage;
+      default:
+        return fieldKey;
+    }
+  }
+
+  String _localizeSectionTitle(BuildContext context, String sectionKey) {
+    switch (sectionKey) {
+      case 'Informations personnelles':
+      case 'Infos personnelles':
+        return context.l10n.driverSummaryPersonalInfo;
+      case 'Véhicule':
+        return context.l10n.driverSummaryVehicle;
+      case 'GPS & Notifications':
+        return context.l10n.driverSummaryGpsNotifications;
+      case 'Préférences':
+        return context.l10n.driverSummaryPreferences;
+      default:
+        return sectionKey;
+    }
+  }
+
   Widget _buildResumeElement(
+    BuildContext context,
     DriverSummaryViewModel summaryViewModel,
     String element,
     String sectionTitle,
   ) {
+    final displayLabel = _localizeFieldLabel(context, element);
     if (element == 'Photos uploadées') {
-      final totalPhotos = summaryViewModel.getTotalUploadedPhotosCount();
+    
+      final isVehicle = sectionTitle == 'Véhicule';
+      final totalPhotos = isVehicle
+          ? coordinator.documentUploadViewModel.getVehicleUploadedPhotosCount()
+          : coordinator.documentUploadViewModel.getPersonalUploadedPhotosCount();
+      final photosStepIndex = isVehicle ? 4 : 2;
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: Row(
@@ -37,17 +95,39 @@ class StepElevenView extends StatelessWidget {
             Icon(
               summaryViewModel.getFieldIcon(element),
               size: 16,
-              color: AppColors.fillButtonBackground,
+              color: AppColors.light,
             ),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                '$element : $totalPhotos',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textColor.withAlpha(200),
-                  fontFamily: 'Inder',
+                '$displayLabel : $totalPhotos',
+                style: AppTextStyles.body14(context).copyWith(
+                  color: AppColors.light,
                 ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: AppColors.backgroundSecondary,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.light,
+                  width: 1,
+                ),
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  size: 16,
+                  color: AppColors.light,
+                ),
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  onNavigateToStep(photosStepIndex);
+                },
               ),
             ),
           ],
@@ -57,7 +137,6 @@ class StepElevenView extends StatelessWidget {
 
     final summaryData = coordinator.getSummaryData();
     final fieldValue = summaryViewModel.getFieldValue(element, summaryData);
-    final stepIndex = summaryViewModel.getStepIndexForField(element);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -66,7 +145,7 @@ class StepElevenView extends StatelessWidget {
           Icon(
             summaryViewModel.getFieldIcon(element),
             size: 16,
-            color: AppColors.fillButtonBackground,
+            color: AppColors.light,
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -74,51 +153,22 @@ class StepElevenView extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: '$element: ',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textColor.withAlpha(200),
-                      fontFamily: 'Inder',
+                    text: '$displayLabel: ',
+                    style: AppTextStyles.body14(context).copyWith(
+                      color: AppColors.light,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   TextSpan(
                     text: fieldValue,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textColor.withAlpha(160),
-                      fontFamily: 'Inder',
+                    style: AppTextStyles.body14(context).copyWith(
+                      color: AppColors.light,
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(width: 8),
-          if (element != 'Photos uploadées')
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: AppColors.fillButtonBackground.withAlpha(20),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: AppColors.fillButtonBackground.withAlpha(100),
-                  width: 1,
-                ),
-              ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.edit,
-                  size: 16,
-                  color: AppColors.fillButtonBackground,
-                ),
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  onNavigateToStep(stepIndex);
-                },
-              ),
-            ),
         ],
       ),
     );
@@ -140,12 +190,12 @@ class StepElevenView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 20),
-                _buildHeader(),
+                _buildHeader(context),
                 const SizedBox(height: 24),
-                _buildSummaryContent(summaryViewModel, resumeData),
+                _buildSummaryContent(context, summaryViewModel, resumeData),
                 const SizedBox(height: 16),
-                _buildActionButton(summaryViewModel),
-                _buildErrorMessage(summaryViewModel),
+                _buildActionButton(context, summaryViewModel),
+                _buildErrorMessage(context, summaryViewModel),
               ],
             ),
           );
@@ -154,28 +204,25 @@ class StepElevenView extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Column(
       children: [
         Text(
           step.title,
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: AppTextStyles.h1(context).copyWith(
             fontSize: 24,
             fontWeight: FontWeight.w600,
-            color: AppColors.textColor,
-            fontFamily: 'Inder',
+            color: AppColors.light,
           ),
         ),
         const SizedBox(height: 16),
         Text(
           step.description ?? '',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            color: AppColors.textColor.withAlpha(180),
+          style: AppTextStyles.body16(context).copyWith(
             height: 1.5,
-            fontFamily: 'Inder',
+            color: AppColors.light,
           ),
         ),
       ],
@@ -183,6 +230,7 @@ class StepElevenView extends StatelessWidget {
   }
 
   Widget _buildSummaryContent(
+    BuildContext context,
     DriverSummaryViewModel summaryViewModel,
     List<Map<String, dynamic>> resumeData,
   ) {
@@ -194,7 +242,7 @@ class StepElevenView extends StatelessWidget {
             final titre = section['titre'] as String;
             final elements = section['elements'] as List<String>;
 
-            return _buildSectionContainer(summaryViewModel, titre, elements);
+            return _buildSectionContainer(context, summaryViewModel, titre, elements);
           }).toList(),
         ),
       ),
@@ -202,6 +250,7 @@ class StepElevenView extends StatelessWidget {
   }
 
   Widget _buildSectionContainer(
+    BuildContext context,
     DriverSummaryViewModel summaryViewModel,
     String titre,
     List<String> elements,
@@ -210,20 +259,20 @@ class StepElevenView extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.inputTextBackground.withAlpha(50),
+        color: AppColors.backgroundSecondary,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.fillButtonBackground.withAlpha(100),
+          color: AppColors.light,
           width: 1,
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader(summaryViewModel, titre),
+          _buildSectionHeader(context, summaryViewModel, titre),
           const SizedBox(height: 12),
           ...elements.map<Widget>((element) {
-            return _buildResumeElement(summaryViewModel, element, titre);
+            return _buildResumeElement(context, summaryViewModel, element, titre);
           }),
         ],
       ),
@@ -231,43 +280,70 @@ class StepElevenView extends StatelessWidget {
   }
 
   Widget _buildSectionHeader(
+    BuildContext context,
     DriverSummaryViewModel summaryViewModel,
     String titre,
   ) {
+    final stepIndex = summaryViewModel.getStepIndexForSection(titre);
+    final displayTitle = _localizeSectionTitle(context, titre);
     return Row(
       children: [
         Icon(
           summaryViewModel.getSectionIcon(titre),
           size: 20,
-          color: AppColors.fillButtonBackground,
+          color: AppColors.light,
         ),
         const SizedBox(width: 8),
-        Text(
-          titre,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textColor,
-            fontFamily: 'Inder',
+        Expanded(
+          child: Text(
+            displayTitle,
+            style: AppTextStyles.body16(context).copyWith(
+              fontWeight: FontWeight.bold,
+              color: AppColors.light,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: AppColors.backgroundSecondary,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppColors.light,
+              width: 1,
+            ),
+          ),
+          child: IconButton(
+            icon: const Icon(
+              Icons.edit,
+              size: 16,
+              color: AppColors.light,
+            ),
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              onNavigateToStep(stepIndex);
+            },
           ),
         ),
       ],
     );
   }
 
-  Widget _buildActionButton(DriverSummaryViewModel summaryViewModel) {
+  Widget _buildActionButton(BuildContext context, DriverSummaryViewModel summaryViewModel) {
     if (summaryViewModel.isLoading) {
       return const CircularProgressIndicator();
     }
 
     return PrimaryButton.primaryButton(
-      text: "Valider",
+      text: context.l10n.driverSummaryValidate,
       onPressed: () => _handleValidation(summaryViewModel),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
     );
   }
 
-  Widget _buildErrorMessage(DriverSummaryViewModel summaryViewModel) {
+  Widget _buildErrorMessage(BuildContext context, DriverSummaryViewModel summaryViewModel) {
     if (summaryViewModel.errorMessage == null) {
       return const SizedBox.shrink();
     }
@@ -276,7 +352,7 @@ class StepElevenView extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8),
       child: Text(
         summaryViewModel.errorMessage!,
-        style: const TextStyle(color: Colors.red, fontSize: 14),
+        style: AppTextStyles.body14(context).copyWith(color: Colors.red),
       ),
     );
   }

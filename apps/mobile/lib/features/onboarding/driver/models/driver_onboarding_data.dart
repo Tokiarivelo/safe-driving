@@ -3,7 +3,6 @@ import 'driver_onboarding_step_model.dart';
 class DriverOnboardingData {
   static const int totalSteps = 13;
 
-  // Méthodes statiques pour accéder aux données CGU
   static dynamic getCguContent() {
     return cguContents[0][0]['additionalContent']['content'];
   }
@@ -14,6 +13,14 @@ class DriverOnboardingData {
 
   static dynamic getPrivacyPolicyContent() {
     return cguContents[0][1]['additionalContent']['content'];
+  }
+
+  static dynamic getCguContentEn() {
+    return cguContentsEn[0][0]['additionalContent']['content'];
+  }
+
+  static dynamic getPrivacyPolicyContentEn() {
+    return cguContentsEn[0][1]['additionalContent']['content'];
   }
 
   static dynamic getPrivacyPolicyTitle() {
@@ -129,6 +136,118 @@ class DriverOnboardingData {
               "Votre sécurité et votre confidentialité sont essentielles. Nous nous engageons à protéger vos données avec transparence, responsabilité et respect.",
         },
         "buttonTitles": ["J'accepte"],
+      },
+    ],
+  ];
+
+  // English versions for Terms and Privacy content
+  static dynamic cguContentsEn = [
+    [
+      {
+        "title": 'Safe Driving Terms of Service (ToS)',
+        "subtitle": "Please read our Terms of Service carefully.",
+        "stepType": DriverStepType.legal,
+        "additionalContent": {
+          "content":
+              "## 1. Purpose\n"
+              "These Terms of Service (ToS) define the conditions of access to and use of the Safe Driving platform (the \"Application\"), available on web and mobile.\n\n"
+              "## 2. Acceptance of the ToS\n"
+              "The user (the \"User\") acknowledges having read and unreservedly accepted these ToS by ticking the dedicated box during registration.\n\n"
+              "## 3. Definitions\n"
+              "* **Application**: the Safe Driving service, mobile app and web interface.\n"
+              "* **Driver**: User providing transport services.\n"
+              "* **Passenger**: User requesting transport.\n\n"
+              "## 4. Access and registration\n"
+              "1. Access to the Application is free for Passengers.\n"
+              "2. Drivers must provide accurate and up-to-date information (identity, license, vehicle documents).\n"
+              "3. Safe Driving reserves the right to suspend or remove any account if the information is incomplete or fraudulent.\n\n"
+              "## 5. Services provided\n"
+              "* Instant connection between Drivers and Passengers\n"
+              "* Geolocation system for position indication\n"
+              "* Secure payment interface\n"
+              "* Customer support and AI assistance\n\n"
+              "## 6. User obligations\n"
+              "* Comply with applicable laws and safety rules\n"
+              "* Do not publish illegal or offensive content\n"
+              "* Protect login credentials; any action will be deemed to originate from the User\n"
+              "* For Drivers: maintain valid insurance and vehicle maintenance\n\n"
+              "## 7. Personal data\n"
+              "Personal data collected is processed in accordance with the Safe Driving Privacy Policy. The User has rights to access, rectify, and delete their data.\n\n"
+              "## 8. Intellectual property\n"
+              "All content, logos, graphics, and source code of the Application are the exclusive property of Safe Driving. Any partial or total reproduction is strictly prohibited.\n\n"
+              "## 9. Liability\n"
+              "* Safe Driving is not responsible for damages resulting from misuse of the Application\n"
+              "* Safe Driving does not guarantee uninterrupted service availability\n"
+              "* Final ride pricing may vary depending on traffic and weather conditions\n\n"
+              "## 10. Force majeure\n"
+              "Safe Driving cannot be held liable in cases of force majeure making it impossible to fulfill its obligations.\n\n"
+              "## 11. Changes to the ToS\n"
+              "Safe Driving reserves the right to modify these ToS at any time. Users will be informed via the Application and must accept the new ToS to continue using the service.\n\n"
+              "## 12. Term and termination\n"
+              "These ToS are valid for the entire duration of the Application's use. The User may terminate their account at any time via the Application settings.\n\n"
+              "## 13. Governing law and jurisdiction\n"
+              "These ToS are governed by Malagasy law. In the event of a dispute, jurisdiction is expressly assigned to the courts of Antananarivo.\n\n"
+              "## 14. Contact\n"
+              "For any questions regarding the ToS or the functioning of the Application:\n"
+              "* Email: support@safedriving.mg\n"
+              "* Phone: +261 XX XX XX XX\n\n"
+              "**Last updated: June 30, 2025**",
+        },
+        "buttonTitles": ["I accept"],
+      },
+      {
+        "title": 'Privacy Policy',
+        "subtitle": "Your privacy matters. Learn how we protect your data.",
+        "stepType": DriverStepType.legal,
+        "additionalContent": {
+          "content":
+              "Last updated: July 3, 2025\n\n"
+              "At Safe Driving, protecting your personal data is a priority. This Privacy Policy explains how your data is collected, used, stored, and protected when using our application.\n\n"
+              "## 1. Data collected\n"
+              "**During registration:**\n"
+              "* Full name\n* Email address\n* Phone number\n* Role (driver or passenger)\n* Password (encrypted)\n\n"
+              "**For drivers:**\n"
+              "* ID and driver's license\n* Vehicle information and documents\n* Verification selfie\n* Geolocation (if enabled)\n* Preferences and notifications\n\n"
+              "**During use:**\n"
+              "* Trip history\n* Real-time GPS position (if enabled)\n* Interactions with the app (clicks, actions, preferences)\n* Reviews, comments, and ratings\n\n"
+              "## 2. Use of data\n"
+              "* Create and manage your user account\n"
+              "* Verify your identity and that of drivers\n"
+              "* Ensure the proper functioning of the application\n"
+              "* Provide relevant rides (based on location)\n"
+              "* Improve the user experience (recommendations, support)\n"
+              "* Send you important notifications (rides, safety, etc.)\n\n"
+              "## 3. Data sharing\n"
+              "We never sell your data to third parties. Some information may be shared only:\n"
+              "* With passengers to identify their driver (name, photo, vehicle model, license plate)\n"
+              "* With partner services to process payments or verify identity\n"
+              "* With competent authorities, only where legally required\n\n"
+              "## 4. Storage and security\n"
+              "* Your data is hosted on secure servers located in France or the EU\n"
+              "* Passwords are encrypted\n"
+              "* Sensitive documents are protected and accessible only by secure internal systems\n\n"
+              "## 5. Geolocation\n"
+              "GPS activation is optional but necessary to use real-time transport features. You can disable geolocation at any time via your phone settings.\n\n"
+              "## 6. Cookies and trackers\n"
+              "We only use technical cookies essential for the platform to function properly. No browsing data is collected for advertising purposes.\n\n"
+              "## 7. Data retention\n"
+              "* Your data is retained as long as your account is active\n"
+              "* You can request deletion of your data at any time\n"
+              "* Legal documents (drivers) are kept for 5 years in accordance with applicable law\n\n"
+              "## 8. Your rights\n"
+              "In accordance with the GDPR, you have the right to:\n"
+              "* Access your personal data\n"
+              "* Correct or update your data\n"
+              "* Delete your account and data\n"
+              "* Withdraw your consent\n"
+              "* File a complaint with the CNIL\n\n"
+              "To exercise your rights, contact us at: **privacy@safedriving.app**\n\n"
+              "## 9. Changes\n"
+              "We may update this policy at any time. You will be notified in the event of significant changes. The most recent version will always be available in the application.\n\n"
+              "**Thank you for your trust**\n"
+              "Your safety and privacy are essential. We are committed to protecting your data with transparency, responsibility, and respect.",
+        },
+        "buttonTitles": ["I accept"],
       },
     ],
   ];

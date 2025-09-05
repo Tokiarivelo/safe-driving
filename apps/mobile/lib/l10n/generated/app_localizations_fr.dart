@@ -612,4 +612,32 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get driverCompleteThankYou =>
       'Merci de faire partie de la communauté Safe Driving. Nous vous souhaitons de bons trajets en toute sécurité !';
+
+  @override
+  String get sendCode => 'Envoyer le code';
+
+  @override
+  String get resetCodeSent =>
+      'Un code de réinitialisation a été envoyé à votre adresse email';
+
+  @override
+  String get readAndAcceptTerms => 'Lire et accepter les CGU';
+
+  @override
+  String get readAndAcceptPolicy => 'Lire et accepter la politique';
+
+  @override
+  String get registrationSuccess =>
+      'Inscription réussie ! Vous pouvez maintenant vous connecter.';
+
+  @override
+  String get registrationError => 'Erreur lors de l\'inscription';
+
+  @override
+  String get googleSignInNotImplemented =>
+      'Connexion Google non encore implémentée';
+
+  @override
+  String get facebookSignInNotImplemented =>
+      'Connexion Facebook non encore implémentée';
 }

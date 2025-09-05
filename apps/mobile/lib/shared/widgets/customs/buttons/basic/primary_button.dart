@@ -13,40 +13,40 @@ class PrimaryButton {
     double? elevation,
     Widget? icon,
   }) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        shadowColor: AppColors.dark,
-        backgroundColor: backgroundColor ?? AppColors.fillButtonBackground,
-        foregroundColor: textColor ?? AppColors.light,
-        elevation: elevation ?? 6,
-        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius ?? 11),
-        ),
-      ),
-      child: icon != null
-          ? Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                icon,
-                const SizedBox(width: 8),
-                Text(
-                  text,
-                  style: TextStyle(
-                    fontSize: fontSize ?? 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            )
-          : Text(
-              text,
-              style: TextStyle(
-                fontSize: fontSize ?? 16,
-                fontWeight: FontWeight.w500,
-              ),
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        final isDarkMode = theme.brightness == Brightness.dark;
+
+        final defaultBackgroundColor = isDarkMode
+            ? theme.colorScheme.primary
+            : AppColors.fillButtonBackground;
+        final defaultTextColor = theme.colorScheme.onPrimary;
+
+        return ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            shadowColor: isDarkMode ? Colors.black54 : AppColors.dark,
+            backgroundColor: backgroundColor ?? defaultBackgroundColor,
+            foregroundColor: textColor ?? defaultTextColor,
+            elevation: elevation ?? 6,
+            padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius ?? 11),
             ),
+          ),
+          child: icon != null
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    icon,
+                    const SizedBox(width: 8),
+                    Text(text, style: TextStyle(fontSize: fontSize ?? 16)),
+                  ],
+                )
+              : Text(text, style: TextStyle(fontSize: fontSize ?? 16)),
+        );
+      },
     );
   }
 

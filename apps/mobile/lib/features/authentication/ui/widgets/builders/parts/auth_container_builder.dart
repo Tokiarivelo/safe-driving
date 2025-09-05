@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../../../core/constants/colors/colors.dart';
+import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
 
 class AuthContainerBuilder {
   static Widget buildAuthContainer({
@@ -24,12 +25,21 @@ class AuthContainerBuilder {
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
         ),
-        color: AppColors.secondBackgroundColor,
+        border: Border(
+          top: BorderSide(
+            color: ColorsWidget.subtleBorderColor(context),
+            width: 1.0,
+          ),
+        ),
+
+        color: ColorsWidget.surface(context),
         boxShadow: [
           BoxShadow(
-            color: AppColors.blur,
-            blurRadius: 4,
-            spreadRadius: 4,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.dark.withValues(alpha: 0.18)
+                : AppColors.dark.withValues(alpha: 0.08),
+            blurRadius: 3,
+            spreadRadius: 2,
             offset: const Offset(0, -2),
           ),
         ],

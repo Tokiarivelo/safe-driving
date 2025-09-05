@@ -23,7 +23,7 @@ class AuthLayout extends StatelessWidget {
 
     return Container(
       height: double.infinity,
-      decoration: ColorsWidget.background,
+      decoration: ColorsWidget.background(context),
       child: SafeArea(
         child: isRegister
             ? _buildRegisterLayout(isSmallScreen)
@@ -41,10 +41,7 @@ class AuthLayout extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Center(child: headerBuilder()),
           ),
-          Padding(
-            padding: EdgeInsets.zero,
-            child: contentBuilder(),
-          ),
+          Padding(padding: EdgeInsets.zero, child: contentBuilder()),
         ],
       ),
     );
@@ -55,10 +52,7 @@ class AuthLayout extends StatelessWidget {
       children: [
         Container(
           height: isSmallScreen ? 100 : 130,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20.0,
-            vertical: 10.0,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Center(child: headerBuilder()),
         ),
         Expanded(

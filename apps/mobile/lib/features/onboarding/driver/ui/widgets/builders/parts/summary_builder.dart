@@ -1,12 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class SummaryBuilder {
+  // Localize section titles
+  static String _localizeSectionTitle(BuildContext context, String sectionKey) {
+    switch (sectionKey) {
+      case 'Informations personnelles':
+      case 'Infos personnelles':
+        return context.l10n.driverSummaryPersonalInfo;
+      case 'Véhicule':
+        return context.l10n.driverSummaryVehicle;
+      case 'GPS & Notifications':
+        return context.l10n.driverSummaryGpsNotifications;
+      case 'Préférences':
+        return context.l10n.driverSummaryPreferences;
+      default:
+        return sectionKey;
+    }
+  }
+
+  // Localize field labels depending on section when necessary
+  static String _localizeFieldLabel(BuildContext context, String fieldKey, String sectionTitle) {
+    switch (fieldKey) {
+      case 'Nom':
+        return context.l10n.driverSummaryPersonalInfoName;
+      case 'E-mail':
+        return context.l10n.driverSummaryPersonalInfoEmail;
+      case 'Téléphone':
+        return context.l10n.driverSummaryPersonalInfoPhone;
+      case 'Photos uploadées':
+        // Personal or vehicle photos
+        if (sectionTitle == 'Véhicule') {
+          return context.l10n.driverSummaryVehiclePhotos;
+        }
+        return context.l10n.driverSummaryPersonalInfoPhotos;
+      case 'Type':
+        return context.l10n.driverSummaryVehicleType;
+      case 'Marque':
+        return context.l10n.driverSummaryVehicleBrand;
+      case 'Modèle':
+        return context.l10n.driverSummaryVehicleModel;
+      case 'Immatriculation':
+        return context.l10n.driverSummaryVehicleRegistration;
+      case 'Nombre de places':
+        return context.l10n.driverSummaryVehicleSeats;
+      case 'GPS':
+        return context.l10n.driverSummaryGps;
+      case 'Notifications':
+        return context.l10n.driverSummaryNotifications;
+      case 'Thème':
+        return context.l10n.driverSummaryTheme;
+      case 'Langue':
+        return context.l10n.driverSummaryLanguage;
+      default:
+        return fieldKey;
+    }
+  }
   static Widget buildSummary(
     List resumeData,
     DriverOnboardingCoordinator coordinator,
     Function(int) navigateToStep,
+    BuildContext context,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -18,10 +75,10 @@ class SummaryBuilder {
           margin: const EdgeInsets.only(bottom: 16),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.inputTextBackground.withAlpha(50),
+            color: AppColors.backgroundSecondary,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: AppColors.fillButtonBackground.withAlpha(100),
+              color: AppColors.light,
               width: 1,
             ),
           ),
@@ -33,16 +90,40 @@ class SummaryBuilder {
                   Icon(
                     getSectionIcon(titre),
                     size: 20,
-                    color: AppColors.fillButtonBackground,
+                    color: AppColors.light,
                   ),
                   const SizedBox(width: 8),
-                  Text(
-                    titre,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textColor,
-                      fontFamily: 'Inder',
+                  Expanded(
+          child: Text(
+                      _localizeSectionTitle(context, titre),
+                      style: AppTextStyles.body16(context).copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.light,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundSecondary,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: AppColors.light,
+                        width: 1,
+                      ),
+                    ),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.edit,
+                        size: 16,
+                        color: AppColors.light,
+                      ),
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        navigateToStep(getStepIndexForSection(titre));
+                      },
                     ),
                   ),
                 ],
@@ -50,6 +131,7 @@ class SummaryBuilder {
               const SizedBox(height: 12),
               ...elements.map<Widget>((element) {
                 return buildResumeElement(
+                  context,
                   element,
                   titre,
                   coordinator,
@@ -64,14 +146,20 @@ class SummaryBuilder {
   }
 
   static Widget buildResumeElement(
+    BuildContext context,
     String element,
     String sectionTitle,
     DriverOnboardingCoordinator coordinator,
     Function(int) navigateToStep,
   ) {
+    final localizedLabel = _localizeFieldLabel(context, element, sectionTitle);
     if (element == 'Photos uploadées') {
-      final totalPhotos = coordinator.documentUploadViewModel
-          .getTotalUploadedPhotosCount();
+ 
+      final isVehicle = sectionTitle == 'Véhicule';
+      final totalPhotos = isVehicle
+          ? coordinator.documentUploadViewModel.getVehicleUploadedPhotosCount()
+          : coordinator.documentUploadViewModel.getPersonalUploadedPhotosCount();
+      final stepIndex = isVehicle ? 4 : 2;
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: Row(
@@ -79,17 +167,39 @@ class SummaryBuilder {
             Icon(
               getFieldIcon(element),
               size: 16,
-              color: AppColors.fillButtonBackground,
+              color: AppColors.light,
             ),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                '$element : $totalPhotos',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textColor.withAlpha(200),
-                  fontFamily: 'Inder',
+                '$localizedLabel : $totalPhotos',
+                style: AppTextStyles.body14(context).copyWith(
+                  color: AppColors.light,
                 ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: AppColors.backgroundSecondary,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.light,
+                  width: 1,
+                ),
+              ),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.edit,
+                  size: 16,
+                  color: AppColors.light,
+                ),
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  navigateToStep(stepIndex);
+                },
               ),
             ),
           ],
@@ -98,7 +208,6 @@ class SummaryBuilder {
     }
 
     final fieldValue = coordinator.getFieldValue(element);
-    final stepIndex = getStepIndexForField(element);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -107,7 +216,7 @@ class SummaryBuilder {
           Icon(
             getFieldIcon(element),
             size: 16,
-            color: AppColors.fillButtonBackground,
+            color: AppColors.light,
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -115,68 +224,41 @@ class SummaryBuilder {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: '$element: ',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textColor.withAlpha(200),
-                      fontFamily: 'Inder',
+                    text: '$localizedLabel: ',
+                    style: AppTextStyles.body14(context).copyWith(
+                      color: AppColors.light,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   TextSpan(
                     text: fieldValue,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textColor.withAlpha(160),
-                      fontFamily: 'Inder',
+                    style: AppTextStyles.body14(context).copyWith(
+                      color: AppColors.light,
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(width: 8),
-          if (element != 'Photos uploadées')
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: AppColors.fillButtonBackground.withAlpha(20),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: AppColors.fillButtonBackground.withAlpha(100),
-                  width: 1,
-                ),
-              ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.edit,
-                  size: 16,
-                  color: AppColors.fillButtonBackground,
-                ),
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  navigateToStep(stepIndex);
-                },
-              ),
-            ),
         ],
       ),
     );
   }
 
-  static Widget buildCompletionContent(Map<String, dynamic> content) {
+  static Widget buildCompletionContent(Map<String, dynamic> content, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (content.containsKey('subsubtitle'))
           Text(
-            content['subsubtitle'] as String,
+            context.l10n.driverCompleteQrCodeSubtitle,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: AppColors.textColor,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.light
+                  : Theme.of(context).colorScheme.onSurface,
               fontFamily: 'Inder',
             ),
           ),
@@ -187,18 +269,18 @@ class SummaryBuilder {
           width: 150,
           height: 150,
           decoration: BoxDecoration(
-            color: AppColors.inputTextBackground.withAlpha(100),
+            color: AppColors.inputTextBackground.adapt(context).withAlpha(100),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: AppColors.fillButtonBackground.withAlpha(100),
+              color: AppColors.fillButtonBackground.adapt(context).withAlpha(100),
               width: 2,
             ),
           ),
-          child: const Center(
+          child: Center(
             child: Icon(
               Icons.qr_code,
               size: 80,
-              color: AppColors.fillButtonBackground,
+              color: AppColors.fillButtonBackground.adapt(context),
             ),
           ),
         ),
@@ -206,11 +288,13 @@ class SummaryBuilder {
         const SizedBox(height: 16),
         if (content.containsKey('instructions'))
           Text(
-            content['instructions'] as String,
+            context.l10n.driverCompleteQrCodeInstructions,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
-              color: AppColors.textColor.withAlpha(180),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.light
+                  : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
               height: 1.4,
               fontFamily: 'Inder',
             ),
@@ -221,20 +305,20 @@ class SummaryBuilder {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.fillButtonBackground.withAlpha(20),
+              color: AppColors.backgroundSecondary,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: AppColors.fillButtonBackground.withAlpha(100),
+                color: AppColors.light,
                 width: 1,
               ),
             ),
             child: Text(
-              content['messageConfiance'] as String,
+              context.l10n.driverCompleteThankYou,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: AppColors.textColor,
+                color: AppColors.light,
                 height: 1.4,
                 fontFamily: 'Inder',
               ),
@@ -280,6 +364,7 @@ class SummaryBuilder {
   static IconData getSectionIcon(String sectionTitle) {
     switch (sectionTitle) {
       case 'Infos personnelles':
+      case 'Informations personnelles':
         return Icons.person;
       case 'Véhicule':
         return Icons.directions_car;
@@ -289,6 +374,22 @@ class SummaryBuilder {
         return Icons.tune;
       default:
         return Icons.info;
+    }
+  }
+
+  static int getStepIndexForSection(String sectionTitle) {
+    switch (sectionTitle) {
+      case 'Infos personnelles':
+      case 'Informations personnelles':
+        return 1;
+      case 'Véhicule':
+        return 3;
+      case 'GPS & Notifications':
+        return 6;
+      case 'Préférences':
+        return 8;
+      default:
+        return 0;
     }
   }
 
@@ -311,6 +412,8 @@ class SummaryBuilder {
       case 'Thème':
       case 'Langue':
         return 8;
+      case 'Photos uploadées':
+        return 4;
       default:
         return 0;
     }

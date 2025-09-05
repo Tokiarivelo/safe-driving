@@ -25,18 +25,18 @@ class PhotoGalleryView extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: kIsWeb ? _buildWebGallery() : _buildMobileGallery(),
+          child: kIsWeb ? _buildWebGallery(context) : _buildMobileGallery(),
         ),
         Positioned(
           top: 16,
           right: 16,
           child: Container(
             decoration: BoxDecoration(
-              color: AppColors.dark.withValues(alpha: 0.6),
+              color: AppColors.dark.adapt(context).withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(20),
             ),
             child: IconButton(
-              icon: const Icon(Icons.delete, color: AppColors.light),
+              icon: Icon(Icons.delete, color: AppColors.light.adapt(context)),
               onPressed: () => onDeleteImage(currentIndex),
             ),
           ),
@@ -45,12 +45,12 @@ class PhotoGalleryView extends StatelessWidget {
     );
   }
 
-  Widget _buildWebGallery() {
+  Widget _buildWebGallery(BuildContext context) {
     return Container(
       width: double.infinity,
       height: 300,
       decoration: BoxDecoration(
-        color: AppColors.softBackgroundColor,
+        color: AppColors.softBackgroundColor.adapt(context),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
@@ -58,7 +58,7 @@ class PhotoGalleryView extends StatelessWidget {
           'Aperçu des photos non disponible sur le web',
           style: TextStyle(
             fontSize: 16,
-            color: AppColors.textColor.withValues(alpha: 0.7),
+            color: AppColors.textColor.adapt(context).withValues(alpha: 0.7),
             fontFamily: 'Inder',
           ),
         ),
@@ -80,7 +80,7 @@ class PhotoGalleryView extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.dark.withValues(alpha: 0.1),
+                  color: AppColors.dark.adapt(context).withValues(alpha: 0.1),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -94,20 +94,20 @@ class PhotoGalleryView extends StatelessWidget {
                 width: double.infinity,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: AppColors.softBackgroundColor,
+                    color: AppColors.softBackgroundColor.adapt(context),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.error_outline,
                           size: 48,
-                          color: AppColors.textColor.withValues(alpha: 0.5),
+                          color: AppColors.textColor.adapt(context).withValues(alpha: 0.5),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'Erreur de chargement',
                           style: TextStyle(
-                            color: AppColors.textColor.withValues(alpha: 0.7),
+                            color: AppColors.textColor.adapt(context).withValues(alpha: 0.7),
                             fontFamily: 'Inder',
                           ),
                         ),
