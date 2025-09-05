@@ -33,7 +33,6 @@ class _StepFourViewState extends State<StepFourView> {
   void _handleNext() {
     final vm = _coordinator.vehicleInfoViewModel;
 
-    // Propagate data to legacy callback while ensuring we use the shared controllers
     widget.onDataChanged({
       'marque': vm.getController('marque').text,
       'modele': vm.getController('modele').text,

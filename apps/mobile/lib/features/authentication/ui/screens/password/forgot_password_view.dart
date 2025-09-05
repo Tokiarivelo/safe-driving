@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 import '../../../../../core/utils/form/form_utils.dart';
 import '../../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
 import '../../widgets/auth/auth_widget.dart';
@@ -30,14 +31,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     final emailToUse = email.trim();
 
     if (emailToUse.isEmpty) {
-      SnackbarHelper.showError(context, "Veuillez saisir votre adresse email");
+      SnackbarHelper.showError(context, context.l10n.pleaseEnterEmail);
       return;
     }
 
     if (!RegexFormatter.isValidEmail(emailToUse)) {
       SnackbarHelper.showError(
         context,
-        "Veuillez saisir une adresse email valide",
+        context.l10n.pleaseEnterValidEmail,
       );
       return;
     }
@@ -46,7 +47,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
     SnackbarHelper.showSuccess(
       context,
-      'Un code de réinitialisation a été envoyé à votre adresse email',
+      context.l10n.resetPassword,
     );
 
     if (widget.onSendCodeSuccess != null) {

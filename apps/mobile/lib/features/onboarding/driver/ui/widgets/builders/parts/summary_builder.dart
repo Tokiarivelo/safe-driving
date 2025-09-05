@@ -2,8 +2,63 @@ import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class SummaryBuilder {
+  // Localize section titles
+  static String _localizeSectionTitle(BuildContext context, String sectionKey) {
+    switch (sectionKey) {
+      case 'Informations personnelles':
+      case 'Infos personnelles':
+        return context.l10n.driverSummaryPersonalInfo;
+      case 'Véhicule':
+        return context.l10n.driverSummaryVehicle;
+      case 'GPS & Notifications':
+        return context.l10n.driverSummaryGpsNotifications;
+      case 'Préférences':
+        return context.l10n.driverSummaryPreferences;
+      default:
+        return sectionKey;
+    }
+  }
+
+  // Localize field labels depending on section when necessary
+  static String _localizeFieldLabel(BuildContext context, String fieldKey, String sectionTitle) {
+    switch (fieldKey) {
+      case 'Nom':
+        return context.l10n.driverSummaryPersonalInfoName;
+      case 'E-mail':
+        return context.l10n.driverSummaryPersonalInfoEmail;
+      case 'Téléphone':
+        return context.l10n.driverSummaryPersonalInfoPhone;
+      case 'Photos uploadées':
+        // Personal or vehicle photos
+        if (sectionTitle == 'Véhicule') {
+          return context.l10n.driverSummaryVehiclePhotos;
+        }
+        return context.l10n.driverSummaryPersonalInfoPhotos;
+      case 'Type':
+        return context.l10n.driverSummaryVehicleType;
+      case 'Marque':
+        return context.l10n.driverSummaryVehicleBrand;
+      case 'Modèle':
+        return context.l10n.driverSummaryVehicleModel;
+      case 'Immatriculation':
+        return context.l10n.driverSummaryVehicleRegistration;
+      case 'Nombre de places':
+        return context.l10n.driverSummaryVehicleSeats;
+      case 'GPS':
+        return context.l10n.driverSummaryGps;
+      case 'Notifications':
+        return context.l10n.driverSummaryNotifications;
+      case 'Thème':
+        return context.l10n.driverSummaryTheme;
+      case 'Langue':
+        return context.l10n.driverSummaryLanguage;
+      default:
+        return fieldKey;
+    }
+  }
   static Widget buildSummary(
     List resumeData,
     DriverOnboardingCoordinator coordinator,
@@ -39,8 +94,8 @@ class SummaryBuilder {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(
-                      titre,
+          child: Text(
+                      _localizeSectionTitle(context, titre),
                       style: AppTextStyles.body16(context).copyWith(
                         fontWeight: FontWeight.bold,
                         color: AppColors.light,
@@ -97,9 +152,14 @@ class SummaryBuilder {
     DriverOnboardingCoordinator coordinator,
     Function(int) navigateToStep,
   ) {
+    final localizedLabel = _localizeFieldLabel(context, element, sectionTitle);
     if (element == 'Photos uploadées') {
-      final totalPhotos = coordinator.documentUploadViewModel
-          .getTotalUploadedPhotosCount();
+ 
+      final isVehicle = sectionTitle == 'Véhicule';
+      final totalPhotos = isVehicle
+          ? coordinator.documentUploadViewModel.getVehicleUploadedPhotosCount()
+          : coordinator.documentUploadViewModel.getPersonalUploadedPhotosCount();
+      final stepIndex = isVehicle ? 4 : 2;
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: Row(
@@ -112,7 +172,7 @@ class SummaryBuilder {
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                '$element : $totalPhotos',
+                '$localizedLabel : $totalPhotos',
                 style: AppTextStyles.body14(context).copyWith(
                   color: AppColors.light,
                 ),
@@ -138,7 +198,7 @@ class SummaryBuilder {
                 ),
                 padding: EdgeInsets.zero,
                 onPressed: () {
-                  navigateToStep(getStepIndexForField(element));
+                  navigateToStep(stepIndex);
                 },
               ),
             ),
@@ -164,7 +224,7 @@ class SummaryBuilder {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: '$element: ',
+                    text: '$localizedLabel: ',
                     style: AppTextStyles.body14(context).copyWith(
                       color: AppColors.light,
                       fontWeight: FontWeight.w500,
@@ -191,7 +251,7 @@ class SummaryBuilder {
       children: [
         if (content.containsKey('subsubtitle'))
           Text(
-            content['subsubtitle'] as String,
+            context.l10n.driverCompleteQrCodeSubtitle,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
@@ -228,7 +288,7 @@ class SummaryBuilder {
         const SizedBox(height: 16),
         if (content.containsKey('instructions'))
           Text(
-            content['instructions'] as String,
+            context.l10n.driverCompleteQrCodeInstructions,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -253,7 +313,7 @@ class SummaryBuilder {
               ),
             ),
             child: Text(
-              content['messageConfiance'] as String,
+              context.l10n.driverCompleteThankYou,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 14,

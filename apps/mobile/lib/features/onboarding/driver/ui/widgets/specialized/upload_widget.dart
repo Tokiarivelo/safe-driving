@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/modals/gallery_modal.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class UploadWidget extends StatefulWidget {
   final String title;
@@ -156,14 +157,16 @@ class UploadWidgetState extends State<UploadWidget> {
           child: Icon(Icons.check, color: AppColors.light.adapt(context), size: 32),
         ),
         const SizedBox(height: 16),
-        Text(
-          "${_selectedImages.length} photo${_selectedImages.length > 1 ? 's' : ''} sélectionnée${_selectedImages.length > 1 ? 's' : ''}",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textColor.adapt(context),
-            fontFamily: 'Inder',
+        Builder(
+          builder: (context) => Text(
+            '${context.l10n.driverSummaryVehiclePhotos}: ${_selectedImages.length}',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textColor.adapt(context),
+              fontFamily: 'Inder',
+            ),
           ),
         ),
         const SizedBox(height: 12),
@@ -177,12 +180,14 @@ class UploadWidgetState extends State<UploadWidget> {
                 color: AppColors.fillButtonBackground.adapt(context),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Text(
-                widget.addMorePhotosText!,
-                style: TextStyle(
-                  color: AppColors.light.adapt(context),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
+              child: Builder(
+                builder: (context) => Text(
+                  widget.addMorePhotosText!,
+                  style: TextStyle(
+                    color: AppColors.light.adapt(context),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),
@@ -196,12 +201,14 @@ class UploadWidgetState extends State<UploadWidget> {
                 color: AppColors.fillButtonBackground.adapt(context),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Text(
-                "Gérer les photos",
-                style: TextStyle(
-                  color: AppColors.light.adapt(context),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
+              child: Builder(
+                builder: (context) => Text(
+                  'Add more photos',
+                  style: TextStyle(
+                    color: AppColors.light.adapt(context),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),

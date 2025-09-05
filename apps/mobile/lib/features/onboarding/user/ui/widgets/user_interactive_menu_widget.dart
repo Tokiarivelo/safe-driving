@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 import '../../models/user_onboarding_data.dart';
 import '../../viewmodels/user_onboarding_viewmodel.dart';
@@ -30,10 +31,26 @@ class UserInteractiveMenuWidget extends StatelessWidget {
         ),
 
         // Progress header
-        UserProgressWidget(
-          currentStep: viewModel.currentStep,
-          totalSteps: viewModel.totalSteps,
-          stepTitle: viewModel.getStepTitle(viewModel.currentStep),
+        Builder(
+          builder: (context) => UserProgressWidget(
+            currentStep: viewModel.currentStep,
+            totalSteps: viewModel.totalSteps,
+            stepTitle: () {
+              switch (viewModel.currentStep) {
+                case 1:
+                  return context.l10n.onboardingWelcome;
+                case 2:
+                  return context.l10n.onboardingGps;
+                case 3:
+                  return context.l10n.onboardingNotifications;
+                case 4:
+                  return context.l10n.onboardingPreferences;
+                case 5:
+                default:
+                  return context.l10n.onboardingSummary;
+              }
+            }(),
+          ),
         ),
 
         // Steps list
@@ -98,12 +115,28 @@ class UserInteractiveMenuWidget extends StatelessWidget {
                               size: 24,
                             ),
                           const SizedBox(width: 8),
-                          Text(
-                            stepInfo.title,
-                            style: TextStyle(
-                              color: AppColors.light.adapt(context),
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16,
+                          Builder(
+                            builder: (context) => Text(
+                              () {
+                                switch (step) {
+                                  case 1:
+                                    return context.l10n.onboardingWelcome;
+                                  case 2:
+                                    return context.l10n.onboardingGps;
+                                  case 3:
+                                    return context.l10n.onboardingNotifications;
+                                  case 4:
+                                    return context.l10n.onboardingPreferences;
+                                  case 5:
+                                  default:
+                                    return context.l10n.onboardingSummary;
+                                }
+                              }(),
+                              style: TextStyle(
+                                color: AppColors.light.adapt(context),
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ],

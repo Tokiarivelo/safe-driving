@@ -8,21 +8,20 @@ class _PreferencesStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeLabel = stepContent.additionalContent?['themeLabel'] ?? 'Thème';
+    final themeLabel = context.l10n.stepPreferencesTheme;
     final themeOptions =
         (stepContent.additionalContent?['themeOptions'] as List<dynamic>?)
             ?.cast<String>() ??
         const ['Clair', 'Sombre'];
-    final transportLabel =
-        stepContent.additionalContent?['transportLabel'] ?? 'Type de transport';
+    final transportLabel = context.l10n.stepPreferencesTransport;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(stepContent.title, style: AppTextStyles.h1(context)),
+        Text(context.l10n.stepPreferencesTitle, style: AppTextStyles.h1(context)),
         const SizedBox(height: 8),
         Text(
-          stepContent.subtitle,
+          context.l10n.stepPreferencesSubtitle,
           style: AppTextStyles.body14(context).copyWith(
             color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
           ),
@@ -59,7 +58,7 @@ class _PreferencesStep extends StatelessWidget {
             if (!viewModel.validateCurrentStep()) {
               final msg =
                   viewModel.getValidationError() ??
-                  'Veuillez compléter les informations requises';
+                  context.l10n.stepPreferencesValidate;
               SnackbarHelper.showWarning(
                 context,
                 msg,
@@ -69,9 +68,8 @@ class _PreferencesStep extends StatelessWidget {
             }
             viewModel.nextStepImmediate();
           },
-          actionText: stepContent.buttonTitles.length > 1
-              ? stepContent.buttonTitles[1]
-              : 'Valider',
+          actionText: context.l10n.stepPreferencesValidate,
+          laterText: context.l10n.stepPreferencesLater,
           fontSize: 14,
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),

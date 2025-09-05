@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/specialized/upload_widget.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
-import 'package:safe_driving/features/onboarding/driver/services/storage_service.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
+import 'package:safe_driving/shared/state_management/providers.dart';
 
 class StepFiveView extends StatefulWidget {
   final VoidCallback onNext;
@@ -17,14 +17,15 @@ class StepFiveView extends StatefulWidget {
 }
 
 class _StepFiveViewState extends State<StepFiveView> {
-  final StorageService _storageService = StorageService();
-
   Future<void> _handlePhotosChanged(
     List<dynamic> photos,
     String storageType,
   ) async {
     try {
-      await _storageService.storePhotos(photos, storageType);
+
+      await context.driverOnboardingVM.documentUploadViewModel
+          .uploadPhotos(photos.cast(), storageType);
+
       if (mounted) {
         final typeLabel = _getTypeLabel(storageType);
         SnackbarHelper.showSuccess(
@@ -41,11 +42,14 @@ class _StepFiveViewState extends State<StepFiveView> {
 
   String _getTypeLabel(String storageType) {
     switch (storageType) {
-      case StorageService.certificatImmatriculationType:
+      case 'certificatImmatriculation':
+      case 'certificat_immatriculation':
         return 'le certificat d\'immatriculation';
-      case StorageService.attestationAssuranceType:
+      case 'attestationAssurance':
+      case 'attestation_assurance':
         return 'l\'attestation d\'assurance';
-      case StorageService.photosVehiculeType:
+      case 'photosVehicule':
+      case 'photos_vehicule':
         return 'les photos du véhicule';
       default:
         return 'le document';
@@ -91,7 +95,7 @@ class _StepFiveViewState extends State<StepFiveView> {
                     addMorePhotosText: 'Ajouter plus de photos',
                     onPhotosChanged: (photos) => _handlePhotosChanged(
                       photos,
-                      StorageService.certificatImmatriculationType,
+                      'certificatImmatriculation',
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -104,7 +108,7 @@ class _StepFiveViewState extends State<StepFiveView> {
                     addMorePhotosText: 'Ajouter plus de photos',
                     onPhotosChanged: (photos) => _handlePhotosChanged(
                       photos,
-                      StorageService.attestationAssuranceType,
+                      'attestationAssurance',
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -117,7 +121,7 @@ class _StepFiveViewState extends State<StepFiveView> {
                     addMorePhotosText: 'Ajouter plus de photos',
                     onPhotosChanged: (photos) => _handlePhotosChanged(
                       photos,
-                      StorageService.photosVehiculeType,
+                      'photosVehicule',
                     ),
                   ),
                 ],

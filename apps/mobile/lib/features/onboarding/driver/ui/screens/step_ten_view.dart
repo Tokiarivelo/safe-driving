@@ -5,6 +5,7 @@ import 'package:safe_driving/features/onboarding/driver/ui/widgets/modals/policy
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/specialized/elegant_acceptance_button.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class StepTenView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -50,16 +51,16 @@ class StepTenView extends StatelessWidget {
           Column(
             children: [
               ElegantAcceptanceButton.elegantAcceptanceButton(
-                text: "Conditions Générales d'Utilisation",
-                subtitle: "Lire et accepter les CGU",
+                text: context.l10n.driverCguTitle,
+                subtitle: context.l10n.readAndAcceptTerms,
                 isAccepted: coordinator.legalViewModel.cguAccepted[0],
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (context) {
                       return PolicyModal(
-                        titleContent: coordinator.legalViewModel.getCguTitle(),
-                        content: coordinator.legalViewModel.getCguContent(),
+                        titleContent: context.l10n.driverCguTitle,
+                        content: coordinator.legalViewModel.getCguContent(context),
                         onAccept: () {
                           coordinator.legalViewModel.setCguAccepted(0, true);
                         },
@@ -70,18 +71,17 @@ class StepTenView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ElegantAcceptanceButton.elegantAcceptanceButton(
-                text: "Politique de Confidentialité",
-                subtitle: "Lire et accepter la politique",
+                text: context.l10n.driverPrivacyTitle,
+                subtitle: context.l10n.readAndAcceptPolicy,
                 isAccepted: coordinator.legalViewModel.cguAccepted[1],
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (context) {
                       return PolicyModal(
-                        titleContent: coordinator.legalViewModel
-                            .getPrivacyPolicyTitle(),
+                        titleContent: context.l10n.driverPrivacyTitle,
                         content: coordinator.legalViewModel
-                            .getPrivacyPolicyContent(),
+                            .getPrivacyPolicyContent(context),
                         onAccept: () {
                           coordinator.legalViewModel.setCguAccepted(1, true);
                         },
@@ -95,7 +95,7 @@ class StepTenView extends StatelessWidget {
                 (accepted) => accepted,
               ))
                 PrimaryButton.nextButton(
-                  text: "Continuer",
+                  text: context.l10n.next,
                   onPressed: onContinue,
                   padding: const EdgeInsets.symmetric(
                     vertical: 16,

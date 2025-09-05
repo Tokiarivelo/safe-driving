@@ -11,6 +11,8 @@ class DocumentUploadViewModel extends ChangeNotifier {
   final List<File> _capturedPhotos = [];
   // Compteur spécifique au Web pour suivre les téléchargements sans File système
   int _webUploadedCount = 0;
+
+  final Map<String, int> _typeCounts = {};
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -55,10 +57,15 @@ class DocumentUploadViewModel extends ChangeNotifier {
 
   // Document upload methods
   Future<void> uploadPhotos(List<File> photos, String documentType) async {
+
+    _typeCounts[documentType] = photos.length;
+    notifyListeners();
+
     _setLoading(true);
     try {
       await _service.uploadDocumentPhotos(photos, documentType);
     } catch (e) {
+      // On garde au moins le compteur local pour l'affichage du résumé
       _setError('Erreur lors de l\'upload des photos: $e');
     } finally {
       _setLoading(false);
@@ -133,6 +140,55 @@ class DocumentUploadViewModel extends ChangeNotifier {
       return _service.getTotalUploadedPhotosCount();
     } catch (e) {
       return kIsWeb ? _webUploadedCount : 0;
+    }
+  }
+
+
+  int getPersonalUploadedPhotosCount() {
+    try {
+      if (kIsWeb) {
+        return _webUploadedCount; // selfie only on web
+      }
+   
+      final personalTypes = <String>[
+        'carteIdentiteRecto', 'carte_identite_recto',
+        'carteIdentiteVerso', 'carte_identite_verso',
+        'permisConduire', 'permis_conduire',
+        'selfie',
+      ];
+      int local = 0;
+      for (final t in personalTypes) {
+        local += _typeCounts[t] ?? 0;
+      }
+      if (local > 0) return local;
+
+   
+      return _service.getPersonalUploadedPhotosCount();
+    } catch (e) {
+      return kIsWeb ? _webUploadedCount : 0;
+    }
+  }
+
+  int getVehicleUploadedPhotosCount() {
+    try {
+      if (kIsWeb) {
+        return 0; // not tracked on web
+      }
+    
+      final vehicleTypes = <String>[
+        'certificatImmatriculation', 'certificat_immatriculation',
+        'attestationAssurance', 'attestation_assurance',
+        'photosVehicule', 'photos_vehicule',
+      ];
+      int local = 0;
+      for (final t in vehicleTypes) {
+        local += _typeCounts[t] ?? 0;
+      }
+      if (local > 0) return local;
+
+      return _service.getVehicleUploadedPhotosCount();
+    } catch (e) {
+      return 0;
     }
   }
 

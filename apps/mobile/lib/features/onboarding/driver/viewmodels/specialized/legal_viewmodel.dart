@@ -35,20 +35,33 @@ class LegalViewModel extends ChangeNotifier {
     return false;
   }
 
-  String getCguContent() {
+  String getCguContent(BuildContext context) {
     try {
+      final code = Localizations.localeOf(context).languageCode.toLowerCase();
+      if (code == 'en') {
+        return DriverOnboardingData.getCguContentEn();
+      }
       return DriverOnboardingData.getCguContent();
     } catch (e) {
-      return 'Erreur: Impossible de charger les conditions générales d\'utilisation.';
+      return codeFallback(context, fr: "Erreur: Impossible de charger les conditions générales d'utilisation.", en: 'Error: Unable to load the Terms of Service.');
     }
   }
 
-  String getPrivacyPolicyContent() {
+  String getPrivacyPolicyContent(BuildContext context) {
     try {
+      final code = Localizations.localeOf(context).languageCode.toLowerCase();
+      if (code == 'en') {
+        return DriverOnboardingData.getPrivacyPolicyContentEn();
+      }
       return DriverOnboardingData.getPrivacyPolicyContent();
     } catch (e) {
-      return 'Erreur: Impossible de charger la politique de confidentialité.';
+      return codeFallback(context, fr: 'Erreur: Impossible de charger la politique de confidentialité.', en: 'Error: Unable to load the Privacy Policy.');
     }
+  }
+
+  String codeFallback(BuildContext context, {required String fr, required String en}) {
+    final code = Localizations.localeOf(context).languageCode.toLowerCase();
+    return code == 'en' ? en : fr;
   }
 
   String getCguTitle() {

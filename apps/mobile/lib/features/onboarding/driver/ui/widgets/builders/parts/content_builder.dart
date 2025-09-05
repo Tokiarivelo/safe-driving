@@ -54,13 +54,13 @@ class ContentBuilder {
     // Notifications checkboxes
     if (content.containsKey('checkboxOptions')) {
       final checkboxOptions = content['checkboxOptions'] as List<String>;
-      if (step.title == "Restez informé") {
+      if (step.stepType == DriverStepType.notifications) {
         return PreferencesBuilder.buildNotificationsCheckboxes(
           checkboxOptions,
           coordinator,
         );
       }
-      if (step.title == "Un dernier point avant de démarrer") {
+      if (step.stepType == DriverStepType.legal) {
         return ButtonBuilder.buildLegalCheckboxes(
           checkboxOptions,
           coordinator,

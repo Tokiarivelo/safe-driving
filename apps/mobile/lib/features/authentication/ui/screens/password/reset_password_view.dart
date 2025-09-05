@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/utils/form/form_utils.dart';
 import '../../../../../shared/widgets/customs/colors/colors_widget.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 import '../../widgets/builders/auth_ui_builder.dart';
 import '../../widgets/password/reset_password_container.dart';
 import '../../widgets/password/reset_success_handler.dart';
@@ -55,6 +56,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     final screenHeight = MediaQuery.of(context).size.height;
     final bool isSmallScreen = screenHeight < 700;
     final stepData = AuthUIBuilder.getStepData(
+      context: context,
       isLogin: false,
       isForgotPassword: false,
       isResetPassword: true,
@@ -105,7 +107,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
           _passwordError = RegexFormatter.getPasswordValidationMessage(value);
           if (_confirmPasswordController.text.isNotEmpty) {
             _confirmPasswordError = value != _confirmPasswordController.text
-                ? "Les mots de passe ne correspondent pas"
+                ? context.l10n.passwordsDoNotMatchError
                 : "";
           }
         });
@@ -113,7 +115,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
       onConfirmPasswordChanged: (value) {
         setState(() {
           _confirmPasswordError = value != _passwordController.text
-              ? "Les mots de passe ne correspondent pas"
+              ? context.l10n.passwordsDoNotMatchError
               : "";
         });
       },

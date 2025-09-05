@@ -21,6 +21,8 @@ abstract class IDriverService {
 
   Future<void> clearAllData();
   int getTotalUploadedPhotosCount();
+  int getPersonalUploadedPhotosCount();
+  int getVehicleUploadedPhotosCount();
 
   bool validatePersonalInfo(Map<String, dynamic> data);
   bool validateVehicleInfo(Map<String, dynamic> data);

@@ -13,7 +13,7 @@ class AppState {
     this.notifEnabled = false,
     this.selectedTheme = 'Clair',
     this.selectedTransports = const [],
-    this.selectedLanguage = 'Français',
+    this.selectedLanguage = 'fr',
   });
 
   AppState copyWith({

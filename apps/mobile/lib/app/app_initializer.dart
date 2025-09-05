@@ -9,6 +9,7 @@ import 'package:safe_driving/shared/state_management/providers.dart';
 import 'package:safe_driving/shared/state_management/service_locator.dart';
 import 'package:safe_driving/core/theme/app_theme.dart';
 import 'package:safe_driving/core/theme/theme_controller.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class SafeDriving extends StatelessWidget {
   SafeDriving({super.key}) {
@@ -50,7 +51,11 @@ class SafeDriving extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: context.watch<ThemeController>().mode,
-          initialRoute: AppRoutes.onboarding,
+          // Internationalization
+          localizationsDelegates: L10n.localizationsDelegates,
+          supportedLocales: L10n.supportedLocales,
+          locale: context.watch<LocaleProvider>().locale,
+          initialRoute: AppRoutes.auth,
           routes: AppRoutes.routes,
 >>>>>>> fc4ccdc (feat: operational dark mode on user onboarding)
         ),

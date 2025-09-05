@@ -42,6 +42,7 @@ dependencies:
   
   # for json serialization
   json_annotation: ^4.9.0
+  confetti: ^0.8.0
 
 dev_dependencies:
   flutter_test:

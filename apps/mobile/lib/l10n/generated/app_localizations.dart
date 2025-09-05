@@ -1237,6 +1237,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Thank you for being part of the Safe Driving community. We wish you safe travels!'**
   String get driverCompleteThankYou;
+
+  /// Bouton envoyer le code (mot de passe oublié)
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get sendCode;
+
+  /// Message succès: code de réinitialisation envoyé
+  ///
+  /// In en, this message translates to:
+  /// **'A reset code has been sent to your email address'**
+  String get resetCodeSent;
+
+  /// Texte: lire et accepter les CGU
+  ///
+  /// In en, this message translates to:
+  /// **'Read and accept the Terms'**
+  String get readAndAcceptTerms;
+
+  /// Texte: lire et accepter la politique de confidentialité
+  ///
+  /// In en, this message translates to:
+  /// **'Read and accept the policy'**
+  String get readAndAcceptPolicy;
+
+  /// Succès inscription
+  ///
+  /// In en, this message translates to:
+  /// **'Registration successful! You can now sign in.'**
+  String get registrationSuccess;
+
+  /// Erreur lors de l'inscription
+  ///
+  /// In en, this message translates to:
+  /// **'Error during registration'**
+  String get registrationError;
+
+  /// Message: Google Sign-In non implémenté
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign-in not implemented yet'**
+  String get googleSignInNotImplemented;
+
+  /// Message: Facebook Sign-In non implémenté
+  ///
+  /// In en, this message translates to:
+  /// **'Facebook sign-in not implemented yet'**
+  String get facebookSignInNotImplemented;
 }
 
 class _AppLocalizationsDelegate

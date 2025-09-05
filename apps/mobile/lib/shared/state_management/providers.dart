@@ -6,6 +6,7 @@ import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart
 import 'service_locator.dart';
 import 'package:safe_driving/core/theme/theme_controller.dart';
 import 'package:safe_driving/api/graph-ql/client/graphql_config.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class AppProviders {
   static List<ChangeNotifierProvider> get providers {
@@ -32,9 +33,17 @@ class AppProviders {
       ),
     );
 
+    // Global theme controller
     list.add(
       ChangeNotifierProvider<ThemeController>(
         create: (_) => sl.get<ThemeController>(),
+      ),
+    );
+
+    // Global locale provider (with persistence)
+    list.add(
+      ChangeNotifierProvider<LocaleProvider>(
+        create: (_) => LocaleProvider(),
       ),
     );
 

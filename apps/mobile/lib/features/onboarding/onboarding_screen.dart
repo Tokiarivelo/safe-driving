@@ -4,6 +4,7 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class OnboardingScreen extends StatelessWidget {
   final VoidCallback onUserPressed;
@@ -70,7 +71,7 @@ class OnboardingScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Choix du rôle',
+                      context.l10n.onboardingRole,
                       style: TextStyle(
                         color: AppColors.light.adapt(context),
                         fontSize: 16,
@@ -107,7 +108,7 @@ class OnboardingScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Vous êtes… ?',
+                            context.l10n.stepRoleTitle,
                             style: AppTextStyles.title20Regular(context),
                           ),
                           const SizedBox(height: 20),

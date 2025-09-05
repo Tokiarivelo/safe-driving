@@ -10,6 +10,14 @@ class NavigationLinksBuilder {
     required AuthStepContent stepData,
     required VoidCallback? onTap,
   }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final underlineColor = isDark
+        ? AppColors.light
+        : AppColors.buttonWithoutBackGround.adapt(context);
+    final linkStyle = AppTextStyles.link9Bold(context).copyWith(
+      color: isDark ? AppColors.light : Theme.of(context).colorScheme.tertiary,
+    );
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -21,14 +29,14 @@ class NavigationLinksBuilder {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: AppColors.buttonWithoutBackGround.adapt(context),
+                  color: underlineColor,
                   width: 1.5,
                 ),
               ),
             ),
             child: Text(
               stepData.navigationLink,
-              style: AppTextStyles.link9Bold(context),
+              style: linkStyle,
             ),
           ),
         ),
@@ -41,22 +49,28 @@ class NavigationLinksBuilder {
     required VoidCallback? onTap,
   }) {
     return Builder(
-      builder: (context) => GestureDetector(
-        onTap: onTap,
-        child: Row(
-          children: [
-            Icon(Icons.arrow_back, color: AppColors.buttonWithoutBackGround.adapt(context)),
-            const SizedBox(width: 8),
-            Text(
-              backText,
-              style: TextStyle(
-                fontFamily: 'Inder',
-                color: AppColors.buttonWithoutBackGround.adapt(context),
+      builder: (context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        final color = isDark
+            ? AppColors.light
+            : AppColors.buttonWithoutBackGround.adapt(context);
+        return GestureDetector(
+          onTap: onTap,
+          child: Row(
+            children: [
+              Icon(Icons.arrow_back, color: color),
+              const SizedBox(width: 8),
+              Text(
+                backText,
+                style: TextStyle(
+                  fontFamily: 'Inder',
+                  color: color,
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

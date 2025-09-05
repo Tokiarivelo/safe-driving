@@ -7,6 +7,7 @@ import 'package:safe_driving/shared/widgets/customs/buttons/composite/language_b
 import 'package:safe_driving/shared/widgets/customs/buttons/controls/switches_and_radios.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import 'package:safe_driving/shared/widgets/customs/colors/colors_widget.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 import '../../models/user_onboarding_data.dart';
 import '../../models/user_onboarding_step_model.dart';

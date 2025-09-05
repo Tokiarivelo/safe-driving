@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 import '../../../../../shared/widgets/customs/inputs/inputs_widget.dart';
 
 class PasswordInput extends StatelessWidget {
@@ -18,7 +19,7 @@ class PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomInputField(
-      hint: "Nouveau mot de passe",
+      hint: context.l10n.password,
       icon: Icons.lock_outlined,
       obscureText: true,
       isPassword: true,

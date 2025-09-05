@@ -225,5 +225,14 @@
   "driverCompleteStart": "C'est parti",
   "driverCompleteQrCodeSubtitle": "Votre QR code personnel a été généré :",
   "driverCompleteQrCodeInstructions": "Il permettra à vos passagers de vous identifier rapidement et en toute sécurité. Vous pouvez à tout moment consulter ou télécharger ce QR code dans le menu Mon compte > Mon QR code.",
-  "driverCompleteThankYou": "Merci de faire partie de la communauté Safe Driving. Nous vous souhaitons de bons trajets en toute sécurité !"
+  "driverCompleteThankYou": "Merci de faire partie de la communauté Safe Driving. Nous vous souhaitons de bons trajets en toute sécurité !",
+
+  "sendCode": "Envoyer le code",
+  "resetCodeSent": "Un code de réinitialisation a été envoyé à votre adresse email",
+  "readAndAcceptTerms": "Lire et accepter les CGU",
+  "readAndAcceptPolicy": "Lire et accepter la politique",
+  "registrationSuccess": "Inscription réussie ! Vous pouvez maintenant vous connecter.",
+  "registrationError": "Erreur lors de l'inscription",
+  "googleSignInNotImplemented": "Connexion Google non encore implémentée",
+  "facebookSignInNotImplemented": "Connexion Facebook non encore implémentée"
 }

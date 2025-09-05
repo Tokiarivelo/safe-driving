@@ -5,6 +5,7 @@ import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/state_management/providers.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class StepTwelveView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -23,9 +24,9 @@ class StepTwelveView extends StatelessWidget {
   String _buildWelcomeTitle(BuildContext context) {
     final user = context.authVM.currentUser;
     final raw = (user?.fullName ?? user?.email ?? '').trim();
-    final displayName = raw.isNotEmpty ? raw : 'Conducteur';
-    // Afficher exactement: "Bienvenue à bord, X"
-    return 'Bienvenue à bord, $displayName';
+    final base = context.l10n.driverCompleteTitle;
+    if (raw.isEmpty) return base.trim();
+    return '$base$raw';
   }
 
   @override
@@ -50,10 +51,9 @@ class StepTwelveView extends StatelessWidget {
           Text(
             step.description!,
             textAlign: TextAlign.center,
-            style: AppTextStyles.body16(context).copyWith(
-              color: AppColors.light,
-              height: 1.5,
-            ),
+            style: AppTextStyles.body16(
+              context,
+            ).copyWith(color: AppColors.light, height: 1.5),
           ),
           const SizedBox(height: 24),
 
@@ -62,12 +62,11 @@ class StepTwelveView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Votre QR code personnel a été généré :",
+                context.l10n.driverCompleteQrCodeSubtitle,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.body16(context).copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.light,
-                ),
+                style: AppTextStyles.body16(
+                  context,
+                ).copyWith(fontWeight: FontWeight.w600, color: AppColors.light),
               ),
               const SizedBox(height: 16),
 
@@ -76,10 +75,14 @@ class StepTwelveView extends StatelessWidget {
                 width: 150,
                 height: 150,
                 decoration: BoxDecoration(
-                  color: AppColors.inputTextBackground.adapt(context).withAlpha(100),
+                  color: AppColors.inputTextBackground
+                      .adapt(context)
+                      .withAlpha(100),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppColors.fillButtonBackground.adapt(context).withAlpha(100),
+                    color: AppColors.fillButtonBackground
+                        .adapt(context)
+                        .withAlpha(100),
                     width: 2,
                   ),
                 ),
@@ -94,7 +97,7 @@ class StepTwelveView extends StatelessWidget {
 
               const SizedBox(height: 16),
               Text(
-                "Il permettra à vos passagers de vous identifier rapidement et en toute sécurité. Vous pouvez à tout moment consulter ou télécharger ce QR code dans le menu Mon compte > Mon QR code.",
+                context.l10n.driverCompleteQrCodeInstructions,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
@@ -108,7 +111,6 @@ class StepTwelveView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                
                   color: AppColors.backgroundSecondary,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
@@ -118,7 +120,7 @@ class StepTwelveView extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  "Merci de faire partie de la communauté Safe Driving. Nous vous souhaitons de bons trajets en toute sécurité !",
+                  context.l10n.driverCompleteThankYou,
                   textAlign: TextAlign.center,
                   style: AppTextStyles.body14(context).copyWith(
                     fontWeight: FontWeight.w500,
@@ -133,7 +135,7 @@ class StepTwelveView extends StatelessWidget {
           const SizedBox(height: 32),
 
           PrimaryButton.primaryButton(
-            text: "C'est parti",
+            text: context.l10n.driverCompleteStart,
             onPressed: onContinue,
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
           ),

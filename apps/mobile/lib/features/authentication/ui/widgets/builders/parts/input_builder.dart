@@ -32,28 +32,34 @@ class InputBuilder {
     required VoidCallback? onTap,
   }) {
     return Builder(
-      builder: (context) => GestureDetector(
-        onTap: onTap,
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: AppColors.buttonWithoutBackGround.adapt(context)),
+      builder: (context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        final color = isDark
+            ? AppColors.light
+            : AppColors.buttonWithoutBackGround.adapt(context);
+        return GestureDetector(
+          onTap: onTap,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: color),
+                ),
               ),
-            ),
-            child: Text(
-              forgotText,
-              style: TextStyle(
-                fontFamily: 'Inder',
-                color: AppColors.buttonWithoutBackGround.adapt(context),
-                fontWeight: FontWeight.bold,
-                fontSize: 10,
+              child: Text(
+                forgotText,
+                style: TextStyle(
+                  fontFamily: 'Inder',
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 10,
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

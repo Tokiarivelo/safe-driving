@@ -106,12 +106,14 @@ class PreferencesViewModel extends ChangeNotifier {
 
   // Language methods
   void setLanguage(String language) {
-    _selectedLanguage = language;
+    final code = _normalizeLanguage(language);
+    _selectedLanguage = code;
     notifyListeners();
   }
 
   void setSelectedLanguage(String language) {
-    _selectedLanguage = language;
+    final code = _normalizeLanguage(language);
+    _selectedLanguage = code;
     notifyListeners();
   }
 
@@ -147,6 +149,13 @@ class PreferencesViewModel extends ChangeNotifier {
     _selectedTheme = 'clair';
     _selectedLanguage = 'fr';
     notifyListeners();
+  }
+
+  String _normalizeLanguage(String language) {
+    final lower = language.toLowerCase();
+    if (lower == 'fr' || lower == 'français' || lower == 'francais') return 'fr';
+    if (lower == 'en' || lower == 'english' || lower == 'anglais') return 'en';
+    return 'fr';
   }
 
   void clearError() {

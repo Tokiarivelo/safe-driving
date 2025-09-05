@@ -11,25 +11,30 @@ class ActionButtonBuilder {
     required VoidCallback onPressed,
   }) {
     return Builder(
-      builder: (context) => SizedBox(
-        width: double.infinity,
-        height: 50,
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.fillButtonBackground.adapt(context),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          ),
-          child: Text(
-            buttonText,
-            style: TextStyle(
-              fontFamily: 'Inder',
-              color: AppColors.titleColor.adapt(context),
-              fontSize: 13,
+      builder: (context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        return SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor:
+                  isDark ? AppColors.color1 : AppColors.fillButtonBackground,
+              shape:
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+            ),
+            child: Text(
+              buttonText,
+              style: const TextStyle(
+                fontFamily: 'Inder',
+                color: AppColors.light,
+                fontSize: 13,
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -155,6 +160,7 @@ class _AnimatedAuthContentState extends State<_AnimatedAuthContent>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SlideTransition(
       position: _slideAnimation,
       child: FadeTransition(
@@ -177,7 +183,7 @@ class _AnimatedAuthContentState extends State<_AnimatedAuthContent>
                   widget.stepData.socialText,
                   style: TextStyle(
                     fontFamily: 'Inder',
-                    color: AppColors.textColor.adapt(context),
+                    color: isDark ? AppColors.light : AppColors.textColor.adapt(context),
                   ),
                 ),
               ),

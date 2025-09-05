@@ -8,6 +8,7 @@ import 'package:safe_driving/shared/widgets/customs/buttons/composite/language_b
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/theme/theme_controller.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class StepNineView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -25,11 +26,10 @@ class StepNineView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final themeController = context.watch<ThemeController>();
     final themeOptions = [
-      {'label': 'Clair', 'value': 'clair'},
-      {'label': 'Sombre', 'value': 'sombre'},
+      {'label': context.l10n.driverCustomizeThemeLight, 'value': 'clair'},
+      {'label': context.l10n.driverCustomizeThemeDark, 'value': 'sombre'},
     ];
 
     return Container(
@@ -42,17 +42,18 @@ class StepNineView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.h1(context).copyWith(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.h1(
+              context,
+            ).copyWith(fontSize: 24, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 16),
           Text(
             step.description!,
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(context).copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.7),
               height: 1.5,
             ),
           ),
@@ -63,7 +64,10 @@ class StepNineView extends StatelessWidget {
             children: [
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Thème', style: AppTextStyles.h2BoldNeutral(context)),
+                child: Text(
+                  context.l10n.stepPreferencesTheme,
+                  style: AppTextStyles.h2BoldNeutral(context),
+                ),
               ),
               const SizedBox(height: 12),
               Row(
@@ -75,19 +79,24 @@ class StepNineView extends StatelessWidget {
                       .map((entry) {
                         final index = entry.key;
                         final option = entry.value;
-                        final current = themeController.mode == ThemeMode.dark ? 'sombre' : 'clair';
+                        final current = themeController.mode == ThemeMode.dark
+                            ? 'sombre'
+                            : 'clair';
                         return [
                           Chips.customChoiceChip(
                             label: option['label']!,
                             selected: current == option['value'],
                             onSelected: (_) {
                               final value = option['value']!;
-                              coordinator.preferencesViewModel.setSelectedTheme(value);
+                              coordinator.preferencesViewModel.setSelectedTheme(
+                                value,
+                              );
                               final mode = ThemeController.fromLabel(value);
                               context.read<ThemeController>().setMode(mode);
                             },
-                            // In dark mode, force light text inside the chips as requested
-                            labelColor: Theme.of(context).brightness == Brightness.dark
+
+                            labelColor:
+                                Theme.of(context).brightness == Brightness.dark
                                 ? AppColors.light
                                 : null,
                           ),
@@ -101,7 +110,10 @@ class StepNineView extends StatelessWidget {
               const SizedBox(height: 32),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Langue', style: AppTextStyles.h2BoldNeutral(context)),
+                child: Text(
+                  context.l10n.language,
+                  style: AppTextStyles.h2BoldNeutral(context),
+                ),
               ),
               const SizedBox(height: 12),
               LanguageButtons.languageButtonContainer(
@@ -117,7 +129,7 @@ class StepNineView extends StatelessWidget {
           const SizedBox(height: 32),
 
           ButtonRows.buttonRow(
-            buttonTitles: ['Plus tard', 'Valider'],
+            buttonTitles: [context.l10n.driverOnboardingLater, context.l10n.driverDetailsValidate],
             onPressedList: [onSkip ?? () {}, onContinue],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             isLastButtonPrimary: true,

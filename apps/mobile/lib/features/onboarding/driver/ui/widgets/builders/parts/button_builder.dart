@@ -3,6 +3,7 @@ import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/modals/policy_modal.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 import 'preferences_builder.dart';
 
 class ButtonBuilder {
@@ -12,7 +13,6 @@ class ButtonBuilder {
     VoidCallback nextStep,
     BuildContext context,
   ) {
-
     if (step.stepType == DriverStepType.gps) {
       return PreferencesBuilder.buildGpsButtons(coordinator, nextStep, context);
     }
@@ -20,7 +20,7 @@ class ButtonBuilder {
     if (step.stepType == DriverStepType.legal) {
       if (coordinator.legalViewModel.allCguAccepted) {
         return PrimaryButton.primaryButton(
-          text: "Continuer",
+          text: context.l10n.next,
           onPressed: nextStep,
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
         );
@@ -29,20 +29,43 @@ class ButtonBuilder {
     }
 
     if (step.buttonTitles.isNotEmpty) {
-      return ButtonRows.buttonRow(
-        buttonTitles: step.buttonTitles,
-        onPressedList: step.buttonTitles.map((buttonTitle) {
-          final isMainButton =
-              step.buttonTitles.indexOf(buttonTitle) ==
-              step.buttonTitles.length - 1;
-          final isPlusTard = buttonTitle.toLowerCase().contains('plus tard');
+      List<String> usedTitles;
+      switch (step.stepType) {
+        case DriverStepType.welcome:
+          usedTitles = [context.l10n.driverOnboardingLater, context.l10n.driverOnboardingStart];
+          break;
+        case DriverStepType.personalInfo:
+        case DriverStepType.vehicleInfo:
+        case DriverStepType.documents:
+        case DriverStepType.photos:
+        case DriverStepType.selfie:
+          usedTitles = [context.l10n.driverOnboardingLater, context.l10n.driverDetailsValidate];
+          break;
+        case DriverStepType.notifications:
+          usedTitles = [context.l10n.driverOnboardingLater, context.l10n.stepPreferencesValidate];
+          break;
+        case DriverStepType.preferences:
+          usedTitles = [context.l10n.driverOnboardingLater, context.l10n.stepPreferencesValidate];
+          break;
+        case DriverStepType.summary:
+          usedTitles = [context.l10n.driverSummaryValidate];
+          break;
+        case DriverStepType.completion:
+          usedTitles = [context.l10n.driverCompleteStart];
+          break;
+        case DriverStepType.gps:
+          usedTitles = step.buttonTitles;
+          break;
+        case DriverStepType.legal:
+          usedTitles = step.buttonTitles;
+          break;
+      }
 
+      return ButtonRows.buttonRow(
+        buttonTitles: usedTitles,
+        onPressedList: usedTitles.map((buttonTitle) {
           return () {
-            if (isMainButton && !isPlusTard) {
-              nextStep();
-            } else {
-              nextStep();
-            }
+            nextStep();
           };
         }).toList(),
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -64,16 +87,16 @@ class ButtonBuilder {
     return Column(
       children: [
         ElegantAcceptanceButton.elegantAcceptanceButton(
-          text: "Conditions Générales d'Utilisation",
-          subtitle: "Lire et accepter les CGU",
+          text: context.l10n.driverCguTitle,
+          subtitle: context.l10n.driverTermsSubtitle,
           isAccepted: coordinator.legalViewModel.cguAccepted[0],
           onTap: () {
             showDialog(
               context: context,
               builder: (context) {
                 return PolicyModal(
-                  titleContent: coordinator.legalViewModel.getCguTitle(),
-                  content: coordinator.legalViewModel.getCguContent(),
+                  titleContent: context.l10n.driverCguTitle,
+                  content: coordinator.legalViewModel.getCguContent(context),
                   onAccept: () {
                     coordinator.legalViewModel.setCguAccepted(0, true);
                   },
@@ -84,17 +107,16 @@ class ButtonBuilder {
         ),
         const SizedBox(height: 16),
         ElegantAcceptanceButton.elegantAcceptanceButton(
-          text: "Politique de Confidentialité",
-          subtitle: "Lire et accepter la politique",
+          text: context.l10n.driverPrivacyTitle,
+          subtitle: context.l10n.driverTermsSubtitle,
           isAccepted: coordinator.legalViewModel.cguAccepted[1],
           onTap: () {
             showDialog(
               context: context,
               builder: (context) {
                 return PolicyModal(
-                  titleContent: coordinator.legalViewModel
-                      .getPrivacyPolicyTitle(),
-                  content: coordinator.legalViewModel.getPrivacyPolicyContent(),
+                  titleContent: context.l10n.driverPrivacyTitle,
+                  content: coordinator.legalViewModel.getPrivacyPolicyContent(context),
                   onAccept: () {
                     coordinator.legalViewModel.setCguAccepted(1, true);
                   },

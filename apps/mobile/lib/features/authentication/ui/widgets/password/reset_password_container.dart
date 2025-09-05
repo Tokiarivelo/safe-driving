@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter_svg/svg.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 import '../../../../../core/constants/colors/colors.dart';
 import '../builders/auth_ui_builder.dart';
 import 'password_input.dart';
@@ -99,16 +100,20 @@ class ResetPasswordContainer extends StatelessWidget {
 
                   SizedBox(height: isSmallScreen ? 20 : 25),
 
-                  AuthUIBuilder.buildActionButton(
-                    buttonText: "Réinitialiser le mot de passe",
-                    onPressed: onResetPassword,
+                  Builder(
+                    builder: (context) => AuthUIBuilder.buildActionButton(
+                      buttonText: context.l10n.resetPassword,
+                      onPressed: onResetPassword,
+                    ),
                   ),
 
                   SizedBox(height: isSmallScreen ? 15 : 20),
 
-                  AuthUIBuilder.buildBackToLoginButton(
-                    backText: "Retour à la connexion",
-                    onTap: onNavigateToLogin,
+                  Builder(
+                    builder: (context) => AuthUIBuilder.buildBackToLoginButton(
+                      backText: context.l10n.backToLogin,
+                      onTap: onNavigateToLogin,
+                    ),
                   ),
                 ],
               ),

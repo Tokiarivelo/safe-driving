@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class PolicyModal extends StatefulWidget {
   final String titleContent;
@@ -84,7 +85,7 @@ class _PolicyModalState extends State<PolicyModal> {
           style: TextButton.styleFrom(
             foregroundColor: isDark ? AppColors.light : AppColors.dark,
           ),
-          child: const Text("Annuler"),
+          child: Builder(builder: (context) => Text(context.l10n.cancel)),
         ),
         TextButton(
           onPressed: _hasScrolledToBottom
@@ -99,8 +100,10 @@ class _PolicyModalState extends State<PolicyModal> {
                 ? const BorderSide(color: AppColors.light)
                 : null,
           ),
-          child: Text(
-            _hasScrolledToBottom ? "J'accepte" : "Lisez d'abord le contenu",
+          child: Builder(
+            builder: (context) => Text(
+              context.l10n.driverCguAccept,
+            ),
           ),
         ),
       ],

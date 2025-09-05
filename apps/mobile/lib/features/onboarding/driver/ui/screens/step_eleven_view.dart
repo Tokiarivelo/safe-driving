@@ -7,6 +7,7 @@ import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboar
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_summary_view_model.dart';
 import 'package:safe_driving/shared/state_management/service_locator.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class StepElevenView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -24,15 +25,69 @@ class StepElevenView extends StatelessWidget {
     required this.onNavigateToStep,
   });
 
+  String _localizeFieldLabel(BuildContext context, String fieldKey) {
+    switch (fieldKey) {
+      case 'Nom':
+        return context.l10n.driverSummaryPersonalInfoName;
+      case 'E-mail':
+        return context.l10n.driverSummaryPersonalInfoEmail;
+      case 'Téléphone':
+        return context.l10n.driverSummaryPersonalInfoPhone;
+      case 'Photos uploadées':
+        return context.l10n.driverSummaryPersonalInfoPhotos;
+      case 'Type':
+        return context.l10n.driverSummaryVehicleType;
+      case 'Marque':
+        return context.l10n.driverSummaryVehicleBrand;
+      case 'Modèle':
+        return context.l10n.driverSummaryVehicleModel;
+      case 'Immatriculation':
+        return context.l10n.driverSummaryVehicleRegistration;
+      case 'Nombre de places':
+        return context.l10n.driverSummaryVehicleSeats;
+      case 'GPS':
+        return context.l10n.driverSummaryGps;
+      case 'Notifications':
+        return context.l10n.driverSummaryNotifications;
+      case 'Thème':
+        return context.l10n.driverSummaryTheme;
+      case 'Langue':
+        return context.l10n.driverSummaryLanguage;
+      default:
+        return fieldKey;
+    }
+  }
+
+  String _localizeSectionTitle(BuildContext context, String sectionKey) {
+    switch (sectionKey) {
+      case 'Informations personnelles':
+      case 'Infos personnelles':
+        return context.l10n.driverSummaryPersonalInfo;
+      case 'Véhicule':
+        return context.l10n.driverSummaryVehicle;
+      case 'GPS & Notifications':
+        return context.l10n.driverSummaryGpsNotifications;
+      case 'Préférences':
+        return context.l10n.driverSummaryPreferences;
+      default:
+        return sectionKey;
+    }
+  }
+
   Widget _buildResumeElement(
     BuildContext context,
     DriverSummaryViewModel summaryViewModel,
     String element,
     String sectionTitle,
   ) {
+    final displayLabel = _localizeFieldLabel(context, element);
     if (element == 'Photos uploadées') {
-      final totalPhotos = summaryViewModel.getTotalUploadedPhotosCount();
-      final photosStepIndex = summaryViewModel.getStepIndexForField(element);
+    
+      final isVehicle = sectionTitle == 'Véhicule';
+      final totalPhotos = isVehicle
+          ? coordinator.documentUploadViewModel.getVehicleUploadedPhotosCount()
+          : coordinator.documentUploadViewModel.getPersonalUploadedPhotosCount();
+      final photosStepIndex = isVehicle ? 4 : 2;
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: Row(
@@ -45,7 +100,7 @@ class StepElevenView extends StatelessWidget {
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                '$element : $totalPhotos',
+                '$displayLabel : $totalPhotos',
                 style: AppTextStyles.body14(context).copyWith(
                   color: AppColors.light,
                 ),
@@ -98,7 +153,7 @@ class StepElevenView extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: '$element: ',
+                    text: '$displayLabel: ',
                     style: AppTextStyles.body14(context).copyWith(
                       color: AppColors.light,
                       fontWeight: FontWeight.w500,
@@ -139,7 +194,7 @@ class StepElevenView extends StatelessWidget {
                 const SizedBox(height: 24),
                 _buildSummaryContent(context, summaryViewModel, resumeData),
                 const SizedBox(height: 16),
-                _buildActionButton(summaryViewModel),
+                _buildActionButton(context, summaryViewModel),
                 _buildErrorMessage(context, summaryViewModel),
               ],
             ),
@@ -230,6 +285,7 @@ class StepElevenView extends StatelessWidget {
     String titre,
   ) {
     final stepIndex = summaryViewModel.getStepIndexForSection(titre);
+    final displayTitle = _localizeSectionTitle(context, titre);
     return Row(
       children: [
         Icon(
@@ -240,7 +296,7 @@ class StepElevenView extends StatelessWidget {
         const SizedBox(width: 8),
         Expanded(
           child: Text(
-            titre,
+            displayTitle,
             style: AppTextStyles.body16(context).copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.light,
@@ -275,13 +331,13 @@ class StepElevenView extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton(DriverSummaryViewModel summaryViewModel) {
+  Widget _buildActionButton(BuildContext context, DriverSummaryViewModel summaryViewModel) {
     if (summaryViewModel.isLoading) {
       return const CircularProgressIndicator();
     }
 
     return PrimaryButton.primaryButton(
-      text: "Valider",
+      text: context.l10n.driverSummaryValidate,
       onPressed: () => _handleValidation(summaryViewModel),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
     );

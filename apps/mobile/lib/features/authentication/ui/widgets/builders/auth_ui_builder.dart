@@ -160,11 +160,13 @@ class AuthUIBuilder {
   }
 
   static AuthStepContent getStepData({
+    required BuildContext context,
     required bool isLogin,
     required bool isForgotPassword,
     bool isResetPassword = false,
   }) {
     return StepDataGetter.getStepData(
+      context: context,
       isLogin: isLogin,
       isForgotPassword: isForgotPassword,
       isResetPassword: isResetPassword,

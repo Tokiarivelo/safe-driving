@@ -8,25 +8,22 @@ class _SummaryStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final summaryLabels =
-        (stepContent.additionalContent?['summaryLabels'] as Map?)
-            ?.cast<String, String>() ??
-        const {
-          'gps': 'GPS',
-          'notifications': 'Notifications',
-          'theme': 'Thème',
-          'transport': 'Transport(s)',
-          'language': 'Langue',
-          'noTransport': 'Aucun transport sélectionné',
-        };
+    final l10n = context.l10n;
+
+  
+    String themeNameRaw = viewModel.appState.selectedTheme;
+    final raw = themeNameRaw.toLowerCase();
+    final themeName = (raw.contains('sombre') || raw.contains('dark'))
+        ? l10n.stepPreferencesThemeDark
+        : l10n.stepPreferencesThemeLight;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(stepContent.title, style: AppTextStyles.h1(context)),
+        Text(l10n.stepSummaryTitle, style: AppTextStyles.h1(context)),
         const SizedBox(height: 8),
         Text(
-          stepContent.subtitle,
+          l10n.stepSummarySubtitle,
           style: AppTextStyles.body14(context).copyWith(
             color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
           ),
@@ -41,7 +38,7 @@ class _SummaryStep extends StatelessWidget {
             const SizedBox(width: 8),
             Builder(
               builder: (context) => Text(
-                summaryLabels['gps']!,
+                l10n.stepSummaryGps,
                 style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
               ),
             ),
@@ -56,7 +53,7 @@ class _SummaryStep extends StatelessWidget {
             const SizedBox(width: 8),
             Builder(
               builder: (context) => Text(
-                summaryLabels['notifications']!,
+                l10n.stepSummaryNotifications,
                 style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
               ),
             ),
@@ -65,14 +62,14 @@ class _SummaryStep extends StatelessWidget {
         const SizedBox(height: 16),
         Builder(
           builder: (context) => Text(
-            '${summaryLabels['theme']} : ${viewModel.appState.selectedTheme}',
+            l10n.stepSummaryTheme(themeName),
             style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           ),
         ),
         const SizedBox(height: 8),
         Builder(
           builder: (context) => Text(
-            '${summaryLabels['transport']} :',
+            l10n.stepSummaryTransports,
             style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           ),
         ),
@@ -126,7 +123,7 @@ class _SummaryStep extends StatelessWidget {
                 )
               else
                 Text(
-                  summaryLabels['noTransport']!,
+                  l10n.stepSummaryNoTransports,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
                     fontStyle: FontStyle.italic,
@@ -138,7 +135,7 @@ class _SummaryStep extends StatelessWidget {
         const SizedBox(height: 16),
         Builder(
           builder: (context) => Text(
-            '${summaryLabels['language']} :',
+            '${l10n.language} :',
             style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           ),
         ),
@@ -156,18 +153,18 @@ class _SummaryStep extends StatelessWidget {
             if (ok) {
               SnackbarHelper.showSuccess(
                 context,
-                'Configuration terminée avec succès !',
+                l10n.stepSummaryValidate,
                 duration: const Duration(seconds: 2),
               );
             } else {
               SnackbarHelper.showError(
                 context,
-                viewModel.errorMessage ?? 'Erreur lors de la finalisation',
+                viewModel.errorMessage ?? l10n.networkError,
               );
             }
           },
-          laterText: stepContent.buttonTitles[0],
-          actionText: stepContent.buttonTitles[1],
+          laterText: l10n.stepSummaryCancel,
+          actionText: l10n.stepSummaryBegin,
           fontSize: 14,
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),

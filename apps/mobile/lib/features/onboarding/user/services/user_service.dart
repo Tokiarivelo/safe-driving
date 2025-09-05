@@ -55,7 +55,7 @@ class UserOnboardingService implements IUserOnboardingService {
         selectedTheme: data['selectedTheme'] as String? ?? 'Clair',
         selectedTransports:
             (data['selectedTransports'] as List?)?.cast<String>() ?? const [],
-        selectedLanguage: data['selectedLanguage'] as String? ?? 'Français',
+        selectedLanguage: data['selectedLanguage'] as String? ?? 'fr',
       );
     } catch (_) {
       return null;

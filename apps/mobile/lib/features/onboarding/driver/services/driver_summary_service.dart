@@ -15,6 +15,7 @@ class DriverSummaryService {
           'Modèle',
           'Immatriculation',
           'Nombre de places',
+          'Photos uploadées',
         ],
       },
       {

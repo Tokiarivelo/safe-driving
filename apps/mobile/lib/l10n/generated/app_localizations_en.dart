@@ -603,4 +603,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get driverCompleteThankYou =>
       'Thank you for being part of the Safe Driving community. We wish you safe travels!';
+
+  @override
+  String get sendCode => 'Send code';
+
+  @override
+  String get resetCodeSent =>
+      'A reset code has been sent to your email address';
+
+  @override
+  String get readAndAcceptTerms => 'Read and accept the Terms';
+
+  @override
+  String get readAndAcceptPolicy => 'Read and accept the policy';
+
+  @override
+  String get registrationSuccess =>
+      'Registration successful! You can now sign in.';
+
+  @override
+  String get registrationError => 'Error during registration';
+
+  @override
+  String get googleSignInNotImplemented => 'Google sign-in not implemented yet';
+
+  @override
+  String get facebookSignInNotImplemented =>
+      'Facebook sign-in not implemented yet';
 }

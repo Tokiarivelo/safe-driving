@@ -12,13 +12,13 @@ class _WelcomeStep extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          stepContent.title,
+          context.l10n.stepWelcomeTitle,
           style: AppTextStyles.h2(context),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 8),
         Text(
-          stepContent.subtitle,
+          context.l10n.stepWelcomeSubtitle,
           style: AppTextStyles.body14(context).copyWith(
             color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
           ),
@@ -28,8 +28,8 @@ class _WelcomeStep extends StatelessWidget {
         ButtonRows.laterAndActionButtons(
           onLaterPressed: viewModel.nextStepImmediate,
           onActionPressed: viewModel.nextStepImmediate,
-          laterText: stepContent.buttonTitles[0],
-          actionText: stepContent.buttonTitles[1],
+          laterText: context.l10n.stepWelcomeLater,
+          actionText: context.l10n.stepWelcomeStart,
           fontSize: 14,
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),
