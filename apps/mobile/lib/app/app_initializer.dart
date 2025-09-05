@@ -18,30 +18,6 @@ class SafeDriving extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    final httpLink = HttpLink(GraphQLConfig.endpoint);
-    final client = ValueNotifier(
-      GraphQLClient(
-        link: httpLink,
-        cache: GraphQLCache(store: HiveStore()),
-      ),
-    );
-
-    return GraphQLProvider(
-      client: client,
-      child: Provider<GraphQLClientWrapper>.value(
-        value: GraphQLClientWrapper.instance,
-        child: MultiProvider(
-          providers: AppProviders.providers,
-          child: MaterialApp(
-            title: 'Safe Driving',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(fontFamily: 'Inder'),
-            // initialRoute: AppRoutes.onboarding,
-            initialRoute: AppRoutes.home,
-            routes: AppRoutes.routes,
-          ),
-=======
     Widget app = MultiProvider(
       providers: AppProviders.providers,
       child: Builder(
@@ -55,9 +31,8 @@ class SafeDriving extends StatelessWidget {
           localizationsDelegates: L10n.localizationsDelegates,
           supportedLocales: L10n.supportedLocales,
           locale: context.watch<LocaleProvider>().locale,
-          initialRoute: AppRoutes.auth,
+          initialRoute: AppRoutes.onboarding,
           routes: AppRoutes.routes,
->>>>>>> fc4ccdc (feat: operational dark mode on user onboarding)
         ),
       ),
     );

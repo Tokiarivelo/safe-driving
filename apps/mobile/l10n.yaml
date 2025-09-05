@@ -31,8 +31,3 @@ preferred-supported-locales: ['en', 'fr']
 # Générer les méthodes nullables
 nullable-getter: true
 
-<<<<<<< HEAD
-# Génération des paramètres synthétiques
-#synthetic-package: false
-=======
->>>>>>> fc4ccdc (feat: operational dark mode on user onboarding)

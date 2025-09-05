@@ -16,22 +16,25 @@ class LanguageButtons {
         final theme = Theme.of(context);
         final isDarkMode = theme.brightness == Brightness.dark;
 
-        final selectedBackgroundColor =
-            isDarkMode ? theme.colorScheme.primary : AppColors.fillButtonBackground;
+        final selectedBackgroundColor = isDarkMode
+            ? theme.colorScheme.primary
+            : AppColors.fillButtonBackground;
         final selectedBorderColor = selectedBackgroundColor;
         final unselectedBorderColor = ColorsWidget.subtleBorderColor(context);
         final textColor = isSelected
             ? theme.colorScheme.onPrimary
             : (isDarkMode
-                ? theme.colorScheme.onSurface
-                : AppColors.buttonWithoutBackGround);
+                  ? theme.colorScheme.onSurface
+                  : AppColors.buttonWithoutBackGround);
 
         return GestureDetector(
           onTap: onPressed,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              color: isSelected ? selectedBackgroundColor : AppColors.transparent,
+              color: isSelected
+                  ? selectedBackgroundColor
+                  : AppColors.transparent,
               borderRadius: BorderRadius.circular(6),
               border: Border.all(
                 color: isSelected ? selectedBorderColor : unselectedBorderColor,
@@ -44,10 +47,7 @@ class LanguageButtons {
                 const SizedBox(width: 6),
                 Text(
                   language,
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: 12,
-                  ),
+                  style: TextStyle(color: textColor, fontSize: 12),
                 ),
               ],
             ),
@@ -59,7 +59,8 @@ class LanguageButtons {
 
   static String _normalizeToCode(String input) {
     final lower = input.toLowerCase();
-    if (lower == 'fr' || lower == 'français' || lower == 'francais') return 'fr';
+    if (lower == 'fr' || lower == 'français' || lower == 'francais')
+      return 'fr';
     if (lower == 'en' || lower == 'english' || lower == 'anglais') return 'en';
     return 'fr';
   }
@@ -71,18 +72,17 @@ class LanguageButtons {
     return Builder(
       builder: (context) {
         final borderColor = ColorsWidget.subtleBorderColor(context);
-        // Use the current app locale as the source of truth for selection highlighting
-        final localeCode = Localizations.localeOf(context).languageCode.toLowerCase();
+
+        final localeCode = Localizations.localeOf(
+          context,
+        ).languageCode.toLowerCase();
         final selectedCode = L10n.isSupported(localeCode)
             ? localeCode
             : _normalizeToCode(selectedLanguage);
 
         return Container(
           decoration: BoxDecoration(
-            border: Border.all(
-              color: borderColor,
-              width: 1,
-            ),
+            border: Border.all(color: borderColor, width: 1),
             borderRadius: BorderRadius.circular(8),
           ),
           padding: const EdgeInsets.all(12),
