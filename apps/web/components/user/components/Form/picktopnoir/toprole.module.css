@@ -1,0 +1,23 @@
+@reference '../../../../../app/global.css';
+
+.auth_toprole {
+  @apply max-w-4xl w-full h-20 top-0 flex justify-center space-x-1;
+}
+.auth_toprole1 {
+  @apply bg-auth-colorx-green w-9 border-3 border-auth-color-bg-white h-9 rounded-full flex items-center justify-center text-auth-color-bg-white;
+}
+.auth_toprole2 {
+  @apply text-auth-color-bg-white;
+}
+.auth_toprole3 {
+  @apply w-45 h-10 flex mt-4 justify-center;
+}
+.auth_toprole4 {
+  @apply  bg-auth-color-bg-white w-full h-[2px];
+}
+.auth_toprole5 {
+  @apply bg-auth-color-black w-9 border-3 border-auth-color-bg-white h-9 rounded-full text-center text-xl font-semibold text-auth-color-bg-white;
+}
+.auth_toprole6 {
+  @apply text-auth-color-bg-white;
+}

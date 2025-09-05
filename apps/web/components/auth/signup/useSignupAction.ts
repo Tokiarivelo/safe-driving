@@ -25,13 +25,12 @@ export const useRegister = () => {
     },
   });
 
-  // Fonction pour capitaliser le texte en temps réel
   const capitalizeText = (text: string) => {
     return text
       .toLowerCase()
       .split(/(\s+|-)/)
       .map(part => {
-        if (part.match(/\s+|-/)) return part; // Garde les espaces et traits d'union
+        if (part.match(/\s+|-/)) return part; 
         return part.charAt(0).toUpperCase() + part.slice(1);
       })
       .join('');
@@ -47,7 +46,6 @@ export const useRegister = () => {
       const { data, errors } = await mutationRegister({
         variables: {
           data: { ...dataInput },
-          // data: {...dataInput, username: dataInput.email},
         },
       });
 

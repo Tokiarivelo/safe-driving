@@ -80,7 +80,7 @@ const { handlers } = NextAuth({
     },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/pickrole');
+      const isOnDashboard = nextUrl.pathname.startsWith('/user/form/pickrole');
 
       if (isOnDashboard) {
         // Si page /dashboard/* et pas loggé → reject
@@ -88,7 +88,7 @@ const { handlers } = NextAuth({
       }
       if (isLoggedIn && nextUrl.pathname === '/login') {
         // Si déjà loggé et arrive sur /login → renvoi /dashboard
-        return Response.redirect(new URL('/pickrole', nextUrl));
+        return Response.redirect(new URL('/user/form/pickrole', nextUrl));
       }
       // Dans tous les autres cas, laisse faire
       return true;

@@ -1,0 +1,71 @@
+@reference '../../../../../app/global.css';
+
+.auth_Qr1 {
+  @apply h-[14%] flex items-center pl-5;
+}
+.auth_Qr2 {
+  @apply h-17 w-auto;
+}
+.auth_Qr3 {
+  @apply h-[8%] text-center;
+}
+.auth_Qr4 {
+  @apply text-2xl font-semibold text-auth-color-text-custom-magenta mb-2;
+}
+.auth_Qr5 {
+  @apply h-[10%] text-center;
+}
+.auth_Qr6 {
+  @apply text-auth-color-placeholder text-sm;
+}
+.auth_Qr7 {
+  @apply text-auth-color-placeholder text-sm;
+}
+.auth_Qr8 {
+  @apply h-[15%] pl-5 sm:pl-10 md:pl-15;
+}
+.auth_Qr9 {
+  @apply text-gray-700 text-sm mb-2;
+}
+.auth_Qr10 {
+  @apply text-[12px] text-gray-600;
+}
+.auth_Qr11 {
+  @apply h-[30%] flex items-center justify-center;
+}
+.auth_Qr12 {
+  @apply w-[200px] h-[200px] bg-gray-100 animate-pulse rounded-lg flex items-center justify-center;
+}
+.auth_Qr13 {
+  @apply text-gray-500;
+}
+.auth_Qr14 {
+  @apply w-[200px] h-[200px] bg-red-50 border border-red-200 rounded-lg flex items-center justify-center;
+}
+.auth_Qr15 {
+  @apply text-red-500 text-sm text-center px-4;
+}
+.auth_Qr16 {
+  @apply rounded-sm border border-gray-500;
+}
+.auth_Qr17 {
+  @apply w-[200px] h-[200px] bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-center;
+}
+.auth_Qr18 {
+  @apply text-gray-500 text-sm;
+}
+.auth_Qr19 {
+  @apply h-[10%] text-center mt-4;
+}
+.auth_Qr20 {
+  @apply text-[12px] text-gray-600;
+}
+.auth_Qr21 {
+  @apply text-[12px] text-gray-600;
+}
+.auth_Qr22 {
+  @apply h-[8%] flex items-center justify-center;
+}
+.auth_Qr23 {
+  @apply px-12 py-[6px] bg-auth-color-button text-auth-color-bg-white rounded-md hover:bg-auth-hover lg:w-42;
+}

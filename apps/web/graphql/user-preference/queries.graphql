@@ -1,0 +1,15 @@
+query getMyUserPreference {
+  userPreference {
+    ...UserPreferenceFields
+  }
+}
+
+query getVehicleTypes {
+  vehicleTypes {
+    ...vehicleTypeFragment
+  }
+}
+
+query getqr {
+  getUserQr(type: "png")
+}

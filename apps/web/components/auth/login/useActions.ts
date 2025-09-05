@@ -39,7 +39,7 @@ export const useLogin = () => {
         redirect: false,
         email,
         password,
-        callbackUrl: '/pickrole',
+        callbackUrl: '/user/form/pickrole',
       });
 
       setLoading(false);
@@ -53,7 +53,7 @@ export const useLogin = () => {
         description: `Bienvenue! Redirection en cours...`,
       });
 
-      router.push((res?.url as string) || '/pickrole');
+      router.push((res?.url as string) || '/user/form/pickrole');
       return res;
     } catch (error) {
       if (error instanceof Error) {

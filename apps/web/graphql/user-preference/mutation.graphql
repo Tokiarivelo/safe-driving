@@ -1,0 +1,16 @@
+mutation upsertUserPreference($input: UserPreferenceUpsertInput!) {
+  upsertUserPreference(input: $input) {
+    ...UserPreferenceFields
+  }
+}
+mutation createVehicleType ( $input: VehicleTypeCreateInput! ) {
+  createVehicleType(input: $input) {
+    ...vehicleTypeFragment
+  }
+}
+mutation createUserQrs($type: String!) {
+  createUserQr(type: $type) {
+    id
+    url
+  }
+}

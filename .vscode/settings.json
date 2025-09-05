@@ -1,3 +1,4 @@
 {
-  "cmake.sourceDirectory": "/home/tokiarivelo/Documents/stagiaire/safe-driving/apps/mobile/linux"
+  "cmake.sourceDirectory": "/home/tokiarivelo/Documents/stagiaire/safe-driving/apps/mobile/linux",
+  "postman.settings.dotenv-detection-notification-visibility": false
 }
