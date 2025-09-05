@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import React from 'react';
 import styles from './utilisateur.module.css';
-import FormButton from '../../../../../components/user/components/formbutton/formbutton';
-import TopRole from '../../../../../components/user/components/pickrolenoir/toprole';
-import TopRoles from '../../../../../components/user/components/pickrolegreen/toprole';
+import FormButton from '../../../../../components/user/components/Form/formbutton/formbutton';
+import TopRole from '../../../../../components/user/components/Form/picktopnoir/toprole';
+import TopRoles from '../../../../../components/user/components/Form/picktopgreen/toprole';
 import { usePathname } from 'next/navigation';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { motion } from 'framer-motion';

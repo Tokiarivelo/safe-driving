@@ -1,0 +1,29 @@
+@reference '../../../../../app/global.css';
+
+.auth_pickrole {
+  @apply hidden sm:w-full sm:h-50 sm:flex sm:items-center sm:justify-center;
+}
+.auth_pickrole1 {
+  @apply h-20 w-auto mt-5;
+}
+.auth_pickrole2 {
+  @apply w-full h-20  flex items-center justify-center text-center  text-xl font-sans;
+}
+.auth_pickrole3 {
+  @apply text-[#9a4a8c];
+}
+/*.auth_pickrole4 {
+  @apply w-ful gap-[100%] px-40  h-30 sm:h-50  flex items-center justify-center sm:gap-40;
+}*/
+.auth_pickrole5 {
+  @apply w-33 sm:w-50 border-2 border-pink-600 flex text-center justify-center rounded-lg p-[2px] hover:border-pink-700 hover:p-[2px] transition-all duration-200 transform hover:scale-105;
+}
+.auth_pickrole6 {
+  @apply text-center py-1 w-33 sm:w-50 bg-pink-600 sm:py-2 text-white font-medium rounded-lg hover:to-pink-700;
+}
+.auth_pickrole7 {
+  @apply  w-33 sm:w-50 border-2 border-pink-600 flex text-center justify-center rounded-lg p-[2px] hover:border-pink-700 hover:p-[2px] transition-all duration-200 transform hover:scale-105;
+}
+.auth_pickrole8 {
+  @apply w-33 text-center p-1 sm:w-50 bg-pink-600 sm:py-2 text-white font-medium rounded-lg hover:to-pink-700;
+}

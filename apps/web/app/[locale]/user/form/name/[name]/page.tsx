@@ -1,9 +1,9 @@
 import { JSX } from 'react';
-import BjrForm from '../../../../../../components/user/components/bjr/bjr';
-import NotificationForm from '../../../../../../components/user/components/notification/notification';
-import GpsForm from '../../../../../../components/user/components/gps/gps';
-import RecapitulatifForm from '../../../../../../components/user/components//recapitulatif/recapitulatif';
-import PreferenceForm from '../../../../../../components/user/components/preference/preference';
+import BjrForm from '../../../../../../components/user/components/Form/bjr/bjr';
+import NotificationForm from '../../../../../../components/user/components/Form/notification/notification';
+import GpsForm from '../../../../../../components/user/components/Form/gps/gps';
+import RecapitulatifForm from '../../../../../../components/user/components/Form/recapitulatif/recapitulatif';
+import PreferenceForm from '../../../../../../components/user/components/Form/preference/preference';
 
 const pages: Record<string, JSX.Element> = {
   bjr: <BjrForm />,

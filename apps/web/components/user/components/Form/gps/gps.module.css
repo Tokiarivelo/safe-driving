@@ -1,0 +1,26 @@
+@reference '../../../../../app/global.css';
+
+.auth_gps3 {
+  @apply w-full h-15 text-center sm:h-50 md:px-10 md:mt-2;
+}
+.auth_gps4 {
+  @apply text-lg font-semibold text-auth-color-text-custom-magenta mb-2 sm:mb-10 sm:text-xl md:text-2xl;
+}
+.auth_gps5 {
+  @apply text-[12px] sm:text-base text-auth-color-placeholder leading-relaxed sm:mb-8;
+}
+.auth_gps6 {
+  @apply w-full h-15 space-x-25 flex items-center justify-center;
+}
+.auth_gps7 {
+  @apply flex items-center space-x-2;
+}
+.auth_gps8 {
+  @apply text-auth-color-button;
+}
+.auth_gps9 {
+  @apply flex items-center space-x-2;
+}
+.auth_gps10 {
+  @apply text-auth-color-button;
+}

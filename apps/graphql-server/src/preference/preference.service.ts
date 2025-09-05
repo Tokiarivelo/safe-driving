@@ -97,6 +97,7 @@ export class UserPreferenceService {
   async findByUserId(userId: string) {
     const userPreference = await this.prisma.userPreference.findUnique({
       where: { userId },
+       include: { preferedvelicles: true }, // retourne preferedvelicles
     });
 
     return userPreference;

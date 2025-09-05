@@ -1,0 +1,192 @@
+@reference '../../../../../app/global.css';
+
+.auth_btn {
+  @apply w-full h-45 sm:hidden;
+}
+.auth_btn1 {
+  @apply h-[65%] flex justify-center;
+}
+.auth_btn2 {
+  @apply w-full h-21 mt-8;
+}
+.auth_btn3 {
+  @apply h-[35%] flex;
+}
+.auth_btn4 {
+  @apply w-[18%] pt-2 pr-4;
+}
+.auth_btn5 {
+  @apply relative flex justify-center mb-8;
+} 
+.auth_btn6 {
+  @apply w-13 h-13 transform -rotate-90;
+} 
+.auth_btn7 {
+  @apply transition-all duration-500 ease-in-out;
+} 
+.auth_btn8 {
+  @apply absolute inset-0 flex items-center justify-center;
+} 
+.auth_btn9 {
+  @apply text-sm font-bold text-white;
+} 
+.auth_btn10 {
+  @apply w-[77%] h-17 flex items-center;
+} 
+.auth_btn11 {
+  @apply text-white;
+} 
+.auth_btn12 {
+  @apply text-sm font-medium;
+} 
+.auth_btn13 {
+  @apply w-full;
+} 
+.auth_btn14 {
+  @apply space-y-3 sm:space-y-2;
+} 
+.auth_btn15 {
+  @apply auth-card-bgs-gradient shadow-sm;
+}
+/*.auth_btn16 {
+  @apply space-x-3;
+}*/
+.auth_btn17 {
+  @apply text-3xl ml-3;
+}
+/*.auth_btn18 {
+  @apply animate-spin-y;
+}*/
+.auth_btn19 {
+  @apply text-2xl font-medium;
+}
+.auth_btn20 {
+  @apply text-[#ffcf4a];
+} 
+.auth_btn21 {
+  @apply text-auth-color-bg-white;
+}
+.auth_btn22 {
+  @apply flex flex-col gap-4 text-balance sm:hidden;
+}
+.auth_btn23 {
+  @apply auth-card-bgs-gradient shadow-sm;
+}
+.auth_btn24 {
+  @apply space-x-3 flex;
+}
+.auth_btn25 {
+  @apply flex items-center;
+}
+.auth_btn26 {
+  @apply w-10 h-10 flex items-center justify-center ml-3;
+}
+/*.auth_btn27 {
+  @apply animate-spin-y text-[#ffcf4a];
+}
+*/.auth_btn28 {
+  @apply text-white;
+}
+.auth_btn29 {
+  @apply text-2xl font-medium mt-1;
+}
+.auth_btn30 {
+  @apply text-[#ffcf4a];
+}
+
+.auth_btn31 {
+  @apply text-white;
+}
+.auth_btn32 {
+  @apply flex flex-col gap-4 text-balance sm:hidden;
+}
+.auth_btn33 {
+  @apply auth-card-bgs-gradient shadow-sm;
+}
+.auth_btn34 {
+  @apply space-x-3 flex;
+}
+.auth_btn35 {
+  @apply flex items-center;
+}
+.auth_btn36 {
+  @apply w-10 h-10 flex items-center justify-center ml-3;
+}
+/*.auth_btn37 {
+  @apply animate-spin-y text-[#ffcf4a];
+}*/
+.auth_btn38 {
+  @apply text-white;
+}
+.auth_btn39 {
+  @apply text-2xl font-medium mt-1;
+}
+.auth_btn40 {
+  @apply text-[#ffcf4a];
+}
+.auth_btn41 {
+  @apply text-white;
+}
+.auth_btn42 {
+  @apply flex flex-col gap-4 text-balance sm:hidden;
+}
+.auth_btn43 {
+  @apply auth-card-bgs-gradient shadow-sm;
+}
+.auth_btn44 {
+  @apply space-x-3 flex;
+}
+.auth_btn45 {
+  @apply flex items-center;
+}
+.auth_btn46 {
+  @apply w-10 h-10 flex items-center justify-center ml-3;
+}
+/*.auth_btn47 {
+  @apply animate-spin-y text-[#ffcf4a];
+}*/
+.auth_btn48 {
+  @apply text-white;
+}
+.auth_btn49 {
+  @apply text-2xl font-medium mt-1;
+}
+.auth_btn50 {
+  @apply text-[#ffcf4a];
+}
+.auth_btn51 {
+  @apply text-white;
+}
+.auth_btn52 {
+  @apply flex flex-col gap-4 text-balance sm:hidden;
+}
+.auth_btn53 {
+  @apply auth-card-bgs-gradient shadow-sm;
+}
+.auth_btn54 {
+  @apply space-x-3 flex;
+}
+.auth_btn55 {
+  @apply flex items-center;
+}
+.auth_btn56 {
+  @apply w-10 h-10 flex items-center justify-center ml-3;
+}
+/*.auth_btn57 {
+  @apply animate-spin-y text-[#ffcf4a];
+}*/
+.auth_btn58 {
+  @apply text-white;
+}
+.auth_btn59 {
+  @apply text-2xl font-medium mt-1;
+}
+.auth_btn60 {
+  @apply text-[#ffcf4a];
+}
+.auth_btn61 {
+  @apply text-white;
+}
+.auth_btn62 {
+  @apply flex flex-col gap-4 text-balance sm:hidden;
+}

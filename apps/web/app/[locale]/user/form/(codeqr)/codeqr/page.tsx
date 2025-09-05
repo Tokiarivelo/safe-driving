@@ -1,4 +1,4 @@
-import  PickRoleForm from '../../../../../../components/user/components/codeqr/codeqr'
+import  PickRoleForm from '../../../../../../components/user/components/Form/codeqr/codeqr'
 
 export default function ChoixLoginPage() {
   return (

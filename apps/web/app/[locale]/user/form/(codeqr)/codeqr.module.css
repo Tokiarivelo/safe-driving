@@ -4,8 +4,80 @@
   @apply auth-background min-h-screen w-full flex items-center justify-center;
 }
 .auth_card_container {
-  @apply rounded-tl-sm rounded-tr-sm  bg-auth-color-bg-white w-[370px] shadow-auth-card overflow-hidden sm:rounded-sm sm:h-[550px] sm:justify-between sm:w-[633px] md:w-[750px] lg:max-w-4xl lg:w-full;
+  @apply w-full h-screen sm:rounded-tl-sm rounded-tr-sm bg-auth-color-bg-white shadow-auth-card overflow-hidden sm:rounded-sm sm:h-[550px] sm:justify-between sm:w-[633px] md:w-[750px] lg:max-w-4xl lg:w-full;
 }
 .auth_card_fond_container {
-  @apply rounded-tl-sm rounded-tr-sm  w-[370px] sm:rounded-sm sm:h-[611px] sm:w-[633px] md:w-[750px] lg:max-w-4xl lg:w-full;
+  @apply rounded-tl-sm rounded-tr-sm w-full sm:rounded-sm sm:h-[611px] sm:w-[633px] md:w-[750px] lg:max-w-4xl lg:w-full;
 }
+.auth_toprole {
+   @apply hidden sm:block h-16;
+} 
+/*.auth_qrcode1 {
+   @apply h-[14%] flex items-center pl-5;
+}.auth_qrcode2 {
+   @apply h-17 w-auto;
+} 
+.auth_qrcode3 {
+   @apply h-[8%] text-center;
+}
+.auth_qrcode4 {
+   @apply text-2xl font-semibold text-auth-color-text-custom-magenta mb-2;
+}
+.auth_qrcode5 {
+   @apply h-[10%] text-center;
+}
+.auth_qrcode6 {
+   @apply text-auth-color-placeholder text-sm;
+}
+.auth_qrcode7 {
+   @apply text-auth-color-placeholder text-sm;
+}.auth_qrcode8 {
+   @apply h-[15%] pl-5 sm:pl-10 md:pl-15;
+}
+.auth_qrcode9 {
+   @apply text-gray-700 text-sm mb-2;
+}
+.auth_qrcode10 {
+   @apply text-[12px] text-gray-600;
+}
+.auth_qrcode11 {
+   @apply h-[30%] flex items-center justify-center;
+}
+.auth_qrcode12 {
+   @apply w-[200px] h-[200px] bg-gray-100 animate-pulse rounded-lg flex items-center justify-center;
+}
+.auth_qrcode13 {
+   @apply text-gray-500;
+}
+.auth_qrcode14 {
+   @apply w-[200px] h-[200px] bg-red-50 border border-red-200 rounded-lg flex items-center justify-center;
+}
+.auth_qrcode15 {
+   @apply text-red-500 text-sm text-center px-4;
+}
+
+.auth_qrcode16 {
+   @apply rounded-sm border border-gray-500;
+}
+.auth_qrcode17 {
+   @apply w-[200px] h-[200px] bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-center;
+}
+.auth_qrcode18 {
+   @apply text-gray-500 text-sm;
+}
+.auth_qrcode20 {
+   @apply h-[10%] text-center mt-2;
+}
+.auth_qrcode21 {
+   @apply text-[12px] text-gray-600;
+}
+.auth_qrcode22 {
+   @apply text-[12px] text-gray-600;
+}
+.auth_qrcode23 {
+   @apply h-[8%] flex items-center justify-center;
+}
+.auth_qrcode24 {
+   @apply px-12 py-[6px] bg-auth-color-button text-auth-color-bg-white rounded-md hover:bg-auth-hover lg:w-42;
+} */
+

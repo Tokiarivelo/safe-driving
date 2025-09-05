@@ -8,3 +8,9 @@ mutation createVehicleType ( $input: VehicleTypeCreateInput! ) {
     ...vehicleTypeFragment
   }
 }
+mutation createUserQrs($type: String!) {
+  createUserQr(type: $type) {
+    id
+    url
+  }
+}

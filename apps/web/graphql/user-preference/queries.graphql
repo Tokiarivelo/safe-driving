@@ -9,3 +9,7 @@ query getVehicleTypes {
     ...vehicleTypeFragment
   }
 }
+
+query getqr {
+  getUserQr(type: "png")
+}
