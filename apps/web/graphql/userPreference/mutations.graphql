@@ -1,0 +1,5 @@
+mutation upsertUserPreference($input: UserPreferenceUpsertInput!) {
+  upsertUserPreference(input: $input) {
+    ...userPreferenceFragment
+  }
+}

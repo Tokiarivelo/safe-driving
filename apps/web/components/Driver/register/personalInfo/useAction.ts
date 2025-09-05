@@ -1,97 +1,80 @@
-'use client'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { personalInfoSchema } from './schema'
-import type { PersonalInfoFormValues } from './schema'
-import { useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+'use client';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { personalInfoSchema } from './schema';
+import type { PersonalInfoFormValues } from './schema';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+import { useMeQuery, useUpdateUserMutation } from '@/graphql/generated/graphql';
 
-export const usePersonalInfoAction = (
-  initialData: Partial<PersonalInfoFormValues> = {}
-) => {
-  const router = useRouter()
-  const { data: session } = useSession()
-  const [loading, setLoading] = useState(true)
-  const [userData, setUserData] = useState<any>(null)
-  const [error, setError] = useState<string | null>(null)
+export const usePersonalInfoAction = () => {
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      // Utilisez une assertion de type pour accéder à sessionToken
-      const typedSession = session as any
-      if (!typedSession?.user?.id || !typedSession.sessionToken) {
-        setLoading(false)
-        setError('User not authenticated')
-        return
-      }
-
-      try {
-        setLoading(true)
-        setError(null)
-        
-        const response = await fetch('/api/driver', {
-          credentials: 'include', // Important pour envoyer les cookies
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
-        
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}))
-          throw new Error(errorData.error || 'Failed to fetch user data')
-        }
-
-        const data = await response.json()
-        setUserData(data.user)
-      } catch (error) {
-        console.error('Error fetching user data:', error)
-        setError(error instanceof Error ? error.message : 'Unknown error')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    if (session) {
-      fetchUserData()
-    }
-  }, [session])
+  const { data: userData, loading: queryLoading, error: queryError } = useMeQuery({
+    skip: status !== 'authenticated', 
+  });
+  
+  const [updateUser, { loading: updateLoading, error: updateError }] = useUpdateUserMutation();
 
   const form = useForm<PersonalInfoFormValues>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
       name: '',
       email: '',
-      phone: ''
-    }
-  })
+      phone: '',
+    },
+  });
 
   useEffect(() => {
-    if (userData) {
+    if (userData?.me) {
       form.reset({
-        name: `${userData.firstName} ${userData.lastName || ''}`.trim(),
-        email: userData.email,
-        phone: userData.phone || ''
-      })
+        name: `${userData.me.firstName || ''} ${userData.me.lastName || ''}`.trim(),
+        email: userData.me.email || '',
+        phone: userData.me.phone || '',
+      });
     }
-  }, [userData, form])
+  }, [userData, form]);
 
-  const handleFormSubmit = async (data: PersonalInfoFormValues) => {
+  const handleFormSubmit = async (values: PersonalInfoFormValues) => {
     try {
-      await new Promise(resolve => setTimeout(resolve, 500))
-      router.push('/identityUpload')
-      return true
+      const nameParts = values.name.split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+  
+      const { data } = await updateUser({
+        variables: {
+          input: {
+            firstName: { set: firstName },
+            lastName: { set: lastName },
+            email: { set: values.email },
+            phone: { set: values.phone },
+          },
+        },
+      });
+  
+      if (data?.updateUser) {
+        toast.success('Informations mises à jour avec succès');
+        router.push('/identityUpload');
+        return true;
+      } else {
+        toast.error('Erreur lors de la mise à jour');
+        return false;
+      }
     } catch (error) {
-      console.error('Erreur lors de la soumission:', error)
-      return false
+      console.error('Erreur lors de la soumission:', error);
+      toast.error('Erreur lors de la mise à jour');
+      return false;
     }
-  }
+  };
 
   return {
     form,
     handleFormSubmit,
-    loading,
-    error,
-    userData
-  }
-}
+    loading: queryLoading || updateLoading,
+    error: queryError || updateError,
+    userData: userData?.me,
+  };
+};

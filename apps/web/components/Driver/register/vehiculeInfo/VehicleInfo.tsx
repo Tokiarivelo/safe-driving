@@ -2,6 +2,7 @@
 import { useVehicleInfoAction } from './useAction';
 import { Form, FormField } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { CardFormContainer } from '@/components/ui/CardFormContainer';
@@ -23,7 +24,7 @@ interface VehicleInfoFormProps {
 
 export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
   const { t } = useTranslation(['registerDriver/step4', 'registerDriver/stepList']);
-  const { form, handleSubmit, isSubmitting } = useVehicleInfoAction(initialData);
+  const { form, handleSubmit, isSubmitting, vehicleTypes, loadingTypes } = useVehicleInfoAction(initialData);
 
   const iconNames = [
     'User', 'UserRound', 'IdCard', 'CarFront', 'FileUp', 'Camera',
@@ -120,6 +121,7 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                           placeholder={t('form.seats.placeholder')}
                           type="number"
                           {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                         />
                       )}
                     />
@@ -128,11 +130,37 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                       control={form.control}
                       name="type"
                       render={({ field }) => (
-                        <Input
-                          label={t('form.type.label')}
-                          placeholder={t('form.type.placeholder')}
-                          {...field}
-                        />
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {t('form.type.label')}
+                          </label>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            value={field.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder={t('form.type.placeholder')} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {loadingTypes ? (
+                                <SelectItem value="loading" disabled>
+                                  Chargement...
+                                </SelectItem>
+                              ) : vehicleTypes.length === 0 ? (
+                                <SelectItem value="empty" disabled>
+                                  Aucun type de véhicule disponible
+                                </SelectItem>
+                              ) : (
+                                vehicleTypes.map((vehicleType) => (
+                                  <SelectItem key={vehicleType.id} value={vehicleType.id}>
+                                    {vehicleType.name}
+                                  </SelectItem>
+                                ))
+                              )}
+                            </SelectContent>
+                          </Select>
+                        </div>
                       )}
                     />
 
@@ -147,7 +175,7 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
 
                       <Button
                         type="submit"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || loadingTypes}
                         className={styles.buttonPrimary}
                       >
                         {isSubmitting ? t('buttons.processing') : t('buttons.validate')}

@@ -2,19 +2,40 @@
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { vehicleDocumentsSchema, VehicleDocumentsFormValues } from './schema';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
+import { useMutation } from '@apollo/client';
+import { 
+  useCreateBatchPresignedUrlsMutation, 
+  useCompleteUploadBulkMutation,
+  ImageType,
+  useUpdateDriverVehicleMutation
+} from '@/graphql/generated/graphql';
+import { uploadMultipleWithLimit } from '@/components/ui/upload/upload-component.service';
+import { v4 as uuidv4 } from 'uuid';
+import { useSession } from 'next-auth/react';
 
 type UseVehicleDocumentsActionReturn = {
   form: UseFormReturn<VehicleDocumentsFormValues>;
   handleSubmit: ReturnType<UseFormReturn<VehicleDocumentsFormValues>['handleSubmit']>;
   isSubmitting: boolean;
+  vehicleId: string | null;
 };
 
 export const useVehicleDocumentsAction = (
   initialData: Partial<VehicleDocumentsFormValues> = {}
 ): UseVehicleDocumentsActionReturn => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { data: session } = useSession();
+  
+  const [createPresignedUrls] = useCreateBatchPresignedUrlsMutation();
+  const [completeUploadBulk] = useCompleteUploadBulkMutation();
+  const [updateDriverVehicle] = useUpdateDriverVehicleMutation();
+
+  // Récupérer le vehicleId depuis les paramètres d'URL ou le localStorage
+  const vehicleId = searchParams.get('vehicleId') || localStorage.getItem('currentVehicleId');
+
   const form = useForm<VehicleDocumentsFormValues>({
     resolver: zodResolver(vehicleDocumentsSchema),
     defaultValues: {
@@ -25,42 +46,108 @@ export const useVehicleDocumentsAction = (
   });
 
   const onSubmit = async (data: VehicleDocumentsFormValues): Promise<void> => {
-    const isValid = await form.trigger();
-    if (!isValid) {
-      toast.error('Veuillez corriger les erreurs dans le formulaire');
+    if (!session?.user?.id) {
+      toast.error('Utilisateur non connecté');
+      return;
+    }
+
+    if (!vehicleId) {
+      toast.error('ID du véhicule manquant. Veuillez créer un véhicule d\'abord.');
       return;
     }
 
     try {
-      const formData = new FormData();
-      
-      data.registrationFiles.forEach((file, index) => {
-        formData.append(`registration_${index}`, file);
-      });
-      
-      data.insuranceFiles.forEach((file, index) => {
-        formData.append(`insurance_${index}`, file);
-      });
-      
-      data.vehiclePhotos.forEach((file, index) => {
-        formData.append(`photo_${index}`, file);
+      const allFiles: File[] = [
+        ...data.registrationFiles,
+        ...data.insuranceFiles,
+        ...data.vehiclePhotos
+      ];
+
+      if (allFiles.length === 0) {
+        toast.error('Aucun fichier à uploader');
+        return;
+      }
+
+      const fileMetas = allFiles.map((file) => ({
+        originalName: file.name,
+        contentType: file.type || 'application/octet-stream',
+        uniqueId: uuidv4()
+      }));
+
+      const { data: presignedData } = await createPresignedUrls({
+        variables: {
+          files: fileMetas,
+          type: ImageType.VEHICLE,
+        },
       });
 
-      console.log('Envoi des documents véhicule...');
+      if (!presignedData?.createBatchPresignedUrls) {
+        throw new Error('Erreur lors de la génération des URLs');
+      }
+
+      const results = await uploadMultipleWithLimit(
+        presignedData.createBatchPresignedUrls,
+        allFiles,
+        () => {},
+        3,
+        3
+      );
+
+      const successResults = results.filter(r => r.success);
       
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      toast.success('Documents enregistrés avec succès');
+      if (successResults.length === 0) {
+        throw new Error('Aucun fichier n\'a pu être uploadé');
+      }
+
+      await completeUploadBulk({
+        variables: {
+          keys: successResults.map(r => r.key || ''),
+          type: ImageType.VEHICLE,
+        },
+      });
+
+      const uploadDocuments = [
+        ...data.registrationFiles.map((file, index) => ({
+          key: successResults[index]?.key || '',
+          originalName: file.name,
+          contentType: file.type || 'application/octet-stream'
+        })),
+        ...data.insuranceFiles.map((file, index) => ({
+          key: successResults[data.registrationFiles.length + index]?.key || '',
+          originalName: file.name,
+          contentType: file.type || 'application/octet-stream'
+        }))
+      ];
+
+      const uploadImages = data.vehiclePhotos.map((file, index) => ({
+        key: successResults[data.registrationFiles.length + data.insuranceFiles.length + index]?.key || '',
+        originalName: file.name,
+        contentType: file.type || 'application/octet-stream'
+      }));
+
+      await updateDriverVehicle({
+        variables: {
+          vehicleId: vehicleId,
+          input: {
+            uploadDocuments: uploadDocuments,
+            uploadImages: uploadImages
+          }
+        }
+      });
+
+      toast.success('Documents véhicule uploadés avec succès');
       router.push('/selfieVerif');
-    } catch (error) {
-      console.error('Erreur:', error);
-      toast.error('Erreur lors de l\'enregistrement des documents');
+      
+    } catch (error: any) {
+      console.error('Erreur lors de l\'upload:', error);
+      toast.error(error.message || 'Erreur lors de l\'enregistrement des documents');
     }
   };
 
   return {
     form,
     handleSubmit: form.handleSubmit(onSubmit),
-    isSubmitting: form.formState.isSubmitting
+    isSubmitting: form.formState.isSubmitting,
+    vehicleId
   };
 };

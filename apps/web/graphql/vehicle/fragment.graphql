@@ -1,0 +1,32 @@
+fragment vehicleTypeFragment on VehicleType {
+  id
+  name
+}
+
+fragment driverVehicleFragment on DriverVehicle {
+  id
+  brand
+  model
+  registrationNumber
+  place
+  vehicleTypeId
+  userId
+  VehicleImage {
+    id
+    file {
+      id
+      key
+      url
+      originalName
+    }
+  }
+  VehicleDocument {
+    id
+    file {
+      id
+      key
+      url
+      originalName
+    }
+  }
+}

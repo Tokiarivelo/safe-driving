@@ -1,10 +1,16 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { locationPermissionSchema, LocationPermissionValues } from './schema';
 import { useRouter } from 'next/navigation';
 import { useLocationContext } from './LocationContext';
+import { useSession } from 'next-auth/react';
+import { 
+  useUpsertUserPreferenceMutation, 
+  useUserPreferenceQuery 
+} from '@/graphql/generated/graphql';
+import { toast } from 'sonner';
 
 type UseLocationPermissionActionProps = {
   onSuccess?: (data: {
@@ -21,9 +27,18 @@ export const useLocationPermissionAction = ({
   onLocationUpdate
 }: UseLocationPermissionActionProps = {}) => {
   const router = useRouter();
+  const { data: session } = useSession();
+  const [upsertUserPreference] = useUpsertUserPreferenceMutation();
+  const { data: preferenceData } = useUserPreferenceQuery({
+    skip: !session?.user?.id
+  });
+  
   const [isLoading, setIsLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
+
+  const hasInitialized = useRef(false);
+  const lastPreferenceData = useRef<any>(null);
 
   const {
     isEnabled,
@@ -39,34 +54,45 @@ export const useLocationPermissionAction = ({
   const form = useForm<LocationPermissionValues>({
     resolver: zodResolver(locationPermissionSchema),
     defaultValues: {
-      locationEnabled: isEnabled,
-      rememberChoice: rememberChoice
+      locationEnabled: false,
+      rememberChoice: false
     }
   });
-
-  useEffect(() => {
-    form.setValue('locationEnabled', isEnabled);
-    form.setValue('rememberChoice', rememberChoice);
-  }, [isEnabled, rememberChoice, form]);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   useEffect(() => {
+    if (preferenceData?.userPreference && 
+        (!hasInitialized.current || lastPreferenceData.current?.activateLocation !== preferenceData.userPreference.activateLocation)) {
+      
+      lastPreferenceData.current = preferenceData.userPreference;
+      hasInitialized.current = true;
+      
+      const activateLocation = preferenceData.userPreference.activateLocation;
+      form.setValue('locationEnabled', activateLocation);
+      
+      setTimeout(() => {
+        setLocationEnabled(activateLocation);
+      }, 0);
+    }
+  }, [preferenceData?.userPreference?.activateLocation]); 
+
+  useEffect(() => {
     if (currentPosition && onLocationUpdate) {
       onLocationUpdate(currentPosition);
     }
-  }, [currentPosition, onLocationUpdate]);
+  }, [currentPosition]); 
 
-  const checkLocationSupport = () => {
+  const checkLocationSupport = useCallback(() => {
     if (!isClient || typeof window === 'undefined') {
       return false;
     }
     return !!navigator.geolocation;
-  };
+  }, [isClient]);
 
-  const getCurrentLocation = async () => {
+  const getCurrentLocation = useCallback(async () => {
     if (!hasPermission || !checkLocationSupport()) {
       throw new Error("Permission de géolocalisation requise");
     }
@@ -74,23 +100,40 @@ export const useLocationPermissionAction = ({
     setIsGettingLocation(true);
     try {
       await updateLocation();
-      if (currentPosition && onLocationUpdate) {
-        onLocationUpdate(currentPosition);
-      }
     } catch (error) {
       console.error('Erreur lors de la récupération de position:', error);
       throw error;
     } finally {
       setIsGettingLocation(false);
     }
-  };
+  }, [hasPermission, checkLocationSupport, updateLocation]);
 
-  const onSubmit = async (data: LocationPermissionValues) => {
+  const onSubmit = useCallback(async (data: LocationPermissionValues) => {
+    if (!session?.user?.id) {
+      toast.error('Utilisateur non connecté');
+      return { success: false, error: 'Utilisateur non connecté' };
+    }
+
     setIsLoading(true);
     
     try {
-      setLocationEnabled(data.locationEnabled);
-      setRememberChoice(data.rememberChoice);
+      const { errors } = await upsertUserPreference({
+        variables: {
+          input: {
+            activateLocation: data.locationEnabled
+          }
+        }
+      });
+
+      if (errors) {
+        console.error('Erreurs GraphQL:', errors);
+        throw new Error(errors.map(e => e.message).join(', '));
+      }
+
+      setTimeout(() => {
+        setLocationEnabled(data.locationEnabled);
+        setRememberChoice(data.rememberChoice);
+      }, 0);
 
       if (data.locationEnabled) {
         try {
@@ -117,12 +160,17 @@ export const useLocationPermissionAction = ({
         });
       }
 
-      router.push('/notif');
+      toast.success('Préférences de localisation enregistrées');
+      
+      setTimeout(() => {
+        router.push('/notif');
+      }, 100);
       
       return { success: true };
       
     } catch (error) {
       console.error("Erreur lors de la soumission:", error);
+      toast.error('Erreur lors de la sauvegarde des préférences');
       
       return { 
         success: false, 
@@ -131,7 +179,7 @@ export const useLocationPermissionAction = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [session?.user?.id, upsertUserPreference, requestPermission, hasPermission, currentPosition, onSuccess, router]);
 
   return {
     form,
@@ -142,6 +190,9 @@ export const useLocationPermissionAction = ({
     currentPosition,
     hasPermission,
     isGettingLocation,
-    getCurrentLocation
+    getCurrentLocation,
+    userPreference: preferenceData?.userPreference,
+    isLocationEnabled: isEnabled,
+    locationRememberChoice: rememberChoice
   };
 };
