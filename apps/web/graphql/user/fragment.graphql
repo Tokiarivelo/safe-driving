@@ -33,7 +33,11 @@ fragment userMessageFragment on User {
   email
   phone
   username
-  UserImage {
-    ...Image
+  avatar {
+    id
+    url
+    type
+    meta
+    name
   }
 }

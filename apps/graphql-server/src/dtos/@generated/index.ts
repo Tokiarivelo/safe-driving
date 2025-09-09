@@ -2569,14 +2569,6 @@ export class ConversationOrderByWithRelationInput {
 }
 
 @InputType()
-export class ConversationScalarRelationFilter {
-    @Field(() => ConversationWhereInput, {nullable:true})
-    is?: InstanceType<typeof ConversationWhereInput>;
-    @Field(() => ConversationWhereInput, {nullable:true})
-    isNot?: InstanceType<typeof ConversationWhereInput>;
-}
-
-@InputType()
 export class ConversationScalarWhereWithAggregatesInput {
     @Field(() => [ConversationScalarWhereWithAggregatesInput], {nullable:true})
     AND?: Array<ConversationScalarWhereWithAggregatesInput>;
@@ -2743,25 +2735,6 @@ export class ConversationUpdateManyMutationInput {
 }
 
 @InputType()
-export class ConversationUpdateOneRequiredWithoutParticipantsNestedInput {
-    @Field(() => ConversationCreateWithoutParticipantsInput, {nullable:true})
-    @Type(() => ConversationCreateWithoutParticipantsInput)
-    create?: InstanceType<typeof ConversationCreateWithoutParticipantsInput>;
-    @Field(() => ConversationCreateOrConnectWithoutParticipantsInput, {nullable:true})
-    @Type(() => ConversationCreateOrConnectWithoutParticipantsInput)
-    connectOrCreate?: InstanceType<typeof ConversationCreateOrConnectWithoutParticipantsInput>;
-    @Field(() => ConversationUpsertWithoutParticipantsInput, {nullable:true})
-    @Type(() => ConversationUpsertWithoutParticipantsInput)
-    upsert?: InstanceType<typeof ConversationUpsertWithoutParticipantsInput>;
-    @Field(() => ConversationWhereUniqueInput, {nullable:true})
-    @Type(() => ConversationWhereUniqueInput)
-    connect?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
-    @Field(() => ConversationUpdateToOneWithWhereWithoutParticipantsInput, {nullable:true})
-    @Type(() => ConversationUpdateToOneWithWhereWithoutParticipantsInput)
-    update?: InstanceType<typeof ConversationUpdateToOneWithWhereWithoutParticipantsInput>;
-}
-
-@InputType()
 export class ConversationUpdateOneWithoutMessagesNestedInput {
     @Field(() => ConversationCreateWithoutMessagesInput, {nullable:true})
     @Type(() => ConversationCreateWithoutMessagesInput)
@@ -2784,6 +2757,31 @@ export class ConversationUpdateOneWithoutMessagesNestedInput {
     @Field(() => ConversationUpdateToOneWithWhereWithoutMessagesInput, {nullable:true})
     @Type(() => ConversationUpdateToOneWithWhereWithoutMessagesInput)
     update?: InstanceType<typeof ConversationUpdateToOneWithWhereWithoutMessagesInput>;
+}
+
+@InputType()
+export class ConversationUpdateOneWithoutParticipantsNestedInput {
+    @Field(() => ConversationCreateWithoutParticipantsInput, {nullable:true})
+    @Type(() => ConversationCreateWithoutParticipantsInput)
+    create?: InstanceType<typeof ConversationCreateWithoutParticipantsInput>;
+    @Field(() => ConversationCreateOrConnectWithoutParticipantsInput, {nullable:true})
+    @Type(() => ConversationCreateOrConnectWithoutParticipantsInput)
+    connectOrCreate?: InstanceType<typeof ConversationCreateOrConnectWithoutParticipantsInput>;
+    @Field(() => ConversationUpsertWithoutParticipantsInput, {nullable:true})
+    @Type(() => ConversationUpsertWithoutParticipantsInput)
+    upsert?: InstanceType<typeof ConversationUpsertWithoutParticipantsInput>;
+    @Field(() => ConversationWhereInput, {nullable:true})
+    @Type(() => ConversationWhereInput)
+    disconnect?: InstanceType<typeof ConversationWhereInput>;
+    @Field(() => ConversationWhereInput, {nullable:true})
+    @Type(() => ConversationWhereInput)
+    delete?: InstanceType<typeof ConversationWhereInput>;
+    @Field(() => ConversationWhereUniqueInput, {nullable:true})
+    @Type(() => ConversationWhereUniqueInput)
+    connect?: Prisma.AtLeast<ConversationWhereUniqueInput, 'id' | 'rideId' | 'directHash'>;
+    @Field(() => ConversationUpdateToOneWithWhereWithoutParticipantsInput, {nullable:true})
+    @Type(() => ConversationUpdateToOneWithWhereWithoutParticipantsInput)
+    update?: InstanceType<typeof ConversationUpdateToOneWithWhereWithoutParticipantsInput>;
 }
 
 @InputType()
@@ -3323,8 +3321,8 @@ export class ConversationParticipantCreateWithoutUserInput {
     isMuted?: boolean;
     @Field(() => Date, {nullable:true})
     joinedAt?: Date | string;
-    @Field(() => ConversationCreateNestedOneWithoutParticipantsInput, {nullable:false})
-    conversation!: InstanceType<typeof ConversationCreateNestedOneWithoutParticipantsInput>;
+    @Field(() => ConversationCreateNestedOneWithoutParticipantsInput, {nullable:true})
+    conversation?: InstanceType<typeof ConversationCreateNestedOneWithoutParticipantsInput>;
 }
 
 @InputType()
@@ -3339,8 +3337,8 @@ export class ConversationParticipantCreateInput {
     joinedAt?: Date | string;
     @Field(() => UserCreateNestedOneWithoutConversationParticipantInput, {nullable:false})
     user!: InstanceType<typeof UserCreateNestedOneWithoutConversationParticipantInput>;
-    @Field(() => ConversationCreateNestedOneWithoutParticipantsInput, {nullable:false})
-    conversation!: InstanceType<typeof ConversationCreateNestedOneWithoutParticipantsInput>;
+    @Field(() => ConversationCreateNestedOneWithoutParticipantsInput, {nullable:true})
+    conversation?: InstanceType<typeof ConversationCreateNestedOneWithoutParticipantsInput>;
 }
 
 @ArgsType()
@@ -3376,10 +3374,10 @@ export class ConversationParticipantGroupBy {
     userId!: string;
     @Field(() => String, {nullable:true})
     role?: string;
-    @Field(() => Boolean, {nullable:false})
-    isMuted!: boolean;
-    @Field(() => Date, {nullable:false})
-    joinedAt!: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    isMuted?: boolean;
+    @Field(() => Date, {nullable:true})
+    joinedAt?: Date | string;
     @Field(() => ConversationParticipantCountAggregate, {nullable:true})
     _count?: InstanceType<typeof ConversationParticipantCountAggregate>;
     @Field(() => ConversationParticipantMinAggregate, {nullable:true})
@@ -3510,10 +3508,10 @@ export class ConversationParticipantOrderByWithAggregationInput {
     userId?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     role?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrder, {nullable:true})
-    isMuted?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    joinedAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    isMuted?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    joinedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => ConversationParticipantCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof ConversationParticipantCountOrderByAggregateInput>;
     @Field(() => ConversationParticipantMaxOrderByAggregateInput, {nullable:true})
@@ -3532,10 +3530,10 @@ export class ConversationParticipantOrderByWithRelationInput {
     userId?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     role?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrder, {nullable:true})
-    isMuted?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    joinedAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    isMuted?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    joinedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => UserOrderByWithRelationInput, {nullable:true})
     user?: InstanceType<typeof UserOrderByWithRelationInput>;
     @Field(() => ConversationOrderByWithRelationInput, {nullable:true})
@@ -3558,10 +3556,10 @@ export class ConversationParticipantScalarWhereWithAggregatesInput {
     userId?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     role?: InstanceType<typeof StringNullableWithAggregatesFilter>;
-    @Field(() => BoolWithAggregatesFilter, {nullable:true})
-    isMuted?: InstanceType<typeof BoolWithAggregatesFilter>;
-    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => BoolNullableWithAggregatesFilter, {nullable:true})
+    isMuted?: InstanceType<typeof BoolNullableWithAggregatesFilter>;
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    joinedAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
 }
 
 @InputType()
@@ -3580,10 +3578,10 @@ export class ConversationParticipantScalarWhereInput {
     userId?: InstanceType<typeof StringFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     role?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => BoolFilter, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => BoolNullableFilter, {nullable:true})
+    isMuted?: InstanceType<typeof BoolNullableFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    joinedAt?: InstanceType<typeof DateTimeNullableFilter>;
 }
 
 @InputType()
@@ -3707,10 +3705,10 @@ export class ConversationParticipantUncheckedUpdateManyWithoutConversationInput 
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     role?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    isMuted?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    joinedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -3758,10 +3756,10 @@ export class ConversationParticipantUncheckedUpdateManyWithoutUserInput {
     conversationId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     role?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    isMuted?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    joinedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -3774,10 +3772,10 @@ export class ConversationParticipantUncheckedUpdateManyInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     role?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    isMuted?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    joinedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -3788,10 +3786,10 @@ export class ConversationParticipantUncheckedUpdateWithoutConversationInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     role?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    isMuted?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    joinedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -3802,10 +3800,10 @@ export class ConversationParticipantUncheckedUpdateWithoutUserInput {
     conversationId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     role?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    isMuted?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    joinedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -3818,10 +3816,10 @@ export class ConversationParticipantUncheckedUpdateInput {
     userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     role?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    isMuted?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    joinedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -3830,10 +3828,10 @@ export class ConversationParticipantUpdateManyMutationInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     role?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    isMuted?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    joinedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -3956,10 +3954,10 @@ export class ConversationParticipantUpdateWithoutConversationInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     role?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    isMuted?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    joinedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => UserUpdateOneRequiredWithoutConversationParticipantNestedInput, {nullable:true})
     user?: InstanceType<typeof UserUpdateOneRequiredWithoutConversationParticipantNestedInput>;
 }
@@ -3970,12 +3968,12 @@ export class ConversationParticipantUpdateWithoutUserInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     role?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => ConversationUpdateOneRequiredWithoutParticipantsNestedInput, {nullable:true})
-    conversation?: InstanceType<typeof ConversationUpdateOneRequiredWithoutParticipantsNestedInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    isMuted?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    joinedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => ConversationUpdateOneWithoutParticipantsNestedInput, {nullable:true})
+    conversation?: InstanceType<typeof ConversationUpdateOneWithoutParticipantsNestedInput>;
 }
 
 @InputType()
@@ -3984,14 +3982,14 @@ export class ConversationParticipantUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     role?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    isMuted?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    joinedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => UserUpdateOneRequiredWithoutConversationParticipantNestedInput, {nullable:true})
     user?: InstanceType<typeof UserUpdateOneRequiredWithoutConversationParticipantNestedInput>;
-    @Field(() => ConversationUpdateOneRequiredWithoutParticipantsNestedInput, {nullable:true})
-    conversation?: InstanceType<typeof ConversationUpdateOneRequiredWithoutParticipantsNestedInput>;
+    @Field(() => ConversationUpdateOneWithoutParticipantsNestedInput, {nullable:true})
+    conversation?: InstanceType<typeof ConversationUpdateOneWithoutParticipantsNestedInput>;
 }
 
 @InputType()
@@ -4038,14 +4036,14 @@ export class ConversationParticipantWhereUniqueInput {
     userId?: InstanceType<typeof StringFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     role?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => BoolFilter, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => BoolNullableFilter, {nullable:true})
+    isMuted?: InstanceType<typeof BoolNullableFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    joinedAt?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => UserScalarRelationFilter, {nullable:true})
     user?: InstanceType<typeof UserScalarRelationFilter>;
-    @Field(() => ConversationScalarRelationFilter, {nullable:true})
-    conversation?: InstanceType<typeof ConversationScalarRelationFilter>;
+    @Field(() => ConversationNullableScalarRelationFilter, {nullable:true})
+    conversation?: InstanceType<typeof ConversationNullableScalarRelationFilter>;
 }
 
 @InputType()
@@ -4064,14 +4062,14 @@ export class ConversationParticipantWhereInput {
     userId?: InstanceType<typeof StringFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     role?: InstanceType<typeof StringNullableFilter>;
-    @Field(() => BoolFilter, {nullable:true})
-    isMuted?: InstanceType<typeof BoolFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    joinedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => BoolNullableFilter, {nullable:true})
+    isMuted?: InstanceType<typeof BoolNullableFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    joinedAt?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => UserScalarRelationFilter, {nullable:true})
     user?: InstanceType<typeof UserScalarRelationFilter>;
-    @Field(() => ConversationScalarRelationFilter, {nullable:true})
-    conversation?: InstanceType<typeof ConversationScalarRelationFilter>;
+    @Field(() => ConversationNullableScalarRelationFilter, {nullable:true})
+    conversation?: InstanceType<typeof ConversationNullableScalarRelationFilter>;
 }
 
 @ObjectType()
@@ -4084,14 +4082,14 @@ export class ConversationParticipant {
     userId!: string;
     @Field(() => String, {nullable:true})
     role!: string | null;
-    @Field(() => Boolean, {defaultValue:false,nullable:false})
-    isMuted!: boolean;
-    @Field(() => Date, {nullable:false})
-    joinedAt!: Date;
+    @Field(() => Boolean, {defaultValue:false,nullable:true})
+    isMuted!: boolean | null;
+    @Field(() => Date, {nullable:true})
+    joinedAt!: Date | null;
     @Field(() => User, {nullable:false})
     user?: InstanceType<typeof User>;
-    @Field(() => Conversation, {nullable:false})
-    conversation?: InstanceType<typeof Conversation>;
+    @Field(() => Conversation, {nullable:true})
+    conversation?: InstanceType<typeof Conversation> | null;
 }
 
 @ArgsType()
@@ -17208,6 +17206,28 @@ export class BoolFilter {
 }
 
 @InputType()
+export class BoolNullableFilter {
+    @Field(() => Boolean, {nullable:true})
+    equals?: boolean;
+    @Field(() => NestedBoolNullableFilter, {nullable:true})
+    not?: InstanceType<typeof NestedBoolNullableFilter>;
+}
+
+@InputType()
+export class BoolNullableWithAggregatesFilter {
+    @Field(() => Boolean, {nullable:true})
+    equals?: boolean;
+    @Field(() => NestedBoolNullableWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedBoolNullableWithAggregatesFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedBoolNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedBoolNullableFilter>;
+    @Field(() => NestedBoolNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedBoolNullableFilter>;
+}
+
+@InputType()
 export class BoolWithAggregatesFilter {
     @Field(() => Boolean, {nullable:true})
     equals?: boolean;
@@ -17877,6 +17897,28 @@ export class NestedBoolFilter {
     equals?: boolean;
     @Field(() => NestedBoolFilter, {nullable:true})
     not?: InstanceType<typeof NestedBoolFilter>;
+}
+
+@InputType()
+export class NestedBoolNullableFilter {
+    @Field(() => Boolean, {nullable:true})
+    equals?: boolean;
+    @Field(() => NestedBoolNullableFilter, {nullable:true})
+    not?: InstanceType<typeof NestedBoolNullableFilter>;
+}
+
+@InputType()
+export class NestedBoolNullableWithAggregatesFilter {
+    @Field(() => Boolean, {nullable:true})
+    equals?: boolean;
+    @Field(() => NestedBoolNullableWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedBoolNullableWithAggregatesFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedBoolNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedBoolNullableFilter>;
+    @Field(() => NestedBoolNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedBoolNullableFilter>;
 }
 
 @InputType()
@@ -18559,6 +18601,12 @@ export class NestedStringWithAggregatesFilter {
     _min?: InstanceType<typeof NestedStringFilter>;
     @Field(() => NestedStringFilter, {nullable:true})
     _max?: InstanceType<typeof NestedStringFilter>;
+}
+
+@InputType()
+export class NullableBoolFieldUpdateOperationsInput {
+    @Field(() => Boolean, {nullable:true})
+    set?: boolean;
 }
 
 @InputType()

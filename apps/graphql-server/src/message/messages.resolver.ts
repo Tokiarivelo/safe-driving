@@ -8,7 +8,6 @@ import { MessagePayload } from 'src/dtos/message/message.output';
 import { RedisService } from 'src/redis/redis.service';
 import { MessageService } from './messages.service';
 import { CurrentUser } from 'src/auth/current-user.decorator';
-import { WsJwtGuard } from 'src/auth/guards/ws-jwt.guard';
 import { GraphqlWsJwtGuard } from 'src/auth/guards/graphql-ws-jwt.guard';
 
 @Resolver(() => Message)

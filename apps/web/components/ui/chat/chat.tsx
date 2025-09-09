@@ -1,11 +1,11 @@
 import MessageBubble from '@/components/ui/chat/message-bubble';
 import MessageInput from '@/components/ui/chat/message-input';
-import { Message, SendMessageMutation } from '@/graphql/generated/graphql';
+import { Message, SendMessageMutation, Conversation } from '@/graphql/generated/graphql';
 import { ArrowDown, MoreVertical } from 'lucide-react';
 import { useCallback, useRef, useState } from 'react';
 
 interface ChatProps {
-  conversationId?: string;
+  conversation?: Conversation;
   rideId?: string;
   currentUserId: string;
   className?: string;
@@ -26,7 +26,7 @@ interface ChatProps {
 }
 
 export const Chat: React.FC<ChatProps> = ({
-  conversationId,
+  conversation,
   rideId,
   currentUserId,
   className = '',
@@ -83,21 +83,69 @@ export const Chat: React.FC<ChatProps> = ({
     );
   }
 
+  console.log('conversation :>> ', conversation);
+
   return (
     <div className={`flex flex-col h-full bg-gray-50 ${className}`}>
       {/* Header */}
       <div className="border-b bg-white p-4 flex items-center justify-between">
-        <div>
-          <h2 className="font-semibold">
-            {conversationId ? 'Conversation' : rideId ? 'Chat de course' : 'Chat'}
-          </h2>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <div
-              className={`w-2 h-2 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'}`}
-            ></div>
-            {connected ? 'En ligne' : 'Hors ligne'}
+        <div className="flex items-center gap-3">
+          <div>
+            <h2 className="font-semibold">
+              {conversation?.title || (rideId ? 'Chat de course' : 'Chat')}
+            </h2>
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <div
+                className={`w-2 h-2 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'}`}
+              ></div>
+              {connected ? 'En ligne' : 'Hors ligne'}
+              {conversation?.participants && (
+                <span className="ml-2">
+                  • {conversation.participants.length} participant
+                  {conversation.participants.length > 1 ? 's' : ''}
+                </span>
+              )}
+            </div>
           </div>
+
+          {/* Miniatures des participants */}
+          {conversation?.participants && conversation.participants.length > 0 && (
+            <div className="flex -space-x-2 ml-4">
+              {conversation.participants.slice(0, 4).map((participant, index) => (
+                <div
+                  key={participant.id}
+                  className="relative w-8 h-8 rounded-full bg-gray-300 border-2 border-white overflow-hidden"
+                  title={
+                    `${participant.user?.firstName || ''} ${participant.user?.lastName || ''}`.trim() ||
+                    participant.user?.email
+                  }
+                >
+                  {participant.user?.avatar?.url ? (
+                    <img
+                      src={participant.user.avatar.url}
+                      alt={`${participant.user.firstName || ''} ${participant.user.lastName || ''}`.trim()}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-blue-500 flex items-center justify-center text-white text-xs font-medium">
+                      {(
+                        participant.user?.firstName?.[0] ||
+                        participant.user?.email?.[0] ||
+                        '?'
+                      ).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+              ))}
+              {conversation.participants.length > 4 && (
+                <div className="w-8 h-8 rounded-full bg-gray-400 border-2 border-white flex items-center justify-center text-white text-xs font-medium">
+                  +{conversation.participants.length - 4}
+                </div>
+              )}
+            </div>
+          )}
         </div>
+
         <button className="p-2 hover:bg-gray-100 rounded-lg">
           <MoreVertical className="w-5 h-5" />
         </button>
@@ -155,7 +203,7 @@ export const Chat: React.FC<ChatProps> = ({
         replyingTo={replyingTo}
         onCancelReply={() => setReplyingTo(null)}
         disabled={!connected}
-        conversationId={conversationId}
+        conversationId={conversation?.id}
       />
     </div>
   );

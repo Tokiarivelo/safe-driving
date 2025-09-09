@@ -21,6 +21,11 @@ export type Scalars = {
   Upload: { input: any; output: any; }
 };
 
+export type AddParticipantInput = {
+  conversationId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
 export type Attachment = {
   __typename?: 'Attachment';
   createdAt: Scalars['DateTime']['output'];
@@ -434,6 +439,11 @@ export type BoolFilter = {
   not?: InputMaybe<NestedBoolFilter>;
 };
 
+export type BoolNullableFilter = {
+  equals?: InputMaybe<Scalars['Boolean']['input']>;
+  not?: InputMaybe<NestedBoolNullableFilter>;
+};
+
 export type CompleteUploadOutput = {
   __typename?: 'CompleteUploadOutput';
   contentType?: Maybe<Scalars['String']['output']>;
@@ -541,11 +551,11 @@ export type ConversationNullableScalarRelationFilter = {
 
 export type ConversationParticipant = {
   __typename?: 'ConversationParticipant';
-  conversation: Conversation;
+  conversation?: Maybe<Conversation>;
   conversationId: Scalars['String']['output'];
   id: Scalars['String']['output'];
-  isMuted: Scalars['Boolean']['output'];
-  joinedAt: Scalars['DateTime']['output'];
+  isMuted?: Maybe<Scalars['Boolean']['output']>;
+  joinedAt?: Maybe<Scalars['DateTime']['output']>;
   role?: Maybe<Scalars['String']['output']>;
   user: User;
   userId: Scalars['String']['output'];
@@ -626,7 +636,7 @@ export type ConversationParticipantCreateWithoutConversationInput = {
 };
 
 export type ConversationParticipantCreateWithoutUserInput = {
-  conversation: ConversationCreateNestedOneWithoutParticipantsInput;
+  conversation?: InputMaybe<ConversationCreateNestedOneWithoutParticipantsInput>;
   id?: InputMaybe<Scalars['String']['input']>;
   isMuted?: InputMaybe<Scalars['Boolean']['input']>;
   joinedAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -663,22 +673,29 @@ export type ConversationParticipantOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
 };
 
+export type ConversationParticipantPayload = {
+  __typename?: 'ConversationParticipantPayload';
+  action: Scalars['String']['output'];
+  conversationId: Scalars['String']['output'];
+  participant: ConversationParticipant;
+};
+
 export type ConversationParticipantScalarWhereInput = {
   AND?: InputMaybe<Array<ConversationParticipantScalarWhereInput>>;
   NOT?: InputMaybe<Array<ConversationParticipantScalarWhereInput>>;
   OR?: InputMaybe<Array<ConversationParticipantScalarWhereInput>>;
   conversationId?: InputMaybe<StringFilter>;
   id?: InputMaybe<StringFilter>;
-  isMuted?: InputMaybe<BoolFilter>;
-  joinedAt?: InputMaybe<DateTimeFilter>;
+  isMuted?: InputMaybe<BoolNullableFilter>;
+  joinedAt?: InputMaybe<DateTimeNullableFilter>;
   role?: InputMaybe<StringNullableFilter>;
   userId?: InputMaybe<StringFilter>;
 };
 
 export type ConversationParticipantUpdateManyMutationInput = {
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
-  isMuted?: InputMaybe<BoolFieldUpdateOperationsInput>;
-  joinedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  isMuted?: InputMaybe<NullableBoolFieldUpdateOperationsInput>;
+  joinedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   role?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
@@ -732,17 +749,17 @@ export type ConversationParticipantUpdateWithWhereUniqueWithoutUserInput = {
 
 export type ConversationParticipantUpdateWithoutConversationInput = {
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
-  isMuted?: InputMaybe<BoolFieldUpdateOperationsInput>;
-  joinedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  isMuted?: InputMaybe<NullableBoolFieldUpdateOperationsInput>;
+  joinedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   role?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutConversationParticipantNestedInput>;
 };
 
 export type ConversationParticipantUpdateWithoutUserInput = {
-  conversation?: InputMaybe<ConversationUpdateOneRequiredWithoutParticipantsNestedInput>;
+  conversation?: InputMaybe<ConversationUpdateOneWithoutParticipantsNestedInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
-  isMuted?: InputMaybe<BoolFieldUpdateOperationsInput>;
-  joinedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  isMuted?: InputMaybe<NullableBoolFieldUpdateOperationsInput>;
+  joinedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   role?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
@@ -762,11 +779,11 @@ export type ConversationParticipantWhereInput = {
   AND?: InputMaybe<Array<ConversationParticipantWhereInput>>;
   NOT?: InputMaybe<Array<ConversationParticipantWhereInput>>;
   OR?: InputMaybe<Array<ConversationParticipantWhereInput>>;
-  conversation?: InputMaybe<ConversationScalarRelationFilter>;
+  conversation?: InputMaybe<ConversationNullableScalarRelationFilter>;
   conversationId?: InputMaybe<StringFilter>;
   id?: InputMaybe<StringFilter>;
-  isMuted?: InputMaybe<BoolFilter>;
-  joinedAt?: InputMaybe<DateTimeFilter>;
+  isMuted?: InputMaybe<BoolNullableFilter>;
+  joinedAt?: InputMaybe<DateTimeNullableFilter>;
   role?: InputMaybe<StringNullableFilter>;
   user?: InputMaybe<UserScalarRelationFilter>;
   userId?: InputMaybe<StringFilter>;
@@ -776,20 +793,21 @@ export type ConversationParticipantWhereUniqueInput = {
   AND?: InputMaybe<Array<ConversationParticipantWhereInput>>;
   NOT?: InputMaybe<Array<ConversationParticipantWhereInput>>;
   OR?: InputMaybe<Array<ConversationParticipantWhereInput>>;
-  conversation?: InputMaybe<ConversationScalarRelationFilter>;
+  conversation?: InputMaybe<ConversationNullableScalarRelationFilter>;
   conversationId?: InputMaybe<StringFilter>;
   conversationId_userId?: InputMaybe<ConversationParticipantConversationIdUserIdCompoundUniqueInput>;
   id?: InputMaybe<Scalars['String']['input']>;
-  isMuted?: InputMaybe<BoolFilter>;
-  joinedAt?: InputMaybe<DateTimeFilter>;
+  isMuted?: InputMaybe<BoolNullableFilter>;
+  joinedAt?: InputMaybe<DateTimeNullableFilter>;
   role?: InputMaybe<StringNullableFilter>;
   user?: InputMaybe<UserScalarRelationFilter>;
   userId?: InputMaybe<StringFilter>;
 };
 
-export type ConversationScalarRelationFilter = {
-  is?: InputMaybe<ConversationWhereInput>;
-  isNot?: InputMaybe<ConversationWhereInput>;
+export type ConversationPayload = {
+  __typename?: 'ConversationPayload';
+  action: Scalars['String']['output'];
+  conversation: UserConversation;
 };
 
 export enum ConversationType {
@@ -797,14 +815,6 @@ export enum ConversationType {
   GROUP = 'GROUP',
   RIDE_LINKED = 'RIDE_LINKED'
 }
-
-export type ConversationUpdateOneRequiredWithoutParticipantsNestedInput = {
-  connect?: InputMaybe<ConversationWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<ConversationCreateOrConnectWithoutParticipantsInput>;
-  create?: InputMaybe<ConversationCreateWithoutParticipantsInput>;
-  update?: InputMaybe<ConversationUpdateToOneWithWhereWithoutParticipantsInput>;
-  upsert?: InputMaybe<ConversationUpsertWithoutParticipantsInput>;
-};
 
 export type ConversationUpdateOneWithoutMessagesNestedInput = {
   connect?: InputMaybe<ConversationWhereUniqueInput>;
@@ -814,6 +824,16 @@ export type ConversationUpdateOneWithoutMessagesNestedInput = {
   disconnect?: InputMaybe<ConversationWhereInput>;
   update?: InputMaybe<ConversationUpdateToOneWithWhereWithoutMessagesInput>;
   upsert?: InputMaybe<ConversationUpsertWithoutMessagesInput>;
+};
+
+export type ConversationUpdateOneWithoutParticipantsNestedInput = {
+  connect?: InputMaybe<ConversationWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<ConversationCreateOrConnectWithoutParticipantsInput>;
+  create?: InputMaybe<ConversationCreateWithoutParticipantsInput>;
+  delete?: InputMaybe<ConversationWhereInput>;
+  disconnect?: InputMaybe<ConversationWhereInput>;
+  update?: InputMaybe<ConversationUpdateToOneWithWhereWithoutParticipantsInput>;
+  upsert?: InputMaybe<ConversationUpsertWithoutParticipantsInput>;
 };
 
 export type ConversationUpdateToOneWithWhereWithoutMessagesInput = {
@@ -884,6 +904,13 @@ export type ConversationWhereUniqueInput = {
   rideId?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<StringNullableFilter>;
   type?: InputMaybe<EnumConversationTypeFilter>;
+};
+
+export type CreateConversationInput = {
+  participantIds: Array<Scalars['String']['input']>;
+  rideId?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  type: ConversationType;
 };
 
 export type CreateDriverVehicleInput = {
@@ -1677,7 +1704,7 @@ export type DriverVehicleWhereUniqueInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   model?: InputMaybe<StringNullableFilter>;
   place?: InputMaybe<IntFilter>;
-  registrationNumber?: InputMaybe<StringNullableFilter>;
+  registrationNumber?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<VehicleTypeScalarRelationFilter>;
   user?: InputMaybe<UserScalarRelationFilter>;
   userId?: InputMaybe<StringFilter>;
@@ -3743,13 +3770,16 @@ export type MessageWhereUniqueInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addParticipant: ConversationParticipant;
   completeUploadBulk: Array<CompleteUploadOutput>;
   createBatchPresignedUrls: Array<PresignedUrl>;
+  createConversation: UserConversation;
   createDriverVehicle: DriverVehicle;
   createFile: File;
   createUser: User;
   createUserQr: Scalars['String']['output'];
   createVehicleType: VehicleType;
+  deleteConversation: UserConversation;
   deleteCover: User;
   deleteFilesByUserId: Array<File>;
   deleteMessage: Message;
@@ -3767,8 +3797,11 @@ export type Mutation = {
   markMessageAsDelivered: Message;
   register: User;
   removeAvatar: User;
+  removeParticipant: ConversationParticipant;
   resetPassword: Scalars['Boolean']['output'];
   sendMessage: Message;
+  updateConversation: UserConversation;
+  updateDriverVehicle: DriverVehicle;
   updateFile: File;
   updateUser: User;
   uploadAvatar: User;
@@ -3779,6 +3812,11 @@ export type Mutation = {
   uploadVehicleDocuments: Array<VehicleDocument>;
   uploadVehicleImages: Array<VehicleImage>;
   upsertUserPreference: UserPreference;
+};
+
+
+export type MutationAddParticipantArgs = {
+  input: AddParticipantInput;
 };
 
 
@@ -3794,9 +3832,13 @@ export type MutationCreateBatchPresignedUrlsArgs = {
 };
 
 
+export type MutationCreateConversationArgs = {
+  input: CreateConversationInput;
+};
+
+
 export type MutationCreateDriverVehicleArgs = {
   input: CreateDriverVehicleInput;
-  vehicleId: Scalars['String']['input'];
 };
 
 
@@ -3817,6 +3859,11 @@ export type MutationCreateUserQrArgs = {
 
 export type MutationCreateVehicleTypeArgs = {
   input: VehicleTypeCreateInput;
+};
+
+
+export type MutationDeleteConversationArgs = {
+  conversationId: Scalars['String']['input'];
 };
 
 
@@ -3890,6 +3937,11 @@ export type MutationRegisterArgs = {
 };
 
 
+export type MutationRemoveParticipantArgs = {
+  input: RemoveParticipantInput;
+};
+
+
 export type MutationResetPasswordArgs = {
   newPassword: Scalars['String']['input'];
   sessionToken: Scalars['String']['input'];
@@ -3898,6 +3950,18 @@ export type MutationResetPasswordArgs = {
 
 export type MutationSendMessageArgs = {
   input: SendMessageInput;
+};
+
+
+export type MutationUpdateConversationArgs = {
+  conversationId: Scalars['String']['input'];
+  input: UpdateConversationInput;
+};
+
+
+export type MutationUpdateDriverVehicleArgs = {
+  input: CreateDriverVehicleInput;
+  vehicleId: Scalars['String']['input'];
 };
 
 
@@ -3957,6 +4021,11 @@ export type MutationUpsertUserPreferenceArgs = {
 export type NestedBoolFilter = {
   equals?: InputMaybe<Scalars['Boolean']['input']>;
   not?: InputMaybe<NestedBoolFilter>;
+};
+
+export type NestedBoolNullableFilter = {
+  equals?: InputMaybe<Scalars['Boolean']['input']>;
+  not?: InputMaybe<NestedBoolNullableFilter>;
 };
 
 export type NestedDateTimeFilter = {
@@ -4095,6 +4164,10 @@ export type NestedStringNullableFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: InputMaybe<Scalars['DateTime']['input']>;
 };
@@ -4123,6 +4196,12 @@ export enum NullsOrder {
   FIRST = 'first',
   LAST = 'last'
 }
+
+export type PartialConversationCount = {
+  __typename?: 'PartialConversationCount';
+  messages?: Maybe<Scalars['Int']['output']>;
+  participants?: Maybe<Scalars['Int']['output']>;
+};
 
 export type Position = {
   __typename?: 'Position';
@@ -4703,6 +4782,7 @@ export type QrTokenWhereUniqueInput = {
 export type Query = {
   __typename?: 'Query';
   VehicleType: VehicleType;
+  conversation: UserConversation;
   file: File;
   files: Array<File>;
   getUserQr: Scalars['String']['output'];
@@ -4711,6 +4791,7 @@ export type Query = {
   messages: Array<Message>;
   user: User;
   userByToken: User;
+  userConversations: UserConversationsResponse;
   userPreference?: Maybe<UserPreference>;
   users: Array<User>;
   usersForAdmin: Array<User>;
@@ -4720,6 +4801,11 @@ export type Query = {
 
 
 export type QueryVehicleTypeArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryConversationArgs = {
   id: Scalars['String']['input'];
 };
 
@@ -4764,6 +4850,12 @@ export type QueryUserArgs = {
 
 export type QueryUserByTokenArgs = {
   token: Scalars['String']['input'];
+};
+
+
+export type QueryUserConversationsArgs = {
+  cursor?: InputMaybe<Scalars['String']['input']>;
+  limit?: Scalars['Int']['input'];
 };
 
 
@@ -5200,6 +5292,11 @@ export type RegisterInput = {
   lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
   username?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type RemoveParticipantInput = {
+  conversationId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
 };
 
 export type Review = {
@@ -6223,13 +6320,24 @@ export type StringNullableFilter = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  conversationUpdated: ConversationPayload;
   messageReceived: MessagePayload;
+  participantUpdated: ConversationParticipantPayload;
 };
 
 
 export type SubscriptionMessageReceivedArgs = {
   conversationId?: InputMaybe<Scalars['String']['input']>;
   rideId?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type SubscriptionParticipantUpdatedArgs = {
+  conversationId: Scalars['String']['input'];
+};
+
+export type UpdateConversationInput = {
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UploadUserDocumentsInput = {
@@ -6279,6 +6387,38 @@ export type User = {
   userCoverId?: Maybe<Scalars['String']['output']>;
   username?: Maybe<Scalars['String']['output']>;
   vehicles?: Maybe<Array<DriverVehicle>>;
+};
+
+export type UserConversation = {
+  __typename?: 'UserConversation';
+  _count?: Maybe<PartialConversationCount>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  directHash?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  messages?: Maybe<Array<Message>>;
+  participants?: Maybe<Array<UserConversationParticipant>>;
+  rideId?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  type: ConversationType;
+};
+
+export type UserConversationParticipant = {
+  __typename?: 'UserConversationParticipant';
+  conversation?: Maybe<UserConversation>;
+  conversationId?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  isMuted?: Maybe<Scalars['Boolean']['output']>;
+  joinedAt?: Maybe<Scalars['DateTime']['output']>;
+  role?: Maybe<Scalars['String']['output']>;
+  user: UserUserConversationParticipant;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type UserConversationsResponse = {
+  __typename?: 'UserConversationsResponse';
+  conversations: Array<UserConversation>;
+  cursor?: Maybe<Scalars['String']['output']>;
+  hasNextPage: Scalars['Boolean']['output'];
 };
 
 export type UserCount = {
@@ -7208,9 +7348,14 @@ export type UserDocumentScalarWhereInput = {
 
 export enum UserDocumentType {
   DRIVER_LICENSE = 'DRIVER_LICENSE',
+  DRIVER_LICENSE_BACK = 'DRIVER_LICENSE_BACK',
+  DRIVER_LICENSE_FRONT = 'DRIVER_LICENSE_FRONT',
   ID_CARD = 'ID_CARD',
+  ID_CARD_BACK = 'ID_CARD_BACK',
+  ID_CARD_FRONT = 'ID_CARD_FRONT',
   OTHER = 'OTHER',
-  PASSPORT = 'PASSPORT'
+  PASSPORT = 'PASSPORT',
+  PROOF_OF_ADDRESS = 'PROOF_OF_ADDRESS'
 }
 
 export type UserDocumentUpdateManyMutationInput = {
@@ -7633,6 +7778,31 @@ export type UserOrderByWithRelationInput = {
   userCoverId?: InputMaybe<SortOrderInput>;
   username?: InputMaybe<SortOrderInput>;
   vehicles?: InputMaybe<DriverVehicleOrderByRelationAggregateInput>;
+};
+
+export type UserPartialAvatar = {
+  __typename?: 'UserPartialAvatar';
+  Attachment?: Maybe<Array<Attachment>>;
+  User?: Maybe<Array<User>>;
+  UserCover?: Maybe<Array<UserCover>>;
+  UserDocument?: Maybe<Array<UserDocument>>;
+  UserImage?: Maybe<Array<UserImage>>;
+  VehicleDocument?: Maybe<Array<VehicleDocument>>;
+  VehicleImage?: Maybe<Array<VehicleImage>>;
+  _count?: Maybe<FileCount>;
+  contentType?: Maybe<Scalars['String']['output']>;
+  driverVehicleId?: Maybe<Scalars['String']['output']>;
+  etag?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  key?: Maybe<Scalars['String']['output']>;
+  meta?: Maybe<Scalars['JSON']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  originalName?: Maybe<Scalars['String']['output']>;
+  size?: Maybe<Scalars['Int']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<FileType>;
+  url?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
 };
 
 export type UserPreference = {
@@ -8630,6 +8800,17 @@ export type UserUpsertWithoutVehiclesInput = {
   where?: InputMaybe<UserWhereInput>;
 };
 
+export type UserUserConversationParticipant = {
+  __typename?: 'UserUserConversationParticipant';
+  avatar?: Maybe<UserPartialAvatar>;
+  email?: Maybe<Scalars['String']['output']>;
+  firstName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  lastName?: Maybe<Scalars['String']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  username?: Maybe<Scalars['String']['output']>;
+};
+
 export type UserWhereInput = {
   AND?: InputMaybe<Array<UserWhereInput>>;
   ConversationParticipant?: InputMaybe<ConversationParticipantListRelationFilter>;
@@ -9413,24 +9594,93 @@ export type ForgotPasswordMutationVariables = Exact<{
 
 export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: { __typename?: 'ForgotPasswordOutput', resetLink: string, email: string } };
 
+export type ParticipantAvatarFragment = { __typename?: 'UserPartialAvatar', id?: string | null, url?: string | null, type?: FileType | null, meta?: any | null, name?: string | null };
+
+export type ConversationBasicFragment = { __typename?: 'UserConversation', id: string, title?: string | null, type: ConversationType, createdAt?: any | null, directHash?: string | null, rideId?: string | null, _count?: { __typename?: 'PartialConversationCount', messages?: number | null, participants?: number | null } | null };
+
+export type ConversationWithParticipantsFragment = { __typename?: 'UserConversation', id: string, title?: string | null, type: ConversationType, createdAt?: any | null, directHash?: string | null, rideId?: string | null, participants?: Array<{ __typename?: 'UserConversationParticipant', conversationId?: string | null, id: string, isMuted?: boolean | null, joinedAt?: any | null, role?: string | null, user: { __typename?: 'UserUserConversationParticipant', id: string, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'UserPartialAvatar', id?: string | null, url?: string | null, type?: FileType | null, meta?: any | null, name?: string | null } | null } }> | null, _count?: { __typename?: 'PartialConversationCount', messages?: number | null, participants?: number | null } | null };
+
+export type CreateConversationMutationVariables = Exact<{
+  input: CreateConversationInput;
+}>;
+
+
+export type CreateConversationMutation = { __typename?: 'Mutation', createConversation: { __typename?: 'UserConversation', id: string, title?: string | null, type: ConversationType, createdAt?: any | null, directHash?: string | null, rideId?: string | null, participants?: Array<{ __typename?: 'UserConversationParticipant', conversationId?: string | null, id: string, isMuted?: boolean | null, joinedAt?: any | null, role?: string | null, user: { __typename?: 'UserUserConversationParticipant', id: string, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'UserPartialAvatar', id?: string | null, url?: string | null, type?: FileType | null, meta?: any | null, name?: string | null } | null } }> | null, _count?: { __typename?: 'PartialConversationCount', messages?: number | null, participants?: number | null } | null } };
+
+export type UpdateConversationMutationVariables = Exact<{
+  conversationId: Scalars['String']['input'];
+  input: UpdateConversationInput;
+}>;
+
+
+export type UpdateConversationMutation = { __typename?: 'Mutation', updateConversation: { __typename?: 'UserConversation', id: string, title?: string | null, type: ConversationType, createdAt?: any | null, directHash?: string | null, rideId?: string | null, participants?: Array<{ __typename?: 'UserConversationParticipant', conversationId?: string | null, id: string, isMuted?: boolean | null, joinedAt?: any | null, role?: string | null, user: { __typename?: 'UserUserConversationParticipant', id: string, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'UserPartialAvatar', id?: string | null, url?: string | null, type?: FileType | null, meta?: any | null, name?: string | null } | null } }> | null, _count?: { __typename?: 'PartialConversationCount', messages?: number | null, participants?: number | null } | null } };
+
+export type DeleteConversationMutationVariables = Exact<{
+  conversationId: Scalars['String']['input'];
+}>;
+
+
+export type DeleteConversationMutation = { __typename?: 'Mutation', deleteConversation: { __typename?: 'UserConversation', id: string, title?: string | null } };
+
+export type AddParticipantMutationVariables = Exact<{
+  input: AddParticipantInput;
+}>;
+
+
+export type AddParticipantMutation = { __typename?: 'Mutation', addParticipant: { __typename?: 'ConversationParticipant', id: string, userId: string, conversationId: string, user: { __typename?: 'User', id: string, firstName: string, lastName?: string | null } } };
+
+export type RemoveParticipantMutationVariables = Exact<{
+  input: RemoveParticipantInput;
+}>;
+
+
+export type RemoveParticipantMutation = { __typename?: 'Mutation', removeParticipant: { __typename?: 'ConversationParticipant', id: string, userId: string, conversationId: string, user: { __typename?: 'User', id: string, firstName: string, lastName?: string | null } } };
+
+export type GetUserConversationsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  cursor?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetUserConversationsQuery = { __typename?: 'Query', userConversations: { __typename?: 'UserConversationsResponse', hasNextPage: boolean, cursor?: string | null, conversations: Array<{ __typename?: 'UserConversation', id: string, title?: string | null, type: ConversationType, createdAt?: any | null, directHash?: string | null, rideId?: string | null, participants?: Array<{ __typename?: 'UserConversationParticipant', conversationId?: string | null, id: string, isMuted?: boolean | null, joinedAt?: any | null, role?: string | null, user: { __typename?: 'UserUserConversationParticipant', id: string, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'UserPartialAvatar', id?: string | null, url?: string | null, type?: FileType | null, meta?: any | null, name?: string | null } | null } }> | null, _count?: { __typename?: 'PartialConversationCount', messages?: number | null, participants?: number | null } | null }> } };
+
+export type GetConversationByIdQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type GetConversationByIdQuery = { __typename?: 'Query', conversation: { __typename?: 'UserConversation', id: string, title?: string | null, type: ConversationType, createdAt?: any | null, directHash?: string | null, rideId?: string | null, participants?: Array<{ __typename?: 'UserConversationParticipant', conversationId?: string | null, id: string, isMuted?: boolean | null, joinedAt?: any | null, role?: string | null, user: { __typename?: 'UserUserConversationParticipant', id: string, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'UserPartialAvatar', id?: string | null, url?: string | null, type?: FileType | null, meta?: any | null, name?: string | null } | null } }> | null, _count?: { __typename?: 'PartialConversationCount', messages?: number | null, participants?: number | null } | null } };
+
+export type ConversationUpdatedSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ConversationUpdatedSubscription = { __typename?: 'Subscription', conversationUpdated: { __typename?: 'ConversationPayload', action: string, conversation: { __typename?: 'UserConversation', id: string, title?: string | null, type: ConversationType, createdAt?: any | null, directHash?: string | null, rideId?: string | null, participants?: Array<{ __typename?: 'UserConversationParticipant', conversationId?: string | null, id: string, isMuted?: boolean | null, joinedAt?: any | null, role?: string | null, user: { __typename?: 'UserUserConversationParticipant', id: string, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'UserPartialAvatar', id?: string | null, url?: string | null, type?: FileType | null, meta?: any | null, name?: string | null } | null } }> | null, _count?: { __typename?: 'PartialConversationCount', messages?: number | null, participants?: number | null } | null } } };
+
+export type ParticipantUpdatedSubscriptionVariables = Exact<{
+  conversationId: Scalars['String']['input'];
+}>;
+
+
+export type ParticipantUpdatedSubscription = { __typename?: 'Subscription', participantUpdated: { __typename?: 'ConversationParticipantPayload', action: string, conversationId: string, participant: { __typename?: 'ConversationParticipant', id: string, userId: string, user: { __typename?: 'User', id: string, firstName: string, lastName?: string | null } } } };
+
 export type DocumentFragment = { __typename?: 'UserDocument', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } };
 
 export type FileFragmentFragment = { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string };
 
 export type ImageFragment = { __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } };
 
-export type MessageFragmentFragment = { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } }> | null };
+export type MessageFragmentFragment = { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null } }> | null };
 
-export type MutationMessageFragmentFragment = { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, createdAt: any, sentAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } };
+export type MutationMessageFragmentFragment = { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, createdAt: any, sentAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null } };
 
-export type SubscriptionMessageFragmentFragment = { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } }> | null };
+export type SubscriptionMessageFragmentFragment = { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null } }> | null };
 
 export type SendMessageMutationVariables = Exact<{
   input: SendMessageInput;
 }>;
 
 
-export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, createdAt: any, sentAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } } };
+export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, createdAt: any, sentAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null } } };
 
 export type EditMessageMutationVariables = Exact<{
   messageId: Scalars['String']['input'];
@@ -9462,7 +9712,7 @@ export type GetMessagesQueryVariables = Exact<{
 }>;
 
 
-export type GetMessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } }> | null }> };
+export type GetMessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null } }> | null }> };
 
 export type MessageReceivedSubscriptionVariables = Exact<{
   conversationId?: InputMaybe<Scalars['String']['input']>;
@@ -9470,7 +9720,7 @@ export type MessageReceivedSubscriptionVariables = Exact<{
 }>;
 
 
-export type MessageReceivedSubscription = { __typename?: 'Subscription', messageReceived: { __typename?: 'MessagePayload', type: string, message: { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null } }> | null } } };
+export type MessageReceivedSubscription = { __typename?: 'Subscription', messageReceived: { __typename?: 'MessagePayload', type: string, message: { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null } }> | null } } };
 
 export type PresignedUrlFragment = { __typename?: 'PresignedUrl', key: string, url: string, expiresIn: number };
 
@@ -9492,7 +9742,7 @@ export type CompleteUploadBulkMutation = { __typename?: 'Mutation', completeUplo
 
 export type UserFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null };
 
-export type UserMessageFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null };
+export type UserMessageFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null };
 
 export type CreateUserMutationVariables = Exact<{
   input: UserCreateInput;
@@ -9513,6 +9763,62 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
 
+export type UsersQueryVariables = Exact<{
+  cursor?: InputMaybe<UserWhereUniqueInput>;
+  distinct?: InputMaybe<Array<UserScalarFieldEnum> | UserScalarFieldEnum>;
+  orderBy?: InputMaybe<Array<UserOrderByWithRelationInput> | UserOrderByWithRelationInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<UserWhereInput>;
+}>;
+
+
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null }> };
+
+export const ConversationBasicFragmentDoc = gql`
+    fragment ConversationBasic on UserConversation {
+  id
+  title
+  type
+  createdAt
+  directHash
+  rideId
+  _count {
+    messages
+    participants
+  }
+}
+    `;
+export const ParticipantAvatarFragmentDoc = gql`
+    fragment ParticipantAvatar on UserPartialAvatar {
+  id
+  url
+  type
+  meta
+  name
+}
+    `;
+export const ConversationWithParticipantsFragmentDoc = gql`
+    fragment ConversationWithParticipants on UserConversation {
+  ...ConversationBasic
+  participants {
+    conversationId
+    id
+    isMuted
+    joinedAt
+    role
+    user {
+      id
+      firstName
+      lastName
+      avatar {
+        ...ParticipantAvatar
+      }
+    }
+  }
+}
+    ${ConversationBasicFragmentDoc}
+${ParticipantAvatarFragmentDoc}`;
 export const FileFragmentFragmentDoc = gql`
     fragment FileFragment on File {
   id
@@ -9534,15 +9840,6 @@ export const DocumentFragmentDoc = gql`
   }
 }
     ${FileFragmentFragmentDoc}`;
-export const ImageFragmentDoc = gql`
-    fragment Image on UserImage {
-  id
-  updatedAt
-  file {
-    ...FileFragment
-  }
-}
-    ${FileFragmentFragmentDoc}`;
 export const UserMessageFragmentFragmentDoc = gql`
     fragment userMessageFragment on User {
   id
@@ -9551,11 +9848,15 @@ export const UserMessageFragmentFragmentDoc = gql`
   email
   phone
   username
-  UserImage {
-    ...Image
+  avatar {
+    id
+    url
+    type
+    meta
+    name
   }
 }
-    ${ImageFragmentDoc}`;
+    `;
 export const MessageFragmentFragmentDoc = gql`
     fragment messageFragment on Message {
   id
@@ -9636,6 +9937,15 @@ export const PresignedUrlFragmentDoc = gql`
   expiresIn
 }
     `;
+export const ImageFragmentDoc = gql`
+    fragment Image on UserImage {
+  id
+  updatedAt
+  file {
+    ...FileFragment
+  }
+}
+    ${FileFragmentFragmentDoc}`;
 export const UserFragmentFragmentDoc = gql`
     fragment userFragment on User {
   id
@@ -9806,6 +10116,344 @@ export function useForgotPasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswordMutation>;
 export type ForgotPasswordMutationResult = Apollo.MutationResult<ForgotPasswordMutation>;
 export type ForgotPasswordMutationOptions = Apollo.BaseMutationOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
+export const CreateConversationDocument = gql`
+    mutation CreateConversation($input: CreateConversationInput!) {
+  createConversation(input: $input) {
+    ...ConversationWithParticipants
+  }
+}
+    ${ConversationWithParticipantsFragmentDoc}`;
+export type CreateConversationMutationFn = Apollo.MutationFunction<CreateConversationMutation, CreateConversationMutationVariables>;
+
+/**
+ * __useCreateConversationMutation__
+ *
+ * To run a mutation, you first call `useCreateConversationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateConversationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createConversationMutation, { data, loading, error }] = useCreateConversationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateConversationMutation(baseOptions?: Apollo.MutationHookOptions<CreateConversationMutation, CreateConversationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateConversationMutation, CreateConversationMutationVariables>(CreateConversationDocument, options);
+      }
+export type CreateConversationMutationHookResult = ReturnType<typeof useCreateConversationMutation>;
+export type CreateConversationMutationResult = Apollo.MutationResult<CreateConversationMutation>;
+export type CreateConversationMutationOptions = Apollo.BaseMutationOptions<CreateConversationMutation, CreateConversationMutationVariables>;
+export const UpdateConversationDocument = gql`
+    mutation UpdateConversation($conversationId: String!, $input: UpdateConversationInput!) {
+  updateConversation(conversationId: $conversationId, input: $input) {
+    ...ConversationWithParticipants
+  }
+}
+    ${ConversationWithParticipantsFragmentDoc}`;
+export type UpdateConversationMutationFn = Apollo.MutationFunction<UpdateConversationMutation, UpdateConversationMutationVariables>;
+
+/**
+ * __useUpdateConversationMutation__
+ *
+ * To run a mutation, you first call `useUpdateConversationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateConversationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateConversationMutation, { data, loading, error }] = useUpdateConversationMutation({
+ *   variables: {
+ *      conversationId: // value for 'conversationId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateConversationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateConversationMutation, UpdateConversationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateConversationMutation, UpdateConversationMutationVariables>(UpdateConversationDocument, options);
+      }
+export type UpdateConversationMutationHookResult = ReturnType<typeof useUpdateConversationMutation>;
+export type UpdateConversationMutationResult = Apollo.MutationResult<UpdateConversationMutation>;
+export type UpdateConversationMutationOptions = Apollo.BaseMutationOptions<UpdateConversationMutation, UpdateConversationMutationVariables>;
+export const DeleteConversationDocument = gql`
+    mutation DeleteConversation($conversationId: String!) {
+  deleteConversation(conversationId: $conversationId) {
+    id
+    title
+  }
+}
+    `;
+export type DeleteConversationMutationFn = Apollo.MutationFunction<DeleteConversationMutation, DeleteConversationMutationVariables>;
+
+/**
+ * __useDeleteConversationMutation__
+ *
+ * To run a mutation, you first call `useDeleteConversationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteConversationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteConversationMutation, { data, loading, error }] = useDeleteConversationMutation({
+ *   variables: {
+ *      conversationId: // value for 'conversationId'
+ *   },
+ * });
+ */
+export function useDeleteConversationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteConversationMutation, DeleteConversationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteConversationMutation, DeleteConversationMutationVariables>(DeleteConversationDocument, options);
+      }
+export type DeleteConversationMutationHookResult = ReturnType<typeof useDeleteConversationMutation>;
+export type DeleteConversationMutationResult = Apollo.MutationResult<DeleteConversationMutation>;
+export type DeleteConversationMutationOptions = Apollo.BaseMutationOptions<DeleteConversationMutation, DeleteConversationMutationVariables>;
+export const AddParticipantDocument = gql`
+    mutation AddParticipant($input: AddParticipantInput!) {
+  addParticipant(input: $input) {
+    id
+    userId
+    user {
+      id
+      firstName
+      lastName
+    }
+    conversationId
+  }
+}
+    `;
+export type AddParticipantMutationFn = Apollo.MutationFunction<AddParticipantMutation, AddParticipantMutationVariables>;
+
+/**
+ * __useAddParticipantMutation__
+ *
+ * To run a mutation, you first call `useAddParticipantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddParticipantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addParticipantMutation, { data, loading, error }] = useAddParticipantMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddParticipantMutation(baseOptions?: Apollo.MutationHookOptions<AddParticipantMutation, AddParticipantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddParticipantMutation, AddParticipantMutationVariables>(AddParticipantDocument, options);
+      }
+export type AddParticipantMutationHookResult = ReturnType<typeof useAddParticipantMutation>;
+export type AddParticipantMutationResult = Apollo.MutationResult<AddParticipantMutation>;
+export type AddParticipantMutationOptions = Apollo.BaseMutationOptions<AddParticipantMutation, AddParticipantMutationVariables>;
+export const RemoveParticipantDocument = gql`
+    mutation RemoveParticipant($input: RemoveParticipantInput!) {
+  removeParticipant(input: $input) {
+    id
+    userId
+    user {
+      id
+      firstName
+      lastName
+    }
+    conversationId
+  }
+}
+    `;
+export type RemoveParticipantMutationFn = Apollo.MutationFunction<RemoveParticipantMutation, RemoveParticipantMutationVariables>;
+
+/**
+ * __useRemoveParticipantMutation__
+ *
+ * To run a mutation, you first call `useRemoveParticipantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveParticipantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeParticipantMutation, { data, loading, error }] = useRemoveParticipantMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveParticipantMutation(baseOptions?: Apollo.MutationHookOptions<RemoveParticipantMutation, RemoveParticipantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveParticipantMutation, RemoveParticipantMutationVariables>(RemoveParticipantDocument, options);
+      }
+export type RemoveParticipantMutationHookResult = ReturnType<typeof useRemoveParticipantMutation>;
+export type RemoveParticipantMutationResult = Apollo.MutationResult<RemoveParticipantMutation>;
+export type RemoveParticipantMutationOptions = Apollo.BaseMutationOptions<RemoveParticipantMutation, RemoveParticipantMutationVariables>;
+export const GetUserConversationsDocument = gql`
+    query GetUserConversations($limit: Int, $cursor: String) {
+  userConversations(limit: $limit, cursor: $cursor) {
+    conversations {
+      ...ConversationWithParticipants
+    }
+    hasNextPage
+    cursor
+  }
+}
+    ${ConversationWithParticipantsFragmentDoc}`;
+
+/**
+ * __useGetUserConversationsQuery__
+ *
+ * To run a query within a React component, call `useGetUserConversationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserConversationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserConversationsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useGetUserConversationsQuery(baseOptions?: Apollo.QueryHookOptions<GetUserConversationsQuery, GetUserConversationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserConversationsQuery, GetUserConversationsQueryVariables>(GetUserConversationsDocument, options);
+      }
+export function useGetUserConversationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserConversationsQuery, GetUserConversationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserConversationsQuery, GetUserConversationsQueryVariables>(GetUserConversationsDocument, options);
+        }
+export function useGetUserConversationsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserConversationsQuery, GetUserConversationsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserConversationsQuery, GetUserConversationsQueryVariables>(GetUserConversationsDocument, options);
+        }
+export type GetUserConversationsQueryHookResult = ReturnType<typeof useGetUserConversationsQuery>;
+export type GetUserConversationsLazyQueryHookResult = ReturnType<typeof useGetUserConversationsLazyQuery>;
+export type GetUserConversationsSuspenseQueryHookResult = ReturnType<typeof useGetUserConversationsSuspenseQuery>;
+export type GetUserConversationsQueryResult = Apollo.QueryResult<GetUserConversationsQuery, GetUserConversationsQueryVariables>;
+export const GetConversationByIdDocument = gql`
+    query GetConversationById($id: String!) {
+  conversation(id: $id) {
+    ...ConversationWithParticipants
+  }
+}
+    ${ConversationWithParticipantsFragmentDoc}`;
+
+/**
+ * __useGetConversationByIdQuery__
+ *
+ * To run a query within a React component, call `useGetConversationByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetConversationByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetConversationByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetConversationByIdQuery(baseOptions: Apollo.QueryHookOptions<GetConversationByIdQuery, GetConversationByIdQueryVariables> & ({ variables: GetConversationByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetConversationByIdQuery, GetConversationByIdQueryVariables>(GetConversationByIdDocument, options);
+      }
+export function useGetConversationByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetConversationByIdQuery, GetConversationByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetConversationByIdQuery, GetConversationByIdQueryVariables>(GetConversationByIdDocument, options);
+        }
+export function useGetConversationByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetConversationByIdQuery, GetConversationByIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetConversationByIdQuery, GetConversationByIdQueryVariables>(GetConversationByIdDocument, options);
+        }
+export type GetConversationByIdQueryHookResult = ReturnType<typeof useGetConversationByIdQuery>;
+export type GetConversationByIdLazyQueryHookResult = ReturnType<typeof useGetConversationByIdLazyQuery>;
+export type GetConversationByIdSuspenseQueryHookResult = ReturnType<typeof useGetConversationByIdSuspenseQuery>;
+export type GetConversationByIdQueryResult = Apollo.QueryResult<GetConversationByIdQuery, GetConversationByIdQueryVariables>;
+export const ConversationUpdatedDocument = gql`
+    subscription ConversationUpdated {
+  conversationUpdated {
+    conversation {
+      ...ConversationWithParticipants
+    }
+    action
+  }
+}
+    ${ConversationWithParticipantsFragmentDoc}`;
+
+/**
+ * __useConversationUpdatedSubscription__
+ *
+ * To run a query within a React component, call `useConversationUpdatedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useConversationUpdatedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useConversationUpdatedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useConversationUpdatedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<ConversationUpdatedSubscription, ConversationUpdatedSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<ConversationUpdatedSubscription, ConversationUpdatedSubscriptionVariables>(ConversationUpdatedDocument, options);
+      }
+export type ConversationUpdatedSubscriptionHookResult = ReturnType<typeof useConversationUpdatedSubscription>;
+export type ConversationUpdatedSubscriptionResult = Apollo.SubscriptionResult<ConversationUpdatedSubscription>;
+export const ParticipantUpdatedDocument = gql`
+    subscription ParticipantUpdated($conversationId: String!) {
+  participantUpdated(conversationId: $conversationId) {
+    participant {
+      id
+      userId
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+    action
+    conversationId
+  }
+}
+    `;
+
+/**
+ * __useParticipantUpdatedSubscription__
+ *
+ * To run a query within a React component, call `useParticipantUpdatedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useParticipantUpdatedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useParticipantUpdatedSubscription({
+ *   variables: {
+ *      conversationId: // value for 'conversationId'
+ *   },
+ * });
+ */
+export function useParticipantUpdatedSubscription(baseOptions: Apollo.SubscriptionHookOptions<ParticipantUpdatedSubscription, ParticipantUpdatedSubscriptionVariables> & ({ variables: ParticipantUpdatedSubscriptionVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<ParticipantUpdatedSubscription, ParticipantUpdatedSubscriptionVariables>(ParticipantUpdatedDocument, options);
+      }
+export type ParticipantUpdatedSubscriptionHookResult = ReturnType<typeof useParticipantUpdatedSubscription>;
+export type ParticipantUpdatedSubscriptionResult = Apollo.SubscriptionResult<ParticipantUpdatedSubscription>;
 export const SendMessageDocument = gql`
     mutation SendMessage($input: SendMessageInput!) {
   sendMessage(input: $input) {
@@ -10211,3 +10859,55 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeSuspenseQueryHookResult = ReturnType<typeof useMeSuspenseQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const UsersDocument = gql`
+    query users($cursor: UserWhereUniqueInput, $distinct: [UserScalarFieldEnum!], $orderBy: [UserOrderByWithRelationInput!], $skip: Int, $take: Int, $where: UserWhereInput) {
+  users(
+    cursor: $cursor
+    distinct: $distinct
+    orderBy: $orderBy
+    skip: $skip
+    take: $take
+    where: $where
+  ) {
+    ...userFragment
+  }
+}
+    ${UserFragmentFragmentDoc}`;
+
+/**
+ * __useUsersQuery__
+ *
+ * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersQuery({
+ *   variables: {
+ *      cursor: // value for 'cursor'
+ *      distinct: // value for 'distinct'
+ *      orderBy: // value for 'orderBy'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+      }
+export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+        }
+export function useUsersSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+        }
+export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
+export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
+export type UsersSuspenseQueryHookResult = ReturnType<typeof useUsersSuspenseQuery>;
+export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;

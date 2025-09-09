@@ -1,0 +1,24 @@
+subscription ConversationUpdated {
+  conversationUpdated {
+    conversation {
+      ...ConversationWithParticipants
+    }
+    action
+  }
+}
+
+subscription ParticipantUpdated($conversationId: String!) {
+  participantUpdated(conversationId: $conversationId) {
+    participant {
+      id
+      userId
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+    action
+    conversationId
+  }
+}

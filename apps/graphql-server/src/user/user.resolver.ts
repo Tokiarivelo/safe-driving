@@ -1,4 +1,11 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 
 import { UsersService } from './users.service';
 import {
@@ -13,8 +20,42 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UploadUserDocumentsInput } from 'src/dtos/user/user.input';
 
 @Resolver(() => User)
+@UseGuards(JwtAuthGuard) // 👈 protège la route
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
+
+  @ResolveField(() => String, { nullable: true })
+  UserPreference(@Parent() user: User, @CurrentUser() me: User) {
+    if (!me) return null;
+    const isAdmin = me.Role.find((role) => role.name === 'ADMIN');
+    if (isAdmin || me.id === user.id) return user.UserPreference;
+    return null;
+  }
+
+  @ResolveField(() => String, { nullable: true })
+  UserDocument(@Parent() user: User, @CurrentUser() me: User) {
+    if (!me) return null;
+    const isAdmin = me.Role.find((role) => role.name === 'ADMIN');
+    if (isAdmin || me.id === user.id) return user.UserDocument;
+    return null;
+  }
+
+  @ResolveField(() => String, { nullable: true })
+  Message(@Parent() user: User, @CurrentUser() me: User) {
+    if (!me) return null;
+    const isAdmin = me.Role.find((role) => role.name === 'ADMIN');
+    if (isAdmin || me.id === user.id) return user.Message;
+    return null;
+  }
+
+  @ResolveField(() => String, { nullable: true })
+  Role(@Parent() user: User, @CurrentUser() me: User) {
+    console.log('me :>> ', me);
+    if (!me) return null;
+    const isAdmin = me.Role.find((role) => role.name === 'ADMIN');
+    if (isAdmin || me.id === user.id) return user.Role;
+    return null;
+  }
 
   @Query(() => [User], { name: 'users' })
   async getAll(@Args() manyUserArgs: FindManyUserArgs): Promise<User[] | null> {
@@ -29,24 +70,20 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'user' })
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   async getOne(@Args('id') id: string): Promise<User> {
     return this.usersService.findById(id);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Query(() => User, { name: 'me' })
   me(@CurrentUser() user: User) {
     return this.usersService.findById(user.id);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Query(() => User, { name: 'userByToken' })
   userByToken(@Args('token') token: string) {
     return this.usersService.userByToken(token);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Mutation(() => User, { name: 'updateUser' })
   async update(
     @Args('input') input: UserUpdateInput,
@@ -61,7 +98,6 @@ export class UsersResolver {
     return user;
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Mutation(() => User, { name: 'uploadAvatar' })
   async uploadAvatar(
     @Args('key') key: string,
@@ -70,7 +106,6 @@ export class UsersResolver {
     return this.usersService.uploadAvatar(user.id, key);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Mutation(() => User, { name: 'uploadCover' })
   async uploadCover(
     @Args('key') key: string,
@@ -79,19 +114,16 @@ export class UsersResolver {
     return this.usersService.uploadCover(user.id, key);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Mutation(() => User, { name: 'removeAvatar' })
   async removeAvatar(@CurrentUser() user: User): Promise<User> {
     return this.usersService.removeAvatar(user.id);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Mutation(() => User, { name: 'deleteCover' })
   async removeCover(@CurrentUser() user: User): Promise<User> {
     return this.usersService.deleteCover(user.id);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Mutation(() => User, { name: 'uploadUserDocument' })
   async uploadUserDocument(
     @Args('input', { type: () => [UploadUserDocumentsInput] })
@@ -101,7 +133,6 @@ export class UsersResolver {
     return this.usersService.uploadUserDocument(user.id, input);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Mutation(() => User, { name: 'deleteUserDocumentByKey' })
   async deleteUserDocumentByKey(
     @Args('documentId') documentId: string,
@@ -110,7 +141,6 @@ export class UsersResolver {
     return this.usersService.deleteUserDocumentByKey(user.id, documentId);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Mutation(() => User, { name: 'uploadUserImages' })
   async uploadUserImages(
     @Args('keys', { type: () => [String] }) keys: string[],
@@ -119,7 +149,6 @@ export class UsersResolver {
     return this.usersService.uploadUserImages(user.id, keys);
   }
 
-  @UseGuards(JwtAuthGuard) // 👈 protège la route
   @Mutation(() => User, { name: 'deleteUserImageByKey' })
   async deleteUserImageByKey(
     @Args('key') key: string,

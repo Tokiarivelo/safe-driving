@@ -1,0 +1,31 @@
+fragment ConversationBasic on UserConversation {
+  id
+  title
+  type
+  createdAt
+  directHash
+  rideId
+  _count {
+    messages
+    participants
+  }
+}
+
+fragment ConversationWithParticipants on UserConversation {
+  ...ConversationBasic
+  participants {
+    conversationId
+    id
+    isMuted
+    joinedAt
+    role
+    user {
+      id
+      firstName
+      lastName
+      avatar {
+        ...ParticipantAvatar
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+query GetUserConversations($limit: Int, $cursor: String) {
+  userConversations(limit: $limit, cursor: $cursor) {
+    conversations {
+      ...ConversationWithParticipants
+    }
+    hasNextPage
+    cursor
+  }
+}
+
+query GetConversationById($id: String!) {
+  conversation(id: $id) {
+    ...ConversationWithParticipants
+  }
+}

@@ -17,12 +17,14 @@ export default function Acceuil() {
     <div className="flex w-full min-h-screen overflow-hidden relative">
       <header className="mb-8">
         <LanguageSwitcher />
+        <LogoutButton />
       </header>
 
-      <div className="inset-0 z-0">{t('title')}</div>
-      <UploadComponent />
-      <ChatContainer />
-      <LogoutButton />
+      <div className="flex flex-col items-center justify-center w-full p-4">
+        <div className="inset-0 z-0">{t('title')}</div>
+        <UploadComponent />
+        <ChatContainer showConversationSelector={true} />
+      </div>
     </div>
   );
 }

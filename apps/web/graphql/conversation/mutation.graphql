@@ -1,0 +1,44 @@
+mutation CreateConversation($input: CreateConversationInput!) {
+  createConversation(input: $input) {
+    ...ConversationWithParticipants
+  }
+}
+
+mutation UpdateConversation($conversationId: String!, $input: UpdateConversationInput!) {
+  updateConversation(conversationId: $conversationId, input: $input) {
+    ...ConversationWithParticipants
+  }
+}
+
+mutation DeleteConversation($conversationId: String!) {
+  deleteConversation(conversationId: $conversationId) {
+    id
+    title
+  }
+}
+
+mutation AddParticipant($input: AddParticipantInput!) {
+  addParticipant(input: $input) {
+    id
+    userId
+    user {
+      id
+      firstName
+      lastName
+    }
+    conversationId
+  }
+}
+
+mutation RemoveParticipant($input: RemoveParticipantInput!) {
+  removeParticipant(input: $input) {
+    id
+    userId
+    user {
+      id
+      firstName
+      lastName
+    }
+    conversationId
+  }
+}

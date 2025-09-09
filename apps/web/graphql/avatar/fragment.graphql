@@ -1,0 +1,7 @@
+fragment ParticipantAvatar on UserPartialAvatar {
+  id
+  url
+  type
+  meta
+  name
+}
