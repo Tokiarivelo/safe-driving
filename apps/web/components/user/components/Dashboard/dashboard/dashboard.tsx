@@ -8,17 +8,23 @@ import Link from 'next/link';
 import { useMeQuery } from '@/graphql/generated/graphql';
 import ReactFlagsSelect from 'react-flags-select';
 import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 function dashboard() {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState('');
   const [position, setPosition] = React.useState<string>('bottom');
-  const mika = ()=>{
-
-  }
+  const mika = () => {};
   const {
     data,
     error,
@@ -39,52 +45,130 @@ function dashboard() {
   return (
     <div className="w-full min-h-screen">
       <div className="w-full h-13 flex items-center">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="w-12 h-12 rounded-full flex justify-center items-center ml-5 mt-5 border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984] cursor-pointer">
-              <div
-                className="w-10 h-10 rounded-full flex justify-center items-center text-white"
-                style={{ backgroundColor: bgColor }}
-              >
-                {data?.me?.firstName?.[0]}
-                {data?.me?.lastName?.[0]}
+        <div className="sm:hidden">
+          <Sheet>
+            <SheetTrigger>
+              <div className="w-12 h-12 rounded-full flex justify-center items-center ml-5 mt-5 border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984] cursor-pointer">
+                <div
+                  className="w-10 h-10 rounded-full flex justify-center items-center text-white"
+                  style={{ backgroundColor: bgColor }}
+                >
+                  {data?.me?.firstName?.[0]}
+                  {data?.me?.lastName?.[0]}
+                </div>
               </div>
-            </div>
-          </DropdownMenuTrigger>
+            </SheetTrigger>
+            <SheetContent side="left">
+              <SheetHeader>
+                <SheetDescription>
+                  <div className="w-full h-15 flex">
+                    <div className="w-[23%] h-15 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full flex justify-center items-center border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984] cursor-pointer">
+                        <div
+                          className="w-10 h-10 rounded-full flex justify-center items-center text-white"
+                          style={{ backgroundColor: bgColor }}
+                        >
+                          {data?.me?.firstName?.[0]}
+                          {data?.me?.lastName?.[0]}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-[77%] h-14">
+                      <div className="w-full h-7 font-semibold flex items-center pl-1 text-lg">
+                        mickael
+                      </div>
+                      <div className="w-full h-8 text-[9px] pl-1">
+                        Passionne de la route depuis 10ans,votre <br />
+                        confort et votre securite sont ma priorite.
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full h-10 mt-10 flex">
+                    <div className="w-10 h-10 flex justify-center items-center">
+                      <Icon icon="uil:setting" width="24" height="24" />
+                    </div>
+                    <div className="w-40 h-10 flex items-center ">Account Settings</div>
+                  </div>
+                  <div className="w-full h-10 flex">
+                    <div className="w-10 h-10 flex justify-center items-center">
+                      <Icon icon="mingcute:settings-6-line" width="24" height="24" />
+                    </div>
+                    <div className="w-40 h-10 flex items-center">Preference</div>
+                  </div>
+                  <div className="w-full h-10 px-1.5">
+                    <ReactFlagsSelect
+                      selected={selected}
+                      onSelect={code => setSelected(code)}
+                      countries={['US', 'GB', 'FR', 'DE', 'IT', 'NG']}
+                    />
+                  </div>
+                  <div className="w-full h-10 flex">
+                    <div className="w-10 h-10 flex justify-center items-center">
+                      <Icon icon="circum:dark" width="24" height="24" />
+                    </div>
+                    <div className="w-40 h-10 flex items-center">Sombre</div>
+                  </div>
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        </div>
+        <div className="hidden sm:block">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="w-12 h-12 rounded-full flex justify-center items-center ml-5 mt-5 border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984] cursor-pointer">
+                <div
+                  className="w-10 h-10 rounded-full flex justify-center items-center text-white"
+                  style={{ backgroundColor: bgColor }}
+                >
+                  {data?.me?.firstName?.[0]}
+                  {data?.me?.lastName?.[0]}
+                </div>
+              </div>
+            </DropdownMenuTrigger>
 
-          <DropdownMenuContent
-            side="top"
-            align="end"
-            className="w-50 p-2 rounded-sm border border-white shadow-md shadow-gray-400 ml-18 mt-[-40px]"
-          >
-            <h1 className='ml-2'>{data?.me?.firstName}</h1>
-            <DropdownMenuSeparator />
-            <div className='w-full h-10 flex'>
-                <div className='w-10 h-10 flex justify-center items-center'><Icon icon="uil:setting" width="24" height="24" /></div>
-                <div className='w-40 h-10 flex items-center '>Account Settings</div>
-            </div>
-            <div className='w-full h-10 flex'>
-                <div className='w-10 h-10 flex justify-center items-center'><Icon icon="mingcute:settings-6-line" width="24" height="24" /></div>
-                <div className='w-40 h-10 flex items-center'>Preference</div>
-            </div>
-            <div className='w-full h-10 px-1.5'>
+            <DropdownMenuContent
+              side="top"
+              align="end"
+              className="w-50 p-2 rounded-sm border border-white shadow-md shadow-gray-400 ml-18 mt-[-40px]"
+            >
+              <h1 className="ml-2">{data?.me?.firstName}</h1>
+              <DropdownMenuSeparator />
+              <div className="w-full h-10 flex">
+                <div className="w-10 h-10 flex justify-center items-center">
+                  <Icon icon="uil:setting" width="24" height="24" />
+                </div>
+                <div className="w-40 h-10 flex items-center ">Account Settings</div>
+              </div>
+              <div className="w-full h-10 flex">
+                <div className="w-10 h-10 flex justify-center items-center">
+                  <Icon icon="mingcute:settings-6-line" width="24" height="24" />
+                </div>
+                <div className="w-40 h-10 flex items-center">Preference</div>
+              </div>
+              <div className="w-full h-10 px-1.5">
                 <ReactFlagsSelect
-    selected={selected}
-    onSelect={(code) => setSelected(code)}
-    countries={["US", "GB", "FR", "DE", "IT", "NG"]}
-  />
-            </div>
-            <div className='w-full h-10 flex'>
-                <div className='w-10 h-10 flex justify-center items-center'><Icon icon="circum:dark" width="24" height="24" /></div>
-                <div className='w-40 h-10 flex items-center'>Sombre</div>
-            </div>
-            <hr className='h-[1px] w-full bg-black'/>
-            <div className='w-full h-10 flex'>
-                <div className='w-10 h-10 flex justify-center items-center'><Icon icon="material-symbols:logout" width="24" height="24" /></div>
-                <div className='w-40 h-10 flex items-center'>Log Out</div>
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                  selected={selected}
+                  onSelect={code => setSelected(code)}
+                  countries={['US', 'GB', 'FR', 'DE', 'IT', 'NG']}
+                />
+              </div>
+              <div className="w-full h-10 flex">
+                <div className="w-10 h-10 flex justify-center items-center">
+                  <Icon icon="circum:dark" width="24" height="24" />
+                </div>
+                <div className="w-40 h-10 flex items-center">Sombre</div>
+              </div>
+              <hr className="h-[1px] w-full bg-black" />
+              <div className="w-full h-10 flex">
+                <div className="w-10 h-10 flex justify-center items-center">
+                  <Icon icon="material-symbols:logout" width="24" height="24" />
+                </div>
+                <div className="w-40 h-10 flex items-center">Log Out</div>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <motion.div
         initial={{ y: 100, opacity: 0 }}

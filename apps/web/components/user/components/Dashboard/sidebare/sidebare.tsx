@@ -60,7 +60,7 @@ function sidebare() {
         </div>
       </div>
       <div className="bg-white w-12 h-150 space-y-2 rounded-[23px] shadow-auth-card">
-        <div className="bg-white w-12 h-12 rounded-full border-1 border-pink-600 flex justify-center items-center">
+        <div className={`bg-white w-12 h-12 rounded-full border-1 flex justify-center items-center ${datahome ?'border-pink-600':'border-white'}`}>
           <Tooltip>
             <TooltipTrigger className="p-2 rounded-full" onClick={() => datahome && home()}>
               <Icon icon="radix-icons:home" width="30" height="30" className="text-[#FF7F41]" />
@@ -70,7 +70,7 @@ function sidebare() {
             </TooltipContent>
           </Tooltip>
         </div>
-        <div className="bg-white w-12 h-12 rounded-full border-1 border-pink-600 flex justify-center items-center">
+        <div className={`bg-white w-12 h-12 rounded-full border-1 flex justify-center items-center ${datarechercher ?'border-pink-600':'border-white'}`}>
           <Tooltip>
             <TooltipTrigger
               className="p-2 rounded-full"
@@ -88,7 +88,7 @@ function sidebare() {
             </TooltipContent>
           </Tooltip>
         </div>
-        <div className="bg-white w-12 h-12 rounded-full border-1 border-pink-600 flex justify-center items-center">
+        <div className={`bg-white w-12 h-12 rounded-full border-1 flex justify-center items-center ${datamessages ?'border-pink-600':'border-white'}`}>
           <Tooltip>
             <TooltipTrigger className="p-2 rounded-full" onClick={() => datamessages && messages()}>
               <Icon icon="streamline-ultimate-color:messages-logo" width="30" height="30" />
@@ -101,7 +101,7 @@ function sidebare() {
             9
           </div>
         </div>
-        <div className="bg-white w-12 h-12 rounded-full border-1 border-pink-600 flex justify-center items-center">
+        <div className={`bg-white w-12 h-12 rounded-full border-1 flex justify-center items-center ${datacourses ?'border-pink-600':'border-white'}`}>
           <Tooltip>
             <TooltipTrigger className="p-2 rounded-full" onClick={() => datacourses && courses()}>
               <Icon icon="streamline-kameleon-color:map" width="30" height="30" />
@@ -111,7 +111,7 @@ function sidebare() {
             </TooltipContent>
           </Tooltip>
         </div>
-        <div className="bg-white w-12 h-12 rounded-full border-1 border-pink-600 flex justify-center items-center">
+        <div className={`bg-white w-12 h-12 rounded-full border-1 flex justify-center items-center ${datacourses ?'border-pink-600':'border-white'}`}>
           <Tooltip>
             <TooltipTrigger className="p-2 rounded-full" onClick={() => datascanner && scanner()}>
               <Icon icon="iconoir:scan-qr-code" width="30" height="30" className="text-[#FF7F41]" />
@@ -121,7 +121,7 @@ function sidebare() {
             </TooltipContent>
           </Tooltip>
         </div>
-        <div className="bg-white w-12 h-12 rounded-full border-1 border-pink-600 flex justify-center items-center">
+        <div className={`bg-white w-12 h-12 rounded-full border-1 flex justify-center items-center ${datanotifications ?'border-pink-600':'border-white'}`}>
           <Tooltip>
             <TooltipTrigger
               className="p-2 rounded-full"
@@ -137,7 +137,7 @@ function sidebare() {
             3
           </div>
         </div>
-        <div className="bg-white w-12 h-12 rounded-full border-1 border-pink-600 flex justify-center items-center">
+        <div className={`bg-white w-12 h-12 rounded-full border-1 flex justify-center items-center ${datatrajet ?'border-pink-600':'border-white'}`}>
           <Tooltip>
             <TooltipTrigger className="p-2 rounded-full" onClick={() => datatrajet && trajet()}>
               <Icon icon="icon-park:gps" width="30" height="30" />
@@ -147,7 +147,7 @@ function sidebare() {
             </TooltipContent>
           </Tooltip>
         </div>
-        <div className="bg-white w-12 h-12 rounded-full border-1 border-pink-600 flex justify-center items-center">
+        <div className={`bg-white w-12 h-12 rounded-full border-1 flex justify-center items-center ${datahome ?'border-pink-600':'border-white'}`}>
           <Tooltip>
             <TooltipTrigger className="p-2 rounded-full" onClick={() => dataprofil && profil()}>
               <Icon icon="mdi:user" width="30" height="30" className="text-[#C82BA0]" />
@@ -157,7 +157,7 @@ function sidebare() {
             </TooltipContent>
           </Tooltip>
         </div>
-        <div className="bg-white w-12 h-12 rounded-full border-1 border-pink-600 flex justify-center items-center">
+        <div className={`bg-white w-12 h-12 rounded-full border-1 flex justify-center items-center ${dataoffre ?'border-pink-600':'border-white'}`}>
           <Tooltip>
             <TooltipTrigger className="p-2 rounded-full" onClick={() => dataoffre && offre()}>
               <Icon icon="lsicon:badge-promotion-filled" width="30" height="30" color="red" />
@@ -167,7 +167,7 @@ function sidebare() {
             </TooltipContent>
           </Tooltip>
         </div>
-        <div className="bg-white w-12 h-12 rounded-full border-1 border-pink-600 flex justify-center items-center">
+        <div className={`bg-white w-12 h-12 rounded-full border-1 flex justify-center items-center ${dataparametre ?'border-pink-600':'border-white'}`}>
           <Tooltip>
             <TooltipTrigger
               className="p-2 rounded-full"
@@ -180,7 +180,7 @@ function sidebare() {
             </TooltipContent>
           </Tooltip>
         </div>
-        <div className="bg-white w-12 h-12 rounded-full border-1 border-pink-600 flex justify-center items-center">
+        <div className={`bg-white w-12 h-12 rounded-full border-1 flex justify-center items-center ${datahome ?'border-pink-600':'border-white'}`}>
           <Tooltip>
             <TooltipTrigger
               className="p-2 rounded-full"
