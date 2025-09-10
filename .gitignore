@@ -115,3 +115,8 @@ localstack_data
 localstack_tmp
 volume
 my-localstack-data
+
+# OpenRouteService
+ors-data/elevation_cache
+ors-data/graphs
+ors-data/pbf

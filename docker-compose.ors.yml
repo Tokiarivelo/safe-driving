@@ -1,3 +1,6 @@
+# Le fichier .osm.pbf à télécharger depuis Geofabrik via ce lien: https://download.geofabrik.de/africa/madagascar.html
+# Le transférer dans le dossier ors-data/pbf (à créer si besoin).
+
 services:
   ors:
     image: openrouteservice/openrouteservice:latest
