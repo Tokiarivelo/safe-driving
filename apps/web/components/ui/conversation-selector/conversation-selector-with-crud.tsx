@@ -3,7 +3,11 @@ import { ConversationSelectorProps } from './conversation-selector.interface';
 import { ConversationItem } from './conversation-item';
 import { ConversationFormModal } from './conversation-form-modal';
 import { useConversations } from '@/lib/conversation/useConversations';
-import { CreateConversationInput, UpdateConversationInput } from '@/graphql/generated/graphql';
+import {
+  CreateConversationInput,
+  UpdateConversationInput,
+  UserConversation,
+} from '@/graphql/generated/graphql';
 
 export function ConversationSelectorWithCRUD({
   selectedConversationId,
@@ -14,7 +18,9 @@ export function ConversationSelectorWithCRUD({
   showSearch = true,
   showCreateButton = true,
   onConversationChange,
-}: ConversationSelectorProps & { onConversationChange?: (conversations: any[]) => void }) {
+}: ConversationSelectorProps & {
+  onConversationChange?: (conversations: UserConversation[]) => void;
+}) {
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingConversation, setEditingConversation] = useState<any>(null);
