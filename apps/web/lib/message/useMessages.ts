@@ -50,12 +50,14 @@ export const useMessages = (options: UseMessagesOptions) => {
   const [markDelivered] = useMarkMessageDeliveredMutation();
 
   // Subscription pour les nouveaux messages
-  useMessageReceivedSubscription({
+  const { data: subscriptionData } = useMessageReceivedSubscription({
     variables: {
       conversationId: options.conversationId,
       rideId: options.rideId,
     },
     onData: ({ data }) => {
+      console.log('data useMessageReceivedSubscription :>> ', data);
+
       if (data.data?.messageReceived) {
         const { message, type } = data.data.messageReceived;
 
@@ -78,6 +80,8 @@ export const useMessages = (options: UseMessagesOptions) => {
       }
     },
   });
+
+  console.log('subscriptionData useMessageReceivedSubscription :>> ', subscriptionData);
 
   const sendMessage = useCallback(
     async (content: string, parentMessageId?: string) => {

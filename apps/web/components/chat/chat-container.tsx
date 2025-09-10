@@ -1,34 +1,50 @@
 // Dans votre composant parent
 
 import { useMessages } from '@/lib/message/useMessages';
-import { useSocket } from '@/lib/socket.io/useSocket';
 import { Chat } from '../ui/chat/chat';
+import { ConversationSelectorWithCRUD } from '../ui/conversation-selector';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { useChatSocket } from '@/lib/socket.io/useChatSocket';
+import { UserConversation } from '@/graphql/generated/graphql';
 
 interface ChatContainerProps {
   conversationId?: string;
   rideId?: string;
+  onConversationChange?: (conversationId: string) => void;
 }
 
-const DEFAULT_CONVERSATION_ID = '68d3169b-9553-42ee-b998-4966bb001dae'; // Remplacez par une valeur par défaut appropriée
-
 export function ChatContainer({
-  conversationId = DEFAULT_CONVERSATION_ID,
+  conversationId,
   rideId,
+  onConversationChange,
 }: ChatContainerProps) {
   const session = getSession();
   const [currentUserId, setCurrentUserId] = useState<string>('');
+  const [selectedConversationId, setSelectedConversationId] = useState(conversationId);
+  const [selectedConversation, setSelectedConversation] = useState<UserConversation | undefined>();
+  const [userName, setUserName] = useState<string>('');
 
   useEffect(() => {
     session.then(data => {
+      console.log('data :>> ', data);
       if (data?.user?.id) {
         setCurrentUserId(data?.user?.id);
+        setUserName(`${data?.user?.firstName || ''} ${data?.user?.lastName || ''}`.trim());
       }
     });
   }, [session]);
 
-  const { isConnected } = useSocket({ conversationId, rideId });
+  const handleConversationSelect = (newConversationId: string, conversation?: UserConversation) => {
+    console.log('newConversationId, conversation :>> ', newConversationId, conversation);
+    setSelectedConversationId(newConversationId);
+    setSelectedConversation(conversation);
+    onConversationChange?.(newConversationId);
+  };
+
+  const { isConnected } = useChatSocket({ conversationId: selectedConversationId, rideId });
+
+  console.log('isConnected :>> ', isConnected);
 
   const {
     messages,
@@ -38,24 +54,47 @@ export function ChatContainer({
     sendMessage,
     loadMore,
     scrollToBottom,
-    editMessage, // Si vous l'implémentez
-    deleteMessage, // Si vous l'implémentez
-  } = useMessages({ conversationId, rideId });
+    editMessage,
+    deleteMessage,
+  } = useMessages({ conversationId: selectedConversationId, rideId });
+
+  console.log('selectedConversationId :>> ', selectedConversationId);
 
   return (
-    <Chat
-      conversationId={conversationId}
-      currentUserId={currentUserId}
-      messages={messages}
-      loading={loading}
-      error={error}
-      hasMore={hasMore}
-      connected={isConnected}
-      onSendMessage={sendMessage}
-      onLoadMore={loadMore}
-      onScrollToBottom={scrollToBottom}
-      onEditMessage={editMessage} // Optionnel
-      onDeleteMessage={deleteMessage} // Optionnel
-    />
+    <div className="flex h-full">
+      {/* User name */}
+      <div className="p-4 border-b bg-white">
+        <h3 className="text-lg font-semibold">Bonjour, {userName || 'Utilisateur'}</h3>
+      </div>
+      {/* Conversation Selector */}
+      <div className="w-80 border-r border-gray-200 bg-gray-50">
+        <ConversationSelectorWithCRUD
+          selectedConversationId={selectedConversationId}
+          onConversationSelect={handleConversationSelect}
+          className="h-full"
+          showSearch={true}
+          showCreateButton={true}
+          onConversationChange={conversations => {
+            console.log('Conversations updated:', conversations);
+          }}
+        />
+      </div>
+      <div className="flex-1">
+        <Chat
+          conversation={selectedConversation}
+          currentUserId={currentUserId}
+          messages={messages}
+          loading={loading}
+          error={error}
+          hasMore={hasMore}
+          connected={isConnected}
+          onSendMessage={sendMessage}
+          onLoadMore={loadMore}
+          onScrollToBottom={scrollToBottom}
+          onEditMessage={editMessage} // Optionnel
+          onDeleteMessage={deleteMessage} // Optionnel
+        />
+      </div>
+    </div>
   );
 }

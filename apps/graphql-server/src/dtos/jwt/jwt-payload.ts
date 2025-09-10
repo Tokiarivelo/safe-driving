@@ -1,3 +1,5 @@
+import { Role } from '../@generated';
+
 /**
  * Represents the payload of a JSON Web Token (JWT).
  * This class is used to define the structure of the data
@@ -10,7 +12,7 @@ export class JwtPayload {
   username?: string;
   firstName?: string;
   lastName?: string;
-  roles?: string[]; // ou Role[] si tu utilises un enum
+  Role?: Role[]; // ou Role[] si tu utilises un enum
   iat?: number; // Issued At (optionnel, généré automatiquement par JWT)
   exp?: number; // Expiration Time (optionnel)
 }

@@ -267,6 +267,8 @@ export class MessageService {
 
     const channelName = `conversation_${conversationId}`;
     const payload: MessagePayload = { message, type: 'NEW_MESSAGE' };
+
+    console.log('payload :>> ', payload, channelName);
     await this.redisService.getPubSub().publish(channelName, payload);
 
     await this.updateConversationStats(

@@ -4,6 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import { type Locale } from '@/lib/i18n';
 import { ClientI18nProvider } from './client-i18n-provider';
 import '../global.css';
+import { SocketProvider } from '@/lib/socket.io/SocketProvider';
 
 export const metadata = {
   title: {
@@ -34,12 +35,14 @@ export default async function RootLayout({
     <html lang={locale}>
       <body>
         <main>
-          <ClientI18nProvider locale={locale}>
-            <SessionProvider refetchOnWindowFocus={false}>
-              <ApolloWrapper>{children}</ApolloWrapper>
-            </SessionProvider>
-          </ClientI18nProvider>
-          <Toaster position="top-right" richColors closeButton />
+          <SocketProvider>
+            <ClientI18nProvider locale={locale}>
+              <SessionProvider refetchOnWindowFocus={false}>
+                <ApolloWrapper>{children}</ApolloWrapper>
+                <Toaster position="top-right" richColors closeButton />
+              </SessionProvider>
+            </ClientI18nProvider>
+          </SocketProvider>
         </main>
       </body>
     </html>

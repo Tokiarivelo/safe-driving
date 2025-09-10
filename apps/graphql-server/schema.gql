@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddParticipantInput {
+  conversationId: String!
+  userId: String!
+}
+
 type Attachment {
   createdAt: DateTime!
   file: File
@@ -411,6 +416,11 @@ input BoolFilter {
   not: NestedBoolFilter
 }
 
+input BoolNullableFilter {
+  equals: Boolean
+  not: NestedBoolNullableFilter
+}
+
 type CompleteUploadOutput {
   contentType: String
   etag: String
@@ -511,11 +521,11 @@ input ConversationNullableScalarRelationFilter {
 }
 
 type ConversationParticipant {
-  conversation: Conversation!
+  conversation: Conversation
   conversationId: String!
   id: String!
-  isMuted: Boolean!
-  joinedAt: DateTime!
+  isMuted: Boolean
+  joinedAt: DateTime
   role: String
   user: User!
   userId: String!
@@ -595,7 +605,7 @@ input ConversationParticipantCreateWithoutConversationInput {
 }
 
 input ConversationParticipantCreateWithoutUserInput {
-  conversation: ConversationCreateNestedOneWithoutParticipantsInput!
+  conversation: ConversationCreateNestedOneWithoutParticipantsInput
   id: String
   isMuted: Boolean
   joinedAt: DateTime
@@ -630,22 +640,28 @@ input ConversationParticipantOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
+type ConversationParticipantPayload {
+  action: String!
+  conversationId: String!
+  participant: ConversationParticipant!
+}
+
 input ConversationParticipantScalarWhereInput {
   AND: [ConversationParticipantScalarWhereInput!]
   NOT: [ConversationParticipantScalarWhereInput!]
   OR: [ConversationParticipantScalarWhereInput!]
   conversationId: StringFilter
   id: StringFilter
-  isMuted: BoolFilter
-  joinedAt: DateTimeFilter
+  isMuted: BoolNullableFilter
+  joinedAt: DateTimeNullableFilter
   role: StringNullableFilter
   userId: StringFilter
 }
 
 input ConversationParticipantUpdateManyMutationInput {
   id: StringFieldUpdateOperationsInput
-  isMuted: BoolFieldUpdateOperationsInput
-  joinedAt: DateTimeFieldUpdateOperationsInput
+  isMuted: NullableBoolFieldUpdateOperationsInput
+  joinedAt: NullableDateTimeFieldUpdateOperationsInput
   role: NullableStringFieldUpdateOperationsInput
 }
 
@@ -699,17 +715,17 @@ input ConversationParticipantUpdateWithWhereUniqueWithoutUserInput {
 
 input ConversationParticipantUpdateWithoutConversationInput {
   id: StringFieldUpdateOperationsInput
-  isMuted: BoolFieldUpdateOperationsInput
-  joinedAt: DateTimeFieldUpdateOperationsInput
+  isMuted: NullableBoolFieldUpdateOperationsInput
+  joinedAt: NullableDateTimeFieldUpdateOperationsInput
   role: NullableStringFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutConversationParticipantNestedInput
 }
 
 input ConversationParticipantUpdateWithoutUserInput {
-  conversation: ConversationUpdateOneRequiredWithoutParticipantsNestedInput
+  conversation: ConversationUpdateOneWithoutParticipantsNestedInput
   id: StringFieldUpdateOperationsInput
-  isMuted: BoolFieldUpdateOperationsInput
-  joinedAt: DateTimeFieldUpdateOperationsInput
+  isMuted: NullableBoolFieldUpdateOperationsInput
+  joinedAt: NullableDateTimeFieldUpdateOperationsInput
   role: NullableStringFieldUpdateOperationsInput
 }
 
@@ -729,11 +745,11 @@ input ConversationParticipantWhereInput {
   AND: [ConversationParticipantWhereInput!]
   NOT: [ConversationParticipantWhereInput!]
   OR: [ConversationParticipantWhereInput!]
-  conversation: ConversationScalarRelationFilter
+  conversation: ConversationNullableScalarRelationFilter
   conversationId: StringFilter
   id: StringFilter
-  isMuted: BoolFilter
-  joinedAt: DateTimeFilter
+  isMuted: BoolNullableFilter
+  joinedAt: DateTimeNullableFilter
   role: StringNullableFilter
   user: UserScalarRelationFilter
   userId: StringFilter
@@ -743,34 +759,26 @@ input ConversationParticipantWhereUniqueInput {
   AND: [ConversationParticipantWhereInput!]
   NOT: [ConversationParticipantWhereInput!]
   OR: [ConversationParticipantWhereInput!]
-  conversation: ConversationScalarRelationFilter
+  conversation: ConversationNullableScalarRelationFilter
   conversationId: StringFilter
   conversationId_userId: ConversationParticipantConversationIdUserIdCompoundUniqueInput
   id: String
-  isMuted: BoolFilter
-  joinedAt: DateTimeFilter
+  isMuted: BoolNullableFilter
+  joinedAt: DateTimeNullableFilter
   role: StringNullableFilter
   user: UserScalarRelationFilter
   userId: StringFilter
 }
 
-input ConversationScalarRelationFilter {
-  is: ConversationWhereInput
-  isNot: ConversationWhereInput
+type ConversationPayload {
+  action: String!
+  conversation: UserConversation!
 }
 
 enum ConversationType {
   DIRECT
   GROUP
   RIDE_LINKED
-}
-
-input ConversationUpdateOneRequiredWithoutParticipantsNestedInput {
-  connect: ConversationWhereUniqueInput
-  connectOrCreate: ConversationCreateOrConnectWithoutParticipantsInput
-  create: ConversationCreateWithoutParticipantsInput
-  update: ConversationUpdateToOneWithWhereWithoutParticipantsInput
-  upsert: ConversationUpsertWithoutParticipantsInput
 }
 
 input ConversationUpdateOneWithoutMessagesNestedInput {
@@ -781,6 +789,16 @@ input ConversationUpdateOneWithoutMessagesNestedInput {
   disconnect: ConversationWhereInput
   update: ConversationUpdateToOneWithWhereWithoutMessagesInput
   upsert: ConversationUpsertWithoutMessagesInput
+}
+
+input ConversationUpdateOneWithoutParticipantsNestedInput {
+  connect: ConversationWhereUniqueInput
+  connectOrCreate: ConversationCreateOrConnectWithoutParticipantsInput
+  create: ConversationCreateWithoutParticipantsInput
+  delete: ConversationWhereInput
+  disconnect: ConversationWhereInput
+  update: ConversationUpdateToOneWithWhereWithoutParticipantsInput
+  upsert: ConversationUpsertWithoutParticipantsInput
 }
 
 input ConversationUpdateToOneWithWhereWithoutMessagesInput {
@@ -851,6 +869,13 @@ input ConversationWhereUniqueInput {
   rideId: String
   title: StringNullableFilter
   type: EnumConversationTypeFilter
+}
+
+input CreateConversationInput {
+  participantIds: [String!]!
+  rideId: String
+  title: String
+  type: ConversationType!
 }
 
 input CreateDriverVehicleInput {
@@ -3689,13 +3714,16 @@ input MessageWhereUniqueInput {
 }
 
 type Mutation {
+  addParticipant(input: AddParticipantInput!): ConversationParticipant!
   completeUploadBulk(keys: [String!]!, type: FileType!): [CompleteUploadOutput!]!
   createBatchPresignedUrls(files: [FileMetaInput!]!, type: FileType!): [PresignedUrl!]!
+  createConversation(input: CreateConversationInput!): UserConversation!
   createDriverVehicle(input: CreateDriverVehicleInput!): DriverVehicle!
   createFile(input: FileCreateInput!): File!
   createUser(input: UserCreateInput!): User!
   createUserQr(type: String): String!
   createVehicleType(input: VehicleTypeCreateInput!): VehicleType!
+  deleteConversation(conversationId: String!): UserConversation!
   deleteCover: User!
   deleteFilesByUserId: [File!]!
   deleteMessage(messageId: String!): Message!
@@ -3713,8 +3741,10 @@ type Mutation {
   markMessageAsDelivered(messageId: String!): Message!
   register(data: RegisterInput!): User!
   removeAvatar: User!
+  removeParticipant(input: RemoveParticipantInput!): ConversationParticipant!
   resetPassword(newPassword: String!, sessionToken: String!): Boolean!
   sendMessage(input: SendMessageInput!): Message!
+  updateConversation(conversationId: String!, input: UpdateConversationInput!): UserConversation!
   updateDriverVehicle(input: CreateDriverVehicleInput!, vehicleId: String!): DriverVehicle!
   updateFile(id: String!, input: CustomFileUpdateInput!): File!
   updateUser(input: UserUpdateInput!): User!
@@ -3731,6 +3761,11 @@ type Mutation {
 input NestedBoolFilter {
   equals: Boolean
   not: NestedBoolFilter
+}
+
+input NestedBoolNullableFilter {
+  equals: Boolean
+  not: NestedBoolNullableFilter
 }
 
 input NestedDateTimeFilter {
@@ -3869,6 +3904,10 @@ input NestedStringNullableFilter {
   startsWith: String
 }
 
+input NullableBoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
 input NullableDateTimeFieldUpdateOperationsInput {
   set: DateTime
 }
@@ -3896,6 +3935,11 @@ input NullableStringFieldUpdateOperationsInput {
 enum NullsOrder {
   first
   last
+}
+
+type PartialConversationCount {
+  messages: Int
+  participants: Int
 }
 
 type Position {
@@ -4465,6 +4509,7 @@ input QrTokenWhereUniqueInput {
 
 type Query {
   VehicleType(id: String!): VehicleType!
+  conversation(id: String!): UserConversation!
   file(id: String!): File!
   files(cursor: FileWhereUniqueInput, distinct: [FileScalarFieldEnum!], orderBy: [FileOrderByWithRelationInput!], skip: Int, take: Int, where: FileWhereInput): [File!]!
   getUserQr(type: String): String!
@@ -4473,6 +4518,7 @@ type Query {
   messages(conversationId: String, cursor: String, limit: Float! = 20, rideId: String): [Message!]!
   user(id: String!): User!
   userByToken(token: String!): User!
+  userConversations(cursor: String, limit: Int! = 20): UserConversationsResponse!
   userPreference: UserPreference
   users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
   usersForAdmin(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
@@ -4876,6 +4922,11 @@ input RegisterInput {
   lastName: String
   password: String!
   username: String
+}
+
+input RemoveParticipantInput {
+  conversationId: String!
+  userId: String!
 }
 
 type Review {
@@ -5878,7 +5929,13 @@ input StringNullableFilter {
 }
 
 type Subscription {
+  conversationUpdated: ConversationPayload!
   messageReceived(conversationId: String, rideId: String): MessagePayload!
+  participantUpdated(conversationId: String!): ConversationParticipantPayload!
+}
+
+input UpdateConversationInput {
+  title: String
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -5930,6 +5987,35 @@ type User {
   userCoverId: String
   username: String
   vehicles: [DriverVehicle!]
+}
+
+type UserConversation {
+  _count: PartialConversationCount
+  createdAt: DateTime
+  directHash: String
+  id: String!
+  messages: [Message!]
+  participants: [UserConversationParticipant!]
+  rideId: String
+  title: String
+  type: ConversationType!
+}
+
+type UserConversationParticipant {
+  conversation: UserConversation
+  conversationId: String
+  id: String!
+  isMuted: Boolean
+  joinedAt: DateTime
+  role: String
+  user: UserUserConversationParticipant!
+  userId: String
+}
+
+type UserConversationsResponse {
+  conversations: [UserConversation!]!
+  cursor: String
+  hasNextPage: Boolean!
 }
 
 type UserCount {
@@ -7275,6 +7361,30 @@ input UserOrderByWithRelationInput {
   vehicles: DriverVehicleOrderByRelationAggregateInput
 }
 
+type UserPartialAvatar {
+  Attachment: [Attachment!]
+  User: [User!]
+  UserCover: [UserCover!]
+  UserDocument: [UserDocument!]
+  UserImage: [UserImage!]
+  VehicleDocument: [VehicleDocument!]
+  VehicleImage: [VehicleImage!]
+  _count: FileCount
+  contentType: String
+  driverVehicleId: String
+  etag: String
+  id: String
+  key: String
+  meta: JSON
+  name: String
+  originalName: String
+  size: Int
+  status: String
+  type: FileType
+  url: String
+  userId: String
+}
+
 type UserPreference {
   _count: UserPreferenceCount!
   activateEmailNotifications: Boolean!
@@ -8263,6 +8373,16 @@ input UserUpsertWithoutVehiclesInput {
   create: UserCreateWithoutVehiclesInput!
   update: UserUpdateWithoutVehiclesInput!
   where: UserWhereInput
+}
+
+type UserUserConversationParticipant {
+  avatar: UserPartialAvatar
+  email: String
+  firstName: String
+  id: String!
+  lastName: String
+  phone: String
+  username: String
 }
 
 input UserWhereInput {

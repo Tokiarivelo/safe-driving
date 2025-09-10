@@ -4,12 +4,11 @@ import { MessageService } from 'src/message/messages.service';
 import { ChatGateway } from '../chat/chat.gateway';
 import { AuthModule } from 'src/auth/auth.module';
 import { ChatCacheService } from 'src/chat/chat-cache.service';
+import { PrismaModule } from 'src/prisma-module/prisma.module';
 
 @Module({
   providers: [MessageService, MessageResolver, ChatGateway, ChatCacheService],
-  imports: [
-    forwardRef(() => AuthModule), // forwardRef si AuthModule importe MessageModule aussi
-  ],
+  imports: [PrismaModule, AuthModule],
   exports: [MessageService, ChatGateway],
 })
 export class MessageModule {}

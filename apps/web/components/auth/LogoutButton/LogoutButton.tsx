@@ -13,5 +13,12 @@ export default function LogoutButton() {
     signOut({ callbackUrl: '/login' });
   };
 
-  return <button onClick={handleLogout}>Se déconnecter</button>;
+  return (
+    <button
+      className="bg-red-500 text-white py-2 px-4 rounded cursor-pointer"
+      onClick={handleLogout}
+    >
+      Se déconnecter
+    </button>
+  );
 }

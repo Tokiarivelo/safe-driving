@@ -15,6 +15,7 @@ import { FileModule } from 'src/file/file.module';
 import { QrModule } from 'src/qr/qr.module';
 import { RedisModule } from 'src/redis/redis.module';
 import { MessageModule } from 'src/message/message.module';
+import { ConversationModule } from 'src/conversation/conversation.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { MessageModule } from 'src/message/message.module';
     QrModule,
     RedisModule,
     MessageModule,
+    ConversationModule,
   ],
 })
 export class AppModule {}
