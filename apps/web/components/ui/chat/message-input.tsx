@@ -3,7 +3,7 @@ import { emitTyping } from '@/lib/socket.io/socketClient';
 import { Paperclip, Send, Smile } from 'lucide-react';
 import { useState } from 'react';
 import TypingIndicator from './typing-indicator/typing-indicator';
-import { useSocket } from '@/lib/socket.io/useSocket';
+import { useChatSocket } from '@/lib/socket.io/useChatSocket';
 
 const MessageInput: React.FC<{
   conversationId?: string;
@@ -19,7 +19,7 @@ const MessageInput: React.FC<{
   const [message, setMessage] = useState('');
   const [sending, setSending] = useState(false);
 
-  const { typingUsers } = useSocket({ conversationId, rideId });
+  const { typingUsers } = useChatSocket({ conversationId, rideId });
 
   const handleSend = async () => {
     if (!message.trim() || sending) return;

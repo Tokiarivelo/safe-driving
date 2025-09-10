@@ -23,7 +23,7 @@ export default function Poc() {
       <div className="flex flex-col items-center justify-center w-full p-4">
         <div className="inset-0 z-0">{t('title')}</div>
         <UploadComponent />
-        <ChatContainer showConversationSelector={true} />
+        <ChatContainer />
       </div>
     </div>
   );

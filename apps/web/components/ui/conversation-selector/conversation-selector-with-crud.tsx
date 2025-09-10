@@ -164,7 +164,7 @@ export function ConversationSelectorWithCRUD({
                 <ConversationItem
                   conversation={conversation}
                   isSelected={selectedConversationId === conversation.id}
-                  onClick={() => onConversationSelect(conversation.id, conversation as any)}
+                  onClick={() => onConversationSelect(conversation.id, conversation)}
                 />
 
                 {/* Actions menu */}

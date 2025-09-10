@@ -2,7 +2,7 @@ import { Conversation, UserConversation } from '@/graphql/generated/graphql';
 
 export interface ConversationSelectorProps {
   selectedConversationId?: string;
-  onConversationSelect: (conversationId: string, conversation?: Conversation) => void;
+  onConversationSelect: (conversationId: string, conversation?: UserConversation) => void;
   className?: string;
   style?: React.CSSProperties;
   maxHeight?: string;

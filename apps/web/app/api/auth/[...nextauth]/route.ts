@@ -1,4 +1,4 @@
-import { LoginDocument } from '@/graphql/generated/graphql';
+import { LoginDocument, User } from '@/graphql/generated/graphql';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -28,7 +28,7 @@ const { handlers } = NextAuth({
           const { email, password } = credentials;
           // 2. Appelez la mutation
           const { data } = await client.mutate<{
-            login: { token: string; user: any };
+            login: { token: string; user: User };
           }>({
             mutation: LoginDocument,
             variables: {
@@ -44,7 +44,9 @@ const { handlers } = NextAuth({
             return {
               id: data.login.user.id,
               email: data.login.user.email,
-              name: `${data.login.user.firstName} ${data.login.user.lastName}`,
+              firstName: data.login.user.firstName,
+              lastName: data.login.user.lastName,
+              avatar: data.login.user.avatar?.url,
               token: data.login.token,
             };
           }
@@ -62,11 +64,14 @@ const { handlers } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.accessToken = (user as any).token;
+
+        const u = user as User;
         token.user = {
-          id: (user as any).id,
-          email: (user as any).email,
-          name: (user as any).name,
-          image: (user as any).image,
+          id: u.id,
+          email: u.email,
+          firstName: u.firstName,
+          lastName: u.lastName || '',
+          avatar: u.avatar?.url || '',
         };
       }
       return token;
@@ -74,7 +79,9 @@ const { handlers } = NextAuth({
 
     // Expose token + user dans useSession()
     async session({ session, token }) {
-      session.user = token.user as any;
+      if (token.user) {
+        session.user = { ...session.user, ...token.user };
+      }
       session.accessToken = token.accessToken as string; // même nom
       return session;
     },

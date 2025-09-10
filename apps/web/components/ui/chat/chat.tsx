@@ -1,11 +1,11 @@
 import MessageBubble from '@/components/ui/chat/message-bubble';
 import MessageInput from '@/components/ui/chat/message-input';
-import { Message, SendMessageMutation, Conversation } from '@/graphql/generated/graphql';
+import { Message, SendMessageMutation, UserConversation } from '@/graphql/generated/graphql';
 import { ArrowDown, MoreVertical } from 'lucide-react';
 import { useCallback, useRef, useState } from 'react';
 
 interface ChatProps {
-  conversation?: Conversation;
+  conversation?: UserConversation;
   rideId?: string;
   currentUserId: string;
   className?: string;
@@ -83,8 +83,6 @@ export const Chat: React.FC<ChatProps> = ({
     );
   }
 
-  console.log('conversation :>> ', conversation);
-
   return (
     <div className={`flex flex-col h-full bg-gray-50 ${className}`}>
       {/* Header */}
@@ -117,7 +115,8 @@ export const Chat: React.FC<ChatProps> = ({
                   className="relative w-8 h-8 rounded-full bg-gray-300 border-2 border-white overflow-hidden"
                   title={
                     `${participant.user?.firstName || ''} ${participant.user?.lastName || ''}`.trim() ||
-                    participant.user?.email
+                    participant.user?.email ||
+                    ''
                   }
                 >
                   {participant.user?.avatar?.url ? (

@@ -73,6 +73,7 @@ export class MessageResolver {
   @UseGuards(GraphqlWsJwtGuard)
   @Subscription(() => MessagePayload, {
     filter: (payload, variables) => {
+      console.log('Subscription payload, variables :>> ', payload, variables);
       // Filtrer les messages selon la conversation/ride
       const message = payload.messageReceived.message;
 
@@ -93,6 +94,11 @@ export class MessageResolver {
       ? `conversation_${conversationId}`
       : `ride_${rideId}`;
 
-    return this.redisService.getPubSub().asyncIterator(channelName);
+    console.log('messageReceived channelName :>> ', channelName);
+
+    const result = this.redisService.getPubSub().asyncIterator(channelName);
+    console.log('result :>> ', result);
+
+    return result;
   }
 }
