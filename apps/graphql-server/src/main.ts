@@ -44,8 +44,6 @@ async function bootstrap() {
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
   );
-
-  app.use(graphqlUploadExpress({ maxFileSize: 10_000_000 }));
 }
 
 bootstrap();

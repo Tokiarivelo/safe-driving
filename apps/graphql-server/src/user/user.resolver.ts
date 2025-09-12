@@ -50,7 +50,6 @@ export class UsersResolver {
 
   @ResolveField(() => String, { nullable: true })
   Role(@Parent() user: User, @CurrentUser() me: User) {
-    console.log('me :>> ', me);
     if (!me) return null;
     const isAdmin = me.Role.find((role) => role.name === 'ADMIN');
     if (isAdmin || me.id === user.id) return user.Role;

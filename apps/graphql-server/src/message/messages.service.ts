@@ -268,8 +268,9 @@ export class MessageService {
     const channelName = `conversation_${conversationId}`;
     const payload: MessagePayload = { message, type: 'NEW_MESSAGE' };
 
-    console.log('payload :>> ', payload, channelName);
-    await this.redisService.getPubSub().publish(channelName, payload);
+    await this.redisService
+      .getPubSub()
+      .publish(channelName, { messageReceived: payload });
 
     await this.updateConversationStats(
       conversationId,
@@ -294,7 +295,9 @@ export class MessageService {
 
     if (cached) {
       const jsonCached = JSON.parse(cached);
+
       return normalizeDates<Message[]>(jsonCached);
+      // return jsonCached;
     }
 
     const messages = await this.prisma.message.findMany({

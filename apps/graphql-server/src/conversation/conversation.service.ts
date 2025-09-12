@@ -116,8 +116,6 @@ export class ConversationService {
     userId: string,
     input: CreateConversationInput,
   ): Promise<UserConversation> {
-    console.log('input :>> ', input);
-
     // For DIRECT conversations, check if conversation already exists
     if (
       input.type === ConversationType.DIRECT &&
@@ -142,21 +140,6 @@ export class ConversationService {
       const userIds = [userId, input.participantIds[0]].sort();
       directHash = userIds.join('-');
     }
-
-    console.log('data :>> ', {
-      title: input.title,
-      type: input.type,
-      rideId: input.rideId,
-      directHash,
-      participants: {
-        create: [
-          { userId }, // Creator
-          ...input.participantIds.map((participantId) => ({
-            userId: participantId,
-          })),
-        ],
-      },
-    });
 
     const conversation = await this.prisma.conversation.create({
       data: {
