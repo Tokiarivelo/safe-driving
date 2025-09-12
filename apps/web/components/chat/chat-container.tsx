@@ -27,7 +27,6 @@ export function ChatContainer({
 
   useEffect(() => {
     session.then(data => {
-      console.log('data :>> ', data);
       if (data?.user?.id) {
         setCurrentUserId(data?.user?.id);
         setUserName(`${data?.user?.firstName || ''} ${data?.user?.lastName || ''}`.trim());
@@ -36,15 +35,12 @@ export function ChatContainer({
   }, [session]);
 
   const handleConversationSelect = (newConversationId: string, conversation?: UserConversation) => {
-    console.log('newConversationId, conversation :>> ', newConversationId, conversation);
     setSelectedConversationId(newConversationId);
     setSelectedConversation(conversation);
     onConversationChange?.(newConversationId);
   };
 
   const { isConnected } = useChatSocket({ conversationId: selectedConversationId, rideId });
-
-  console.log('isConnected :>> ', isConnected);
 
   const {
     messages,
@@ -57,8 +53,6 @@ export function ChatContainer({
     editMessage,
     deleteMessage,
   } = useMessages({ conversationId: selectedConversationId, rideId });
-
-  console.log('selectedConversationId :>> ', selectedConversationId);
 
   return (
     <div className="flex h-full">

@@ -16,6 +16,7 @@ import { QrModule } from 'src/qr/qr.module';
 import { RedisModule } from 'src/redis/redis.module';
 import { MessageModule } from 'src/message/message.module';
 import { ConversationModule } from 'src/conversation/conversation.module';
+import { DateTimeScalar } from 'src/common/scalars/date-time.scalar';
 
 @Module({
   imports: [
@@ -54,5 +55,6 @@ import { ConversationModule } from 'src/conversation/conversation.module';
     MessageModule,
     ConversationModule,
   ],
+  providers: [DateTimeScalar],
 })
 export class AppModule {}
