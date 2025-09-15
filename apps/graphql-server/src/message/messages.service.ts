@@ -255,22 +255,29 @@ export class MessageService {
       },
     });
 
-    // Mettre en cache
+    // Mettre en cache le message individuel
     await this.chatCache.cacheMessage({
       id: message.id,
-      content: message.content,
+      content: JSON.stringify(message),
       senderId: message.senderId,
       timestamp: message.createdAt.toISOString(),
       conversationId: message.conversationId,
       rideId: message.rideId,
     });
 
+    // Invalider et mettre à jour le cache des listes de messages
+    const roomId = conversationId || input.rideId;
+    await this.invalidateMessagesCache(roomId);
+
+    // Optionnel: Pré-remplir le cache avec les messages récents incluant le nouveau
+    await this.updateMessagesListCache(conversationId, input.rideId, message);
+
     const channelName = `conversation_${conversationId}`;
     const payload: MessagePayload = { message, type: 'NEW_MESSAGE' };
 
     await this.redisService
       .getPubSub()
-      .publish(channelName, { messageReceived: payload });
+      .publish(channelName, { messageEvent: payload });
 
     await this.updateConversationStats(
       conversationId,
@@ -287,19 +294,24 @@ export class MessageService {
     cursor?: string,
     limit = 20,
   ) {
+    if (!conversationId && !rideId) {
+      throw new Error('No conversationId or rideId provided');
+    }
+
+    const roomId = conversationId || rideId;
     const where = conversationId ? { conversationId } : { rideId };
 
     // Essayer d'abord le cache Redis pour les messages récents
-    const cacheKey = `messages:${conversationId || rideId}:${cursor || 'latest'}:${limit}`;
+    const cacheKey = `messages:${roomId}:${cursor || 'latest'}:${limit}`;
     const cached = await this.redisService.get(cacheKey);
 
     if (cached) {
       const jsonCached = JSON.parse(cached);
-
-      return normalizeDates<Message[]>(jsonCached);
-      // return jsonCached;
+      console.log('Messages trouvés dans le cache :>> ', jsonCached.length);
+      return jsonCached;
     }
 
+    // Si pas dans le cache, récupérer depuis la DB
     const messages = await this.prisma.message.findMany({
       where: {
         ...where,
@@ -319,7 +331,7 @@ export class MessageService {
         },
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'desc', // Changé en desc pour avoir les plus récents en premier
       },
       take: limit,
     });
@@ -347,9 +359,9 @@ export class MessageService {
       },
     });
 
-    // Mettre à jour le cache
-    const messageKey = `message:${messageId}`;
-    await this.redisService.set(messageKey, JSON.stringify(message), 3600);
+    await this.chatCache.updateMessage(messageId, {
+      content: JSON.stringify(message),
+    });
 
     // Notifier la mise à jour
     const channelName = message.conversationId
@@ -398,14 +410,11 @@ export class MessageService {
       },
     });
 
-    // Invalider le cache
-    const cachePattern = `messages:${message.conversationId || message.rideId}:*`;
-    const keysToDelete = await this.redisService.scanKeys(cachePattern);
-    if (keysToDelete.length > 0) {
-      await this.redisService.del(...keysToDelete);
-    }
+    // Invalider le cache des listes de messages
+    const roomId = message.conversationId || message.rideId;
+    await this.invalidateMessagesCache(roomId);
 
-    // Mettre à jour le cache du message
+    // Mettre à jour le cache du message individuel
     await this.chatCache.cacheMessage({
       id: updatedMessage.id,
       content: updatedMessage.content,
@@ -425,7 +434,9 @@ export class MessageService {
       type: 'MESSAGE_UPDATED',
     };
 
-    await this.redisService.getPubSub().publish(channelName, payload);
+    await this.redisService.getPubSub().publish(channelName, {
+      messageEvent: payload,
+    });
 
     return updatedMessage;
   }
@@ -448,7 +459,7 @@ export class MessageService {
         data: {
           deleted: true,
           deletedAt: new Date(),
-          content: null, // Effacer le contenu
+          content: null,
         },
         include: {
           sender: {
@@ -466,17 +477,13 @@ export class MessageService {
       });
     }
 
-    // Supprimer du cache
+    // Supprimer du cache individuel
     const type = message.conversationId ? 'conversation' : 'ride';
     const roomId = message.conversationId || message.rideId;
     await this.chatCache.deleteMessageFromCache(messageId, roomId, type);
 
-    // Invalider les caches de messages
-    const cachePattern = `messages:${roomId}:*`;
-    const keysToDelete = await this.redisService.keys(cachePattern);
-    if (keysToDelete.length > 0) {
-      await this.redisService.del(...keysToDelete);
-    }
+    // Invalider les caches de listes de messages
+    await this.invalidateMessagesCache(roomId);
 
     // Publier la suppression
     const channelName = message.conversationId
@@ -488,7 +495,9 @@ export class MessageService {
       type: 'MESSAGE_DELETED',
     };
 
-    await this.redisService.getPubSub().publish(channelName, payload);
+    await this.redisService.getPubSub().publish(channelName, {
+      messageEvent: payload,
+    });
 
     return deletedMessage;
   }
@@ -555,5 +564,51 @@ export class MessageService {
 
     await this.chatCache.incrementMessageCount(roomId, type);
     await this.chatCache.setLastActivity(roomId, type);
+  }
+
+  // Nouvelle méthode pour invalider le cache des messages
+  private async invalidateMessagesCache(roomId: string) {
+    const cachePattern = `messages:${roomId}:*`;
+    const keysToDelete = await this.redisService.scanKeys(cachePattern);
+    if (keysToDelete.length > 0) {
+      await this.redisService.del(...keysToDelete);
+      console.log(
+        `Cache invalidé pour ${keysToDelete.length} clés de ${roomId}`,
+      );
+    }
+  }
+
+  // Nouvelle méthode pour pré-remplir le cache avec les messages récents
+  private async updateMessagesListCache(
+    conversationId?: string,
+    rideId?: string,
+    newMessage?: any,
+  ) {
+    const roomId = conversationId || rideId;
+    const where = conversationId ? { conversationId } : { rideId };
+
+    // Récupérer les 20 messages les plus récents pour le cache "latest"
+    const recentMessages = await this.prisma.message.findMany({
+      where: {
+        ...where,
+        deleted: false,
+      },
+      include: {
+        sender: true,
+        replies: {
+          include: {
+            sender: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 20,
+    });
+
+    // Mettre en cache avec la clé "latest"
+    const cacheKey = `messages:${roomId}:latest:20`;
+    await this.redisService.set(cacheKey, JSON.stringify(recentMessages), 300);
   }
 }

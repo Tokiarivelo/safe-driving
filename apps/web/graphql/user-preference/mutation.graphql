@@ -3,14 +3,8 @@ mutation upsertUserPreference($input: UserPreferenceUpsertInput!) {
     ...UserPreferenceFields
   }
 }
-mutation createVehicleType ( $input: VehicleTypeCreateInput! ) {
+mutation createVehicleType($input: VehicleTypeCreateInput!) {
   createVehicleType(input: $input) {
     ...vehicleTypeFragment
-  }
-}
-mutation createUserQrs($type: String!) {
-  createUserQr(type: $type) {
-    id
-    url
   }
 }

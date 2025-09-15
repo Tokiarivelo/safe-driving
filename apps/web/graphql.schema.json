@@ -12239,7 +12239,7 @@
       {
         "kind": "SCALAR",
         "name": "DateTime",
-        "description": "A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.",
+        "description": "DateTime scalar - accepts Date, ISO string or timestamp; throws on invalid date",
         "isOneOf": null,
         "fields": null,
         "inputFields": null,
@@ -64726,7 +64726,7 @@
             "deprecationReason": null
           },
           {
-            "name": "messageReceived",
+            "name": "messageEvent",
             "description": null,
             "args": [
               {

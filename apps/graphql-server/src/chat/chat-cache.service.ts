@@ -152,7 +152,14 @@ export class ChatCacheService {
       : `ride:${message.rideId}:messages`;
 
     const result = await this.redis.pipeline([
-      ['JSON.SET', messageKey, '.', JSON.stringify(message)], // JSON.SET avec chemin '.'
+      [
+        'JSON.SET',
+        messageKey,
+        '.',
+        typeof message.content === 'string'
+          ? message.content
+          : JSON.stringify(message.content),
+      ], // JSON.SET avec chemin '.'
       ['expire', messageKey, '3600'], // TTL séparé avec EXPIRE
       ['zadd', roomKey, Date.now(), message.id], // Sorted set avec timestamp
     ]);
@@ -176,6 +183,60 @@ export class ChatCacheService {
     const messages = await this.redis.pipeline(pipeline);
 
     return messages.filter((msg) => msg !== null) as MessageCache[];
+  }
+
+  async updateMessage(
+    messageId: string,
+    updates: Partial<MessageCache>,
+    roomId?: string,
+    type?: 'conversation' | 'ride',
+  ): Promise<void> {
+    const messageKey = `message:${messageId}`;
+
+    // Récupérer le message existant
+    const existingMessage = await this.redis.pipeline([
+      ['JSON.GET', messageKey],
+    ]);
+
+    if (!existingMessage[0]) {
+      throw new Error(`Message ${messageId} not found in cache`);
+    }
+
+    const currentMessage = JSON.parse(
+      existingMessage[0] as string,
+    ) as MessageCache;
+    const updatedMessage = { ...currentMessage, ...updates };
+
+    const pipelineCommands: [string, ...any[]][] = [
+      ['JSON.SET', messageKey, '.', JSON.stringify(updatedMessage)], // Mise à jour du message
+      ['expire', messageKey, '3600'], // Renouveler le TTL
+    ];
+
+    // Si le message change de room, mettre à jour les sorted sets
+    if (
+      roomId &&
+      type &&
+      (updates.conversationId !== undefined || updates.rideId !== undefined)
+    ) {
+      const oldRoomKey = currentMessage.conversationId
+        ? `conversation:${currentMessage.conversationId}:messages`
+        : `ride:${currentMessage.rideId}:messages`;
+
+      const newRoomKey = `${type}:${roomId}:messages`;
+
+      if (oldRoomKey !== newRoomKey) {
+        pipelineCommands.push(
+          ['zrem', oldRoomKey, messageId], // Supprimer de l'ancienne room
+          ['zadd', newRoomKey, Date.now(), messageId], // Ajouter à la nouvelle room
+        );
+      }
+    } else if (roomId && type) {
+      // Mettre à jour le timestamp dans le sorted set existant
+      const roomKey = `${type}:${roomId}:messages`;
+      pipelineCommands.push(['zadd', roomKey, Date.now(), messageId]);
+    }
+
+    await this.redis.pipeline(pipelineCommands);
   }
 
   async deleteMessageFromCache(

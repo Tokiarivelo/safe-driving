@@ -3,3 +3,7 @@ mutation createUser($input: UserCreateInput!) {
     ...userFragment
   }
 }
+
+mutation createUserQrs($type: String!) {
+  createUserQr(type: $type)
+}

@@ -84,7 +84,7 @@ export class MessageResolver {
         });
 
         // Filtrer les messages selon la conversation/ride
-        const message = payload?.messageReceived?.message;
+        const message = payload?.messageEvent?.message;
 
         if (!message) {
           logger.warn('No message found in payload', { payload });
@@ -132,7 +132,7 @@ export class MessageResolver {
       }
     },
   })
-  messageReceived(
+  messageEvent(
     @Args('conversationId', { nullable: true }) conversationId?: string,
     @Args('rideId', { nullable: true }) rideId?: string,
   ) {

@@ -11,6 +11,9 @@ import { RedisConfigService } from './config/redis-config.service';
 @Injectable()
 export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(RedisExtendedService.name);
+  private readonly dataFlowLogger = new Logger(
+    `${RedisExtendedService.name}:DataFlow`,
+  );
   private pubSub: RedisPubSub;
   private publisher: Redis;
   private subscriber: Redis;
@@ -29,6 +32,7 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
     this.cache = new Redis(config);
 
     this.setupEventListeners();
+    this.setupDataFlowMonitoring();
 
     this.pubSub = new RedisPubSub({
       publisher: this.publisher,
@@ -36,6 +40,64 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
     });
 
     this.logger.log('Redis connections initialized');
+  }
+
+  private setupDataFlowMonitoring() {
+    // Monitoring des commandes sur l'instance cache
+    this.cache.on('connect', () => {
+      this.cache
+        .monitor()
+        .then((monitor) => {
+          monitor.on('monitor', (time, args, source, database) => {
+            const command = args[0];
+            const key = args[1];
+            const value = args[2];
+
+            // Log flux entrant (SET, HSET, etc.)
+            if (
+              [
+                'set',
+                'setex',
+                'hset',
+                'sadd',
+                'zadd',
+                'lpush',
+                'rpush',
+              ].includes(command?.toLowerCase())
+            ) {
+              this.dataFlowLogger.log(
+                `INBOUND: ${command} ${key} ${this.truncateValue(value)} [${source}]`,
+              );
+            }
+
+            // Log flux sortant (GET, HGET, etc.)
+            if (
+              [
+                'get',
+                'hget',
+                'hgetall',
+                'smembers',
+                'lrange',
+                'zrange',
+              ].includes(command?.toLowerCase())
+            ) {
+              this.dataFlowLogger.log(
+                `OUTBOUND: ${command} ${key} [${source}]`,
+              );
+            }
+          });
+        })
+        .catch(() => {
+          // Monitor peut ne pas être disponible en mode cluster
+          this.dataFlowLogger.warn('Redis monitor not available');
+        });
+    });
+  }
+
+  private truncateValue(value: any, maxLength: number = 100): string {
+    if (!value) return '';
+    const str = String(value);
+    return str.length > maxLength ? str.substring(0, maxLength) + '...' : str;
   }
 
   private setupEventListeners() {
@@ -85,6 +147,9 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
   // === OPERATIONS DE BASE ===
 
   async set(key: string, value: string, ttl?: number): Promise<void> {
+    this.dataFlowLogger.debug(
+      `INBOUND SET: key=${key}, value_length=${value?.length || 0}, ttl=${ttl}`,
+    );
     if (ttl) {
       await this.cache.setex(key, ttl, value);
     } else {
@@ -93,7 +158,12 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
   }
 
   async get(key: string): Promise<string | null> {
-    return await this.cache.get(key);
+    this.dataFlowLogger.debug(`OUTBOUND GET: key=${key}`);
+    const result = await this.cache.get(key);
+    this.dataFlowLogger.debug(
+      `OUTBOUND GET RESULT: key=${key}, found=${!!result}, length=${result?.length || 0}`,
+    );
+    return result;
   }
 
   async del(...keys: string[]): Promise<number> {
@@ -297,6 +367,11 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
   async pipeline(commands: Array<[string, ...any[]]>): Promise<any[]> {
     if (!commands || commands.length === 0) return [];
 
+    this.dataFlowLogger.log(`PIPELINE START: ${commands.length} commands`);
+    commands.forEach(([cmd, key], index) => {
+      this.dataFlowLogger.debug(`PIPELINE[${index}]: ${cmd} ${key}`);
+    });
+
     // Normalisation : s'assurer qu'on renvoie *toujours* un tableau d'items-array
     const normalized: Array<[string, ...any[]]> = commands.flatMap(
       ([cmd, ...args]) => {
@@ -345,32 +420,35 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
       ([cmd]) => typeof cmd === 'string' && cmd.toLowerCase().includes('json'),
     );
 
+    let results: any[];
+
     // Si on a pas de JSON.SET, on peut utiliser le pipeline array optimisé de ioredis
     if (!hasJsonModuleCmd) {
       const pipeline = this.cache.pipeline(normalized); // utilise la forme tableau
-      const results = await pipeline.exec();
-      return results.map(([err, result]) => {
+      const pipelineResults = await pipeline.exec();
+      results = pipelineResults.map(([err, result]) => {
+        if (err) throw err;
+        return result;
+      });
+    } else {
+      // Sinon (il y a au moins JSON.SET), utilisons pipeline + call() — robuste pour les modules
+      const p = this.cache.pipeline();
+      for (const [cmd, ...args] of normalized) {
+        console.log('cmd, ...args :>> ', cmd, ...args);
+        p.call(cmd, ...args);
+      }
+
+      const pipelineResults = await p.exec();
+      results = pipelineResults.map(([err, result]) => {
         if (err) throw err;
         return result;
       });
     }
 
-    // Sinon (il y a au moins JSON.SET), utilisons pipeline + call() — robuste pour les modules
-    const p = this.cache.pipeline();
-    for (const [cmd, ...args] of normalized) {
-      // Utiliser call avec la casse CLI (JSON.SET) évite les erreurs d'apply sur méthodes non exposées
-      // On envoie exactement la commande telle quelle (mais on garde l'argument cmd tel quel)
-      // pour s'assurer de la compatibilité avec les modules.
-
-      p.call(cmd, ...args);
-    }
-
-    const results = await p.exec();
-
-    return results.map(([err, result]) => {
-      if (err) throw err;
-      return result;
-    });
+    this.dataFlowLogger.log(
+      `PIPELINE END: ${commands.length} commands executed, ${results.length} results`,
+    );
+    return results;
   }
 
   // === PATTERNS ET RECHERCHE ===
@@ -412,27 +490,51 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
 
   // Cache avec JSON
   async setJSON(key: string, value: any, ttl?: number): Promise<void> {
-    await this.set(key, JSON.stringify(value), ttl);
+    const jsonString = JSON.stringify(value);
+    this.dataFlowLogger.debug(
+      `INBOUND SET_JSON: key=${key}, size=${jsonString.length} bytes, ttl=${ttl}`,
+    );
+    await this.set(key, jsonString, ttl);
   }
 
   async getJSON<T>(key: string): Promise<T | null> {
+    this.dataFlowLogger.debug(`OUTBOUND GET_JSON: key=${key}`);
     const value = await this.get(key);
-    return value ? JSON.parse(value) : null;
+    const result = value ? JSON.parse(value) : null;
+    this.dataFlowLogger.debug(
+      `OUTBOUND GET_JSON RESULT: key=${key}, found=${!!result}`,
+    );
+    return result;
   }
 
   // Cache avec compression (pour de gros objets)
   async setCompressed(key: string, value: string, ttl?: number): Promise<void> {
+    const originalSize = value.length;
     const zlib = await import('zlib');
     const compressed = zlib.gzipSync(value);
+    const compressedSize = compressed.length;
+    this.dataFlowLogger.log(
+      `INBOUND SET_COMPRESSED: key=${key}, original=${originalSize} bytes, compressed=${compressedSize} bytes, ratio=${((1 - compressedSize / originalSize) * 100).toFixed(2)}%`,
+    );
     await this.cache.setex(key, ttl || 3600, compressed);
   }
 
   async getCompressed(key: string): Promise<string | null> {
+    this.dataFlowLogger.debug(`OUTBOUND GET_COMPRESSED: key=${key}`);
     const compressed = await this.cache.getBuffer(key);
-    if (!compressed) return null;
+    if (!compressed) {
+      this.dataFlowLogger.debug(
+        `OUTBOUND GET_COMPRESSED RESULT: key=${key}, found=false`,
+      );
+      return null;
+    }
 
     const zlib = await import('zlib');
-    return zlib.gunzipSync(compressed).toString();
+    const result = zlib.gunzipSync(compressed).toString();
+    this.dataFlowLogger.debug(
+      `OUTBOUND GET_COMPRESSED RESULT: key=${key}, found=true, decompressed=${result.length} bytes`,
+    );
+    return result;
   }
 
   // Rate limiting
