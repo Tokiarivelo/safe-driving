@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/features/home/ui/widgets/sideBar/sidebar_profile.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sidebar_profile.dart';
 
 class SidebarHeader extends StatelessWidget {
   final VoidCallback onProfileTap;

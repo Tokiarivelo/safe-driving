@@ -7,7 +7,6 @@ import '../widgets/homeWidgets/sidebar_button.dart';
 import '../widgets/homeWidgets/animated_sidebar.dart';
 
 class HomeScreen extends StatefulWidget {
-  // final VoidCallback onExPressed;
   const HomeScreen({super.key});
 
   @override
@@ -58,9 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SafeArea(
           child: Stack(
             children: [
-              // Contenu principal
               const Expanded(child: HomeContent()),
-              // Sidebar animmation
               AnimatedSidebar(
                 isVisible: _isSidebarVisible,
                 onProfileTap: _handleProfileTap,
@@ -68,7 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 onClose: _closeSidebar,
                 onLogout: _handleLogout,
               ),
-              // Bouton sidebar
               SidebarButton(onTap: _openSidebar, isVisible: !_isSidebarVisible),
             ],
           ),

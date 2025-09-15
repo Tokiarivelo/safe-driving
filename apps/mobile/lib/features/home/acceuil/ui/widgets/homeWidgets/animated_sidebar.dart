@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safe_driving/features/home/ui/widgets/sideBar/sideBar.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sideBar.dart';
 
 class AnimatedSidebar extends StatelessWidget {
   final bool isVisible;
