@@ -126,4 +126,99 @@ export class RedisService implements OnModuleDestroy {
       console.error('Error during Redis shutdown', e);
     }
   }
+
+  /**
+   * SCAN all keys by pattern safely (avoids blocking like KEYS).
+   * count: hint for batch size per cursor iteration.
+   */
+  async scanKeys(pattern: string, count = 500): Promise<string[]> {
+    let cursor = '0';
+    const keys: string[] = [];
+
+    do {
+      const [nextCursor, batch] = await this.publisher.scan(cursor, 'MATCH', pattern, 'COUNT', count);
+      cursor = nextCursor;
+      if (batch && batch.length) keys.push(...batch);
+    } while (cursor !== '0');
+
+    return keys;
+  }
+
+  /**
+   * Fetch hash values for many keys using a pipeline.
+   * Returns a map of key -> hash (empty object if not a hash or missing).
+   */
+  async mHGetAll(keys: string[]): Promise<Record<string, Record<string, string>>> {
+    const result: Record<string, Record<string, string>> = {};
+    if (!keys.length) return result;
+
+    const pipeline = this.publisher.pipeline();
+    keys.forEach((k) => pipeline.hgetall(k));
+    const replies = await pipeline.exec();
+
+    keys.forEach((k, i) => {
+      const [, value] = replies[i] ?? [];
+      result[k] = (value && typeof value === 'object') ? value as Record<string, string> : {};
+    });
+
+    return result;
+  }
+
+  /**
+   * Fetch string values for many keys using MGET, returning a map key -> value|null.
+   */
+  async mGet(keys: string[]): Promise<Record<string, string | null>> {
+    const map: Record<string, string | null> = {};
+    if (!keys.length) return map;
+
+    const values = await this.publisher.mget(...keys);
+    keys.forEach((k, i) => { map[k] = values[i]; });
+    return map;
+  }
+
+  /**
+   * Helper to get driver entities by pattern.
+   * - Tries HGETALL per key (hash storage)
+   * - If empty, falls back to GET and JSON.parse if possible
+   */
+  async getEntitiesByPattern(pattern: string): Promise<Array<{ key: string; value: unknown }>> {
+    const keys = await this.scanKeys(pattern);
+    if (!keys.length) return [];
+
+    const hashes = await this.mHGetAll(keys);
+    const notHashes = keys.filter((k) => {
+      const h = hashes[k];
+      return !h || Object.keys(h).length === 0;
+    });
+
+    const stringValues = await this.mGet(notHashes);
+
+    return keys.map((k) => {
+      const hash = hashes[k];
+      if (hash && Object.keys(hash).length > 0) {
+        return { key: k, value: hash };
+      }
+      const str = stringValues[k];
+      if (str != null) {
+        try {
+          return { key: k, value: JSON.parse(str) };
+        } catch {
+          return { key: k, value: str };
+        }
+      }
+      return { key: k, value: null };
+    });
+  }
+
+  async subscribe(channel: string, handler: (message: string) => void) {
+    this.subscriber.subscribe(channel);
+    this.subscriber.on('message', (ch, message) => {
+      if (ch === channel) handler(message);
+    });
+  }
+
+  async publish(channel: string, data: any) {
+    return this.publisher.publish(channel, JSON.stringify(data));
+  }
+
 }
