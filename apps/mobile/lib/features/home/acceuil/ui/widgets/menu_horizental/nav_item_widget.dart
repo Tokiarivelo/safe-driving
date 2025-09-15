@@ -24,14 +24,15 @@ class NavItemWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeOutBack,
         transform: Matrix4.translationValues(0, isActive ? -20 : 0, 0),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+          padding: const EdgeInsets.symmetric(vertical: 35),
+          // padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: isActive ? tabBackgroundColor : null,
-            borderRadius: BorderRadius.circular(isActive ? 100 : 100),
+            shape: BoxShape.circle,
             border: isActive
                 ? Border.all(color: tabBackgroundColor, width: 1)
                 : null,
@@ -50,8 +51,8 @@ class NavItemWidget extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 item.iconPath,
-                width: isActive ? 50 : 30,
-                height: isActive ? 50 : 30,
+                width: isActive ? 35 : 25,
+                height: isActive ? 35 : 25,
               ),
               Text(
                 item.title,

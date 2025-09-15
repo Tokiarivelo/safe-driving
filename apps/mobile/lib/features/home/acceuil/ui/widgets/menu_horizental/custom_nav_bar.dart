@@ -43,11 +43,11 @@ class _CustomNavBarViewState extends State<CustomNavBarView> {
       children: [
         _buildBackground(),
         Positioned(
-          top: 0,
+          top: -20,
           left: 0,
           right: 0,
           child: SizedBox(
-            height: 95,
+            height: 120,
             child: PageView.builder(
               controller: _pageController,
               scrollDirection: Axis.horizontal,
@@ -87,7 +87,7 @@ class _CustomNavBarViewState extends State<CustomNavBarView> {
 
   Widget _buildBackground() {
     return Container(
-      height: 70,
+      height: 75,
       decoration: BoxDecoration(
         color: AppColors.light,
         boxShadow: [
