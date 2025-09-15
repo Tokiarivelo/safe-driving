@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_driving/features/home/acceuil/viewmodels/navigation_viewmodel.dart';
+import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
 import '../../features/authentication/viewmodels/auth_view_model.dart';
 import '../../features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart';
@@ -42,8 +44,23 @@ class AppProviders {
 
     // Global locale provider (with persistence)
     list.add(
-      ChangeNotifierProvider<LocaleProvider>(
-        create: (_) => LocaleProvider(),
+      ChangeNotifierProvider<LocaleProvider>(create: (_) => LocaleProvider()),
+    );
+
+    list.add(
+      ChangeNotifierProvider<AuthViewModel>(
+        create: (_) => ServiceLocator.instance.get<AuthViewModel>(),
+      ),
+    );
+    list.add(
+      ChangeNotifierProvider<DriverOnboardingCoordinator>(
+        create: (_) =>
+            ServiceLocator.instance.get<DriverOnboardingCoordinator>(),
+      ),
+    );
+    list.add(
+      ChangeNotifierProvider<NavigationViewModel>(
+        create: (_) => NavigationViewModel(),
       ),
     );
 
@@ -64,4 +81,6 @@ extension AppContext on BuildContext {
       watch<UserOnboardingViewModel>();
   ThemeController get themeController => read<ThemeController>();
   ThemeController get themeControllerWatch => watch<ThemeController>();
+  NavigationViewModel get navigationVM => read<NavigationViewModel>();
+  NavigationViewModel get navigationVMWatch => watch<NavigationViewModel>();
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import '../../../../shared/widgets/customs/buttons/specialized/icon_with_badge.dart';
+import '../../../../../shared/widgets/customs/buttons/specialized/icon_with_badge.dart';
 
 class MenuButtonBuilder {
   static Widget buildMenuButton({

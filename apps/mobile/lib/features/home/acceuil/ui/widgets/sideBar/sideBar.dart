@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/features/home/viewmodels/sidebar_view_model.dart';
-import 'package:safe_driving/features/home/ui/widgets/sideBar/sidebar_menu.dart';
-import 'package:safe_driving/features/home/ui/widgets/sideBar/sidebar_theme.dart';
-import 'package:safe_driving/features/home/ui/widgets/sideBar/sidebar_logout.dart';
-import 'package:safe_driving/features/home/ui/widgets/sideBar/sidebar_header.dart';
+import 'package:safe_driving/features/home/acceuil/viewmodels/sidebar_view_model.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sidebar_menu.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sidebar_theme.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sidebar_logout.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sidebar_header.dart';
 
 class Sidebar extends StatelessWidget {
   final VoidCallback onProfileTap;

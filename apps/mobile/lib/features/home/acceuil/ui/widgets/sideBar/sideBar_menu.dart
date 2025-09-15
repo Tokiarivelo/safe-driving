@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import '../../../viewmodels/sidebar_view_model.dart';
-import './sidebar_language.dart';
+import '../sideBar/sideBar_language.dart';
 
 class SidebarMenu extends StatelessWidget {
   final Function(int) onMenuItemSelected;
