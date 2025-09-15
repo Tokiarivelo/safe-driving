@@ -4,11 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { vehicleDocumentsSchema, VehicleDocumentsFormValues } from './schema';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
-import { useMutation } from '@apollo/client';
 import { 
   useCreateBatchPresignedUrlsMutation, 
   useCompleteUploadBulkMutation,
-  ImageType,
+  FileType,
+  VehicleDocumentType,
   useUpdateDriverVehicleMutation
 } from '@/graphql/generated/graphql';
 import { uploadMultipleWithLimit } from '@/components/ui/upload/upload-component.service';
@@ -68,16 +68,18 @@ export const useVehicleDocumentsAction = (
         return;
       }
 
+      // Générer les métadonnées pour chaque fichier
       const fileMetas = allFiles.map((file) => ({
         originalName: file.name,
         contentType: file.type || 'application/octet-stream',
         uniqueId: uuidv4()
       }));
 
+      // Récupérer les URLs présignées
       const { data: presignedData } = await createPresignedUrls({
         variables: {
           files: fileMetas,
-          type: ImageType.VEHICLE,
+          type: FileType.VEHICLE,
         },
       });
 
@@ -85,6 +87,7 @@ export const useVehicleDocumentsAction = (
         throw new Error('Erreur lors de la génération des URLs');
       }
 
+      // Upload effectif
       const results = await uploadMultipleWithLimit(
         presignedData.createBatchPresignedUrls,
         allFiles,
@@ -99,38 +102,42 @@ export const useVehicleDocumentsAction = (
         throw new Error('Aucun fichier n\'a pu être uploadé');
       }
 
+      // Marquer les fichiers comme complets
       await completeUploadBulk({
         variables: {
           keys: successResults.map(r => r.key || ''),
-          type: ImageType.VEHICLE,
+          type: FileType.VEHICLE,
         },
       });
 
+      // Mapper les documents (carte grise, assurance, etc.)
       const uploadDocuments = [
         ...data.registrationFiles.map((file, index) => ({
-          key: successResults[index]?.key || '',
-          originalName: file.name,
-          contentType: file.type || 'application/octet-stream'
+          documentType: VehicleDocumentType.REGISTRATION,
+          file: {
+            key: successResults[index]?.key || ''
+          }
         })),
         ...data.insuranceFiles.map((file, index) => ({
-          key: successResults[data.registrationFiles.length + index]?.key || '',
-          originalName: file.name,
-          contentType: file.type || 'application/octet-stream'
+          documentType: VehicleDocumentType.INSURANCE,
+          file: {
+            key: successResults[data.registrationFiles.length + index]?.key || ''
+          }
         }))
       ];
 
+      // Mapper les photos du véhicule
       const uploadImages = data.vehiclePhotos.map((file, index) => ({
-        key: successResults[data.registrationFiles.length + data.insuranceFiles.length + index]?.key || '',
-        originalName: file.name,
-        contentType: file.type || 'application/octet-stream'
+        key: successResults[data.registrationFiles.length + data.insuranceFiles.length + index]?.key || ''
       }));
 
+      // Mise à jour du véhicule côté backend
       await updateDriverVehicle({
         variables: {
           vehicleId: vehicleId,
           input: {
-            uploadDocuments: uploadDocuments,
-            uploadImages: uploadImages
+            uploadDocuments,
+            uploadImages
           }
         }
       });

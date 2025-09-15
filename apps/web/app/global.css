@@ -389,6 +389,160 @@
   }
 }
 
+.tag {
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+  transform: rotate(0deg);
+  position: relative; /* ensure pseudo-elements anchor */
+  z-index: 30; /* above white card */
+  /* height: 65px;  */
+}
+.tag:hover::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -22px;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid #ffffff;
+  cursor: pointer;
+  z-index: 35;
+}
+
+.tag:hover::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: -19px;
+  transform: translateX(-50%) rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-bottom: 13px solid #ea3a7e;
+  cursor: pointer;
+  z-index: 36;
+}
+/*===================================*/
+.tog {
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #e0d8d8;
+  border-top: 1px solid #ffffff;
+  border-right: 1px solid #c4c0c0;
+  border-radius: 13px;
+  transform: rotate(0deg);
+  position: relative;
+  z-index: 30;
+  /* height: 65px; */
+}
+.tog:hover::before {
+  content: '';
+  position: absolute;
+  top: 17.5px;
+  left: -22px;
+  transform: translateX(-50%) rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid #ffffff;
+  z-index: 35;
+}
+
+.tog:hover::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: -19px;
+  transform: translateX(-50%) rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-bottom: 13px solid #eb3e7a;
+  z-index: 36;
+}
+/*===================================*/
+.teg {
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #e0d8d8;
+  border-top: 1px solid #ffffff;
+  border-right: 1px solid #c4c0c0;
+  border-radius: 13px;
+  transform: rotate(0deg);
+  position: relative;
+  z-index: 30;
+  /* height: 65px; */
+}
+.teg:hover::before {
+  content: '';
+  position: absolute;
+  top: 17.5px;
+  left: -22px;
+  transform: translateX(-50%) rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid #ffffff;
+  z-index: 35;
+}
+
+.teg:hover::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: -19px;
+  transform: translateX(-50%) rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-bottom: 13px solid #ee4772;
+  z-index: 36;
+}
+/*===================================*/
+.tig {
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #e0d8d8;
+  border-top: 1px solid #ffffff;
+  border-right: 1px solid #c4c0c0;
+  border-radius: 13px;
+  transform: rotate(0deg);
+  position: relative;
+  z-index: 30;
+  /* height: 65px; */
+}
+.tig:hover::before {
+  content: '';
+  position: absolute;
+  top: 17.5px;
+  left: -22px;
+  transform: translateX(-50%) rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid #ffffff;
+  z-index: 35;
+}
+.tig:hover::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: -19px;
+  transform: translateX(-50%) rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-bottom: 13px solid #f14f6a;
+  z-index: 36;
+}
+/*================================*/
 @keyframes spin-y {
   0% {
     transform: rotateY(0deg);

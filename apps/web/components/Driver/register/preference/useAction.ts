@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useSession } from 'next-auth/react';
 import { 
   useUpsertUserPreferenceMutation, 
-  useUserPreferenceQuery 
+  useGetMyUserPreferenceQuery  
 } from '@/graphql/generated/graphql';
 import { toast } from 'sonner';
 import '@/lib/i18n';
@@ -20,15 +21,15 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const { data: session, update: updateSession } = useSession();
-  
+
   const [upsertUserPreference] = useUpsertUserPreferenceMutation();
-  const { data: preferenceData, refetch: refetchPreferences } = useUserPreferenceQuery({
+  const { data: preferenceData, refetch: refetchPreferences } = useGetMyUserPreferenceQuery({
     skip: !session?.user?.id
   });
 
-  const [isRequesting, setIsRequesting] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Formulaire
   const form = useForm<ExperiencePreferencesValues>({
     resolver: zodResolver(experiencePreferencesSchema),
     defaultValues: {
@@ -40,12 +41,12 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
     }
   });
 
-  // Synchroniser les valeurs du formulaire avec les données de la base
+  // Synchroniser les valeurs du formulaire avec la base
   useEffect(() => {
     if (preferenceData?.userPreference) {
       const dbTheme = preferenceData.userPreference.theme;
       const dbLanguage = preferenceData.userPreference.language;
-      
+
       if (dbTheme) {
         form.setValue('theme', {
           light: dbTheme === 'light',
@@ -53,7 +54,7 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
         });
         setTheme(dbTheme as 'light' | 'dark');
       }
-      
+
       if (dbLanguage) {
         form.setValue('language', dbLanguage === 'fr' ? 'french' : 'english');
         i18n.changeLanguage(dbLanguage);
@@ -61,70 +62,54 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
     }
   }, [preferenceData, form, setTheme, i18n]);
 
-  // Synchroniser le thème avec le document HTML
+  // Appliquer le thème globalement
   useEffect(() => {
     const html = document.documentElement;
-    if (theme === 'dark') {
-      html.classList.add('dark');
-    } else {
-      html.classList.remove('dark');
-    }
-    
-    // Sauvegarder aussi dans localStorage pour persistance
+    if (theme === 'dark') html.classList.add('dark');
+    else html.classList.remove('dark');
+
     localStorage.setItem('preferred-theme', theme);
   }, [theme]);
 
+  // Changer le thème
   const handleThemeChange = async (selectedTheme: 'light' | 'dark') => {
     if (!session?.user?.id) {
       toast.error('Utilisateur non connecté');
       return;
     }
 
-    const newThemePrefs = {
-      light: selectedTheme === 'light',
-      dark: selectedTheme === 'dark'
-    };
-    
-    form.setValue('theme', newThemePrefs, { shouldValidate: true });
-    setTheme(selectedTheme); // Met à jour le contexte global
+    form.setValue('theme', { light: selectedTheme === 'light', dark: selectedTheme === 'dark' });
+    setTheme(selectedTheme);
 
-    // Sauvegarder immédiatement le thème en base
     try {
       const existingPreference = preferenceData?.userPreference;
-      
       const { errors } = await upsertUserPreference({
         variables: {
           input: {
             theme: selectedTheme,
-            // Conserver les autres préférences existantes
+            language: existingPreference?.language ?? (i18n.language === 'fr' ? 'fr' : 'en'),
             activateLocation: existingPreference?.activateLocation ?? false,
             activateNotifications: existingPreference?.activateNotifications ?? false,
             activateSmsNotifications: existingPreference?.activateSmsNotifications ?? false,
             activateEmailNotifications: existingPreference?.activateEmailNotifications ?? false,
-            language: existingPreference?.language ?? (i18n.language === 'fr' ? 'fr' : 'en'),
             cguAccepted: existingPreference?.cguAccepted ?? false,
             privacyPolicyAccepted: existingPreference?.privacyPolicyAccepted ?? false
           }
         }
       });
 
-      if (errors) {
-        console.error('Erreurs GraphQL lors de la sauvegarde du thème:', errors);
-        toast.error('Erreur lors de la sauvegarde du thème');
-        return;
-      }
+      if (errors) throw new Error(errors.map(e => e.message).join(', '));
 
-      // Rafraîchir les préférences et la session
       await refetchPreferences();
       await updateSession();
-      
       toast.success('Thème mis à jour');
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde du thème:', error);
+      console.error('Erreur sauvegarde thème:', error);
       toast.error('Erreur lors de la sauvegarde du thème');
     }
   };
 
+  // Changer la langue
   const handleLanguageChange = async (lang: 'french' | 'english') => {
     if (!session?.user?.id) {
       toast.error('Utilisateur non connecté');
@@ -132,87 +117,59 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
     }
 
     const languageCode = lang === 'french' ? 'fr' : 'en';
-    
-    console.log('Changement de langue:', lang, '-> code:', languageCode);
-    console.log('Pathname actuel:', pathname);
-    
-    // Sauvegarder immédiatement la langue en base
+
+    form.setValue('language', lang);
+    i18n.changeLanguage(languageCode);
+    localStorage.setItem('preferred-language', languageCode);
+    document.cookie = `preferred-language=${languageCode}; path=/; max-age=31536000`;
+
+    // Changer l'URL
+    let newPathname = pathname.replace(/^\/(fr|en)/, `/${languageCode}`);
+    if (!/^\/(fr|en)/.test(pathname)) newPathname = `/${languageCode}${pathname}`;
+
+    router.push(newPathname);
+
     try {
       const existingPreference = preferenceData?.userPreference;
-      
       const { errors } = await upsertUserPreference({
         variables: {
           input: {
             language: languageCode,
-            // Conserver les autres préférences existantes
+            theme: existingPreference?.theme ?? (theme || 'light'),
             activateLocation: existingPreference?.activateLocation ?? false,
             activateNotifications: existingPreference?.activateNotifications ?? false,
             activateSmsNotifications: existingPreference?.activateSmsNotifications ?? false,
             activateEmailNotifications: existingPreference?.activateEmailNotifications ?? false,
-            theme: existingPreference?.theme ?? (theme || 'light'),
             cguAccepted: existingPreference?.cguAccepted ?? false,
             privacyPolicyAccepted: existingPreference?.privacyPolicyAccepted ?? false
           }
         }
       });
 
-      if (errors) {
-        console.error('Erreurs GraphQL lors de la sauvegarde de la langue:', errors);
-        toast.error('Erreur lors de la sauvegarde de la langue');
-        return;
-      }
-
-      // Mettre à jour i18n après la sauvegarde réussie
-      await i18n.changeLanguage(languageCode);
-      form.setValue('language', lang, { shouldValidate: true });
-      
-      // Sauvegarder dans localStorage pour persistance
-      localStorage.setItem('preferred-language', languageCode);
-      
-      // Rafraîchir les préférences et la session
+      if (errors) throw new Error(errors.map(e => e.message).join(', '));
       await refetchPreferences();
       await updateSession();
-
-      // Mettre à jour l'URL
-      let newPathname = pathname;
-      
-      if (pathname.startsWith('/fr')) {
-        newPathname = pathname.replace('/fr', `/${languageCode}`);
-      } else if (pathname.startsWith('/en')) {
-        newPathname = pathname.replace('/en', `/${languageCode}`);
-      } else {
-        newPathname = `/${languageCode}${pathname}`;
-      }
-      
-      router.push(newPathname);
-      router.refresh();
-      
       toast.success('Langue mise à jour');
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde de la langue:', error);
+      console.error('Erreur sauvegarde langue:', error);
       toast.error('Erreur lors de la sauvegarde de la langue');
     }
   };
 
+  // Soumettre tout le formulaire
   const onSubmit = async (data: ExperiencePreferencesValues) => {
-    if (!session?.user?.id) {
-      toast.error('Utilisateur non connecté');
-      return { success: false, error: 'Utilisateur non connecté' };
-    }
-
+    if (!session?.user?.id) return { success: false, error: 'Utilisateur non connecté' };
     setIsSubmitting(true);
-    
+
     try {
       const languageCode = data.language === 'french' ? 'fr' : 'en';
       const selectedTheme = data.theme.light ? 'light' : 'dark';
 
-      // Sauvegarder les préférences en base de données
       const { errors } = await upsertUserPreference({
         variables: {
           input: {
             language: languageCode,
             theme: selectedTheme,
-            // Valeurs par défaut pour les autres champs
             activateLocation: preferenceData?.userPreference?.activateLocation ?? false,
             activateNotifications: preferenceData?.userPreference?.activateNotifications ?? false,
             activateSmsNotifications: preferenceData?.userPreference?.activateSmsNotifications ?? false,
@@ -223,35 +180,24 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
         }
       });
 
-      if (errors) {
-        console.error('Erreurs GraphQL:', errors);
-        throw new Error(errors.map(e => e.message).join(', '));
-      }
+      if (errors) throw new Error(errors.map(e => e.message).join(', '));
 
-      // Appliquer les changements immédiatement
       setTheme(selectedTheme);
-      await i18n.changeLanguage(languageCode);
-      
-      // Sauvegarder en localStorage pour la persistance locale
+      i18n.changeLanguage(languageCode);
       localStorage.setItem('preferred-language', languageCode);
       localStorage.setItem('preferred-theme', selectedTheme);
-      
-      // Rafraîchir les données
+      document.cookie = `preferred-language=${languageCode}; path=/; max-age=31536000`;
+
       await refetchPreferences();
       await updateSession();
-      
       toast.success('Préférences sauvegardées avec succès');
-      router.push('/terms');
-      
+
+      router.push(`/${languageCode}/terms`);
       return { success: true };
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde des préférences:', error);
+      console.error('Erreur sauvegarde préférences:', error);
       toast.error('Erreur lors de la sauvegarde des préférences');
-      
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Erreur inconnue' 
-      };
+      return { success: false, error: error instanceof Error ? error.message : 'Erreur inconnue' };
     } finally {
       setIsSubmitting(false);
     }
@@ -260,7 +206,6 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
   return {
     form,
     preferences: form.watch(),
-    isRequesting,
     isSubmitting,
     handleThemeChange,
     handleLanguageChange,

@@ -1,0 +1,9 @@
+input UploadUserDocumentsInput {
+  documentType: String!
+  name: String!
+  file: UploadedFileRefInput!
+}
+
+input UploadedFileRefInput {
+  key: String!
+}

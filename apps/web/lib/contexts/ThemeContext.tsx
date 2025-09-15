@@ -13,23 +13,23 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('light');
 
+  // ⚡ Initialisation une seule fois après le mount
   useEffect(() => {
-    const savedTheme = localStorage.getItem('preferred-theme') as Theme;
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches 
-      ? 'dark' : 'light';
-    
-    setThemeState(savedTheme || systemTheme);
-  }, []);
+    const savedTheme = localStorage.getItem('preferred-theme') as Theme | null;
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    setThemeState(initialTheme);
+  }, []); // ✅ pas de dépendances → ne boucle jamais
 
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    localStorage.setItem('preferred-theme', newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-  };
-
+  // ⚡ Applique le theme dans le DOM
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
+    localStorage.setItem('preferred-theme', theme);
   }, [theme]);
+
+  const setTheme = (newTheme: Theme) => {
+    if (newTheme !== theme) setThemeState(newTheme); // ✅ éviter setState inutile
+  };
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
@@ -40,8 +40,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 export function useTheme() {
   const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
+  if (!context) throw new Error('useTheme must be used within a ThemeProvider');
   return context;
 }

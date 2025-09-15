@@ -11,6 +11,9 @@ fragment driverVehicleFragment on DriverVehicle {
   place
   vehicleTypeId
   userId
+  type {
+    ...vehicleTypeFragment
+  }
   VehicleImage {
     id
     file {

@@ -35,8 +35,10 @@ export const FileUpload = ({
         <>
           <label
             htmlFor="single-file-upload"
-            className="relative border-2 border-dashed border-[#E33486] bg-auth-color-input rounded-xl w-full h-[150px] flex flex-col items-center justify-center text-center cursor-pointer"
-          >
+            className="relative border-2 border-dashed border-[#E33486] bg-auth-color-input rounded-xl 
+            w-full max-w-[200px] h-[100px] flex flex-col items-center justify-center 
+            text-center cursor-pointer"
+>
             <UploadCloud className="text-[#E33486] w-8 h-8 mb-2" />
             <div className="text-sm text-auth-color-placeholder font-normal">
               Glissez un fichier ou cliquez pour télécharger

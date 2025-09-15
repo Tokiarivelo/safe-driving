@@ -1,5 +1,0 @@
-query userPreference {
-  userPreference {
-    ...userPreferenceFragment
-  }
-}

@@ -9,8 +9,11 @@ import { useSession } from 'next-auth/react';
 import { 
   useCreateBatchPresignedUrlsMutation, 
   useCompleteUploadBulkMutation,
-  ImageType 
+  FileType,
+  useUploadUserDocumentMutation,
+  UserDocumentType
 } from '@/graphql/generated/graphql';
+
 import { uploadMultipleWithLimit } from '@/components/ui/upload/upload-component.service';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -21,6 +24,7 @@ export const useIdentityUploadAction = () => {
   
   const [createPresignedUrls] = useCreateBatchPresignedUrlsMutation();
   const [completeUploadBulk] = useCompleteUploadBulkMutation();
+  const [uploadUserDocument] = useUploadUserDocumentMutation();
 
   const form = useForm<IdentityUploadFormValues>({
     resolver: zodResolver(identityUploadSchema),
@@ -44,7 +48,8 @@ export const useIdentityUploadAction = () => {
       const fileMetas: Array<{
         originalName: string;
         contentType: string;
-        uniqueId?: string;
+        uniqueId: string;
+        documentType: UserDocumentType;
       }> = [];
 
       // Carte d'identité recto
@@ -54,6 +59,7 @@ export const useIdentityUploadAction = () => {
           originalName: data.idCardFront.name,
           contentType: data.idCardFront.type || 'application/octet-stream',
           uniqueId: uuidv4(),
+          documentType: UserDocumentType.ID_CARD_FRONT
         });
       }
 
@@ -64,6 +70,7 @@ export const useIdentityUploadAction = () => {
           originalName: data.idCardBack.name,
           contentType: data.idCardBack.type || 'application/octet-stream',
           uniqueId: uuidv4(),
+          documentType: UserDocumentType.ID_CARD_BACK
         });
       }
 
@@ -74,6 +81,7 @@ export const useIdentityUploadAction = () => {
           originalName: data.license.name,
           contentType: data.license.type || 'application/octet-stream',
           uniqueId: uuidv4(),
+          documentType: UserDocumentType.DRIVER_LICENSE
         });
       }
 
@@ -82,10 +90,11 @@ export const useIdentityUploadAction = () => {
         return;
       }
 
+      // 1. Obtenir les URLs présignées
       const { data: presignedData } = await createPresignedUrls({
         variables: {
-          files: fileMetas,
-          type: ImageType.USER,
+          files: fileMetas.map(({ documentType, ...rest }) => rest),
+          type: FileType.USER,
         },
       });
 
@@ -93,6 +102,7 @@ export const useIdentityUploadAction = () => {
         throw new Error('Erreur lors de la génération des URLs de téléchargement');
       }
 
+      // 2. Uploader les fichiers vers LocalStack
       const results = await uploadMultipleWithLimit(
         presignedData.createBatchPresignedUrls,
         filesToUpload,
@@ -104,11 +114,26 @@ export const useIdentityUploadAction = () => {
       const successResults = results.filter(r => r.success);
       
       if (successResults.length > 0) {
+        // 3. Marquer les uploads comme complétés
         await completeUploadBulk({
           variables: {
             keys: successResults.map(r => r.key || ''),
-            type: ImageType.USER,
+            type: FileType.USER,
           },
+        });
+
+        const uploadInput = successResults.map((result, index) => ({
+          documentType: fileMetas[index].documentType,
+          name: fileMetas[index].originalName, // Utiliser le nom original comme "name"
+          file: {
+            key: result.key || '' // Format attendu par votre backend
+          }
+        }));
+
+        await uploadUserDocument({
+          variables: {
+            input: uploadInput
+          }
         });
       }
 
@@ -116,7 +141,7 @@ export const useIdentityUploadAction = () => {
         throw new Error('Certains fichiers n\'ont pas pu être uploadés');
       }
 
-      toast.success('Documents uploadés avec succès');
+      toast.success('Documents uploadés et liés avec succès');
       router.push('/vehiculeInfo');
     } catch (error: any) {
       console.error('Erreur lors du processus:', error);

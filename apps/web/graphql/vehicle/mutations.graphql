@@ -6,6 +6,6 @@ mutation createDriverVehicle($input: CreateDriverVehicleInput!) {
 
 mutation updateDriverVehicle($vehicleId: String!, $input: UpdateDriverVehicleInput!) {
   updateDriverVehicle(vehicleId: $vehicleId, input: $input) {
-    ...driverVehicleFragment
+    id
   }
 }

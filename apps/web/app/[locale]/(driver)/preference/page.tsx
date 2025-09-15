@@ -15,5 +15,5 @@ export default function ExperiencePreferencesPage() {
     console.log('Préférences mises à jour:', data);
   };
 
-  return <ExperiencePreferences onUpdate={handleUpdate} t={t} />;
+  return <ExperiencePreferences onUpdate={handleUpdate} />;
 }

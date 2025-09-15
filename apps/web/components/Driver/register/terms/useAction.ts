@@ -5,16 +5,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
 import { 
   useUpsertUserPreferenceMutation, 
-  useUserPreferenceQuery 
+  useGetMyUserPreferenceQuery  
 } from '@/graphql/generated/graphql';
 import { toast } from 'sonner';
 import { termsAcceptanceSchema, TermsAcceptanceValues } from './schema';
+import { useRouter } from 'next/navigation';
 
 export const useTermsAcceptance = (initialValues?: Partial<TermsAcceptanceValues>) => {
   const { data: session } = useSession();
-  
+  const router = useRouter();
   const [upsertUserPreference] = useUpsertUserPreferenceMutation();
-  const { data: preferenceData } = useUserPreferenceQuery({
+  const { data: preferenceData } = useGetMyUserPreferenceQuery({
     skip: !session?.user?.id
   });
 
@@ -116,7 +117,7 @@ export const useTermsAcceptance = (initialValues?: Partial<TermsAcceptanceValues
       }
       
       toast.success('Conditions générales sauvegardées avec succès');
-      
+      router.push('/recapitulatif'); 
       return { success: true };
     } catch (error) {
       console.error('Erreur lors de la sauvegarde des conditions:', error);

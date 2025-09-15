@@ -7,6 +7,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   startOrnerIcon?: React.ReactNode;
   endOrnerIcon?: React.ReactNode;
   inputClassname?: string;
+  wrapperClassName?: string; // allows controlling outer width/spacing without overriding defaults
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -15,10 +16,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     inputClassname,
     startOrnerIcon,
     endOrnerIcon,
+    wrapperClassName,
     ...props
   }, ref) => {
     return (
-      <div className={cn(className, 'px-12 relative')}>
+      <div className={cn(className, 'px-12 relative', wrapperClassName)}>
         {/* Icon component */}
         {startOrnerIcon && (
           <span className="absolute left-3 top-1/2 transform -translate-y-1/2">

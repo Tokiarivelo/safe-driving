@@ -13,3 +13,9 @@ mutation updateUser($input: UserUpdateInput!) {
     ...userFragment
   }
 }
+
+mutation uploadUserDocument($input: [UploadUserDocumentsInput!]!) {
+  uploadUserDocument(input: $input) {
+    ...userFragment
+  }
+}

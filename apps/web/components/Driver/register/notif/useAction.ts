@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { 
   useUpsertUserPreferenceMutation, 
-  useUserPreferenceQuery 
+  useGetMyUserPreferenceQuery 
 } from '@/graphql/generated/graphql';
 import { toast } from 'sonner';
 import { notificationPreferencesSchema, NotificationPreferencesValues } from './schema';
@@ -16,7 +16,7 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
   const { data: session } = useSession();
   
   const [upsertUserPreference] = useUpsertUserPreferenceMutation();
-  const { data: preferenceData } = useUserPreferenceQuery({
+  const { data: preferenceData } = useGetMyUserPreferenceQuery({
     skip: !session?.user?.id
   });
 
