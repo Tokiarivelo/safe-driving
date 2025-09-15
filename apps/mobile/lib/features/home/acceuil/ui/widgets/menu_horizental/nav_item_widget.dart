@@ -29,7 +29,6 @@ class NavItemWidget extends StatelessWidget {
         transform: Matrix4.translationValues(0, isActive ? -20 : 0, 0),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 35),
-          // padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: isActive ? tabBackgroundColor : null,
             shape: BoxShape.circle,

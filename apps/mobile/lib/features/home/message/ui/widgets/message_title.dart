@@ -8,28 +8,34 @@ class MessageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: AppColors.color1,
-        child: Text(
-          message.sender[0],
-          style: const TextStyle(color: AppColors.light),
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      child: InkWell(
+        onTap: () {},
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: AppColors.color1,
+            child: Text(
+              message.sender[0],
+              style: const TextStyle(color: AppColors.light),
+            ),
+          ),
+          title: Text(
+            message.sender,
+            style: TextStyle(
+              fontWeight: message.unread ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          subtitle: Text(message.content),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(message.time, style: const TextStyle(fontSize: 12)),
+              if (message.unread)
+                const Icon(Icons.circle, color: AppColors.color1, size: 12),
+            ],
+          ),
         ),
-      ),
-      title: Text(
-        message.sender,
-        style: TextStyle(
-          fontWeight: message.unread ? FontWeight.bold : FontWeight.normal,
-        ),
-      ),
-      subtitle: Text(message.content),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(message.time, style: const TextStyle(fontSize: 12)),
-          if (message.unread)
-            const Icon(Icons.circle, color: AppColors.color1, size: 12),
-        ],
       ),
     );
   }
