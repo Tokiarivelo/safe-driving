@@ -6321,12 +6321,12 @@ export type StringNullableFilter = {
 export type Subscription = {
   __typename?: 'Subscription';
   conversationUpdated: ConversationPayload;
-  messageReceived: MessagePayload;
+  messageEvent: MessagePayload;
   participantUpdated: ConversationParticipantPayload;
 };
 
 
-export type SubscriptionMessageReceivedArgs = {
+export type SubscriptionMessageEventArgs = {
   conversationId?: InputMaybe<Scalars['String']['input']>;
   rideId?: InputMaybe<Scalars['String']['input']>;
 };
@@ -9714,13 +9714,13 @@ export type GetMessagesQueryVariables = Exact<{
 
 export type GetMessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null } }> | null }> };
 
-export type MessageReceivedSubscriptionVariables = Exact<{
+export type MessageEventSubscriptionVariables = Exact<{
   conversationId?: InputMaybe<Scalars['String']['input']>;
   rideId?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type MessageReceivedSubscription = { __typename?: 'Subscription', messageReceived: { __typename?: 'MessagePayload', type: string, message: { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null } }> | null } } };
+export type MessageEventSubscription = { __typename?: 'Subscription', messageEvent: { __typename?: 'MessagePayload', type: string, message: { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null } }> | null } } };
 
 export type PresignedUrlFragment = { __typename?: 'PresignedUrl', key: string, url: string, expiresIn: number };
 
@@ -9740,6 +9740,39 @@ export type CompleteUploadBulkMutationVariables = Exact<{
 
 export type CompleteUploadBulkMutation = { __typename?: 'Mutation', completeUploadBulk: Array<{ __typename?: 'CompleteUploadOutput', key: string, size?: number | null, etag?: string | null, contentType?: string | null }> };
 
+export type UserPreferenceFieldsFragment = { __typename?: 'UserPreference', activateEmailNotifications: boolean, activateLocation: boolean, activateNotifications: boolean, activateSmsNotifications: boolean, cguAccepted: boolean, createdAt: any, id: string, language?: string | null, privacyPolicyAccepted: boolean, theme?: string | null, updatedAt?: any | null, preferedvelicles?: Array<{ __typename?: 'VehicleType', id: string, name: string }> | null };
+
+export type VehicleTypeFragmentFragment = { __typename?: 'VehicleType', id: string, name: string };
+
+export type UpsertUserPreferenceMutationVariables = Exact<{
+  input: UserPreferenceUpsertInput;
+}>;
+
+
+export type UpsertUserPreferenceMutation = { __typename?: 'Mutation', upsertUserPreference: { __typename?: 'UserPreference', activateEmailNotifications: boolean, activateLocation: boolean, activateNotifications: boolean, activateSmsNotifications: boolean, cguAccepted: boolean, createdAt: any, id: string, language?: string | null, privacyPolicyAccepted: boolean, theme?: string | null, updatedAt?: any | null, preferedvelicles?: Array<{ __typename?: 'VehicleType', id: string, name: string }> | null } };
+
+export type CreateVehicleTypeMutationVariables = Exact<{
+  input: VehicleTypeCreateInput;
+}>;
+
+
+export type CreateVehicleTypeMutation = { __typename?: 'Mutation', createVehicleType: { __typename?: 'VehicleType', id: string, name: string } };
+
+export type GetMyUserPreferenceQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMyUserPreferenceQuery = { __typename?: 'Query', userPreference?: { __typename?: 'UserPreference', activateEmailNotifications: boolean, activateLocation: boolean, activateNotifications: boolean, activateSmsNotifications: boolean, cguAccepted: boolean, createdAt: any, id: string, language?: string | null, privacyPolicyAccepted: boolean, theme?: string | null, updatedAt?: any | null, preferedvelicles?: Array<{ __typename?: 'VehicleType', id: string, name: string }> | null } | null };
+
+export type GetVehicleTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetVehicleTypesQuery = { __typename?: 'Query', vehicleTypes: Array<{ __typename?: 'VehicleType', id: string, name: string }> };
+
+export type GetqrQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetqrQuery = { __typename?: 'Query', getUserQr: string };
+
 export type UserFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null };
 
 export type UserMessageFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null };
@@ -9750,6 +9783,13 @@ export type CreateUserMutationVariables = Exact<{
 
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, UserImage?: Array<{ __typename?: 'UserImage', id: string, updatedAt?: any | null, file: { __typename?: 'File', id: string, meta?: any | null, name?: string | null, url?: string | null, type: FileType, status: string, size?: number | null, originalName: string } }> | null, UserDocument?: Array<{ __typename?: 'UserDocument', id: string, fileId: string, createdAt: any, file: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } }> | null, Role?: Array<{ __typename?: 'Role', id: string, name: string }> | null } };
+
+export type CreateUserQrsMutationVariables = Exact<{
+  type: Scalars['String']['input'];
+}>;
+
+
+export type CreateUserQrsMutation = { __typename?: 'Mutation', createUserQr: string };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -9935,6 +9975,31 @@ export const PresignedUrlFragmentDoc = gql`
   key
   url
   expiresIn
+}
+    `;
+export const UserPreferenceFieldsFragmentDoc = gql`
+    fragment UserPreferenceFields on UserPreference {
+  activateEmailNotifications
+  activateLocation
+  activateNotifications
+  activateSmsNotifications
+  cguAccepted
+  createdAt
+  id
+  language
+  preferedvelicles {
+    id
+    name
+  }
+  privacyPolicyAccepted
+  theme
+  updatedAt
+}
+    `;
+export const VehicleTypeFragmentFragmentDoc = gql`
+    fragment vehicleTypeFragment on VehicleType {
+  id
+  name
 }
     `;
 export const ImageFragmentDoc = gql`
@@ -10642,9 +10707,9 @@ export type GetMessagesQueryHookResult = ReturnType<typeof useGetMessagesQuery>;
 export type GetMessagesLazyQueryHookResult = ReturnType<typeof useGetMessagesLazyQuery>;
 export type GetMessagesSuspenseQueryHookResult = ReturnType<typeof useGetMessagesSuspenseQuery>;
 export type GetMessagesQueryResult = Apollo.QueryResult<GetMessagesQuery, GetMessagesQueryVariables>;
-export const MessageReceivedDocument = gql`
-    subscription MessageReceived($conversationId: String, $rideId: String) {
-  messageReceived(conversationId: $conversationId, rideId: $rideId) {
+export const MessageEventDocument = gql`
+    subscription MessageEvent($conversationId: String, $rideId: String) {
+  messageEvent(conversationId: $conversationId, rideId: $rideId) {
     message {
       ...subscriptionMessageFragment
     }
@@ -10654,28 +10719,28 @@ export const MessageReceivedDocument = gql`
     ${SubscriptionMessageFragmentFragmentDoc}`;
 
 /**
- * __useMessageReceivedSubscription__
+ * __useMessageEventSubscription__
  *
- * To run a query within a React component, call `useMessageReceivedSubscription` and pass it any options that fit your needs.
- * When your component renders, `useMessageReceivedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMessageEventSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useMessageEventSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMessageReceivedSubscription({
+ * const { data, loading, error } = useMessageEventSubscription({
  *   variables: {
  *      conversationId: // value for 'conversationId'
  *      rideId: // value for 'rideId'
  *   },
  * });
  */
-export function useMessageReceivedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<MessageReceivedSubscription, MessageReceivedSubscriptionVariables>) {
+export function useMessageEventSubscription(baseOptions?: Apollo.SubscriptionHookOptions<MessageEventSubscription, MessageEventSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<MessageReceivedSubscription, MessageReceivedSubscriptionVariables>(MessageReceivedDocument, options);
+        return Apollo.useSubscription<MessageEventSubscription, MessageEventSubscriptionVariables>(MessageEventDocument, options);
       }
-export type MessageReceivedSubscriptionHookResult = ReturnType<typeof useMessageReceivedSubscription>;
-export type MessageReceivedSubscriptionResult = Apollo.SubscriptionResult<MessageReceivedSubscription>;
+export type MessageEventSubscriptionHookResult = ReturnType<typeof useMessageEventSubscription>;
+export type MessageEventSubscriptionResult = Apollo.SubscriptionResult<MessageEventSubscription>;
 export const CreateBatchPresignedUrlsDocument = gql`
     mutation createBatchPresignedUrls($files: [FileMetaInput!]!, $type: FileType!) {
   createBatchPresignedUrls(files: $files, type: $type) {
@@ -10747,6 +10812,187 @@ export function useCompleteUploadBulkMutation(baseOptions?: Apollo.MutationHookO
 export type CompleteUploadBulkMutationHookResult = ReturnType<typeof useCompleteUploadBulkMutation>;
 export type CompleteUploadBulkMutationResult = Apollo.MutationResult<CompleteUploadBulkMutation>;
 export type CompleteUploadBulkMutationOptions = Apollo.BaseMutationOptions<CompleteUploadBulkMutation, CompleteUploadBulkMutationVariables>;
+export const UpsertUserPreferenceDocument = gql`
+    mutation upsertUserPreference($input: UserPreferenceUpsertInput!) {
+  upsertUserPreference(input: $input) {
+    ...UserPreferenceFields
+  }
+}
+    ${UserPreferenceFieldsFragmentDoc}`;
+export type UpsertUserPreferenceMutationFn = Apollo.MutationFunction<UpsertUserPreferenceMutation, UpsertUserPreferenceMutationVariables>;
+
+/**
+ * __useUpsertUserPreferenceMutation__
+ *
+ * To run a mutation, you first call `useUpsertUserPreferenceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertUserPreferenceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertUserPreferenceMutation, { data, loading, error }] = useUpsertUserPreferenceMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertUserPreferenceMutation(baseOptions?: Apollo.MutationHookOptions<UpsertUserPreferenceMutation, UpsertUserPreferenceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertUserPreferenceMutation, UpsertUserPreferenceMutationVariables>(UpsertUserPreferenceDocument, options);
+      }
+export type UpsertUserPreferenceMutationHookResult = ReturnType<typeof useUpsertUserPreferenceMutation>;
+export type UpsertUserPreferenceMutationResult = Apollo.MutationResult<UpsertUserPreferenceMutation>;
+export type UpsertUserPreferenceMutationOptions = Apollo.BaseMutationOptions<UpsertUserPreferenceMutation, UpsertUserPreferenceMutationVariables>;
+export const CreateVehicleTypeDocument = gql`
+    mutation createVehicleType($input: VehicleTypeCreateInput!) {
+  createVehicleType(input: $input) {
+    ...vehicleTypeFragment
+  }
+}
+    ${VehicleTypeFragmentFragmentDoc}`;
+export type CreateVehicleTypeMutationFn = Apollo.MutationFunction<CreateVehicleTypeMutation, CreateVehicleTypeMutationVariables>;
+
+/**
+ * __useCreateVehicleTypeMutation__
+ *
+ * To run a mutation, you first call `useCreateVehicleTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateVehicleTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createVehicleTypeMutation, { data, loading, error }] = useCreateVehicleTypeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateVehicleTypeMutation(baseOptions?: Apollo.MutationHookOptions<CreateVehicleTypeMutation, CreateVehicleTypeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateVehicleTypeMutation, CreateVehicleTypeMutationVariables>(CreateVehicleTypeDocument, options);
+      }
+export type CreateVehicleTypeMutationHookResult = ReturnType<typeof useCreateVehicleTypeMutation>;
+export type CreateVehicleTypeMutationResult = Apollo.MutationResult<CreateVehicleTypeMutation>;
+export type CreateVehicleTypeMutationOptions = Apollo.BaseMutationOptions<CreateVehicleTypeMutation, CreateVehicleTypeMutationVariables>;
+export const GetMyUserPreferenceDocument = gql`
+    query getMyUserPreference {
+  userPreference {
+    ...UserPreferenceFields
+  }
+}
+    ${UserPreferenceFieldsFragmentDoc}`;
+
+/**
+ * __useGetMyUserPreferenceQuery__
+ *
+ * To run a query within a React component, call `useGetMyUserPreferenceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyUserPreferenceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyUserPreferenceQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyUserPreferenceQuery(baseOptions?: Apollo.QueryHookOptions<GetMyUserPreferenceQuery, GetMyUserPreferenceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMyUserPreferenceQuery, GetMyUserPreferenceQueryVariables>(GetMyUserPreferenceDocument, options);
+      }
+export function useGetMyUserPreferenceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyUserPreferenceQuery, GetMyUserPreferenceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMyUserPreferenceQuery, GetMyUserPreferenceQueryVariables>(GetMyUserPreferenceDocument, options);
+        }
+export function useGetMyUserPreferenceSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetMyUserPreferenceQuery, GetMyUserPreferenceQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMyUserPreferenceQuery, GetMyUserPreferenceQueryVariables>(GetMyUserPreferenceDocument, options);
+        }
+export type GetMyUserPreferenceQueryHookResult = ReturnType<typeof useGetMyUserPreferenceQuery>;
+export type GetMyUserPreferenceLazyQueryHookResult = ReturnType<typeof useGetMyUserPreferenceLazyQuery>;
+export type GetMyUserPreferenceSuspenseQueryHookResult = ReturnType<typeof useGetMyUserPreferenceSuspenseQuery>;
+export type GetMyUserPreferenceQueryResult = Apollo.QueryResult<GetMyUserPreferenceQuery, GetMyUserPreferenceQueryVariables>;
+export const GetVehicleTypesDocument = gql`
+    query getVehicleTypes {
+  vehicleTypes {
+    ...vehicleTypeFragment
+  }
+}
+    ${VehicleTypeFragmentFragmentDoc}`;
+
+/**
+ * __useGetVehicleTypesQuery__
+ *
+ * To run a query within a React component, call `useGetVehicleTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVehicleTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVehicleTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetVehicleTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>(GetVehicleTypesDocument, options);
+      }
+export function useGetVehicleTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>(GetVehicleTypesDocument, options);
+        }
+export function useGetVehicleTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>(GetVehicleTypesDocument, options);
+        }
+export type GetVehicleTypesQueryHookResult = ReturnType<typeof useGetVehicleTypesQuery>;
+export type GetVehicleTypesLazyQueryHookResult = ReturnType<typeof useGetVehicleTypesLazyQuery>;
+export type GetVehicleTypesSuspenseQueryHookResult = ReturnType<typeof useGetVehicleTypesSuspenseQuery>;
+export type GetVehicleTypesQueryResult = Apollo.QueryResult<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>;
+export const GetqrDocument = gql`
+    query getqr {
+  getUserQr(type: "png")
+}
+    `;
+
+/**
+ * __useGetqrQuery__
+ *
+ * To run a query within a React component, call `useGetqrQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetqrQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetqrQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetqrQuery(baseOptions?: Apollo.QueryHookOptions<GetqrQuery, GetqrQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetqrQuery, GetqrQueryVariables>(GetqrDocument, options);
+      }
+export function useGetqrLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetqrQuery, GetqrQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetqrQuery, GetqrQueryVariables>(GetqrDocument, options);
+        }
+export function useGetqrSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetqrQuery, GetqrQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetqrQuery, GetqrQueryVariables>(GetqrDocument, options);
+        }
+export type GetqrQueryHookResult = ReturnType<typeof useGetqrQuery>;
+export type GetqrLazyQueryHookResult = ReturnType<typeof useGetqrLazyQuery>;
+export type GetqrSuspenseQueryHookResult = ReturnType<typeof useGetqrSuspenseQuery>;
+export type GetqrQueryResult = Apollo.QueryResult<GetqrQuery, GetqrQueryVariables>;
 export const CreateUserDocument = gql`
     mutation createUser($input: UserCreateInput!) {
   createUser(input: $input) {
@@ -10780,6 +11026,37 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const CreateUserQrsDocument = gql`
+    mutation createUserQrs($type: String!) {
+  createUserQr(type: $type)
+}
+    `;
+export type CreateUserQrsMutationFn = Apollo.MutationFunction<CreateUserQrsMutation, CreateUserQrsMutationVariables>;
+
+/**
+ * __useCreateUserQrsMutation__
+ *
+ * To run a mutation, you first call `useCreateUserQrsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserQrsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserQrsMutation, { data, loading, error }] = useCreateUserQrsMutation({
+ *   variables: {
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useCreateUserQrsMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserQrsMutation, CreateUserQrsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserQrsMutation, CreateUserQrsMutationVariables>(CreateUserQrsDocument, options);
+      }
+export type CreateUserQrsMutationHookResult = ReturnType<typeof useCreateUserQrsMutation>;
+export type CreateUserQrsMutationResult = Apollo.MutationResult<CreateUserQrsMutation>;
+export type CreateUserQrsMutationOptions = Apollo.BaseMutationOptions<CreateUserQrsMutation, CreateUserQrsMutationVariables>;
 export const GetUserDocument = gql`
     query getUser($id: String!) {
   user(id: $id) {

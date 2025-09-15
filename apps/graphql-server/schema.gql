@@ -5930,7 +5930,7 @@ input StringNullableFilter {
 
 type Subscription {
   conversationUpdated: ConversationPayload!
-  messageReceived(conversationId: String, rideId: String): MessagePayload!
+  messageEvent(conversationId: String, rideId: String): MessagePayload!
   participantUpdated(conversationId: String!): ConversationParticipantPayload!
 }
 

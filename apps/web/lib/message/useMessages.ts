@@ -5,7 +5,7 @@ import {
   useEditMessageMutation,
   useGetMessagesQuery,
   useMarkMessageDeliveredMutation,
-  useMessageReceivedSubscription,
+  useMessageEventSubscription,
   useSendMessageMutation,
 } from '@/graphql/generated/graphql';
 
@@ -20,7 +20,7 @@ export const useMessages = (options: UseMessagesOptions) => {
   const [optimisticMessages, setOptimisticMessages] = useState<any[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { data, loading, error, fetchMore } = useGetMessagesQuery({
+  const { data, loading, error, fetchMore, updateQuery } = useGetMessagesQuery({
     variables: {
       conversationId: options.conversationId,
       rideId: options.rideId,
@@ -30,6 +30,8 @@ export const useMessages = (options: UseMessagesOptions) => {
       setMessages(data.messages || []);
     },
   });
+
+  console.log('data :>>>>>>>>>><< ', data);
 
   const [sendMessageMutation] = useSendMessageMutation({
     onCompleted: data => {
@@ -50,7 +52,7 @@ export const useMessages = (options: UseMessagesOptions) => {
   const [markDelivered] = useMarkMessageDeliveredMutation();
 
   // Subscription pour les nouveaux messages
-  const { data: subscriptionData } = useMessageReceivedSubscription({
+  const { data: subscriptionData } = useMessageEventSubscription({
     variables: {
       conversationId: options.conversationId,
       rideId: options.rideId,
@@ -58,10 +60,18 @@ export const useMessages = (options: UseMessagesOptions) => {
     onData: ({ data }) => {
       console.log('data useMessageReceivedSubscription :>> ', data);
 
-      if (data.data?.messageReceived) {
-        const { message, type } = data.data.messageReceived;
+      if (data.data?.messageEvent) {
+        const { message, type } = data.data.messageEvent;
 
         if (type === 'NEW_MESSAGE') {
+          // Mettre à jour le cache Apollo
+          updateQuery(prev => ({
+            ...prev,
+            messages: [message, ...(prev.messages || [])].filter(
+              (msg, index, self) => self.findIndex(m => m.id === msg.id) === index,
+            ),
+          }));
+
           setMessages(prev => {
             // Éviter les doublons
             const exists = prev.some(m => m.id === message.id);
@@ -75,6 +85,12 @@ export const useMessages = (options: UseMessagesOptions) => {
             markDelivered({ variables: { messageId: message.id } });
           }
         } else if (type === 'MESSAGE_UPDATED') {
+          // Mettre à jour le cache Apollo pour les messages modifiés
+          updateQuery(prev => ({
+            ...prev,
+            messages: (prev.messages || []).map(m => (m.id === message.id ? message : m)),
+          }));
+
           setMessages(prev => prev.map(m => (m.id === message.id ? message : m)));
         }
       }
