@@ -16,3 +16,12 @@ mutation UpdateUser($input: UserUpdateInput!) {
 }
 ''';
 
+const String setUserRoleMutation = r'''
+mutation SetUserRole($userId: String!, $role: String!) {
+  setUserRole(userId: $userId, role: $role) {
+    id
+    roles
+  }
+}
+''';
+

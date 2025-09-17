@@ -3,14 +3,18 @@ import '../models/user_onboarding_data.dart';
 import '../models/user_onboarding_step_model.dart';
 import '../core/interfaces/user_service_interface.dart';
 import '../services/user_service.dart';
+import '../../../../api/graph-ql/graphql_client.dart';
+import '../data/user_data_source_graphql.dart';
 
 class UserOnboardingRepository {
   final IUserOnboardingService _service;
 
   UserOnboardingRepository({IUserOnboardingService? service})
-    : _service = service ?? UserOnboardingService();
+      : _service = service ??
+            UserOnboardingService(
+              UserDataSourceGraphQL(GraphQLClientWrapper.instance),
+            );
 
-  // Standardized methods used by ViewModel
   Future<bool> requestGpsPermission(BuildContext context) {
     return _service.requestGpsPermission(context);
   }
@@ -37,25 +41,24 @@ class UserOnboardingRepository {
     return _service.completeOnboarding(context);
   }
 
-  // Legacy/stubbed methods for future expansion
   Future<void> saveGpsPreference(bool enabled) async {
-    throw UnimplementedError('saveGpsPreference not implemented yet');
+    await _service.saveUserPreferences(AppState(gpsEnabled: enabled));
   }
 
   Future<void> saveNotificationPreference(bool enabled) async {
-    throw UnimplementedError('saveNotificationPreference not implemented yet');
+    await _service.saveUserPreferences(AppState(notifEnabled: enabled));
   }
 
   Future<void> saveThemePreference(String theme) async {
-    throw UnimplementedError('saveThemePreference not implemented yet');
+    await _service.saveUserPreferences(AppState(selectedTheme: theme));
   }
 
   Future<void> saveTransportPreferences(List<String> transports) async {
-    throw UnimplementedError('saveTransportPreferences not implemented yet');
+    await _service.saveUserPreferences(AppState(selectedTransports: transports));
   }
 
   Future<void> saveLanguagePreference(String language) async {
-    throw UnimplementedError('saveLanguagePreference not implemented yet');
+    await _service.saveUserPreferences(AppState(selectedLanguage: language));
   }
 
   Future<void> completeOnboardingLegacy(AppState appState) async {

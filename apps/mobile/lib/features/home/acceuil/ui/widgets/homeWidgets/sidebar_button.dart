@@ -20,7 +20,7 @@ class SidebarButton extends StatelessWidget {
       top: 20,
       child: GestureDetector(
         onTap: onTap,
-        child: Container(
+        child: SizedBox(
           width: 50,
           height: 50,
           child: ShaderMask(

@@ -28,7 +28,7 @@ class _GpsStep extends StatelessWidget {
                 value: false,
                 groupValue: viewModel.appState.gpsEnabled,
                 onChanged: (value) =>
-                    viewModel.updateGps(value!, context, shouldSave: false),
+                    viewModel.updateGps(value!, context, shouldSave: true),
               ),
             ),
             Expanded(

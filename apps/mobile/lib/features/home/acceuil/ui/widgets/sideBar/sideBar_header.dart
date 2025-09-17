@@ -1,3 +1,4 @@
+// ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sidebar_profile.dart';
@@ -21,7 +22,7 @@ class SidebarHeader extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: onProfileTap,
-            child: Container(
+            child: SizedBox(
               width: 50,
               height: 50,
               child: ShaderMask(

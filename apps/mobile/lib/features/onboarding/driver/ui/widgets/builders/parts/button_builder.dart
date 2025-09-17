@@ -5,6 +5,7 @@ import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboar
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/l10n/l10n.dart';
 import 'preferences_builder.dart';
+import 'package:safe_driving/app/routes.dart';
 
 class ButtonBuilder {
   static Widget buildButtons(
@@ -17,11 +18,24 @@ class ButtonBuilder {
       return PreferencesBuilder.buildGpsButtons(coordinator, nextStep, context);
     }
 
+    if (step.stepType == DriverStepType.completion) {
+      return PrimaryButton.primaryButton(
+        text: context.l10n.driverCompleteStart,
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, AppRoutes.home);
+        },
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+      );
+    }
+
     if (step.stepType == DriverStepType.legal) {
       if (coordinator.legalViewModel.allCguAccepted) {
         return PrimaryButton.primaryButton(
           text: context.l10n.next,
-          onPressed: nextStep,
+          onPressed: () {
+      
+            coordinator.nextStep().whenComplete(nextStep);
+          },
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
         );
       }
@@ -61,13 +75,25 @@ class ButtonBuilder {
           break;
       }
 
+      // Build onPressed handlers: last button triggers backend save via coordinator.nextStep()
+      final List<VoidCallback> handlers = [];
+      for (int i = 0; i < usedTitles.length; i++) {
+        final isPrimary = i == usedTitles.length - 1;
+        if (isPrimary) {
+          handlers.add(() {
+            // Trigger backend save then navigate
+            coordinator.nextStep().whenComplete(nextStep);
+          });
+        } else {
+          handlers.add(() {
+            nextStep();
+          });
+        }
+      }
+
       return ButtonRows.buttonRow(
         buttonTitles: usedTitles,
-        onPressedList: usedTitles.map((buttonTitle) {
-          return () {
-            nextStep();
-          };
-        }).toList(),
+        onPressedList: handlers,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         isLastButtonPrimary: true,
         spacing: 8,

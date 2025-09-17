@@ -10,7 +10,7 @@ class HomeHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Row(
         children: [
-          Container(width: 50, height: 50),
+          const SizedBox(width: 50, height: 50),
           const SizedBox(width: 15),
           const Expanded(
             child: Text(

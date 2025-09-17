@@ -1,7 +1,6 @@
-// Upload mutations
 const String uploadFileMutation = r'''
-  mutation UploadFile($file: Upload!, $path: String) {
-    uploadFile(file: $file, path: $path) {
+  mutation UploadFile($file: Upload!) {
+    uploadFile(file: $file) {
       url
     }
   }
@@ -14,28 +13,101 @@ const String deleteObjectMutation = r'''
 ''';
 
 const String getPresignedUrlMutation = r'''
-  mutation GetPresignedUrl($key: String!, $contentType: String!, $expiresIn: Int) {
+  mutation GetPresignedUrl($key: String!, $contentType: String!, $expiresIn: Float) {
+  mutation GetPresignedUrl($key: String!, $contentType: String!, $expiresIn: Float) {
     getPresignedUrl(key: $key, contentType: $contentType, expiresIn: $expiresIn)
   }
 ''';
 
 const String createBatchPresignedUrlsMutation = r'''
-  mutation CreateBatchPresignedUrls($type: ImageType!, $files: [FileMetaInput!]!) {
+  mutation CreateBatchPresignedUrls($type: FileType!, $files: [FileMetaInput!]!) {
+  mutation CreateBatchPresignedUrls($type: FileType!, $files: [FileMetaInput!]!) {
     createBatchPresignedUrls(type: $type, files: $files) {
       key
       url
-      fileName
+      expiresIn
+      expiresIn
     }
   }
 ''';
 
 const String completeUploadBulkMutation = r'''
-  mutation CompleteUploadBulk($keys: [String!]!, $type: ImageType!) {
+  mutation CompleteUploadBulk($keys: [String!]!, $type: FileType!) {
+  mutation CompleteUploadBulk($keys: [String!]!, $type: FileType!) {
     completeUploadBulk(keys: $keys, type: $type) {
       key
-      url
-      success
-      error
+      contentType
+      etag
+      size
+    }
+  }
+''';
+
+
+const String uploadUserImagesMutation = r'''
+  mutation uploadUserImages($keys: [String!]!) {
+    uploadUserImages(keys: $keys) {
+      id
+      UserImage {
+        createdAt
+        file {
+          id
+          key
+          url
+        }
+        id
+        updatedAt
+        userId
+      }
+    }
+  }
+''';
+
+const String uploadUserDocumentMutation = r'''
+  mutation uploadUserDocument($input: [UploadUserDocumentsInput!]!) {
+    uploadUserDocument(input: $input) {
+      id
+      UserDocument {
+        id
+        name
+        documentType
+        file {
+          id
+          key
+          url
+        }
+      }
+    }
+  }
+''';
+
+const String uploadAvatarMutation = r'''
+  mutation uploadAvatar($key: String!) {
+    uploadAvatar(key: $key) {
+      id
+      avatar {
+        id
+        key
+        url
+      }
+    }
+  }
+''';
+
+const String uploadCoverMutation = r'''
+  mutation uploadCover($key: String!) {
+    uploadCover(key: $key) {
+      id
+      UserCover {
+        id
+        updatedAt
+        createdAt
+        file {
+          id
+          key
+          url
+        }
+      }
     }
   }
 ''';

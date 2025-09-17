@@ -59,9 +59,12 @@ class LanguageButtons {
 
   static String _normalizeToCode(String input) {
     final lower = input.toLowerCase();
-    if (lower == 'fr' || lower == 'français' || lower == 'francais')
+    if (lower == 'fr' || lower == 'français' || lower == 'francais') {
       return 'fr';
-    if (lower == 'en' || lower == 'english' || lower == 'anglais') return 'en';
+    }
+    if (lower == 'en' || lower == 'english' || lower == 'anglais') {
+      return 'en';
+    }
     return 'fr';
   }
 

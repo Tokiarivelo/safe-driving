@@ -3,6 +3,11 @@ import '../models/user_onboarding_step_model.dart';
 import '../core/interfaces/user_service_interface.dart';
 import '../data/user_data_source_interface.dart';
 import '../../../../shared/widgets/customs/buttons/utils/permission_handlers.dart';
+import '../ui/screens/user_welcome_screen.dart';
+import 'package:safe_driving/shared/state_management/service_locator.dart';
+import 'package:safe_driving/api/graph-ql/client/graphql_client.dart';
+import 'package:safe_driving/api/graph-ql/mutations.dart';
+import 'package:safe_driving/features/onboarding/driver/core/interfaces/driver_service_interface.dart';
 
 class UserOnboardingService implements IUserOnboardingService {
   final IUserDataSource? _dataSource;
@@ -39,9 +44,8 @@ class UserOnboardingService implements IUserOnboardingService {
           'selectedLanguage': state.selectedLanguage,
         },
       );
-    } catch (_) {
-      // Ignore until concrete implementation is ready
-    }
+    } catch (_) {}
+    } catch (_) {}
   }
 
   @override
@@ -65,11 +69,31 @@ class UserOnboardingService implements IUserOnboardingService {
   @override
   Future<void> completeOnboarding(BuildContext context) async {
     try {
-      if (_dataSource != null) {}
-    } catch (_) {
-      // Backend completion is optional for now; proceed with navigation
-    }
+      if (_dataSource != null) {
+        await _dataSource.completeOnboarding('current');
+      }
+    } catch (_) {}
+
+    // Ensure role USER is persisted and a QR code is created for the current user
+    try {
+      final svc = ServiceLocator.instance.get<IDriverService>();
+      await svc.setUserRole(isDriver: false);
+    } catch (_) {}
+    try {
+      // Generate and persist a personal QR code (server-side stores it)
+      final client = GraphQLClientWrapper.instance;
+      await client.executeMutation(
+        document: createUserQrMutation,
+        variables: const {'type': 'png'},
+      );
+    } catch (_) {}
+
     if (!context.mounted) return;
-    Navigator.pushReplacementNamed(context, '/home');
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const UserWelcomeScreen()),
+    );
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const UserWelcomeScreen()),
+    );
   }
 }

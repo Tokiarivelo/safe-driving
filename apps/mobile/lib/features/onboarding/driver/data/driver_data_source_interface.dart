@@ -13,8 +13,8 @@ abstract class IDriverDataSource {
     required String marque,
     required String modele,
     required String immatriculation,
-    required String couleur,
-    required int annee,
+    int? places,
+    String? typeVehicule,
   });
 
   Future<Map<String, dynamic>> uploadDocument({
@@ -77,4 +77,58 @@ abstract class IDriverDataSource {
     Map<String, dynamic>? vehicleInfo,
     Map<String, dynamic>? preferences,
   });
+
+
+  Future<String> generatePresignedUrl({
+    required String key,
+    required String contentType,
+    double? expiresIn,
+  });
+
+  Future<List<Map<String, dynamic>>> createBatchPresignedUrls({
+    required String type, // GraphQL FileType enum value
+    required List<Map<String, String>> files, // [{ originalName, contentType, uniqueId? }]
+  });
+
+  Future<List<Map<String, dynamic>>> completeUploadBulk({
+    required List<String> keys,
+    required String type, // GraphQL FileType enum value
+  });
+
+  Future<Map<String, dynamic>> createUpload({
+    required String userId,
+    required String documentType,
+    required String key,
+    required String url,
+    required int size,
+    String? originalName,
+    String? contentType,
+    String? etag,
+    String? driverVehicleId,
+  });
+
+  // Associate uploaded files (by key) to current user as UserDocument entries
+  Future<Map<String, dynamic>> uploadUserDocuments({
+    required List<Map<String, dynamic>> input, // [{ documentType, file: { key }, name? }]
+  });
+
+
+  Future<List<Map<String, dynamic>>> uploadVehicleImages({
+    required String vehicleId,
+    required List<String> keys,
+  });
+
+  Future<List<Map<String, dynamic>>> uploadVehicleDocuments({
+    required String vehicleId,
+    required List<Map<String, dynamic>> input, // [{ documentType, file: { key }, name? }]
+  });
+
+  Future<String> generateDriverQrCode({String? type});
+
+  Future<Map<String, dynamic>> updateDriverStatus({
+    required String userId,
+    required Map<String, dynamic> input,
+  });
+
+  Future<Map<String, dynamic>> upsertUserPreference(Map<String, dynamic> input);
 }

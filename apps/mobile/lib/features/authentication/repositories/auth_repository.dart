@@ -1,20 +1,17 @@
 import 'package:safe_driving/features/authentication/models/auth_request.dart';
-import 'package:safe_driving/features/authentication/data/auth_data_source_interface.dart';
-import 'package:safe_driving/features/authentication/models/change_password_request_model.dart';
-import 'package:safe_driving/features/authentication/models/reset_password_request_model.dart';
-import 'package:safe_driving/features/authentication/models/update_profile_request_model.dart';
+import 'package:safe_driving/features/authentication/services/auth_service.dart';
+import '../models/auth_models.dart';
 
 class AuthRepository {
-  final IAuthDataSource _dataSource;
+  final AuthService _service;
 
-  AuthRepository(this._dataSource);
+  AuthRepository(this._service);
 
-  Future<Map<String, dynamic>> signIn(String email, String password) async {
-    final request = SignInRequest(email: email, password: password);
-    return await _dataSource.signIn(request);
+  Future<AuthResult> signIn(String email, String password) async {
+    return await _service.signIn(email, password);
   }
 
-  Future<Map<String, dynamic>> signUp(
+  Future<AuthResult> signUp(
     String firstName,
     String lastName,
     String email,
@@ -26,19 +23,18 @@ class AuthRepository {
       email: email,
       password: password,
     );
-    return await _dataSource.signUp(request);
+    return await _service.signUp(request);
   }
 
-  Future<Map<String, dynamic>> resetPassword(String email) async {
-    final request = ResetPasswordRequest(email: email);
-    return await _dataSource.resetPassword(request);
+  Future<AuthResult> resetPassword(String email) async {
+    return await _service.resetPassword(email);
   }
 
-  Future<Map<String, dynamic>> getCurrentUser() async {
-    return await _dataSource.getCurrentUser();
+  Future<AuthResult> getCurrentUser() async {
+    return await _service.getCurrentUser();
   }
 
-  Future<Map<String, dynamic>> updateProfile({
+  Future<AuthResult> updateProfile({
     required String userId,
     String? firstName,
     String? lastName,
@@ -52,10 +48,10 @@ class AuthRepository {
       email: email,
       phoneNumber: phoneNumber,
     );
-    return await _dataSource.updateProfile(request);
+    return await _service.updateProfile(request);
   }
 
-  Future<Map<String, dynamic>> changePassword(
+  Future<AuthResult> changePassword(
     String currentPassword,
     String newPassword,
   ) async {
@@ -63,25 +59,35 @@ class AuthRepository {
       currentPassword: currentPassword,
       newPassword: newPassword,
     );
-    return await _dataSource.changePassword(request);
+    return await _service.changePassword(request);
   }
 
-  Future<Map<String, dynamic>> refreshToken(String refreshToken) async {
-    return await _dataSource.refreshToken(refreshToken);
+  Future<AuthResult> resetPasswordConfirm(String sessionToken, String newPassword) async {
+    return await _service.resetPasswordConfirm(sessionToken, newPassword);
   }
 
-  Future<Map<String, dynamic>> signInWithGoogle() async {
-    return await _dataSource.signInWithGoogle();
+  Future<AuthResult> refreshToken() async {
+    return await _service.refreshToken();
   }
 
-  Future<Map<String, dynamic>> signInWithFacebook() async {
-    return await _dataSource.signInWithFacebook();
+  Future<AuthResult> signInWithGoogle() async {
+    return await _service.signInWithGoogle();
   }
 
-  Future<Map<String, dynamic>> deleteAccount(
-    String userId,
-    String password,
-  ) async {
-    return await _dataSource.deleteAccount(userId, password);
+  Future<AuthResult> signInWithFacebook() async {
+    return await _service.signInWithFacebook();
+  }
+
+  Future<AuthResult> deleteAccount(String userId, String password) async {
+    final res = await _service.deleteAccount(userId, password);
+    return res;
+  }
+
+  Future<bool> isEmailTaken(String email) async {
+    return await _service.isEmailTaken(email);
+  }
+
+  Future<void> logout() async {
+    await _service.logout();
   }
 }

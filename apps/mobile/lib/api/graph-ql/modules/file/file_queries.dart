@@ -38,3 +38,23 @@ query File($id: String!) {
 }
 ''';
 
+const String getFilesSimpleQuery = r'''
+query getFiles{
+  files{
+    contentType
+    driverVehicleId
+    etag
+    id
+    key
+    meta
+    name
+    originalName
+    size
+    status
+    type
+    url
+    userId
+  }
+}
+''';
+

@@ -45,22 +45,22 @@ class DriverRepository implements RepositoryInterface {
     }
   }
 
-  Future<void> saveVehicleInfo({
+  Future<Map<String, dynamic>> saveVehicleInfo({
     required String userId,
     required String marque,
     required String modele,
     required String immatriculation,
-    required String couleur,
-    required int annee,
+    int? places,
+    String? typeVehicule,
   }) async {
     try {
-      await _dataSource.saveVehicleInfo(
+      return await _dataSource.saveVehicleInfo(
         userId: userId,
         marque: marque,
         modele: modele,
         immatriculation: immatriculation,
-        couleur: couleur,
-        annee: annee,
+        places: places,
+        typeVehicule: typeVehicule,
       );
     } catch (e) {
       throw Exception('Failed to save vehicle info: $e');
@@ -98,6 +98,137 @@ class DriverRepository implements RepositoryInterface {
       return result['data']['id'] ?? '';
     } catch (e) {
       throw Exception('Failed to upload selfie: $e');
+    }
+  }
+
+  Future<String> generatePresignedUrl({
+    required String key,
+    required String contentType,
+    double? expiresIn,
+  }) async {
+    try {
+      return await _dataSource.generatePresignedUrl(
+        key: key,
+        contentType: contentType,
+        expiresIn: expiresIn,
+      );
+    } catch (e) {
+      throw Exception('Failed to generate presigned url: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> createBatchPresignedUrls({
+    required String type,
+    required List<Map<String, String>> files,
+  }) async {
+    try {
+      return await _dataSource.createBatchPresignedUrls(
+        type: type,
+        files: files,
+      );
+    } catch (e) {
+      throw Exception('Failed to create batch presigned urls: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> completeUploadBulk({
+    required List<String> keys,
+    required String type,
+  }) async {
+    try {
+      return await _dataSource.completeUploadBulk(
+        keys: keys,
+        type: type,
+      );
+    } catch (e) {
+      throw Exception('Failed to complete upload bulk: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> createUpload({
+    required String userId,
+    required String documentType,
+    required String key,
+    required String url,
+    required int size,
+    String? originalName,
+    String? contentType,
+    String? etag,
+    String? driverVehicleId,
+  }) async {
+    try {
+      return await _dataSource.createUpload(
+        userId: userId,
+        documentType: documentType,
+        key: key,
+        url: url,
+        size: size,
+        originalName: originalName,
+        contentType: contentType,
+        etag: etag,
+        driverVehicleId: driverVehicleId,
+      );
+    } catch (e) {
+      throw Exception('Failed to create upload: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> uploadUserDocuments({
+    required List<Map<String, dynamic>> input,
+  }) async {
+    try {
+      return await _dataSource.uploadUserDocuments(input: input);
+    } catch (e) {
+      throw Exception('Failed to attach user documents: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> uploadVehicleImages({
+    required String vehicleId,
+    required List<String> keys,
+  }) async {
+    try {
+      return await _dataSource.uploadVehicleImages(vehicleId: vehicleId, keys: keys);
+    } catch (e) {
+      throw Exception('Failed to attach vehicle images: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> uploadVehicleDocuments({
+    required String vehicleId,
+    required List<Map<String, dynamic>> input,
+  }) async {
+    try {
+      return await _dataSource.uploadVehicleDocuments(vehicleId: vehicleId, input: input);
+    } catch (e) {
+      throw Exception('Failed to attach vehicle documents: $e');
+    }
+  }
+
+  Future<String> generateDriverQrCode({String? type}) async {
+    try {
+      return await _dataSource.generateDriverQrCode(type: type);
+    } catch (e) {
+      throw Exception('Failed to generate driver QR code: $e');
+    }
+  }
+
+  Future<void> updateDriverStatus({
+    required String userId,
+    required Map<String, dynamic> input,
+  }) async {
+    try {
+      await _dataSource.updateDriverStatus(userId: userId, input: input);
+    } catch (e) {
+      throw Exception('Failed to update driver status: $e');
+    }
+  }
+
+  Future<void> upsertUserPreference(Map<String, dynamic> input) async {
+    try {
+      await _dataSource.upsertUserPreference(input);
+    } catch (e) {
+      throw Exception('Failed to upsert user preference: $e');
     }
   }
 
@@ -154,15 +285,19 @@ class DriverRepository implements RepositoryInterface {
     throw UnimplementedError('getDocumentValidationStatus not implemented yet');
   }
 
-  Future<Map<String, List<String>>> getUploadedDocuments(String userId) async {
-    throw UnimplementedError('getUploadedDocuments not implemented yet');
+  Future<Map<String, dynamic>> getUploadedDocuments(String userId) async {
+    try {
+      return await _dataSource.getUploadedDocuments(userId);
+    } catch (e) {
+      throw Exception('Failed to fetch uploaded documents: $e');
+    }
   }
 
   Future<void> deleteDocument({
     required String userId,
     required String documentId,
   }) async {
-    throw UnimplementedError('deleteDocument not implemented yet');
+    await _dataSource.deleteDocument(userId: userId, documentId: documentId);
   }
 
   Future<void> updateOnboardingStep({
@@ -170,7 +305,15 @@ class DriverRepository implements RepositoryInterface {
     required int currentStep,
     required Map<String, dynamic> stepData,
   }) async {
-    throw UnimplementedError('updateOnboardingStep not implemented yet');
+    try {
+      await _dataSource.updateOnboardingStep(
+        userId: userId,
+        currentStep: currentStep,
+        stepData: stepData,
+      );
+    } catch (e) {
+      throw Exception('Failed to update onboarding step: $e');
+    }
   }
 
   Future<Map<String, String?>> validateDriverInfo({

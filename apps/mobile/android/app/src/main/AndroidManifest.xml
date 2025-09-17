@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-<<<<<<< HEAD
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -9,31 +9,21 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- Required for Android 13+ to request notification permission at runtime -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Background location for Android 10+ (requested separately at runtime) -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" />
-    <!-- <uses-feature android:name="android.hardware.camera" /> -->
-=======
-<uses-permission android:name="android.permission.CAMERA" />
-<uses-permission android:name="android.permission.RECORD_AUDIO" />
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.RECEIVE_SMS"/>
-<uses-permission android:name="android.permission.READ_SMS"/>
-<uses-permission android:name="android.permission.SEND_SMS"/>
-<!-- Required for Android 13+ to request notification permission at runtime -->
-<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-<!-- Background location for Android 10+ (requested separately at runtime) -->
-<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
->>>>>>> a956c7b (feat: Add Android background location permission in AndroidManifest and update GPS handler to support 'always' permission after 'whileInUse' is granted.)
-
 
     <application
         android:label="safe_driving"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -49,8 +39,7 @@
                  to determine the Window background behind the Flutter UI. -->
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
-                android:resource="@style/NormalTheme"
-            />
+                android:resource="@style/NormalTheme" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -61,11 +50,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <!-- <uses-feature android:name="android.hardware.camera" />
-        <uses-feature android:name="android.hardware.camera.front" /> -->
-        <meta-data android:name="flutterEmbedding" android:value="2" />
-
     </application>
+
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.

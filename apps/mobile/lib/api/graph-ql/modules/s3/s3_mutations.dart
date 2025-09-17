@@ -1,33 +1,32 @@
-// S3 mutations
 const String s3CreatePresignedUrlMutation = r'''
-  mutation S3CreatePresignedUrl($key: String!, $contentType: String!, $expiresIn: Int) {
-    s3CreatePresignedUrl(key: $key, contentType: $contentType, expiresIn: $expiresIn)
+  mutation S3CreatePresignedUrl($key: String!, $contentType: String!, $expiresIn: Float) {
+    getPresignedUrl(key: $key, contentType: $contentType, expiresIn: $expiresIn)
   }
 ''';
 
 const String s3CreateBatchPresignedUrlsMutation = r'''
-  mutation S3CreateBatchPresignedUrls($type: ImageType!, $files: [FileMetaInput!]!) {
-    s3CreateBatchPresignedUrls(type: $type, files: $files) {
+  mutation S3CreateBatchPresignedUrls($type: FileType!, $files: [FileMetaInput!]!) {
+    createBatchPresignedUrls(type: $type, files: $files) {
       key
       url
-      fileName
+      expiresIn
     }
   }
 ''';
 
 const String s3CompleteUploadBulkMutation = r'''
-  mutation S3CompleteUploadBulk($keys: [String!]!, $type: ImageType!) {
+  mutation S3CompleteUploadBulk($keys: [String!]!, $type: FileType!) {
     completeUploadBulk(keys: $keys, type: $type) {
       key
-      url
-      success
-      error
+      contentType
+      etag
+      size
     }
   }
 ''';
 
 const String s3DeleteObjectMutation = r'''
   mutation S3DeleteObject($key: String!) {
-    s3DeleteObject(key: $key)
+    deleteObject(key: $key)
   }
 ''';

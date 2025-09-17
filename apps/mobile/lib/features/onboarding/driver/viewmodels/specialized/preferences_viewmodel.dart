@@ -37,6 +37,8 @@ class PreferencesViewModel extends ChangeNotifier {
   void setGpsEnabled(bool enabled) {
     _gpsEnabled = enabled;
     notifyListeners();
+
+    _service.saveGpsPreference(enabled);
   }
 
   Future<bool> requestGpsPermission() async {
@@ -73,6 +75,13 @@ class PreferencesViewModel extends ChangeNotifier {
       _selectedNotifications.add(notification);
     }
     notifyListeners();
+    // Persister immédiatement les préférences de notifications
+    final prefs = <String, bool>{
+      'activateSmsNotifications': _selectedNotifications.contains('SMS'),
+      'activateNotifications': _selectedNotifications.contains('Push notification mobile'),
+      'activateEmailNotifications': _selectedNotifications.contains('E-mail'),
+    };
+    _service.saveNotificationPreferences(prefs);
   }
 
   void addNotification(String notification) {
@@ -97,6 +106,8 @@ class PreferencesViewModel extends ChangeNotifier {
   void setTheme(String theme) {
     _selectedTheme = theme;
     notifyListeners();
+
+    _service.saveAppPreferences(theme: _selectedTheme, language: _selectedLanguage);
   }
 
   void setSelectedTheme(String theme) {
@@ -109,6 +120,8 @@ class PreferencesViewModel extends ChangeNotifier {
     final code = _normalizeLanguage(language);
     _selectedLanguage = code;
     notifyListeners();
+ 
+    _service.saveAppPreferences(theme: _selectedTheme, language: _selectedLanguage);
   }
 
   void setSelectedLanguage(String language) {

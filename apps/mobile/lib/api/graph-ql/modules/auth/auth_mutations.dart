@@ -6,9 +6,7 @@ mutation Login($data: LoginInput!) {
     token
     user {
       id
-      email
       firstName
-      lastName
     }
   }
 }
@@ -18,9 +16,8 @@ const String registerMutation = r'''
 mutation Register($data: RegisterInput!) {
   register(data: $data) {
     id
-    email
+    username
     firstName
-    lastName
   }
 }
 ''';

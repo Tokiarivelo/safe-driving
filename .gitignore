@@ -124,3 +124,4 @@ ors-data/pbf
 apps/graphql-server/schema.gql
 apps/web/graphql/generated/graphql.ts
 apps/web/graphql.schema.json
+db_data

@@ -3,6 +3,7 @@ import 'package:safe_driving/l10n/l10n.dart';
 import '../../../../../core/utils/form/form_utils.dart';
 import '../../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
 import '../../widgets/auth/auth_widget.dart';
+import '../../../../../shared/state_management/providers.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   final VoidCallback? onNavigateToLogin;
@@ -45,13 +46,23 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
     if (!mounted) return;
 
-    SnackbarHelper.showSuccess(
-      context,
-      context.l10n.resetPassword,
-    );
+    final ok = await context.authVM.resetPassword(emailToUse);
 
-    if (widget.onSendCodeSuccess != null) {
-      widget.onSendCodeSuccess!(emailToUse);
+    if (!mounted) return;
+
+    if (ok) {
+      SnackbarHelper.showSuccess(
+        context,
+        context.l10n.resetPassword,
+      );
+      if (widget.onSendCodeSuccess != null) {
+        widget.onSendCodeSuccess!(emailToUse);
+      }
+    } else {
+      SnackbarHelper.showError(
+        context,
+        context.l10n.networkError,
+      );
     }
   }
 

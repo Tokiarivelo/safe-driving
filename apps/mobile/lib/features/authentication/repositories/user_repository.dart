@@ -30,7 +30,11 @@ class UserRepository {
       document: isEmailTakenQuery,
       variables: {'email': email},
     );
-    return data['isEmailTaken'] ?? false;
+    final users = data['users'];
+    if (users is List) {
+      return users.isNotEmpty;
+    }
+    return false;
   }
 
   Future<AppState> getUserPreferences(String userId) async {

@@ -57,6 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SafeArea(
           child: Stack(
             children: [
+              // Contenu principal
+              const Positioned.fill(child: HomeContent()),
+              // Sidebar animmation
               const Expanded(child: HomeContent()),
               AnimatedSidebar(
                 isVisible: _isSidebarVisible,

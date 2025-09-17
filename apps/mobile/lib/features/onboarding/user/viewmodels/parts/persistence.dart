@@ -6,6 +6,18 @@ mixin UserOnboardingPersistenceMixin on UserOnboardingContract {
     await _repository.saveUserPreferences(_appState);
   }
 
+  Future<void> saveCurrentPreferences() async {
+    _setLoading(true);
+    _setError(null);
+    try {
+      await _savePreferences();
+    } catch (e) {
+      _setError('Erreur lors de la sauvegarde');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   Future<void> loadPreferences() async {
     _setLoading(true);
     try {

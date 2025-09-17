@@ -5,11 +5,14 @@ import '../../features/authentication/data/auth_data_source_interface.dart';
 import '../../features/authentication/data/auth_data_source_graphql.dart';
 import '../../features/authentication/services/auth_service.dart';
 import '../../features/authentication/repositories/user_repository.dart';
+import '../../features/authentication/repositories/auth_repository.dart';
+import '../../features/authentication/repositories/auth_repository.dart';
 import '../../features/authentication/viewmodels/auth_view_model.dart';
 import '../../features/onboarding/driver/core/interfaces/driver_service_interface.dart';
 import '../../features/onboarding/driver/services/driver_service.dart';
 import '../../features/onboarding/driver/services/storage_service.dart';
 import '../../features/onboarding/driver/repositories/driver_repository.dart';
+
 import '../../features/onboarding/driver/data/driver_data_source_interface.dart';
 import '../../features/onboarding/driver/data/driver_data_source_graphql.dart';
 import '../../features/onboarding/driver/data/driver_data_source_local.dart';
@@ -22,6 +25,7 @@ import '../../features/onboarding/user/core/interfaces/user_service_interface.da
 import '../../features/onboarding/user/services/user_service.dart';
 import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart';
 import 'package:safe_driving/core/theme/theme_controller.dart';
+import 'dart:developer' as developer;
 
 typedef _FactoryFunc<T> = T Function();
 typedef _Disposer = void Function(dynamic);
@@ -125,22 +129,36 @@ class ServiceLocator {
   }
 
   void setupDependencies() {
+    registerLazySingleton<SessionService>(() => SessionService());
+    try {
+      get<SessionService>().initialize();
+    } catch (_) {}
+
     // Register GraphQL only if configured
     if (GraphQLConfig.isConfigured) {
       registerSingleton<GraphQLClientWrapper>(GraphQLClientWrapper.instance);
+      final session = get<SessionService>();
+      final session = get<SessionService>();
       get<GraphQLClientWrapper>().configure(
-        onTokenRefresh: (newToken) {},
-        onError: (error) {},
+        accessToken: session.token,
+        refreshToken: session.refreshToken,
+        onTokenRefresh: (newToken) async {
+          try {
+            await session.saveToken(newToken);
+          } catch (_) {}
+        },
+        onError: (error) {
+          // Log GraphQL client errors for easier diagnostics
+          try {
+            developer.log('[GraphQLClientWrapper] Error: $error');
+          } catch (_) {}
+        },
       );
     }
 
     // Theme controller
     registerLazySingleton<ThemeController>(() => ThemeController());
 
-    // Session service is always available
-    registerLazySingleton<SessionService>(() => SessionService());
-
-    // Auth stack (only when GraphQL is configured)
     if (GraphQLConfig.isConfigured) {
       registerLazySingleton<IAuthDataSource>(
         () => AuthDataSourceGraphQL(get<GraphQLClientWrapper>()),
@@ -158,7 +176,13 @@ class ServiceLocator {
         ),
       );
 
-      registerFactory<AuthViewModel>(() => AuthViewModel(get<AuthService>()));
+      registerLazySingleton<AuthRepository>(
+        () => AuthRepository(get<AuthService>()),
+      );
+
+      registerFactory<AuthViewModel>(
+        () => AuthViewModel(get<AuthRepository>()),
+      );
     }
 
     // Storage service for local files
@@ -170,9 +194,7 @@ class ServiceLocator {
         () => DriverDataSourceGraphQL(get<GraphQLClientWrapper>()),
       );
     } else {
-      registerLazySingleton<IDriverDataSource>(
-        () => DriverDataSourceLocal(),
-      );
+      registerLazySingleton<IDriverDataSource>(() => DriverDataSourceLocal());
     }
 
     registerLazySingleton<DriverRepository>(
@@ -180,7 +202,11 @@ class ServiceLocator {
     );
 
     registerLazySingleton<IDriverService>(
-      () => DriverService(get<DriverRepository>(), get<StorageService>()),
+      () => DriverService(
+        get<DriverRepository>(),
+        get<StorageService>(),
+        get<SessionService>(),
+      ),
     );
 
     registerFactory<DriverOnboardingCoordinator>(
@@ -200,7 +226,6 @@ class ServiceLocator {
         () => UserOnboardingService(get<IUserDataSource>()),
       );
     } else {
-      // Register a service without remote data source to allow UI to work offline / without backend
       registerLazySingleton<IUserOnboardingService>(
         () => UserOnboardingService(),
       );

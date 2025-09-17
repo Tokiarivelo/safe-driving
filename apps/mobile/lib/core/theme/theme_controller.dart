@@ -14,7 +14,6 @@ class ThemeController extends ChangeNotifier {
   ThemeMode get mode => _mode;
 
   void setMode(ThemeMode mode) {
-   
     if (mode == ThemeMode.system) {
       mode = ThemeMode.light;
     }
@@ -42,16 +41,14 @@ class ThemeController extends ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_storageKey, _toString(mode));
-    } catch (_) {
-      // Ignorer les erreurs d'écriture
-    }
+    } catch (_) {}
   }
 
   static ThemeMode fromLabel(String label) {
     final l = label.trim().toLowerCase();
     if (l == 'clair' || l == 'light') return ThemeMode.light;
     if (l == 'sombre' || l == 'dark' || l == 'noir') return ThemeMode.dark;
-    // Supprimer le mode automatique: toute saisie 'auto/automatique/system' => light
+
     if (l == 'system' ||
         l == 'système' ||
         l == 'systeme' ||
@@ -81,7 +78,6 @@ class ThemeController extends ChangeNotifier {
         return ThemeMode.dark;
       case 'system':
       default:
-        // Si une ancienne valeur 'system' est stockée, forcer maintenant à 'light'
         return ThemeMode.light;
     }
   }

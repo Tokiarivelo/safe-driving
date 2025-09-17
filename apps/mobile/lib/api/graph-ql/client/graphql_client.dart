@@ -1,6 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'graphql_config.dart';
+import '../mutations.dart' as gql_mutations;
 
 class GraphQLClientWrapper {
   late GraphQLClient _client;
@@ -34,9 +35,9 @@ class GraphQLClientWrapper {
               final graphqlError = response.errors!.first;
 
               if (graphqlError.extensions?['code'] == 'UNAUTHENTICATED' ||
-                  graphqlError.message.contains('token') &&
-                      graphqlError.message.contains('expired')) {
-                _handleTokenRefresh();
+                  (graphqlError.message.contains('token') &&
+                      graphqlError.message.contains('expired'))) {
+                _handleError('UNAUTHENTICATED');
               } else {
                 _handleError('GraphQL error: ${graphqlError.message}');
               }
@@ -73,57 +74,6 @@ class GraphQLClientWrapper {
     if (refreshToken != null) _refreshToken = refreshToken;
   }
 
-  Future<void> _handleTokenRefresh() async {
-    if (_refreshToken == null) {
-      _handleError('No refresh token available');
-      return;
-    }
-
-    try {
-      const String refreshMutation = '''
-        mutation RefreshToken(\$refreshToken: String!) {
-          refreshToken(refreshToken: \$refreshToken) {
-            success
-            tokens {
-              accessToken
-              refreshToken
-              expiresAt
-            }
-            message
-            errorCode
-          }
-        }
-      ''';
-
-      final result = await _client.mutate(
-        MutationOptions(
-          document: gql(refreshMutation),
-          variables: {'refreshToken': _refreshToken},
-        ),
-      );
-
-      if (result.hasException) {
-        _handleError('Failed to refresh token: ${result.exception}');
-        return;
-      }
-
-      final refreshData = result.data?['refreshToken'];
-      if (refreshData?['success'] == true) {
-        final tokens = refreshData['tokens'];
-        _accessToken = tokens['accessToken'];
-        _refreshToken = tokens['refreshToken'];
-
-        if (_onTokenRefresh != null) {
-          _onTokenRefresh!(_accessToken!);
-        }
-      } else {
-        _handleError('Token refresh failed: ${refreshData?['message']}');
-      }
-    } catch (e) {
-      _handleError('Token refresh exception: $e');
-    }
-  }
-
   void _handleError(String error) {
     if (_onError != null) {
       _onError!(error);
@@ -141,7 +91,16 @@ class GraphQLClientWrapper {
         variables: variables ?? {},
       );
 
-      final result = await _client.mutate(options);
+      var result = await _client.mutate(options);
+
+      if (result.hasException && useErrorHandling) {
+        if (_isUnauthenticated(result.exception)) {
+          final refreshed = await _attemptTokenRefresh();
+          if (refreshed) {
+            result = await _client.mutate(options);
+          }
+        }
+      }
 
       if (result.hasException && useErrorHandling) {
         return {
@@ -176,7 +135,16 @@ class GraphQLClientWrapper {
         errorPolicy: useErrorHandling ? ErrorPolicy.all : ErrorPolicy.none,
       );
 
-      final result = await _client.query(options);
+      var result = await _client.query(options);
+
+      if (result.hasException && useErrorHandling) {
+        if (_isUnauthenticated(result.exception)) {
+          final refreshed = await _attemptTokenRefresh();
+          if (refreshed) {
+            result = await _client.query(options);
+          }
+        }
+      }
 
       if (result.hasException && useErrorHandling) {
         return {
@@ -194,6 +162,66 @@ class GraphQLClientWrapper {
         'message': 'Query execution failed: $e',
         'errorCode': 'EXECUTION_ERROR',
       };
+    }
+  }
+
+  bool _isUnauthenticated(OperationException? exception) {
+    if (exception == null) return false;
+    if (exception.graphqlErrors.isNotEmpty) {
+      for (final e in exception.graphqlErrors) {
+        final code = e.extensions?['code'];
+        final msg = e.message.toLowerCase();
+        if (code == 'UNAUTHENTICATED' ||
+            msg.contains('unauthorized') ||
+            (msg.contains('token') && msg.contains('expired'))) {
+          return true;
+        }
+      }
+    }
+    final linkEx = exception.linkException?.toString().toLowerCase() ?? '';
+    if (linkEx.contains('401') || linkEx.contains('unauthorized')) return true;
+    return false;
+  }
+
+  Future<bool> _attemptTokenRefresh() async {
+    if (_refreshToken == null || _refreshToken!.isEmpty) {
+      _handleError('Missing refresh token');
+      return false;
+    }
+    try {
+      final tempClient = GraphQLClient(
+        link: HttpLink(GraphQLConfig.endpoint),
+        cache: GraphQLCache(store: HiveStore()),
+      );
+      final options = MutationOptions(
+        document: gql(gql_mutations.refreshTokenMutation),
+        variables: {'refreshToken': _refreshToken},
+      );
+      final result = await tempClient.mutate(options);
+      if (result.hasException) {
+        _handleError(_extractErrorMessage(result.exception));
+        return false;
+      }
+      final data = result.data;
+      if (data == null) return false;
+      String? newAccessToken;
+      if (data['refreshToken'] is Map) {
+        final rt = data['refreshToken'] as Map<String, dynamic>;
+        newAccessToken = (rt['accessToken'] as String?) ?? (rt['token'] as String?);
+      } else if (data['token'] is String) {
+        newAccessToken = data['token'] as String;
+      }
+      if (newAccessToken == null || newAccessToken.isEmpty) return false;
+      _accessToken = newAccessToken;
+      if (_onTokenRefresh != null) {
+        try {
+          _onTokenRefresh!(newAccessToken);
+        } catch (_) {}
+      }
+      return true;
+    } catch (e) {
+      _handleError('Token refresh failed: $e');
+      return false;
     }
   }
 

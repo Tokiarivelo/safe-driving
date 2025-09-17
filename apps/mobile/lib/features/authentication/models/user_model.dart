@@ -35,13 +35,26 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    final createdRaw = json['createdAt'];
+    DateTime createdAt;
+    if (createdRaw is String && createdRaw.isNotEmpty) {
+      createdAt = DateTime.tryParse(createdRaw) ?? DateTime.now();
+    } else {
+      createdAt = DateTime.now();
+    }
+    final updatedRaw = json['updatedAt'];
+    final DateTime? updatedAt =
+        (updatedRaw is String && updatedRaw.isNotEmpty)
+            ? DateTime.tryParse(updatedRaw)
+            : null;
+
     return User(
-      id: json['id'],
-      email: json['email'],
+      id: json['id'] ?? '',
+      email: json['email'] ?? '',
       firstName: json['firstName'],
       lastName: json['lastName'],
-      phoneNumber: json['phoneNumber'],
-      phone: json['phone'],
+      phoneNumber: json['phoneNumber'] ?? json['phone'],
+      phone: json['phone'] ?? json['phoneNumber'],
       roleNames: List<String>.from(json['roles'] ?? []),
       roles: (json['Role'] as List<dynamic>? ?? [])
           .map((role) => Role.fromJson(role))
@@ -49,10 +62,8 @@ class User {
       images: (json['images'] as List<dynamic>? ?? [])
           .map((image) => UserImage.fromJson(image))
           .toList(),
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.parse(json['updatedAt'])
-          : null,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
       isEmailVerified: json['isEmailVerified'] ?? false,
       isVerified: json['isVerified'] ?? false,
       isActive: json['isActive'] ?? true,

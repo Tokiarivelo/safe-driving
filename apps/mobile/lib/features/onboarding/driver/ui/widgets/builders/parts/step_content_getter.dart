@@ -6,6 +6,8 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/l10n/l10n.dart';
 import 'content_builder.dart';
 import 'button_builder.dart';
+import 'package:safe_driving/features/onboarding/driver/ui/screens/step_twelve_view.dart';
+import 'package:safe_driving/app/routes.dart';
 
 class StepContentGetter {
   static Widget buildStepContent(
@@ -18,6 +20,17 @@ class StepContentGetter {
     final bool forceLightHeader =
         step.stepType == DriverStepType.summary ||
         step.stepType == DriverStepType.completion;
+
+
+    if (step.stepType == DriverStepType.completion) {
+      return StepTwelveView(
+        step: step,
+        coordinator: coordinator,
+        onContinue: () {
+          Navigator.pushReplacementNamed(context, AppRoutes.home);
+        },
+      );
+    }
 
     return Container(
       width: double.infinity,

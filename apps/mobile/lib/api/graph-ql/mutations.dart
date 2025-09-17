@@ -17,14 +17,16 @@ export 'modules/s3/s3_mutations.dart';
 export 'modules/qr/qr_mutations.dart';
 
 import 'modules/auth/auth_mutations.dart';
+import 'modules/s3/s3_mutations.dart' as s3;
 
 const String signInMutation = loginMutation;
 const String signUpMutation = registerMutation;
 const String resetPasswordAuthMutation = resetPasswordMutation;
+const String getPresignedUrlMutation = s3.s3CreatePresignedUrlMutation;
 
 const String refreshTokenMutation = r'''
 mutation RefreshToken($refreshToken: String!) {
-  # Cette mutation n'est pas implémentée dans le backend actuel
+ 
   refreshToken(refreshToken: $refreshToken) {
     token
     user {
@@ -36,7 +38,7 @@ mutation RefreshToken($refreshToken: String!) {
 
 const String signInWithGoogleMutation = r'''
 mutation SignInWithGoogle {
-  # Cette mutation n'est pas implémentée dans le backend actuel
+ 
   signInWithGoogle {
     token
     user {
@@ -49,7 +51,7 @@ mutation SignInWithGoogle {
 
 const String signInWithFacebookMutation = r'''
 mutation SignInWithFacebook {
-  # Cette mutation n'est pas implémentée dans le backend actuel
+
   signInWithFacebook {
     token
     user {
@@ -73,7 +75,7 @@ mutation UpdateProfile($data: UserUpdateInput!) {
 
 const String changePasswordMutation = r'''
 mutation ChangePassword($data: ChangePasswordInput!) {
-  # Cette mutation n'est pas implémentée dans le backend actuel
+
   changePassword(data: $data) {
     success
   }
@@ -82,7 +84,7 @@ mutation ChangePassword($data: ChangePasswordInput!) {
 
 const String deleteAccountMutation = r'''
 mutation DeleteAccount($userId: String!, $password: String!) {
-  # Cette mutation n'est pas implémentée dans le backend actuel
+
   deleteAccount(userId: $userId, password: $password) {
     success
   }
@@ -91,7 +93,7 @@ mutation DeleteAccount($userId: String!, $password: String!) {
 
 const String saveDriverPersonalInfoMutation = r'''
 mutation SaveDriverPersonalInfo($input: DriverPersonalInfoInput!) {
-  # Non implémenté dans le backend
+
   saveDriverPersonalInfo(input: $input) {
     success
   }
@@ -108,7 +110,7 @@ mutation SaveDriverVehicleInfo($input: DriverVehicleInfoInput!) {
 
 const String uploadDriverDocumentMutation = r'''
 mutation UploadDriverDocument($input: UploadDocumentInput!) {
-  # Non implémenté dans le backend
+ 
   uploadDriverDocument(input: $input) {
     success
   }
@@ -117,7 +119,7 @@ mutation UploadDriverDocument($input: UploadDocumentInput!) {
 
 const String uploadDriverSelfieMutation = r'''
 mutation UploadDriverSelfie($input: UploadSelfieInput!) {
-  # Non implémenté dans le backend
+ 
   uploadDriverSelfie(input: $input) {
     success
   }
@@ -142,7 +144,7 @@ mutation SaveDriverAppPreferences($input: AppPreferencesInput!) {
 
 const String completeDriverOnboardingMutation = r'''
 mutation CompleteDriverOnboarding($userId: String!) {
-  # Non implémenté dans le backend
+
   completeDriverOnboarding(userId: $userId) {
     success
   }
@@ -151,7 +153,7 @@ mutation CompleteDriverOnboarding($userId: String!) {
 
 const String updateDriverOnboardingStepMutation = r'''
 mutation UpdateDriverOnboardingStep($input: OnboardingStepInput!) {
-  # Non implémenté dans le backend
+
   updateDriverOnboardingStep(input: $input) {
     success
   }
@@ -178,18 +180,18 @@ mutation SaveLanguagePreference($language: String!) {
 
 const String saveGpsPreferenceMutation = r'''
 mutation SaveGpsPreference($enabled: Boolean!) {
-  upsertUserPreference(input: { gpsEnabled: $enabled }) {
+  upsertUserPreference(input: { activateLocation: $enabled }) {
     id
-    gpsEnabled
+    activateLocation
   }
 }
 ''';
 
 const String saveNotificationPreferenceMutation = r'''
 mutation SaveNotificationPreference($enabled: Boolean!) {
-  upsertUserPreference(input: { notificationsEnabled: $enabled }) {
+  upsertUserPreference(input: { activateNotifications: $enabled }) {
     id
-    notificationsEnabled
+    activateNotifications
   }
 }
 ''';
@@ -205,7 +207,7 @@ mutation SaveTransportPreferences($transports: [String!]!) {
 
 const String completeOnboardingMutation = r'''
 mutation CompleteOnboarding($appState: AppStateInput!) {
-  # Non implémenté dans le backend
+
   completeOnboarding(appState: $appState) {
     success
   }
