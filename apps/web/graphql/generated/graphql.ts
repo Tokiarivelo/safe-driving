@@ -3018,6 +3018,14 @@ export type MessageCreateWithoutSenderInput = {
   state?: InputMaybe<MessageState>;
 };
 
+/** Types of message events */
+export enum MessageEventType {
+  MESSAGE_DELETED = 'MESSAGE_DELETED',
+  MESSAGE_READ = 'MESSAGE_READ',
+  MESSAGE_UPDATED = 'MESSAGE_UPDATED',
+  NEW_MESSAGE = 'NEW_MESSAGE'
+}
+
 export type MessageListRelationFilter = {
   every?: InputMaybe<MessageWhereInput>;
   none?: InputMaybe<MessageWhereInput>;
@@ -3074,7 +3082,7 @@ export type MessageOrderByRelationAggregateInput = {
 export type MessagePayload = {
   __typename?: 'MessagePayload';
   message: Message;
-  type: Scalars['String']['output'];
+  type: MessageEventType;
 };
 
 export type MessageReadReceipt = {
@@ -9720,7 +9728,7 @@ export type MessageEventSubscriptionVariables = Exact<{
 }>;
 
 
-export type MessageEventSubscription = { __typename?: 'Subscription', messageEvent: { __typename?: 'MessagePayload', type: string, message: { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null } }> | null } } };
+export type MessageEventSubscription = { __typename?: 'Subscription', messageEvent: { __typename?: 'MessagePayload', type: MessageEventType, message: { __typename?: 'Message', id: string, content?: string | null, senderId: string, clientTempId?: string | null, parentMessageId?: string | null, edited: boolean, editedAt?: any | null, deleted: boolean, deletedAt?: any | null, createdAt: any, sentAt?: any | null, deliveredAt?: any | null, state: MessageState, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null }, replies?: Array<{ __typename?: 'Message', id: string, content?: string | null, senderId: string, createdAt: any, sender: { __typename?: 'User', id: string, firstName: string, lastName?: string | null, email: string, phone?: string | null, username?: string | null, avatar?: { __typename?: 'File', id: string, url?: string | null, type: FileType, meta?: any | null, name?: string | null } | null } }> | null } } };
 
 export type PresignedUrlFragment = { __typename?: 'PresignedUrl', key: string, url: string, expiresIn: number };
 

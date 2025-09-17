@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
+  MessageEventType,
   useDeleteMessageMutation,
   useEditMessageMutation,
   useGetMessagesQuery,
@@ -26,14 +27,18 @@ export const useMessages = (options: UseMessagesOptions) => {
       rideId: options.rideId,
       limit: 20,
     },
-    onCompleted: data => {
-      setMessages(data.messages || []);
-    },
   });
+
+  // Replace onCompleted with useEffect
+  useEffect(() => {
+    if (data?.messages) {
+      setMessages(data.messages);
+    }
+  }, [data?.messages]);
 
   console.log('data :>>>>>>>>>><< ', data);
 
-  const [sendMessageMutation] = useSendMessageMutation({
+  const [sendMessageMutation, { data: sendMessageData }] = useSendMessageMutation({
     onCompleted: data => {
       // Retirer le message optimiste une fois confirmé
       setOptimisticMessages(prev =>
@@ -63,7 +68,7 @@ export const useMessages = (options: UseMessagesOptions) => {
       if (data.data?.messageEvent) {
         const { message, type } = data.data.messageEvent;
 
-        if (type === 'NEW_MESSAGE') {
+        if (type === MessageEventType.NEW_MESSAGE) {
           // Mettre à jour le cache Apollo
           updateQuery(prev => ({
             ...prev,
@@ -84,7 +89,8 @@ export const useMessages = (options: UseMessagesOptions) => {
           if (message.senderId !== currentUserId) {
             markDelivered({ variables: { messageId: message.id } });
           }
-        } else if (type === 'MESSAGE_UPDATED') {
+        }
+        if (type === MessageEventType.MESSAGE_UPDATED) {
           // Mettre à jour le cache Apollo pour les messages modifiés
           updateQuery(prev => ({
             ...prev,
@@ -92,6 +98,16 @@ export const useMessages = (options: UseMessagesOptions) => {
           }));
 
           setMessages(prev => prev.map(m => (m.id === message.id ? message : m)));
+        }
+
+        if (type === MessageEventType.MESSAGE_DELETED) {
+          // Mettre à jour le cache Apollo pour les messages supprimés
+          updateQuery(prev => ({
+            ...prev,
+            messages: (prev.messages || []).filter(m => m.id !== message.id),
+          }));
+
+          setMessages(prev => prev.filter(m => m.id !== message.id));
         }
       }
     },

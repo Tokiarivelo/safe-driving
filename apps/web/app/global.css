@@ -4,7 +4,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ===============================
-   1) Définition des variables
+   1) Variables existantes
    =============================== */
 
 .dark {
@@ -40,31 +40,88 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 
-  /* Auth cards */
+  /* Auth cards existantes - GRADIENT MODIFIÉ */
   --auth-color-primary: #eb397d;
-  /* couleur du projet important*/
   --auth-color-text-custom-magenta: #822072;
   --auth-color-bg-white: #ffffff;
   --auth-color-button: #dc318d;
   --auth-color-icon: #e33486;
   --auth-color-input: #fadbf0;
   --auth-color-placeholder: #b15c8b;
-
-  --auth-background: linear-gradient(135deg, #c02aa8 0%, #c02aa8 15%, #ee6984 60%, #fe7f78 100%);
-  --auth-gradient-card: linear-gradient(135deg, #ea3a7e 14%, #ff7746 64%);
-  --auth-gradient-but-card: linear-gradient(135deg, #e91e63 0%, #ff6b35 100%);
+  --auth-background: linear-gradient(135deg, #c02aa8 0%, #c936a1 30%, #ee6984 70%, #fe7f78 100%);
+  --auth-gradient-card: linear-gradient(135deg, #c02aa8 0%, #c936a1 30%, #ee6984 70%, #fe7f78 100%);
+  --auth-gradient-but-card: linear-gradient(
+    135deg,
+    #c02aa8 0%,
+    #c936a1 30%,
+    #ee6984 70%,
+    #fe7f78 100%
+  );
   --auth-color-black: #000000;
   --auth-color-bg: #fff;
-  --auth-color-bg: ;
   --auth-color-green: #22c55e;
   --auth-color-text: #333;
   --auth-color-text-light: #fff;
   --auth-color-btn-bg: #d81b60;
   --auth-color-btn-bg-hover: #c2185b;
   --auth-color-input-border: #e91e63;
-  --auth-shadow: 5px 8px 20px rgba(0, 0, 0, 0.80);
+  --auth-shadow: 5px 8px 20px rgba(0, 0, 0, 0.8);
   --auth-card-shadow: 0 0 9px rgba(0, 0, 0, 0.5);
-  --auth-card-shadow: 0 0 9px #c2185b;
+
+  /* Nouvelles variables SafeDrive Dark */
+  --safe-bg-dark: #0b1020;
+  --safe-surface-dark: #0f1724;
+  --safe-surface-2-dark: #111827;
+  --safe-text-light: #e6eef8;
+  --safe-muted-light: #98a3b3;
+  --safe-border-dark: rgba(255, 255, 255, 0.06);
+
+  /* NOUVEAU GRADIENT SafeDrive - Couleurs personnalisées */
+  --safe-gradient-start: #c02aa8;
+  --safe-gradient-mid1: #c936a1;
+  --safe-gradient-mid2: #ee6984;
+  --safe-gradient-end: #fe7f78;
+
+  /* SafeDrive Primary Colors */
+  --safe-primary-50: #fef2f5;
+  --safe-primary-100: #fde2ea;
+  --safe-primary-200: #fcbfd1;
+  --safe-primary-300: #fa8db8;
+  --safe-primary-400: #f85a9f;
+  --safe-primary-500: #ee6984;
+  --safe-primary-600: #c936a1;
+  --safe-primary-700: #c02aa8;
+  --safe-primary-800: #a02489;
+  --safe-primary-900: #801e6a;
+
+  /* SafeDrive Secondary Colors - basées sur FE7F78 */
+  --safe-secondary-50: #fff5f5;
+  --safe-secondary-100: #feeaea;
+  --safe-secondary-200: #fed5d5;
+  --safe-secondary-300: #fdb5b5;
+  --safe-secondary-400: #fc9595;
+  --safe-secondary-500: #fe7f78;
+  --safe-secondary-600: #f56565;
+  --safe-secondary-700: #e53e3e;
+  --safe-secondary-800: #c53030;
+  --safe-secondary-900: #9b2c2c;
+
+  /* SafeDrive Accent Colors */
+  --safe-accent-50: #f5f3ff;
+  --safe-accent-100: #ede9fe;
+  --safe-accent-200: #ddd6fe;
+  --safe-accent-300: #c4b5fd;
+  --safe-accent-400: #a78bfa;
+  --safe-accent-500: #8b5cf6;
+  --safe-accent-600: #7c3aed;
+  --safe-accent-700: #6d28d9;
+  --safe-accent-800: #5b21b6;
+  --safe-accent-900: #4c1d9b;
+
+  /* SafeDrive Semantic Colors */
+  --safe-success: #10b981;
+  --safe-warning: #f59e0b;
+  --safe-error: #ef4444;
 }
 
 :root {
@@ -101,9 +158,8 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  /* Auth cards */
+  /* Auth cards existantes - GRADIENT MODIFIÉ */
   --auth-color-primary: #eb397d;
-  /* couleur du projet important*/
   --auth-color-text-custom-magenta: #822072;
   --auth-color-bg-white: #ffffff;
   --auth-color-green: #22c55e;
@@ -111,14 +167,15 @@
   --auth-color-icon: #e33486;
   --auth-color-input: #fadbf0;
   --auth-color-placeholder: #b15c8b;
-
-  --auth-background: linear-gradient(135deg, #c02aa8 0%, #c02aa8 15%, #ee6984 60%, #fe7f78 100%);
-  --auth-gradient-card: linear-gradient(135deg, #ea3a7e 14%, #ff7746 64%);
-  --auth-gradient-but-card: linear-gradient(135deg, #e91e63 0%, #ff6b35 100%);
-  --auth-color-: #c02aa8;
-  --auth-color-black: #c02aa8;
-  --auth-color-black: #ee6984;
-  --auth-color-black: #fe7f78;
+  --auth-background: linear-gradient(135deg, #c02aa8 0%, #c936a1 30%, #ee6984 70%, #fe7f78 100%);
+  --auth-gradient-card: linear-gradient(135deg, #c02aa8 0%, #c936a1 30%, #ee6984 70%, #fe7f78 100%);
+  --auth-gradient-but-card: linear-gradient(
+    135deg,
+    #c02aa8 0%,
+    #c936a1 30%,
+    #ee6984 70%,
+    #fe7f78 100%
+  );
   --auth-color-black: #000000;
   --auth-color-bg: #fff;
   --auth-color-text: #333;
@@ -126,9 +183,64 @@
   --auth-color-btn-bg: #d81b60;
   --auth-color-btn-bg-hover: #c2185b;
   --auth-color-input-border: #e91e63;
-  --auth-shadow: 5px 8px 20px rgba(0, 0, 0,0.12);
+  --auth-shadow: 5px 8px 20px rgba(0, 0, 0, 0.12);
   --auth-card-shadow: 0 0 9px rgba(0, 0, 0, 0.5);
   --auth-m-shadow: 0 0 5px #c2185b;
+
+  /* Nouvelles variables SafeDrive Light - CORRIGÉ */
+  --safe-bg-light: #f9fafb;
+  --safe-surface-light: #ffffff;
+  --safe-surface-2-light: #f3f4f6;
+  --safe-text-dark: #111827; /* CORRIGÉ: plus sombre pour meilleure lisibilité */
+  --safe-muted-light: #6b7280; /* CORRIGÉ: renommé pour clarté */
+  --safe-border-light: #e5e7eb;
+
+  /* NOUVEAU GRADIENT SafeDrive - Couleurs personnalisées */
+  --safe-gradient-start: #c02aa8;
+  --safe-gradient-mid1: #c936a1;
+  --safe-gradient-mid2: #ee6984;
+  --safe-gradient-end: #fe7f78;
+
+  /* SafeDrive Primary Colors */
+  --safe-primary-50: #fef2f5;
+  --safe-primary-100: #fde2ea;
+  --safe-primary-200: #fcbfd1;
+  --safe-primary-300: #fa8db8;
+  --safe-primary-400: #f85a9f;
+  --safe-primary-500: #ee6984;
+  --safe-primary-600: #c936a1;
+  --safe-primary-700: #c02aa8;
+  --safe-primary-800: #a02489;
+  --safe-primary-900: #801e6a;
+
+  /* SafeDrive Secondary Colors - basées sur FE7F78 */
+  --safe-secondary-50: #fff5f5;
+  --safe-secondary-100: #feeaea;
+  --safe-secondary-200: #fed5d5;
+  --safe-secondary-300: #fdb5b5;
+  --safe-secondary-400: #fc9595;
+  --safe-secondary-500: #fe7f78;
+  --safe-secondary-600: #f56565;
+  --safe-secondary-700: #e53e3e;
+  --safe-secondary-800: #c53030;
+  --safe-secondary-900: #9b2c2c;
+
+  /* SafeDrive Accent Colors */
+  --safe-accent-50: #f5f3ff;
+  --safe-accent-100: #ede9fe;
+  --safe-accent-200: #ddd6fe;
+  --safe-accent-300: #c4b5fd;
+  --safe-accent-400: #a78bfa;
+  --safe-accent-500: #8b5cf6;
+  --safe-accent-600: #7c3aed;
+  --safe-accent-700: #6d28d9;
+  --safe-accent-800: #5b21b6;
+  --safe-accent-900: #4c1d9b;
+
+  /* SafeDrive Semantic Colors */
+  --safe-success: #10b981;
+  --safe-warning: #f59e0b;
+  --safe-error: #ef4444;
 }
 
 @theme inline {
@@ -176,7 +288,6 @@
   --shadow-auth: var(--auth-shadow);
   --shadow-auth-card: var(--auth-card-shadow);
   --shadow-auth-cards: var(--auth-m-shadow);
-  /*========couleur complet==========*/
   --color-auth-color-text-custom-magenta: var(--auth-color-text-custom-magenta);
   --color-auth-color-bg-white: var(--auth-color-bg-white);
   --color-auth-color-button: var(--auth-color-button);
@@ -186,8 +297,47 @@
   --color-auth-hover: var(--auth-color-btn-bg);
   --color-auth-color-black: var(--auth-color-black);
   --color-auth-colorx-green: var(--auth-color-green);
+
+  /* SafeDrive Colors dans le système de couleurs Tailwind */
+  --color-safe-primary-50: var(--safe-primary-50);
+  --color-safe-primary-100: var(--safe-primary-100);
+  --color-safe-primary-200: var(--safe-primary-200);
+  --color-safe-primary-300: var(--safe-primary-300);
+  --color-safe-primary-400: var(--safe-primary-400);
+  --color-safe-primary-500: var(--safe-primary-500);
+  --color-safe-primary-600: var(--safe-primary-600);
+  --color-safe-primary-700: var(--safe-primary-700);
+  --color-safe-primary-800: var(--safe-primary-800);
+  --color-safe-primary-900: var(--safe-primary-900);
+
+  --color-safe-secondary-50: var(--safe-secondary-50);
+  --color-safe-secondary-100: var(--safe-secondary-100);
+  --color-safe-secondary-200: var(--safe-secondary-200);
+  --color-safe-secondary-300: var(--safe-secondary-300);
+  --color-safe-secondary-400: var(--safe-secondary-400);
+  --color-safe-secondary-500: var(--safe-secondary-500);
+  --color-safe-secondary-600: var(--safe-secondary-600);
+  --color-safe-secondary-700: var(--safe-secondary-700);
+  --color-safe-secondary-800: var(--safe-secondary-800);
+  --color-safe-secondary-900: var(--safe-secondary-900);
+
+  --color-safe-accent-50: var(--safe-accent-50);
+  --color-safe-accent-100: var(--safe-accent-100);
+  --color-safe-accent-200: var(--safe-accent-200);
+  --color-safe-accent-300: var(--safe-accent-300);
+  --color-safe-accent-400: var(--safe-accent-400);
+  --color-safe-accent-500: var(--safe-accent-500);
+  --color-safe-accent-600: var(--safe-accent-600);
+  --color-safe-accent-700: var(--safe-accent-700);
+  --color-safe-accent-800: var(--safe-accent-800);
+  --color-safe-accent-900: var(--safe-accent-900);
+
+  --color-safe-success: var(--safe-success);
+  --color-safe-warning: var(--safe-warning);
+  --color-safe-error: var(--safe-error);
 }
-/* =========== Auth card ======== */
+
+/* =========== Utilitaires Auth existants ======== */
 @utility auth-background {
   background: var(--auth-background);
 }
@@ -200,7 +350,11 @@
 @utility auth-card-bgs-gradient {
   background: var(--auth-gradient-but-card);
 }
-/* =============== End =============== */
+
+/* ===============================
+   2) Styles existants
+   =============================== */
+
 .spinner {
   --d: 20.6px;
   width: 2.5px;
@@ -217,6 +371,7 @@
     calc(0 * var(--d)) calc(-1 * var(--d)) 0 6.7px;
   animation: spinner-a90wxe 1s infinite steps(8);
 }
+
 @layer utilities {
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -233,152 +388,7 @@
     transform: rotate(1turn);
   }
 }
-.tag {
-  border: 1px solid #e5e7eb;
-  border-radius: 13px;
-  transform: rotate(0deg);
-  /* height: 65px;  */
-}
-.tag:hover::before {
-  content: '';
-  position: absolute;
-  top: 17.5px;
-  left: -22px;
-  transform: translateX(-50%);
-  transform: rotate(-90deg);
-  width: 0;
-  height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-bottom: 15px solid #ffffff;
-  cursor: pointer;
-}
 
-.tag:hover::after {
-  content: '';
-  position: absolute;
-  top: 18px;
-  left: -19px;
-  transform: translateX(-50%);
-  transform: rotate(-90deg);
-  width: 0;
-  height: 0;
-  border-left: 13px solid transparent;
-  border-right: 13px solid transparent;
-  border-bottom: 13px solid #ea3a7e;
-  cursor: pointer;
-}
-/*===================================*/
-.tog {
-  border-left: 1px solid #ffffff;
-  border-bottom: 1px solid #e0d8d8;
-  border-top: 1px solid #ffffff;
-  border-right: 1px solid #c4c0c0;
-  border-radius: 13px;
-  transform: rotate(0deg);
-  /* height: 65px; */
-}
-.tog:hover::before {
-  content: '';
-  position: absolute;
-  top: 17.5px;
-  left: -22px;
-  transform: translateX(-50%);
-  transform: rotate(-90deg);
-  width: 0;
-  height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-bottom: 15px solid #ffffff;
-}
-
-.tog:hover::after {
-  content: '';
-  position: absolute;
-  top: 18px;
-  left: -19px;
-  transform: translateX(-50%);
-  transform: rotate(-90deg);
-  width: 0;
-  height: 0;
-  border-left: 13px solid transparent;
-  border-right: 13px solid transparent;
-  border-bottom: 13px solid #eb3e7a;
-}
-/*===================================*/
-.teg {
-  border-left: 1px solid #ffffff;
-  border-bottom: 1px solid #e0d8d8;
-  border-top: 1px solid #ffffff;
-  border-right: 1px solid #c4c0c0;
-  border-radius: 13px;
-  transform: rotate(0deg);
-  /* height: 65px; */
-}
-.teg:hover::before {
-  content: '';
-  position: absolute;
-  top: 17.5px;
-  left: -22px;
-  transform: translateX(-50%);
-  transform: rotate(-90deg);
-  width: 0;
-  height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-bottom: 15px solid #ffffff;
-}
-
-.teg:hover::after {
-  content: '';
-  position: absolute;
-  top: 18px;
-  left: -19px;
-  transform: translateX(-50%);
-  transform: rotate(-90deg);
-  width: 0;
-  height: 0;
-  border-left: 13px solid transparent;
-  border-right: 13px solid transparent;
-  border-bottom: 13px solid #ee4772;
-}
-/*===================================*/
-.tig {
-  border-left: 1px solid #ffffff;
-  border-bottom: 1px solid #e0d8d8;
-  border-top: 1px solid #ffffff;
-  border-right: 1px solid #c4c0c0;
-  border-radius: 13px;
-  transform: rotate(0deg);
-  /* height: 65px; */
-}
-.tig:hover::before {
-  content: '';
-  position: absolute;
-  top: 17.5px;
-  left: -22px;
-  transform: translateX(-50%);
-  transform: rotate(-90deg);
-  width: 0;
-  height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-bottom: 15px solid #ffffff;
-}
-.tig:hover::after {
-  content: '';
-  position: absolute;
-  top: 18px;
-  left: -19px;
-  transform: translateX(-50%);
-  transform: rotate(-90deg);
-  width: 0;
-  height: 0;
-  border-left: 13px solid transparent;
-  border-right: 13px solid transparent;
-  border-bottom: 13px solid #f14f6a;
-}
-/*================================*/
 @keyframes spin-y {
   0% {
     transform: rotateY(0deg);
@@ -394,6 +404,7 @@
   transform-style: preserve-3d;
   perspective: 1000px;
 }
+
 .react-flags-select {
   width: 100%;
   height: 10px;
@@ -403,18 +414,689 @@
   color: var(--color-foreground);
   font-size: 14px;
 }
-/*border dashord*/
+
+/* NOUVEAU GRADIENT - Classe utilitaire */
 .text-gradient {
-  background: linear-gradient(180deg, #c02aa8, #ee6984, #fe7f78, #6bc5f8);
+  background: linear-gradient(135deg, #c02aa8 0%, #c936a1 30%, #ee6984 70%, #fe7f78 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-@media (min-width: 640px) {
-  .auth-border {
-    border-top: 2px solid #ee6984;
-    border-right: 2px solid #fe7f78;
-    border-bottom: 2px solid #c02aa8;
-    border-left: 2px solid #c02aa8;
+
+/* GRADIENT SafeDrive pour les backgrounds */
+.safe-gradient-bg {
+  background: linear-gradient(
+    135deg,
+    var(--safe-gradient-start) 0%,
+    var(--safe-gradient-mid1) 30%,
+    var(--safe-gradient-mid2) 70%,
+    var(--safe-gradient-end) 100%
+  );
+}
+
+/* GRADIENT pour les boutons */
+.safe-btn-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--safe-gradient-start) 0%,
+    var(--safe-gradient-mid1) 30%,
+    var(--safe-gradient-mid2) 70%,
+    var(--safe-gradient-end) 100%
+  );
+  @apply px-6 py-3 rounded-xl text-white font-semibold transition-all duration-300 hover:-translate-y-0.5;
+  box-shadow: 0 4px 15px rgba(192, 42, 168, 0.25);
+}
+
+.safe-btn-gradient:hover {
+  box-shadow: 0 8px 30px rgba(192, 42, 168, 0.35);
+}
+
+.safe-btn-gradient-large {
+  background: linear-gradient(
+    135deg,
+    var(--safe-gradient-start) 0%,
+    var(--safe-gradient-mid1) 30%,
+    var(--safe-gradient-mid2) 70%,
+    var(--safe-gradient-end) 100%
+  );
+  @apply px-8 py-4 rounded-2xl text-white font-bold text-lg transition-all duration-300 hover:-translate-y-1 flex items-center space-x-3;
+  box-shadow: 0 8px 30px rgba(192, 42, 168, 0.3);
+}
+
+.safe-btn-gradient-large:hover {
+  box-shadow: 0 12px 40px rgba(192, 42, 168, 0.4);
+}
+
+/* GRADIENT pour les lignes de connexion */
+.safe-gradient-line {
+  background: linear-gradient(
+    to right,
+    var(--safe-gradient-start),
+    var(--safe-gradient-mid1),
+    var(--safe-gradient-mid2),
+    var(--safe-gradient-end)
+  );
+}
+
+/* GRADIENT pour les cercles et icônes */
+.safe-gradient-circle {
+  background: linear-gradient(
+    135deg,
+    var(--safe-gradient-start) 0%,
+    var(--safe-gradient-mid1) 30%,
+    var(--safe-gradient-mid2) 70%,
+    var(--safe-gradient-end) 100%
+  );
+}
+
+/* ===============================
+   3) Nouveaux styles SafeDrive
+   =============================== */
+
+/* Animations SafeDrive */
+@keyframes gradient-shift {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
   }
+  50% {
+    transform: scale(1.1) rotate(1deg);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+}
+
+@keyframes float-delayed {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(-5deg);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-left {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-right {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes route-flow {
+  0% {
+    transform: translateX(-100%) rotate(-10deg);
+  }
+  100% {
+    transform: translateX(200%) rotate(-10deg);
+  }
+}
+
+@keyframes counter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Classes d'animation SafeDrive */
+.animate-gradient-shift {
+  animation: gradient-shift 8s ease-in-out infinite;
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+.animate-float-delayed {
+  animation: float-delayed 8s ease-in-out infinite;
+}
+.animate-fade-up {
+  animation: fade-up 0.8s ease-out forwards;
+}
+.animate-fade-left {
+  animation: fade-left 0.8s ease-out forwards;
+}
+.animate-fade-right {
+  animation: fade-right 0.8s ease-out forwards;
+}
+.counter-animation {
+  animation: counter 2s ease-out forwards;
+}
+
+/* Composants SafeDrive */
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.3;
+  animation: pulse 2s infinite;
+}
+
+.grid-pattern {
+  background-image:
+    linear-gradient(var(--safe-primary-500) 1px, transparent 1px),
+    linear-gradient(90deg, var(--safe-primary-500) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.1;
+}
+
+.floating-particles::before,
+.floating-particles::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--safe-primary-500);
+  opacity: 0.3;
+  animation: float 8s ease-in-out infinite;
+}
+
+.floating-particles::before {
+  top: 20%;
+  left: 10%;
+  animation-delay: -2s;
+}
+
+.floating-particles::after {
+  top: 60%;
+  right: 15%;
+  animation-delay: -4s;
+}
+
+.holographic-frame::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 24px;
+  padding: 2px;
+  background: linear-gradient(
+    45deg,
+    var(--safe-primary-500),
+    var(--safe-secondary-500),
+    var(--safe-accent-500)
+  );
+  opacity: 0.5;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: gradient-shift 3s ease infinite;
+}
+
+.route-animation {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--safe-primary-500), transparent);
+  opacity: 0.8;
+  top: 50%;
+  animation: route-flow 3s ease-in-out infinite;
+}
+
+/* Cards SafeDrive */
+.safe-vehicle-card {
+  @apply p-8 rounded-3xl backdrop-blur-xl border transition-all duration-500 hover:shadow-2xl hover:-translate-y-2;
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(229, 231, 235, 0.5);
+  animation: fade-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.dark .safe-vehicle-card {
+  background: rgba(15, 23, 36, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.safe-feature-item {
+  @apply flex items-start space-x-4 p-6 rounded-2xl backdrop-blur-sm border transition-all duration-300;
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(229, 231, 235, 0.3);
+}
+
+.dark .safe-feature-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.safe-feature-item:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.dark .safe-feature-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.safe-feature-icon {
+  @apply w-12 h-12 rounded-xl flex items-center justify-center shadow-lg;
+}
+
+.safe-interactive-dashboard {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(20, 184, 166, 0.1) 100%);
+}
+
+.safe-stat-card {
+  @apply p-3 rounded-xl border text-center;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.safe-activity-item {
+  @apply flex items-center p-3 rounded-lg border;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.safe-testimonial-card {
+  @apply p-8 rounded-3xl backdrop-blur-xl border transition-all duration-500 hover:shadow-2xl hover:-translate-y-2;
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(229, 231, 235, 0.5);
+  animation: fade-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.dark .safe-testimonial-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Boutons SafeDrive */
+.safe-btn-primary {
+  @apply px-6 py-3 rounded-xl text-white font-semibold transition-all duration-300 hover:-translate-y-0.5;
+  background: linear-gradient(to right, var(--safe-primary-500), var(--safe-primary-600));
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25);
+}
+
+.safe-btn-primary:hover {
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.35);
+}
+
+.safe-btn-primary-large {
+  @apply px-8 py-4 rounded-2xl text-white font-bold text-lg transition-all duration-300 hover:-translate-y-1 flex items-center space-x-3;
+  background: linear-gradient(to right, var(--safe-primary-500), var(--safe-primary-600));
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.3);
+}
+
+.safe-btn-primary-large:hover {
+  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.4);
+}
+
+.safe-btn-glass {
+  @apply px-6 py-3 rounded-xl font-semibold backdrop-blur-sm transition-all duration-300;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--safe-text-dark);
+}
+
+.dark .safe-btn-glass {
+  color: var(--safe-text-light);
+}
+
+.safe-btn-glass:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.safe-btn-glass-large {
+  @apply px-8 py-4 rounded-2xl font-bold text-lg backdrop-blur-sm transition-all duration-300 flex items-center space-x-3;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.safe-btn-glass-large:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.safe-app-badge {
+  @apply flex flex-col items-center px-6 py-3 rounded-xl backdrop-blur-sm transition-all duration-300;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.safe-app-badge:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Navigation SafeDrive */
+.safe-nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 50%;
+  background: linear-gradient(90deg, var(--safe-primary-500), var(--safe-secondary-500));
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.safe-nav-link:hover::after {
+  width: 100%;
+}
+
+/* Effets de lueur SafeDrive */
+.safe-hover-glow:hover {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+}
+
+.safe-hover-glow-primary:hover {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+}
+
+.safe-hover-glow-secondary:hover {
+  box-shadow: 0 0 30px rgba(20, 184, 166, 0.4);
+}
+
+.safe-hover-glow-accent:hover {
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+}
+
+/* Classes utilitaires SafeDrive pour le thème */
+.safe-bg-light {
+  background-color: var(--safe-bg-light);
+}
+
+.safe-bg-dark {
+  background-color: var(--safe-bg-dark);
+}
+
+.safe-text-light {
+  color: var(--safe-text-light);
+}
+
+.safe-text-dark {
+  color: var(--safe-text-dark);
+}
+
+.safe-text-muted {
+  color: var(--safe-muted-dark);
+}
+
+.dark .safe-text-muted {
+  color: var(--safe-muted-light);
+}
+
+.safe-surface {
+  background-color: var(--safe-surface-light);
+}
+
+.dark .safe-surface {
+  background-color: var(--safe-surface-dark);
+}
+
+.safe-border {
+  border-color: var(--safe-border-light);
+}
+
+.dark .safe-border {
+  border-color: var(--safe-border-dark);
+}
+
+/* Modifications pour intégration avec next-themes */
+.dark .safe-bg-light {
+  background-color: var(--safe-bg-dark);
+}
+
+.dark .safe-surface-light {
+  background-color: var(--safe-surface-dark);
+}
+
+/* Couleurs primaires SafeDrive accessibles via Tailwind */
+.bg-safe-primary-50 {
+  background-color: var(--safe-primary-50);
+}
+.bg-safe-primary-100 {
+  background-color: var(--safe-primary-100);
+}
+.bg-safe-primary-200 {
+  background-color: var(--safe-primary-200);
+}
+.bg-safe-primary-300 {
+  background-color: var(--safe-primary-300);
+}
+.bg-safe-primary-400 {
+  background-color: var(--safe-primary-400);
+}
+.bg-safe-primary-500 {
+  background-color: var(--safe-primary-500);
+}
+.bg-safe-primary-600 {
+  background-color: var(--safe-primary-600);
+}
+.bg-safe-primary-700 {
+  background-color: var(--safe-primary-700);
+}
+.bg-safe-primary-800 {
+  background-color: var(--safe-primary-800);
+}
+.bg-safe-primary-900 {
+  background-color: var(--safe-primary-900);
+}
+
+.text-safe-primary-50 {
+  color: var(--safe-primary-50);
+}
+.text-safe-primary-100 {
+  color: var(--safe-primary-100);
+}
+.text-safe-primary-200 {
+  color: var(--safe-primary-200);
+}
+.text-safe-primary-300 {
+  color: var(--safe-primary-300);
+}
+.text-safe-primary-400 {
+  color: var(--safe-primary-400);
+}
+.text-safe-primary-500 {
+  color: var(--safe-primary-500);
+}
+.text-safe-primary-600 {
+  color: var(--safe-primary-600);
+}
+.text-safe-primary-700 {
+  color: var(--safe-primary-700);
+}
+.text-safe-primary-800 {
+  color: var(--safe-primary-800);
+}
+.text-safe-primary-900 {
+  color: var(--safe-primary-900);
+}
+
+/* Couleurs secondaires SafeDrive */
+.bg-safe-secondary-50 {
+  background-color: var(--safe-secondary-50);
+}
+.bg-safe-secondary-100 {
+  background-color: var(--safe-secondary-100);
+}
+.bg-safe-secondary-200 {
+  background-color: var(--safe-secondary-200);
+}
+.bg-safe-secondary-300 {
+  background-color: var(--safe-secondary-300);
+}
+.bg-safe-secondary-400 {
+  background-color: var(--safe-secondary-400);
+}
+.bg-safe-secondary-500 {
+  background-color: var(--safe-secondary-500);
+}
+.bg-safe-secondary-600 {
+  background-color: var(--safe-secondary-600);
+}
+.bg-safe-secondary-700 {
+  color: var(--safe-secondary-700);
+}
+.bg-safe-secondary-800 {
+  background-color: var(--safe-secondary-800);
+}
+.bg-safe-secondary-900 {
+  background-color: var(--safe-secondary-900);
+}
+
+.text-safe-secondary-50 {
+  color: var(--safe-secondary-50);
+}
+.text-safe-secondary-100 {
+  color: var(--safe-secondary-100);
+}
+.text-safe-secondary-200 {
+  color: var(--safe-secondary-200);
+}
+.text-safe-secondary-300 {
+  color: var(--safe-secondary-300);
+}
+.text-safe-secondary-400 {
+  color: var(--safe-secondary-400);
+}
+.text-safe-secondary-500 {
+  color: var(--safe-secondary-500);
+}
+.text-safe-secondary-600 {
+  color: var(--safe-secondary-600);
+}
+.text-safe-secondary-700 {
+  color: var(--safe-secondary-700);
+}
+.text-safe-secondary-800 {
+  color: var(--safe-secondary-800);
+}
+.text-safe-secondary-900 {
+  color: var(--safe-secondary-900);
+}
+
+/* Couleurs accent SafeDrive */
+.bg-safe-accent-50 {
+  background-color: var(--safe-accent-50);
+}
+.bg-safe-accent-100 {
+  background-color: var(--safe-accent-100);
+}
+.bg-safe-accent-200 {
+  background-color: var(--safe-accent-200);
+}
+.bg-safe-accent-300 {
+  background-color: var(--safe-accent-300);
+}
+.bg-safe-accent-400 {
+  background-color: var(--safe-accent-400);
+}
+.bg-safe-accent-500 {
+  background-color: var(--safe-accent-500);
+}
+.bg-safe-accent-600 {
+  background-color: var(--safe-accent-600);
+}
+.bg-safe-accent-700 {
+  background-color: var(--safe-accent-700);
+}
+.bg-safe-accent-800 {
+  background-color: var(--safe-accent-800);
+}
+.bg-safe-accent-900 {
+  background-color: var(--safe-accent-900);
+}
+
+.text-safe-accent-50 {
+  color: var(--safe-accent-50);
+}
+.text-safe-accent-100 {
+  color: var(--safe-accent-100);
+}
+.text-safe-accent-200 {
+  color: var(--safe-accent-200);
+}
+.text-safe-accent-300 {
+  color: var(--safe-accent-300);
+}
+.text-safe-accent-400 {
+  color: var(--safe-accent-400);
+}
+.text-safe-accent-500 {
+  color: var(--safe-accent-500);
+}
+.text-safe-accent-600 {
+  color: var(--safe-accent-600);
+}
+.text-safe-accent-700 {
+  color: var(--safe-accent-700);
+}
+.text-safe-accent-800 {
+  color: var(--safe-accent-800);
+}
+.text-safe-accent-900 {
+  color: var(--safe-accent-900);
+}
+
+/* Couleurs sémantiques SafeDrive */
+.bg-safe-success {
+  background-color: var(--safe-success);
+}
+.bg-safe-warning {
+  background-color: var(--safe-warning);
+}
+.bg-safe-error {
+  background-color: var(--safe-error);
+}
+
+.text-safe-success {
+  color: var(--safe-success);
+}
+.text-safe-warning {
+  color: var(--safe-warning);
+}
+.text-safe-error {
+  color: var(--safe-error);
+}
+
+/* Bordures SafeDrive */
+.border-safe-primary-500 {
+  border-color: var(--safe-primary-500);
+}
+.border-safe-secondary-500 {
+  border-color: var(--safe-secondary-500);
+}
+.border-safe-accent-500 {
+  border-color: var(--safe-accent-500);
 }

@@ -1,4 +1,4 @@
-import Acceuil from '@/components/home/acceuil';
+import Acceuil from '@/components/home';
 
 const HomePage = () => {
   return (

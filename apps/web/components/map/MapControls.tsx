@@ -4,11 +4,11 @@ import { Icon } from '@iconify/react';
 import React, { useState } from 'react';
 
 function MapControls({
-                       getLocation,
-                       isCentered,
-                       zoomIn,
-                       zoomOut,
-                     }: {
+  getLocation,
+  isCentered,
+  zoomIn,
+  zoomOut,
+}: {
   getLocation: () => void;
   isCentered: boolean;
   zoomIn: () => void;
