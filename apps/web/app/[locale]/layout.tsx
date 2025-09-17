@@ -5,19 +5,18 @@ import { type Locale } from '@/lib/i18n';
 import { ClientI18nProvider } from './client-i18n-provider';
 import '../global.css';
 import { SocketProvider } from '@/lib/socket.io/SocketProvider';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import ThemeScript from '@/components/ThemeScript';
 
 export const metadata = {
   title: {
     default: 'Safe Driving',
-    template: '%s | Safe Driving', // tout titre passé sera injecté ici
+    template: '%s | Safe Driving',
   },
   description: 'Le site officiel de Safe Driving',
   icons: {
-    // favicon par défaut (affiché dans l’onglet du navigateur)
     icon: '/logo.svg',
-    // balise <link rel="shortcut icon" ...>
     shortcut: '/logo.svg',
-    // icône pour iOS / Safari
     apple: '/logo.svg',
   },
 };
@@ -32,13 +31,26 @@ export default async function RootLayout({
   const { locale } = await params;
 
   return (
-    <html lang={locale}>
-      <body>
+    <html lang={locale} suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
+      <body suppressHydrationWarning>
         <main>
           <SocketProvider>
             <ClientI18nProvider locale={locale}>
               <SessionProvider refetchOnWindowFocus={false}>
-                <ApolloWrapper>{children}</ApolloWrapper>
+                <ApolloWrapper>
+                  <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                    storageKey="safe-drive-theme"
+                  >
+                    {children}
+                  </ThemeProvider>
+                </ApolloWrapper>
                 <Toaster position="top-right" richColors closeButton />
               </SessionProvider>
             </ClientI18nProvider>

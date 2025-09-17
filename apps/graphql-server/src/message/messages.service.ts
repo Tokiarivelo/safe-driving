@@ -4,7 +4,10 @@ import { Prisma } from '@prisma/client';
 import { ChatCacheService } from 'src/chat/chat-cache.service';
 import { Message } from 'src/dtos/@generated';
 import { SendMessageInput } from 'src/dtos/message/message.input';
-import { MessagePayload } from 'src/dtos/message/message.output';
+import {
+  MessageEventType,
+  MessagePayload,
+} from 'src/dtos/message/message.output';
 
 import { PrismaService } from 'src/prisma-module/prisma.service';
 import { RedisExtendedService } from 'src/redis/redis-extended.service';
@@ -273,7 +276,10 @@ export class MessageService {
     await this.updateMessagesListCache(conversationId, input.rideId, message);
 
     const channelName = `conversation_${conversationId}`;
-    const payload: MessagePayload = { message, type: 'NEW_MESSAGE' };
+    const payload: MessagePayload = {
+      message,
+      type: MessageEventType.NEW_MESSAGE,
+    };
 
     await this.redisService
       .getPubSub()
@@ -370,7 +376,7 @@ export class MessageService {
 
     const payload: MessagePayload = {
       message,
-      type: 'MESSAGE_UPDATED',
+      type: MessageEventType.MESSAGE_UPDATED,
     };
 
     await this.redisService.getPubSub().publish(channelName, payload);
@@ -431,7 +437,7 @@ export class MessageService {
 
     const payload: MessagePayload = {
       message: updatedMessage,
-      type: 'MESSAGE_UPDATED',
+      type: MessageEventType.MESSAGE_UPDATED,
     };
 
     await this.redisService.getPubSub().publish(channelName, {
@@ -467,6 +473,7 @@ export class MessageService {
               id: true,
               firstName: true,
               lastName: true,
+              email: true,
             },
           },
         },
@@ -492,7 +499,7 @@ export class MessageService {
 
     const payload: MessagePayload = {
       message: deletedMessage,
-      type: 'MESSAGE_DELETED',
+      type: MessageEventType.MESSAGE_DELETED,
     };
 
     await this.redisService.getPubSub().publish(channelName, {

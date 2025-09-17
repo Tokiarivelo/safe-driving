@@ -1,0 +1,266 @@
+/* Animations pour les lignes de connexion */
+@keyframes flow {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%);
+    opacity: 0;
+  }
+}
+
+@keyframes flowVertical {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(400%);
+    opacity: 0;
+  }
+}
+
+/* Classes pour les lignes de connexion avec le nouveau gradient */
+.connection-line-horizontal {
+  position: relative;
+  height: 2px;
+  background: linear-gradient(to right, #c02aa8, #c936a1, #ee6984, #fe7f78);
+  flex: 1;
+}
+
+.connection-line-horizontal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #c02aa8, #c936a1, #ee6984, #fe7f78);
+  opacity: 0.3;
+  animation: pulse 2s infinite;
+}
+
+.connection-line-horizontal::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #c02aa8, #c936a1);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  animation: flow 3s ease-in-out infinite;
+}
+
+.connection-line-horizontal.secondary::after {
+  background: linear-gradient(135deg, #ee6984, #fe7f78);
+  animation-delay: 1s;
+}
+
+.connection-line-vertical {
+  position: absolute;
+  left: 3rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #c02aa8, #c936a1, #ee6984, #fe7f78);
+  opacity: 0.3;
+}
+
+.connection-line-vertical::after {
+  content: '';
+  position: absolute;
+  top: 8rem;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #c02aa8, #c936a1);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  animation: flowVertical 4s ease-in-out infinite;
+}
+
+/* Conteneur des lignes de connexion desktop */
+.connection-container {
+  position: absolute;
+  top: 3rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.connection-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 64rem;
+  padding: 0 3rem;
+}
+
+.connection-spacer {
+  width: 6rem;
+}
+
+/* Styles pour les étapes */
+.step-container {
+  position: relative;
+  z-index: 10;
+}
+
+/* Cercle avec le nouveau gradient */
+.step-circle {
+  position: relative;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c02aa8 0%, #c936a1 30%, #ee6984 70%, #fe7f78 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 25px 50px -12px rgba(192, 42, 168, 0.25);
+  transition: all 0.5s ease;
+  z-index: 10;
+}
+
+.step-circle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px rgba(192, 42, 168, 0.4);
+}
+
+/* Badge numéro avec le nouveau gradient */
+.step-number {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ee6984, #fe7f78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 700;
+  box-shadow: 0 10px 25px -5px rgba(238, 105, 132, 0.25);
+  z-index: 20;
+}
+
+/* Effet de lueur avec le nouveau gradient */
+.step-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c02aa8 0%, #c936a1 30%, #ee6984 70%, #fe7f78 100%);
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+  animation: pulse 2s infinite;
+  transform: scale(1.1);
+}
+
+.step-container:hover .step-glow {
+  opacity: 0.4;
+}
+
+/* Anneau de lueur */
+.step-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #ee6984;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  transform: scale(1.25);
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.step-container:hover .step-ring {
+  opacity: 0.5;
+}
+
+/* Styles de texte CORRIGÉS */
+.step-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--safe-text-dark);
+  transition: color 0.3s ease;
+}
+
+.dark .step-title {
+  color: var(--safe-text-light);
+}
+
+.step-container:hover .step-title {
+  color: #c02aa8;
+}
+
+.dark .step-container:hover .step-title {
+  color: #ee6984;
+}
+
+.step-description {
+  color: var(--safe-muted-light);
+  max-width: 20rem;
+  line-height: 1.625;
+  transition: color 0.3s ease;
+}
+
+.dark .step-description {
+  color: var(--safe-muted-light);
+}
+
+.step-container:hover .step-description {
+  color: var(--safe-text-dark);
+}
+
+.dark .step-container:hover .step-description {
+  color: var(--safe-text-light);
+}
+
+/* Indicateur de direction mobile */
+.mobile-arrow {
+  position: absolute;
+  bottom: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--safe-muted-light);
+  animation: bounce 1s infinite;
+}
+
+.dark .mobile-arrow {
+  color: var(--safe-muted-light);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .connection-container {
+    display: none;
+  }
+
+  .connection-line-vertical {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .connection-line-vertical {
+    display: none;
+  }
+
+  .mobile-arrow {
+    display: none;
+  }
+}

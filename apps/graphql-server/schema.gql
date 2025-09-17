@@ -2970,6 +2970,14 @@ input MessageCreateWithoutSenderInput {
   state: MessageState
 }
 
+"""Types of message events"""
+enum MessageEventType {
+  MESSAGE_DELETED
+  MESSAGE_READ
+  MESSAGE_UPDATED
+  NEW_MESSAGE
+}
+
 input MessageListRelationFilter {
   every: MessageWhereInput
   none: MessageWhereInput
@@ -3023,7 +3031,7 @@ input MessageOrderByRelationAggregateInput {
 
 type MessagePayload {
   message: Message!
-  type: String!
+  type: MessageEventType!
 }
 
 type MessageReadReceipt {
