@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import '../../viewmodels/home_view_model.dart';
-import '../widgets/homeWidgets/home_content.dart';
-import '../widgets/homeWidgets/sidebar_button.dart';
-import '../widgets/homeWidgets/animated_sidebar.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/homeWidgets/animated_sidebar.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/homeWidgets/home_content.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/homeWidgets/sidebar_button.dart';
+import 'package:safe_driving/features/home/acceuil/viewmodels/home_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,11 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _handleMenuItemSelected(int index) {
-    print('Menu item selected: $index');
+    debugPrint('Menu item selected: $index');
   }
 
   void _handleLogout() {
-    print('Déconnexion demandée');
+    debugPrint('Déconnexion demandée');
     setState(() {
       _isSidebarVisible = false;
     });
@@ -60,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
               // Contenu principal
               const Positioned.fill(child: HomeContent()),
               // Sidebar animmation
-              const Expanded(child: HomeContent()),
               AnimatedSidebar(
                 isVisible: _isSidebarVisible,
                 onProfileTap: _handleProfileTap,
@@ -68,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onClose: _closeSidebar,
                 onLogout: _handleLogout,
               ),
+              // Bouton sidebar
               SidebarButton(onTap: _openSidebar, isVisible: !_isSidebarVisible),
             ],
           ),

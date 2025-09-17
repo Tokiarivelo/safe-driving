@@ -4,7 +4,7 @@ import '../../../../../shared/widgets/customs/colors/colors_widget.dart';
 import 'package:safe_driving/l10n/l10n.dart';
 import '../../widgets/builders/auth_ui_builder.dart';
 import '../../widgets/password/reset_password_container.dart';
-import '../../widgets/password/reset_success_handler.dart';
+import '../../../../../shared/state_management/providers.dart';
 
 class ResetPasswordView extends StatefulWidget {
   final VoidCallback? onNavigateToLogin;
@@ -42,13 +42,28 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     final newPassword = _passwordController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
 
-    await ResetSuccessHandler.handleResetPassword(
-      context: context,
-      newPassword: newPassword,
-      confirmPassword: confirmPassword,
-      onResetSuccess: widget.onResetSuccess,
-      onNavigateToLogin: widget.onNavigateToLogin,
+    if (widget.resetToken == null || widget.resetToken!.isEmpty) {
+      return;
+    }
+
+    if (newPassword.isEmpty || newPassword != confirmPassword) {
+      return;
+    }
+
+    final ok = await context.authVM.resetPasswordConfirm(
+      widget.resetToken!,
+      newPassword,
     );
+
+    if (!mounted) return;
+
+    if (ok) {
+      if (widget.onResetSuccess != null) {
+        widget.onResetSuccess!();
+      } else if (widget.onNavigateToLogin != null) {
+        widget.onNavigateToLogin!();
+      }
+    }
   }
 
   @override

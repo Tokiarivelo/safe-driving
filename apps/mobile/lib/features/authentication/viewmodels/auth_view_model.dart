@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/features/authentication/models/auth_request.dart';
 import 'package:safe_driving/features/authentication/models/user_model.dart';
-import '../services/auth_service.dart';
+import '../repositories/auth_repository.dart';
 
 class AuthViewModel extends ChangeNotifier {
-  final AuthService _authService;
+  final AuthRepository _repository;
   User? _currentUser;
   bool _isLoading = false;
   String? _error;
 
-  AuthViewModel(this._authService);
+  AuthViewModel(this._repository);
 
-  String? get token => _authService.token;
-  bool get isAuthenticated =>
-      _authService.isAuthenticated && _currentUser != null;
+  String? get token => null;
+  bool get isAuthenticated => _currentUser != null;
   User? get currentUser => _currentUser;
   bool get isLoading => _isLoading;
   String? get errorMessage => _error;
@@ -22,7 +21,7 @@ class AuthViewModel extends ChangeNotifier {
     _setLoading(true);
     _clearError();
 
-    final result = await _authService.signIn(email, password);
+    final result = await _repository.signIn(email, password);
 
     if (result.isSuccess) {
       _currentUser = result.user;
@@ -40,7 +39,12 @@ class AuthViewModel extends ChangeNotifier {
     _setLoading(true);
     _clearError();
 
-    final result = await _authService.signUp(request);
+    final result = await _repository.signUp(
+      request.firstName,
+      request.lastName,
+      request.email,
+      request.password,
+    );
 
     if (result.isSuccess) {
       _currentUser = result.user;
@@ -54,11 +58,27 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  Future<bool> resetPasswordConfirm(String sessionToken, String newPassword) async {
+    _setLoading(true);
+    _clearError();
+
+    final result = await _repository.resetPasswordConfirm(sessionToken, newPassword);
+
+    if (result.isSuccess) {
+      _setLoading(false);
+      return true;
+    } else {
+      _setError(result.errorMessage ?? 'Échec de la réinitialisation');
+      _setLoading(false);
+      return false;
+    }
+  }
+
   Future<bool> resetPassword(String email) async {
     _setLoading(true);
     _clearError();
 
-    final result = await _authService.resetPassword(email);
+    final result = await _repository.resetPassword(email);
 
     if (result.isSuccess) {
       notifyListeners();
@@ -75,7 +95,7 @@ class AuthViewModel extends ChangeNotifier {
     _setLoading(true);
     _clearError();
 
-    final result = await _authService.getCurrentUser();
+    final result = await _repository.getCurrentUser();
 
     if (result.isSuccess) {
       _currentUser = result.user;
@@ -89,13 +109,13 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<void> logout() async {
     _currentUser = null;
-    await _authService.logout();
+    await _repository.logout();
     _clearError();
     notifyListeners();
   }
 
   Future<bool> isEmailTaken(String email) async {
-    return await _authService.isEmailTaken(email);
+    return await _repository.isEmailTaken(email);
   }
 
   void _setLoading(bool loading) {

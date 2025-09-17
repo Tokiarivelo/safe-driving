@@ -15,23 +15,59 @@ class AuthService {
   String? get token => _sessionService.token;
 
   Future<AuthResult> signIn(String email, String password) async {
-    return _handleAuth(() async {
+    try {
       final request = SignInRequest(email: email, password: password);
-      return await _dataSource.signIn(request);
-    });
+      final result = await _dataSource.signIn(request);
+      if (result.containsKey('token') && result.containsKey('user')) {
+        final user = User.fromJson(result['user']);
+        final token = result['token'] as String;
+        final refresh = result['refreshToken'] as String?;
+        await _saveTokens(token, refresh);
+        return AuthResult.success(user: user, token: token, refreshToken: refresh);
+      }
+      return AuthResult.failure(errorMessage: 'Authentification échouée');
+    } catch (e) {
+      return AuthResult.failure(errorMessage: e.toString());
+    }
   }
 
   Future<AuthResult> signUp(SignUpRequest request) async {
-    return _handleAuth(() async {
-      return await _dataSource.signUp(request);
-    }, formatError: _formatRegisterError);
+    try {
+      final result = await _dataSource.signUp(request);
+      if (result.isNotEmpty) {
+        return AuthResult.success(user: User.fromJson(result));
+      }
+      return AuthResult.failure(errorMessage: 'Inscription échouée');
+    } catch (e) {
+      return AuthResult.failure(
+        errorMessage: _formatRegisterError(e.toString()),
+      );
+    }
+  }
+
+  Future<AuthResult> resetPasswordConfirm(String sessionToken, String newPassword) async {
+    try {
+      final result = await _dataSource.resetPasswordConfirm(sessionToken, newPassword);
+      if (result['success'] == true) {
+        return AuthResult.success(message: 'Mot de passe mis à jour');
+      }
+      return AuthResult.failure(errorMessage: result['message'] ?? 'Échec de la réinitialisation');
+    } catch (e) {
+      return AuthResult.failure(errorMessage: e.toString());
+    }
   }
 
   Future<AuthResult> resetPassword(String email) async {
-    return _handleSimpleResult(() async {
+    try {
       final request = ResetPasswordRequest(email: email);
-      return await _dataSource.resetPassword(request);
-    }, 'Erreur de réinitialisation');
+      final result = await _dataSource.resetPassword(request);
+      if (result.containsKey('email') && result.containsKey('resetLink')) {
+        return AuthResult.success(message: 'Lien envoyé');
+      }
+      return AuthResult.failure(errorMessage: 'Échec de l\'envoi du lien');
+    } catch (e) {
+      return AuthResult.failure(errorMessage: e.toString());
+    }
   }
 
   Future<AuthResult> getCurrentUser() async {
@@ -47,9 +83,15 @@ class AuthService {
   }
 
   Future<AuthResult> updateProfile(UpdateProfileRequest request) async {
-    return _handleUserResult(() async {
-      return await _dataSource.updateProfile(request);
-    }, 'Erreur de mise à jour');
+    try {
+      final result = await _dataSource.updateProfile(request);
+      if (result.isNotEmpty) {
+        return AuthResult.success(user: User.fromJson(result));
+      }
+      return AuthResult.failure(errorMessage: 'Erreur de mise à jour');
+    } catch (e) {
+      return AuthResult.failure(errorMessage: e.toString());
+    }
   }
 
   Future<AuthResult> changePassword(ChangePasswordRequest request) async {
@@ -66,10 +108,8 @@ class AuthService {
           errorMessage: 'Token de rafraîchissement manquant',
         );
       }
-
       final result = await _dataSource.refreshToken(refreshToken);
-
-      if (result['success'] == true) {
+      if (result['success'] == true && result['tokens'] != null) {
         await _saveTokens(
           result['tokens']['accessToken'],
           result['tokens']['refreshToken'],
@@ -80,8 +120,7 @@ class AuthService {
         );
       }
       return AuthResult.failure(
-        errorMessage: result['message'] ?? 'Erreur de rafraîchissement',
-        errorCode: result['errorCode'],
+        errorMessage: result['message'] ?? 'Rafraîchissement non supporté',
       );
     } catch (e) {
       return AuthResult.failure(errorMessage: e.toString());
@@ -128,22 +167,14 @@ class AuthService {
   }) async {
     try {
       final result = await operation();
-      if (result['success'] == true) {
+      if (result.containsKey('token') && result.containsKey('user')) {
         final user = User.fromJson(result['user']);
-        final token = result['tokens']['accessToken'];
-        final refreshToken = result['tokens']['refreshToken'];
-
-        await _saveTokens(token, refreshToken);
-        return AuthResult.success(
-          user: user,
-          token: token,
-          refreshToken: refreshToken,
-        );
+        final token = result['token'] as String;
+        await _saveTokens(token, null);
+        return AuthResult.success(user: user, token: token);
       }
-
       String errorMessage = result['message'] ?? 'Erreur d\'authentification';
       if (formatError != null) errorMessage = formatError(errorMessage);
-
       return AuthResult.failure(
         errorMessage: errorMessage,
         errorCode: result['errorCode'],
@@ -173,26 +204,12 @@ class AuthService {
     }
   }
 
-  Future<AuthResult> _handleUserResult(
-    Future<Map<String, dynamic>> Function() operation,
-    String defaultError,
-  ) async {
-    try {
-      final result = await operation();
-      if (result['success'] == true) {
-        return AuthResult.success(user: User.fromJson(result['user']));
-      }
-      return AuthResult.failure(
-        errorMessage: result['message'] ?? defaultError,
-        errorCode: result['errorCode'],
-      );
-    } catch (e) {
-      return AuthResult.failure(errorMessage: e.toString());
+  Future<void> _saveTokens(String token, String? refreshToken) async {
+    if (refreshToken == null || refreshToken.isEmpty) {
+      await _sessionService.saveToken(token);
+    } else {
+      await _sessionService.saveTokens(token, refreshToken);
     }
-  }
-
-  Future<void> _saveTokens(String token, String refreshToken) async {
-    await _sessionService.saveTokens(token, refreshToken);
   }
 
   String _formatRegisterError(String message) {

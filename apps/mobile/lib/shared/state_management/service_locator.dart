@@ -5,6 +5,7 @@ import '../../features/authentication/data/auth_data_source_interface.dart';
 import '../../features/authentication/data/auth_data_source_graphql.dart';
 import '../../features/authentication/services/auth_service.dart';
 import '../../features/authentication/repositories/user_repository.dart';
+import '../../features/authentication/repositories/auth_repository.dart';
 import '../../features/authentication/viewmodels/auth_view_model.dart';
 import '../../features/onboarding/driver/core/interfaces/driver_service_interface.dart';
 import '../../features/onboarding/driver/services/driver_service.dart';
@@ -125,20 +126,30 @@ class ServiceLocator {
   }
 
   void setupDependencies() {
+ 
+    registerLazySingleton<SessionService>(() => SessionService());
+    try {
+      get<SessionService>().initialize();
+    } catch (_) {}
+
     // Register GraphQL only if configured
     if (GraphQLConfig.isConfigured) {
       registerSingleton<GraphQLClientWrapper>(GraphQLClientWrapper.instance);
+      final session = get<SessionService>();
       get<GraphQLClientWrapper>().configure(
-        onTokenRefresh: (newToken) {},
+        accessToken: session.token,
+        refreshToken: session.refreshToken,
+        onTokenRefresh: (newToken) async {
+          try {
+            await session.saveToken(newToken);
+          } catch (_) {}
+        },
         onError: (error) {},
       );
     }
 
     // Theme controller
     registerLazySingleton<ThemeController>(() => ThemeController());
-
-    // Session service is always available
-    registerLazySingleton<SessionService>(() => SessionService());
 
     // Auth stack (only when GraphQL is configured)
     if (GraphQLConfig.isConfigured) {
@@ -158,7 +169,11 @@ class ServiceLocator {
         ),
       );
 
-      registerFactory<AuthViewModel>(() => AuthViewModel(get<AuthService>()));
+      registerLazySingleton<AuthRepository>(
+        () => AuthRepository(get<AuthService>()),
+      );
+
+      registerFactory<AuthViewModel>(() => AuthViewModel(get<AuthRepository>()));
     }
 
     // Storage service for local files
@@ -200,7 +215,6 @@ class ServiceLocator {
         () => UserOnboardingService(get<IUserDataSource>()),
       );
     } else {
-      // Register a service without remote data source to allow UI to work offline / without backend
       registerLazySingleton<IUserOnboardingService>(
         () => UserOnboardingService(),
       );

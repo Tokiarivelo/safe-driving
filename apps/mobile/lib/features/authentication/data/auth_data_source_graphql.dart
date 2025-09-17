@@ -3,7 +3,8 @@ import 'package:safe_driving/features/authentication/models/reset_password_reque
 import 'package:safe_driving/features/authentication/models/update_profile_request_model.dart';
 import 'package:safe_driving/api/graph-ql/graphql_client.dart';
 import '../../../api/graph-ql/mutations.dart';
-import '../../../api/graph-ql/queries.dart';
+import '../../../api/graph-ql/modules/auth/auth_mutations.dart' as auth_mut;
+import '../../../api/graph-ql/modules/auth/auth_queries.dart' as auth_q;
 
 import 'auth_data_source_interface.dart';
 import '../models/auth_request.dart';
@@ -19,9 +20,8 @@ class AuthDataSourceGraphQL implements IAuthDataSource {
       document: signInMutation,
       variables: {'data': request.toJson()},
     );
-
-    if (result.containsKey('signIn')) {
-      return result['signIn'];
+    if (result.containsKey('login')) {
+      return result['login'];
     }
     return result;
   }
@@ -32,8 +32,8 @@ class AuthDataSourceGraphQL implements IAuthDataSource {
       document: signUpMutation,
       variables: {'data': request.toJson()},
     );
-    if (result.containsKey('signUp')) {
-      return result['signUp'];
+    if (result.containsKey('register')) {
+      return result['register'];
     }
     return result;
   }
@@ -43,12 +43,26 @@ class AuthDataSourceGraphQL implements IAuthDataSource {
     ResetPasswordRequest request,
   ) async {
     final result = await _graphQLClient.executeMutation(
-      document: resetPasswordAuthMutation,
-      variables: {'data': request.toJson()},
+      document: auth_mut.forgotPasswordMutation,
+      variables: {'email': request.email},
     );
+    if (result.containsKey('forgotPassword')) {
+      return result['forgotPassword'];
+    }
+    return result;
+  }
 
+  @override
+  Future<Map<String, dynamic>> resetPasswordConfirm(String sessionToken, String newPassword) async {
+    final result = await _graphQLClient.executeMutation(
+      document: auth_mut.resetPasswordMutation,
+      variables: {
+        'sessionToken': sessionToken,
+        'newPassword': newPassword,
+      },
+    );
     if (result.containsKey('resetPassword')) {
-      return result['resetPassword'];
+      return {'success': result['resetPassword'] == true};
     }
     return result;
   }
@@ -61,9 +75,36 @@ class AuthDataSourceGraphQL implements IAuthDataSource {
     );
 
     if (result.containsKey('refreshToken')) {
-      return result['refreshToken'];
+      final data = result['refreshToken'];
+      if (data is Map<String, dynamic>) {
+        final access = (data['accessToken'] as String?) ?? (data['token'] as String?);
+        if (access != null && access.isNotEmpty) {
+          return {
+            'success': true,
+            'tokens': {
+              'accessToken': access,
+              'refreshToken': refreshToken,
+            },
+          };
+        }
+      }
     }
-    return result;
+
+    if (result.containsKey('token') && result['token'] is String) {
+      return {
+        'success': true,
+        'tokens': {
+          'accessToken': result['token'],
+          'refreshToken': refreshToken,
+        },
+      };
+    }
+
+    return {
+      'success': false,
+      'message': result['message'] ?? 'Unable to refresh token',
+      'errorCode': result['errorCode'] ?? 'REFRESH_FAILED',
+    };
   }
 
   @override
@@ -95,10 +136,10 @@ class AuthDataSourceGraphQL implements IAuthDataSource {
   @override
   Future<Map<String, dynamic>> getCurrentUser() async {
     final result = await _graphQLClient.executeQuery(
-      document: getCurrentUserAuthQuery,
+      document: auth_q.meAuthQuery,
       variables: {},
     );
-    return result['getCurrentUser'] ?? {};
+    return result['me'] ?? {};
   }
 
   @override
@@ -109,9 +150,8 @@ class AuthDataSourceGraphQL implements IAuthDataSource {
       document: updateProfileMutation,
       variables: {'data': request.toJson()},
     );
-
-    if (result.containsKey('updateProfile')) {
-      return result['updateProfile'];
+    if (result.containsKey('updateUser')) {
+      return result['updateUser'];
     }
     return result;
   }

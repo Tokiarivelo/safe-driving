@@ -8,6 +8,7 @@ abstract class IAuthDataSource {
   Future<Map<String, dynamic>> signIn(SignInRequest request);
   Future<Map<String, dynamic>> signUp(SignUpRequest request);
   Future<Map<String, dynamic>> resetPassword(ResetPasswordRequest request);
+  Future<Map<String, dynamic>> resetPasswordConfirm(String sessionToken, String newPassword);
   Future<Map<String, dynamic>> refreshToken(String refreshToken);
   Future<Map<String, dynamic>> signInWithGoogle();
   Future<Map<String, dynamic>> signInWithFacebook();
