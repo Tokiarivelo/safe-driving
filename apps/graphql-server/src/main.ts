@@ -19,7 +19,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: [/http:\/\/localhost:\d{2,4}/], // ton front React
+    // Autorise localhost et 127.0.0.1 sur n'importe quel port en dev
+    origin: [/http:\/\/localhost:\d{2,5}/, /http:\/\/127\.0\.0\.1:\d{2,5}/],
     credentials: true,
   });
 
