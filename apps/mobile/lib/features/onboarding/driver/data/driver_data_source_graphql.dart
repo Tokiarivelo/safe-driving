@@ -63,18 +63,21 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
         );
         vehicleTypes = typesResp['vehicleTypes'] as List<dynamic>?;
         if (vehicleTypes != null) {
-          final lower = typeVehicule.trim().toLowerCase();
+          final wanted = _canonicalVehicleName(typeVehicule);
           for (final t in vehicleTypes) {
-            if (t is Map && (t['name']?.toString().toLowerCase() == lower)) {
-              vehicleTypeId = t['id']?.toString();
-              break;
+            if (t is Map) {
+              final name = (t['name']?.toString() ?? '');
+              final canon = _canonicalVehicleName(name);
+              if (canon == wanted) {
+                vehicleTypeId = t['id']?.toString();
+                break;
+              }
             }
           }
         }
       } catch (_) {}
     }
 
-    // Use first available type if no match found
     if ((vehicleTypeId == null || vehicleTypeId.isEmpty) &&
         vehicleTypes != null &&
         vehicleTypes.isNotEmpty) {
@@ -99,7 +102,6 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
       'vehicleTypeId': vehicleTypeId ?? '',
     };
 
-    // Ensure we have a vehicleTypeId
     if (input['vehicleTypeId'].toString().isEmpty) {
       throw Exception(
         'Impossible de créer le véhicule: aucun type de véhicule disponible',
@@ -114,6 +116,44 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
       variables: variables,
     );
     return response['createDriverVehicle'];
+  }
+
+  String _normalizeName(String s) {
+    var r = s.toLowerCase();
+    r = r
+        .replaceAll('à', 'a')
+        .replaceAll('á', 'a')
+        .replaceAll('â', 'a')
+        .replaceAll('ä', 'a');
+    r = r.replaceAll('ç', 'c');
+    r = r
+        .replaceAll('è', 'e')
+        .replaceAll('é', 'e')
+        .replaceAll('ê', 'e')
+        .replaceAll('ë', 'e');
+    r = r.replaceAll('î', 'i').replaceAll('ï', 'i');
+    r = r.replaceAll('ô', 'o').replaceAll('ö', 'o');
+    r = r.replaceAll('û', 'u').replaceAll('ü', 'u');
+    r = r.replaceAll('-', ' ').replaceAll('_', ' ');
+    r = r.replaceAll(RegExp(r'\s+'), ' ');
+    return r.trim();
+  }
+
+  String _canonicalVehicleName(String s) {
+    final n = _normalizeName(s).replaceAll(' ', '');
+    if (n == 'car' || n == 'auto' || n == 'automobile') return 'voiture';
+    if (n == 'voiture') return 'voiture';
+
+    if (n == 'motorcycle' || n == 'motorbike') return 'moto';
+    if (n == 'moto') return 'moto';
+
+    if (n == 'bike' || n == 'bicycle') return 'velo';
+    if (n == 'velo' || n == 'vélo') return 'velo';
+
+    if (n == 'tuktuk' || n == 'tuktuktuk' || n == 'tuk') return 'tuktuk';
+    if (n.contains('tuk')) return 'tuktuk';
+
+    return n;
   }
 
   @override
@@ -413,13 +453,16 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
       'url': url,
       'size': size,
       // Ensure a valid FileType value on backend
-      'type': 'USER',
+      'type': (driverVehicleId != null && driverVehicleId.isNotEmpty)
+          ? 'VEHICLE'
+          : 'USER',
       'userId': userId,
     };
     if (originalName != null) input['originalName'] = originalName;
     if (contentType != null) input['contentType'] = contentType;
     if (etag != null) input['etag'] = etag;
-    if (driverVehicleId != null) input['driverVehicleId'] = driverVehicleId;
+    if (driverVehicleId != null && driverVehicleId.isNotEmpty)
+      input['driverVehicleId'] = driverVehicleId;
     final response = await _client.executeMutation(
       document: createFileMutation,
       variables: {'input': input},

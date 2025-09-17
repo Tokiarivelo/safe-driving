@@ -65,13 +65,40 @@ class DocumentUploadViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Queue photos to upload later (when pressing "Valider")
   void queuePhotosForUpload(List<File> photos, String documentType) {
     if (photos.isEmpty) return;
+
+    final isIdentityFront =
+        documentType == 'carteIdentiteRecto' ||
+        documentType == 'carte_identite_recto' ||
+        documentType == 'identity_recto';
+    final isIdentityBack =
+        documentType == 'carteIdentiteVerso' ||
+        documentType == 'carte_identite_verso' ||
+        documentType == 'identity_verso';
+    final isLicense =
+        documentType == 'permisConduire' ||
+        documentType == 'permis_conduire' ||
+        documentType == 'driving_license';
+
     final list = _pendingUploads.putIfAbsent(documentType, () => <File>[]);
-    list.addAll(photos);
-    _typeCounts[documentType] =
-        (_typeCounts[documentType] ?? 0) + photos.length;
+
+    if (isIdentityFront || isIdentityBack) {
+      list
+        ..clear()
+        ..add(photos.first);
+    } else if (isLicense) {
+      // Keep at most 2 photos for driver's license (front/back)
+      list.addAll(photos);
+      if (list.length > 2) {
+        list.removeRange(2, list.length);
+      }
+    } else {
+      // Default behavior: append
+      list.addAll(photos);
+    }
+
+    _typeCounts[documentType] = list.length;
     notifyListeners();
   }
 
@@ -161,6 +188,8 @@ Future<void> flushPendingUploads() async {
       _webUploadedCount += 1;
       // Assurer la prise en compte dans le total personnel
       _typeCounts['selfie'] = (_typeCounts['selfie'] ?? 0) + 1;
+      // Assurer la prise en compte dans le total personnel
+      _typeCounts['selfie'] = (_typeCounts['selfie'] ?? 0) + 1;
       notifyListeners();
       // Optionnel: implémenter un upload réel côté web dans le service si nécessaire
       return;
@@ -168,6 +197,9 @@ Future<void> flushPendingUploads() async {
 
     final capturedFile = File(imagePath);
     addCapturedPhoto(capturedFile);
+    // Compter localement le selfie pour la section "Infos personnelles"
+    _typeCounts['selfie'] = (_typeCounts['selfie'] ?? 0) + 1;
+    notifyListeners();
     // Compter localement le selfie pour la section "Infos personnelles"
     _typeCounts['selfie'] = (_typeCounts['selfie'] ?? 0) + 1;
     notifyListeners();
@@ -221,14 +253,7 @@ Future<void> flushPendingUploads() async {
         return _webUploadedCount;
       }
 
-      // First check local counts from queued uploads
-      int localTotal = 0;
-      for (final count in _typeCounts.values) {
-        localTotal += count;
-      }
-      if (localTotal > 0) return localTotal;
-
-      // Then check backend counts if available
+      // Then check backend counts if available (mobile)
       final backend =
           (_backendPersonalCount ?? 0) + (_backendVehicleCount ?? 0);
       if (backend > 0) return backend;
@@ -242,11 +267,6 @@ Future<void> flushPendingUploads() async {
 
   int getPersonalUploadedPhotosCount() {
     try {
-      if (kIsWeb) {
-        return _webUploadedCount; // selfie only on web
-      }
-      if (_backendPersonalCount != null) return _backendPersonalCount!;
-
       final personalTypes = <String>[
         'carteIdentiteRecto',
         'carte_identite_recto',
@@ -262,6 +282,12 @@ Future<void> flushPendingUploads() async {
       }
       if (local > 0) return local;
 
+      if (kIsWeb) {
+        return _webUploadedCount;
+      }
+
+      if (_backendPersonalCount != null) return _backendPersonalCount!;
+
       return _service.getPersonalUploadedPhotosCount();
     } catch (e) {
       return kIsWeb ? _webUploadedCount : 0;
@@ -270,11 +296,6 @@ Future<void> flushPendingUploads() async {
 
   int getVehicleUploadedPhotosCount() {
     try {
-      if (kIsWeb) {
-        return 0; // not tracked on web
-      }
-      if (_backendVehicleCount != null) return _backendVehicleCount!;
-
       final vehicleTypes = <String>[
         'certificatImmatriculation',
         'certificat_immatriculation',

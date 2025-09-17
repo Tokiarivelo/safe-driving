@@ -41,15 +41,17 @@ class UserDataSourceGraphQL implements IUserDataSource {
       if (transports.isNotEmpty) {
         final vtResp = await _client.executeQuery(
           document: getVehicleTypesQuery,
-          variables: {},
+          variables: const {},
         );
         final types = vtResp['vehicleTypes'] as List<dynamic>? ?? const [];
-        final names = transports.map(_normalize).toSet();
+
+        final requested = transports.map(_canonicalTransportName).toSet();
         final matchedIds = <String>[];
         for (final t in types) {
           if (t is Map) {
-            final n = _normalize((t['name'] as String?) ?? '');
-            if (names.contains(n)) {
+            final typeName = (t['name'] as String?) ?? '';
+            final canonical = _canonicalTransportName(typeName);
+            if (requested.contains(canonical)) {
               final id = t['id'] as String?;
               if (id != null && id.isNotEmpty) matchedIds.add(id);
             }
@@ -77,7 +79,34 @@ class UserDataSourceGraphQL implements IUserDataSource {
     r = r.replaceAll('î', 'i').replaceAll('ï', 'i');
     r = r.replaceAll('ô', 'o').replaceAll('ö', 'o');
     r = r.replaceAll('û', 'u').replaceAll('ü', 'u');
+    r = r.replaceAll('-', ' ').replaceAll('_', ' ');
+    r = r.replaceAll(RegExp(r'\s+'), ' ');
     return r.trim();
+  }
+
+  String _canonicalTransportName(String s) {
+    var n = _normalize(s);
+    // remove spaces for comparison like "tuk tuk" vs "tuktuk"
+    final compact = n.replaceAll(' ', '');
+    // Map common localized names and synonyms to canonical keys
+    // voiture/car/auto -> voiture
+    if (compact == 'car' || compact == 'auto' || compact == 'automobile') return 'voiture';
+    if (n == 'voiture') return 'voiture';
+
+    // moto/motorcycle -> moto
+    if (compact == 'motorcycle' || compact == 'motorbike') return 'moto';
+    if (n == 'moto') return 'moto';
+
+    // vélo/bike/bicycle -> velo
+    if (compact == 'bike' || compact == 'bicycle') return 'velo';
+    if (n == 'velo' || n == 'vélo') return 'velo';
+
+    // tuk tuk variants -> tuktuk
+    if (compact == 'tuktuk' || compact == 'tuk') return 'tuktuk';
+    if (n.contains('tuk')) return 'tuktuk';
+
+    // fallback to compact token
+    return compact;
   }
 
   @override

@@ -210,7 +210,8 @@ class DriverService implements IDriverService {
         return "Carte d'identité (Recto)";
       case 'ID_CARD_BACK':
         return "Carte d'identité (Verso)";
-      case 'VEHICLE_REGISTRATION':
+      case 'REGISTRATION':
+      case 'VEHICLE_REGISTRATION': 
         return "Certificat d'immatriculation";
       case 'INSURANCE':
         return "Attestation d'assurance";
@@ -241,9 +242,9 @@ class DriverService implements IDriverService {
     }
 
     try {
-      // WEB BRANCH
+  
       if (kIsWeb) {
-        // 1) Presign URLs
+
         final filesMeta = <Map<String, String>>[];
         for (final photo in photos) {
           final originalName = p.basename(photo.path);
@@ -251,9 +252,25 @@ class DriverService implements IDriverService {
           final contentType = WebUploadRegistry.getContentType(photo.path) ?? inferredType;
           filesMeta.add({'originalName': originalName, 'contentType': contentType});
         }
-        final presigned = await _repository.createBatchPresignedUrls(type: fileTypeEnum, files: filesMeta);
+      
 
-        // 2) PUT uploads
+        String presignTypeUsed = fileTypeEnum;
+        List<Map<String, dynamic>> presigned;
+        try {
+          presigned = await _repository.createBatchPresignedUrls(
+            type: presignTypeUsed,
+            files: filesMeta,
+          );
+        } catch (e) {
+          developer.log('createBatchPresignedUrls($presignTypeUsed) failed: $e. Retrying with USER.');
+          presignTypeUsed = 'USER';
+          presigned = await _repository.createBatchPresignedUrls(
+            type: presignTypeUsed,
+            files: filesMeta,
+          );
+        }
+
+   
         final uploadedKeys = <String>[];
         final putUrls = <String>[];
         final sizes = <int>[];
@@ -292,40 +309,49 @@ class DriverService implements IDriverService {
         }
         developer.log('uploadDocumentPhotos(web) PUT ok: keys=${uploadedKeys.join(', ')}');
 
-        
-        List<Map<String, dynamic>> completed = const [];
+    
         try {
-          completed = await _repository.completeUploadBulk(keys: uploadedKeys, type: fileTypeEnum);
+          await _repository.completeUploadBulk(
+            keys: uploadedKeys,
+            type: presignTypeUsed,
+          );
         } catch (e) {
-          developer.log('completeUploadBulk(web) failed: $e');
-        }
-        final presentKeys = completed.map((e) => (e['key'] ?? '').toString()).where((k) => k.isNotEmpty).toSet();
-        final missingIdx = <int>[];
-        for (var i = 0; i < uploadedKeys.length; i++) {
-          if (!presentKeys.contains(uploadedKeys[i])) missingIdx.add(i);
-        }
-
-        // 3bis) Fallback: create missing File rows explicitly
-        if (missingIdx.isNotEmpty) {
-          developer.log('Fallback(web) createUpload for keys: ${missingIdx.map((i) => uploadedKeys[i]).join(', ')}');
-          for (final i in missingIdx) {
+          if (presignTypeUsed != 'USER') {
+            developer.log('completeUploadBulk($presignTypeUsed) failed: $e. Retrying with USER.');
             try {
-              await _repository.createUpload(
-                userId: userId,
-                documentType: useVehicleFlow ? mappedVehicleDocType : mappedUserType,
-                key: uploadedKeys[i],
-                url: putUrls[i],
-                size: sizes[i],
-                originalName: filesMeta[i]['originalName'],
-                contentType: filesMeta[i]['contentType'],
-                etag: null,
+              presignTypeUsed = 'USER';
+              await _repository.completeUploadBulk(
+                keys: uploadedKeys,
+                type: presignTypeUsed,
               );
-            } catch (e) {
-              developer.log('Fallback(web) createUpload failed for key=${uploadedKeys[i]}: $e');
+            } catch (e2) {
+              developer.log('completeUploadBulk(USER) failed: $e2');
             }
+          } else {
+            developer.log('completeUploadBulk(USER) failed: $e');
           }
         }
 
+        for (var i = 0; i < uploadedKeys.length; i++) {
+          try {
+            await _repository.createUpload(
+              userId: userId,
+              documentType: useVehicleFlow ? mappedVehicleDocType : mappedUserType,
+              key: uploadedKeys[i],
+              url: putUrls[i],
+              size: sizes[i],
+              originalName: filesMeta[i]['originalName'],
+              contentType: filesMeta[i]['contentType'],
+              etag: null,
+              driverVehicleId: useVehicleFlow ? _currentVehicleId : null,
+            );
+          } catch (e) {
+            // Ignore if already created or backend rejects duplicate key
+            developer.log('createUpload(web) for key=${uploadedKeys[i]}: $e');
+          }
+        }
+
+        // 4) Attach files
         if (!useVehicleFlow) {
           // User docs flow (identity, license, selfie)
           final attachInputs = <Map<String, dynamic>>[];
@@ -359,20 +385,58 @@ class DriverService implements IDriverService {
           developer.log('uploadDocumentPhotos(web) attaching USER: ${attachInputs.map((m) => m['documentType']).join(', ')}');
           await _repository.uploadUserDocuments(input: attachInputs);
         } else {
+          // Vehicle docs/images flow
           if (isVehicleImgs) {
-            developer.log('uploadDocumentPhotos(web) attaching VEHICLE IMAGES x${uploadedKeys.length}');
-            await _repository.uploadVehicleImages(vehicleId: _currentVehicleId!, keys: uploadedKeys);
+            try {
+ 
+              developer.log('uploadDocumentPhotos(web) attaching VEHICLE PHOTOS as VehicleDocument x${uploadedKeys.length}');
+              final defaultName = _defaultNameForDocumentType('VEHICLE_PHOTO') ?? 'Photo du véhicule';
+              final docsInput = uploadedKeys
+                  .map((k) => {
+                        'documentType': 'OTHER',
+                        'file': {'key': k},
+                        'name': defaultName,
+                      })
+                  .toList();
+              await _repository.uploadVehicleDocuments(vehicleId: _currentVehicleId!, input: docsInput);
+            } catch (e) {
+              developer.log('uploadVehicleDocuments(web, photos) failed: $e');
+              // Fallback: attach as generic user docs to avoid misclassification
+              final attachInputs = uploadedKeys
+                  .map((k) => {
+                        'documentType': 'OTHER',
+                        'file': {'key': k},
+                        'name': _defaultNameForDocumentType('VEHICLE_PHOTO') ?? 'Photo du véhicule',
+                      })
+                  .toList();
+              await _repository.uploadUserDocuments(input: attachInputs);
+            }
           } else {
-            final defaultName = _defaultNameForDocumentType(mappedVehicleDocType) ?? '';
-            final docsInput = uploadedKeys
-                .map((k) => {
-                      'documentType': mappedVehicleDocType,
-                      'file': {'key': k},
-                      'name': defaultName,
-                    })
-                .toList();
-            developer.log('uploadDocumentPhotos(web) attaching VEHICLE DOCS: ${docsInput.map((m) => m['documentType']).join(', ')}');
-            await _repository.uploadVehicleDocuments(vehicleId: _currentVehicleId!, input: docsInput);
+            try {
+              final defaultName = _defaultNameForDocumentType(mappedVehicleDocType) ?? '';
+              final docsInput = uploadedKeys
+                  .map((k) => {
+                        'documentType': mappedVehicleDocType,
+                        'file': {'key': k},
+                        'name': defaultName,
+                      })
+                  .toList();
+              developer.log('uploadDocumentPhotos(web) attaching VEHICLE DOCS: ${docsInput.map((m) => m['documentType']).join(', ')}');
+              await _repository.uploadVehicleDocuments(vehicleId: _currentVehicleId!, input: docsInput);
+            } catch (e) {
+              developer.log('uploadVehicleDocuments(web) failed: $e');
+              // Fallback: attach as generic user docs to avoid misclassification
+              const effectiveUserType = 'OTHER';
+              final defaultName = _defaultNameForDocumentType(effectiveUserType);
+              final attachInputs = uploadedKeys
+                  .map((k) {
+                    final map = {'documentType': effectiveUserType, 'file': {'key': k}};
+                    if (defaultName != null) map['name'] = defaultName;
+                    return map;
+                  })
+                  .toList();
+              await _repository.uploadUserDocuments(input: attachInputs);
+            }
           }
         }
         developer.log('uploadDocumentPhotos(web) done');
@@ -417,36 +481,28 @@ class DriverService implements IDriverService {
       developer.log('uploadDocumentPhotos(mobile) PUT ok: keys=${uploadedKeys.join(', ')}');
 
       // 3) Complete
-      List<Map<String, dynamic>> completed = const [];
       try {
-        completed = await _repository.completeUploadBulk(keys: uploadedKeys, type: fileTypeEnum);
+        await _repository.completeUploadBulk(keys: uploadedKeys, type: fileTypeEnum);
       } catch (e) {
         developer.log('completeUploadBulk(mobile) failed: $e');
       }
-      final presentKeys = completed.map((e) => (e['key'] ?? '').toString()).where((k) => k.isNotEmpty).toSet();
-      final missingIdx = <int>[];
-      for (var i = 0; i < uploadedKeys.length; i++) {
-        if (!presentKeys.contains(uploadedKeys[i])) missingIdx.add(i);
-      }
 
-      // 3bis) Fallback: create missing File rows
-      if (missingIdx.isNotEmpty) {
-        developer.log('Fallback(mobile) createUpload for keys: ${missingIdx.map((i) => uploadedKeys[i]).join(', ')}');
-        for (final i in missingIdx) {
-          try {
-            await _repository.createUpload(
-              userId: userId,
-              documentType: useVehicleFlow ? mappedVehicleDocType : mappedUserType,
-              key: uploadedKeys[i],
-              url: urls[i],
-              size: sizes[i],
-              originalName: filesMeta[i]['originalName'],
-              contentType: filesMeta[i]['contentType'],
-              etag: etags[i],
-            );
-          } catch (e) {
-            developer.log('Fallback(mobile) createUpload failed for key=${uploadedKeys[i]}: $e');
-          }
+      // 3bis) Ensure File rows exist for all keys
+      for (var i = 0; i < uploadedKeys.length; i++) {
+        try {
+          await _repository.createUpload(
+            userId: userId,
+            documentType: useVehicleFlow ? mappedVehicleDocType : mappedUserType,
+            key: uploadedKeys[i],
+            url: urls[i],
+            size: sizes[i],
+            originalName: filesMeta[i]['originalName'],
+            contentType: filesMeta[i]['contentType'],
+            etag: etags[i],
+            driverVehicleId: useVehicleFlow ? _currentVehicleId : null,
+          );
+        } catch (e) {
+          developer.log('createUpload(mobile) for key=${uploadedKeys[i]}: $e');
         }
       }
 
@@ -483,8 +539,17 @@ class DriverService implements IDriverService {
         await _repository.uploadUserDocuments(input: attachInputs);
       } else {
         if (isVehicleImgs) {
-          developer.log('uploadDocumentPhotos(mobile) attaching VEHICLE IMAGES x${uploadedKeys.length}');
-          await _repository.uploadVehicleImages(vehicleId: _currentVehicleId!, keys: uploadedKeys);
+          // Attach photos as VehicleDocument OTHER with a friendly name
+          final defaultName = _defaultNameForDocumentType('VEHICLE_PHOTO') ?? 'Photo du véhicule';
+          final docsInput = uploadedKeys
+              .map((k) => {
+                    'documentType': 'OTHER',
+                    'file': {'key': k},
+                    'name': defaultName,
+                  })
+              .toList();
+          developer.log('uploadDocumentPhotos(mobile) attaching VEHICLE PHOTOS as VehicleDocument x${uploadedKeys.length}');
+          await _repository.uploadVehicleDocuments(vehicleId: _currentVehicleId!, input: docsInput);
         } else {
           final defaultName = _defaultNameForDocumentType(mappedVehicleDocType) ?? '';
           final docsInput = uploadedKeys
@@ -525,32 +590,43 @@ class DriverService implements IDriverService {
       final adjustedUrl = PresignedUrlUtil.adjustForDevice(url);
       final etag = await _uploadToS3(adjustedUrl, photo, contentType);
 
-  
-      final stat = await photo.stat();
-      await _repository.createUpload(
-        userId: userId,
-        documentType: 'SELFIE',
-        key: key,
-        url: adjustedUrl,
-        size: stat.size,
-        originalName: fileName,
-        contentType: contentType,
-        etag: etag,
-      );
+ 
+      try {
+        await _repository.completeUploadBulk(keys: [key], type: 'USER');
+      } catch (e) {
+        developer.log('completeUploadBulk(selfie) failed: $e');
+      }
 
-    
+      final stat = await photo.stat();
+      try {
+        await _repository.createUpload(
+          userId: userId,
+          documentType: 'SELFIE',
+          key: key,
+          url: adjustedUrl,
+          size: stat.size,
+          originalName: fileName,
+          contentType: contentType,
+          etag: etag,
+        );
+      } catch (e) {
+
+        developer.log('createUpload(selfie) skipped: $e');
+      }
+
+
       try {
         await _repository.uploadUserDocuments(
           input: [
             {
-              'documentType': 'SELFIE',
+              'documentType': 'OTHER',
               'file': {'key': key},
               'name': 'Selfie',
             },
           ],
         );
       } catch (_) {
-    
+  
       }
     } catch (e) {
       throw Exception('Failed to upload selfie: $e');
@@ -692,6 +768,15 @@ class DriverService implements IDriverService {
       for (final f in files) {
         final type = (f is Map && f['type'] is String) ? (f['type'] as String) : '';
         switch (type) {
+       
+          case 'USER':
+            personal += 1;
+            break;
+       
+          case 'VEHICLE':
+            vehicle += 1;
+            break;
+  
           case 'SELFIE':
           case 'ID_CARD_FRONT':
           case 'ID_CARD_BACK':
@@ -699,17 +784,19 @@ class DriverService implements IDriverService {
             personal += 1;
             break;
           case 'VEHICLE_REGISTRATION':
+          case 'REGISTRATION':
           case 'INSURANCE':
           case 'VEHICLE_PHOTO':
             vehicle += 1;
             break;
           default:
-            // Heuristically classify unknowns by key path if present
+        
             try {
               final key = (f['key'] ?? '').toString().toUpperCase();
               if (key.contains('/DRIVER/SELFIE') ||
                   key.contains('ID_CARD') ||
-                  key.contains('LICENSE')) {
+                  key.contains('LICENSE') ||
+                  key.contains('/USER/')) {
                 personal += 1;
               } else if (key.contains('VEHICLE')) {
                 vehicle += 1;
@@ -721,7 +808,7 @@ class DriverService implements IDriverService {
       _backendPersonalPhotos = personal;
       _backendVehiclePhotos = vehicle;
     } catch (e) {
-      // Keep existing cached values on failure
+   
       throw Exception('Failed to refresh backend photo counts: $e');
     }
   }

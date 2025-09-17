@@ -48,7 +48,7 @@ mutation uploadVehicleImages($keys: [String!]!, $vehicleId: String!) {
 ''';
 
 const String uploadVehicleDocumentsMutation = r'''
-mutation uploadVehicleDocuments($input: [UploadVehicleDocumentInput!]!, $vehicleId: String!) {
+mutation uploadVehicleDocuments($input: [UploadVehicleDocumentsInput!]!, $vehicleId: String!) {
   uploadVehicleDocuments(input: $input, vehicleId: $vehicleId) {
     createdAt
     driverVehicleId
