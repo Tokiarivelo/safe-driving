@@ -12,7 +12,18 @@ const String upsertUserPreferenceMutation = r'''
         name
       }
       theme
-      userId
+      activateEmailNotifications
+      activateSmsNotifications
+      activateLocation
+      activateNotifications
+      cguAccepted
+      privacyPolicyAccepted
+      createdAt
+      updatedAt
+      preferedvelicles {
+        id
+        name
+      }
     }
   }
 ''';
