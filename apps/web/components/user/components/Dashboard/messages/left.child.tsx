@@ -15,19 +15,19 @@ function left() {
     <>
       <div className={styles.auth_msg5}>
         <div className={styles.auth_msg6}>
-          <h1>Messages</h1>
+          <h1 className='text-black'>Messages</h1>
         </div>
-        <hr />
+        <hr className='text-black'/>
         <div className={styles.auth_msg7}>
           <div className={styles.auth_msg8}>
             <Input
               type="text"
               placeholder="Rechercher message / utilisateur"
-              startOrnerIcon={<Icon icon="material-symbols:search" width="24" height="24" />}
+              startOrnerIcon={<Icon icon="material-symbols:search" width="24" height="24" color='black'/>}
             />
           </div>
           <div className={styles.auth_msg9}>
-            <Icon icon="gridicons:filter" width="30" height="30" />
+            <Icon icon="gridicons:filter" width="30" height="30" color='black'/>
           </div>
         </div>
       </div>

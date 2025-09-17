@@ -6,7 +6,7 @@ import ConversationItem from './left.child';
 import styles from './messages.module.css';
 import { useMessages } from '@/lib/message/useMessages';
 import { Chat } from '../../../../ui/chat/chat';
-import { ConversationSelectorWithCRUD } from '../../../../ui/conversation-selector';
+import { ConversationSelectorWithCRUD } from './conversation-selector';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useChatSocket } from '@/lib/socket.io/useChatSocket';
@@ -76,7 +76,7 @@ export function ChatContainer({
       <div className={styles.auth_msg2}>
         <div className={styles.auth_msg3}></div>
         <div className={styles.auth_msg4}>
-          {/* <ConversationSelectorWithCRUD
+          <ConversationSelectorWithCRUD
             selectedConversationId={selectedConversationId}
             onConversationSelect={handleConversationSelect}
             className="h-full"
@@ -85,11 +85,11 @@ export function ChatContainer({
             onConversationChange={(conversations) => {
               console.log('Conversations updated:', conversations);
             }}
-          /> */}
-          <ConversationItem/>
+          />
+          {/* <ConversationItem/> */}
         </div>
         <div className={styles.auth_msg11}>
-          {/* <Chat
+          <Chat
             conversation={selectedConversation}
             currentUserId={currentUserId}
             messages={messages}
@@ -102,8 +102,8 @@ export function ChatContainer({
             onScrollToBottom={scrollToBottom}
             onEditMessage={editMessage}
             onDeleteMessage={deleteMessage}
-          /> */}
-          <MpMessage/>
+          />
+          {/* <MpMessage/> */}
         </div>
         <div className={styles.auth_msg12}>
           <Fichier />

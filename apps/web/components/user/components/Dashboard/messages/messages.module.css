@@ -52,16 +52,16 @@
   @apply w-[73%] h-6;
 }
 .auth_left6 {
-  @apply w-full h-6 flex ;
+  @apply w-full h-6 flex text-black;
 }
 .auth_left7 {
-  @apply w-[60%] flex items-center;
+  @apply w-[60%] flex items-center text-black;
 }
 .auth_left8 {
-  @apply w-[30%] flex items-center text-[13px];
+  @apply w-[30%] flex items-center text-[13px] text-black;
 }
 .auth_left9 {
-  @apply w-[10%] h-10 flex items-center justify-center;
+  @apply w-[10%] h-10 flex items-center justify-center ;
 }
 .auth_left10 {
   @apply w-2 h-6 space-y-1 cursor-pointer ml-2;

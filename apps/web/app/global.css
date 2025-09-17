@@ -167,15 +167,9 @@
   --auth-color-icon: #e33486;
   --auth-color-input: #fadbf0;
   --auth-color-placeholder: #b15c8b;
-  --auth-background: linear-gradient(135deg, #c02aa8 0%, #c936a1 30%, #ee6984 70%, #fe7f78 100%);
-  --auth-gradient-card: linear-gradient(135deg, #c02aa8 0%, #c936a1 30%, #ee6984 70%, #fe7f78 100%);
-  --auth-gradient-but-card: linear-gradient(
-    135deg,
-    #c02aa8 0%,
-    #c936a1 30%,
-    #ee6984 70%,
-    #fe7f78 100%
-  );
+  --auth-background: linear-gradient(135deg, #c02aa8 0%, #c02aa8 15%, #ee6984 60%, #fe7f78 100%);
+  --auth-gradient-card: linear-gradient(135deg, #ea3a7e 14%, #ff7746 64%);
+  --auth-gradient-but-card: linear-gradient(135deg, #e91e63 0%, #ff6b35 100%);
   --auth-color-black: #000000;
   --auth-color-bg: #fff;
   --auth-color-text: #333;
@@ -354,7 +348,152 @@
 /* ===============================
    2) Styles existants
    =============================== */
+.tag {
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+  transform: rotate(0deg);
+  /* height: 65px;  */
+}
+.tag:hover::before {
+  content: '';
+  position: absolute;
+  top: 17.5px;
+  left: -22px;
+  transform: translateX(-50%);
+  transform: rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid #ffffff;
+  cursor: pointer;
+}
 
+.tag:hover::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: -19px;
+  transform: translateX(-50%);
+  transform: rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-bottom: 13px solid #ea3a7e;
+  cursor: pointer;
+}
+/*===================================*/
+.tog {
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #e0d8d8;
+  border-top: 1px solid #ffffff;
+  border-right: 1px solid #c4c0c0;
+  border-radius: 13px;
+  transform: rotate(0deg);
+  /* height: 65px; */
+}
+.tog:hover::before {
+  content: '';
+  position: absolute;
+  top: 17.5px;
+  left: -22px;
+  transform: translateX(-50%);
+  transform: rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid #ffffff;
+}
+
+.tog:hover::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: -19px;
+  transform: translateX(-50%);
+  transform: rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-bottom: 13px solid #eb3e7a;
+}
+/*===================================*/
+.teg {
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #e0d8d8;
+  border-top: 1px solid #ffffff;
+  border-right: 1px solid #c4c0c0;
+  border-radius: 13px;
+  transform: rotate(0deg);
+  /* height: 65px; */
+}
+.teg:hover::before {
+  content: '';
+  position: absolute;
+  top: 17.5px;
+  left: -22px;
+  transform: translateX(-50%);
+  transform: rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid #ffffff;
+}
+
+.teg:hover::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: -19px;
+  transform: translateX(-50%);
+  transform: rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-bottom: 13px solid #ee4772;
+}
+/*===================================*/
+.tig {
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #e0d8d8;
+  border-top: 1px solid #ffffff;
+  border-right: 1px solid #c4c0c0;
+  border-radius: 13px;
+  transform: rotate(0deg);
+  /* height: 65px; */
+}
+.tig:hover::before {
+  content: '';
+  position: absolute;
+  top: 17.5px;
+  left: -22px;
+  transform: translateX(-50%);
+  transform: rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid #ffffff;
+}
+.tig:hover::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: -19px;
+  transform: translateX(-50%);
+  transform: rotate(-90deg);
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-bottom: 13px solid #f14f6a;
+}
+/*================================*/
 .spinner {
   --d: 20.6px;
   width: 2.5px;
