@@ -1256,9 +1256,17 @@
   border-color: var(--safe-accent-500);
 }
 
-html, body {
-  background: var(--background);
-  color: var(--foreground);
-  transition: background-color 0.3s, color 0.3s;
-}
+@media (min-width: 640px) {
+  .auth-border {
+    border-top: 2px solid #ee6984;
+    border-right: 2px solid #fe7f78;
+    border-bottom: 2px solid #c02aa8;
+    border-left: 2px solid #c02aa8;
+  }
 
+  html, body {
+    background: var(--background);
+    color: var(--foreground);
+    transition: background-color 0.3s, color 0.3s;
+  }
+}
