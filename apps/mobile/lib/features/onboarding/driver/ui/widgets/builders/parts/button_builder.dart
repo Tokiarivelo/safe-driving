@@ -5,6 +5,7 @@ import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboar
 import 'package:safe_driving/shared/widgets/customs/buttons/buttons_widget.dart';
 import 'package:safe_driving/l10n/l10n.dart';
 import 'preferences_builder.dart';
+import 'package:safe_driving/app/routes.dart';
 
 class ButtonBuilder {
   static Widget buildButtons(
@@ -15,6 +16,16 @@ class ButtonBuilder {
   ) {
     if (step.stepType == DriverStepType.gps) {
       return PreferencesBuilder.buildGpsButtons(coordinator, nextStep, context);
+    }
+
+    if (step.stepType == DriverStepType.completion) {
+      return PrimaryButton.primaryButton(
+        text: context.l10n.driverCompleteStart,
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, AppRoutes.home);
+        },
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+      );
     }
 
     if (step.stepType == DriverStepType.legal) {

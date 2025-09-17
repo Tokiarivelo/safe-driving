@@ -16,15 +16,24 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     required String email,
     required String phone,
   }) async {
+    final parts = name.trim().split(' ');
+    final firstName = parts.isNotEmpty ? parts.first : '';
+    final lastName = parts.length > 1 ? parts.sublist(1).join(' ').trim() : '';
     final variables = {
-      'input': {'userId': userId, 'name': name, 'email': email, 'phone': phone},
+      'input': {
+        'id': userId,
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'phoneNumber': phone,
+      },
     };
 
     final response = await _client.executeMutation(
-      document: saveDriverPersonalInfoMutation,
+      document: updateUserMutation,
       variables: variables,
     );
-    return response['saveDriverPersonalInfo'];
+    return response['updateUser'];
   }
 
   @override
@@ -272,5 +281,88 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     }
 
     throw Exception('No data to update');
+  }
+
+  @override
+  Future<String> generatePresignedUrl({
+    required String key,
+    required String contentType,
+    double? expiresIn,
+  }) async {
+    final variables = {
+      'key': key,
+      'contentType': contentType,
+      if (expiresIn != null) 'expiresIn': expiresIn,
+    };
+    final response = await _client.executeMutation(
+      document: getPresignedUrlMutation,
+      variables: variables,
+    );
+    final url = response['getPresignedUrl'];
+    if (url is String && url.isNotEmpty) return url;
+    throw Exception('Failed to generate presigned URL');
+  }
+
+  @override
+  Future<Map<String, dynamic>> createUpload({
+    required String userId,
+    required String documentType,
+    required String key,
+    required String url,
+    required int size,
+    String? originalName,
+    String? contentType,
+    String? etag,
+    String? driverVehicleId,
+  }) async {
+    final input = <String, dynamic>{
+      'key': key,
+      'url': url,
+      'size': size,
+      'type': documentType,
+      'userId': userId,
+    };
+    if (originalName != null) input['originalName'] = originalName;
+    if (contentType != null) input['contentType'] = contentType;
+    if (etag != null) input['etag'] = etag;
+    if (driverVehicleId != null) input['driverVehicleId'] = driverVehicleId;
+    final response = await _client.executeMutation(
+      document: createFileMutation,
+      variables: {'input': input},
+    );
+    return response['createFile'] as Map<String, dynamic>;
+  }
+
+  @override
+  Future<String> generateDriverQrCode({String? type}) async {
+    final response = await _client.executeQuery(
+      document: getUserQrQuery,
+      variables: {'type': type ?? 'driver'},
+    );
+    final data = response['getUserQr'];
+    if (data is String && data.isNotEmpty) return data;
+    throw Exception('Failed to generate driver QR code');
+  }
+
+  @override
+  Future<Map<String, dynamic>> updateDriverStatus({
+    required String userId,
+    required Map<String, dynamic> input,
+  }) async {
+    final payload = {'input': {'id': userId, ...input}};
+    final response = await _client.executeMutation(
+      document: updateUserMutation,
+      variables: payload,
+    );
+    return response['updateUser'] as Map<String, dynamic>;
+  }
+
+  @override
+  Future<Map<String, dynamic>> upsertUserPreference(Map<String, dynamic> input) async {
+    final response = await _client.executeMutation(
+      document: upsertUserPreferenceMutation,
+      variables: {'input': input},
+    );
+    return response['upsertUserPreference'] as Map<String, dynamic>;
   }
 }

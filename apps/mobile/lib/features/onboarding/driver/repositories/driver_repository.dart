@@ -101,6 +101,77 @@ class DriverRepository implements RepositoryInterface {
     }
   }
 
+  Future<String> generatePresignedUrl({
+    required String key,
+    required String contentType,
+    double? expiresIn,
+  }) async {
+    try {
+      return await _dataSource.generatePresignedUrl(
+        key: key,
+        contentType: contentType,
+        expiresIn: expiresIn,
+      );
+    } catch (e) {
+      throw Exception('Failed to generate presigned url: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> createUpload({
+    required String userId,
+    required String documentType,
+    required String key,
+    required String url,
+    required int size,
+    String? originalName,
+    String? contentType,
+    String? etag,
+    String? driverVehicleId,
+  }) async {
+    try {
+      return await _dataSource.createUpload(
+        userId: userId,
+        documentType: documentType,
+        key: key,
+        url: url,
+        size: size,
+        originalName: originalName,
+        contentType: contentType,
+        etag: etag,
+        driverVehicleId: driverVehicleId,
+      );
+    } catch (e) {
+      throw Exception('Failed to create upload: $e');
+    }
+  }
+
+  Future<String> generateDriverQrCode({String? type}) async {
+    try {
+      return await _dataSource.generateDriverQrCode(type: type);
+    } catch (e) {
+      throw Exception('Failed to generate driver QR code: $e');
+    }
+  }
+
+  Future<void> updateDriverStatus({
+    required String userId,
+    required Map<String, dynamic> input,
+  }) async {
+    try {
+      await _dataSource.updateDriverStatus(userId: userId, input: input);
+    } catch (e) {
+      throw Exception('Failed to update driver status: $e');
+    }
+  }
+
+  Future<void> upsertUserPreference(Map<String, dynamic> input) async {
+    try {
+      await _dataSource.upsertUserPreference(input);
+    } catch (e) {
+      throw Exception('Failed to upsert user preference: $e');
+    }
+  }
+
   Future<void> saveNotificationPreferences({
     required String userId,
     required Map<String, bool> preferences,

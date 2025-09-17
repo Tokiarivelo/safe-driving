@@ -70,29 +70,85 @@ class StepTwelveView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // QR code placeholder
-              Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: AppColors.inputTextBackground
-                      .adapt(context)
-                      .withAlpha(100),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.fillButtonBackground
-                        .adapt(context)
-                        .withAlpha(100),
-                    width: 2,
-                  ),
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.qr_code,
-                    size: 80,
-                    color: AppColors.fillButtonBackground.adapt(context),
-                  ),
-                ),
+              FutureBuilder<String>(
+                future: coordinator.generateDriverQrCode(type: 'driver'),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      width: 150,
+                      height: 150,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: AppColors.inputTextBackground
+                            .adapt(context)
+                            .withAlpha(100),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.fillButtonBackground
+                              .adapt(context)
+                              .withAlpha(100),
+                          width: 2,
+                        ),
+                      ),
+                      child: const SizedBox(
+                        width: 28,
+                        height: 28,
+                        child: CircularProgressIndicator(strokeWidth: 2.2),
+                      ),
+                    );
+                  }
+                  if (snapshot.hasError || !(snapshot.hasData)) {
+                    return Container(
+                      width: 150,
+                      height: 150,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: AppColors.inputTextBackground
+                            .adapt(context)
+                            .withAlpha(100),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.fillButtonBackground
+                              .adapt(context)
+                              .withAlpha(100),
+                          width: 2,
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.qr_code_2,
+                        size: 80,
+                        color: AppColors.fillButtonBackground.adapt(context),
+                      ),
+                    );
+                  }
+                  final qrUrl = snapshot.data!;
+                  return Container(
+                    width: 150,
+                    height: 150,
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.inputTextBackground
+                          .adapt(context)
+                          .withAlpha(100),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: AppColors.fillButtonBackground
+                            .adapt(context)
+                            .withAlpha(100),
+                        width: 2,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        qrUrl,
+                        width: 134,
+                        height: 134,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                },
               ),
 
               const SizedBox(height: 16),

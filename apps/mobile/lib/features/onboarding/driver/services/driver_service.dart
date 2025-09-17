@@ -1,16 +1,17 @@
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:path/path.dart' as p;
 import '../core/interfaces/driver_service_interface.dart';
 import '../repositories/driver_repository.dart';
 import 'storage_service.dart';
+import 'package:safe_driving/features/authentication/services/session_service.dart';
 
-/// Service standardisé pour la gestion du driver onboarding
-/// Implémente l'interface IDriverService et suit l'architecture MVVM
 class DriverService implements IDriverService {
   final DriverRepository _repository;
   final StorageService _storageService;
+  final SessionService _sessionService;
 
-  DriverService(this._repository, this._storageService);
+  DriverService(this._repository, this._storageService, this._sessionService);
 
   @override
   Future<bool> requestCameraPermission() async {
@@ -49,8 +50,9 @@ class DriverService implements IDriverService {
     }
 
     try {
+      final userId = _getUserIdOrThrow();
       await _repository.savePersonalInfo(
-        userId: 'temp_user_id',
+        userId: userId,
         name: personalInfo['name'] ?? '',
         email: personalInfo['email'] ?? '',
         phone: personalInfo['phone'] ?? '',
@@ -67,8 +69,9 @@ class DriverService implements IDriverService {
     }
 
     try {
+      final userId = _getUserIdOrThrow();
       await _repository.saveVehicleInfo(
-        userId: 'temp_user_id',
+        userId: userId,
         marque: vehicleInfo['marque'] ?? '',
         modele: vehicleInfo['modele'] ?? '',
         immatriculation: vehicleInfo['immatriculation'] ?? '',
@@ -80,22 +83,86 @@ class DriverService implements IDriverService {
     }
   }
 
+  Future<String?> _uploadToS3(String url, File file, String contentType) async {
+    final client = HttpClient();
+    try {
+      final req = await client.putUrl(Uri.parse(url));
+      req.headers.set(HttpHeaders.contentTypeHeader, contentType);
+      final bytes = await file.readAsBytes();
+      req.add(bytes);
+      final resp = await req.close();
+      if (resp.statusCode < 200 || resp.statusCode >= 300) {
+        throw HttpException('S3 upload failed: ${resp.statusCode}');
+      }
+      return resp.headers.value('etag');
+    } finally {
+      client.close(force: true);
+    }
+  }
+
+  String _inferContentType(String path) {
+    final lower = path.toLowerCase();
+    if (lower.endsWith('.png')) return 'image/png';
+    if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return 'image/jpeg';
+    if (lower.endsWith('.heic')) return 'image/heic';
+    return 'application/octet-stream';
+    }
+
+  String _mapDocumentType(String type) {
+    switch (type) {
+      case 'identity_recto':
+      case 'carte_identite_recto':
+        return 'ID_CARD_FRONT';
+      case 'identity_verso':
+      case 'carte_identite_verso':
+        return 'ID_CARD_BACK';
+      case 'driving_license':
+      case 'permis_conduire':
+        return 'DRIVER_LICENSE';
+      case 'certificat_immatriculation':
+        return 'VEHICLE_REGISTRATION';
+      case 'attestation_assurance':
+        return 'INSURANCE';
+      case 'selfie':
+        return 'SELFIE';
+      default:
+        return type.toUpperCase();
+    }
+  }
+
+  String _buildS3Key(String userId, String documentType, String fileName) {
+    final ts = DateTime.now().millisecondsSinceEpoch;
+    return 'uploads/users/$userId/driver/$documentType/${ts}_$fileName';
+  }
+
   @override
   Future<void> uploadDocumentPhotos(
     List<File> photos,
     String documentType,
   ) async {
+    final userId = _getUserIdOrThrow();
+    final backendType = _mapDocumentType(documentType);
     try {
-      // Store locally first
       await _storageService.storePhotos(photos, documentType);
-
-      // Upload each photo to server via repository
       for (final photo in photos) {
-        await _repository.uploadDocument(
-          userId: 'temp_user_id',
-          documentType: documentType,
-          filePath: photo.path,
-          side: 'front',
+        final contentType = _inferContentType(photo.path);
+        final fileName = p.basename(photo.path);
+        final key = _buildS3Key(userId, backendType, fileName);
+        final url = await _repository.generatePresignedUrl(
+          key: key,
+          contentType: contentType,
+        );
+        final etag = await _uploadToS3(url, photo, contentType);
+        final stat = await photo.stat();
+        await _repository.createUpload(
+          userId: userId,
+          documentType: backendType,
+          key: key,
+          url: url,
+          size: stat.size,
+          originalName: fileName,
+          contentType: contentType,
+          etag: etag,
         );
       }
     } catch (e) {
@@ -105,14 +172,27 @@ class DriverService implements IDriverService {
 
   @override
   Future<void> uploadSelfie(File photo) async {
+    final userId = _getUserIdOrThrow();
     try {
-      // Store locally first
       await _storageService.storePhoto(photo, StorageService.selfieType);
-
-      // Upload to server via repository
-      await _repository.uploadSelfie(
-        userId: 'temp_user_id',
-        filePath: photo.path,
+      final contentType = _inferContentType(photo.path);
+      final fileName = p.basename(photo.path);
+      final key = _buildS3Key(userId, 'SELFIE', fileName);
+      final url = await _repository.generatePresignedUrl(
+        key: key,
+        contentType: contentType,
+      );
+      final etag = await _uploadToS3(url, photo, contentType);
+      final stat = await photo.stat();
+      await _repository.createUpload(
+        userId: userId,
+        documentType: 'SELFIE',
+        key: key,
+        url: url,
+        size: stat.size,
+        originalName: fileName,
+        contentType: contentType,
+        etag: etag,
       );
     } catch (e) {
       throw Exception('Failed to upload selfie: $e');
@@ -124,8 +204,9 @@ class DriverService implements IDriverService {
     Map<String, bool> preferences,
   ) async {
     try {
+      final userId = _getUserIdOrThrow();
       await _repository.saveNotificationPreferences(
-        userId: 'temp_user_id',
+        userId: userId,
         preferences: preferences,
       );
     } catch (e) {
@@ -139,8 +220,9 @@ class DriverService implements IDriverService {
     required String language,
   }) async {
     try {
+      final userId = _getUserIdOrThrow();
       await _repository.saveAppPreferences(
-        userId: 'temp_user_id',
+        userId: userId,
         theme: theme,
         language: language,
       );
@@ -151,10 +233,32 @@ class DriverService implements IDriverService {
 
   @override
   Future<void> completeDriverOnboarding(Map<String, dynamic> data) async {
+    final userId = _getUserIdOrThrow();
     try {
-      await _repository.completeDriverOnboarding('temp_user_id');
+      final cgu = data['cgu_accepted'] == true;
+      final privacy = data['privacy_policy_accepted'] == true;
+      await _repository.upsertUserPreference({
+        'cguAccepted': cgu,
+        'privacyPolicyAccepted': privacy,
+        'driverTermsAccepted': true,
+      });
+      await _repository.updateDriverStatus(
+        userId: userId,
+        input: {
+          'isDriver': true,
+        },
+      );
     } catch (e) {
       throw Exception('Failed to complete driver onboarding: $e');
+    }
+  }
+
+  @override
+  Future<String> generateDriverQrCode({String? type}) async {
+    try {
+      return await _repository.generateDriverQrCode(type: type);
+    } catch (e) {
+      throw Exception('Failed to generate driver QR code: $e');
     }
   }
 
@@ -175,7 +279,6 @@ class DriverService implements IDriverService {
   @override
   int getPersonalUploadedPhotosCount() {
     try {
-   
       final types = <String>[
         'carteIdentiteRecto', 'carte_identite_recto',
         'carteIdentiteVerso', 'carte_identite_verso',
@@ -195,7 +298,6 @@ class DriverService implements IDriverService {
   @override
   int getVehicleUploadedPhotosCount() {
     try {
-   
       final types = <String>[
         'certificatImmatriculation', 'certificat_immatriculation',
         'attestationAssurance', 'attestation_assurance',
@@ -240,10 +342,18 @@ class DriverService implements IDriverService {
   @override
   bool validateDocuments() {
     try {
-      return getTotalUploadedPhotosCount() >= 3; // Minimum required photos
+      return getTotalUploadedPhotosCount() >= 3;
     } catch (e) {
       return false;
     }
+  }
+
+  String _getUserIdOrThrow() {
+    final id = _sessionService.userId;
+    if (id == null || id.isEmpty) {
+      throw StateError('Utilisateur non authentifié');
+    }
+    return id;
   }
 
   bool _isValidEmail(String email) {

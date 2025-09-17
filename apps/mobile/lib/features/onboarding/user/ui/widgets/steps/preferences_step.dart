@@ -54,7 +54,7 @@ class _PreferencesStep extends StatelessWidget {
         const SizedBox(height: 24),
         ButtonRows.laterAndActionButtons(
           onLaterPressed: viewModel.nextStepImmediate,
-          onActionPressed: () {
+          onActionPressed: () async {
             if (!viewModel.validateCurrentStep()) {
               final msg =
                   viewModel.getValidationError() ??
@@ -66,6 +66,8 @@ class _PreferencesStep extends StatelessWidget {
               );
               return;
             }
+            await viewModel.saveCurrentPreferences();
+            if (!context.mounted) return;
             viewModel.nextStepImmediate();
           },
           actionText: context.l10n.stepPreferencesValidate,

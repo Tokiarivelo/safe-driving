@@ -12,7 +12,7 @@ mixin UserOnboardingPreferencesMixin on UserOnboardingContract {
     }
     _appState = _appState.copyWith(gpsEnabled: granted);
     notifyListeners();
-    if (shouldSave && value) {
+    if (shouldSave) {
       await _savePreferences();
     }
   }
@@ -32,7 +32,7 @@ mixin UserOnboardingPreferencesMixin on UserOnboardingContract {
     }
     _appState = _appState.copyWith(notifEnabled: granted);
     notifyListeners();
-    if (shouldSave && value) {
+    if (shouldSave) {
       await _savePreferences();
     }
   }

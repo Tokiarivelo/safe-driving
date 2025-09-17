@@ -195,7 +195,11 @@ class ServiceLocator {
     );
 
     registerLazySingleton<IDriverService>(
-      () => DriverService(get<DriverRepository>(), get<StorageService>()),
+      () => DriverService(
+        get<DriverRepository>(),
+        get<StorageService>(),
+        get<SessionService>(),
+      ),
     );
 
     registerFactory<DriverOnboardingCoordinator>(

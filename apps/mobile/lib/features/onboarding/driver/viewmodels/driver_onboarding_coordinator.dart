@@ -63,7 +63,40 @@ class DriverOnboardingCoordinator extends ChangeNotifier {
   List<DriverOnboardingStepModel> get steps => _flowViewModel.steps;
 
   void goToStep(int stepIndex) => _flowViewModel.goToStep(stepIndex);
-  void nextStep() => _flowViewModel.nextStep();
+  void nextStep() async {
+    final index = _flowViewModel.currentStep;
+    final step = _flowViewModel.steps[index];
+    _flowViewModel.setLoading(true);
+    try {
+      switch (step.stepType) {
+        case DriverStepType.personalInfo:
+          await _service.savePersonalInfo(
+            _personalInfoViewModel.getPersonalInfoData(),
+          );
+          break;
+        case DriverStepType.vehicleInfo:
+          await _service.saveVehicleInfo(
+            _vehicleInfoViewModel.getVehicleInfoData(),
+          );
+          break;
+        case DriverStepType.legal:
+          await _service.completeDriverOnboarding({
+            'cgu_accepted': _legalViewModel.allCguAccepted,
+            'privacy_policy_accepted': _legalViewModel.cguAccepted.length > 1
+                ? _legalViewModel.cguAccepted[1]
+                : false,
+          });
+          break;
+        default:
+          break;
+      }
+      _flowViewModel.nextStep();
+    } catch (e) {
+      _flowViewModel.setError('Erreur: $e');
+    } finally {
+      _flowViewModel.setLoading(false);
+    }
+  }
   void previousStep() => _flowViewModel.previousStep();
 
   bool isStepValid(int stepIndex) {
@@ -113,6 +146,10 @@ class DriverOnboardingCoordinator extends ChangeNotifier {
     } finally {
       _flowViewModel.setLoading(false);
     }
+  }
+
+  Future<String> generateDriverQrCode({String? type}) {
+    return _service.generateDriverQrCode(type: type);
   }
 
   String getFieldValue(String fieldName) {

@@ -33,7 +33,7 @@ class _NotificationsStep extends StatelessWidget {
                 onChanged: (value) => viewModel.updateNotifications(
                   value!,
                   context,
-                  shouldSave: false,
+                  shouldSave: true,
                 ),
               ),
             ),

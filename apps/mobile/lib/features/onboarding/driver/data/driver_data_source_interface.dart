@@ -77,4 +77,31 @@ abstract class IDriverDataSource {
     Map<String, dynamic>? vehicleInfo,
     Map<String, dynamic>? preferences,
   });
+
+  Future<String> generatePresignedUrl({
+    required String key,
+    required String contentType,
+    double? expiresIn,
+  });
+
+  Future<Map<String, dynamic>> createUpload({
+    required String userId,
+    required String documentType,
+    required String key,
+    required String url,
+    required int size,
+    String? originalName,
+    String? contentType,
+    String? etag,
+    String? driverVehicleId,
+  });
+
+  Future<String> generateDriverQrCode({String? type});
+
+  Future<Map<String, dynamic>> updateDriverStatus({
+    required String userId,
+    required Map<String, dynamic> input,
+  });
+
+  Future<Map<String, dynamic>> upsertUserPreference(Map<String, dynamic> input);
 }
