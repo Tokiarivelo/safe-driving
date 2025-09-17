@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:safe_driving/core/theme/app_text_styles.dart';
@@ -17,42 +18,45 @@ class StepFiveView extends StatefulWidget {
 }
 
 class _StepFiveViewState extends State<StepFiveView> {
-  Future<void> _handlePhotosChanged(
-    List<dynamic> photos,
+  bool _hasShownUploadSnack = false;
+  int _previousCount = 0;
+
+  void _queuePhotos(
+    List<File> photos,
     String storageType,
-  ) async {
+  ) {
     try {
+      context.driverOnboardingVM.documentUploadViewModel.queuePhotosForUpload(
+            photos,
+            storageType,
+          );
 
-      await context.driverOnboardingVM.documentUploadViewModel
-          .uploadPhotos(photos.cast(), storageType);
-
-      if (mounted) {
-        final typeLabel = _getTypeLabel(storageType);
+      if (!_hasShownUploadSnack && _previousCount == 0 && photos.isNotEmpty && mounted) {
+        final count = photos.length;
         SnackbarHelper.showSuccess(
           context,
-          '${photos.length} photo${photos.length > 1 ? 's' : ''} ajoutée${photos.length > 1 ? 's' : ''} pour $typeLabel',
+          '$count photo${count > 1 ? 's' : ''} sélectionnée${count > 1 ? 's' : ''}',
         );
+        _hasShownUploadSnack = true;
       }
+      _previousCount = photos.length;
     } catch (e) {
       if (mounted) {
-        SnackbarHelper.showError(context, 'Erreur lors de l\'ajout des photos');
+        SnackbarHelper.showError(
+          context,
+          'Erreur lors de la sélection des photos',
+        );
       }
     }
   }
 
-  String _getTypeLabel(String storageType) {
-    switch (storageType) {
-      case 'certificatImmatriculation':
-      case 'certificat_immatriculation':
-        return 'le certificat d\'immatriculation';
-      case 'attestationAssurance':
-      case 'attestation_assurance':
-        return 'l\'attestation d\'assurance';
-      case 'photosVehicule':
-      case 'photos_vehicule':
-        return 'les photos du véhicule';
-      default:
-        return 'le document';
+  Future<void> _onValidate() async {
+    try {
+      await context.driverOnboardingVM.documentUploadViewModel.flushPendingUploads();
+    } catch (_) {
+   
+    } finally {
+      if (mounted) widget.onNext();
     }
   }
 
@@ -93,7 +97,7 @@ class _StepFiveViewState extends State<StepFiveView> {
                         'Téléchargez votre certificat d\'immatriculation (carte grise)',
                     buttonText: 'Ajouter un fichier',
                     addMorePhotosText: 'Ajouter plus de photos',
-                    onPhotosChanged: (photos) => _handlePhotosChanged(
+                    onPhotosChanged: (photos) => _queuePhotos(
                       photos,
                       'certificatImmatriculation',
                     ),
@@ -106,7 +110,7 @@ class _StepFiveViewState extends State<StepFiveView> {
                         'Téléchargez votre attestation d\'assurance valide',
                     buttonText: 'Ajouter un fichier',
                     addMorePhotosText: 'Ajouter plus de photos',
-                    onPhotosChanged: (photos) => _handlePhotosChanged(
+                    onPhotosChanged: (photos) => _queuePhotos(
                       photos,
                       'attestationAssurance',
                     ),
@@ -119,7 +123,7 @@ class _StepFiveViewState extends State<StepFiveView> {
                         'Ajoutez des photos de votre véhicule (extérieur et intérieur)',
                     buttonText: 'Ajouter un fichier',
                     addMorePhotosText: 'Ajouter plus de photos',
-                    onPhotosChanged: (photos) => _handlePhotosChanged(
+                    onPhotosChanged: (photos) => _queuePhotos(
                       photos,
                       'photosVehicule',
                     ),
@@ -132,7 +136,7 @@ class _StepFiveViewState extends State<StepFiveView> {
           const SizedBox(height: 32),
           ButtonRows.buttonRow(
             buttonTitles: ['Plus tard', 'Valider'],
-            onPressedList: [widget.onSkip, widget.onNext],
+            onPressedList: [widget.onSkip, _onValidate],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             isLastButtonPrimary: true,
             spacing: 8,

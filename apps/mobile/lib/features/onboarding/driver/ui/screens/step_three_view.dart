@@ -63,7 +63,7 @@ class StepThreeView extends StatelessWidget {
                     buttonText: "Ajouter un fichier",
                     onPhotosChanged: (List<File> photos) => coordinator
                         .documentUploadViewModel
-                        .uploadPhotos(photos, 'carteIdentiteRecto'),
+                        .queuePhotosForUpload(photos, 'carteIdentiteRecto'),
                   ),
 
                   const SizedBox(height: 16),
@@ -76,7 +76,7 @@ class StepThreeView extends StatelessWidget {
                     buttonText: "Ajouter un fichier",
                     onPhotosChanged: (List<File> photos) => coordinator
                         .documentUploadViewModel
-                        .uploadPhotos(photos, 'carteIdentiteVerso'),
+                        .queuePhotosForUpload(photos, 'carteIdentiteVerso'),
                   ),
 
                   const SizedBox(height: 16),
@@ -88,7 +88,7 @@ class StepThreeView extends StatelessWidget {
                     buttonText: "Ajouter un fichier",
                     onPhotosChanged: (List<File> photos) => coordinator
                         .documentUploadViewModel
-                        .uploadPhotos(photos, 'permisConduire'),
+                        .queuePhotosForUpload(photos, 'permisConduire'),
                   ),
 
                   const SizedBox(height: 32),

@@ -4,6 +4,7 @@ import 'sign_in_screen.dart';
 import 'sign_up_screen.dart';
 import 'password/forgot_password_view.dart';
 import 'password/reset_password_view.dart';
+import 'package:safe_driving/app/routes.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -42,7 +43,11 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
         return SignUpScreen(
           key: const ValueKey('register'),
           onNavigateToLogin: _navigateToLogin,
-          onRegistrationSuccess: _navigateToLogin,
+          onRegistrationSuccess: () {
+            if (mounted) {
+              Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
+            }
+          },
         );
       case 2:
         return ForgotPasswordView(

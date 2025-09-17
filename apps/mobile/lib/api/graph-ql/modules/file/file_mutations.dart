@@ -44,6 +44,7 @@ const String deleteFilesByUserIdMutation = r'''
 mutation DeleteFilesByUserId {
   deleteFilesByUserId {
     id
+    key
   }
 }
 ''';

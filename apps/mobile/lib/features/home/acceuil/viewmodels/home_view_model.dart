@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/menu_item_model.dart';
 
 class HomeViewModel with ChangeNotifier {
-  List<MenuItemModel> _menuItems = [
+  final List<MenuItemModel> _menuItems = [
     MenuItemModel(
       iconPath: 'lib/resources/assets/home/icons/search.svg',
       title: 'Rechercher un transport',

@@ -40,3 +40,80 @@ query UserByToken($token: String!) {
 }
 ''';
 
+const String meFullQuery = r'''
+query me {
+  me {
+    id
+    email
+    createdAt
+    email
+    firstName
+    id
+    isVerified
+    lastName
+    password
+    phone
+    Role {
+      id
+      name
+    }
+    username
+    UserPreference {
+      cguAccepted
+      activateLocation
+      activateNotifications
+      createdAt
+      id
+      language
+      theme
+      updatedAt
+      userId
+      preferedvelicles {
+        id
+        name
+      }
+    }
+  }
+}
+''';
+
+const String userFilesQuery = r'''
+query UserFiles {
+  me {
+    id
+    UserDocument {
+      id
+      name
+      documentType
+      file {
+        id
+        key
+        url
+      }
+    }
+    UserImage {
+      id
+      file {
+        id
+        key
+        url
+      }
+    }
+    avatar {
+      id
+      key
+      url
+    }
+    UserCover {
+      id
+      file {
+        id
+        key
+        url
+      }
+    }
+  }
+}
+''';
+
+

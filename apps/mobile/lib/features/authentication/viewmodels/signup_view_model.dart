@@ -20,6 +20,18 @@ class SignupViewModel extends ChangeNotifier {
     if (_context == null) return;
 
     final auth = _context!.authVM;
+
+    try {
+      final taken = await auth.isEmailTaken(email);
+      if (taken) {
+        SnackbarHelper.showError(
+          _context!,
+          'Cette adresse email est déjà utilisée. Veuillez en choisir une autre.',
+        );
+        return;
+      }
+    } catch (_) {}
+
     final request = SignUpRequest(
       firstName: firstName,
       lastName: lastName,
@@ -30,7 +42,6 @@ class SignupViewModel extends ChangeNotifier {
     final ok = await auth.signUp(request);
 
     if (ok) {
-      SnackbarHelper.showSuccess(_context!, 'Inscription réussie');
       if (onSuccess != null) onSuccess();
     } else {
       SnackbarHelper.showError(

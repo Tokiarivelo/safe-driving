@@ -13,6 +13,7 @@ export 'modules/s3/s3_queries.dart';
 export 'modules/qr/qr_queries.dart';
 
 export 'modules/upload/upload_queries.dart';
+export 'modules/role/role_queries.dart';
 
 const String getCurrentUserAuthQuery = r'''
 query GetCurrentUser {

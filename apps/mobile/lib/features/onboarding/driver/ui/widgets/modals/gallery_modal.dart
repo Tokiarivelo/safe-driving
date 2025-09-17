@@ -1,7 +1,10 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/features/onboarding/driver/services/web_upload_registry.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/camera/camera_interface.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
@@ -61,7 +64,9 @@ class PhotoManagementModalState
             icon: Icon(
               Icons.camera_alt,
               size: 18,
-              color: AppColors.light.adapt(context),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.light.adapt(context)
+                  : Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),
@@ -92,6 +97,20 @@ class PhotoManagementModalState
       );
 
       if (pickedFile != null && mounted) {
+        // En Web, on enregistre les bytes en mémoire pour l'upload réel via HTTP PUT
+        if (kIsWeb) {
+          try {
+            final bytes = await pickedFile.readAsBytes();
+            final mime = pickedFile.mimeType;
+            WebUploadRegistry.register(
+              pickedFile.path,
+              bytes,
+              contentType: (mime == null || mime.isEmpty)
+                  ? _inferContentTypeFromName(pickedFile.name)
+                  : mime,
+            );
+          } catch (_) {}
+        }
         addImage(File(pickedFile.path));
         if (mounted && !_hasShownUploadSnack) {
           SnackbarHelper.showSuccess(context, 'Photo ajoutée avec succès');
@@ -108,6 +127,15 @@ class PhotoManagementModalState
     }
   }
 
+  String _inferContentTypeFromName(String fileName) {
+    final lower = fileName.toLowerCase();
+    if (lower.endsWith('.png')) return 'image/png';
+    if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return 'image/jpeg';
+    if (lower.endsWith('.heic')) return 'image/heic';
+
+    return 'image/jpeg';
+  }
+
   void _showCameraInterface() {
     showModalBottomSheet(
       context: context,
@@ -116,6 +144,23 @@ class PhotoManagementModalState
       builder: (context) => CameraInterface(
         onPictureTaken: (imagePath) {
           if (imagePath != null) {
+    
+            if (kIsWeb) {
+              try {
+                if (imagePath.startsWith('data:')) {
+                  final comma = imagePath.indexOf(',');
+                  if (comma > 0) {
+                    final header = imagePath.substring(0, comma);
+                    final match = RegExp(r'data:(.*?);base64').firstMatch(header);
+                    String contentType = match?.group(1) ?? 'image/png';
+                    final base64Data = imagePath.substring(comma + 1);
+                    final bytes = base64Decode(base64Data);
+                    WebUploadRegistry.register(imagePath, bytes, contentType: contentType);
+                  }
+                }
+              } catch (_) {}
+            }
+
             addImage(File(imagePath));
             Navigator.of(context).pop();
             if (!_hasShownUploadSnack) {

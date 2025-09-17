@@ -1,4 +1,3 @@
-// S3 mutations
 const String s3CreatePresignedUrlMutation = r'''
   mutation S3CreatePresignedUrl($key: String!, $contentType: String!, $expiresIn: Float) {
     getPresignedUrl(key: $key, contentType: $contentType, expiresIn: $expiresIn)

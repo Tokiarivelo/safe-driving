@@ -41,7 +41,8 @@ dependencies:
   path_provider: ^2.1.5
   path: ^1.9.1
   flutter_screenutil: ^5.9.3
-  
+  http: ^1.2.2
+
   # for json serialization
   json_annotation: ^4.9.0
   confetti: ^0.8.0
@@ -58,6 +59,7 @@ flutter:
   generate: true
   assets:
     - .env
+    - .env.web
     - lib/resources/assets/img/social/
     - lib/resources/assets/logo/
     - lib/resources/assets/home/icons/

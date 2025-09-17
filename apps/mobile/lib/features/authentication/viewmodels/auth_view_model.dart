@@ -24,8 +24,19 @@ class AuthViewModel extends ChangeNotifier {
     final result = await _repository.signIn(email, password);
 
     if (result.isSuccess) {
+   
       _currentUser = result.user;
       notifyListeners();
+
+   
+      try {
+        final me = await _repository.getCurrentUser();
+        if (me.isSuccess) {
+          _currentUser = me.user;
+          notifyListeners();
+        }
+      } catch (_) {}
+
       _setLoading(false);
       return true;
     } else {

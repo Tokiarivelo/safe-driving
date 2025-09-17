@@ -183,21 +183,29 @@ class StepElevenView extends StatelessWidget {
         builder: (context, summaryViewModel, child) {
           final resumeData = summaryViewModel.getResumeData();
 
-          return Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20),
-                _buildHeader(context),
-                const SizedBox(height: 24),
-                _buildSummaryContent(context, summaryViewModel, resumeData),
-                const SizedBox(height: 16),
-                _buildActionButton(context, summaryViewModel),
-                _buildErrorMessage(context, summaryViewModel),
-              ],
-            ),
+       
+          final future = coordinator.documentUploadViewModel.refreshBackendPhotoCounts();
+
+          return FutureBuilder<void>(
+            future: future,
+            builder: (context, snapshot) {
+              return Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 20),
+                    _buildHeader(context),
+                    const SizedBox(height: 24),
+                    _buildSummaryContent(context, summaryViewModel, resumeData),
+                    const SizedBox(height: 16),
+                    _buildActionButton(context, summaryViewModel),
+                    _buildErrorMessage(context, summaryViewModel),
+                  ],
+                ),
+              );
+            },
           );
         },
       ),

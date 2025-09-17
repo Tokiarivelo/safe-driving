@@ -1,23 +1,18 @@
-// Preference mutations
 const String upsertUserPreferenceMutation = r'''
   mutation UpsertUserPreference($input: UserPreferenceUpsertInput!) {
     upsertUserPreference(input: $input) {
       id
-      userId
-      language
-      theme
-      activateEmailNotifications
-      activateSmsNotifications
+      cguAccepted
       activateLocation
       activateNotifications
-      cguAccepted
-      privacyPolicyAccepted
       createdAt
-      updatedAt
+      language
       preferedvelicles {
         id
         name
       }
+      theme
+      userId
     }
   }
 ''';

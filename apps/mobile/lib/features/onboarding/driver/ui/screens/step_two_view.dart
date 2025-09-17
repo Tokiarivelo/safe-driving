@@ -6,8 +6,10 @@ import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboar
 import 'package:safe_driving/shared/widgets/customs/buttons/composite/button_rows.dart';
 import 'package:safe_driving/shared/widgets/customs/inputs/inputs_widget.dart';
 import 'package:safe_driving/core/utils/form/form_utils.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_driving/features/authentication/viewmodels/auth_view_model.dart';
 
-class StepTwoView extends StatelessWidget {
+class StepTwoView extends StatefulWidget {
   final DriverOnboardingStepModel step;
   final DriverOnboardingCoordinator coordinator;
   final VoidCallback onContinue;
@@ -22,6 +24,55 @@ class StepTwoView extends StatelessWidget {
   });
 
   @override
+  State<StepTwoView> createState() => _StepTwoViewState();
+}
+
+class _StepTwoViewState extends State<StepTwoView> {
+  @override
+  void initState() {
+    super.initState();
+    // Pré-remplir les champs depuis l'utilisateur connecté dès que possible
+    WidgetsBinding.instance.addPostFrameCallback((_) => _prefillFromUser());
+  }
+
+  Future<void> _prefillFromUser() async {
+    try {
+      final auth = Provider.of<AuthViewModel>(context, listen: false);
+      var user = auth.currentUser;
+      if (user == null) {
+        await auth.fetchCurrentUser();
+        user = auth.currentUser;
+      }
+      if (user == null) return;
+
+      String first = (user.firstName ?? '').trim();
+      String last = (user.lastName ?? '').trim();
+      String displayName;
+      if (first.isNotEmpty && last.isNotEmpty) {
+        displayName = '$first $last';
+      } else if (first.isNotEmpty) {
+        displayName = first;
+      } else {
+        displayName = user.email;
+      }
+      final email = user.email;
+
+      final nameCtrl = widget.coordinator.personalInfoViewModel.nameController;
+      final emailCtrl = widget.coordinator.personalInfoViewModel.emailController;
+
+      if (nameCtrl.text.trim().isEmpty) {
+        nameCtrl.text = displayName;
+        widget.coordinator.personalInfoViewModel.updateFormField('name', displayName);
+      }
+      if (emailCtrl.text.trim().isEmpty) {
+        emailCtrl.text = email;
+        widget.coordinator.personalInfoViewModel.updateFormField('email', email);
+      }
+      if (mounted) setState(() {});
+    } catch (_) {}
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -31,7 +82,7 @@ class StepTwoView extends StatelessWidget {
         children: [
           const SizedBox(height: 20),
           Text(
-            step.title,
+            widget.step.title,
             textAlign: TextAlign.center,
             style: AppTextStyles.h1(context).copyWith(
               fontSize: 24,
@@ -40,7 +91,7 @@ class StepTwoView extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            step.description ?? '',
+            widget.step.description ?? '',
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(context).copyWith(
               color: AppColors.textColor.adapt(context).withAlpha(180),
@@ -56,7 +107,7 @@ class StepTwoView extends StatelessWidget {
             icon: Icons.person,
             showLabel: true,
             backgroundColor: AppColors.inputTextBackground,
-            controller: coordinator.personalInfoViewModel.nameController,
+            controller: widget.coordinator.personalInfoViewModel.nameController,
             readOnly: true,
             enabled: false,
             onChanged: (value) => {},
@@ -70,7 +121,7 @@ class StepTwoView extends StatelessWidget {
             hint: 'example@email.com',
             icon: Icons.email,
             keyboardType: TextInputType.emailAddress,
-            controller: coordinator.personalInfoViewModel.emailController,
+            controller: widget.coordinator.personalInfoViewModel.emailController,
             showLabel: true,
             backgroundColor: AppColors.inputTextBackground,
             readOnly: true,
@@ -84,7 +135,7 @@ class StepTwoView extends StatelessWidget {
             icon: Icons.phone,
             keyboardType: TextInputType.phone,
             showLabel: true,
-            controller: coordinator.personalInfoViewModel.phoneController,
+            controller: widget.coordinator.personalInfoViewModel.phoneController,
             onChanged: (value) => {},
             validator: (value) => value?.isEmpty == true
                 ? null
@@ -98,8 +149,8 @@ class StepTwoView extends StatelessWidget {
           const SizedBox(height: 32),
 
           ButtonRows.buttonRow(
-            buttonTitles: step.buttonTitles,
-            onPressedList: [onSkip ?? () {}, onContinue],
+            buttonTitles: widget.step.buttonTitles,
+            onPressedList: [widget.onSkip ?? () {}, widget.onContinue],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             isLastButtonPrimary: true,
             spacing: 8,

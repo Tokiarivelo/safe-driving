@@ -45,7 +45,9 @@ class PhotoActionButtons extends StatelessWidget {
             icon: Icon(
               Icons.camera_alt,
               size: 18,
-              color: AppColors.light.adapt(context),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.light.adapt(context)
+                  : Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),

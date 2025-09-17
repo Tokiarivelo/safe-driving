@@ -13,14 +13,16 @@ class UpdateProfileRequest {
     this.phoneNumber,
   });
 
+  // Produce a payload matching UserUpdateInput (StringFieldUpdateOperationsInput wrappers)
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{'userId': userId};
+    final data = <String, dynamic>{};
 
-    if (firstName != null) data['firstName'] = firstName;
-    if (lastName != null) data['lastName'] = lastName;
-    if (email != null) data['email'] = email;
-    if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
+    if (firstName != null) data['firstName'] = {'set': firstName};
+    if (lastName != null) data['lastName'] = {'set': lastName};
+    if (email != null) data['email'] = {'set': email};
+    if (phoneNumber != null) data['phone'] = {'set': phoneNumber};
 
+    // Note: userId is not included; server uses @CurrentUser to target the record
     return data;
   }
 }

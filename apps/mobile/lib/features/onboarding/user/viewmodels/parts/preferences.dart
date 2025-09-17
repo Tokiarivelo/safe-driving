@@ -40,6 +40,8 @@ mixin UserOnboardingPreferencesMixin on UserOnboardingContract {
   void updateTheme(String theme) {
     _appState = _appState.copyWith(selectedTheme: theme);
     notifyListeners();
+  
+    _savePreferences();
   }
 
   void updateTransport(String transport, bool selected) {
@@ -51,6 +53,8 @@ mixin UserOnboardingPreferencesMixin on UserOnboardingContract {
     }
     _appState = _appState.copyWith(selectedTransports: newTransports);
     notifyListeners();
+ 
+    _savePreferences();
   }
 
   void removeTransport(String transport) {
@@ -58,10 +62,14 @@ mixin UserOnboardingPreferencesMixin on UserOnboardingContract {
     newTransports.remove(transport);
     _appState = _appState.copyWith(selectedTransports: newTransports);
     notifyListeners();
+
+    _savePreferences();
   }
 
   void updateLanguage(String language) {
     _appState = _appState.copyWith(selectedLanguage: language);
     notifyListeners();
+   
+    _savePreferences();
   }
 }

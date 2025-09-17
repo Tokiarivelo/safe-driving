@@ -18,6 +18,7 @@ class CustomInputField extends StatefulWidget {
   final Color? backgroundColor;
   final bool readOnly;
   final bool enabled;
+  final double? fieldHeight;
 
   final String? Function(String?)? validator;
 
@@ -38,6 +39,7 @@ class CustomInputField extends StatefulWidget {
     this.backgroundColor,
     this.readOnly = false,
     this.enabled = true,
+    this.fieldHeight,
     this.validator,
   });
 
@@ -92,123 +94,145 @@ class CustomInputFieldState extends State<CustomInputField> {
                     ),
                   )
                 : null,
-            child: TextFormField(
-              style: TextStyle(
-                fontSize: widget.showLabel ? 16 : 10,
-                color: Theme.of(context).colorScheme.onSurface,
+            child: ConstrainedBox(
+              constraints: BoxConstraints.tightFor(
+                height: widget.fieldHeight ?? (widget.showLabel ? 52 : 44),
               ),
-              readOnly: widget.readOnly,
-              enabled: widget.enabled,
-              keyboardType: widget.keyboardType,
-              decoration: InputDecoration(
-                filled: !widget.showLabel,
-                fillColor: widget.showLabel
-                    ? null
-                    : (Theme.of(context).brightness == Brightness.dark
-                        ? AppColors.backgroundSecondary
-                        : AppColors.inputTextBackground),
-                hintText: widget.hint,
-                hintStyle: widget.showLabel
-                    ? AppTextStyles.hint14(context).copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.7),
-                      )
-                    : AppTextStyles.hint10(context).copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.7),
-                      ),
-                prefixIcon: Icon(
-                  widget.icon,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? AppColors.light
-                      : (widget.showLabel ? AppColors.textColor : AppColors.icon),
-                  size: widget.showLabel ? 20 : 24,
+              child: TextFormField(
+                style: TextStyle(
+                  fontSize: widget.showLabel ? 16 : 10,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: widget.showLabel ? 14 : (isSmallScreen ? 12 : 16),
+                readOnly: widget.readOnly,
+                enabled: widget.enabled,
+                keyboardType: widget.keyboardType,
+                maxLines: 1,
+                textAlignVertical: TextAlignVertical.center,
+                enableSuggestions: false,
+                autocorrect: false,
+                autofillHints: const <String>[],
+                smartDashesType: SmartDashesType.disabled,
+                smartQuotesType: SmartQuotesType.disabled,
+                textCapitalization: TextCapitalization.none,
+                decoration: InputDecoration(
+                  isDense: true,
+                  filled: !widget.showLabel,
+                  fillColor: widget.showLabel
+                      ? null
+                      : (Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.backgroundSecondary
+                          : AppColors.inputTextBackground),
+                  hintText: widget.hint,
+                  hintStyle: widget.showLabel
+                      ? AppTextStyles.hint14(context).copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.7),
+                        )
+                      : AppTextStyles.hint10(context).copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.7),
+                        ),
+                  prefixIcon: Icon(
+                    widget.icon,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.light
+                        : (widget.showLabel ? AppColors.textColor : AppColors.icon),
+                    size: widget.showLabel ? 20 : 24,
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 0,
+                  ),
+                  border: widget.showLabel
+                      ? InputBorder.none
+                      : OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: hasError
+                                ? AppColors.error.adapt(context)
+                                : (Theme.of(context).brightness == Brightness.dark
+                                    ? AppColors.light.withValues(alpha: 0.2)
+                                    : AppColors.borderInputField),
+                            width: hasError ? 2 : 1,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                  enabledBorder: widget.showLabel
+                      ? InputBorder.none
+                      : OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: hasError
+                                ? AppColors.error.adapt(context)
+                                : (Theme.of(context).brightness == Brightness.dark
+                                    ? AppColors.light.withValues(alpha: 0.2)
+                                    : AppColors.borderInputField),
+                            width: hasError ? 2 : 1,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                  focusedBorder: widget.showLabel
+                      ? InputBorder.none
+                      : OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: hasError
+                                ? AppColors.error.adapt(context)
+                                : (Theme.of(context).brightness == Brightness.dark
+                                    ? AppColors.light.withValues(alpha: 0.4)
+                                    : AppColors.borderInputField),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                  suffixIcon: widget.obscureText
+                      ? IconButton(
+                          icon: Icon(
+                            isVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.light
+                              : AppColors.icon,
+                          onPressed: () {
+                            setState(() {
+                              if (widget.isPassword) {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              } else if (widget.isConfirmPassword) {
+                                _isConfirmPasswordVisible =
+                                    !_isConfirmPasswordVisible;
+                              }
+                            });
+                          },
+                        )
+                      : null,
                 ),
-                border: widget.showLabel
-                    ? InputBorder.none
-                    : OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: hasError
-                              ? AppColors.error.adapt(context)
-                              : (Theme.of(context).brightness == Brightness.dark
-                                  ? AppColors.light.withValues(alpha: 0.2)
-                                  : AppColors.borderInputField),
-                          width: hasError ? 2 : 1,
-                        ),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                enabledBorder: widget.showLabel
-                    ? InputBorder.none
-                    : OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: hasError
-                              ? AppColors.error.adapt(context)
-                              : (Theme.of(context).brightness == Brightness.dark
-                                  ? AppColors.light.withValues(alpha: 0.2)
-                                  : AppColors.borderInputField),
-                          width: hasError ? 2 : 1,
-                        ),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                focusedBorder: widget.showLabel
-                    ? InputBorder.none
-                    : OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: hasError
-                              ? AppColors.error.adapt(context)
-                              : (Theme.of(context).brightness == Brightness.dark
-                                  ? AppColors.light.withValues(alpha: 0.4)
-                                  : AppColors.borderInputField),
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                suffixIcon: widget.obscureText
-                    ? IconButton(
-                        icon: Icon(
-                          isVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? AppColors.light
-                            : AppColors.icon,
-                        onPressed: () {
-                          setState(() {
-                            if (widget.isPassword) {
-                              _isPasswordVisible = !_isPasswordVisible;
-                            } else if (widget.isConfirmPassword) {
-                              _isConfirmPasswordVisible =
-                                  !_isConfirmPasswordVisible;
-                            }
-                          });
-                        },
-                      )
-                    : null,
+                obscureText: widget.obscureText && !isVisible,
+                controller: widget.controller,
+                onChanged: widget.onChanged,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: widget.validator,
               ),
-              obscureText: widget.obscureText && !isVisible,
-              controller: widget.controller,
-              onChanged: widget.onChanged,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: widget.validator,
             ),
           ),
 
-          // Message d'erreur
-          if (hasError)
-            Padding(
-              padding: const EdgeInsets.only(top: 4.0, left: 8.0),
-              child: Text(widget.errorMessage!,
-                  style: AppTextStyles.error10(context)),
-            ),
+        
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            height: hasError ? 20 : 0,
+            child: hasError
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 4.0, left: 8.0),
+                    child: Text(
+                      widget.errorMessage!,
+                      style: AppTextStyles.error10(context),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ),
         ],
       ),
     );

@@ -9,12 +9,17 @@ class DocumentUploadViewModel extends ChangeNotifier {
   DocumentUploadViewModel(this._service);
 
   final List<File> _capturedPhotos = [];
+
+  final Map<String, List<File>> _pendingUploads = {};
   // Compteur spécifique au Web pour suivre les téléchargements sans File système
   int _webUploadedCount = 0;
 
   final Map<String, int> _typeCounts = {};
   bool _isLoading = false;
   String? _errorMessage;
+
+  int? _backendPersonalCount;
+  int? _backendVehicleCount;
 
   // Getters
   List<File> get capturedPhotos => _capturedPhotos;
@@ -55,21 +60,39 @@ class DocumentUploadViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Document upload methods
-  Future<void> uploadPhotos(List<File> photos, String documentType) async {
-
-    _typeCounts[documentType] = photos.length;
+  // Queue photos to upload later (when pressing "Valider")
+  void queuePhotosForUpload(List<File> photos, String documentType) {
+    if (photos.isEmpty) return;
+    final list = _pendingUploads.putIfAbsent(documentType, () => <File>[]);
+    list.addAll(photos);
+    _typeCounts[documentType] = ( _typeCounts[documentType] ?? 0 ) + photos.length;
     notifyListeners();
+  }
 
+  bool get hasPendingUploads => _pendingUploads.values.any((l) => l.isNotEmpty);
+
+  // Perform the actual uploads for any pending files
+  Future<void> flushPendingUploads() async {
+    if (!hasPendingUploads) return;
     _setLoading(true);
     try {
-      await _service.uploadDocumentPhotos(photos, documentType);
+      for (final entry in _pendingUploads.entries) {
+        if (entry.value.isEmpty) continue;
+        await _service.uploadDocumentPhotos(entry.value, entry.key);
+      }
+      _pendingUploads.clear();
     } catch (e) {
-      // On garde au moins le compteur local pour l'affichage du résumé
       _setError('Erreur lors de l\'upload des photos: $e');
+      rethrow;
     } finally {
       _setLoading(false);
     }
+  }
+
+  // Immediate upload method (kept for backwards compatibility)
+  Future<void> uploadPhotos(List<File> photos, String documentType) async {
+    queuePhotosForUpload(photos, documentType);
+    await flushPendingUploads();
   }
 
   Future<void> handleIdentityRectoPhotos(List<File> photos) async {
@@ -130,6 +153,19 @@ class DocumentUploadViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> refreshBackendPhotoCounts() async {
+    _setLoading(true);
+    try {
+      await _service.refreshBackendPhotoCounts();
+      _backendPersonalCount = _service.cachedPersonalPhotosCount;
+      _backendVehicleCount = _service.cachedVehiclePhotosCount;
+    } catch (e) {
+      _setError('Erreur lors de la récupération des photos: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   // Total uploaded photos count
   int getTotalUploadedPhotosCount() {
     try {
@@ -137,6 +173,19 @@ class DocumentUploadViewModel extends ChangeNotifier {
         // Sur le Web, on retourne le compteur local (pas de stockage fichier)
         return _webUploadedCount;
       }
+      
+      // First check local counts from queued uploads
+      int localTotal = 0;
+      for (final count in _typeCounts.values) {
+        localTotal += count;
+      }
+      if (localTotal > 0) return localTotal;
+      
+      // Then check backend counts if available
+      final backend = (_backendPersonalCount ?? 0) + (_backendVehicleCount ?? 0);
+      if (backend > 0) return backend;
+      
+      // Finally fallback to service count
       return _service.getTotalUploadedPhotosCount();
     } catch (e) {
       return kIsWeb ? _webUploadedCount : 0;
@@ -149,7 +198,9 @@ class DocumentUploadViewModel extends ChangeNotifier {
       if (kIsWeb) {
         return _webUploadedCount; // selfie only on web
       }
-   
+      if (_backendPersonalCount != null) return _backendPersonalCount!;
+
+    
       final personalTypes = <String>[
         'carteIdentiteRecto', 'carte_identite_recto',
         'carteIdentiteVerso', 'carte_identite_verso',
@@ -162,7 +213,6 @@ class DocumentUploadViewModel extends ChangeNotifier {
       }
       if (local > 0) return local;
 
-   
       return _service.getPersonalUploadedPhotosCount();
     } catch (e) {
       return kIsWeb ? _webUploadedCount : 0;
@@ -174,7 +224,9 @@ class DocumentUploadViewModel extends ChangeNotifier {
       if (kIsWeb) {
         return 0; // not tracked on web
       }
-    
+      if (_backendVehicleCount != null) return _backendVehicleCount!;
+
+   
       final vehicleTypes = <String>[
         'certificatImmatriculation', 'certificat_immatriculation',
         'attestationAssurance', 'attestation_assurance',

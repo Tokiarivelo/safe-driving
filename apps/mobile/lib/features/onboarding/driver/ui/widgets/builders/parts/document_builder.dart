@@ -172,7 +172,8 @@ class _UploadWithSingleSnackbarState extends State<_UploadWithSingleSnackbar> {
   Future<void> _onPhotosChanged(List<File> photos) async {
     final storageType = widget.storageTypeResolver();
 
-    await widget.coordinator.documentUploadViewModel.uploadPhotos(
+
+    widget.coordinator.documentUploadViewModel.queuePhotosForUpload(
       photos,
       storageType,
     );

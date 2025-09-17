@@ -11,6 +11,7 @@ import '../../features/onboarding/driver/core/interfaces/driver_service_interfac
 import '../../features/onboarding/driver/services/driver_service.dart';
 import '../../features/onboarding/driver/services/storage_service.dart';
 import '../../features/onboarding/driver/repositories/driver_repository.dart';
+
 import '../../features/onboarding/driver/data/driver_data_source_interface.dart';
 import '../../features/onboarding/driver/data/driver_data_source_graphql.dart';
 import '../../features/onboarding/driver/data/driver_data_source_local.dart';
@@ -23,6 +24,7 @@ import '../../features/onboarding/user/core/interfaces/user_service_interface.da
 import '../../features/onboarding/user/services/user_service.dart';
 import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart';
 import 'package:safe_driving/core/theme/theme_controller.dart';
+import 'dart:developer' as developer;
 
 typedef _FactoryFunc<T> = T Function();
 typedef _Disposer = void Function(dynamic);
@@ -126,7 +128,6 @@ class ServiceLocator {
   }
 
   void setupDependencies() {
- 
     registerLazySingleton<SessionService>(() => SessionService());
     try {
       get<SessionService>().initialize();
@@ -144,14 +145,18 @@ class ServiceLocator {
             await session.saveToken(newToken);
           } catch (_) {}
         },
-        onError: (error) {},
+        onError: (error) {
+          // Log GraphQL client errors for easier diagnostics
+          try {
+            developer.log('[GraphQLClientWrapper] Error: $error');
+          } catch (_) {}
+        },
       );
     }
 
     // Theme controller
     registerLazySingleton<ThemeController>(() => ThemeController());
 
-    // Auth stack (only when GraphQL is configured)
     if (GraphQLConfig.isConfigured) {
       registerLazySingleton<IAuthDataSource>(
         () => AuthDataSourceGraphQL(get<GraphQLClientWrapper>()),
@@ -173,7 +178,9 @@ class ServiceLocator {
         () => AuthRepository(get<AuthService>()),
       );
 
-      registerFactory<AuthViewModel>(() => AuthViewModel(get<AuthRepository>()));
+      registerFactory<AuthViewModel>(
+        () => AuthViewModel(get<AuthRepository>()),
+      );
     }
 
     // Storage service for local files
@@ -185,9 +192,7 @@ class ServiceLocator {
         () => DriverDataSourceGraphQL(get<GraphQLClientWrapper>()),
       );
     } else {
-      registerLazySingleton<IDriverDataSource>(
-        () => DriverDataSourceLocal(),
-      );
+      registerLazySingleton<IDriverDataSource>(() => DriverDataSourceLocal());
     }
 
     registerLazySingleton<DriverRepository>(

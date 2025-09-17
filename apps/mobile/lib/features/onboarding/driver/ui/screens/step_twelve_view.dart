@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
@@ -6,8 +8,9 @@ import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboar
 import 'package:safe_driving/shared/state_management/providers.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 import 'package:safe_driving/l10n/l10n.dart';
+import 'package:confetti/confetti.dart';
 
-class StepTwelveView extends StatelessWidget {
+class StepTwelveView extends StatefulWidget {
   final DriverOnboardingStepModel step;
   final DriverOnboardingCoordinator coordinator;
   final VoidCallback onContinue;
@@ -21,22 +24,46 @@ class StepTwelveView extends StatelessWidget {
     this.onSkip,
   });
 
+  @override
+  State<StepTwelveView> createState() => _StepTwelveViewState();
+}
+
+class _StepTwelveViewState extends State<StepTwelveView> {
+  late final ConfettiController _confetti;
+
+  @override
+  void initState() {
+    super.initState();
+    _confetti = ConfettiController(duration: const Duration(seconds: 2))..play();
+  }
+
+  @override
+  void dispose() {
+    _confetti.dispose();
+    super.dispose();
+  }
+
   String _buildWelcomeTitle(BuildContext context) {
     final user = context.authVM.currentUser;
-    final raw = (user?.fullName ?? user?.email ?? '').trim();
+    final first = (user?.firstName ?? '').trim();
+    final display = first.isNotEmpty
+        ? first
+        : ((user?.fullName ?? user?.email ?? '').trim());
     final base = context.l10n.driverCompleteTitle;
-    if (raw.isEmpty) return base.trim();
-    return '$base$raw';
+    if (display.isEmpty) return base.trim();
+    return '$base$display !';
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+    return Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
           const SizedBox(height: 20),
           Text(
             _buildWelcomeTitle(context),
@@ -49,7 +76,7 @@ class StepTwelveView extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            step.description!,
+            widget.step.description!,
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(
               context,
@@ -71,7 +98,7 @@ class StepTwelveView extends StatelessWidget {
               const SizedBox(height: 16),
 
               FutureBuilder<String>(
-                future: coordinator.generateDriverQrCode(type: 'driver'),
+                future: widget.coordinator.generateDriverQrCode(type: 'png'),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
@@ -121,7 +148,22 @@ class StepTwelveView extends StatelessWidget {
                       ),
                     );
                   }
-                  final qrUrl = snapshot.data!;
+                  final qrData = snapshot.data!;
+
+                  Uint8List? decodeDataUrl(String dataUrl) {
+                    final prefix = 'data:image/png;base64,';
+                    if (dataUrl.startsWith(prefix)) {
+                      final b64 = dataUrl.substring(prefix.length);
+                      try {
+                        return base64Decode(b64);
+                      } catch (_) {
+                        return null;
+                      }
+                    }
+                    return null;
+                  }
+
+                  final bytes = decodeDataUrl(qrData);
                   return Container(
                     width: 150,
                     height: 150,
@@ -140,12 +182,19 @@ class StepTwelveView extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        qrUrl,
-                        width: 134,
-                        height: 134,
-                        fit: BoxFit.cover,
-                      ),
+                      child: bytes != null
+                          ? Image.memory(
+                              bytes,
+                              width: 134,
+                              height: 134,
+                              fit: BoxFit.cover,
+                            )
+                          : Icon(
+                              Icons.qr_code_2,
+                              size: 80,
+                              color:
+                                  AppColors.fillButtonBackground.adapt(context),
+                            ),
                     ),
                   );
                 },
@@ -192,11 +241,25 @@ class StepTwelveView extends StatelessWidget {
 
           PrimaryButton.primaryButton(
             text: context.l10n.driverCompleteStart,
-            onPressed: onContinue,
+            onPressed: widget.onContinue,
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
           ),
         ],
       ),
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: ConfettiWidget(
+            confettiController: _confetti,
+            blastDirectionality: BlastDirectionality.explosive,
+            shouldLoop: false,
+            emissionFrequency: 0.05,
+            numberOfParticles: 20,
+            maxBlastForce: 20,
+            minBlastForce: 5,
+          ),
+        ),
+      ],
     );
   }
 }

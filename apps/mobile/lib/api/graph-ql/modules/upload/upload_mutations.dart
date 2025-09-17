@@ -1,7 +1,6 @@
-// Upload mutations
 const String uploadFileMutation = r'''
-  mutation UploadFile($file: Upload!, $path: String) {
-    uploadFile(file: $file, path: $path) {
+  mutation UploadFile($file: Upload!) {
+    uploadFile(file: $file) {
       url
     }
   }
@@ -36,6 +35,75 @@ const String completeUploadBulkMutation = r'''
       contentType
       etag
       size
+    }
+  }
+''';
+
+
+const String uploadUserImagesMutation = r'''
+  mutation uploadUserImages($keys: [String!]!) {
+    uploadUserImages(keys: $keys) {
+      id
+      UserImage {
+        createdAt
+        file {
+          id
+          key
+          url
+        }
+        id
+        updatedAt
+        userId
+      }
+    }
+  }
+''';
+
+const String uploadUserDocumentMutation = r'''
+  mutation uploadUserDocument($input: [UploadUserDocumentsInput!]!) {
+    uploadUserDocument(input: $input) {
+      id
+      UserDocument {
+        id
+        name
+        documentType
+        file {
+          id
+          key
+          url
+        }
+      }
+    }
+  }
+''';
+
+const String uploadAvatarMutation = r'''
+  mutation uploadAvatar($key: String!) {
+    uploadAvatar(key: $key) {
+      id
+      avatar {
+        id
+        key
+        url
+      }
+    }
+  }
+''';
+
+const String uploadCoverMutation = r'''
+  mutation uploadCover($key: String!) {
+    uploadCover(key: $key) {
+      id
+      UserCover {
+        id
+        updatedAt
+        createdAt
+        file {
+          id
+          key
+          url
+        }
+      }
     }
   }
 ''';

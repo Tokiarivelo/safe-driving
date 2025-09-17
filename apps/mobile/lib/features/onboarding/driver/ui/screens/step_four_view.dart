@@ -11,7 +11,7 @@ class StepFourView extends StatefulWidget {
   final VoidCallback onNext;
   final VoidCallback onSkip;
   final Function(Map<String, String>) onDataChanged;
-  // Optionally inject the coordinator (falls back to Provider if null)
+
   final DriverOnboardingCoordinator? coordinator;
 
   const StepFourView({
@@ -82,8 +82,10 @@ class _StepFourViewState extends State<StepFourView> {
                     showLabel: true,
                     controller: vm.getController('marque'),
                     backgroundColor: AppColors.inputTextBackground,
-                    validator: (value) =>
-                        RegexFormatter.getVehicleNameValidationMessage(value!),
+                    validator: (value) {
+                      final msg = RegexFormatter.getVehicleNameValidationMessage(value ?? '');
+                      return msg.isEmpty ? null : msg;
+                    },
                   ),
                   const SizedBox(height: 16),
 
@@ -94,8 +96,10 @@ class _StepFourViewState extends State<StepFourView> {
                     showLabel: true,
                     controller: vm.getController('modele'),
                     backgroundColor: AppColors.inputTextBackground,
-                    validator: (value) =>
-                        RegexFormatter.getVehicleNameValidationMessage(value!),
+                    validator: (value) {
+                      final msg = RegexFormatter.getVehicleNameValidationMessage(value ?? '');
+                      return msg.isEmpty ? null : msg;
+                    },
                   ),
                   const SizedBox(height: 16),
 
@@ -106,8 +110,10 @@ class _StepFourViewState extends State<StepFourView> {
                     showLabel: true,
                     controller: vm.getController('immatriculation'),
                     backgroundColor: AppColors.inputTextBackground,
-                    validator: (value) =>
-                        RegexFormatter.getLicensePlateValidationMessage(value!),
+                    validator: (value) {
+                      final msg = RegexFormatter.getLicensePlateValidationMessage(value ?? '');
+                      return msg.isEmpty ? null : msg;
+                    },
                   ),
                   const SizedBox(height: 16),
 
@@ -119,8 +125,10 @@ class _StepFourViewState extends State<StepFourView> {
                     showLabel: true,
                     controller: vm.getController('places'),
                     backgroundColor: AppColors.inputTextBackground,
-                    validator: (value) =>
-                        RegexFormatter.getSeatCountValidationMessage(value!),
+                    validator: (value) {
+                      final msg = RegexFormatter.getSeatCountValidationMessage(value ?? '');
+                      return msg.isEmpty ? null : msg;
+                    },
                   ),
                   const SizedBox(height: 16),
 

@@ -31,7 +31,7 @@ class SafeDriving extends StatelessWidget {
           localizationsDelegates: L10n.localizationsDelegates,
           supportedLocales: L10n.supportedLocales,
           locale: context.watch<LocaleProvider>().locale,
-          initialRoute: AppRoutes.onboarding,
+          initialRoute: AppRoutes.auth,
           routes: AppRoutes.routes,
         ),
       ),

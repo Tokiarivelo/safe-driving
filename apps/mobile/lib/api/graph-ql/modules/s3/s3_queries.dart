@@ -1,4 +1,3 @@
-// S3 queries
 const String s3ListQuery = r'''
   query S3List($bucket: String!) {
     listObjects(bucket: $bucket)

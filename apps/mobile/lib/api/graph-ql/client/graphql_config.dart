@@ -11,13 +11,15 @@ class GraphQLConfig {
     try {
       if (dotenv.isInitialized) {
         value = dotenv.env['GRAPHQL_ENDPOINT'];
+        value ??= dotenv.env['NEXT_PUBLIC_GRAPHQL_API_URL'];
+        value ??= dotenv.env['GRAPHQL_API_URL'];
       }
     } catch (_) {
       value = null;
     }
     if (value == null || value.trim().isEmpty) {
       throw Exception(
-        'GRAPHQL_ENDPOINT is not configured (use --dart-define or .env)',
+        'GRAPHQL endpoint is not configured. Define GRAPHQL_ENDPOINT or NEXT_PUBLIC_GRAPHQL_API_URL (via --dart-define or .env)',
       );
     }
     return value.trim();
@@ -33,32 +35,7 @@ class GraphQLConfig {
   }
 
   static void validateConfiguration() {
-    const define = String.fromEnvironment('GRAPHQL_ENDPOINT');
-    if (define.isNotEmpty) return;
-
-    final requiredVars = ['GRAPHQL_ENDPOINT'];
-
-    final missingVars = <String>[];
-
-    for (final varName in requiredVars) {
-      String? value;
-      try {
-        if (dotenv.isInitialized) {
-          value = dotenv.env[varName];
-        }
-      } catch (_) {
-        value = null;
-      }
-      if (value == null || value.trim().isEmpty) {
-        missingVars.add(varName);
-      }
-    }
-
-    if (missingVars.isNotEmpty) {
-      throw Exception(
-        'Missing required environment variables: ${missingVars.join(', ')} (or set via --dart-define)',
-      );
-    }
+    endpoint;
   }
 
   static bool get isConfigured {
