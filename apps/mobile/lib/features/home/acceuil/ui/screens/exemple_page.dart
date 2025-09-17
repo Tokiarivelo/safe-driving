@@ -63,7 +63,7 @@ class _ExamplePageState extends State<ExamplePage> {
           viewModel.changeIndex(index);
         },
       ),
-      bottomNavigationBar: const CustomNavBarView(
+      bottomNavigationBar: CustomNavBarView(
         activeColor: AppColors.dark,
         tabBackgroundColor: AppColors.light,
       ),

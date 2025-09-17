@@ -60,6 +60,11 @@ class AppProviders {
         create: (_) => NavigationViewModel(),
       ),
     );
+    // list.add(
+    //   ChangeNotifierProvider<MessageViewmodels>(
+    //     create: (_) => MessageViewmodels(),
+    //   ),
+    // );
 
     return list;
   }
@@ -80,4 +85,6 @@ extension AppContext on BuildContext {
   ThemeController get themeControllerWatch => watch<ThemeController>();
   NavigationViewModel get navigationVM => read<NavigationViewModel>();
   NavigationViewModel get navigationVMWatch => watch<NavigationViewModel>();
+  // MessageViewmodels get messageVM => read<MessageViewmodels>();
+  // MessageViewmodels get messageVMWatch => watch<MessageViewmodels>();
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/features/authentication/ui/screens/auth_screen.dart';
-import 'package:safe_driving/features/home/message/ui/screens/message_screens.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/screens/driver_onboarding_screen.dart';
 import 'package:safe_driving/features/onboarding/onboarding_screen.dart';
 
@@ -36,7 +35,7 @@ class AppRoutes {
     driveronboarding: (context) => const DriverOnboardingScreen(),
     home: (context) => const HomeScreen(),
     exemple: (context) => const ExamplePage(),
-    message: (context) => const MessageScreens(),
+    message: (context) => const MessageScreen(),
     map: (context) => const MapScreen(),
     searchTransport: (context) {
       final args = ModalRoute.of(context)?.settings.arguments;
@@ -52,4 +51,17 @@ class AppRoutes {
       return MapView(initialCenter: initialCenter, openFilters: openFilters);
     },
   };
+}
+
+//modif
+class MessageScreen extends StatelessWidget {
+  const MessageScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Messages')),
+      body: const Center(child: Text('No messages yet')),
+    );
+  }
 }

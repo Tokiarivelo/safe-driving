@@ -57,7 +57,11 @@ class CustomNavBarController {
     return List<int>.generate(n, (i) => (start + i) % n);
   }
 
-  void onItemTap(int index, NavigationViewModel viewModel) {
+  void onItemTap(
+    int index,
+    NavigationViewModel viewModel,
+    BuildContext context,
+  ) {
     viewModel.changeIndex(index);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollToActiveItem();
