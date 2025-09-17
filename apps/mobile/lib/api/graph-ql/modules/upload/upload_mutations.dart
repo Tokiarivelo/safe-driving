@@ -14,28 +14,28 @@ const String deleteObjectMutation = r'''
 ''';
 
 const String getPresignedUrlMutation = r'''
-  mutation GetPresignedUrl($key: String!, $contentType: String!, $expiresIn: Int) {
+  mutation GetPresignedUrl($key: String!, $contentType: String!, $expiresIn: Float) {
     getPresignedUrl(key: $key, contentType: $contentType, expiresIn: $expiresIn)
   }
 ''';
 
 const String createBatchPresignedUrlsMutation = r'''
-  mutation CreateBatchPresignedUrls($type: ImageType!, $files: [FileMetaInput!]!) {
+  mutation CreateBatchPresignedUrls($type: FileType!, $files: [FileMetaInput!]!) {
     createBatchPresignedUrls(type: $type, files: $files) {
       key
       url
-      fileName
+      expiresIn
     }
   }
 ''';
 
 const String completeUploadBulkMutation = r'''
-  mutation CompleteUploadBulk($keys: [String!]!, $type: ImageType!) {
+  mutation CompleteUploadBulk($keys: [String!]!, $type: FileType!) {
     completeUploadBulk(keys: $keys, type: $type) {
       key
-      url
-      success
-      error
+      contentType
+      etag
+      size
     }
   }
 ''';

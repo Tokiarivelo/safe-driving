@@ -6,11 +6,18 @@ const String upsertUserPreferenceMutation = r'''
       userId
       language
       theme
-      notificationsEnabled
-      locationEnabled
-      settings
+      activateEmailNotifications
+      activateSmsNotifications
+      activateLocation
+      activateNotifications
+      cguAccepted
+      privacyPolicyAccepted
       createdAt
       updatedAt
+      preferedvelicles {
+        id
+        name
+      }
     }
   }
 ''';

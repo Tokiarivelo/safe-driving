@@ -178,18 +178,18 @@ mutation SaveLanguagePreference($language: String!) {
 
 const String saveGpsPreferenceMutation = r'''
 mutation SaveGpsPreference($enabled: Boolean!) {
-  upsertUserPreference(input: { gpsEnabled: $enabled }) {
+  upsertUserPreference(input: { activateLocation: $enabled }) {
     id
-    gpsEnabled
+    activateLocation
   }
 }
 ''';
 
 const String saveNotificationPreferenceMutation = r'''
 mutation SaveNotificationPreference($enabled: Boolean!) {
-  upsertUserPreference(input: { notificationsEnabled: $enabled }) {
+  upsertUserPreference(input: { activateNotifications: $enabled }) {
     id
-    notificationsEnabled
+    activateNotifications
   }
 }
 ''';

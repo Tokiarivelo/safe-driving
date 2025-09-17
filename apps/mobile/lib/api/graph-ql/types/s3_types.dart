@@ -7,15 +7,15 @@ part 's3_types.g.dart';
 class PresignedUrl {
   final String key;
   final String url;
-  final String? fileName;
+  final double expiresIn;
 
   PresignedUrl({
     required this.key,
     required this.url,
-    this.fileName,
+    required this.expiresIn,
   });
 
-  factory PresignedUrl.fromJson(Map<String, dynamic> json) => 
+  factory PresignedUrl.fromJson(Map<String, dynamic> json) =>
       _$PresignedUrlFromJson(json);
   Map<String, dynamic> toJson() => _$PresignedUrlToJson(this);
 }
@@ -23,18 +23,18 @@ class PresignedUrl {
 @JsonSerializable()
 class CompleteUploadOutput {
   final String key;
-  final String url;
-  final bool success;
-  final String? error;
+  final String? contentType;
+  final String? etag;
+  final int? size;
 
   CompleteUploadOutput({
     required this.key,
-    required this.url,
-    required this.success,
-    this.error,
+    this.contentType,
+    this.etag,
+    this.size,
   });
 
-  factory CompleteUploadOutput.fromJson(Map<String, dynamic> json) => 
+  factory CompleteUploadOutput.fromJson(Map<String, dynamic> json) =>
       _$CompleteUploadOutputFromJson(json);
   Map<String, dynamic> toJson() => _$CompleteUploadOutputToJson(this);
 }
@@ -51,7 +51,7 @@ class FileMetaInput {
     this.size,
   });
 
-  factory FileMetaInput.fromJson(Map<String, dynamic> json) => 
+  factory FileMetaInput.fromJson(Map<String, dynamic> json) =>
       _$FileMetaInputFromJson(json);
   Map<String, dynamic> toJson() => _$FileMetaInputToJson(this);
 }

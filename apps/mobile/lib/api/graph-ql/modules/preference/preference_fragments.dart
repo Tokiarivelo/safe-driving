@@ -2,29 +2,19 @@ const String userPreferenceFragment = r'''
 fragment UserPreferenceFragment on UserPreference {
   id
   userId
-  selectedDriverVehicleId
-  location
+  language
+  theme
+  activateEmailNotifications
+  activateSmsNotifications
+  activateLocation
+  activateNotifications
+  cguAccepted
+  privacyPolicyAccepted
   createdAt
   updatedAt
-  vehicleDocuments {
+  preferedvelicles {
     id
-    fileId
-    driverVehicleId
-  }
-  vehicleImages {
-    id
-    fileId
-    driverVehicleId
-  }
-  userImages {
-    id
-    fileId
-    userId
-  }
-  userDocuments {
-    id
-    fileId
-    userId
+    name
   }
 }
 ''';

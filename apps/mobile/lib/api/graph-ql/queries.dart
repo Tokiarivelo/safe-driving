@@ -49,15 +49,21 @@ query IsEmailTaken($email: String!) {
 ''';
 
 const String getUserPreferencesQuery = r'''
-query GetUserPreferences($userId: String!) {
+query GetUserPreferences {
   userPreference {
     id
     userId
-    theme
     language
-    notificationsEnabled
-    gpsEnabled
-    transportModes
+    theme
+    activateEmailNotifications
+    activateSmsNotifications
+    activateLocation
+    activateNotifications
+    cguAccepted
+    privacyPolicyAccepted
+    preferedvelicles { id name }
+    createdAt
+    updatedAt
   }
 }
 ''';
@@ -69,16 +75,12 @@ query GetUserOnboardingData($userId: String!) {
     email
     firstName
     lastName
-    # Les données d'onboarding ne sont pas directement disponibles dans le schema actuel
-    # Cette query est maintenue pour compatibilité
   }
 }
 ''';
 
 const String getDriverOnboardingDataQuery = r'''
 query GetDriverOnboardingData($userId: String!) {
-  # Non implémenté dans le backend actuel
-  # Retourne les données du user à la place
   user(id: $userId) {
     id
     email
@@ -92,25 +94,24 @@ const String getDriverDocumentsQuery = r'''
 query GetDriverDocuments($userId: String!) {
   files(where: { userId: { equals: $userId } }) {
     id
-    fileName
-    fileUrl
-    fileType
+    key
+    url
+    originalName
+    contentType
     size
-    createdAt
+    status
+    type
   }
 }
 ''';
 
 const String getDriverStatsQuery = r'''
 query GetDriverStats($userId: String!) {
-  # Non implémenté dans le backend actuel
-  # Retourne les données du user à la place
   user(id: $userId) {
     id
     email
     firstName
     lastName
-    # Les stats de driver ne sont pas disponibles dans le schema actuel
   }
 }
 ''';
@@ -123,13 +124,11 @@ query GetVehicles {
     vehicleTypeId
     brand
     model
-    year
-    color
-    licensePlate
-    vehicleType {
+    registrationNumber
+    place
+    type {
       id
-      typeName
-      icon
+      name
     }
   }
 }
@@ -139,10 +138,7 @@ const String getVehicleTypesQuery = r'''
 query GetVehicleTypes {
   vehicleTypes {
     id
-    typeName
-    icon
-    createdAt
-    updatedAt
+    name
   }
 }
 ''';

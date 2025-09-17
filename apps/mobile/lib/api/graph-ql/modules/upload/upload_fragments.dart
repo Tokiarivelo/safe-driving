@@ -9,15 +9,15 @@ const String presignedUrlFragment = r'''
   fragment PresignedUrlFields on PresignedUrl {
     key
     url
-    fileName
+    expiresIn
   }
 ''';
 
 const String completeUploadFragment = r'''
   fragment CompleteUploadFields on CompleteUploadOutput {
     key
-    url
-    success
-    error
+    contentType
+    etag
+    size
   }
 ''';

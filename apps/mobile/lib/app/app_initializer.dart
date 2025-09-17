@@ -27,7 +27,7 @@ class SafeDriving extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: context.watch<ThemeController>().mode,
-          // Internationalization
+
           localizationsDelegates: L10n.localizationsDelegates,
           supportedLocales: L10n.supportedLocales,
           locale: context.watch<LocaleProvider>().locale,
