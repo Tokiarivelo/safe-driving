@@ -152,38 +152,38 @@ function Dashboard() {
                   </div>
                 </Popover.Trigger>
                 
-                <Popover.Content 
-                  className="w-auto p-0 bg-transparent border-none shadow-none outline-none"
-                  align="start"
-                  side="bottom"
-                  sideOffset={-120}
-                  alignOffset={0}
-                >
-                  {/* Options de statut - alignement flex comme dans l'image */}
-                  <div className="flex flex-wrap gap-6 sm:gap-8 md:gap-10 max-w-[240px] sm:max-w-[336px] md:max-w-[416px]">
-                    {statuses.map((s, index) => (
-                      <div
-                        key={s.key}
-                        className={`w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48 flex flex-col items-center justify-center cursor-pointer rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl ${
-                          status === s.key 
-                            ? 'bg-pink-50 border-2 border-pink-400' 
-                            : 'bg-white border-2 border-gray-300 hover:border-pink-400'
-                        }`}
-                        onClick={() => {
-                          setStatus(s.key);
-                          setOpen(false);
-                        }}
-                      >
-                        <div
-                          className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${s.color} mb-2`}
-                        />
-                        <p className="text-[10px] sm:text-sm text-center font-medium text-gray-700">
-                          {s.label}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </Popover.Content>
+<Popover.Content
+  className="bg-transparent border-none shadow-none outline-none"
+  align="end"
+  side="bottom"
+  sideOffset={10}
+>
+  <div className="flex flex-col items-end gap-3">
+    {statuses
+      .filter((s) => s.key !== status)
+      .map((s) => (
+        <div
+          key={s.key}
+          className={`w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48 
+                      flex flex-col items-center justify-center cursor-pointer 
+                      rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl
+                      bg-white border-2 border-gray-300 hover:border-pink-400`}
+          onClick={() => {
+            setStatus(s.key);
+            setOpen(false);
+          }}
+        >
+          <div
+            className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${s.color} mb-2`}
+          />
+          <p className="text-[10px] sm:text-sm text-center font-medium text-gray-700">
+            {s.label}
+          </p>
+        </div>
+      ))}
+  </div>
+</Popover.Content>
+
               </Popover.Root>
 
               {/* Bloc Rechercher */}
