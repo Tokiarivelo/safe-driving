@@ -132,13 +132,82 @@ class _StepFourViewState extends State<StepFourView> {
                   ),
                   const SizedBox(height: 16),
 
-                  CustomInputField(
-                    label: 'Type de véhicule',
-                    hint: 'ex: Voiture',
-                    icon: Icons.local_taxi,
-                    showLabel: true,
-                    controller: vm.getController('typeVehicule'),
-                    backgroundColor: AppColors.inputTextBackground,
+             
+                  Builder(
+                    builder: (context) {
+                      final options = <String>['Voiture', 'Moto', 'TukTuk'];
+                      final ctrl = vm.getController('typeVehicule');
+                      final current = ctrl.text.trim().isEmpty ? null : ctrl.text.trim();
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Type de véhicule',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          InputDecorator(
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              filled: true,
+                              fillColor: AppColors.inputTextBackground.adapt(context),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? AppColors.light.withValues(alpha: 0.2)
+                                      : AppColors.borderInputField,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? AppColors.light.withValues(alpha: 0.2)
+                                      : AppColors.borderInputField,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? AppColors.light.withValues(alpha: 0.4)
+                                      : AppColors.borderInputField,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                hint: const Text('ex: Voiture'),
+                                value: current,
+                                items: options
+                                    .map((e) => DropdownMenuItem<String>(
+                                          value: e,
+                                          child: Text(e),
+                                        ))
+                                    .toList(),
+                                onChanged: (val) {
+                                  final text = val ?? '';
+                                  if (ctrl.text != text) {
+                                    ctrl.text = text;
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),

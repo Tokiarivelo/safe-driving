@@ -211,15 +211,88 @@ class FormBuilder {
       ),
       const SizedBox(height: 16),
       Builder(
-        builder: (context) => CustomInputField(
-          label: context.l10n.driverVehicleType,
-          hint: context.l10n.driverVehicleTypePlaceholder,
-          icon: Icons.local_taxi,
-          showLabel: true,
-          controller: coordinator.vehicleInfoViewModel.getController(
-            'typeVehicule',
-          ),
-        ),
+        builder: (context) {
+          final options = <String>['Voiture', 'Moto', 'TukTuk'];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.l10n.driverVehicleType,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 6),
+              InputDecorator(
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  filled: true,
+                  fillColor: AppColors.inputTextBackground.adapt(context),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.light.withValues(alpha: 0.2)
+                          : AppColors.borderInputField,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.light.withValues(alpha: 0.2)
+                          : AppColors.borderInputField,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.light.withValues(alpha: 0.4)
+                          : AppColors.borderInputField,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    hint: Text(context.l10n.driverVehicleTypePlaceholder),
+                    value: () {
+                      final v = coordinator.vehicleInfoViewModel
+                          .getController('typeVehicule')
+                          .text
+                          .trim();
+                      return v.isEmpty ? null : v;
+                    }(),
+                    items: options
+                        .map((e) => DropdownMenuItem<String>(
+                              value: e,
+                              child: Text(e),
+                            ))
+                        .toList(),
+                    onChanged: (val) {
+                      final text = val ?? '';
+                      final ctrl = coordinator.vehicleInfoViewModel
+                          .getController('typeVehicule');
+                      if (ctrl.text != text) {
+                        ctrl.text = text;
+                        coordinator.vehicleInfoViewModel
+                            .updateFormField('typeVehicule', text);
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     ];
   }

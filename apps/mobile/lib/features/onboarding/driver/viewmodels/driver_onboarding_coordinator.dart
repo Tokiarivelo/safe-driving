@@ -71,6 +71,9 @@ class DriverOnboardingCoordinator extends ChangeNotifier {
     try {
       Map<String, dynamic> stepData = {};
       switch (step.stepType) {
+        case DriverStepType.welcome:
+          stepData = {};
+          break;
         case DriverStepType.personalInfo:
           final data = _personalInfoViewModel.getPersonalInfoData();
           try {
@@ -89,41 +92,83 @@ class DriverOnboardingCoordinator extends ChangeNotifier {
             stepData = data;
           } catch (e) {
             developer.log('Error saving vehicle info: $e');
-            _flowViewModel.setError('Erreur lors de la sauvegarde du véhicule: $e');
+            _flowViewModel.setError(
+              'Erreur lors de la sauvegarde du véhicule: $e',
+            );
             rethrow;
           }
-          break;
-        case DriverStepType.preferences:
-          stepData = _preferencesViewModel.getPreferencesData();
           break;
         case DriverStepType.documents:
           try {
             await _documentUploadViewModel.flushPendingUploads();
           } catch (e) {
             developer.log('Error flushing uploads: $e');
-            // Continue anyway to show counts
           }
           stepData = {
-            'personal_photos': _documentUploadViewModel.getPersonalUploadedPhotosCount(),
-            'vehicle_photos': _documentUploadViewModel.getVehicleUploadedPhotosCount(),
-            'total_photos': _documentUploadViewModel.getTotalUploadedPhotosCount(),
+            'personal_photos': _documentUploadViewModel
+                .getPersonalUploadedPhotosCount(),
+            'vehicle_photos': _documentUploadViewModel
+                .getVehicleUploadedPhotosCount(),
+            'total_photos': _documentUploadViewModel
+                .getTotalUploadedPhotosCount(),
           };
           developer.log('Document step data: $stepData');
           break;
         case DriverStepType.selfie:
           stepData = {
-            'selfie_uploaded': _documentUploadViewModel.getPersonalUploadedPhotosCount() > 0,
+            'selfie_uploaded':
+                _documentUploadViewModel.getPersonalUploadedPhotosCount() > 0,
           };
           break;
         case DriverStepType.gps:
-          stepData = {
-            'gps_enabled': _preferencesViewModel.gpsEnabled,
-          };
+          stepData = {'gps_enabled': _preferencesViewModel.gpsEnabled};
+          try {
+            await _service.saveGpsPreference(_preferencesViewModel.gpsEnabled);
+          } catch (e) {
+            developer.log('Error saving GPS preference: $e');
+            _flowViewModel.setError('Erreur lors de la sauvegarde GPS: $e');
+            rethrow;
+          }
           break;
         case DriverStepType.notifications:
           stepData = {
             'notifications': _preferencesViewModel.selectedNotifications,
           };
+          try {
+            final prefs = <String, bool>{
+              'activateSmsNotifications': _preferencesViewModel
+                  .selectedNotifications
+                  .contains('SMS'),
+              'activateNotifications': _preferencesViewModel
+                  .selectedNotifications
+                  .contains('Push notification mobile'),
+              'activateEmailNotifications': _preferencesViewModel
+                  .selectedNotifications
+                  .contains('E-mail'),
+            };
+            await _service.saveNotificationPreferences(prefs);
+          } catch (e) {
+            developer.log('Error saving notifications preference: $e');
+            _flowViewModel.setError(
+              'Erreur lors de la sauvegarde des notifications: $e',
+            );
+            rethrow;
+          }
+          break;
+        case DriverStepType.preferences:
+          stepData = _preferencesViewModel.getPreferencesData();
+          try {
+            await _service.saveAppPreferences(
+              theme: _preferencesViewModel.selectedTheme,
+              language: _preferencesViewModel.selectedLanguage,
+            );
+          } catch (e) {
+            developer.log('Error saving app preferences: $e');
+            _flowViewModel.setError(
+              'Erreur lors de la sauvegarde des préférences: $e',
+            );
+            rethrow;
+          }
           break;
         case DriverStepType.legal:
           final legal = {
@@ -132,15 +177,23 @@ class DriverOnboardingCoordinator extends ChangeNotifier {
                 ? _legalViewModel.cguAccepted[1]
                 : false,
           };
-          await _service.completeDriverOnboarding(legal);
+          try {
+            await _service.completeDriverOnboarding(legal);
+          } catch (e) {
+            developer.log('Error completing onboarding: $e');
+            _flowViewModel.setError('Erreur lors de la finalisation: $e');
+            rethrow;
+          }
           stepData = legal;
           break;
-        default:
+        case DriverStepType.summary:
+        case DriverStepType.completion:
           stepData = {};
           break;
+        case DriverStepType.photos:
+          throw UnimplementedError();
       }
 
-   
       // Skip sending unsupported onboarding step progress to backend.
       _flowViewModel.nextStep();
     } catch (e) {
@@ -149,6 +202,7 @@ class DriverOnboardingCoordinator extends ChangeNotifier {
       _flowViewModel.setLoading(false);
     }
   }
+
   void previousStep() => _flowViewModel.previousStep();
 
   bool isStepValid(int stepIndex) {

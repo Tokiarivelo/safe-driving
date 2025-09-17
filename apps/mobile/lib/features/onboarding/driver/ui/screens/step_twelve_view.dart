@@ -44,14 +44,17 @@ class _StepTwelveViewState extends State<StepTwelveView> {
   }
 
   String _buildWelcomeTitle(BuildContext context) {
-    final user = context.authVM.currentUser;
-    final first = (user?.firstName ?? '').trim();
-    final display = first.isNotEmpty
-        ? first
-        : ((user?.fullName ?? user?.email ?? '').trim());
+    String display = '';
+    try {
+      final user = context.authVM.currentUser;
+      final first = (user?.firstName ?? '').trim();
+      display = first.isNotEmpty
+          ? first
+          : ((user?.fullName ?? user?.email ?? '').trim());
+    } catch (_) {}
     final base = context.l10n.driverCompleteTitle;
     if (display.isEmpty) return base.trim();
-    return '$base$display !';
+    return '$base$display';
   }
 
   @override
@@ -64,188 +67,199 @@ class _StepTwelveViewState extends State<StepTwelveView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-          const SizedBox(height: 20),
-          Text(
-            _buildWelcomeTitle(context),
-            textAlign: TextAlign.center,
-            style: AppTextStyles.h1(context).copyWith(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColors.light,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            widget.step.description!,
-            textAlign: TextAlign.center,
-            style: AppTextStyles.body16(
-              context,
-            ).copyWith(color: AppColors.light, height: 1.5),
-          ),
-          const SizedBox(height: 24),
-
-          // QR Code section
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+              const SizedBox(height: 20),
               Text(
-                context.l10n.driverCompleteQrCodeSubtitle,
+                _buildWelcomeTitle(context),
+                textAlign: TextAlign.center,
+                style: AppTextStyles.h1(context).copyWith(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                context.l10n.driverCompleteSubtitle,
                 textAlign: TextAlign.center,
                 style: AppTextStyles.body16(
                   context,
-                ).copyWith(fontWeight: FontWeight.w600, color: AppColors.light),
+                ).copyWith(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.7),
+                  height: 1.5,
+                ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
 
-              FutureBuilder<String>(
-                future: widget.coordinator.generateDriverQrCode(type: 'png'),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container(
-                      width: 150,
-                      height: 150,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: AppColors.inputTextBackground
-                            .adapt(context)
-                            .withAlpha(100),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.fillButtonBackground
-                              .adapt(context)
-                              .withAlpha(100),
-                          width: 2,
-                        ),
-                      ),
-                      child: const SizedBox(
-                        width: 28,
-                        height: 28,
-                        child: CircularProgressIndicator(strokeWidth: 2.2),
-                      ),
-                    );
-                  }
-                  if (snapshot.hasError || !(snapshot.hasData)) {
-                    return Container(
-                      width: 150,
-                      height: 150,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: AppColors.inputTextBackground
-                            .adapt(context)
-                            .withAlpha(100),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.fillButtonBackground
-                              .adapt(context)
-                              .withAlpha(100),
-                          width: 2,
-                        ),
-                      ),
-                      child: Icon(
-                        Icons.qr_code_2,
-                        size: 80,
-                        color: AppColors.fillButtonBackground.adapt(context),
-                      ),
-                    );
-                  }
-                  final qrData = snapshot.data!;
+              // QR Code section
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    context.l10n.driverCompleteQrCodeSubtitle,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.body16(
+                      context,
+                    ).copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
 
-                  Uint8List? decodeDataUrl(String dataUrl) {
-                    final prefix = 'data:image/png;base64,';
-                    if (dataUrl.startsWith(prefix)) {
-                      final b64 = dataUrl.substring(prefix.length);
-                      try {
-                        return base64Decode(b64);
-                      } catch (_) {
+                  FutureBuilder<String>(
+                    future: widget.coordinator.generateDriverQrCode(type: 'png'),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Container(
+                          width: 150,
+                          height: 150,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: AppColors.inputTextBackground
+                                .adapt(context)
+                                .withAlpha(100),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: AppColors.fillButtonBackground
+                                  .adapt(context)
+                                  .withAlpha(100),
+                              width: 2,
+                            ),
+                          ),
+                          child: const SizedBox(
+                            width: 28,
+                            height: 28,
+                            child: CircularProgressIndicator(strokeWidth: 2.2),
+                          ),
+                        );
+                      }
+                      if (snapshot.hasError || !(snapshot.hasData)) {
+                        return Container(
+                          width: 150,
+                          height: 150,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: AppColors.inputTextBackground
+                                .adapt(context)
+                                .withAlpha(100),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: AppColors.fillButtonBackground
+                                  .adapt(context)
+                                  .withAlpha(100),
+                              width: 2,
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.qr_code_2,
+                            size: 80,
+                            color: AppColors.fillButtonBackground.adapt(context),
+                          ),
+                        );
+                      }
+                      final qrData = snapshot.data!;
+
+                      Uint8List? decodeDataUrl(String dataUrl) {
+                        final prefix = 'data:image/png;base64,';
+                        if (dataUrl.startsWith(prefix)) {
+                          final b64 = dataUrl.substring(prefix.length);
+                          try {
+                            return base64Decode(b64);
+                          } catch (_) {
+                            return null;
+                          }
+                        }
                         return null;
                       }
-                    }
-                    return null;
-                  }
 
-                  final bytes = decodeDataUrl(qrData);
-                  return Container(
-                    width: 150,
-                    height: 150,
-                    padding: const EdgeInsets.all(8),
+                      final bytes = decodeDataUrl(qrData);
+                      return Container(
+                        width: 150,
+                        height: 150,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppColors.inputTextBackground
+                              .adapt(context)
+                              .withAlpha(100),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.fillButtonBackground
+                                .adapt(context)
+                                .withAlpha(100),
+                            width: 2,
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: bytes != null
+                              ? Image.memory(
+                                  bytes,
+                                  width: 134,
+                                  height: 134,
+                                  fit: BoxFit.cover,
+                                )
+                              : Icon(
+                                  Icons.qr_code_2,
+                                  size: 80,
+                                  color: AppColors.fillButtonBackground
+                                      .adapt(context),
+                                ),
+                        ),
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 16),
+                  Text(
+                    context.l10n.driverCompleteQrCodeInstructions,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.7),
+                      height: 1.4,
+                      fontFamily: 'Inder',
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.inputTextBackground
-                          .adapt(context)
-                          .withAlpha(100),
+                      color: AppColors.backgroundSecondary,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: AppColors.fillButtonBackground
-                            .adapt(context)
-                            .withAlpha(100),
-                        width: 2,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        width: 1,
                       ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: bytes != null
-                          ? Image.memory(
-                              bytes,
-                              width: 134,
-                              height: 134,
-                              fit: BoxFit.cover,
-                            )
-                          : Icon(
-                              Icons.qr_code_2,
-                              size: 80,
-                              color:
-                                  AppColors.fillButtonBackground.adapt(context),
-                            ),
+                    child: Text(
+                      context.l10n.driverCompleteThankYou,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.body14(context).copyWith(
+                        fontWeight: FontWeight.w500,
+                        height: 1.4,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
 
-              const SizedBox(height: 16),
-              Text(
-                context.l10n.driverCompleteQrCodeInstructions,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.light,
-                  height: 1.4,
-                  fontFamily: 'Inder',
-                ),
-              ),
+              const SizedBox(height: 32),
 
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.backgroundSecondary,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    // Keep border light to ensure visibility in both themes
-                    color: AppColors.light,
-                    width: 1,
-                  ),
-                ),
-                child: Text(
-                  context.l10n.driverCompleteThankYou,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.body14(context).copyWith(
-                    fontWeight: FontWeight.w500,
-                    height: 1.4,
-                    color: AppColors.light,
-                  ),
-                ),
+              PrimaryButton.primaryButton(
+                text: context.l10n.driverCompleteStart,
+                onPressed: widget.onContinue,
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
               ),
             ],
           ),
-
-          const SizedBox(height: 32),
-
-          PrimaryButton.primaryButton(
-            text: context.l10n.driverCompleteStart,
-            onPressed: widget.onContinue,
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
-          ),
-        ],
-      ),
         ),
         Align(
           alignment: Alignment.topCenter,
