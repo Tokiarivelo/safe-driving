@@ -3,6 +3,7 @@
 import { Icon } from '@iconify/react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
+import Image from 'next/image';
 import NoSSR from '@/components/NoSSR';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect, useRef } from 'react';
@@ -100,17 +101,24 @@ export default function Navigation({ mobileMenuOpen, setMobileMenuOpen }: Naviga
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-3 group" onClick={closeAllMenus}>
             <div className="relative">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 dark:from-blue-400 dark:to-indigo-400 flex items-center justify-center shadow-lg">
-                <Icon icon="material-symbols:shield-with-heart" className="w-7 h-7 text-white" />
+              <div className="w-12 h-12 p-2 rounded-xl bg-white dark:bg-gray-800 shadow-lg transition-transform duration-300 group-hover:scale-105 border border-gray-200 dark:border-gray-700">
+                <Image
+                  src="/logo.svg"
+                  alt="SafeDriving Logo"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-contain"
+                  priority
+                />
               </div>
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 dark:from-blue-400 dark:to-indigo-400 animate-pulse opacity-30"></div>
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 animate-pulse opacity-30"></div>
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
               SafeDriving
             </span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
