@@ -17,6 +17,7 @@ import { RedisModule } from 'src/redis/redis.module';
 import { MessageModule } from 'src/message/message.module';
 import { ConversationModule } from 'src/conversation/conversation.module';
 import { DateTimeScalar } from 'src/common/scalars/date-time.scalar';
+import { DriversModule } from '../drivers/drivers.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { DateTimeScalar } from 'src/common/scalars/date-time.scalar';
     RedisModule,
     MessageModule,
     ConversationModule,
+    DriversModule,
   ],
   providers: [DateTimeScalar],
 })

@@ -9,29 +9,41 @@ import {
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { RedisService } from '../redis/redis.service';
+import { Logger } from '@nestjs/common';
 
 @WebSocketGateway({
   cors: { origin: '*' },
   transports: ['websocket'],
 })
-export class DriversGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class DriversGateway
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
+  private readonly logger = new Logger(DriversGateway.name);
+
   constructor(private readonly redis: RedisService) {}
 
   afterInit(server: Server) {
-    // Subscribe to Redis Pub/Sub channel "drivers:updates"
     this.redis.subscribe('drivers:updates', (message: string) => {
       const update = JSON.parse(message);
-      // Broadcast update to all connected clients
-      server.emit('drivers:update', update);
+
+      if (Array.isArray(update.cars)) {
+        for (const car of update.cars) {
+          // Send one event per car with a proper key
+          server.emit('drivers:update', {
+            key: `driver:${car.id}`,
+            value: car,
+          });
+        }
+      }
     });
   }
 
   handleConnection(client: Socket) {
-    // Optionally send a welcome message or do auth checks
+    this.logger.log(`Client connected: ${client.id}`);
   }
 
   handleDisconnect(client: Socket) {
-    // Cleanup if needed
+    this.logger.log(`Client disconnected: ${client.id}`);
   }
 
   @SubscribeMessage('drivers:list')

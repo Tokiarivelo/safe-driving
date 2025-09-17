@@ -19,18 +19,18 @@ export class WsJwtGuard implements CanActivate {
   constructor(private readonly jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    // 1) Try to get socket (Socket.IO)
+    // 1) Try to get drivers (Socket.IO)
     const client = context.switchToWs().getClient<Socket>();
 
     if (!client) {
-      throw new WsException('No socket client');
+      throw new WsException('No drivers client');
     }
 
     let token: string | undefined;
 
     try {
       if (client) {
-        // socket.io: token sent in handshake.auth or authorization header or query
+        // drivers.io: token sent in handshake.auth or authorization header or query
         token =
           client.handshake?.auth?.token ||
           client.handshake?.headers?.authorization ||
@@ -68,7 +68,7 @@ export class WsJwtGuard implements CanActivate {
 
       // 4) Attach user to appropriate context for later use
       if (client) {
-        // Socket.IO: attach to socket.data for later usage
+        // Socket.IO: attach to drivers.data for later usage
         // (Nest recommends using client.data for arbitrary metadata)
         client.data = client.data || {};
         client.data.user = payload;

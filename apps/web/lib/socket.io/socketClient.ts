@@ -5,7 +5,7 @@ type TypingPayload = { conversationId?: string; rideId?: string; isTyping: boole
 
 let socket: Socket | null = null;
 
-/** Initialise la socket si pas encore créée, retourne l'instance */
+/** Initialise la drivers si pas encore créée, retourne l'instance */
 export function initSocket(token?: string) {
   if (socket) return socket;
 
@@ -14,9 +14,9 @@ export function initSocket(token?: string) {
     transports: ['websocket'],
   });
 
-  socket.on('connect', () => console.log('[socket] connected', socket?.id));
-  socket.on('connect_error', err => console.error('[socket] connect_error', err));
-  socket.on('disconnect', reason => console.log('[socket] disconnected', reason));
+  socket.on('connect', () => console.log('[drivers] connected', socket?.id));
+  socket.on('connect_error', err => console.error('[drivers] connect_error', err));
+  socket.on('disconnect', reason => console.log('[drivers] disconnected', reason));
 
   return socket;
 }
@@ -37,9 +37,9 @@ export async function disconnectSocket(opts?: { conversationId?: string; rideId?
     }
     socket.disconnect();
     socket = null;
-    console.log('[socket] disconnected and cleaned up');
+    console.log('[drivers] disconnected and cleaned up');
   } catch (err) {
-    console.error('[socket] disconnect error', err);
+    console.error('[drivers] disconnect error', err);
   }
 }
 

@@ -45,7 +45,7 @@ export class ChatCacheService {
     const userKey = `presence:${userId}`;
     const socketKey = `socket:${socketId}`;
 
-    // Retirer ce socket de l'utilisateur
+    // Retirer ce drivers de l'utilisateur
     await this.redis.srem(`user:${userId}:sockets`, socketId);
     await this.redis.del(socketKey);
 

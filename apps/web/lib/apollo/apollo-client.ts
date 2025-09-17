@@ -23,7 +23,7 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
-// 3. Web socket link pour les subscriptions (graphql-ws)
+// 3. Web drivers link pour les subscriptions (graphql-ws)
 const wsClient = new GraphQLWsLink(
   createClient({
     url: process.env.NEXT_PUBLIC_GRAPHQL_WS_URL!,

@@ -684,7 +684,7 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
           if (!members || members.length === 0) continue;
 
           const pipeline = this.cache.pipeline();
-          // check existence de chaque socket:<id>
+          // check existence de chaque drivers:<id>
           for (const sid of members) pipeline.exists(`socket:${sid}`);
           const existsRes = await pipeline.exec();
           // existsRes est array [[null, 1],[null,0],...]
@@ -695,7 +695,7 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
             if (!exists) {
               // supprime l'id orphelin du set
               pipelineRem.srem(key, sid);
-              // supprime la clé socket:... au cas où
+              // supprime la clé drivers:... au cas où
               pipelineRem.del(`socket:${sid}`);
               this.logger.debug(`Removed orphan socket ${sid} from ${key}`);
             }

@@ -2,10 +2,12 @@
 import { Module } from '@nestjs/common';
 import { DriversGateway } from './drivers.gateway';
 import { RedisModule } from '../redis/redis.module';
-import { RedisService } from '../redis/redis.service';
+import { DriversResolver } from './drivers.resolver';
+import { DriversService } from './drivers.service';
 
 @Module({
   imports: [RedisModule],
-  providers: [DriversGateway],
+  providers: [DriversGateway, DriversResolver, DriversService],
+  exports: [DriversService],
 })
 export class DriversModule {}
