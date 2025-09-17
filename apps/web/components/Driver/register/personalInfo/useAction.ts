@@ -57,7 +57,7 @@ export const usePersonalInfoAction = () => {
   
       if (data?.updateUser) {
         toast.success('Informations mises à jour avec succès');
-        router.push('/identityUpload');
+        router.push('identityUpload');
         return true;
       } else {
         toast.error('Erreur lors de la mise à jour');

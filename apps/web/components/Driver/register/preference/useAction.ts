@@ -192,7 +192,7 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
       await updateSession();
       toast.success('Préférences sauvegardées avec succès');
 
-      router.push(`/${languageCode}/terms`);
+      router.push(`/${languageCode}/register/terms`);
       return { success: true };
     } catch (error) {
       console.error('Erreur sauvegarde préférences:', error);

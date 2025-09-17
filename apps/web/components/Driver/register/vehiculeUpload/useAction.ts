@@ -143,7 +143,7 @@ export const useVehicleDocumentsAction = (
       });
 
       toast.success('Documents véhicule uploadés avec succès');
-      router.push('/selfieVerif');
+      router.push('selfieVerif');
       
     } catch (error: any) {
       console.error('Erreur lors de l\'upload:', error);

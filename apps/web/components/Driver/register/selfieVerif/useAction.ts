@@ -102,7 +102,7 @@ export const useSelfieVerificationAction = () => {
       });
 
       toast.success("Selfie uploadé avec succès");
-      router.push('/gps');
+      router.push('gps');
       return { success: true };
 
     } catch (error: any) {

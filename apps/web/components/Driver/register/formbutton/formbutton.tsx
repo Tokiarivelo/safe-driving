@@ -239,7 +239,7 @@ function FormButton() {
       >
         <div className={styles.auth_btn14}>
           <div>
-            <Link href="/welcome">
+            <Link href="register/welcome">
               <AccordionItem
                 value="item-1"
                 className={`tag ${datawelcome ? styles.auth_btn15 : ''}`}
@@ -264,7 +264,7 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="/personalInfo">
+            <Link href="register/personalInfo">
               <AccordionItem
                 value="item-2"
                 className={`tag ${datapersonalInfo ? styles.auth_btn23 : ''}`}
@@ -302,7 +302,7 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="/identityUpload">
+            <Link href="register/identityUpload">
               <AccordionItem
                 value="item-3"
                 className={`tog ${dataidentityUpload ? styles.auth_btn33 : ''}`}
@@ -340,7 +340,7 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="/vehiculeInfo">
+            <Link href="register/vehiculeInfo">
               <AccordionItem
                 value="item-4"
                 className={`teg ${datavehicle ? styles.auth_btn43 : ''}`}
@@ -378,7 +378,7 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="/vehiculeUpload">
+            <Link href="register/vehiculeUpload">
               <AccordionItem
                 value="item-5"
                 className={`tig ${datauploadVehicle ? styles.auth_btn53 : ''}`}
@@ -416,9 +416,9 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="/selfieVerif">
+            <Link href="register/selfieVerif">
               <AccordionItem
-                value="item-2"
+                value="item-6"
                 className={`tag ${dataselfie ? styles.auth_btn23 : ''}`}
                 onClick={() => dataselfie && butselfie()}
               >
@@ -454,9 +454,9 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="/gps">
+            <Link href="register/gps">
               <AccordionItem
-                value="item-2"
+                value="item-7"
                 className={`tag ${datagps ? styles.auth_btn23 : ''}`}
                 onClick={() => datagps && butgps()}
               >
@@ -492,9 +492,9 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="/notif">
+            <Link href="register/notif">
               <AccordionItem
-                value="item-2"
+                value="item-8"
                 className={`tag ${datanotif ? styles.auth_btn23 : ''}`}
                 onClick={() => datanotif && butnotif()}
               >
@@ -530,9 +530,9 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="/preferences">
+            <Link href="register/preferences">
               <AccordionItem
-                value="item-2"
+                value="item-9"
                 className={`tag ${datapref ? styles.auth_btn23 : ''}`}
                 onClick={() => datapref && butpref()}
               >
@@ -568,9 +568,9 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="/recapituatif">
+            <Link href="register/recapituatif">
               <AccordionItem
-                value="item-2"
+                value="item-10"
                 className={`tag ${datarecap ? styles.auth_btn23 : ''}`}
                 onClick={() => datarecap && butrecap()}
               >

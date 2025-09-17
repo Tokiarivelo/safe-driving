@@ -7,7 +7,7 @@
 .subtitle { @apply text-[12px] sm:text-base text-auth-color-placeholder leading-relaxed; }
 
 /* Cartes de récapitulatif */
-.card { @apply p-6 border rounded space-y-2 max-w-3xl mx-auto; }
+.card { @apply space-y-2 max-w-3xl mx-auto; }
 .cardHeader { @apply flex justify-between items-center; }
 .cardTitle { @apply text-lg font-semibold; }
 

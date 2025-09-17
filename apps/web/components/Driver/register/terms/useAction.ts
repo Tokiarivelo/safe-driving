@@ -117,7 +117,7 @@ export const useTermsAcceptance = (initialValues?: Partial<TermsAcceptanceValues
       }
       
       toast.success('Conditions générales sauvegardées avec succès');
-      router.push('/recapitulatif'); 
+      router.push('recapitulatif'); 
       return { success: true };
     } catch (error) {
       console.error('Erreur lors de la sauvegarde des conditions:', error);

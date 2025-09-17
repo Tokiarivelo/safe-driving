@@ -12,7 +12,7 @@ import {
   CreateUserQrsDocument
 } from '@/graphql/generated/graphql'
 import { useQrCodeForRecap } from './useAction';
-import styles from './recapitulatif.module.css'
+import styles from '../../../user/components/Form/recapitulatif/driver-recap.module.css'
 
 export function Recap() {
   const { t } = useTranslation(['registerDriver/step11'])

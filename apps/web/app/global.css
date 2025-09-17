@@ -395,6 +395,7 @@
   transform: rotate(0deg);
   position: relative; /* ensure pseudo-elements anchor */
   z-index: 30; /* above white card */
+  pointer-events: auto; /* allow hover */
   /* height: 65px;  */
 }
 .tag:hover::before {

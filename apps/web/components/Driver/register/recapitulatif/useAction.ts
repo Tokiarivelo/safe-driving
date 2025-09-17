@@ -28,7 +28,7 @@ export const useQrCodeForRecap = () => {
       setQrUrl(url)
       toast.success('QR code créé avec succès ! 🎉')
   
-      router.push(`/qrCode?qrUrl=${encodeURIComponent(url)}`)
+      router.push(`qrCode?qrUrl=${encodeURIComponent(url)}`)
     } catch (err: any) {
       console.error(err)
       setError(err.message || 'Erreur lors de la création du QR code')

@@ -1,6 +1,7 @@
 'use client'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import styles from '../../../user/components/Form/codeqr/codeqr.module.css'
 
 export default function UserQrPage() {
   const router = useRouter()
@@ -19,21 +20,24 @@ export default function UserQrPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center space-y-4">
-      <h1 className="text-xl font-semibold mb-4">Votre QR Code</h1>
-      
-      <img src={qrUrl} alt="QR Code utilisateur" className="w-64 h-64 object-contain" />
+    <div className="w-full px-4 py-8">
+      <div className={styles.auth_Qr1}>
+        <h1 className={styles.auth_Qr4}>Votre QR Code</h1>
+      </div>
 
-      <p className="text-sm text-gray-500">Scannez ce QR Code pour récupérer vos informations.</p>
+      <div className={styles.auth_Qr11}>
+        <img src={qrUrl!} alt="QR Code" className={`${styles.auth_Qr16} w-[160px] h-[160px]`} />
+      </div>
 
-      <Button onClick={downloadQr}>Télécharger le QR Code</Button>
+      <div className={styles.auth_Qr19}>
+        <p className={styles.auth_Qr20}>Scannez ce QR Code pour récupérer vos informations.</p>
+      </div>
 
-      <Button
-        onClick={() => router.push('/scan')}
-        variant="outline"
-      >
-        Scanner QR Code
-      </Button>
+      <div className={styles.auth_Qr22}>
+        <Button type="button" onClick={downloadQr} className={styles.auth_Qr23}>
+          Télécharger le QR Code
+        </Button>
+      </div>
     </div>
   )
 }

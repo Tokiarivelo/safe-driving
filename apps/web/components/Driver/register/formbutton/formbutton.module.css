@@ -43,7 +43,7 @@
   @apply w-full;
 } 
 .auth_btn14 {
-  @apply space-y-3 sm:space-y-2 max-h-[70vh] overflow-y-auto pr-2;
+  @apply space-y-3 sm:space-y-2;
 } 
 .auth_btn15 {
   @apply auth-card-bgs-gradient shadow-sm;

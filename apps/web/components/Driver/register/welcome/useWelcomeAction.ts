@@ -5,7 +5,7 @@ export const useWelcomeAction = () => {
   const router = useRouter()
 
   const handleGetStarted = () => {
-    router.push('/personalInfo')
+    router.push('personalInfo')
   }
 
   return {

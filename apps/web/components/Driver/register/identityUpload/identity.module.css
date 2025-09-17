@@ -7,12 +7,12 @@
 
 /* Bloc texte centré */
 .textContainer {
-  @apply w-full max-w-2xl mx-auto text-center mb-8 sm:mb-10;
+  @apply w-full max-w-2xl mx-auto text-center mb-4 sm:mb-6;
 }
 
 /* Titre (comme welcome.auth_bjr4) */
 .title {
-  @apply text-lg font-semibold text-auth-color-text-custom-magenta mb-2 sm:mb-10 sm:text-xl md:text-2xl;
+  @apply text-lg font-semibold text-auth-color-text-custom-magenta mb-1 sm:mb-6 sm:text-xl md:text-2xl;
 }
 
 /* Sous-titre (comme welcome.auth_bjr5) */
@@ -33,17 +33,17 @@
 
 /* Boutons (comme welcome.auth_bjr6) */
 .buttonContainer {
-  @apply w-full h-10 sm:h-15 space-x-4 flex items-center justify-center sm:block sm:space-y-4 sm:px-2 md:px-15 lg:flex lg:space-x-25 lg:items-center lg:px-10;
+  @apply w-full h-10 sm:h-15 space-x-3 flex items-center justify-center sm:block sm:space-y-3 sm:px-2 md:px-12 lg:flex lg:space-x-20 lg:items-center lg:px-8;
 }
 
 /* Bouton contour (comme welcome.auth_bjr7) */
 .buttonOutline {
-  @apply px-12 py-[6px] sm:w-[300px] rounded-md border-1 text-auth-color-button border-auth-color-button transition-all duration-200 hover:bg-auth-hover md:w-[292px] hover:text-auth-color-bg-white lg:w-42 lg:mt-3;
+  @apply px-10 py-[6px] sm:w-[260px] rounded-md border-1 text-auth-color-button border-auth-color-button transition-all duration-200 hover:bg-auth-hover md:w-[250px] hover:text-auth-color-bg-white lg:w-40 lg:mt-2;
 }
 
 /* Bouton principal (comme welcome.auth_bjr8) */
 .buttonPrimary {
-  @apply px-12 py-[6px] bg-auth-color-button text-auth-color-bg-white rounded-md hover:bg-auth-hover sm:w-full lg:w-42;
+  @apply px-10 py-[6px] bg-auth-color-button text-auth-color-bg-white rounded-md hover:bg-auth-hover sm:w-full lg:w-40;
 }
 
 /* Sidebar conservée si réutilisée ailleurs (non utilisée ici) */

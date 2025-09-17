@@ -1,4 +1,4 @@
-@reference '../../global.css';
+@reference '../../../global.css';
 
 .auth_container {
   @apply auth-background min-h-screen w-full sm:flex sm:items-center sm:justify-center;
@@ -10,7 +10,7 @@
   @apply rounded-tl-sm rounded-tr-sm shadow-auth-card overflow-hidden sm:rounded-sm sm:h-[536px] sm:flex sm:justify-between sm:w-[633px] md:w-[750px] lg:max-w-4xl lg:w-full;
 }
 .auth_card_un_container {
-  @apply hidden w-full bg-auth-color-bg-white overflow-hidden pb-3 rounded-tl-sm sm:h-[536px] sm:block items-center md:w-[60%] sm:w-[52%] lg:w-[65%];
+  @apply hidden w-full bg-auth-color-bg-white overflow-y-auto pb-3 rounded-tl-sm sm:h-[536px] sm:block items-center md:w-[60%] sm:w-[52%] lg:w-[65%];
 }
 .auth_card_deux_container {
   @apply overflow-y-auto overflow-x-visible w-full sm:px-1 sm:pt-2 pb-3 bg-amber-50 sm:rounded-tr-md auth-card-bg-gradient sm:rounded-br-md sm:h-[536px] sm:w-[48%] md:w-[40%] lg:w-[35%] relative z-20;
