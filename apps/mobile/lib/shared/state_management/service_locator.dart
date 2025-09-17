@@ -6,6 +6,7 @@ import '../../features/authentication/data/auth_data_source_graphql.dart';
 import '../../features/authentication/services/auth_service.dart';
 import '../../features/authentication/repositories/user_repository.dart';
 import '../../features/authentication/repositories/auth_repository.dart';
+import '../../features/authentication/repositories/auth_repository.dart';
 import '../../features/authentication/viewmodels/auth_view_model.dart';
 import '../../features/onboarding/driver/core/interfaces/driver_service_interface.dart';
 import '../../features/onboarding/driver/services/driver_service.dart';
@@ -137,6 +138,7 @@ class ServiceLocator {
     if (GraphQLConfig.isConfigured) {
       registerSingleton<GraphQLClientWrapper>(GraphQLClientWrapper.instance);
       final session = get<SessionService>();
+      final session = get<SessionService>();
       get<GraphQLClientWrapper>().configure(
         accessToken: session.token,
         refreshToken: session.refreshToken,
@@ -145,18 +147,14 @@ class ServiceLocator {
             await session.saveToken(newToken);
           } catch (_) {}
         },
-        onError: (error) {
-          // Log GraphQL client errors for easier diagnostics
-          try {
-            developer.log('[GraphQLClientWrapper] Error: $error');
-          } catch (_) {}
-        },
+        onError: (error) {},
       );
     }
 
     // Theme controller
     registerLazySingleton<ThemeController>(() => ThemeController());
 
+    // Auth stack (only when GraphQL is configured)
     if (GraphQLConfig.isConfigured) {
       registerLazySingleton<IAuthDataSource>(
         () => AuthDataSourceGraphQL(get<GraphQLClientWrapper>()),
