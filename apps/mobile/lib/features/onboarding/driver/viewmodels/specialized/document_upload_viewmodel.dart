@@ -11,12 +11,17 @@ class DocumentUploadViewModel extends ChangeNotifier {
   final List<File> _capturedPhotos = [];
 
   final Map<String, List<File>> _pendingUploads = {};
+
+  final Map<String, List<File>> _pendingUploads = {};
   // Compteur spécifique au Web pour suivre les téléchargements sans File système
   int _webUploadedCount = 0;
 
   final Map<String, int> _typeCounts = {};
   bool _isLoading = false;
   String? _errorMessage;
+
+  int? _backendPersonalCount;
+  int? _backendVehicleCount;
 
   int? _backendPersonalCount;
   int? _backendVehicleCount;
@@ -60,45 +65,24 @@ class DocumentUploadViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
+  // Queue photos to upload later (when pressing "Valider")
   void queuePhotosForUpload(List<File> photos, String documentType) {
     if (photos.isEmpty) return;
-
-    final isIdentityFront = documentType == 'carteIdentiteRecto' ||
-        documentType == 'carte_identite_recto' ||
-        documentType == 'identity_recto';
-    final isIdentityBack = documentType == 'carteIdentiteVerso' ||
-        documentType == 'carte_identite_verso' ||
-        documentType == 'identity_verso';
-    final isLicense = documentType == 'permisConduire' ||
-        documentType == 'permis_conduire' ||
-        documentType == 'driving_license';
-
     final list = _pendingUploads.putIfAbsent(documentType, () => <File>[]);
-
-    if (isIdentityFront || isIdentityBack) {
-   
-      list
-        ..clear()
-        ..add(photos.first);
-    } else if (isLicense) {
-      // Keep at most 2 photos for driver's license (front/back)
-      list.addAll(photos);
-      if (list.length > 2) {
-        list.removeRange(2, list.length);
-      }
-    } else {
-      // Default behavior: append
-      list.addAll(photos);
-    }
-
- 
-    _typeCounts[documentType] = list.length;
+    list.addAll(photos);
+    _typeCounts[documentType] =
+        (_typeCounts[documentType] ?? 0) + photos.length;
     notifyListeners();
   }
 
   bool get hasPendingUploads => _pendingUploads.values.any((l) => l.isNotEmpty);
+}
 
+bool get hasPendingUploads => _pendingUploads.values.any((l) => l.isNotEmpty);
+
+// Perform the actual uploads for any pending files
+Future<void> flushPendingUploads() async {
+  if (!hasPendingUploads) return;
   // Perform the actual uploads for any pending files
   Future<void> flushPendingUploads() async {
     if (!hasPendingUploads) return;
@@ -109,12 +93,24 @@ class DocumentUploadViewModel extends ChangeNotifier {
         await _service.uploadDocumentPhotos(entry.value, entry.key);
       }
       _pendingUploads.clear();
+      for (final entry in _pendingUploads.entries) {
+        if (entry.value.isEmpty) continue;
+        await _service.uploadDocumentPhotos(entry.value, entry.key);
+      }
+      _pendingUploads.clear();
     } catch (e) {
       _setError('Erreur lors de l\'upload des photos: $e');
+      rethrow;
       rethrow;
     } finally {
       _setLoading(false);
     }
+  }
+
+  // Immediate upload method (kept for backwards compatibility)
+  Future<void> uploadPhotos(List<File> photos, String documentType) async {
+    queuePhotosForUpload(photos, documentType);
+    await flushPendingUploads();
   }
 
   // Immediate upload method (kept for backwards compatibility)
@@ -199,10 +195,22 @@ class DocumentUploadViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> refreshBackendPhotoCounts() async {
+    _setLoading(true);
+    try {
+      await _service.refreshBackendPhotoCounts();
+      _backendPersonalCount = _service.cachedPersonalPhotosCount;
+      _backendVehicleCount = _service.cachedVehiclePhotosCount;
+    } catch (e) {
+      _setError('Erreur lors de la récupération des photos: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   // Total uploaded photos count
   int getTotalUploadedPhotosCount() {
     try {
-    
       int localTotal = 0;
       for (final count in _typeCounts.values) {
         localTotal += count;
@@ -210,12 +218,19 @@ class DocumentUploadViewModel extends ChangeNotifier {
       if (localTotal > 0) return localTotal;
 
       if (kIsWeb) {
- 
         return _webUploadedCount;
       }
 
-      // Then check backend counts if available (mobile)
-      final backend = (_backendPersonalCount ?? 0) + (_backendVehicleCount ?? 0);
+      // First check local counts from queued uploads
+      int localTotal = 0;
+      for (final count in _typeCounts.values) {
+        localTotal += count;
+      }
+      if (localTotal > 0) return localTotal;
+
+      // Then check backend counts if available
+      final backend =
+          (_backendPersonalCount ?? 0) + (_backendVehicleCount ?? 0);
       if (backend > 0) return backend;
 
       // Finally fallback to service count
@@ -225,14 +240,20 @@ class DocumentUploadViewModel extends ChangeNotifier {
     }
   }
 
-
   int getPersonalUploadedPhotosCount() {
     try {
-   
+      if (kIsWeb) {
+        return _webUploadedCount; // selfie only on web
+      }
+      if (_backendPersonalCount != null) return _backendPersonalCount!;
+
       final personalTypes = <String>[
-        'carteIdentiteRecto', 'carte_identite_recto',
-        'carteIdentiteVerso', 'carte_identite_verso',
-        'permisConduire', 'permis_conduire',
+        'carteIdentiteRecto',
+        'carte_identite_recto',
+        'carteIdentiteVerso',
+        'carte_identite_verso',
+        'permisConduire',
+        'permis_conduire',
         'selfie',
       ];
       int local = 0;
@@ -240,13 +261,6 @@ class DocumentUploadViewModel extends ChangeNotifier {
         local += _typeCounts[t] ?? 0;
       }
       if (local > 0) return local;
-
-      if (kIsWeb) {
-    
-        return _webUploadedCount;
-      }
-
-      if (_backendPersonalCount != null) return _backendPersonalCount!;
 
       return _service.getPersonalUploadedPhotosCount();
     } catch (e) {
@@ -256,11 +270,18 @@ class DocumentUploadViewModel extends ChangeNotifier {
 
   int getVehicleUploadedPhotosCount() {
     try {
+      if (kIsWeb) {
+        return 0; // not tracked on web
+      }
+      if (_backendVehicleCount != null) return _backendVehicleCount!;
 
       final vehicleTypes = <String>[
-        'certificatImmatriculation', 'certificat_immatriculation',
-        'attestationAssurance', 'attestation_assurance',
-        'photosVehicule', 'photos_vehicule',
+        'certificatImmatriculation',
+        'certificat_immatriculation',
+        'attestationAssurance',
+        'attestation_assurance',
+        'photosVehicule',
+        'photos_vehicule',
       ];
       int local = 0;
       for (final t in vehicleTypes) {
@@ -269,7 +290,6 @@ class DocumentUploadViewModel extends ChangeNotifier {
       if (local > 0) return local;
 
       if (kIsWeb) {
-     
         return 0;
       }
 

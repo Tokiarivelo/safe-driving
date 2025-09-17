@@ -147,14 +147,18 @@ class ServiceLocator {
             await session.saveToken(newToken);
           } catch (_) {}
         },
-        onError: (error) {},
+        onError: (error) {
+          // Log GraphQL client errors for easier diagnostics
+          try {
+            developer.log('[GraphQLClientWrapper] Error: $error');
+          } catch (_) {}
+        },
       );
     }
 
     // Theme controller
     registerLazySingleton<ThemeController>(() => ThemeController());
 
-    // Auth stack (only when GraphQL is configured)
     if (GraphQLConfig.isConfigured) {
       registerLazySingleton<IAuthDataSource>(
         () => AuthDataSourceGraphQL(get<GraphQLClientWrapper>()),

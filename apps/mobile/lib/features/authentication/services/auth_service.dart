@@ -39,9 +39,21 @@ class AuthService {
   Future<AuthResult> signUp(SignUpRequest request) async {
     try {
       final result = await _dataSource.signUp(request);
-      if (result.isNotEmpty) {
+
+      final looksLikeUser = result.containsKey('id');
+      if (looksLikeUser) {
         return AuthResult.success(user: User.fromJson(result));
       }
+
+      if (result['success'] == false) {
+        final msg = _formatRegisterError((result['message'] ?? '').toString());
+        return AuthResult.failure(errorMessage: msg, errorCode: result['errorCode']);
+      }
+      if (result.containsKey('message')) {
+        final msg = _formatRegisterError((result['message'] ?? '').toString());
+        return AuthResult.failure(errorMessage: msg, errorCode: result['errorCode']);
+      }
+
       return AuthResult.failure(errorMessage: 'Inscription échouée');
     } catch (e) {
       return AuthResult.failure(
@@ -239,6 +251,11 @@ class AuthService {
     } else {
       await _sessionService.saveTokens(token, refreshToken);
     }
+ 
+    try {
+      GraphQLClientWrapper.instance
+          .updateTokens(accessToken: token, refreshToken: refreshToken);
+    } catch (_) {}
   }
 
   String _formatRegisterError(String message) {

@@ -1,6 +1,8 @@
 import 'vehicle_fragments.dart';
 
-const String createDriverVehicleMutation = driverVehicleFragment + r'''
+const String createDriverVehicleMutation =
+    driverVehicleFragment +
+    r'''
 mutation CreateDriverVehicle($input: CreateDriverVehicleInput!) {
   createDriverVehicle(input: $input) {
     ...DriverVehicleFragment
@@ -8,7 +10,9 @@ mutation CreateDriverVehicle($input: CreateDriverVehicleInput!) {
 }
 ''';
 
-const String updateDriverVehicleMutation = driverVehicleFragment + r'''
+const String updateDriverVehicleMutation =
+    driverVehicleFragment +
+    r'''
 mutation UpdateDriverVehicle($vehicleId: String!, $input: CreateDriverVehicleInput!) {
   updateDriverVehicle(vehicleId: $vehicleId, input: $input) {
     ...DriverVehicleFragment
@@ -44,7 +48,7 @@ mutation uploadVehicleImages($keys: [String!]!, $vehicleId: String!) {
 ''';
 
 const String uploadVehicleDocumentsMutation = r'''
-mutation uploadVehicleDocuments($input: [UploadVehicleDocumentsInput!]!, $vehicleId: String!) {
+mutation uploadVehicleDocuments($input: [UploadVehicleDocumentInput!]!, $vehicleId: String!) {
   uploadVehicleDocuments(input: $input, vehicleId: $vehicleId) {
     createdAt
     driverVehicleId
@@ -98,4 +102,3 @@ mutation deleteVehicleDocumentByKey($key: String!, $vehicleId: String!) {
   }
 }
 ''';
-

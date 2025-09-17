@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
@@ -5,6 +7,8 @@ import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button
 import 'package:safe_driving/l10n/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/features/authentication/viewmodels/auth_view_model.dart';
+import 'package:safe_driving/api/graph-ql/client/graphql_client.dart';
+import 'package:safe_driving/api/graph-ql/mutations.dart';
 
 import 'package:confetti/confetti.dart';
 
@@ -18,18 +22,34 @@ class UserWelcomeScreen extends StatefulWidget {
 class _UserWelcomeScreenState extends State<UserWelcomeScreen> {
   late final ConfettiController _confetti;
 
+  Future<String> _createUserQr() async {
+    final client = GraphQLClientWrapper.instance;
+    final resp = await client.executeMutation(
+      document: createUserQrMutation,
+      variables: {'type': 'png'},
+    );
+    final data = resp['createUserQr'];
+    if (data is String && data.isNotEmpty) return data;
+    throw Exception('QR code generation failed');
+  }
+
   String _buildWelcomeTitle(BuildContext context) {
-    String raw = '';
+    String display = '';
     try {
       final auth = Provider.of<AuthViewModel>(context, listen: false);
-      raw = (auth.currentUser?.fullName ?? auth.currentUser?.email ?? '')
-          .trim();
+      final user = auth.currentUser;
+      final first = (user?.firstName ?? '').trim();
+      if (first.isNotEmpty) {
+        display = first;
+      } else {
+        display = (user?.fullName ?? user?.email ?? '').trim();
+      }
     } catch (_) {
-      raw = '';
+      display = '';
     }
     final base = context.l10n.driverCompleteTitle;
-    if (raw.isEmpty) return base.trim();
-    return '$base$raw';
+    if (display.isEmpty) return base.trim();
+    return '$base$display';
   }
 
   @override
@@ -82,28 +102,116 @@ class _UserWelcomeScreenState extends State<UserWelcomeScreen> {
                       ).copyWith(fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 16),
-                    Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: AppColors.inputTextBackground
-                            .adapt(context)
-                            .withAlpha(100),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.fillButtonBackground
-                              .adapt(context)
-                              .withAlpha(100),
-                          width: 2,
-                        ),
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.qr_code,
-                          size: 80,
-                          color: AppColors.fillButtonBackground.adapt(context),
-                        ),
-                      ),
+
+                    FutureBuilder<String>(
+                      future: _createUserQr(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container(
+                            width: 150,
+                            height: 150,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: AppColors.inputTextBackground
+                                  .adapt(context)
+                                  .withAlpha(100),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: AppColors.fillButtonBackground
+                                    .adapt(context)
+                                    .withAlpha(100),
+                                width: 2,
+                              ),
+                            ),
+                            child: const SizedBox(
+                              width: 28,
+                              height: 28,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.2,
+                              ),
+                            ),
+                          );
+                        }
+
+                        if (snapshot.hasError || !(snapshot.hasData)) {
+                          return Container(
+                            width: 150,
+                            height: 150,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: AppColors.inputTextBackground
+                                  .adapt(context)
+                                  .withAlpha(100),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: AppColors.fillButtonBackground
+                                    .adapt(context)
+                                    .withAlpha(100),
+                                width: 2,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.qr_code_2,
+                              size: 80,
+                              color: AppColors.fillButtonBackground.adapt(
+                                context,
+                              ),
+                            ),
+                          );
+                        }
+
+                        Uint8List? decodeDataUrl(String dataUrl) {
+                          const prefix = 'data:image/png;base64,';
+                          if (dataUrl.startsWith(prefix)) {
+                            final b64 = dataUrl.substring(prefix.length);
+                            try {
+                              return base64Decode(b64);
+                            } catch (_) {
+                              return null;
+                            }
+                          }
+                          return null;
+                        }
+
+                        final qrData = snapshot.data!;
+                        final bytes = decodeDataUrl(qrData);
+
+                        return Container(
+                          width: 150,
+                          height: 150,
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.inputTextBackground
+                                .adapt(context)
+                                .withAlpha(100),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: AppColors.fillButtonBackground
+                                  .adapt(context)
+                                  .withAlpha(100),
+                              width: 2,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: bytes != null
+                                ? Image.memory(
+                                    bytes,
+                                    width: 134,
+                                    height: 134,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Icon(
+                                    Icons.qr_code_2,
+                                    size: 80,
+                                    color: AppColors.fillButtonBackground.adapt(
+                                      context,
+                                    ),
+                                  ),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 16),
                     Text(

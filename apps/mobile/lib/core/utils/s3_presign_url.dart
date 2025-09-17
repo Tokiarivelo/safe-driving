@@ -13,16 +13,6 @@ class PresignedUrlUtil {
       return url;
     }
 
-
-    if (kIsWeb) {
-   
-      if (uri.host == '10.0.2.2') {
-        final adjusted = uri.replace(host: 'localhost', port: uri.port == 0 ? 4566 : uri.port);
-        return adjusted.toString();
-      }
-      return url;
-    }
-
     const localHosts = {
       'localhost',
       '127.0.0.1',
@@ -46,17 +36,25 @@ class PresignedUrlUtil {
     if (hostOverride != null && hostOverride.trim().isNotEmpty) {
       newHost = hostOverride.trim();
     } else {
-      if (defaultTargetPlatform == TargetPlatform.android) {
-        newHost = '10.0.2.2';
-      } else {
+      if (kIsWeb) {
         newHost = 'localhost';
+      } else if (defaultTargetPlatform == TargetPlatform.android) {
+        newHost = '10.0.2.2'; // Android emulator host alias
+      } else {
+        newHost = 'localhost'; // iOS simulator or desktop Flutter
       }
     }
 
     if (portOverride != null && portOverride.trim().isNotEmpty) {
-      newPort = int.tryParse(portOverride.trim()) ?? (uri.port == 0 ? 4566 : uri.port);
+      newPort =
+          int.tryParse(portOverride.trim()) ??
+          (uri.port == 0 ? 4566 : uri.port);
     } else {
       newPort = uri.port == 0 ? 4566 : uri.port;
+    }
+
+    if (kIsWeb && uri.host == '10.0.2.2') {
+      newHost = 'localhost';
     }
 
     final adjusted = uri.replace(host: newHost, port: newPort);
