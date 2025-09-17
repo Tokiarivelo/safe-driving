@@ -307,7 +307,7 @@ class DriverService implements IDriverService {
             try {
               await _repository.createUpload(
                 userId: userId,
-                documentType: backendType,
+                documentType: useVehicleFlow ? mappedVehicleDocType : mappedUserType,
                 key: uploadedKeys[i],
                 url: putUrls[i],
                 size: sizes[i],
@@ -431,7 +431,7 @@ class DriverService implements IDriverService {
           try {
             await _repository.createUpload(
               userId: userId,
-              documentType: backendType,
+              documentType: useVehicleFlow ? mappedVehicleDocType : mappedUserType,
               key: uploadedKeys[i],
               url: urls[i],
               size: sizes[i],

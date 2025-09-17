@@ -299,6 +299,34 @@ class DriverDataSourceLocal implements IDriverDataSource {
   }
 
   @override
+  Future<List<Map<String, dynamic>>> uploadVehicleImages({
+    required String vehicleId,
+    required List<String> keys,
+  }) async {
+    final imgs =
+        (_store['vehicle_images'] as List<Map<String, dynamic>>?) ?? [];
+    for (final k in keys) {
+      imgs.add({'vehicleId': vehicleId, 'key': k});
+    }
+    _store['vehicle_images'] = imgs;
+    return imgs;
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> uploadVehicleDocuments({
+    required String vehicleId,
+    required List<Map<String, dynamic>> input,
+  }) async {
+    final docs =
+        (_store['vehicle_documents'] as List<Map<String, dynamic>>?) ?? [];
+    for (final d in input) {
+      docs.add({'vehicleId': vehicleId, ...d});
+    }
+    _store['vehicle_documents'] = docs;
+    return docs;
+  }
+
+  @override
   Future<String> generateDriverQrCode({String? type}) async {
     final t = type ?? 'driver';
     _store['qr_type'] = t;

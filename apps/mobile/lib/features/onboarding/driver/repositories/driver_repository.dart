@@ -45,7 +45,7 @@ class DriverRepository implements RepositoryInterface {
     }
   }
 
-  Future<void> saveVehicleInfo({
+  Future<Map<String, dynamic>> saveVehicleInfo({
     required String userId,
     required String marque,
     required String modele,
@@ -54,7 +54,7 @@ class DriverRepository implements RepositoryInterface {
     String? typeVehicule,
   }) async {
     try {
-      await _dataSource.saveVehicleInfo(
+      return await _dataSource.saveVehicleInfo(
         userId: userId,
         marque: marque,
         modele: modele,
