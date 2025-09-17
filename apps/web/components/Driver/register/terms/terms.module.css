@@ -1,0 +1,9 @@
+@reference '../../../../app/global.css';
+
+/* Conteneur principal aligné sur welcome */
+.textContainer { @apply w-full max-w-2xl mx-auto text-center mb-8 sm:mb-10; }
+.title { @apply text-lg font-semibold text-auth-color-text-custom-magenta mb-2 sm:mb-10 sm:text-xl md:text-2xl; }
+.subtitle { @apply text-[12px] sm:text-base text-auth-color-placeholder leading-relaxed; }
+
+.buttonPrimary { @apply px-12 py-[6px] bg-auth-color-button text-auth-color-bg-white rounded-md hover:bg-auth-hover sm:w-full lg:w-42; }
+.sidebar { width: 20rem; background: var(--auth-background); border-top-right-radius: .75rem; border-bottom-right-radius: .75rem; padding: 1rem; color: var(--color-auth-text-light); background-color: var(--color-auth-dark-card); border-left: 1px solid var(--color-auth-dark-border); }

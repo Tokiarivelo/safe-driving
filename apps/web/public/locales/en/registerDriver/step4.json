@@ -1,0 +1,30 @@
+{
+  "title": "Tell us more about your vehicle",
+  "subtitle": "To better identify you and ensure the safety of your passengers, please provide your car's details.",
+  "form": {
+    "brand": {
+      "label": "Brand",
+      "placeholder": "e.g., Peugeot"
+    },
+    "model": {
+      "label": "Model",
+      "placeholder": "e.g., 404"
+    },
+    "plate": {
+      "label": "License plate number",
+      "placeholder": "e.g., AB-123-CD"
+    },
+    "seats": {
+      "label": "Number of seats",
+      "placeholder": "e.g., 4"
+    },
+    "type": {
+      "label": "Vehicle type",
+      "placeholder": "e.g., Car"
+    }
+  },
+  "buttons": {
+    "later": "Later",
+    "validate": "Submit"
+  }
+}

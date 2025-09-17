@@ -1,0 +1,12 @@
+{
+  "title": "Stay informed",
+  "subtitle": "Choose how you would like to be notified about new tasks: push or email.",
+  "notifications": {
+    "push": "Mobile push notification",
+    "email": "Email"
+  },
+  "buttons": {
+    "later": "Later",
+    "validate": "Submit"
+  }
+}

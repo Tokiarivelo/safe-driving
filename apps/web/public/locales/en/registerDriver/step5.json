@@ -1,0 +1,30 @@
+{
+  "title": "About your vehicle",
+  "subtitle": "Add your registration certificate, your insurance certificate, and some photos of the vehicle.",
+  "sections": {
+    "registration": "Registration Certificate",
+    "insurance": "Insurance Certificate",
+    "photos": "Vehicle Photos"
+  },
+  "documents": {
+    "registration": {
+      "upload_text": "Drag a file to upload",
+      "button": "Choose a file",
+      "add_more": "Add more photos"
+    },
+    "insurance": {
+      "upload_text": "Drag a file to upload",
+      "button": "Choose a file",
+      "add_more": "Add more photos"
+    },
+    "photos": {
+      "upload_text": "Drag a file to upload",
+      "button": "Choose a file",
+      "add_more": "Add more photos"
+    }
+  },
+  "buttons": {
+    "later": "Later",
+    "validate": "Submit"
+  }
+}

@@ -12,6 +12,7 @@ import {
 import { VehicleService } from './vehicle.service';
 import {
   CreateDriverVehicleInput,
+  UpdateDriverVehicleInput,
   UploadVehicleDocumentsInput,
 } from 'src/dtos/vehicle/vehicle.input';
 
@@ -36,7 +37,7 @@ export class DriverVehicleResolver {
   async updateDriverVehicle(
     @CurrentUser() user: User,
     @Args('vehicleId') vehicleId: string,
-    @Args('input') input: CreateDriverVehicleInput,
+    @Args('input') input: UpdateDriverVehicleInput,
   ): Promise<DriverVehicle> {
     return this.vehicleService.updateDriverVehicle(user.id, vehicleId, input);
   }

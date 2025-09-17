@@ -1,0 +1,15 @@
+@reference '../../../../app/global.css';
+
+/* Conteneur principal aligné sur welcome */
+.contentContainer { @apply w-full text-center md:px-10 md:mt-2; }
+.textContainer { @apply w-full max-w-2xl mx-auto text-center mb-8 sm:mb-10; }
+.title { @apply text-lg font-semibold text-auth-color-text-custom-magenta mb-2 sm:mb-10 sm:text-xl md:text-2xl; }
+.subtitle { @apply text-[12px] sm:text-base text-auth-color-placeholder leading-relaxed; }
+
+/* Cartes de récapitulatif */
+.card { @apply space-y-2 max-w-3xl mx-auto; }
+.cardHeader { @apply flex justify-between items-center; }
+.cardTitle { @apply text-lg font-semibold; }
+
+/* Bouton principal */
+.buttonPrimary { @apply px-12 py-[6px] bg-auth-color-button text-auth-color-bg-white rounded-md hover:bg-auth-hover; }

@@ -1,0 +1,12 @@
+{
+      "title": "Partagez votre position",
+      "subtitle": "Autorisez la géolocalisation pour recevoir les demandes de course à proximité.",
+      "options": {
+        "later": "Plus tard",
+        "enable": "Activer"
+      },
+      "buttons":{
+        "later" :"Plus tard",
+        "validate": "valider"
+      }
+}  

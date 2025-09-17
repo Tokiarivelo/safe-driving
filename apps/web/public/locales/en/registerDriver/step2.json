@@ -1,0 +1,22 @@
+{
+  "title": "A few details about you",
+  "subtitle": "Enter your contact information so we can reach you and verify your identity",
+  "form": {
+    "name": {
+      "label": "Full name",
+      "placeholder": "John Doe"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "example@email.com"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "+261..."
+    }
+  },
+  "buttons": {
+    "later": "Later",
+    "validate": "Submit"
+  }
+}

@@ -1,0 +1,20 @@
+@reference '../../../../app/global.css';
+
+.auth_bjr3 {
+  @apply w-full h-20 text-center sm:h-50 md:px-10 md:mt-2;
+}
+.auth_bjr4 {
+  @apply text-lg font-semibold text-auth-color-text-custom-magenta mb-2  sm:mb-10 sm:text-xl md:text-2xl;
+}
+.auth_bjr5 {
+  @apply text-[12px] sm:text-base text-auth-color-placeholder leading-relaxed;
+}
+.auth_bjr6 {
+  @apply w-full h-10 sm:h-15 space-x-4 flex items-center justify-center sm:block sm:space-y-4 sm:px-2  md:px-15 lg:flex lg:space-x-25 lg:items-center lg:px-10 lg:align-top;
+}
+.auth_bjr7 {
+  @apply px-12 py-[6px] sm:w-[300px] rounded-md border-1 text-auth-color-button border-auth-color-button transition-all duration-200 hover:bg-auth-hover md:w-[292px] hover:text-auth-color-bg-white lg:w-42 lg:mt-3;
+}
+.auth_bjr8 {
+  @apply px-12 py-[6px] bg-auth-color-button text-auth-color-bg-white rounded-md hover:bg-auth-hover sm:w-full lg:w-42;
+}

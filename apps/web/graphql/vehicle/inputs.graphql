@@ -1,0 +1,27 @@
+input CreateDriverVehicleInput {
+  brand: String!
+  model: String!
+  registrationNumber: String!
+  place: Int!
+  vehicleTypeId: String!
+  uploadDocuments: [UploadFileInput!]
+  uploadImages: [UploadFileInput!]
+}
+
+input UpdateDriverVehicleInput {
+  brand: String
+  model: String
+  registrationNumber: String
+  place: Int
+  vehicleTypeId: String
+  uploadDocuments: [UploadFileInput!]
+  uploadImages: [UploadFileInput!]
+  deleteImagesByKeys: [String!]
+  deleteDocumentsByKeys: [String!]
+}
+
+input UploadFileInput {
+  key: String!
+  originalName: String!
+  contentType: String!
+}

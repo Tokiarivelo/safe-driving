@@ -1,0 +1,30 @@
+{
+      "title": "À propos de votre véhicule",
+      "subtitle": "Ajoutez votre certificat d'immatriculation, votre attestation d'assurance et quelques photos du véhicule.",
+      "sections": {
+        "registration": "Certificat d'immatriculation",
+        "insurance": "Attestation d'assurance", 
+        "photos": "Photos du véhicule"
+      },
+      "documents": {
+        "registration": {
+          "upload_text": "Glissez un fichier pour le téléverser",
+          "button": "Choisir un fichier",
+          "add_more": "Ajouter plus de photos"
+        },
+        "insurance": {
+          "upload_text": "Glissez un fichier pour le téléverser",
+          "button": "Choisir un fichier",
+          "add_more": "Ajouter plus de photos"
+        },
+        "photos": {
+          "upload_text": "Glissez un fichier pour le téléverser",
+          "button": "Choisir un fichier",
+          "add_more": "Ajouter plus de photos"
+        }
+      },
+      "buttons": {
+        "later": "Plus tard",
+        "validate": "Valider"
+      }
+}  

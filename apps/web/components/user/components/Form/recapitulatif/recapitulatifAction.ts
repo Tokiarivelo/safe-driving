@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import {
   useUpsertUserPreferenceMutation,
   useCreateVehicleTypeMutation,
-  useCreateUserQrMutation,
+  useCreateUserQrsMutation,
 } from '@/graphql/generated/graphql';
 import { useRouter } from 'next/navigation';
 import { ClientSchemaType, ClientSchema } from './recapitulatuf.schema';
@@ -73,7 +73,7 @@ export const usepreference = () => {
   const [createVehicleTypeMutation, { loading: vehicleLoading }] = 
     useCreateVehicleTypeMutation();
   const [createUserQrMutation, { loading: qrLoading }] = 
-    useCreateUserQrMutation();
+  useCreateUserQrsMutation();
   const [errors, setErrors] = useState<any>(null);
   const router = useRouter();
 

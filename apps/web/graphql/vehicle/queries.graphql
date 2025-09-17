@@ -1,0 +1,12 @@
+query getVehicleTypes {
+  vehicleTypes {
+    ...vehicleTypeFragment
+  }
+}
+
+query getVehicles {
+  vehicles {
+    ...driverVehicleFragment
+  }
+}
+

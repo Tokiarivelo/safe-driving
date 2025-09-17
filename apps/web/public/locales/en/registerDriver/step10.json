@@ -1,0 +1,9 @@
+{
+  "title": "One last step before starting",
+  "subtitle": "Please read and accept our Terms of Use and Privacy Policy.",
+  "terms": {
+    "cgu": "I accept the Terms of Use",
+    "privacy": "I accept the Privacy Policy"
+  },
+  "button": "Submit"
+}

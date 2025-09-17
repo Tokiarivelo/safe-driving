@@ -1,0 +1,23 @@
+{
+  "title": "Everything is ready!",
+  "subtitle": "Check your information and choices before submitting. You can always go back and change your preferences later.",
+  "summary": {
+    "personal_info": {
+      "title": "Personal Information",
+      "items": ["Name", "Email", "Phone", "Uploaded photos"]
+    },
+    "vehicle": {
+      "title": "Vehicle",
+      "items": ["Type", "Brand", "Model", "License plate", "Number of seats", "Uploaded photos"]
+    },
+    "gps_notifications": {
+      "title": "GPS & Notifications",
+      "items": ["GPS", "Notifications"]
+    },
+    "preferences": {
+      "title": "Preferences",
+      "items": ["Theme", "Language"]
+    }
+  },
+  "button": "Submit"
+}

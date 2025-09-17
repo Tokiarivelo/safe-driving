@@ -1,0 +1,12 @@
+{
+  "title": "Share your location",
+  "subtitle": "Allow geolocation to receive nearby ride requests.",
+  "options": {
+    "later": "Later",
+    "enable": "Enable"
+  },
+  "buttons": {
+    "later": "Later",
+    "validate": "Submit"
+  }
+}

@@ -29,3 +29,8 @@ query users(
     ...userFragment
   }
 }
+query UserByToken($token: String!) {
+  userByToken(token: $token) {
+    ...userFragment
+  }
+}

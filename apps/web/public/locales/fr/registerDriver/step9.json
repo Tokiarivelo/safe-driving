@@ -1,0 +1,16 @@
+{
+  "title": "Personnalisez votre expérience",
+  "subtitle": "Réglez votre thème (clair/sombre) et choisissez la langue de l'application.",
+   "theme": {
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "language": {
+    "french": "🇫🇷 Français",
+    "english": "🇺🇸 English"
+  },
+  "buttons": {
+    "later": "Plus tard",
+    "validate": "Valider"
+  }
+}

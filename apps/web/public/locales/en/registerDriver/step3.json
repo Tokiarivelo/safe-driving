@@ -1,0 +1,26 @@
+{
+  "title": "Identity Verification",
+  "subtitle": "Upload your driver's license and ID card to ensure a quick and reliable registration.",
+  "id_card": {
+    "front": {
+      "title": "ID Card",
+      "subtitle": "Front",
+      "upload_text": "Drag a file to upload",
+      "button": "Choose a file"
+    },
+    "back": {
+      "subtitle": "Back",
+      "upload_text": "Drag a file to upload",
+      "button": "Choose a file"
+    },
+    "license": {
+      "title": "Driver's License",
+      "upload_text": "Drag a file to upload",
+      "button": "Choose a file"
+    }
+  },
+  "buttons": {
+    "later": "Later",
+    "validate": "Submit"
+  }
+}

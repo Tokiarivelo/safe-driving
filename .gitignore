@@ -120,3 +120,7 @@ my-localstack-data
 ors-data/elevation_cache
 ors-data/graphs
 ors-data/pbf
+
+apps/graphql-server/schema.gql
+apps/web/graphql/generated/graphql.ts
+apps/web/graphql.schema.json

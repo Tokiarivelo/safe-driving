@@ -1,0 +1,4 @@
+1* Mbola tsy lié ilay UserDocument rehefa avy miUpload azy
+2* Rehefa mi-insert DriverVehicule de mety foana ilay izy na mitovy ara de tokony 
+3* Mode dark 
+4* Ilay langue tokony lasan'ny session

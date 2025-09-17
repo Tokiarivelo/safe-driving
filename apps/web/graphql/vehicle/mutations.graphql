@@ -1,0 +1,11 @@
+mutation createDriverVehicle($input: CreateDriverVehicleInput!) {
+  createDriverVehicle(input: $input) {
+    ...driverVehicleFragment
+  }
+}
+
+mutation updateDriverVehicle($vehicleId: String!, $input: UpdateDriverVehicleInput!) {
+  updateDriverVehicle(vehicleId: $vehicleId, input: $input) {
+    id
+  }
+}
