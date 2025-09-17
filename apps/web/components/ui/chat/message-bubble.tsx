@@ -66,7 +66,7 @@ const MessageBubble: React.FC<{
 
   return (
     <div
-      className={`flex ${isOwn ? 'justify-end' : 'justify-start'} mb-4 ${isThread ? 'ml-4 border-l-2 border-gray-200 pl-4' : ''}`}
+      className={`flex  ${isOwn ? 'justify-end' : 'justify-start'} mb-4 ${isThread ? 'ml-4 border-l-2 border-gray-200 pl-4' : ''}`}
     >
       <div className={`max-w-md ${isOwn ? 'order-2' : 'order-1'}`}>
         {!isOwn && (

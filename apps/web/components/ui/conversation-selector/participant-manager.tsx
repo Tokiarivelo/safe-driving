@@ -64,7 +64,7 @@ export function ParticipantManager({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4">
+    <div className="bg-red-500 border border-gray-200 rounded-lg p-4">{/*==================================================*/}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-900">
           Participants ({conversation.participants?.length || 0})

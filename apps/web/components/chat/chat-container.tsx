@@ -1,5 +1,3 @@
-// Dans votre composant parent
-
 import { useMessages } from '@/lib/message/useMessages';
 import { Chat } from '../ui/chat/chat';
 import { ConversationSelectorWithCRUD } from '../ui/conversation-selector';
@@ -76,11 +74,11 @@ export function ChatContainer({
   return (
     <div className="flex h-full">
       {/* User name */}
-      <div className="p-4 border-b bg-white">
+      <div className="p-4 border-b bg-red-500">
         <h3 className="text-lg font-semibold">Bonjour, {userName || 'Utilisateur'}</h3>
       </div>
       {/* Conversation Selector */}
-      <div className="w-80 border-r border-gray-200 bg-gray-50">
+      <div className="w-80 border-r border-gray-200 bg-blue-500">
         <ConversationSelectorWithCRUD
           selectedConversationId={selectedConversationId}
           onConversationSelect={handleConversationSelect}
@@ -92,7 +90,7 @@ export function ChatContainer({
           }}
         />
       </div>
-      <div className="flex-1">
+      <div className="flex-1 bg-amber-700">
         <Chat
           conversation={selectedConversation}
           currentUserId={currentUserId}

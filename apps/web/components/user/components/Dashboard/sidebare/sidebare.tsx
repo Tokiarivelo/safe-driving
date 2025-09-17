@@ -6,6 +6,7 @@ import { Icon } from '@iconify/react';
 import { usebutton } from './sidebareAction';
 import { useMeQuery } from '@/graphql/generated/graphql';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import Link from 'next/link';
 function sidebare() {
   const {
     datahome,
@@ -41,7 +42,7 @@ function sidebare() {
   });
   function stringToColor(str: string) {
     let hash = 0;
-    for (let i = 0; i < str.length; i++) {
+    for (let i = 0; i < str.length; i++) {  
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
     const color = `hsl(${hash % 360}, 70%, 50%)`;

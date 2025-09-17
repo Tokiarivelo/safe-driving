@@ -168,7 +168,7 @@ function MpMessage() {
                 <div className="flex-shrink-0">
                   <div
                     className={`w-5 h-5 rounded-full flex items-center justify-center text-white text-sm font-medium ${
-                      message.isUser ? 'bg-gray-500' : 'bg-blue-500'
+                      message.isUser ? 'bg-blue-500' : 'bg-gray-500'
                     }`}
                   >
                     <User size={14} />
@@ -186,8 +186,8 @@ function MpMessage() {
                     onClick={() => handleMessageClick(message.id)}
                     className={`px-4 py-3 rounded-2xl text-sm cursor-pointer transition-all hover:shadow-md ${
                       message.isUser
-                        ? 'bg-gray-200 text-gray-800 rounded-br-md'
-                        : 'bg-blue-500 text-white rounded-bl-md'
+                        ? 'bg-blue-500 text-white rounded-br-md'
+                        : 'bg-gray-200 text-gray-800 rounded-bl-md'
                     }`}
                   >
                     {message.content}
@@ -195,14 +195,14 @@ function MpMessage() {
                   <div className="text-xs text-gray-400 mt-1 px-1 flex items-center gap-1">
                     {message.timestamp}
                     {message.clicked && (
-                      <div className="flex items-center gap-1 text-blue-500 font-medium">
+                      <div className="flex items-center gap-1 text-pink-500 font-medium">
                         <span>: now</span>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <div className="cursor-pointer space-y-0.5">
-                              <div className="w-[3px] h-[3px] bg-blue-500 rounded-full"></div>
-                              <div className="w-[3px] h-[3px] bg-blue-500 rounded-full"></div>
-                              <div className="w-[3px] h-[3px] bg-blue-500 rounded-full"></div>
+                              <div className="w-[3px] h-[3px] bg-pink-500 rounded-full"></div>
+                              <div className="w-[3px] h-[3px] bg-pink-500 rounded-full"></div>
+                              <div className="w-[3px] h-[3px] bg-pink-500 rounded-full"></div>
                             </div>
                           </DropdownMenuTrigger>
 
@@ -236,7 +236,6 @@ function MpMessage() {
         ))}
         <div ref={messagesEndRef} />
       </div>
-
       {/* Input Container */}
       <div className="border-t-2 border-[#E5E7EB] p-4">
         <div className="border-2 border-[#E5E7EB] rounded-sm">

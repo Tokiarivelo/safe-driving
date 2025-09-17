@@ -15,13 +15,13 @@ export default function Poc() {
 
   return (
     <div className="flex w-full min-h-screen overflow-hidden relative">
-      <header className="mb-8">
+      <header className="mb-8 bg-amber-300">
         <LanguageSwitcher />
         <LogoutButton />
       </header>
 
-      <div className="flex flex-col items-center justify-center w-full p-4">
-        <div className="inset-0 z-0">{t('title')}</div>
+      <div className="flex flex-col items-center justify-center w-full p-4 bg-green-400">
+        <div className="inset-0 z-0 bg-violet-700-400">{t('title')}</div>
         <UploadComponent />
         <ChatContainer />
       </div>

@@ -191,7 +191,7 @@ function dashboard() {
             <div className="w-full p-5 sm:p-0 h-[100px] flex justify-between items-center sm:h-[150px] sm:w-[600px] md:w-[700px] md:h-[183px] lg:w-[800px]">
               <Link href="/user/form/name/bjr">
                 <div className="w-20 h-20 sm:border-2 sm:border-l-[#c02aa8] sm:border-b-[#c02aa8] sm:border-r-[#fe7f78] sm:border-t-[#ee6984] overflow-hidden rounded-md sm:w-32 sm:h-32 md:w-40 md:h-40">
-                  <div className="md:w-39 h-10 mt-12 w-20 text-auth-color-placeholder text-[12px] absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
+                  <div className="md:w-39 h-10 mt-12 w-20 text-center text-auth-color-placeholder text-[12px] absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
                     Rechercher
                   </div>
                   <div className="w-full h-13 md:h-40 flex items-center justify-center sm:h-32">
@@ -206,9 +206,9 @@ function dashboard() {
                   </div>
                 </div>
               </Link>
-              <Link href="/user/form/name/bjr">
+              <Link href="/user/dashboard/messages">
                 <div className="w-20 h-20 auth-border rounded-md overflow-hidden sm:w-32 sm:h-32 md:w-40 md:h-40">
-                  <div className="md:w-39 h-10 w-20 mt-12 text-auth-color-placeholder text-[12px] absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31 text-center  sm:text-[16px] flex justify-center">
+                  <div className="md:w-39 h-10 w-20 text-center mt-12 text-auth-color-placeholder text-[12px] absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31 text-center  sm:text-[16px] flex justify-center">
                     Messages
                   </div>
                   <div className="w-full h-13 md:h-40 flex items-center justify-center sm:h-32">
@@ -221,7 +221,7 @@ function dashboard() {
               </Link>
               <Link href="/user/form/name/bjr">
                 <div className="w-20 h-20 auth-border overflow-hidden rounded-md sm:w-32 sm:h-32 md:w-40 md:h-40">
-                  <div className="md:w-39 h-10 mt-12 w-20 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
+                  <div className="md:w-39 h-10 mt-12 w-20 text-center text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
                     Mes Courses
                   </div>
                   <div className="w-full h-13 md:h-40 flex items-center justify-center sm:h-32">
@@ -231,7 +231,7 @@ function dashboard() {
               </Link>
               <Link href="/user/form/name/bjr">
                 <div className="w-20 h-20 auth-border overflow-hidden rounded-md sm:w-32 sm:h-32 md:w-40 md:h-40">
-                  <div className="md:w-39 h-10 mt-12 w-20 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
+                  <div className="md:w-39 h-10 mt-12 w-20 text-center text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
                     Scanner Qr Code
                   </div>
                   <div className="w-full h-13 md:h-40 flex items-center justify-center sm:h-32">
@@ -250,7 +250,7 @@ function dashboard() {
             <div className="w-full  p-5 sm:p-0 h-[100px] flex justify-between items-center sm:h-[150px] sm:w-[600px] md:w-[700px] md:h-[183px] lg:w-[800px]">
               <Link href="/user/form/name/bjr">
                 <div className=" w-20 h-20 auth-border overflow-hidden rounded-md sm:w-32 sm:h-32 md:w-40 md:h-40">
-                  <div className="md:w-39 h-10 mt-12 w-20 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
+                  <div className="md:w-39 h-10 mt-12 w-20 text-center text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
                     Notification
                   </div>
                   <div className="w-full h-13 md:h-40 flex items-center justify-center sm:h-32">
@@ -267,7 +267,7 @@ function dashboard() {
               </Link>
               <Link href="/user/form/name/bjr">
                 <div className=" w-20 h-20 auth-border overflow-hidden rounded-md sm:w-32 sm:h-32 md:w-40 md:h-40">
-                  <div className="md:w-39 h-10 mt-12 w-20 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
+                  <div className="md:w-39 h-10 mt-12 w-20 text-[12px] text-center text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
                     Trajet en cours
                   </div>
                   <div className="w-full h-13 md:h-40 flex items-center justify-center sm:h-32">
@@ -277,7 +277,7 @@ function dashboard() {
               </Link>
               <Link href="/user/form/name/bjr">
                 <div className=" w-20 h-20 auth-border overflow-hidden rounded-md sm:w-32 sm:h-32 md:w-40 md:h-40">
-                  <div className="md:w-39 h-10 mt-12 w-20 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
+                  <div className="md:w-39 h-10 mt-12 w-20 text-center text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
                     Profil
                   </div>
                   <div className="w-full h-13 md:h-40 flex items-center justify-center sm:h-32">
@@ -289,7 +289,7 @@ function dashboard() {
               </Link>
               <Link href="/user/form/name/bjr">
                 <div className=" w-20 h-20 auth-border overflow-hidden rounded-md sm:w-32 sm:h-32 md:w-40 md:h-40">
-                  <div className="md:w-39 h-10 mt-12 w-20 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-  sm:text-[16px] flex justify-center">
+                  <div className="md:w-39 h-10 mt-12 w-20 text-center text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-  sm:text-[16px] flex justify-center">
                     Offres Promations
                   </div>
                   <div className="w-full h-13 md:h-40 flex items-center justify-center sm:h-32">
@@ -301,7 +301,7 @@ function dashboard() {
             <div className="w-full h-[100px] p-5 sm:p-0 flex justify-between items-center sm:h-[150px] sm:w-[600px] md:w-[700px] md:h-[183px] lg:w-[800px]">
               <Link href="/user/form/name/bjr">
                 <div className=" w-20 h-20 auth-border overflow-hidden rounded-md sm:w-32 sm:h-32 md:w-40 md:h-40">
-                  <div className="md:w-39 h-10 mt-12 w-20 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
+                  <div className="md:w-39 h-10 mt-12 w-20 text-center text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
                     Parametre
                   </div>
                   <div className="w-full h-13 md:h-40 flex items-center justify-center sm:h-32">
@@ -311,7 +311,7 @@ function dashboard() {
               </Link>
               <Link href="/user/form/name/bjr">
                 <div className=" w-20 h-20 auth-border overflow-hidden rounded-md sm:w-32 sm:h-32 md:w-40 md:h-40">
-                  <div className="md:w-39 h-10 mt-12 w-20 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
+                  <div className="md:w-39 h-10 mt-12 w-20 text-center text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
                     Assistance
                   </div>
                   <div className="w-full h-13 md:h-40 flex items-center justify-center sm:h-32">

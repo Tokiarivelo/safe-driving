@@ -37,7 +37,7 @@ export function ConversationSelector({
 
   return (
     <div
-      className={`bg-white border border-gray-200 rounded-lg shadow-sm ${className}`}
+      className={`bg-red-800 border border-gray-200 rounded-lg shadow-sm ${className}`}
       style={style}
     >
       {/* Header */}

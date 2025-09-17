@@ -22,7 +22,7 @@ export default function TypingIndicator({
   }
 
   return (
-    <div className="text-sm text-gray-500 flex items-center gap-2">
+    <div className="text-sm text-gray-500 flex items-center gap-2 bg-amber-800">
       <span>{text}</span>
       {/* petits points animés */}
       <span className={styles['typing-dots']} aria-hidden>
