@@ -117,34 +117,6 @@ class DriverRepository implements RepositoryInterface {
     }
   }
 
-  Future<List<Map<String, dynamic>>> createBatchPresignedUrls({
-    required String type,
-    required List<Map<String, String>> files,
-  }) async {
-    try {
-      return await _dataSource.createBatchPresignedUrls(
-        type: type,
-        files: files,
-      );
-    } catch (e) {
-      throw Exception('Failed to create batch presigned urls: $e');
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> completeUploadBulk({
-    required List<String> keys,
-    required String type,
-  }) async {
-    try {
-      return await _dataSource.completeUploadBulk(
-        keys: keys,
-        type: type,
-      );
-    } catch (e) {
-      throw Exception('Failed to complete upload bulk: $e');
-    }
-  }
-
   Future<Map<String, dynamic>> createUpload({
     required String userId,
     required String documentType,
@@ -170,38 +142,6 @@ class DriverRepository implements RepositoryInterface {
       );
     } catch (e) {
       throw Exception('Failed to create upload: $e');
-    }
-  }
-
-  Future<Map<String, dynamic>> uploadUserDocuments({
-    required List<Map<String, dynamic>> input,
-  }) async {
-    try {
-      return await _dataSource.uploadUserDocuments(input: input);
-    } catch (e) {
-      throw Exception('Failed to attach user documents: $e');
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> uploadVehicleImages({
-    required String vehicleId,
-    required List<String> keys,
-  }) async {
-    try {
-      return await _dataSource.uploadVehicleImages(vehicleId: vehicleId, keys: keys);
-    } catch (e) {
-      throw Exception('Failed to attach vehicle images: $e');
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> uploadVehicleDocuments({
-    required String vehicleId,
-    required List<Map<String, dynamic>> input,
-  }) async {
-    try {
-      return await _dataSource.uploadVehicleDocuments(vehicleId: vehicleId, input: input);
-    } catch (e) {
-      throw Exception('Failed to attach vehicle documents: $e');
     }
   }
 

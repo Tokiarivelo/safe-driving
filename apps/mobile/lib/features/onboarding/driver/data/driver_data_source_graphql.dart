@@ -20,22 +20,22 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     final parts = name.trim().split(' ');
     final firstName = parts.isNotEmpty ? parts.first : '';
     final lastName = parts.length > 1 ? parts.sublist(1).join(' ').trim() : '';
-
-    // Conform to server: UserUpdateInput requires StringFieldUpdateOperationsInput wrappers
     final variables = {
       'input': {
-        'firstName': { 'set': firstName },
-        'lastName': { 'set': lastName },
-        'email': { 'set': email },
-        // Align with current GraphQL schema: use 'phone'
-        'phone': { 'set': phone },
+        'id': userId,
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'phoneNumber': phone,
       },
     };
 
     final response = await _client.executeMutation(
       document: updateUserMutation,
+      document: updateUserMutation,
       variables: variables,
     );
+    return response['updateUser'];
     return response['updateUser'];
   }
 
@@ -73,12 +73,15 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
       } catch (_) {}
     }
 
-    if ((vehicleTypeId == null || vehicleTypeId.isEmpty) && 
-        vehicleTypes != null && vehicleTypes.isNotEmpty) {
+    if ((vehicleTypeId == null || vehicleTypeId.isEmpty) &&
+        vehicleTypes != null &&
+        vehicleTypes.isNotEmpty) {
       for (final t in vehicleTypes) {
         if (t is Map && t['id'] != null) {
           vehicleTypeId = t['id'].toString();
-          developer.log('Using default vehicle type: ${t['name']} ($vehicleTypeId)');
+          developer.log(
+            'Using default vehicle type: ${t['name']} ($vehicleTypeId)',
+          );
           break;
         }
       }
@@ -86,15 +89,18 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
 
     final input = <String, dynamic>{
       'brand': marque.isNotEmpty ? marque : 'Non spécifié',
-      'model': modele.isNotEmpty ? modele : 'Non spécifié', 
-      'registrationNumber': immatriculation.isNotEmpty ? immatriculation : 'TEMP-${DateTime.now().millisecondsSinceEpoch}',
+      'model': modele.isNotEmpty ? modele : 'Non spécifié',
+      'registrationNumber': immatriculation.isNotEmpty
+          ? immatriculation
+          : 'TEMP-${DateTime.now().millisecondsSinceEpoch}',
       'place': places ?? 4,
       'vehicleTypeId': vehicleTypeId ?? '',
     };
-    
- 
+
     if (input['vehicleTypeId'].toString().isEmpty) {
-      throw Exception('Impossible de créer le véhicule: aucun type de véhicule disponible');
+      throw Exception(
+        'Impossible de créer le véhicule: aucun type de véhicule disponible',
+      );
     }
 
     final variables = {'input': input};
@@ -108,9 +114,17 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
 
   String _normalizeName(String s) {
     var r = s.toLowerCase();
-    r = r.replaceAll('à', 'a').replaceAll('á', 'a').replaceAll('â', 'a').replaceAll('ä', 'a');
+    r = r
+        .replaceAll('à', 'a')
+        .replaceAll('á', 'a')
+        .replaceAll('â', 'a')
+        .replaceAll('ä', 'a');
     r = r.replaceAll('ç', 'c');
-    r = r.replaceAll('è', 'e').replaceAll('é', 'e').replaceAll('ê', 'e').replaceAll('ë', 'e');
+    r = r
+        .replaceAll('è', 'e')
+        .replaceAll('é', 'e')
+        .replaceAll('ê', 'e')
+        .replaceAll('ë', 'e');
     r = r.replaceAll('î', 'i').replaceAll('ï', 'i');
     r = r.replaceAll('ô', 'o').replaceAll('ö', 'o');
     r = r.replaceAll('û', 'u').replaceAll('ü', 'u');
@@ -268,7 +282,8 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
       variables: variables,
     );
 
-    final files = response['files'] ?? response['getDriverDocuments'] ?? <dynamic>[];
+    final files =
+        response['files'] ?? response['getDriverDocuments'] ?? <dynamic>[];
     if (files is List) {
       return {'files': files};
     }
@@ -382,44 +397,6 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> createBatchPresignedUrls({
-    required String type,
-    required List<Map<String, String>> files,
-  }) async {
-    final variables = {
-      'type': type,
-      'files': files,
-    };
-    final response = await _client.executeMutation(
-      document: createBatchPresignedUrlsMutation,
-      variables: variables,
-    );
-    final list = response['createBatchPresignedUrls'];
-    if (list is List) {
-      return list.cast<Map<String, dynamic>>();
-    }
-    throw Exception('Failed to create batch presigned urls');
-  }
-
-  @override
-  Future<List<Map<String, dynamic>>> completeUploadBulk({
-    required List<String> keys,
-    required String type,
-  }) async {
-    final variables = {
-      'keys': keys,
-      'type': type,
-    };
-    final response = await _client.executeMutation(
-      document: completeUploadBulkMutation,
-      variables: variables,
-    );
-    final list = response['completeUploadBulk'];
-    if (list is List) return list.cast<Map<String, dynamic>>();
-    throw Exception('Failed to complete upload bulk');
-  }
-
-  @override
   Future<Map<String, dynamic>> createUpload({
     required String userId,
     required String documentType,
@@ -435,14 +412,13 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
       'key': key,
       'url': url,
       'size': size,
-      // Ensure a valid FileType value on backend
-      'type': (driverVehicleId != null && driverVehicleId.isNotEmpty) ? 'VEHICLE' : 'USER',
+      'type': documentType,
       'userId': userId,
     };
     if (originalName != null) input['originalName'] = originalName;
     if (contentType != null) input['contentType'] = contentType;
     if (etag != null) input['etag'] = etag;
-    if (driverVehicleId != null && driverVehicleId.isNotEmpty) input['driverVehicleId'] = driverVehicleId;
+    if (driverVehicleId != null) input['driverVehicleId'] = driverVehicleId;
     final response = await _client.executeMutation(
       document: createFileMutation,
       variables: {'input': input},
@@ -451,63 +427,12 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> uploadUserDocuments({
-    required List<Map<String, dynamic>> input,
-  }) async {
-    final variables = {
-      'input': input,
-    };
-    final response = await _client.executeMutation(
-      document: uploadUserDocumentMutation,
-      variables: variables,
-    );
-    return response['uploadUserDocument'] as Map<String, dynamic>;
-  }
-
-  @override
-  Future<List<Map<String, dynamic>>> uploadVehicleImages({
-    required String vehicleId,
-    required List<String> keys,
-  }) async {
-    final variables = {
-      'vehicleId': vehicleId,
-      'keys': keys,
-    };
-    final response = await _client.executeMutation(
-      document: uploadVehicleImagesMutation,
-      variables: variables,
-    );
-    final list = response['uploadVehicleImages'];
-    if (list is List) return list.cast<Map<String, dynamic>>();
-    throw Exception('Failed to upload vehicle images');
-  }
-
-  @override
-  Future<List<Map<String, dynamic>>> uploadVehicleDocuments({
-    required String vehicleId,
-    required List<Map<String, dynamic>> input,
-  }) async {
-    final variables = {
-      'vehicleId': vehicleId,
-      'input': input,
-    };
-    final response = await _client.executeMutation(
-      document: uploadVehicleDocumentsMutation,
-      variables: variables,
-    );
-    final list = response['uploadVehicleDocuments'];
-    if (list is List) return list.cast<Map<String, dynamic>>();
-    throw Exception('Failed to upload vehicle documents');
-  }
-
-  @override
   Future<String> generateDriverQrCode({String? type}) async {
-    // Utilise la mutation pour créer et stocker un QR unique, puis renvoyer l'image (data URL)
-    final response = await _client.executeMutation(
-      document: createUserQrMutation,
-      variables: {'type': (type == null || type.isEmpty) ? 'png' : type},
+    final response = await _client.executeQuery(
+      document: getUserQrQuery,
+      variables: {'type': type ?? 'driver'},
     );
-    final data = response['createUserQr'];
+    final data = response['getUserQr'];
     if (data is String && data.isNotEmpty) return data;
     throw Exception('Failed to generate driver QR code');
   }
@@ -517,50 +442,20 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     required String userId,
     required Map<String, dynamic> input,
   }) async {
-    final isDriver = input['isDriver'] ?? false;
-    final roleName = isDriver ? 'DRIVER' : 'USER';
-
-
-    // Step 1 — clear existing roles (exclusive assignment)
-    await _client.executeMutation(
-      document: updateUserMutation,
-      variables: {
-        'input': {
-          'Role': {
-            'set': [],
-          },
-        },
-      },
-    );
-
-    // Step 2 — connect or create the desired role
+    final payload = {
+      'input': {'id': userId, ...input},
+    };
     final response = await _client.executeMutation(
       document: updateUserMutation,
-      variables: {
-        'input': {
-          'Role': {
-            'connectOrCreate': [
-              {
-                'where': {'name': roleName},
-                'create': {'name': roleName}
-              }
-            ],
-          },
-        },
-      },
+      variables: payload,
     );
-
-    final updated = response['updateUser'];
-    if (updated is Map<String, dynamic>) {
-      return updated;
-    }
-
-    final msg = (response['message'] ?? 'Failed to update user role').toString();
-    throw Exception('updateDriverStatus failed: $msg');
+    return response['updateUser'] as Map<String, dynamic>;
   }
 
   @override
-  Future<Map<String, dynamic>> upsertUserPreference(Map<String, dynamic> input) async {
+  Future<Map<String, dynamic>> upsertUserPreference(
+    Map<String, dynamic> input,
+  ) async {
     final response = await _client.executeMutation(
       document: upsertUserPreferenceMutation,
       variables: {'input': input},

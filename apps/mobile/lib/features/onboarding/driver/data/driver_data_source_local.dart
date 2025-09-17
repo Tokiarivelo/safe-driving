@@ -76,6 +76,11 @@ class DriverDataSourceLocal implements IDriverDataSource {
       'filePath': filePath,
       'id': 'local_selfie_1',
     };
+    _store['selfie'] = {
+      'userId': userId,
+      'filePath': filePath,
+      'id': 'local_selfie_1',
+    };
     return {
       'success': true,
       'message': 'Stored locally',
@@ -88,6 +93,10 @@ class DriverDataSourceLocal implements IDriverDataSource {
     required String userId,
     required Map<String, bool> preferences,
   }) async {
+    _store['notification_preferences'] = {
+      'userId': userId,
+      'preferences': preferences,
+    };
     _store['notification_preferences'] = {
       'userId': userId,
       'preferences': preferences,
@@ -106,6 +115,11 @@ class DriverDataSourceLocal implements IDriverDataSource {
       'theme': theme,
       'language': language,
     };
+    _store['app_preferences'] = {
+      'userId': userId,
+      'theme': theme,
+      'language': language,
+    };
     return {'success': true, 'message': 'Saved locally'};
   }
 
@@ -117,6 +131,7 @@ class DriverDataSourceLocal implements IDriverDataSource {
 
   @override
   Future<Map<String, dynamic>> getDriverOnboardingData(String userId) async {
+    return {'success': true, 'data': _store};
     return {'success': true, 'data': _store};
   }
 
@@ -130,6 +145,9 @@ class DriverDataSourceLocal implements IDriverDataSource {
   }
 
   @override
+  Future<Map<String, dynamic>> getDocumentValidationStatus(
+    String userId,
+  ) async {
   Future<Map<String, dynamic>> getDocumentValidationStatus(
     String userId,
   ) async {
@@ -184,6 +202,7 @@ class DriverDataSourceLocal implements IDriverDataSource {
     return {
       'success': true,
       'data': {'rides': 0, 'rating': 0},
+      'data': {'rides': 0, 'rating': 0},
     };
   }
 
@@ -211,46 +230,7 @@ class DriverDataSourceLocal implements IDriverDataSource {
       'contentType': contentType,
       'expiresIn': expiresIn,
     };
-    final base = _resolvePresignBaseUrl();
-    return _buildAbsoluteUrl(base, key);
-  }
-
-  @override
-  Future<List<Map<String, dynamic>>> createBatchPresignedUrls({
-    required String type,
-    required List<Map<String, String>> files,
-  }) async {
-    final result = <Map<String, dynamic>>[];
-    int i = 0;
-    final base = _resolvePresignBaseUrl();
-    for (final f in files) {
-      final key =
-          'local/users/USER/$type/${DateTime.now().millisecondsSinceEpoch}_${i}_${f['originalName'] ?? 'file'}';
-      result.add({
-        'key': key,
-        'url': _buildAbsoluteUrl(base, key),
-        'expiresIn': 300,
-      });
-      i++;
-    }
-    return result;
-  }
-
-  @override
-  Future<List<Map<String, dynamic>>> completeUploadBulk({
-    required List<String> keys,
-    required String type,
-  }) async {
-    return keys
-        .map(
-          (k) => {
-            'key': k,
-            'contentType': 'application/octet-stream',
-            'etag': 'local',
-            'size': 0,
-          },
-        )
-        .toList();
+    return 'https://local.presigned.url/$key';
   }
 
   @override
@@ -270,7 +250,7 @@ class DriverDataSourceLocal implements IDriverDataSource {
     final data = {
       'id': id,
       'userId': userId,
-      'type': 'USER',
+      'type': documentType,
       'key': key,
       'url': url,
       'size': size,
@@ -286,55 +266,10 @@ class DriverDataSourceLocal implements IDriverDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> uploadUserDocuments({
-    required List<Map<String, dynamic>> input,
-  }) async {
-    final docs =
-        (_store['user_documents'] as List<Map<String, dynamic>>?) ?? [];
-    for (final d in input) {
-      docs.add(d);
-    }
-    _store['user_documents'] = docs;
-    return {'success': true, 'count': docs.length};
-  }
-
-  @override
-  Future<List<Map<String, dynamic>>> uploadVehicleImages({
-    required String vehicleId,
-    required List<String> keys,
-  }) async {
-    final imgs =
-        (_store['vehicle_images'] as List<Map<String, dynamic>>?) ?? [];
-    for (final k in keys) {
-      imgs.add({'vehicleId': vehicleId, 'key': k});
-    }
-    _store['vehicle_images'] = imgs;
-    return imgs;
-  }
-
-  @override
-  Future<List<Map<String, dynamic>>> uploadVehicleDocuments({
-    required String vehicleId,
-    required List<Map<String, dynamic>> input,
-  }) async {
-    final docs =
-        (_store['vehicle_documents'] as List<Map<String, dynamic>>?) ?? [];
-    for (final d in input) {
-      docs.add({'vehicleId': vehicleId, ...d});
-    }
-    _store['vehicle_documents'] = docs;
-    return docs;
-  }
-
-  @override
   Future<String> generateDriverQrCode({String? type}) async {
     final t = type ?? 'driver';
     _store['qr_type'] = t;
-    // Return a tiny transparent PNG as a data URL to avoid external hardcoded links.
-    // This will render a placeholder image locally; real QR is provided by the GraphQL datasource.
-    const transparentPngBase64 =
-        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
-    return 'data:image/png;base64,$transparentPngBase64';
+    return 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=local-$t-qr';
   }
 
   @override
@@ -352,37 +287,5 @@ class DriverDataSourceLocal implements IDriverDataSource {
   ) async {
     _store['user_preference'] = input;
     return {'id': 'local_pref_1', ...input};
-  }
-
-  // Resolve base URL for presigned upload endpoints from .env, with sensible local defaults.
-  String _resolvePresignBaseUrl() {
-    String? base;
-    try {
-      if (dotenv.isInitialized) {
-        base = dotenv.env['PRESIGNED_BASE_URL']?.trim();
-        base = (base == null || base.isEmpty)
-            ? dotenv.env['LOCALSTACK_ENDPOINT']?.trim()
-            : base;
-        // If host/port provided separately, compose an http URL.
-        if (base == null || base.isEmpty) {
-          final host = (dotenv.env['LOCALSTACK_CLIENT_HOST'] ?? 'localhost')
-              .trim();
-          final portStr = (dotenv.env['LOCALSTACK_CLIENT_PORT'] ?? '').trim();
-          final port = int.tryParse(portStr) ?? 4566;
-          return Uri(scheme: 'http', host: host, port: port).toString();
-        }
-        return base;
-      }
-    } catch (_) {}
-    // Default to localstack on localhost if no env available.
-    return Uri(scheme: 'http', host: 'localhost', port: 4566).toString();
-  }
-
-  String _buildAbsoluteUrl(String base, String key) {
-    // Ensure exactly one slash between base and key.
-    if (base.endsWith('/')) {
-      return '$base$key';
-    }
-    return '$base/$key';
   }
 }

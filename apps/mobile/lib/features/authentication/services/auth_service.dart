@@ -25,6 +25,9 @@ class AuthService {
         final token = result['token'] as String;
         final refresh = result['refreshToken'] as String?;
         await _saveTokens(token, refresh);
+        try {
+          await _sessionService.saveUserId(user.id);
+        } catch (_) {}
         return AuthResult.success(user: user, token: token, refreshToken: refresh);
       }
       return AuthResult.failure(errorMessage: 'Authentification échouée');
