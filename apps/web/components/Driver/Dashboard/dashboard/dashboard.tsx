@@ -15,13 +15,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-// Définition des statuts avec clé, label et couleur
 const statuses = [
   { key: "libre", label: "Disponible", color: "bg-green-400" },
   { key: "occupe", label: "Occupé", color: "bg-yellow-400" },
   { key: "pause", label: "En pause", color: "bg-blue-400" },
   { key: "non_dispo", label: "Non disponible", color: "bg-red-500" },
 ];
+
+const blockClass =
+  "relative w-32 h-32 sm:w-44 sm:h-44 md:w-52 md:h-52 rounded-md overflow-hidden flex flex-col items-center justify-center";
 
 function Dashboard() {
   const [selected, setSelected] = useState("");
@@ -128,193 +130,186 @@ function Dashboard() {
         </div>
 
         {/* Dashboard blocks */}
-        <div className="w-full mt-5 h-[700px] flex justify-center">
+        <div className="w-full mt-5 flex justify-center">
           <div className="w-full sm:w-[700px] md:w-[800px] lg:w-[900px]">
 
             {/* Première ligne */}
-            <div className="w-full p-5 sm:p-0 h-[120px] flex justify-between items-center sm:h-[180px] sm:w-[700px] md:w-[800px] md:h-[220px] lg:w-[900px] mb-8">
-              
-              {/* Bloc Status avec Popover */}
+            <div className="w-full p-5 sm:p-0 flex justify-between items-center mb-5">
+              {/* Bloc Status */}
               <Popover.Root open={open} onOpenChange={setOpen}>
                 <Popover.Trigger asChild>
-                  <div className="w-28 h-28 auth-border overflow-hidden rounded-md sm:w-40 sm:h-40 md:w-48 md:h-48 flex flex-col items-center justify-center cursor-pointer border-2 border-pink-300">
-                    {/* Statut sélectionné */}
+                <div className={`${blockClass} border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984]`}>
                     <div className="flex flex-col items-center justify-center h-full">
                       <div
                         className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${
                           statuses.find((s) => s.key === status)?.color
                         }`}
                       />
-                      <p className="mt-2 text-[10px] sm:text-sm text-auth-color-placeholder font-medium">
-                        {statuses.find((s) => s.key === status)?.label}
-                      </p>
                     </div>
+                    <p className="absolute bottom-2 text-[10px] sm:text-sm text-auth-color-placeholder font-medium">
+                      {statuses.find((s) => s.key === status)?.label}
+                    </p>
                   </div>
                 </Popover.Trigger>
-                
-<Popover.Content
-  className="bg-transparent border-none shadow-none outline-none"
-  align="end"
-  side="bottom"
-  sideOffset={10}
->
-  <div className="flex flex-col items-end gap-3">
-    {statuses
-      .filter((s) => s.key !== status)
-      .map((s) => (
-        <div
-          key={s.key}
-          className={`w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48 
-                      flex flex-col items-center justify-center cursor-pointer 
-                      rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl
-                      bg-white border-2 border-gray-300 hover:border-pink-400`}
-          onClick={() => {
-            setStatus(s.key);
-            setOpen(false);
-          }}
-        >
-          <div
-            className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${s.color} mb-2`}
-          />
-          <p className="text-[10px] sm:text-sm text-center font-medium text-gray-700">
-            {s.label}
-          </p>
-        </div>
-      ))}
-  </div>
-</Popover.Content>
-
+                <Popover.Content
+                  className="bg-white rounded-lg shadow-lg p-5 border border-gray-200 z-50 translate-x-55"
+                  align="start"
+                  side="bottom"
+                  sideOffset={10}
+                >
+                  <div className="flex flex-row gap-6">
+                    {statuses
+                      .filter((s) => s.key !== status)
+                      .map((s) => (
+                        <div
+                          key={s.key}
+                          className="w-32 h-32 sm:w-44 sm:h-44 md:w-52 md:h-52 
+                                    flex flex-col items-center justify-center cursor-pointer 
+                                    rounded-md border-2 border-gray-300 hover:border-pink-400"
+                          onClick={() => {
+                            setStatus(s.key);
+                            setOpen(false);
+                          }}
+                        >
+                          <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${s.color} mb-2`} />
+                          <p className="text-[10px] sm:text-sm md:text-base text-center font-medium text-gray-700">
+                            {s.label}
+                          </p>
+                        </div>
+                      ))}
+                  </div>
+                </Popover.Content>
               </Popover.Root>
 
               {/* Bloc Rechercher */}
               <Link href="/user/form/name/bjr">
-                <div className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48 
-                                overflow-hidden rounded-md 
-                                border-2 border-l-[#c02aa8] border-b-[#c02aa8] 
-                                border-r-[#fe7f78] border-t-[#ee6984]">
-                  <div className="absolute inset-0 flex items-center justify-center">
+                <div className={`${blockClass} border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984]`}>
+                  <div className="flex-1 flex items-center justify-center">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#D4D995] rounded-full flex items-center justify-center">
-                      <Icon
-                        icon="material-symbols:search-rounded"
-                        width="32"
-                        height="32"
-                        className="text-pink-500"
-                      />
+                      <Icon icon="material-symbols:search-rounded" width="32" height="32" className="text-pink-500" />
                     </div>
                   </div>
-                  <div className="absolute bottom-2 inset-x-0 text-center 
-                                  text-auth-color-placeholder 
-                                  text-[10px] sm:text-sm md:text-base font-medium">
+                  <p className="absolute bottom-2 inset-x-0 text-center text-auth-color-placeholder text-[10px] sm:text-sm md:text-base font-medium">
                     Rechercher des Courses
-                  </div>
+                  </p>
                 </div>
               </Link>
 
               {/* Bloc Messages */}
               <Link href="/user/form/name/bjr">
-                <div className="w-28 h-28 auth-border rounded-md overflow-hidden sm:w-40 sm:h-40 md:w-48 md:h-48">
-                  <div className="md:w-47 h-10 w-28 mt-12 text-auth-color-placeholder text-[12px] absolute z-10 md:mt-36 sm:mt-28 sm:h-7 sm:w-39 text-center sm:text-[16px] flex justify-center">
-                    Messages
-                  </div>
-                  <div className="w-full h-16 md:h-48 flex items-center justify-center sm:h-40">
+                <div className={`${blockClass} auth-border`}>
+                  <div className="flex-1 flex items-center justify-center">
                     <Icon icon="streamline-ultimate-color:messages-logo" width="58" height="58" />
                     <div className="w-5 h-5 absolute z-20 bg-red-600 ml-14 mb-14 rounded-full text-white flex justify-center items-center">
                       9
                     </div>
                   </div>
+                  <p className="absolute bottom-2 text-[10px] sm:text-sm md:text-base text-auth-color-placeholder font-medium">
+                    Messages
+                  </p>
                 </div>
               </Link>
 
               {/* Bloc Mes Courses */}
               <Link href="/user/form/name/bjr">
-                <div className="w-28 h-28 auth-border overflow-hidden rounded-md sm:w-40 sm:h-40 md:w-48 md:h-48">
-                  <div className="md:w-47 h-10 mt-12 w-28 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-36 sm:mt-28 sm:h-7 sm:w-39 sm:text-[16px] flex justify-center">
-                    Mes Courses
-                  </div>
-                  <div className="w-full h-16 md:h-48 flex items-center justify-center sm:h-40">
+                <div className={`${blockClass} auth-border`}>
+                  <div className="flex-1 flex items-center justify-center">
                     <Icon icon="streamline-kameleon-color:map" width="58" height="58" />
                   </div>
+                  <p className="absolute bottom-2 text-[10px] sm:text-sm md:text-base text-auth-color-placeholder font-medium">
+                    Mes Courses
+                  </p>
                 </div>
               </Link>
             </div>
 
             {/* Deuxième ligne */}
-            <div className="w-full p-5 sm:p-0 h-[120px] flex justify-between items-center sm:h-[180px] sm:w-[700px] md:w-[800px] md:h-[220px] lg:w-[900px] mb-8">
-              
+            <div className="w-full p-5 sm:p-0 flex justify-between items-center mb-5">
               {/* Bloc Scanner */}
               <Link href="/register/scan">
-                <div className="w-28 h-28 auth-border overflow-hidden rounded-md sm:w-40 sm:h-40 md:w-48 md:h-48">
-                  <div className="md:w-47 h-10 mt-12 w-28 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-36 sm:mt-28 sm:h-7 sm:w-39 sm:text-[16px] flex justify-center">
-                    Scanner Qr Code
-                  </div>
-                  <div className="w-full h-16 md:h-48 flex items-center justify-center sm:h-40">
+                <div className={`${blockClass} auth-border`}>
+                  <div className="flex-1 flex items-center justify-center">
                     <div className="w-16 h-16 bg-[#C8E6FF] rounded-full flex items-center justify-center">
                       <Icon icon="iconoir:scan-qr-code" width="36" height="36" className="text-pink-600" />
                     </div>
                   </div>
+                  <p className="absolute bottom-2 text-[10px] sm:text-sm md:text-base text-auth-color-placeholder font-medium">
+                    Scanner Qr Code
+                  </p>
                 </div>
               </Link>
+
+              {/* Bloc Notification */}
               <Link href="/user/form/name/bjr">
-                <div className="w-28 h-28 auth-border overflow-hidden rounded-md sm:w-40 sm:h-40 md:w-48 md:h-48">
-                  <div className="md:w-47 h-10 mt-12 w-28 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-36 sm:mt-28 sm:h-7 sm:w-39 sm:text-[16px] flex justify-center">
-                    Notification
-                  </div>
-                  <div className="w-full h-16 md:h-48 flex items-center justify-center sm:h-40">
+                <div className={`${blockClass} auth-border`}>
+                  <div className="flex-1 flex items-center justify-center">
                     <Icon icon="streamline-sharp-color:bell-notification-flat" width="58" height="58" />
                     <div className="w-5 h-5 absolute z-20 bg-red-600 ml-14 mb-14 rounded-full text-white flex justify-center items-center">
                       3
                     </div>
                   </div>
+                  <p className="absolute bottom-2 text-[10px] sm:text-sm md:text-base text-auth-color-placeholder font-medium">
+                    Notification
+                  </p>
                 </div>
               </Link>
+
+              {/* Bloc Trajet en cours */}
               <Link href="/user/form/name/bjr">
-                <div className="w-28 h-28 auth-border overflow-hidden rounded-md sm:w-40 sm:h-40 md:w-48 md:h-48">
-                  <div className="md:w-47 h-10 mt-12 w-28 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-36 sm:mt-28 sm:h-7 sm:w-39 sm:text-[16px] flex justify-center">
-                    Trajet en cours
-                  </div>
-                  <div className="w-full h-16 md:h-48 flex items-center justify-center sm:h-40">
+                <div className={`${blockClass} auth-border`}>
+                  <div className="flex-1 flex items-center justify-center">
                     <Icon icon="icon-park:gps" width="56" height="56" />
                   </div>
+                  <p className="absolute bottom-2 text-[10px] sm:text-sm md:text-base text-auth-color-placeholder font-medium">
+                    Trajet en cours
+                  </p>
                 </div>
               </Link>
+
+              {/* Bloc Profil */}
               <Link href="/recapitulatif">
-                <div className="w-28 h-28 auth-border overflow-hidden rounded-md sm:w-40 sm:h-40 md:w-48 md:h-48">
-                  <div className="md:w-47 h-10 mt-12 w-28 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-36 sm:mt-28 sm:h-7 sm:w-39 sm:text-[16px] flex justify-center">
-                    Profil
-                  </div>
-                  <div className="w-full h-16 md:h-48 flex items-center justify-center sm:h-40">
+                <div className={`${blockClass} auth-border`}>
+                  <div className="flex-1 flex items-center justify-center">
                     <div className="w-16 h-16 bg-[#9EDD28] rounded-full flex items-center justify-center">
                       <Icon icon="mdi:user" width="36" height="36" className="text-white" />
                     </div>
                   </div>
+                  <p className="absolute bottom-2 text-[10px] sm:text-sm md:text-base text-auth-color-placeholder font-medium">
+                    Profil
+                  </p>
                 </div>
               </Link>
             </div>
 
             {/* Troisième ligne */}
-            <div className="w-full h-[120px] p-5 sm:p-0 flex justify-between items-center sm:h-[180px] sm:w-[700px] md:w-[800px] md:h-[220px] lg:w-[900px]">
+            <div className="w-full p-5 sm:p-0 flex justify-between items-center">
+              {/* Bloc Parametre */}
               <Link href="/user/form/name/bjr">
-                <div className="w-28 h-28 auth-border overflow-hidden rounded-md sm:w-40 sm:h-40 md:w-48 md:h-48">
-                  <div className="md:w-47 h-10 mt-12 w-28 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-36 sm:mt-28 sm:h-7 sm:w-39 sm:text-[16px] flex justify-center">
-                    Parametre
-                  </div>
-                  <div className="w-full h-16 md:h-48 flex items-center justify-center sm:h-40">
+                <div className={`${blockClass} auth-border`}>
+                  <div className="flex-1 flex items-center justify-center">
                     <Icon icon="uil:setting" width="58" height="58" className="text-pink-500" />
                   </div>
+                  <p className="absolute bottom-2 text-[10px] sm:text-sm md:text-base text-auth-color-placeholder font-medium">
+                    Parametre
+                  </p>
                 </div>
               </Link>
+
+              {/* Bloc Assistance */}
               <Link href="/user/form/name/bjr">
-                <div className="w-28 h-28 auth-border overflow-hidden rounded-md sm:w-40 sm:h-40 md:w-48 md:h-48">
-                  <div className="md:w-47 h-10 mt-12 w-28 text-[12px] text-auth-color-placeholder absolute z-10 md:mt-36 sm:mt-28 sm:h-7 sm:w-39 sm:text-[16px] flex justify-center">
-                    Assistance
-                  </div>
-                  <div className="w-full h-16 md:h-48 flex items-center justify-center sm:h-40">
+                <div className={`${blockClass} auth-border`}>
+                  <div className="flex-1 flex items-center justify-center">
                     <Icon icon="flat-color-icons:online-support" width="58" height="58" />
                   </div>
+                  <p className="absolute bottom-2 text-[10px] sm:text-sm md:text-base text-auth-color-placeholder font-medium">
+                    Assistance
+                  </p>
                 </div>
               </Link>
-              <div className="w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48"></div>
-              <div className="w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48"></div>
+
+              {/* Blocs vides */}
+              <div className={blockClass}></div>
+              <div className={blockClass}></div>
             </div>
           </div>
         </div>
