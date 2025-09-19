@@ -6,7 +6,6 @@ import styles from './utilisateur.module.css';
 import FormButton from '../../../../../components/user/components/Form/formbutton/formbutton';
 import TopRole from '../../../../../components/user/components/Form/picktopnoir/toprole';
 import TopRoles from '../../../../../components/user/components/Form/picktopgreen/toprole';
-import { usePathname } from 'next/navigation';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { motion } from 'framer-motion';
 interface AuthLayoutProps {
@@ -14,9 +13,6 @@ interface AuthLayoutProps {
 }
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
-  const pathname = usePathname();
-
-  // const name = pathname.split('/').pop();
   const segment = useSelectedLayoutSegment();
   return (
     <div className={styles.auth_container}>

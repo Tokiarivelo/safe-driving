@@ -89,6 +89,8 @@ export enum UserScalarFieldEnum {
     createdAt = "createdAt",
     avatarId = "avatarId",
     updatedAt = "updatedAt",
+    status = "status",
+    driverStatus = "driverStatus",
     userCoverId = "userCoverId"
 }
 
@@ -153,6 +155,20 @@ export enum VehicleDocumentType {
     INSURANCE = "INSURANCE",
     CONTROL = "CONTROL",
     OTHER = "OTHER"
+}
+
+export enum UserStatus {
+    ONLINE = "ONLINE",
+    OFFLINE = "OFFLINE",
+    DRIVING = "DRIVING",
+    DO_NOT_DISTURB = "DO_NOT_DISTURB"
+}
+
+export enum UserDriverStatus {
+    AVAILABLE = "AVAILABLE",
+    BUSY = "BUSY",
+    PAUSED = "PAUSED",
+    UNAVAILABLE = "UNAVAILABLE"
 }
 
 export enum UserDocumentType {
@@ -364,6 +380,8 @@ registerEnumType(QueryMode, { name: 'QueryMode', description: undefined })
 registerEnumType(SortOrder, { name: 'SortOrder', description: undefined })
 registerEnumType(TransactionIsolationLevel, { name: 'TransactionIsolationLevel', description: undefined })
 registerEnumType(UserDocumentType, { name: 'UserDocumentType', description: undefined })
+registerEnumType(UserDriverStatus, { name: 'UserDriverStatus', description: undefined })
+registerEnumType(UserStatus, { name: 'UserStatus', description: undefined })
 registerEnumType(VehicleDocumentType, { name: 'VehicleDocumentType', description: undefined })
 registerEnumType(QrTokenScalarFieldEnum, { name: 'QrTokenScalarFieldEnum', description: undefined })
 registerEnumType(ReactionScalarFieldEnum, { name: 'ReactionScalarFieldEnum', description: undefined })
@@ -17622,6 +17640,66 @@ export class EnumUserDocumentTypeWithAggregatesFilter {
 }
 
 @InputType()
+export class EnumUserDriverStatusNullableFilter {
+    @Field(() => UserDriverStatus, {nullable:true})
+    equals?: `${UserDriverStatus}`;
+    @Field(() => [UserDriverStatus], {nullable:true})
+    in?: Array<`${UserDriverStatus}`>;
+    @Field(() => [UserDriverStatus], {nullable:true})
+    notIn?: Array<`${UserDriverStatus}`>;
+    @Field(() => NestedEnumUserDriverStatusNullableFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumUserDriverStatusNullableFilter>;
+}
+
+@InputType()
+export class EnumUserDriverStatusNullableWithAggregatesFilter {
+    @Field(() => UserDriverStatus, {nullable:true})
+    equals?: `${UserDriverStatus}`;
+    @Field(() => [UserDriverStatus], {nullable:true})
+    in?: Array<`${UserDriverStatus}`>;
+    @Field(() => [UserDriverStatus], {nullable:true})
+    notIn?: Array<`${UserDriverStatus}`>;
+    @Field(() => NestedEnumUserDriverStatusNullableWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumUserDriverStatusNullableWithAggregatesFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedEnumUserDriverStatusNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumUserDriverStatusNullableFilter>;
+    @Field(() => NestedEnumUserDriverStatusNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumUserDriverStatusNullableFilter>;
+}
+
+@InputType()
+export class EnumUserStatusNullableFilter {
+    @Field(() => UserStatus, {nullable:true})
+    equals?: `${UserStatus}`;
+    @Field(() => [UserStatus], {nullable:true})
+    in?: Array<`${UserStatus}`>;
+    @Field(() => [UserStatus], {nullable:true})
+    notIn?: Array<`${UserStatus}`>;
+    @Field(() => NestedEnumUserStatusNullableFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumUserStatusNullableFilter>;
+}
+
+@InputType()
+export class EnumUserStatusNullableWithAggregatesFilter {
+    @Field(() => UserStatus, {nullable:true})
+    equals?: `${UserStatus}`;
+    @Field(() => [UserStatus], {nullable:true})
+    in?: Array<`${UserStatus}`>;
+    @Field(() => [UserStatus], {nullable:true})
+    notIn?: Array<`${UserStatus}`>;
+    @Field(() => NestedEnumUserStatusNullableWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumUserStatusNullableWithAggregatesFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedEnumUserStatusNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumUserStatusNullableFilter>;
+    @Field(() => NestedEnumUserStatusNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumUserStatusNullableFilter>;
+}
+
+@InputType()
 export class EnumVehicleDocumentTypeFieldUpdateOperationsInput {
     @Field(() => VehicleDocumentType, {nullable:true})
     set?: `${VehicleDocumentType}`;
@@ -18256,6 +18334,66 @@ export class NestedEnumUserDocumentTypeWithAggregatesFilter {
 }
 
 @InputType()
+export class NestedEnumUserDriverStatusNullableFilter {
+    @Field(() => UserDriverStatus, {nullable:true})
+    equals?: `${UserDriverStatus}`;
+    @Field(() => [UserDriverStatus], {nullable:true})
+    in?: Array<`${UserDriverStatus}`>;
+    @Field(() => [UserDriverStatus], {nullable:true})
+    notIn?: Array<`${UserDriverStatus}`>;
+    @Field(() => NestedEnumUserDriverStatusNullableFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumUserDriverStatusNullableFilter>;
+}
+
+@InputType()
+export class NestedEnumUserDriverStatusNullableWithAggregatesFilter {
+    @Field(() => UserDriverStatus, {nullable:true})
+    equals?: `${UserDriverStatus}`;
+    @Field(() => [UserDriverStatus], {nullable:true})
+    in?: Array<`${UserDriverStatus}`>;
+    @Field(() => [UserDriverStatus], {nullable:true})
+    notIn?: Array<`${UserDriverStatus}`>;
+    @Field(() => NestedEnumUserDriverStatusNullableWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumUserDriverStatusNullableWithAggregatesFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedEnumUserDriverStatusNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumUserDriverStatusNullableFilter>;
+    @Field(() => NestedEnumUserDriverStatusNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumUserDriverStatusNullableFilter>;
+}
+
+@InputType()
+export class NestedEnumUserStatusNullableFilter {
+    @Field(() => UserStatus, {nullable:true})
+    equals?: `${UserStatus}`;
+    @Field(() => [UserStatus], {nullable:true})
+    in?: Array<`${UserStatus}`>;
+    @Field(() => [UserStatus], {nullable:true})
+    notIn?: Array<`${UserStatus}`>;
+    @Field(() => NestedEnumUserStatusNullableFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumUserStatusNullableFilter>;
+}
+
+@InputType()
+export class NestedEnumUserStatusNullableWithAggregatesFilter {
+    @Field(() => UserStatus, {nullable:true})
+    equals?: `${UserStatus}`;
+    @Field(() => [UserStatus], {nullable:true})
+    in?: Array<`${UserStatus}`>;
+    @Field(() => [UserStatus], {nullable:true})
+    notIn?: Array<`${UserStatus}`>;
+    @Field(() => NestedEnumUserStatusNullableWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumUserStatusNullableWithAggregatesFilter>;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedEnumUserStatusNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumUserStatusNullableFilter>;
+    @Field(() => NestedEnumUserStatusNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumUserStatusNullableFilter>;
+}
+
+@InputType()
 export class NestedEnumVehicleDocumentTypeFilter {
     @Field(() => VehicleDocumentType, {nullable:true})
     equals?: `${VehicleDocumentType}`;
@@ -18613,6 +18751,18 @@ export class NullableBoolFieldUpdateOperationsInput {
 export class NullableDateTimeFieldUpdateOperationsInput {
     @Field(() => Date, {nullable:true})
     set?: Date | string;
+}
+
+@InputType()
+export class NullableEnumUserDriverStatusFieldUpdateOperationsInput {
+    @Field(() => UserDriverStatus, {nullable:true})
+    set?: `${UserDriverStatus}`;
+}
+
+@InputType()
+export class NullableEnumUserStatusFieldUpdateOperationsInput {
+    @Field(() => UserStatus, {nullable:true})
+    set?: `${UserStatus}`;
 }
 
 @InputType()
@@ -26010,6 +26160,10 @@ export class UserCountAggregateInput {
     @Field(() => Boolean, {nullable:true})
     updatedAt?: true;
     @Field(() => Boolean, {nullable:true})
+    status?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverStatus?: true;
+    @Field(() => Boolean, {nullable:true})
     userCoverId?: true;
     @Field(() => Boolean, {nullable:true})
     _all?: true;
@@ -26040,6 +26194,10 @@ export class UserCountAggregate {
     @Field(() => Int, {nullable:false})
     updatedAt!: number;
     @Field(() => Int, {nullable:false})
+    status!: number;
+    @Field(() => Int, {nullable:false})
+    driverStatus!: number;
+    @Field(() => Int, {nullable:false})
     userCoverId!: number;
     @Field(() => Int, {nullable:false})
     _all!: number;
@@ -26069,6 +26227,10 @@ export class UserCountOrderByAggregateInput {
     avatarId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverStatus?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     userCoverId?: `${SortOrder}`;
 }
@@ -26134,6 +26296,10 @@ export class UserCreateManyAvatarInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
 }
@@ -26162,6 +26328,10 @@ export class UserCreateManyInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
 }
@@ -26559,6 +26729,10 @@ export class UserCreateWithoutAvatarInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
@@ -26617,6 +26791,10 @@ export class UserCreateWithoutConversationParticipantInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -26675,6 +26853,10 @@ export class UserCreateWithoutMessageReadReceiptInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -26733,6 +26915,10 @@ export class UserCreateWithoutMessageInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -26791,6 +26977,10 @@ export class UserCreateWithoutQrTokenInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -26849,6 +27039,10 @@ export class UserCreateWithoutReactionInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -26907,6 +27101,10 @@ export class UserCreateWithoutReviewInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -26965,6 +27163,10 @@ export class UserCreateWithoutRideParticipantInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -27023,6 +27225,10 @@ export class UserCreateWithoutRidesInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -27080,6 +27286,10 @@ export class UserCreateWithoutRoleInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -27138,6 +27348,10 @@ export class UserCreateWithoutTokensInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -27196,6 +27410,10 @@ export class UserCreateWithoutUserCoverInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -27254,6 +27472,10 @@ export class UserCreateWithoutUserDocumentInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -27312,6 +27534,10 @@ export class UserCreateWithoutUserImageInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -27370,6 +27596,10 @@ export class UserCreateWithoutUserPreferenceInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -27428,6 +27658,10 @@ export class UserCreateWithoutVehiclesInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -27485,6 +27719,10 @@ export class UserCreateInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
@@ -27570,6 +27808,10 @@ export class UserGroupBy {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => UserCountAggregate, {nullable:true})
@@ -27615,6 +27857,10 @@ export class UserMaxAggregateInput {
     @Field(() => Boolean, {nullable:true})
     updatedAt?: true;
     @Field(() => Boolean, {nullable:true})
+    status?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverStatus?: true;
+    @Field(() => Boolean, {nullable:true})
     userCoverId?: true;
 }
 
@@ -27642,6 +27888,10 @@ export class UserMaxAggregate {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
 }
@@ -27671,6 +27921,10 @@ export class UserMaxOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     updatedAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverStatus?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
     userCoverId?: `${SortOrder}`;
 }
 
@@ -27699,6 +27953,10 @@ export class UserMinAggregateInput {
     @Field(() => Boolean, {nullable:true})
     updatedAt?: true;
     @Field(() => Boolean, {nullable:true})
+    status?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverStatus?: true;
+    @Field(() => Boolean, {nullable:true})
     userCoverId?: true;
 }
 
@@ -27726,6 +27984,10 @@ export class UserMinAggregate {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
 }
@@ -27754,6 +28016,10 @@ export class UserMinOrderByAggregateInput {
     avatarId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverStatus?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     userCoverId?: `${SortOrder}`;
 }
@@ -27797,6 +28063,10 @@ export class UserOrderByWithAggregationInput {
     @Field(() => SortOrderInput, {nullable:true})
     updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
+    status?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    driverStatus?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
     userCoverId?: InstanceType<typeof SortOrderInput>;
     @Field(() => UserCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof UserCountOrderByAggregateInput>;
@@ -27830,6 +28100,10 @@ export class UserOrderByWithRelationInput {
     avatarId?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     updatedAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    status?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    driverStatus?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     userCoverId?: InstanceType<typeof SortOrderInput>;
     @Field(() => FileOrderByWithRelationInput, {nullable:true})
@@ -27906,6 +28180,10 @@ export class UserScalarWhereWithAggregatesInput {
     avatarId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
     updatedAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
+    @Field(() => EnumUserStatusNullableWithAggregatesFilter, {nullable:true})
+    status?: InstanceType<typeof EnumUserStatusNullableWithAggregatesFilter>;
+    @Field(() => EnumUserDriverStatusNullableWithAggregatesFilter, {nullable:true})
+    driverStatus?: InstanceType<typeof EnumUserDriverStatusNullableWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     userCoverId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
 }
@@ -27940,6 +28218,10 @@ export class UserScalarWhereInput {
     avatarId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
     updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => EnumUserStatusNullableFilter, {nullable:true})
+    status?: InstanceType<typeof EnumUserStatusNullableFilter>;
+    @Field(() => EnumUserDriverStatusNullableFilter, {nullable:true})
+    driverStatus?: InstanceType<typeof EnumUserDriverStatusNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     userCoverId?: InstanceType<typeof StringNullableFilter>;
 }
@@ -27995,6 +28277,10 @@ export class UserUncheckedCreateWithoutAvatarInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28055,6 +28341,10 @@ export class UserUncheckedCreateWithoutConversationParticipantInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28113,6 +28403,10 @@ export class UserUncheckedCreateWithoutMessageReadReceiptInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28171,6 +28465,10 @@ export class UserUncheckedCreateWithoutMessageInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28229,6 +28527,10 @@ export class UserUncheckedCreateWithoutQrTokenInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28287,6 +28589,10 @@ export class UserUncheckedCreateWithoutReactionInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28345,6 +28651,10 @@ export class UserUncheckedCreateWithoutReviewInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28403,6 +28713,10 @@ export class UserUncheckedCreateWithoutRideParticipantInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28461,6 +28775,10 @@ export class UserUncheckedCreateWithoutRidesInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28518,6 +28836,10 @@ export class UserUncheckedCreateWithoutRoleInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28576,6 +28898,10 @@ export class UserUncheckedCreateWithoutTokensInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
@@ -28634,6 +28960,10 @@ export class UserUncheckedCreateWithoutUserCoverInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28692,6 +29022,10 @@ export class UserUncheckedCreateWithoutUserDocumentInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28750,6 +29084,10 @@ export class UserUncheckedCreateWithoutUserImageInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28808,6 +29146,10 @@ export class UserUncheckedCreateWithoutUserPreferenceInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28866,6 +29208,10 @@ export class UserUncheckedCreateWithoutVehiclesInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -28923,6 +29269,10 @@ export class UserUncheckedCreateInput {
     avatarId?: string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
     @Field(() => String, {nullable:true})
     userCoverId?: string;
     @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
@@ -29018,6 +29368,10 @@ export class UserUncheckedUpdateManyWithoutAvatarInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
 }
@@ -29080,6 +29434,10 @@ export class UserUncheckedUpdateManyWithoutRoleInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
 }
@@ -29108,6 +29466,10 @@ export class UserUncheckedUpdateManyInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
 }
@@ -29134,6 +29496,10 @@ export class UserUncheckedUpdateWithoutAvatarInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29194,6 +29560,10 @@ export class UserUncheckedUpdateWithoutConversationParticipantInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29252,6 +29622,10 @@ export class UserUncheckedUpdateWithoutMessageReadReceiptInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29310,6 +29684,10 @@ export class UserUncheckedUpdateWithoutMessageInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29368,6 +29746,10 @@ export class UserUncheckedUpdateWithoutQrTokenInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29426,6 +29808,10 @@ export class UserUncheckedUpdateWithoutReactionInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29484,6 +29870,10 @@ export class UserUncheckedUpdateWithoutReviewInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29542,6 +29932,10 @@ export class UserUncheckedUpdateWithoutRideParticipantInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29600,6 +29994,10 @@ export class UserUncheckedUpdateWithoutRidesInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29657,6 +30055,10 @@ export class UserUncheckedUpdateWithoutRoleInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29715,6 +30117,10 @@ export class UserUncheckedUpdateWithoutTokensInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
@@ -29773,6 +30179,10 @@ export class UserUncheckedUpdateWithoutUserCoverInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29831,6 +30241,10 @@ export class UserUncheckedUpdateWithoutUserDocumentInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29889,6 +30303,10 @@ export class UserUncheckedUpdateWithoutUserImageInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -29947,6 +30365,10 @@ export class UserUncheckedUpdateWithoutUserPreferenceInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -30005,6 +30427,10 @@ export class UserUncheckedUpdateWithoutVehiclesInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -30062,6 +30488,10 @@ export class UserUncheckedUpdateInput {
     avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -30120,6 +30550,10 @@ export class UserUpdateManyMutationInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
 }
@@ -30669,6 +31103,10 @@ export class UserUpdateWithoutAvatarInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
@@ -30727,6 +31165,10 @@ export class UserUpdateWithoutConversationParticipantInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -30785,6 +31227,10 @@ export class UserUpdateWithoutMessageReadReceiptInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -30843,6 +31289,10 @@ export class UserUpdateWithoutMessageInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -30901,6 +31351,10 @@ export class UserUpdateWithoutQrTokenInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -30959,6 +31413,10 @@ export class UserUpdateWithoutReactionInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31017,6 +31475,10 @@ export class UserUpdateWithoutReviewInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31075,6 +31537,10 @@ export class UserUpdateWithoutRideParticipantInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31133,6 +31599,10 @@ export class UserUpdateWithoutRidesInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31190,6 +31660,10 @@ export class UserUpdateWithoutRoleInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31248,6 +31722,10 @@ export class UserUpdateWithoutTokensInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31306,6 +31784,10 @@ export class UserUpdateWithoutUserCoverInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31364,6 +31846,10 @@ export class UserUpdateWithoutUserDocumentInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31422,6 +31908,10 @@ export class UserUpdateWithoutUserImageInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31480,6 +31970,10 @@ export class UserUpdateWithoutUserPreferenceInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31538,6 +32032,10 @@ export class UserUpdateWithoutVehiclesInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31595,6 +32093,10 @@ export class UserUpdateInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
@@ -31871,6 +32373,10 @@ export class UserWhereUniqueInput {
     avatarId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
     updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => EnumUserStatusNullableFilter, {nullable:true})
+    status?: InstanceType<typeof EnumUserStatusNullableFilter>;
+    @Field(() => EnumUserDriverStatusNullableFilter, {nullable:true})
+    driverStatus?: InstanceType<typeof EnumUserDriverStatusNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     userCoverId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => FileNullableScalarRelationFilter, {nullable:true})
@@ -31939,6 +32445,10 @@ export class UserWhereInput {
     avatarId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
     updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => EnumUserStatusNullableFilter, {nullable:true})
+    status?: InstanceType<typeof EnumUserStatusNullableFilter>;
+    @Field(() => EnumUserDriverStatusNullableFilter, {nullable:true})
+    driverStatus?: InstanceType<typeof EnumUserDriverStatusNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     userCoverId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => FileNullableScalarRelationFilter, {nullable:true})
@@ -32001,6 +32511,10 @@ export class User {
     avatarId!: string | null;
     @Field(() => Date, {nullable:true})
     updatedAt!: Date | null;
+    @Field(() => UserStatus, {defaultValue:'OFFLINE',nullable:true})
+    status!: `${UserStatus}` | null;
+    @Field(() => UserDriverStatus, {defaultValue:'AVAILABLE',nullable:true})
+    driverStatus!: `${UserDriverStatus}` | null;
     @Field(() => String, {nullable:true})
     userCoverId!: string | null;
     @Field(() => File, {nullable:true})
