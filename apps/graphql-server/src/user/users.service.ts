@@ -48,6 +48,8 @@ export class UsersService {
         phone: input.phone,
         password: hash,
         Role: input.Role,
+        status: input.status?.set,
+        driverStatus: input.driverStatus?.set,
       },
     });
 
