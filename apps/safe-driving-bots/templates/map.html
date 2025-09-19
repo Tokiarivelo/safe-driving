@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Road Network Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        #controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1100;
+            background: white;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        #controls label {
+            margin-bottom: 8px;
+        }
+
+        #clear-btn {
+            background: #f5f5f5;
+            cursor: pointer;
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            text-align: center;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="loading-overlay">
+    <div class="spinner"></div>
+</div>
+
+<!-- Controls (moved to top-right corner) -->
+<div id="controls">
+    <label>
+        Cars:
+        <input type="number" id="car-count" value="200" min="1" style="width:70px;">
+    </label>
+    <div id="clear-btn">Clear All</div>
+</div>
+
+<script>
+    const map = L.map('map').setView([-18.911, 47.543], 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
+
+    const drawnItems = new L.FeatureGroup();
+    map.addLayer(drawnItems);
+
+    const drawControl = new L.Control.Draw({
+        draw: {polygon: false, polyline: false, circle: false, marker: false, circlemarker: false, rectangle: true},
+        edit: false
+    });
+    map.addControl(drawControl);
+
+    let roadLayer = null;
+    let carMarkers = {};
+    const moveDuration = 1000;
+    const updateInterval = 1000;
+
+    function showLoading(show) {
+        document.getElementById("loading-overlay").style.display = show ? "flex" : "none";
+    }
+
+    function animateCar(carId, startLatLng, endLatLng, startTime, duration) {
+        const marker = carMarkers[carId];
+
+        function step() {
+            const now = performance.now();
+            const t = Math.min((now - startTime) / duration, 1);
+            const lat = startLatLng[0] + (endLatLng[0] - startLatLng[0]) * t;
+            const lon = startLatLng[1] + (endLatLng[1] - startLatLng[1]) * t;
+            marker.setLatLng([lat, lon]);
+            if (t < 1) requestAnimationFrame(step);
+        }
+
+        requestAnimationFrame(step);
+    }
+
+    // Handle rectangle creation
+    map.on(L.Draw.Event.CREATED, function (event) {
+        const layer = event.layer;
+        drawnItems.addLayer(layer);
+        const bounds = layer.getBounds();
+        const bbox = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()];
+        const nCars = parseInt(document.getElementById("car-count").value) || 100;
+
+        showLoading(true);
+        fetch("/load_bbox", {
+            method: "POST", headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({bbox, n: nCars})
+        })
+            .then(res => res.json())
+            .then(() => fetch("/get_roads"))
+            .then(res => res.json())
+            .then(roads => {
+                if (roadLayer) map.removeLayer(roadLayer);
+                roadLayer = L.layerGroup();
+                roads.forEach(edge => {
+                    L.polyline(edge, {color: "gray", weight: 2, opacity: 0.7}).addTo(roadLayer);
+                });
+                roadLayer.addTo(map);
+                showLoading(false);
+            })
+            .catch(err => {
+                console.error(err);
+                showLoading(false);
+            });
+    });
+
+    // Update cars smoothly
+    function updateCars() {
+        fetch("/get_cars")
+            .then(res => res.json())
+            .then(cars => {
+                cars.forEach(car => {
+                    const id = car.id;
+                    const coords = car.coords;
+                    if (carMarkers[id]) {
+                        const start = carMarkers[id].getLatLng();
+                        animateCar(id, [start.lat, start.lng], coords, performance.now(), moveDuration);
+                    } else {
+                        carMarkers[id] = L.marker(coords, {
+                            icon: L.icon({
+                                iconUrl: "/static/car.svg",
+                                iconSize: [32, 32],
+                                iconAnchor: [16, 16]
+                            })
+                        }).addTo(map);
+                    }
+                });
+            });
+    }
+
+    // Clear everything
+    function clearAll() {
+        if (roadLayer) {
+            map.removeLayer(roadLayer);
+            roadLayer = null;
+        }
+        drawnItems.clearLayers();
+        Object.values(carMarkers).forEach(marker => map.removeLayer(marker));
+        carMarkers = {};
+        fetch("/clear_cars", {method: "POST"});
+    }
+
+    document.getElementById("clear-btn").addEventListener("click", clearAll);
+
+    // Update cars every second
+    setInterval(updateCars, updateInterval);
+</script>
+</body>
+</html>

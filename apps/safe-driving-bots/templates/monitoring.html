@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Drivers — Real-time Viewer</title>
+    <!-- Socket.IO client -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        :root {
+            --bg: #0f1724;
+            --card: #0b1220;
+            --muted: #94a3b8;
+            --accent: #06b6d4;
+            --ok: #10b981;
+            --danger: #ef4444;
+            --glass: rgba(255, 255, 255, 0.03);
+            --radius: 12px;
+            --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            background: linear-gradient(180deg, var(--bg), #071021);
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 28px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns:320px 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        h1 {
+            font-size: 18px;
+            margin: 0 0 12px;
+            color: #e6eef6
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 6px
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: transparent;
+            color: #e6eef6;
+            outline: none;
+            font-size: 14px
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        button {
+            cursor: pointer;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 0;
+            background: linear-gradient(90deg, var(--accent), #7dd3fc);
+            color: #032;
+            font-weight: 600
+        }
+
+        .small {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: var(--glass);
+            font-size: 13px
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: var(--danger);
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.6)
+        }
+
+        .dot.ok {
+            background: var(--ok);
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.12)
+        }
+
+        .list {
+            overflow: auto;
+            max-height: 72vh;
+            padding: 12px;
+            border-radius: 10px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.005));
+            border: 1px solid rgba(255, 255, 255, 0.02)
+        }
+
+        .card {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0.00));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.02)
+        }
+
+        .meta {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        .key {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: #e6eef6
+        }
+
+        .value {
+            font-size: 13px;
+            color: #dbeafe;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 6px 8px;
+            border-radius: 6px
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 6px 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--muted)
+        }
+
+        .controls {
+            display: grid;
+            gap: 10px
+        }
+
+        .footer {
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        pre {
+            margin: 0;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--muted);
+            white-space: pre-wrap
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <!-- Left panel — controls -->
+    <div class="panel">
+        <h1>Drivers — Real-time</h1>
+
+        <div class="controls">
+            <div>
+                <label for="host">Server URL</label>
+                <input id="host" type="text" value="http://localhost:4000"/>
+                <div class="small" style="margin-top:6px">Change if your NestJS server runs on another host/port.</div>
+            </div>
+
+            <div>
+                <label for="pattern">Pattern (Redis)</label>
+                <input id="pattern" type="text" value="driver:*"/>
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center;">
+                <button id="connectBtn">Connect</button>
+                <button id="refreshBtn" disabled>Refresh list</button>
+                <div id="status" class="status" style="margin-left:auto">
+                    <span id="dot" class="dot"></span>
+                    <span id="statusText">disconnected</span>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="small">When connected:</div>
+                <ul class="small">
+                    <li>Click <strong>Refresh list</strong> to request initial snapshot (`drivers:list`).</li>
+                    <li>Live updates from server will appear automatically as <strong>drivers:update</strong>.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right panel — list and updates -->
+    <div class="panel">
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+            <div style="flex:1">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                    <div class="small">Live drivers</div>
+                    <div class="small badge" id="lastUpdate">no updates yet</div>
+                </div>
+
+                <div id="list" class="list" aria-live="polite"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        // UI elements
+        const hostInput = document.getElementById('host');
+        const patternInput = document.getElementById('pattern');
+        const connectBtn = document.getElementById('connectBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const statusText = document.getElementById('statusText');
+        const dot = document.getElementById('dot');
+        const listEl = document.getElementById('list');
+        const lastUpdateBadge = document.getElementById('lastUpdate');
+
+        let socket = null;
+        let connected = false;
+        // store items keyed by redis key for easy upsert
+        const itemsMap = new Map();
+
+        function setStatus(isOk, text) {
+            connected = !!isOk;
+            statusText.textContent = text || (isOk ? 'connected' : 'disconnected');
+            dot.classList.toggle('ok', !!isOk);
+            refreshBtn.disabled = !isOk;
+        }
+
+        function formatTime(ts = Date.now()) {
+            const d = new Date(ts);
+            return d.toLocaleString();
+        }
+
+        function renderList() {
+            listEl.innerHTML = '';
+            if (itemsMap.size === 0) {
+                listEl.innerHTML = '<div class="small" style="padding:12px;color:var(--muted)">No drivers yet.</div>';
+                return;
+            }
+            // show newest first
+            const keys = Array.from(itemsMap.keys()).sort().reverse();
+            for (const k of keys) {
+                const v = itemsMap.get(k);
+                const card = document.createElement('div');
+                card.className = 'card';
+                const left = document.createElement('div');
+                left.innerHTML = `<div class="key">${escapeHtml(k)}</div>
+                            <div class="meta small">${escapeHtml(v._meta || '')}</div>`;
+                const right = document.createElement('div');
+                right.style.display = 'flex';
+                right.style.gap = '8px';
+                right.style.alignItems = 'center';
+                const value = document.createElement('pre');
+                value.className = 'value';
+                // copy without _meta
+                const copy = Object.assign({}, v);
+                delete copy._meta;
+                value.textContent = JSON.stringify(copy, null, 2);
+                right.appendChild(value);
+                card.appendChild(left);
+                card.appendChild(right);
+                listEl.appendChild(card);
+            }
+        }
+
+        function upsertItem(key, obj, source = 'initial') {
+            // store a timestamp for ordering and debug
+            const prev = itemsMap.get(key) || {};
+            const merged = Object.assign({}, prev, obj, {_meta: `${source} @ ${formatTime()}`});
+            itemsMap.set(key, merged);
+            lastUpdateBadge.textContent = `last: ${formatTime()}`;
+            renderList();
+        }
+
+        function removeItem(key) {
+            itemsMap.delete(key);
+            lastUpdateBadge.textContent = `last: ${formatTime()}`;
+            renderList();
+        }
+
+        function clearList() {
+            itemsMap.clear();
+            renderList();
+        }
+
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str).replace(/[&<>"']/g, function (m) {
+                return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[m];
+            });
+        }
+
+        // Connect / disconnect
+        connectBtn.addEventListener('click', () => {
+            if (socket && connected) {
+                socket.disconnect();
+                socket = null;
+                setStatus(false, 'disconnected');
+                connectBtn.textContent = 'Connect';
+                clearList();
+                return;
+            }
+            const url = hostInput.value.trim() || 'http://localhost:4000';
+            // create socket.io client
+            socket = io(url, {transports: ['websocket'], reconnectionAttempts: 5});
+
+            // socket event handlers
+            socket.on('connect', () => {
+                setStatus(true, 'connected');
+                connectBtn.textContent = 'Disconnect';
+            });
+
+            socket.on('disconnect', (reason) => {
+                setStatus(false, 'disconnected');
+                connectBtn.textContent = 'Connect';
+            });
+
+            socket.on('connect_error', () => {
+                setStatus(false, 'connect error');
+            });
+
+            // initial list result
+            socket.on('drivers:list:result', (payload) => {
+                // payload expected: { items: [ { key, value }, ... ] }
+                if (!payload || !Array.isArray(payload.items)) return;
+                // replace map contents with initial snapshot
+                itemsMap.clear();
+                for (const it of payload.items) {
+                    // if value is plain object or string; keep as object
+                    const key = it.key || it.k || 'unknown';
+                    const value = (typeof it.value === 'string') ? tryParseJson(it.value) : it.value || {};
+                    upsertItem(key, value, 'snapshot');
+                }
+            });
+
+            // error event for list
+            socket.on('drivers:list:error', (payload) => {
+                // show error as single card
+                clearList();
+                const key = 'error';
+                upsertItem(key, {error: payload?.message || 'unknown', details: payload?.details || ''}, 'error');
+            });
+
+            // realtime update channel - server should emit 'drivers:update'
+            socket.on('drivers:update', (payload) => {
+                // expected payload shape depends on your publisher.
+                // Common shapes:
+                // { key: 'driver:1', value: { ... } }  OR { id: 'driver:1', status: 'online' }
+                if (!payload) return;
+                if (payload.key) {
+                    const value = payload.value || payload.data || {};
+                    upsertItem(payload.key, (typeof value === 'string') ? tryParseJson(value) : value, 'update');
+                    return;
+                }
+                // fallback: if publisher sends id
+                if (payload.id) {
+                    const key = payload.id;
+                    const value = Object.assign({}, payload);
+                    delete value.id;
+                    upsertItem(key, value, 'update');
+                    return;
+                }
+                // if publisher sends { action: 'del', key: 'driver:1' }
+                if (payload.action === 'del' && payload.key) {
+                    removeItem(payload.key);
+                    return;
+                }
+            });
+
+            // optional: listen to single-key update channel e.g. user:update:1 (if you use that)
+            // socket.on('user:update:1', ...)
+
+            // convenience helper: parse json safely
+            function tryParseJson(s) {
+                if (typeof s !== 'string') return s;
+                try {
+                    return JSON.parse(s);
+                } catch (e) {
+                    return s;
+                }
+            }
+        });
+
+        // Request initial snapshot
+        refreshBtn.addEventListener('click', () => {
+            if (!socket || !connected) {
+                setStatus(false, 'not connected');
+                return;
+            }
+            const pattern = patternInput.value.trim() || 'driver:*';
+            // emit drivers:list
+            socket.emit('drivers:list', {pattern});
+        });
+
+        // initialize UI
+        setStatus(false, 'disconnected');
+        renderList();
+    })();
+</script>
+</body>
+</html>
