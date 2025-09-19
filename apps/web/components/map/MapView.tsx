@@ -12,6 +12,8 @@ import { defaultLocations, Location } from '@/components/map/Location';
 import { arrayMove } from '@dnd-kit/sortable';
 import * as polyline from '@mapbox/polyline';
 import { TempMarker } from '@/components/map/TempMarker';
+import RealTimeDriverZone from '@/components/map/RealTimeDriverZone';
+import { distanceMeters } from '@/components/map/MapUtils';
 
 // Fix Leaflet's default icon paths for Next.js
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -175,7 +177,7 @@ export default function Map({ coordinates }: Props) {
     setDistKm('-');
     setDurationMin('-');
     setRoute([]);
-  }
+  };
 
   const reverseLocations = () => {
     setLocations(prev => [...prev].reverse());
@@ -362,6 +364,22 @@ export default function Map({ coordinates }: Props) {
         )}
 
         <TempMarker setTempMarker={setTempMarker} addLocationAt={addLocationAt} />
+
+        <RealTimeDriverZone
+          initialCenter={center}
+          radius={500} // meters
+          onCenterChange={(lat: number, lng: number) => {
+            console.log('new center:', lat, lng);
+            // optional: filter drivers by distance
+            const inRadius = locations.filter(
+              loc =>
+                loc.lat !== undefined &&
+                loc.lon !== undefined &&
+                distanceMeters(lat, lng, loc.lat, loc.lon) <= 500,
+            );
+            console.log('drivers inside radius:', inRadius);
+          }}
+        />
       </MapContainer>
 
       <MapPills mapRef={mapRef} />
