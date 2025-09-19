@@ -5,7 +5,7 @@ import Fichier from './right.child';
 import ConversationItem from './left.child';
 import styles from './messages.module.css';
 import { useMessages } from '@/lib/message/useMessages';
-import { Chat } from '../../../../ui/chat/chat';
+import { Chat } from './chat/chat';
 import { ConversationSelectorWithCRUD } from './conversation-selector';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';

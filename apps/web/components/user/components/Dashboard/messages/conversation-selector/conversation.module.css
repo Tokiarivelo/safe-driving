@@ -28,13 +28,13 @@
   @apply w-[10%] h-10 flex items-center justify-center;
 }
 .auth_left10 {
-  @apply w-2 h-6 space-y-1 cursor-pointer ml-2;
+  @apply text-pink-500 cursor-pointer mt-[-12px];
 }
 .auth_left11 {
   @apply auth-background w-0.5 h-0.5 rounded-full;
 }
 .auth_left12 {
-  @apply w-50 p-2 rounded-sm border border-white shadow-md shadow-gray-400;
+  @apply w-43 p-2 rounded-sm border border-white shadow-md shadow-gray-400;
 }
 .auth_left13 {
   @apply w-50 h-6 flex;
@@ -43,7 +43,7 @@
   @apply w-[16%] h-6 flex items-center;
 }
 .auth_left15 {
-  @apply w-[84%] flex items-center h-7 text-sm;
+  @apply w-[84%] flex items-center h-7 text-[12px];
 }
 .auth_left16 {
   @apply w-50 h-7 flex;
@@ -52,7 +52,7 @@
   @apply w-[16%] h-7 flex items-center text-red-500;
 }
 .auth_left18 {
-  @apply w-[84%] flex items-center h-7 text-red-500 text-sm;
+  @apply w-[84%] flex items-center h-7 text-red-500 text-[12px];
 }
 .auth_left19 {
   @apply w-full h-10 flex;

@@ -364,8 +364,8 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
     <div
       style={{
         position: 'absolute',
-        top: '10px',
-        left: '10px',
+        top: '18px',
+        left: '80px',
         display: 'flex',
         gap: '8px',
         zIndex: 1000,

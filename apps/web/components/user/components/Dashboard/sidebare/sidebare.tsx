@@ -50,7 +50,7 @@ function sidebare() {
   }
   const bgColor = stringToColor(`${data?.me?.firstName}${data?.me?.lastName}`);
   return (
-    <div className="w-12 h-155 fixed ml-5 mt-3">
+    <div className="w-12 h-155 fixed z-100 ml-5 mt-3">
       <div className="w-12 h-12 mb-5 flex justify-center items-center rounded-full border-2 border-pink-600">
         <div
           className="text-white flex justify-center items-center w-10 h-10 rounded-full"

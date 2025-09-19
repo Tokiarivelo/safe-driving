@@ -1,7 +1,7 @@
 @reference '../../../../../app/global.css';
 
 .auth_msg1 {
-  @apply w-full h-screen bg-green-300;
+  @apply w-full h-screen bg-green-300 absolute;
 }
 .auth_msg2 {
   @apply w-full h-screen bg-white flex;

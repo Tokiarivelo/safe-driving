@@ -116,9 +116,7 @@ export function ConversationItem({ conversation, isSelected, onClick }: Conversa
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className={styles.auth_left10}>
-                    <div className={styles.auth_left11}></div>
-                    <div className={styles.auth_left11}></div>
-                    <div className={styles.auth_left11}></div>
+                      <Icon icon="mdi:dots-vertical" width={20} height={20} />
                   </div>
                 </DropdownMenuTrigger>
 

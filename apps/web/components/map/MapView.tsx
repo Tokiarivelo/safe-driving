@@ -287,6 +287,7 @@ export default function Map({ coordinates }: Props) {
         width: '100%',
         position: 'relative',
         overflow: 'hidden',
+        zIndex: 0,
       }}
     >
       <MapContainer

@@ -58,10 +58,9 @@ const MessageInput: React.FC<{
   };
 
   return (
-    <div className="border-t border-gray-200 p-4">
-      <div className="flex items-end gap-3 p-3 border border-gray-200 rounded-lg bg-white shadow-sm">
-        {/* Text Input */}
-        <div className="flex-1">
+    <div className="border-t-2 border-[#E5E7EB] p-4">
+      <div className="border-2 border-[#E5E7EB] rounded-sm">
+        <div>
           <Textarea
             value={message}
             onChange={e => setMessage(e.target.value)}
@@ -69,46 +68,35 @@ const MessageInput: React.FC<{
             onInput={handleTyping}
             onBlur={onBlur}
             placeholder="Écrivez votre message..."
-            className="min-h-[40px] max-h-[120px] resize-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 p-0 text-sm"
+            className="flex-1 resize-none text-sm min-h-[40px] max-h-[120px] bg-transparent !border-none !outline-none focus:!border-none focus:!outline-none focus:!ring-0 focus:!shadow-none"
             rows={1}
+            style={{ border: 'none', outline: 'none', boxShadow: 'none' }}
           />
         </div>
-
-        {/* Action Icons */}
-        <div className="flex items-center gap-1">
-          <button className="p-2 text-pink-500 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors">
-            <Icon icon="proicons:emoji" width="20" height="20" />
-          </button>
-
-          <button className="p-2 text-pink-500 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors">
-            <Icon icon="material-symbols-light:mic-outline-rounded" width="20" height="20" />
-          </button>
-
-          <button className="p-2 text-pink-500 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors">
-            <Icon icon="mage:gif-fill" width="20" height="20" />
-          </button>
-
-          <button className="p-2 text-pink-500 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors">
-            <Icon icon="mdi-light:file" width="20" height="20" />
-          </button>
-
-          {/* Send Button */}
-          <Button
-            onClick={handleSend}
-            disabled={!message.trim() || sending || disabled}
-            className="p-2 bg-pink-500 hover:bg-pink-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
-            size="sm"
-          >
-            <Icon icon="fluent:send-28-filled" width="20" height="20" />
-          </Button>
+        <div className="w-full h-10 flex justify-end">
+          <div className="text-pink-500 hover:text-pink-600 transition-colors w-9 h-9 flex items-center justify-center">
+            <Icon icon="proicons:emoji" width="26" height="26" />
+          </div>
+          <div className="text-pink-500 hover:text-pink-600 transition-colors w-9 h-9 flex items-center justify-center">
+            <Icon icon="material-symbols-light:mic-outline-rounded" width="26" height="26" />
+          </div>
+          <div className="text-pink-500 hover:text-pink-600 transition-colors w-9 h-9 flex items-center justify-center">
+            <Icon icon="mage:gif-fill" width="26" height="26" />
+          </div>
+          <div className="text-pink-500 hover:text-pink-600 transition-colors w-9 h-9 flex items-center justify-center">
+            <Icon icon="mdi-light:file" width="26" height="26" />
+          </div>
+          <div className="text-pink-500 hover:text-pink-600 transition-colors w-9 h-9 flex items-center justify-center">
+            <button
+              onClick={handleSend}
+              disabled={!message.trim() || sending || disabled}
+              className="w-8 h-6 text-pink-500 rounded-lg hover:text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+            >
+              <Icon icon="fluent:send-28-filled" width="24" height="24" />
+            </button>
+          </div>
         </div>
       </div>
-      {/* Typing Indicator */}
-      {typingUsers && typingUsers.length > 0 && (
-        <div className="mt-2">
-          <TypingIndicator typingUsers={typingUsers} />
-        </div>
-      )}
     </div>
   );
 };

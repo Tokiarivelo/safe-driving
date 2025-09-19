@@ -71,17 +71,22 @@ function modale() {
               <Icon icon="mdi-light:file" width="26" height="26" />
             </div>
             <div className="text-pink-500 hover:text-pink-600 transition-colors mr-1 w-6 h-6 flex items-center justify-center">
-              <Button
-                className={`w-8 h-6 text-white rounded-lg transition-all duration-200 flex items-center justify-center ${
-                  message.trim()
-                    ? 'bg-pink-500 hover:bg-pink-600 opacity-100'
-                    : 'bg-pink-400 opacity-50 cursor-not-allowed'
-                }`}
+              <button
+                className="cursor-pointer"
                 disabled={!message.trim()}
                 onClick={handleSendMessage}
               >
-                <Icon icon="fluent:send-28-filled" width="20" height="20" />
-              </Button>
+                <Icon
+                  className={
+                    message.trim()
+                      ? 'text-pink-500 hover:text-pink-600 opacity-100'
+                      : 'text-pink-400 opacity-50 cursor-not-allowed'
+                  }
+                  icon="fluent:send-28-filled"
+                  width="24"
+                  height="24"
+                />
+              </button>
             </div>
           </div>
         </div>
