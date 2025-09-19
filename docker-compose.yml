@@ -28,6 +28,20 @@ services:
   #   environment:
   #     - NODE_ENV=development
   #   command: pnpm start:dev
+  
+  ors:
+    image: openrouteservice/openrouteservice:latest
+    container_name: ors
+    ports:
+      - "8085:8082"
+    volumes:
+      - ./ors-data/graphs:/home/ors/graphs
+      - ./ors-data/elevation_cache:/home/ors/elevation_cache
+      - ./ors-data/configs:/home/ors/config
+      # removed duplicate single-file bind
+      - ./ors-data/pbf/madagascar-latest.osm.pbf:/home/ors/files/madagascar-latest.osm.pbf
+    restart: unless-stopped
+
 
   postgis:
     image: postgis/postgis:latest

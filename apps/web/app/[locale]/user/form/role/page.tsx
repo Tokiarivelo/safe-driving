@@ -1,10 +1,11 @@
 'use client';
-import styles from './pickrole.module.css';
+
 import { motion } from 'framer-motion';
-import { useSelectedLayoutSegment } from 'next/navigation';
-import TopRolex from '../../../../../../components/user/components/Form/picktopgray/toprole';
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
-  const segment = useSelectedLayoutSegment();
+import styles from './pickrole.module.css';
+import TopRolex from '../../../../../components/user/components/Form/picktopgray/toprole';
+import PickRoleForm from '../../../../../components/user/components/Form/pickrole/pickrole';
+
+export default function ChoixLoginPage() {
   return (
     <div className={styles.auth_container}>
       <motion.div
@@ -14,10 +15,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         transition={{ duration: 1 }}
       >
         <div className={styles.auth_toprole}>
-            <TopRolex />
+          <TopRolex />
         </div>
         <div className={styles.auth_card_container}>
-            {children}
+          <PickRoleForm />
         </div>
       </motion.div>
     </div>

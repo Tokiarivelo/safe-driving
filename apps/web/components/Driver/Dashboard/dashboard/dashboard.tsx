@@ -16,17 +16,17 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const statuses = [
-  { key: "libre", label: "Disponible", color: "bg-green-400" },
-  { key: "occupe", label: "Occupé", color: "bg-yellow-400" },
-  { key: "pause", label: "En pause", color: "bg-blue-400" },
-  { key: "non_dispo", label: "Non disponible", color: "bg-red-500" },
+  { key: 'libre', label: 'Disponible', color: 'bg-green-400' },
+  { key: 'occupe', label: 'Occupé', color: 'bg-yellow-400' },
+  { key: 'pause', label: 'En pause', color: 'bg-blue-400' },
+  { key: 'non_dispo', label: 'Non disponible', color: 'bg-red-500' },
 ];
 
 const blockClass =
-  "relative w-32 h-32 sm:w-44 sm:h-44 md:w-52 md:h-52 rounded-md overflow-hidden flex flex-col items-center justify-center";
+  'relative w-32 h-32 sm:w-44 sm:h-44 md:w-52 md:h-52 rounded-md overflow-hidden flex flex-col items-center justify-center';
 
 function Dashboard() {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState('');
   const [position, setPosition] = React.useState<string>('bottom');
   const {
     data,
@@ -91,8 +91,8 @@ function Dashboard() {
             <div className="w-full h-10 px-1.5">
               <ReactFlagsSelect
                 selected={selected}
-                onSelect={(code) => setSelected(code)}
-                countries={["US", "GB", "FR", "DE", "IT", "NG"]}
+                onSelect={code => setSelected(code)}
+                countries={['US', 'GB', 'FR', 'DE', 'IT', 'NG']}
               />
             </div>
             <div className="w-full h-10 flex">
@@ -120,7 +120,7 @@ function Dashboard() {
       >
         <div className="w-full h-25 flex justify-center mt-25 sm:mt-0">
           <Image
-            src={"/logo.svg"}
+            src={'/logo.svg'}
             alt="photo"
             width={100}
             height={100}
@@ -132,22 +132,23 @@ function Dashboard() {
         {/* Dashboard blocks */}
         <div className="w-full mt-5 flex justify-center">
           <div className="w-full sm:w-[700px] md:w-[800px] lg:w-[900px]">
-
             {/* Première ligne */}
             <div className="w-full p-5 sm:p-0 flex justify-between items-center mb-5">
               {/* Bloc Status */}
               <Popover.Root open={open} onOpenChange={setOpen}>
                 <Popover.Trigger asChild>
-                <div className={`${blockClass} border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984]`}>
+                  <div
+                    className={`${blockClass} border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984]`}
+                  >
                     <div className="flex flex-col items-center justify-center h-full">
                       <div
                         className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${
-                          statuses.find((s) => s.key === status)?.color
+                          statuses.find(s => s.key === status)?.color
                         }`}
                       />
                     </div>
                     <p className="absolute bottom-2 text-[10px] sm:text-sm text-auth-color-placeholder font-medium">
-                      {statuses.find((s) => s.key === status)?.label}
+                      {statuses.find(s => s.key === status)?.label}
                     </p>
                   </div>
                 </Popover.Trigger>
@@ -159,8 +160,8 @@ function Dashboard() {
                 >
                   <div className="flex flex-row gap-6">
                     {statuses
-                      .filter((s) => s.key !== status)
-                      .map((s) => (
+                      .filter(s => s.key !== status)
+                      .map(s => (
                         <div
                           key={s.key}
                           className="w-32 h-32 sm:w-44 sm:h-44 md:w-52 md:h-52 
@@ -183,10 +184,17 @@ function Dashboard() {
 
               {/* Bloc Rechercher */}
               <Link href="/user/form/name/bjr">
-                <div className={`${blockClass} border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984]`}>
+                <div
+                  className={`${blockClass} border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984]`}
+                >
                   <div className="flex-1 flex items-center justify-center">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#D4D995] rounded-full flex items-center justify-center">
-                      <Icon icon="material-symbols:search-rounded" width="32" height="32" className="text-pink-500" />
+                      <Icon
+                        icon="material-symbols:search-rounded"
+                        width="32"
+                        height="32"
+                        className="text-pink-500"
+                      />
                     </div>
                   </div>
                   <p className="absolute bottom-2 inset-x-0 text-center text-auth-color-placeholder text-[10px] sm:text-sm md:text-base font-medium">
@@ -230,7 +238,12 @@ function Dashboard() {
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="w-16 h-16 bg-[#C8E6FF] rounded-full flex items-center justify-center">
-                      <Icon icon="iconoir:scan-qr-code" width="36" height="36" className="text-pink-600" />
+                      <Icon
+                        icon="iconoir:scan-qr-code"
+                        width="36"
+                        height="36"
+                        className="text-pink-600"
+                      />
                     </div>
                   </div>
                   <p className="absolute bottom-2 text-[10px] sm:text-sm md:text-base text-auth-color-placeholder font-medium">
@@ -243,7 +256,11 @@ function Dashboard() {
               <Link href="/user/form/name/bjr">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
-                    <Icon icon="streamline-sharp-color:bell-notification-flat" width="58" height="58" />
+                    <Icon
+                      icon="streamline-sharp-color:bell-notification-flat"
+                      width="58"
+                      height="58"
+                    />
                     <div className="w-5 h-5 absolute z-20 bg-red-600 ml-14 mb-14 rounded-full text-white flex justify-center items-center">
                       3
                     </div>

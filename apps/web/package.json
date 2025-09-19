@@ -8,7 +8,7 @@
     "build": "next build",
     "lint": "next lint",
     "i18n:extract": "i18next",
-    "generate": "graphql-codegen --config codegen.yml",
+    "generate": "graphql-codegen --config codegen.ts",
     "translate": "translate-locales"
   },
   "dependencies": {
@@ -44,6 +44,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dnd-kit": "^0.0.2",
+    "dotenv": "^16.6.1",
     "fast-glob": "^3.3.3",
     "framer-motion": "^12.12.1",
     "fs-extra": "^11.3.0",

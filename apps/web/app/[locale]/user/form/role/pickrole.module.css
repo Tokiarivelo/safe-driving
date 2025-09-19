@@ -1,4 +1,4 @@
-@reference '../../../../../global.css';
+@reference '../../../../global.css';
 
 .auth_container {
   @apply auth-card-bg-gradient px-3 sm:auth-background min-h-screen w-full flex items-center justify-center;
@@ -10,5 +10,5 @@
   @apply rounded-tl-sm rounded-tr-sm  w-full sm:rounded-sm sm:h-[611px] sm:w-[633px] md:w-[750px] lg:max-w-4xl lg:w-full;
 }
 .auth_toprole {
-   @apply hidden sm:block h-[64];
-} 
+  @apply hidden sm:block h-[64];
+}

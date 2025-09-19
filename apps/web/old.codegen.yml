@@ -1,5 +1,5 @@
 overwrite: true
-schema: 'http://localhost:4000/graphql'
+schema: '${NEXT_PUBLIC_GRAPHQL_API_URL}'
 documents: '**/*.graphql'
 generates:
   ./graphql/generated/graphql.ts:

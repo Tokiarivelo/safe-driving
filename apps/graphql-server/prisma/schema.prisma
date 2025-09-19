@@ -43,6 +43,22 @@ model UserCover {
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+// Disponible, Occupé, En pause, Non disponible
+enum UserDriverStatus {
+  AVAILABLE
+  BUSY
+  PAUSED
+  UNAVAILABLE
+}
+
+// En ligne, Hors ligne, En conduite, Ne pas déranger
+enum UserStatus {
+  ONLINE
+  OFFLINE
+  DRIVING
+  DO_NOT_DISTURB
+}
+
 model User {
   id         String    @id @default(uuid())
   email      String    @unique
@@ -70,6 +86,8 @@ model User {
   ConversationParticipant ConversationParticipant[]
   Reaction                Reaction[]
   MessageReadReceipt      MessageReadReceipt[]
+  status UserStatus? @default(OFFLINE)
+  driverStatus UserDriverStatus? @default(AVAILABLE)
 
   QrToken     QrToken[]
   userCoverId String?
