@@ -38,8 +38,10 @@ services:
       - ./ors-data/graphs:/home/ors/graphs
       - ./ors-data/elevation_cache:/home/ors/elevation_cache
       - ./ors-data/configs:/home/ors/config
-      # removed duplicate single-file bind
+      - ./ors-data/configs/ors-config.yml:/home/ors/config/ors-config.yml
       - ./ors-data/pbf/madagascar-latest.osm.pbf:/home/ors/files/madagascar-latest.osm.pbf
+    environment:
+      - JAVA_OPTS=-Xms2g -Xmx2g
     restart: unless-stopped
 
 

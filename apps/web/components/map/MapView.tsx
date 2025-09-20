@@ -71,7 +71,7 @@ function MapController({
 async function reverseGeocode(lat: number, lon: number): Promise<string> {
   try {
     const res = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
+      `${process.env.NEXT_PUBLIC_NOMINATIM_URL}?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
       { headers: { 'User-Agent': 'safe-driving' } }, // Nominatim requires UA
     );
     const data = await res.json();
@@ -256,7 +256,9 @@ export default function Map({ coordinates }: Props) {
     if (validLocations.length >= 2) {
       const coordinates = validLocations.map(loc => [loc.lon, loc.lat]); // ORS expects [lon, lat]
 
-      fetch('http://localhost:8085/ors/v2/directions/driving-car', {
+      console.log('process.env.NEXT_PUBLIC_ORS_URL :>> ', process.env.NEXT_PUBLIC_ORS_URL);
+
+      fetch(process.env.NEXT_PUBLIC_ORS_URL || '', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ coordinates }),

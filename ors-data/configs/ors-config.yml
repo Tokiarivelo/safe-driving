@@ -8,12 +8,17 @@ ors:
           encoder_options:
             # Much more conservative speeds for Madagascar
             speeds:
-              motorway: 60      # Even main roads are slower
+              motorway: 60 # Even main roads are slower
               trunk: 50
               primary: 40
               secondary: 30
               tertiary: 25
               residential: 20
               service: 15
-            maximum_speed: 60   # Lower overall max speed
-            speed_factor: 0.6   # Apply an additional reduction factor
+            maximum_speed: 60 # Lower overall max speed
+            speed_factor: 0.6 # Apply an additional reduction factor
+  elevation:
+    enabled: true # set to false to test without elevation
+    cache_path: elevation_cache
+    provider: multi # default; auto-downloads SRTM/SONAR tiles
+    dataaccess: download # ensure it can fetch tiles
