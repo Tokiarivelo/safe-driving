@@ -19,18 +19,24 @@ class SearchFields extends StatelessWidget {
             onChanged: vm.onStartChanged,
             decoration: InputDecoration(
               hintText: context.l10n.mapFromPlaceholder,
-              filled: true,
-              fillColor: isDark ? AppColors.backgroundSecondary : AppColors.inputTextBackground,
+              // filled: true,
+              fillColor: isDark
+                  ? AppColors.backgroundSecondary
+                  : AppColors.inputTextBackground,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(
-                  color: isDark ? AppColors.borderButtonDark : AppColors.borderButtonLight,
+                  color: isDark
+                      ? AppColors.light.withValues(alpha: 0.2)
+                      : AppColors.borderButtonLight,
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(
-                  color: isDark ? AppColors.borderButtonDark : AppColors.borderButtonLight,
+                  color: isDark
+                      ? AppColors.light.withValues(alpha: 0.2)
+                      : AppColors.borderButtonLight,
                 ),
               ),
               suffixIcon: IconButton(
@@ -47,18 +53,25 @@ class SearchFields extends StatelessWidget {
             controller: vm.destinationController,
             decoration: InputDecoration(
               hintText: context.l10n.mapToPlaceholder,
+
               filled: true,
-              fillColor: isDark ? AppColors.backgroundSecondary : AppColors.inputTextBackground,
+              fillColor: isDark
+                  ? AppColors.backgroundSecondary
+                  : AppColors.inputTextBackground,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(
-                  color: isDark ? AppColors.borderButtonDark : AppColors.borderButtonLight,
+                  color: isDark
+                      ? AppColors.light.withValues(alpha: 0.2)
+                      : AppColors.borderButtonLight,
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(
-                  color: isDark ? AppColors.borderButtonDark : AppColors.borderButtonLight,
+                  color: isDark
+                      ? AppColors.light.withValues(alpha: 0.2)
+                      : AppColors.borderButtonLight,
                 ),
               ),
               suffixIcon: IconButton(

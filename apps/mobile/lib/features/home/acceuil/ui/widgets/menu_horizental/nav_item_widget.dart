@@ -35,7 +35,7 @@ class NavItemWidget extends StatelessWidget {
             color: isActive ? (isDark ? AppColors.backgroundSecondary : tabBackgroundColor) : null,
             shape: BoxShape.circle,
             border: isActive
-                ? Border.all(color: isDark ? AppColors.borderButtonDark : tabBackgroundColor, width: 1)
+                ? Border.all(color: isDark ? AppColors.light.withValues(alpha: 0.2) : tabBackgroundColor, width: 1)
                 : null,
             boxShadow: isActive
                 ? [

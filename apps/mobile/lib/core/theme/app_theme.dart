@@ -324,12 +324,20 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
 
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: AppColors.backgroundSecondary,
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: const Color(0xFF2A2A2A), 
         selectedItemColor: AppColors.color1,
-        unselectedItemColor: AppColors.unclickable,
+        unselectedItemColor: AppColors.light.withValues(alpha: 0.5), // Gris plus doux pour les items non sélectionnés
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 12,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 11,
+        ),
       ),
 
       snackBarTheme: SnackBarThemeData(

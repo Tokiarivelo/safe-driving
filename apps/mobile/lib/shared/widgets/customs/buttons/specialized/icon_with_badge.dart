@@ -37,17 +37,17 @@ class IconButtonWithBadge extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: isDark ? AppColors.backgroundSoft : backgroundColor,
+        backgroundColor: isDark ? const Color(0xFF2A2A2A) : backgroundColor, 
         foregroundColor: isDark ? AppColors.light : AppColors.dark,
-        elevation: 3,
+        elevation: isDark ? 2 : 3,
         shadowColor: isDark
-            ? AppColors.dark.withValues(alpha: 0.5)
+            ? Colors.black.withValues(alpha: 0.3)
             : AppColors.dark.withValues(alpha: 0.1),
         padding: const EdgeInsets.all(5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: BorderSide(
-            color: isDark ? AppColors.borderButtonDark : Colors.transparent,
+            color: isDark ? const Color(0xFF3A3A3A) : Colors.transparent, // Bordure subtile en mode sombre
             width: 1,
           ),
         ),
@@ -67,7 +67,7 @@ class IconButtonWithBadge extends StatelessWidget {
                   width: iconSize,
                   height: iconSize,
                   colorFilter: ColorFilter.mode(
-                    isDark ? AppColors.light : AppColors.dark,
+                    isDark ? AppColors.light.withValues(alpha: 0.9) : AppColors.dark,
                     BlendMode.srcIn,
                   ),
                   errorBuilder: (context, error, stackTrace) {
@@ -84,7 +84,7 @@ class IconButtonWithBadge extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    color: isDark ? AppColors.light : AppColors.dark,
+                    color: isDark ? AppColors.light.withValues(alpha: 0.85) : AppColors.dark,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -104,7 +104,7 @@ class IconButtonWithBadge extends StatelessWidget {
                     color: badgeColor,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: isDark ? AppColors.backgroundSoft : backgroundColor,
+                      color: isDark ? const Color(0xFF2A2A2A) : backgroundColor,
                       width: 2,
                     ),
                   ),

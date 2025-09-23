@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../viewmodels/home_view_model.dart';
 import 'menu_button_builder.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 
 class MenuGrid extends StatelessWidget {
   final HomeViewModel viewModel;
@@ -21,9 +22,10 @@ class MenuGrid extends StatelessWidget {
         itemCount: viewModel.menuItems.length,
         itemBuilder: (context, index) {
           final item = viewModel.menuItems[index];
+          final title = _localizedTitle(context, item.title);
           return _buildMenuButton(
             iconPath: item.iconPath,
-            title: item.title,
+            title: title,
             hasNotification: item.hasNotification,
             notificationCount: item.notificationCount,
             onTap: () => viewModel.onMenuItemTap(index, context),
@@ -47,5 +49,34 @@ class MenuGrid extends StatelessWidget {
       hasNotification: hasNotification,
       notificationCount: notificationCount,
     );
+  }
+
+  String _localizedTitle(BuildContext context, String title) {
+    final l10n = context.l10n;
+    switch (title) {
+      case 'Rechercher un transport':
+        return l10n.homeSearchTransport;
+      case 'Messages':
+        return l10n.homeMessages;
+      case 'Mes courses':
+        return l10n.homeMyRides;
+      case 'Scanner Qr code':
+      case 'Scanner QR':
+        return l10n.homeScanQr;
+      case 'Trajet en cours':
+        return l10n.homeCurrentTrip;
+      case 'Profile':
+      case 'Profil':
+        return l10n.homeProfile;
+      case 'Offres & promotions':
+        return l10n.homeOffers;
+      case 'Paramètre':
+      case 'Paramètres':
+        return l10n.homeSettings;
+      case 'Assistance':
+        return l10n.homeHelp;
+      default:
+        return title;
+    }
   }
 }

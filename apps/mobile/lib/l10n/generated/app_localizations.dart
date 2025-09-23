@@ -278,6 +278,90 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
+  /// Langue française
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get languageFrench;
+
+  /// Langue anglaise
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// Thème sombre
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// Thème clair
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// Thème système
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeSystem;
+
+  /// Menu rechercher un transport
+  ///
+  /// In en, this message translates to:
+  /// **'Search transport'**
+  String get homeSearchTransport;
+
+  /// Menu messages
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get homeMessages;
+
+  /// Menu mes courses
+  ///
+  /// In en, this message translates to:
+  /// **'My rides'**
+  String get homeMyRides;
+
+  /// Menu scanner QR code
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR'**
+  String get homeScanQr;
+
+  /// Menu trajet en cours
+  ///
+  /// In en, this message translates to:
+  /// **'Ongoing trip'**
+  String get homeCurrentTrip;
+
+  /// Menu profil
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get homeProfile;
+
+  /// Menu offres et promotions
+  ///
+  /// In en, this message translates to:
+  /// **'Offers & promotions'**
+  String get homeOffers;
+
+  /// Menu paramètres
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get homeSettings;
+
+  /// Menu assistance
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get homeHelp;
+
   /// Titre de la page mot de passe oublié
   ///
   /// In en, this message translates to:
@@ -1328,11 +1412,17 @@ abstract class AppLocalizations {
   /// **'No results found'**
   String get mapNoResults;
 
-  /// Summary pill showing route distance and duration
+  /// Summary pill showing distance and duration
   ///
   /// In en, this message translates to:
   /// **'{distance} • {duration}'**
   String mapRouteSummary(String distance, String duration);
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
 }
 
 class _AppLocalizationsDelegate

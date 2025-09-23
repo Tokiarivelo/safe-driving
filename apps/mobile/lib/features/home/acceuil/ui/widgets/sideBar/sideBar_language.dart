@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 import '../../../viewmodels/sidebar_view_model.dart';
 
 class SidebarLanguage extends StatelessWidget {
@@ -12,6 +13,8 @@ class SidebarLanguage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<SidebarViewModel>(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = context.l10n;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 27.0, vertical: 5.0),
@@ -19,7 +22,7 @@ class SidebarLanguage extends StatelessWidget {
         decoration: BoxDecoration(
           color: viewModel.selectedIndex == 2
               ? AppColors.color1.withValues(alpha: 0.2)
-              : AppColors.light.withValues(alpha: 0.8),
+              : (isDark ? AppColors.backgroundSecondary : AppColors.light.withValues(alpha: 0.8)),
           borderRadius: BorderRadius.circular(8),
           border: viewModel.selectedIndex == 2
               ? Border.all(color: AppColors.color1, width: 1)
@@ -41,23 +44,23 @@ class SidebarLanguage extends StatelessWidget {
                   isExpanded: true,
                   icon: Icon(
                     Icons.arrow_drop_down,
-                    color: viewModel.selectedIndex == 2
-                        ? AppColors.dark
-                        : AppColors.dark,
+                    color: isDark ? AppColors.light : AppColors.dark,
                   ),
-                  dropdownColor: AppColors.light,
+                  dropdownColor: isDark ? AppColors.backgroundSecondary : AppColors.light,
                   borderRadius: BorderRadius.circular(8),
-                  style: TextStyle(color: AppColors.dark, fontSize: 16),
+                  style: TextStyle(color: isDark ? AppColors.light : AppColors.dark, fontSize: 16),
                   items: [
                     _buildDropdownItem(
                       value: AppLanguage.french,
                       flag: '🇫🇷',
-                      title: 'Français',
+                      title: l10n.languageFrench,
+                      isDark: isDark,
                     ),
                     _buildDropdownItem(
                       value: AppLanguage.english,
                       flag: '🇬🇧',
-                      title: 'English',
+                      title: l10n.languageEnglish,
+                      isDark: isDark,
                     ),
                   ],
                 ),
@@ -73,6 +76,7 @@ class SidebarLanguage extends StatelessWidget {
     required AppLanguage value,
     required String flag,
     required String title,
+    required bool isDark,
   }) {
     return DropdownMenuItem<AppLanguage>(
       value: value,
@@ -80,7 +84,7 @@ class SidebarLanguage extends StatelessWidget {
         children: [
           Text(flag, style: const TextStyle(fontSize: 18)),
           const SizedBox(width: 12),
-          Text(title, style: const TextStyle(fontSize: 14)),
+          Text(title, style: TextStyle(fontSize: 14, color: isDark ? AppColors.light : AppColors.dark)),
         ],
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
 import '../../viewmodels/home_view_model.dart';
 import '../widgets/homeWidgets/home_content.dart';
 import '../widgets/homeWidgets/sidebar_button.dart';

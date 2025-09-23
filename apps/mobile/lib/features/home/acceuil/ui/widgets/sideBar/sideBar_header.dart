@@ -15,6 +15,7 @@ class SidebarHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(
@@ -49,7 +50,7 @@ class SidebarHeader extends StatelessWidget {
           const SizedBox(width: 12),
           const Expanded(child: SidebarProfile()),
           IconButton(
-            icon: Icon(Icons.close, color: AppColors.dark),
+            icon: Icon(Icons.close, color: isDark ? AppColors.light : AppColors.dark),
             onPressed: onClose,
           ),
         ],

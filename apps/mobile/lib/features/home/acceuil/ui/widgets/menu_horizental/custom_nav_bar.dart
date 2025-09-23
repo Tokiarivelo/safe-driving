@@ -91,15 +91,15 @@ class _CustomNavBarViewState extends State<CustomNavBarView> {
     return Container(
       height: 75,
       decoration: BoxDecoration(
-        color: isDark ? AppColors.backgroundSecondary : AppColors.light,
+        color: isDark ? const Color(0xFF2A2A2A) : AppColors.light, 
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? AppColors.dark.withValues(alpha: 0.5)
+                ? Colors.black.withValues(alpha: 0.4)
                 : AppColors.unclickable.withValues(alpha: 0.3),
-            blurRadius: 8,
-            spreadRadius: 1,
-            offset: const Offset(0, 2),
+            blurRadius: isDark ? 6 : 8,
+            spreadRadius: isDark ? 0 : 1,
+            offset: const Offset(0, -2), // Ombre vers le haut pour la navigation bar
           ),
         ],
       ),

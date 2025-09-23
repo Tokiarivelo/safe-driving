@@ -100,6 +100,48 @@ class AppLocalizationsFr extends AppLocalizations {
   String get language => 'Langue';
 
   @override
+  String get languageFrench => 'Français';
+
+  @override
+  String get languageEnglish => 'Anglais';
+
+  @override
+  String get themeDark => 'Sombre';
+
+  @override
+  String get themeLight => 'Clair';
+
+  @override
+  String get themeSystem => 'Système';
+
+  @override
+  String get homeSearchTransport => 'Rechercher un transport';
+
+  @override
+  String get homeMessages => 'Messages';
+
+  @override
+  String get homeMyRides => 'Mes courses';
+
+  @override
+  String get homeScanQr => 'Scanner QR';
+
+  @override
+  String get homeCurrentTrip => 'Trajet en cours';
+
+  @override
+  String get homeProfile => 'Profil';
+
+  @override
+  String get homeOffers => 'Offres & promotions';
+
+  @override
+  String get homeSettings => 'Paramètres';
+
+  @override
+  String get homeHelp => 'Assistance';
+
+  @override
   String get authForgotPasswordTitle => '🔒 Mot de passe oublié ?';
 
   @override
@@ -667,4 +709,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String mapRouteSummary(String distance, String duration) {
     return '$distance • $duration';
   }
+
+  @override
+  String get theme => 'Thème';
 }
