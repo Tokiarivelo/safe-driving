@@ -21,17 +21,17 @@ class _StepFiveViewState extends State<StepFiveView> {
   bool _hasShownUploadSnack = false;
   int _previousCount = 0;
 
-  void _queuePhotos(
-    List<File> photos,
-    String storageType,
-  ) {
+  void _queuePhotos(List<File> photos, String storageType) {
     try {
       context.driverOnboardingVM.documentUploadViewModel.queuePhotosForUpload(
-            photos,
-            storageType,
-          );
+        photos,
+        storageType,
+      );
 
-      if (!_hasShownUploadSnack && _previousCount == 0 && photos.isNotEmpty && mounted) {
+      if (!_hasShownUploadSnack &&
+          _previousCount == 0 &&
+          photos.isNotEmpty &&
+          mounted) {
         final count = photos.length;
         SnackbarHelper.showSuccess(
           context,
@@ -53,11 +53,15 @@ class _StepFiveViewState extends State<StepFiveView> {
   Future<void> _onValidate() async {
     bool ok = true;
     try {
-      await context.driverOnboardingVM.documentUploadViewModel.flushPendingUploads();
+      await context.driverOnboardingVM.documentUploadViewModel
+          .flushPendingUploads();
     } catch (e) {
       ok = false;
       if (mounted) {
-        SnackbarHelper.showError(context, 'Échec du téléchargement des documents. Vérifiez votre connexion et réessayez.');
+        SnackbarHelper.showError(
+          context,
+          'Échec du téléchargement des documents. Vérifiez votre connexion et réessayez.',
+        );
       }
     }
     if (ok && mounted) widget.onNext();
@@ -100,10 +104,8 @@ class _StepFiveViewState extends State<StepFiveView> {
                         'Téléchargez votre certificat d\'immatriculation (carte grise)',
                     buttonText: 'Ajouter un fichier',
                     addMorePhotosText: 'Ajouter plus de photos',
-                    onPhotosChanged: (photos) => _queuePhotos(
-                      photos,
-                      'certificatImmatriculation',
-                    ),
+                    onPhotosChanged: (photos) =>
+                        _queuePhotos(photos, 'certificatImmatriculation'),
                   ),
                   const SizedBox(height: 16),
 
@@ -113,10 +115,8 @@ class _StepFiveViewState extends State<StepFiveView> {
                         'Téléchargez votre attestation d\'assurance valide',
                     buttonText: 'Ajouter un fichier',
                     addMorePhotosText: 'Ajouter plus de photos',
-                    onPhotosChanged: (photos) => _queuePhotos(
-                      photos,
-                      'attestationAssurance',
-                    ),
+                    onPhotosChanged: (photos) =>
+                        _queuePhotos(photos, 'attestationAssurance'),
                   ),
                   const SizedBox(height: 16),
 
@@ -126,10 +126,8 @@ class _StepFiveViewState extends State<StepFiveView> {
                         'Ajoutez des photos de votre véhicule (extérieur et intérieur)',
                     buttonText: 'Ajouter un fichier',
                     addMorePhotosText: 'Ajouter plus de photos',
-                    onPhotosChanged: (photos) => _queuePhotos(
-                      photos,
-                      'photosVehicule',
-                    ),
+                    onPhotosChanged: (photos) =>
+                        _queuePhotos(photos, 'photosVehicule'),
                   ),
                 ],
               ),

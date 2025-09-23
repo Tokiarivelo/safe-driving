@@ -28,10 +28,9 @@ class StepOneView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.h1(context).copyWith(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.h1(
+              context,
+            ).copyWith(fontSize: 24, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 16),
           Text(

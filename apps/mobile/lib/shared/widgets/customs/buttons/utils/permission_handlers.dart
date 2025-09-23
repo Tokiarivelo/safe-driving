@@ -11,7 +11,8 @@ class PermissionHandlers {
       // On Web, the browser manages permissions; just request via Geolocator
       try {
         final permission = await Geolocator.requestPermission();
-        final granted = permission == LocationPermission.always ||
+        final granted =
+            permission == LocationPermission.always ||
             permission == LocationPermission.whileInUse;
         if (!granted && context.mounted) {
           SnackbarHelper.showError(
@@ -197,10 +198,7 @@ class PermissionHandlers {
 
     if (permission.isGranted) {
       if (context.mounted) {
-        SnackbarHelper.showSuccess(
-          context,
-          'Permission SMS accordée !',
-        );
+        SnackbarHelper.showSuccess(context, 'Permission SMS accordée !');
       }
       return true;
     }

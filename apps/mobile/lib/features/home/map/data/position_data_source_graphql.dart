@@ -33,7 +33,10 @@ class PositionDataSourceGraphQL implements IPositionDataSource {
   }
 
   @override
-  Future<List<LatLngPoint>> getRecentPositions(String vehicleId, {int limit = 100}) async {
+  Future<List<LatLngPoint>> getRecentPositions(
+    String vehicleId, {
+    int limit = 100,
+  }) async {
     final res = await _client.executeQuery(
       document: PositionGqlApi.recentPositions,
       variables: {'vehicleId': vehicleId, 'limit': limit.toDouble()},
@@ -41,12 +44,20 @@ class PositionDataSourceGraphQL implements IPositionDataSource {
     final list = (res['recentPositions'] as List?) ?? const [];
     return list
         .whereType<Map>()
-        .map((m) => LatLngPoint((m['latitude'] as num).toDouble(), (m['longitude'] as num).toDouble()))
+        .map(
+          (m) => LatLngPoint(
+            (m['latitude'] as num).toDouble(),
+            (m['longitude'] as num).toDouble(),
+          ),
+        )
         .toList();
   }
 
   @override
-  Future<List<LatLngPoint>> getRidePositions(String rideId, {int limit = 100}) async {
+  Future<List<LatLngPoint>> getRidePositions(
+    String rideId, {
+    int limit = 100,
+  }) async {
     final res = await _client.executeQuery(
       document: PositionGqlApi.recentRidePositions,
       variables: {'rideId': rideId, 'limit': limit.toDouble()},
@@ -54,7 +65,12 @@ class PositionDataSourceGraphQL implements IPositionDataSource {
     final list = (res['recentRidePositions'] as List?) ?? const [];
     return list
         .whereType<Map>()
-        .map((m) => LatLngPoint((m['latitude'] as num).toDouble(), (m['longitude'] as num).toDouble()))
+        .map(
+          (m) => LatLngPoint(
+            (m['latitude'] as num).toDouble(),
+            (m['longitude'] as num).toDouble(),
+          ),
+        )
         .toList();
   }
 }

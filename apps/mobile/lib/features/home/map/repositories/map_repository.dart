@@ -16,9 +16,9 @@ class MapRepository implements IMapRepository {
     required IMapService service,
     IPositionService? positionService,
     IDriverService? driverService,
-  })  : _service = service,
-        _positionService = positionService,
-        _driverService = driverService;
+  }) : _service = service,
+       _positionService = positionService,
+       _driverService = driverService;
 
   @override
   Future<GeocodeResult?> searchAddress(String query) async {
@@ -33,7 +33,12 @@ class MapRepository implements IMapRepository {
   }
 
   @override
-  Future<void> updateUserPosition(String userId, double lat, double lng, double accuracy) async {
+  Future<void> updateUserPosition(
+    String userId,
+    double lat,
+    double lng,
+    double accuracy,
+  ) async {
     if (_positionService == null) return;
     await _positionService.reportPosition(
       PositionReport(
@@ -48,16 +53,16 @@ class MapRepository implements IMapRepository {
   }
 
   Driver _toDomain(DriverDTO d) => Driver(
-        id: d.id,
-        name: d.name,
-        rating: d.rating,
-        statusText: d.statusText,
-        vehicleModel: d.vehicleModel,
-        seats: d.seats,
-        phone: d.phone,
-        lat: d.lat,
-        lng: d.lng,
-      );
+    id: d.id,
+    name: d.name,
+    rating: d.rating,
+    statusText: d.statusText,
+    vehicleModel: d.vehicleModel,
+    seats: d.seats,
+    phone: d.phone,
+    lat: d.lat,
+    lng: d.lng,
+  );
 
   @override
   Future<List<Driver>> getDriversNearby({
@@ -87,7 +92,12 @@ class MapRepository implements IMapRepository {
       return const Stream<List<Driver>>.empty();
     }
     return _driverService
-        .watchDriversNearby(lat: lat, lng: lng, radiusKm: radiusKm, filters: filters?.toMap())
+        .watchDriversNearby(
+          lat: lat,
+          lng: lng,
+          radiusKm: radiusKm,
+          filters: filters?.toMap(),
+        )
         .map((list) => list.map(_toDomain).toList());
   }
 

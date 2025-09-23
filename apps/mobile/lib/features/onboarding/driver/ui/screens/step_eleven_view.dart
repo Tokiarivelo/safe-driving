@@ -82,11 +82,11 @@ class StepElevenView extends StatelessWidget {
   ) {
     final displayLabel = _localizeFieldLabel(context, element);
     if (element == 'Photos uploadées') {
-    
       final isVehicle = sectionTitle == 'Véhicule';
       final totalPhotos = isVehicle
           ? coordinator.documentUploadViewModel.getVehicleUploadedPhotosCount()
-          : coordinator.documentUploadViewModel.getPersonalUploadedPhotosCount();
+          : coordinator.documentUploadViewModel
+                .getPersonalUploadedPhotosCount();
       final photosStepIndex = isVehicle ? 4 : 2;
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
@@ -101,9 +101,9 @@ class StepElevenView extends StatelessWidget {
             Expanded(
               child: Text(
                 '$displayLabel : $totalPhotos',
-                style: AppTextStyles.body14(context).copyWith(
-                  color: AppColors.light,
-                ),
+                style: AppTextStyles.body14(
+                  context,
+                ).copyWith(color: AppColors.light),
               ),
             ),
             const SizedBox(width: 8),
@@ -113,17 +113,10 @@ class StepElevenView extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.backgroundSecondary,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: AppColors.light,
-                  width: 1,
-                ),
+                border: Border.all(color: AppColors.light, width: 1),
               ),
               child: IconButton(
-                icon: const Icon(
-                  Icons.edit,
-                  size: 16,
-                  color: AppColors.light,
-                ),
+                icon: const Icon(Icons.edit, size: 16, color: AppColors.light),
                 padding: EdgeInsets.zero,
                 onPressed: () {
                   onNavigateToStep(photosStepIndex);
@@ -161,9 +154,9 @@ class StepElevenView extends StatelessWidget {
                   ),
                   TextSpan(
                     text: fieldValue,
-                    style: AppTextStyles.body14(context).copyWith(
-                      color: AppColors.light,
-                    ),
+                    style: AppTextStyles.body14(
+                      context,
+                    ).copyWith(color: AppColors.light),
                   ),
                 ],
               ),
@@ -183,8 +176,8 @@ class StepElevenView extends StatelessWidget {
         builder: (context, summaryViewModel, child) {
           final resumeData = summaryViewModel.getResumeData();
 
-       
-          final future = coordinator.documentUploadViewModel.refreshBackendPhotoCounts();
+          final future = coordinator.documentUploadViewModel
+              .refreshBackendPhotoCounts();
 
           return FutureBuilder<void>(
             future: future,
@@ -228,10 +221,9 @@ class StepElevenView extends StatelessWidget {
         Text(
           step.description ?? '',
           textAlign: TextAlign.center,
-          style: AppTextStyles.body16(context).copyWith(
-            height: 1.5,
-            color: AppColors.light,
-          ),
+          style: AppTextStyles.body16(
+            context,
+          ).copyWith(height: 1.5, color: AppColors.light),
         ),
       ],
     );
@@ -250,7 +242,12 @@ class StepElevenView extends StatelessWidget {
             final titre = section['titre'] as String;
             final elements = section['elements'] as List<String>;
 
-            return _buildSectionContainer(context, summaryViewModel, titre, elements);
+            return _buildSectionContainer(
+              context,
+              summaryViewModel,
+              titre,
+              elements,
+            );
           }).toList(),
         ),
       ),
@@ -269,10 +266,7 @@ class StepElevenView extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.backgroundSecondary,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.light,
-          width: 1,
-        ),
+        border: Border.all(color: AppColors.light, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,7 +274,12 @@ class StepElevenView extends StatelessWidget {
           _buildSectionHeader(context, summaryViewModel, titre),
           const SizedBox(height: 12),
           ...elements.map<Widget>((element) {
-            return _buildResumeElement(context, summaryViewModel, element, titre);
+            return _buildResumeElement(
+              context,
+              summaryViewModel,
+              element,
+              titre,
+            );
           }),
         ],
       ),
@@ -305,10 +304,9 @@ class StepElevenView extends StatelessWidget {
         Expanded(
           child: Text(
             displayTitle,
-            style: AppTextStyles.body16(context).copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppColors.light,
-            ),
+            style: AppTextStyles.body16(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: AppColors.light),
           ),
         ),
         const SizedBox(width: 8),
@@ -318,17 +316,10 @@ class StepElevenView extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.backgroundSecondary,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: AppColors.light,
-              width: 1,
-            ),
+            border: Border.all(color: AppColors.light, width: 1),
           ),
           child: IconButton(
-            icon: const Icon(
-              Icons.edit,
-              size: 16,
-              color: AppColors.light,
-            ),
+            icon: const Icon(Icons.edit, size: 16, color: AppColors.light),
             padding: EdgeInsets.zero,
             onPressed: () {
               onNavigateToStep(stepIndex);
@@ -339,7 +330,10 @@ class StepElevenView extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton(BuildContext context, DriverSummaryViewModel summaryViewModel) {
+  Widget _buildActionButton(
+    BuildContext context,
+    DriverSummaryViewModel summaryViewModel,
+  ) {
     if (summaryViewModel.isLoading) {
       return const CircularProgressIndicator();
     }
@@ -351,7 +345,10 @@ class StepElevenView extends StatelessWidget {
     );
   }
 
-  Widget _buildErrorMessage(BuildContext context, DriverSummaryViewModel summaryViewModel) {
+  Widget _buildErrorMessage(
+    BuildContext context,
+    DriverSummaryViewModel summaryViewModel,
+  ) {
     if (summaryViewModel.errorMessage == null) {
       return const SizedBox.shrink();
     }

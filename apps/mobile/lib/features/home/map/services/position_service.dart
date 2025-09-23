@@ -18,7 +18,10 @@ class PositionService implements IPositionService {
   }
 
   @override
-  Future<List<LatLngPoint>> getRecentPositions(String vehicleId, {int limit = 100}) {
+  Future<List<LatLngPoint>> getRecentPositions(
+    String vehicleId, {
+    int limit = 100,
+  }) {
     return _ds.getRecentPositions(vehicleId, limit: limit);
   }
 

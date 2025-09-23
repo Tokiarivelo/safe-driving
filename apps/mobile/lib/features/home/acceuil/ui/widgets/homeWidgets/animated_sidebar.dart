@@ -21,7 +21,6 @@ class AnimatedSidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
- 
         if (isVisible)
           Positioned.fill(
             child: GestureDetector(

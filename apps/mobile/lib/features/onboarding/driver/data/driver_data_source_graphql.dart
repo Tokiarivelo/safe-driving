@@ -536,7 +536,6 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
       },
     );
 
-
     final Map<String, dynamic> secondInput = {
       'Role': {
         'connectOrCreate': [
@@ -553,9 +552,7 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
 
     final response = await _client.executeMutation(
       document: updateUserMutation,
-      variables: {
-        'input': secondInput,
-      },
+      variables: {'input': secondInput},
     );
 
     final updated = response['updateUser'];

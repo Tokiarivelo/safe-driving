@@ -10,4 +10,3 @@ String extractGraphQLError(OperationException? exception) {
   }
   return 'Unknown GraphQL error';
 }
-

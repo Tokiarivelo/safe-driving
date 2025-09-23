@@ -51,7 +51,8 @@ class PreferencesBuilder {
                 children: [
                   Chips.customChoiceChip(
                     label: context.l10n.stepPreferencesThemeLight,
-                    selected: context.read<ThemeController>().mode != ThemeMode.dark,
+                    selected:
+                        context.read<ThemeController>().mode != ThemeMode.dark,
                     onSelected: (_) {
                       coordinator.preferencesViewModel.setTheme('clair');
                       context.read<ThemeController>().setMode(ThemeMode.light);
@@ -60,7 +61,8 @@ class PreferencesBuilder {
                   const SizedBox(width: 24),
                   Chips.customChoiceChip(
                     label: context.l10n.stepPreferencesThemeDark,
-                    selected: context.read<ThemeController>().mode == ThemeMode.dark,
+                    selected:
+                        context.read<ThemeController>().mode == ThemeMode.dark,
                     onSelected: (_) {
                       coordinator.preferencesViewModel.setTheme('sombre');
                       context.read<ThemeController>().setMode(ThemeMode.dark);
@@ -118,11 +120,15 @@ class PreferencesBuilder {
           child: Builder(
             builder: (context) {
               String localizedOption = option;
-              if (option == 'SMS') localizedOption = context.l10n.driverNotificationSms;
+              if (option == 'SMS') {
+                localizedOption = context.l10n.driverNotificationSms;
+              }
               if (option == 'Push notification mobile') {
                 localizedOption = context.l10n.driverNotificationPush;
               }
-              if (option == 'E-mail') localizedOption = context.l10n.driverNotificationEmail;
+              if (option == 'E-mail') {
+                localizedOption = context.l10n.driverNotificationEmail;
+              }
               return SwitchesAndRadios.customCheckbox(
                 title: localizedOption,
                 value: coordinator.preferencesViewModel.selectedNotifications
@@ -170,7 +176,7 @@ class PreferencesBuilder {
                   if (value == context.l10n.driverLocationEnable) {
                     final granted = await coordinator.preferencesViewModel
                         .requestGpsPermission();
-                      if (context.mounted && granted) {
+                    if (context.mounted && granted) {
                       SnackbarHelper.showSuccess(
                         context,
                         context.l10n.driverLocationEnable,

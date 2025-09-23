@@ -34,7 +34,8 @@ class _StepTwelveViewState extends State<StepTwelveView> {
   @override
   void initState() {
     super.initState();
-    _confetti = ConfettiController(duration: const Duration(seconds: 2))..play();
+    _confetti = ConfettiController(duration: const Duration(seconds: 2))
+      ..play();
   }
 
   @override
@@ -81,13 +82,10 @@ class _StepTwelveViewState extends State<StepTwelveView> {
               Text(
                 context.l10n.driverCompleteSubtitle,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.body16(
-                  context,
-                ).copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.7),
+                style: AppTextStyles.body16(context).copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                   height: 1.5,
                 ),
               ),
@@ -100,9 +98,7 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                   Text(
                     context.l10n.driverCompleteQrCodeSubtitle,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.body16(
-                      context,
-                    ).copyWith(
+                    style: AppTextStyles.body16(context).copyWith(
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
@@ -110,7 +106,9 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                   const SizedBox(height: 16),
 
                   FutureBuilder<String>(
-                    future: widget.coordinator.generateDriverQrCode(type: 'png'),
+                    future: widget.coordinator.generateDriverQrCode(
+                      type: 'png',
+                    ),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Container(
@@ -156,7 +154,9 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                           child: Icon(
                             Icons.qr_code_2,
                             size: 80,
-                            color: AppColors.fillButtonBackground.adapt(context),
+                            color: AppColors.fillButtonBackground.adapt(
+                              context,
+                            ),
                           ),
                         );
                       }
@@ -204,8 +204,9 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                               : Icon(
                                   Icons.qr_code_2,
                                   size: 80,
-                                  color: AppColors.fillButtonBackground
-                                      .adapt(context),
+                                  color: AppColors.fillButtonBackground.adapt(
+                                    context,
+                                  ),
                                 ),
                         ),
                       );
@@ -218,10 +219,9 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.7),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
                       height: 1.4,
                       fontFamily: 'Inder',
                     ),
@@ -256,7 +256,10 @@ class _StepTwelveViewState extends State<StepTwelveView> {
               PrimaryButton.primaryButton(
                 text: context.l10n.driverCompleteStart,
                 onPressed: widget.onContinue,
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 40,
+                ),
               ),
             ],
           ),

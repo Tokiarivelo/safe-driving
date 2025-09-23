@@ -37,10 +37,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     }
 
     if (!RegexFormatter.isValidEmail(emailToUse)) {
-      SnackbarHelper.showError(
-        context,
-        context.l10n.pleaseEnterValidEmail,
-      );
+      SnackbarHelper.showError(context, context.l10n.pleaseEnterValidEmail);
       return;
     }
 
@@ -51,18 +48,12 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     if (!mounted) return;
 
     if (ok) {
-      SnackbarHelper.showSuccess(
-        context,
-        context.l10n.resetPassword,
-      );
+      SnackbarHelper.showSuccess(context, context.l10n.resetPassword);
       if (widget.onSendCodeSuccess != null) {
         widget.onSendCodeSuccess!(emailToUse);
       }
     } else {
-      SnackbarHelper.showError(
-        context,
-        context.l10n.networkError,
-      );
+      SnackbarHelper.showError(context, context.l10n.networkError);
     }
   }
 

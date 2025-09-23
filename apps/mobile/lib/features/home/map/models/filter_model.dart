@@ -18,7 +18,8 @@ class FilterModel {
     this.animals,
   });
 
-  factory FilterModel.defaults() => const FilterModel(radiusKm: 5, lang: 'Française');
+  factory FilterModel.defaults() =>
+      const FilterModel(radiusKm: 5, lang: 'Française');
 
   FilterModel copyWith({
     double? radiusKm,
@@ -39,13 +40,13 @@ class FilterModel {
   }
 
   Map<String, dynamic> toMap() => {
-        'radiusKm': radiusKm,
-        'vehicleType': vehicleType,
-        'passengers': passengers,
-        'babySeat': babySeat,
-        'lang': lang,
-        'animals': animals,
-      }..removeWhere((k, v) => v == null);
+    'radiusKm': radiusKm,
+    'vehicleType': vehicleType,
+    'passengers': passengers,
+    'babySeat': babySeat,
+    'lang': lang,
+    'animals': animals,
+  }..removeWhere((k, v) => v == null);
 
   static Future<FilterModel> fromPrefs() async {
     final prefs = await SharedPreferences.getInstance();

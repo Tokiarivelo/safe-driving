@@ -7,7 +7,8 @@ class PulsingMarkerWidget extends StatefulWidget {
   State<PulsingMarkerWidget> createState() => _PulsingMarkerWidgetState();
 }
 
-class _PulsingMarkerWidgetState extends State<PulsingMarkerWidget> with SingleTickerProviderStateMixin {
+class _PulsingMarkerWidgetState extends State<PulsingMarkerWidget>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _c;
   late final Animation<double> _scale;
   late final Animation<double> _opacity;
@@ -15,9 +16,16 @@ class _PulsingMarkerWidgetState extends State<PulsingMarkerWidget> with SingleTi
   @override
   void initState() {
     super.initState();
-    _c = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat();
-    _scale = Tween<double>(begin: 1, end: 2.2).animate(CurvedAnimation(parent: _c, curve: Curves.easeOut));
-    _opacity = Tween<double>(begin: 0.5, end: 0).animate(CurvedAnimation(parent: _c, curve: Curves.easeOut));
+    _c = AnimationController(vsync: this, duration: const Duration(seconds: 2))
+      ..repeat();
+    _scale = Tween<double>(
+      begin: 1,
+      end: 2.2,
+    ).animate(CurvedAnimation(parent: _c, curve: Curves.easeOut));
+    _opacity = Tween<double>(
+      begin: 0.5,
+      end: 0,
+    ).animate(CurvedAnimation(parent: _c, curve: Curves.easeOut));
   }
 
   @override
@@ -44,7 +52,10 @@ class _PulsingMarkerWidgetState extends State<PulsingMarkerWidget> with SingleTi
                   child: Container(
                     width: 40,
                     height: 40,
-                    decoration: BoxDecoration(color: kBluePulse, shape: BoxShape.circle),
+                    decoration: BoxDecoration(
+                      color: kBluePulse,
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
               );
@@ -53,7 +64,10 @@ class _PulsingMarkerWidgetState extends State<PulsingMarkerWidget> with SingleTi
           Container(
             width: 24,
             height: 24,
-            decoration: const BoxDecoration(color: kBluePulse, shape: BoxShape.circle),
+            decoration: const BoxDecoration(
+              color: kBluePulse,
+              shape: BoxShape.circle,
+            ),
           ),
         ],
       ),

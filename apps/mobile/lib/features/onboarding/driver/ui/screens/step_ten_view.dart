@@ -42,7 +42,9 @@ class StepTenView extends StatelessWidget {
             step.description!,
             textAlign: TextAlign.center,
             style: AppTextStyles.body16(context).copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.7),
               height: 1.5,
             ),
           ),
@@ -60,7 +62,9 @@ class StepTenView extends StatelessWidget {
                     builder: (context) {
                       return PolicyModal(
                         titleContent: context.l10n.driverCguTitle,
-                        content: coordinator.legalViewModel.getCguContent(context),
+                        content: coordinator.legalViewModel.getCguContent(
+                          context,
+                        ),
                         onAccept: () {
                           coordinator.legalViewModel.setCguAccepted(0, true);
                         },

@@ -8,13 +8,13 @@ class CameraBuilder {
     DriverOnboardingCoordinator coordinator,
     BuildContext context,
   ) {
- 
     final screenHeight = MediaQuery.of(context).size.height;
     final cameraHeight = screenHeight * 0.5; // occupy half the screen
     return SizedBox(
       height: cameraHeight,
       child: SelfieCamera(
-        instruction: (selfieData['description'] as String?) ??
+        instruction:
+            (selfieData['description'] as String?) ??
             'Positionnez-vous face à la caméra et assurez-vous que votre visage soit bien visible.',
         onPhotoTaken: (imagePath) async {
           await coordinator.documentUploadViewModel.onSelfieTaken(imagePath);

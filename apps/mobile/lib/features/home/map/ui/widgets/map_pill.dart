@@ -4,7 +4,12 @@ class MapPill extends StatelessWidget {
   final String label;
   final IconData icon;
   final VoidCallback? onTap;
-  const MapPill({super.key, required this.label, required this.icon, this.onTap});
+  const MapPill({
+    super.key,
+    required this.label,
+    required this.icon,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,4 +40,3 @@ class MapPill extends StatelessWidget {
     );
   }
 }
-

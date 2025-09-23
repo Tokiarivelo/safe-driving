@@ -69,22 +69,29 @@ class _MapScreenViewState extends State<_MapScreenView> {
                 subdomains: vm.tileSubdomains,
                 userAgentPackageName: 'com.safe_driving.app',
               ),
-              MarkerLayer(markers: [
-                if (vm.currentLocation != null)
-                  Marker(
-                    width: 40,
-                    height: 40,
-                    point: vm.currentLocation!,
-                    child: const Icon(Icons.my_location, color: Colors.blue),
-                  ),
-              ]),
+              MarkerLayer(
+                markers: [
+                  if (vm.currentLocation != null)
+                    Marker(
+                      width: 40,
+                      height: 40,
+                      point: vm.currentLocation!,
+                      child: const Icon(Icons.my_location, color: Colors.blue),
+                    ),
+                ],
+              ),
               if (vm.routePolyline != null)
-                PolylineLayer(polylines: [
-                  Polyline(points: vm.routePolyline!, color: Colors.blue, strokeWidth: 4),
-                ]),
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: vm.routePolyline!,
+                      color: Colors.blue,
+                      strokeWidth: 4,
+                    ),
+                  ],
+                ),
             ],
           ),
-
 
           // Back button (top-left)
           Positioned(
@@ -104,11 +111,7 @@ class _MapScreenViewState extends State<_MapScreenView> {
           ),
 
           // Route summary pill (if any)
-          const Positioned(
-            right: 12,
-            bottom: 92,
-            child: RouteSummary(),
-          ),
+          const Positioned(right: 12, bottom: 92, child: RouteSummary()),
 
           // Loading overlay
           if (vm.isLoading)

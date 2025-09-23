@@ -10,10 +10,20 @@ import 'package:safe_driving/api/graph-ql/graphql_client.dart';
 
 void registerAuthModule(ServiceLocator sl) {
   if (GraphQLConfig.isConfigured) {
-    sl.registerLazySingleton<IAuthDataSource>(() => AuthDataSourceGraphQL(sl.get<GraphQLClientWrapper>()));
-    sl.registerLazySingleton<UserRepository>(() => UserRepository(sl.get<GraphQLClientWrapper>()));
-    sl.registerLazySingleton<AuthService>(() => AuthService(sl.get<IAuthDataSource>(), sl.get(), sl.get()));
-    sl.registerLazySingleton<AuthRepository>(() => AuthRepository(sl.get<AuthService>()));
-    sl.registerFactory<AuthViewModel>(() => AuthViewModel(sl.get<AuthRepository>()));
+    sl.registerLazySingleton<IAuthDataSource>(
+      () => AuthDataSourceGraphQL(sl.get<GraphQLClientWrapper>()),
+    );
+    sl.registerLazySingleton<UserRepository>(
+      () => UserRepository(sl.get<GraphQLClientWrapper>()),
+    );
+    sl.registerLazySingleton<AuthService>(
+      () => AuthService(sl.get<IAuthDataSource>(), sl.get(), sl.get()),
+    );
+    sl.registerLazySingleton<AuthRepository>(
+      () => AuthRepository(sl.get<AuthService>()),
+    );
+    sl.registerFactory<AuthViewModel>(
+      () => AuthViewModel(sl.get<AuthRepository>()),
+    );
   }
 }

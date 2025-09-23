@@ -63,7 +63,7 @@ class UserPreference {
     required this.updatedAt,
   });
 
-  factory UserPreference.fromJson(Map<String, dynamic> json) => 
+  factory UserPreference.fromJson(Map<String, dynamic> json) =>
       _$UserPreferenceFromJson(json);
   Map<String, dynamic> toJson() => _$UserPreferenceToJson(this);
 }
@@ -96,7 +96,7 @@ class DriverVehicle {
     required this.updatedAt,
   });
 
-  factory DriverVehicle.fromJson(Map<String, dynamic> json) => 
+  factory DriverVehicle.fromJson(Map<String, dynamic> json) =>
       _$DriverVehicleFromJson(json);
   Map<String, dynamic> toJson() => _$DriverVehicleToJson(this);
 }

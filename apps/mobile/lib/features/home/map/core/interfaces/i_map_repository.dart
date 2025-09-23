@@ -6,7 +6,12 @@ abstract class IMapRepository {
   Future<GeocodeResult?> searchAddress(String query);
   Future<RouteGeometry?> getRoute(LatLngPoint start, LatLngPoint end);
 
-  Future<void> updateUserPosition(String userId, double lat, double lng, double accuracy);
+  Future<void> updateUserPosition(
+    String userId,
+    double lat,
+    double lng,
+    double accuracy,
+  );
 
   Future<List<Driver>> getDriversNearby({
     required double lat,

@@ -46,10 +46,12 @@ class PaginationAnimations {
           color: AppColors.transparent,
           child: InkWell(
             onTap: onTap,
-            splashColor:
-                AppColors.fillButtonBackground.adapt(context).withAlpha(77),
-            highlightColor:
-                AppColors.placeHolderInput.adapt(context).withAlpha(51),
+            splashColor: AppColors.fillButtonBackground
+                .adapt(context)
+                .withAlpha(77),
+            highlightColor: AppColors.placeHolderInput
+                .adapt(context)
+                .withAlpha(51),
             child: Container(
               width: size,
               height: size,

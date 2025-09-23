@@ -53,13 +53,13 @@ class AuthDataSourceGraphQL implements IAuthDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> resetPasswordConfirm(String sessionToken, String newPassword) async {
+  Future<Map<String, dynamic>> resetPasswordConfirm(
+    String sessionToken,
+    String newPassword,
+  ) async {
     final result = await _graphQLClient.executeMutation(
       document: auth_mut.resetPasswordMutation,
-      variables: {
-        'sessionToken': sessionToken,
-        'newPassword': newPassword,
-      },
+      variables: {'sessionToken': sessionToken, 'newPassword': newPassword},
     );
     if (result.containsKey('resetPassword')) {
       return {'success': result['resetPassword'] == true};
@@ -77,14 +77,12 @@ class AuthDataSourceGraphQL implements IAuthDataSource {
     if (result.containsKey('refreshToken')) {
       final data = result['refreshToken'];
       if (data is Map<String, dynamic>) {
-        final access = (data['accessToken'] as String?) ?? (data['token'] as String?);
+        final access =
+            (data['accessToken'] as String?) ?? (data['token'] as String?);
         if (access != null && access.isNotEmpty) {
           return {
             'success': true,
-            'tokens': {
-              'accessToken': access,
-              'refreshToken': refreshToken,
-            },
+            'tokens': {'accessToken': access, 'refreshToken': refreshToken},
           };
         }
       }

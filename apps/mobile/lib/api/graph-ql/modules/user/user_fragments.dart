@@ -1,7 +1,8 @@
-
 import '../preference/preference_fragments.dart';
 
-const String userFragment = userPreferenceFragment + r'''
+const String userFragment =
+    userPreferenceFragment +
+    r'''
 fragment UserFragment on User {
   id
   email
@@ -20,4 +21,3 @@ fragment UserFragment on User {
   }
 }
 ''';
-

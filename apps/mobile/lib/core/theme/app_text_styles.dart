@@ -6,7 +6,9 @@ class AppTextStyles {
   static TextStyle h1(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final color = isDark ? theme.colorScheme.onSurface : theme.colorScheme.tertiary;
+    final color = isDark
+        ? theme.colorScheme.onSurface
+        : theme.colorScheme.tertiary;
     return theme.textTheme.headlineSmall!.copyWith(color: color);
   }
 
@@ -23,7 +25,9 @@ class AppTextStyles {
   static TextStyle h2(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final color = isDark ? theme.colorScheme.onSurface : theme.colorScheme.tertiary;
+    final color = isDark
+        ? theme.colorScheme.onSurface
+        : theme.colorScheme.tertiary;
     return theme.textTheme.titleMedium!.copyWith(color: color);
   }
 
@@ -35,7 +39,9 @@ class AppTextStyles {
   static TextStyle title20Regular(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final color = isDark ? theme.colorScheme.onSurface : theme.colorScheme.tertiary;
+    final color = isDark
+        ? theme.colorScheme.onSurface
+        : theme.colorScheme.tertiary;
     return theme.textTheme.headlineSmall!.copyWith(
       fontWeight: FontWeight.w400,
       color: color,
@@ -113,13 +119,17 @@ class AppTextStyles {
         color: Theme.of(context).colorScheme.onPrimary,
       );
 
-  static TextStyle title24(BuildContext context) => Theme.of(context)
-      .textTheme
-      .headlineSmall!
-      .copyWith(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onSurface);
+  static TextStyle title24(BuildContext context) =>
+      Theme.of(context).textTheme.headlineSmall!.copyWith(
+        fontSize: 24,
+        fontWeight: FontWeight.w700,
+        color: Theme.of(context).colorScheme.onSurface,
+      );
 
-  static TextStyle subtitle14(BuildContext context) => Theme.of(context)
-      .textTheme
-      .bodySmall!
-      .copyWith(fontSize: 14, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.onSurface);
+  static TextStyle subtitle14(BuildContext context) =>
+      Theme.of(context).textTheme.bodySmall!.copyWith(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: Theme.of(context).colorScheme.onSurface,
+      );
 }

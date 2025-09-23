@@ -6,15 +6,20 @@ const String _tileUrlTemplateDef = String.fromEnvironment('TILE_URL_TEMPLATE');
 const String _tileSubdomainsDef = String.fromEnvironment('TILE_SUBDOMAINS');
 const String _orsBaseUrlDef = String.fromEnvironment('ORS_BASE_URL');
 const String _orsApiKeyDef = String.fromEnvironment('ORS_API_KEY');
-const String _orsCountryBoundaryDef = String.fromEnvironment('ORS_COUNTRY_BOUNDARY');
-const String _mapDefaultCenterDef = String.fromEnvironment('MAP_DEFAULT_CENTER');
+const String _orsCountryBoundaryDef = String.fromEnvironment(
+  'ORS_COUNTRY_BOUNDARY',
+);
+const String _mapDefaultCenterDef = String.fromEnvironment(
+  'MAP_DEFAULT_CENTER',
+);
 const String _mapInitialZoomDef = String.fromEnvironment('MAP_INITIAL_ZOOM');
 
 class MapConfig {
   MapConfig._();
 
   // Central default values
-  static const String _defaultTileTemplate = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  static const String _defaultTileTemplate =
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   static const String _defaultTileSubdomains = 'a,b,c';
   static const String _defaultOrsBaseUrl = 'https://api.openrouteservice.org';
   static const String _defaultCountryBoundary = '';
@@ -29,7 +34,11 @@ class MapConfig {
     }
   }
 
-  static String _get(String key, {required String defineValue, required String fallback}) {
+  static String _get(
+    String key, {
+    required String defineValue,
+    required String fallback,
+  }) {
     String? v;
     if (_dotenvReady) {
       try {
@@ -45,10 +54,10 @@ class MapConfig {
 
   // Public getters
   static String get tileUrlTemplate => _get(
-        'TILE_URL_TEMPLATE',
-        defineValue: _tileUrlTemplateDef,
-        fallback: _defaultTileTemplate,
-      );
+    'TILE_URL_TEMPLATE',
+    defineValue: _tileUrlTemplateDef,
+    fallback: _defaultTileTemplate,
+  );
 
   static List<String> get tileSubdomains {
     final s = _get(
@@ -64,22 +73,19 @@ class MapConfig {
   }
 
   static String get orsBaseUrl => _get(
-        'ORS_BASE_URL',
-        defineValue: _orsBaseUrlDef,
-        fallback: _defaultOrsBaseUrl,
-      );
+    'ORS_BASE_URL',
+    defineValue: _orsBaseUrlDef,
+    fallback: _defaultOrsBaseUrl,
+  );
 
-  static String get orsApiKey => _get(
-        'ORS_API_KEY',
-        defineValue: _orsApiKeyDef,
-        fallback: '',
-      );
+  static String get orsApiKey =>
+      _get('ORS_API_KEY', defineValue: _orsApiKeyDef, fallback: '');
 
   static String get orsCountryBoundary => _get(
-        'ORS_COUNTRY_BOUNDARY',
-        defineValue: _orsCountryBoundaryDef,
-        fallback: _defaultCountryBoundary,
-      );
+    'ORS_COUNTRY_BOUNDARY',
+    defineValue: _orsCountryBoundaryDef,
+    fallback: _defaultCountryBoundary,
+  );
 
   static LatLng get defaultCenter {
     final raw = _get(
@@ -94,7 +100,8 @@ class MapConfig {
         final lng = double.parse(parts[1]);
         return LatLng(lat, lng);
       }
-    } catch (_) {}    return const LatLng(-18.8792, 47.5079);
+    } catch (_) {}
+    return const LatLng(-18.8792, 47.5079);
   }
 
   static double get initialZoom {
@@ -110,4 +117,3 @@ class MapConfig {
     }
   }
 }
-

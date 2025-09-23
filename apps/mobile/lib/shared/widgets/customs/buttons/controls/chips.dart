@@ -15,15 +15,17 @@ class Chips {
         label: Text(
           label,
           style: TextStyle(
-            color: (labelColor ??
-                    (selected ? AppColors.light : AppColors.textColor))
-                .adapt(context),
+            color:
+                (labelColor ??
+                        (selected ? AppColors.light : AppColors.textColor))
+                    .adapt(context),
           ),
         ),
         selected: selected,
         onSelected: onSelected,
-        selectedColor:
-            (selectedColor ?? AppColors.fillButtonBackground).adapt(context),
+        selectedColor: (selectedColor ?? AppColors.fillButtonBackground).adapt(
+          context,
+        ),
         selectedShadowColor: AppColors.light.adapt(context),
         side: BorderSide(
           color: ColorsWidget.subtleBorderColor(context),
@@ -52,8 +54,9 @@ class Chips {
                 size: 18,
                 color: selected
                     ? ((selectedLabelColor ?? AppColors.light).adapt(context))
-                    : ((labelColor ?? AppColors.buttonWithoutBackGround)
-                        .adapt(context)),
+                    : ((labelColor ?? AppColors.buttonWithoutBackGround).adapt(
+                        context,
+                      )),
               )
             : null,
         label: Text(
@@ -61,19 +64,23 @@ class Chips {
           style: TextStyle(
             color: selected
                 ? ((selectedLabelColor ?? AppColors.light).adapt(context))
-                : ((labelColor ?? AppColors.buttonWithoutBackGround)
-                    .adapt(context)),
+                : ((labelColor ?? AppColors.buttonWithoutBackGround).adapt(
+                    context,
+                  )),
           ),
         ),
         selected: selected,
         onSelected: onSelected,
-        selectedColor:
-            (selectedColor ?? AppColors.fillButtonBackground).adapt(context),
+        selectedColor: (selectedColor ?? AppColors.fillButtonBackground).adapt(
+          context,
+        ),
         checkmarkColor: (checkmarkColor ?? AppColors.light).adapt(context),
         backgroundColor: backgroundColor,
         side: BorderSide(
           color: selected
-              ? ((selectedColor ?? AppColors.fillButtonBackground).adapt(context))
+              ? ((selectedColor ?? AppColors.fillButtonBackground).adapt(
+                  context,
+                ))
               : ColorsWidget.subtleBorderColor(context),
         ),
       ),
@@ -97,8 +104,9 @@ class Chips {
         label: Text(
           label,
           style: TextStyle(
-            color:
-                (labelColor ?? AppColors.buttonWithoutBackGround).adapt(context),
+            color: (labelColor ?? AppColors.buttonWithoutBackGround).adapt(
+              context,
+            ),
             fontSize: fontSize ?? 12,
           ),
         ),

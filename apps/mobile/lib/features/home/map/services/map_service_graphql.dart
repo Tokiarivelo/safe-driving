@@ -60,7 +60,12 @@ class MapServiceGraphQL implements IDriverService {
     final d = interval ?? const Duration(seconds: 5);
     while (true) {
       try {
-        final data = await getDriversNearby(lat: lat, lng: lng, radiusKm: radiusKm, filters: filters);
+        final data = await getDriversNearby(
+          lat: lat,
+          lng: lng,
+          radiusKm: radiusKm,
+          filters: filters,
+        );
         yield data;
       } catch (_) {
         yield const <DriverDTO>[];

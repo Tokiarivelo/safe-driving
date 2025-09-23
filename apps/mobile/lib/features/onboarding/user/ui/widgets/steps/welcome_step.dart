@@ -20,7 +20,9 @@ class _WelcomeStep extends StatelessWidget {
         Text(
           context.l10n.stepWelcomeSubtitle,
           style: AppTextStyles.body14(context).copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.75),
           ),
           textAlign: TextAlign.center,
         ),

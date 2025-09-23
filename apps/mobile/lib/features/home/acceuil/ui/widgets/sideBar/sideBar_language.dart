@@ -22,7 +22,9 @@ class SidebarLanguage extends StatelessWidget {
         decoration: BoxDecoration(
           color: viewModel.selectedIndex == 2
               ? AppColors.color1.withValues(alpha: 0.2)
-              : (isDark ? AppColors.backgroundSecondary : AppColors.light.withValues(alpha: 0.8)),
+              : (isDark
+                    ? AppColors.backgroundSecondary
+                    : AppColors.light.withValues(alpha: 0.8)),
           borderRadius: BorderRadius.circular(8),
           border: viewModel.selectedIndex == 2
               ? Border.all(color: AppColors.color1, width: 1)
@@ -46,9 +48,14 @@ class SidebarLanguage extends StatelessWidget {
                     Icons.arrow_drop_down,
                     color: isDark ? AppColors.light : AppColors.dark,
                   ),
-                  dropdownColor: isDark ? AppColors.backgroundSecondary : AppColors.light,
+                  dropdownColor: isDark
+                      ? AppColors.backgroundSecondary
+                      : AppColors.light,
                   borderRadius: BorderRadius.circular(8),
-                  style: TextStyle(color: isDark ? AppColors.light : AppColors.dark, fontSize: 16),
+                  style: TextStyle(
+                    color: isDark ? AppColors.light : AppColors.dark,
+                    fontSize: 16,
+                  ),
                   items: [
                     _buildDropdownItem(
                       value: AppLanguage.french,
@@ -84,7 +91,13 @@ class SidebarLanguage extends StatelessWidget {
         children: [
           Text(flag, style: const TextStyle(fontSize: 18)),
           const SizedBox(width: 12),
-          Text(title, style: TextStyle(fontSize: 14, color: isDark ? AppColors.light : AppColors.dark)),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 14,
+              color: isDark ? AppColors.light : AppColors.dark,
+            ),
+          ),
         ],
       ),
     );

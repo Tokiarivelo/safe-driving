@@ -101,13 +101,17 @@ class PhotoGalleryView extends StatelessWidget {
                         Icon(
                           Icons.error_outline,
                           size: 48,
-                          color: AppColors.textColor.adapt(context).withValues(alpha: 0.5),
+                          color: AppColors.textColor
+                              .adapt(context)
+                              .withValues(alpha: 0.5),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'Erreur de chargement',
                           style: TextStyle(
-                            color: AppColors.textColor.adapt(context).withValues(alpha: 0.7),
+                            color: AppColors.textColor
+                                .adapt(context)
+                                .withValues(alpha: 0.7),
                             fontFamily: 'Inder',
                           ),
                         ),

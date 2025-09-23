@@ -31,10 +31,10 @@ class SigninViewModel extends ChangeNotifier {
           variables: const {},
         );
         meUser = me['me'] as Map<String, dynamic>?;
-        final role = (meUser != null) ? (meUser!['role'] as String?) : null;
+        final role = (meUser != null) ? (meUser['role'] as String?) : null;
         hasRole = role != null && role.trim().isNotEmpty;
         if (!hasRole && meUser != null) {
-          final roles = meUser!['Role'] as List<dynamic>?;
+          final roles = meUser['Role'] as List<dynamic>?;
           hasRole = roles != null && roles.isNotEmpty;
         }
       } catch (_) {
@@ -53,10 +53,10 @@ class SigninViewModel extends ChangeNotifier {
               variables: const {},
             );
             meUser = me2['me'] as Map<String, dynamic>?;
-            final role2 = (meUser != null) ? (meUser!['role'] as String?) : null;
+            final role2 = (meUser != null) ? (meUser['role'] as String?) : null;
             hasRole = role2 != null && role2.trim().isNotEmpty;
             if (!hasRole && meUser != null) {
-              final roles2 = meUser!['Role'] as List<dynamic>?;
+              final roles2 = meUser['Role'] as List<dynamic>?;
               hasRole = roles2 != null && roles2.isNotEmpty;
             }
           }
@@ -67,7 +67,7 @@ class SigninViewModel extends ChangeNotifier {
         return;
       }
 
-      final bool isVerified = meUser != null && (meUser!['isVerified'] == true);
+      final bool isVerified = meUser != null && (meUser['isVerified'] == true);
       if (!isVerified) {
         Navigator.pushReplacementNamed(_context!, AppRoutes.onboarding);
         return;

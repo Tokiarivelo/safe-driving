@@ -43,9 +43,7 @@ class InputBuilder {
             alignment: Alignment.centerRight,
             child: Container(
               decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: color),
-                ),
+                border: Border(bottom: BorderSide(color: color)),
               ),
               child: Text(
                 forgotText,

@@ -20,20 +20,14 @@ Map<String, dynamic> _$PaginationArgsToJson(PaginationArgs instance) =>
       'cursor': instance.cursor,
     };
 
-WhereInput _$WhereInputFromJson(Map<String, dynamic> json) => WhereInput(
-      where: json['where'] as Map<String, dynamic>?,
-    );
+WhereInput _$WhereInputFromJson(Map<String, dynamic> json) =>
+    WhereInput(where: json['where'] as Map<String, dynamic>?);
 
 Map<String, dynamic> _$WhereInputToJson(WhereInput instance) =>
-    <String, dynamic>{
-      'where': instance.where,
-    };
+    <String, dynamic>{'where': instance.where};
 
-OrderByInput _$OrderByInputFromJson(Map<String, dynamic> json) => OrderByInput(
-      orderBy: json['orderBy'] as Map<String, dynamic>?,
-    );
+OrderByInput _$OrderByInputFromJson(Map<String, dynamic> json) =>
+    OrderByInput(orderBy: json['orderBy'] as Map<String, dynamic>?);
 
 Map<String, dynamic> _$OrderByInputToJson(OrderByInput instance) =>
-    <String, dynamic>{
-      'orderBy': instance.orderBy,
-    };
+    <String, dynamic>{'orderBy': instance.orderBy};

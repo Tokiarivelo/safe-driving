@@ -4,11 +4,17 @@ import '../../../../../../core/utils/form/form_utils.dart';
 import '../../../../../../shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class AuthValidationHandler {
-  static String validateField(BuildContext context, String value, String fieldType) {
+  static String validateField(
+    BuildContext context,
+    String value,
+    String fieldType,
+  ) {
     switch (fieldType) {
       case 'email':
         if (value.isEmpty) return '';
-        return RegexFormatter.isValidEmail(value) ? '' : context.l10n.pleaseEnterValidEmail;
+        return RegexFormatter.isValidEmail(value)
+            ? ''
+            : context.l10n.pleaseEnterValidEmail;
       case 'password':
         if (value.isEmpty) return '';
         return value.length < 8 ? context.l10n.passwordMinLength : '';
@@ -112,10 +118,7 @@ class AuthValidationHandler {
       return false;
     }
     if (password.trim().length < 8) {
-      _showError(
-        context,
-        context.l10n.passwordMinLength,
-      );
+      _showError(context, context.l10n.passwordMinLength);
       return false;
     }
     if (confirmPassword.trim().isEmpty) {

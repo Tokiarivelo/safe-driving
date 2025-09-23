@@ -8,8 +8,9 @@ import '../models/driver_models.dart';
 
 class MapServiceSocketIO implements IDriverService {
   final Map<String, DriverDTO> _mem = {};
-  final StreamController<List<DriverDTO>> _ctrl = StreamController<List<DriverDTO>>.broadcast();
-io.Socket? _socket;
+  final StreamController<List<DriverDTO>> _ctrl =
+      StreamController<List<DriverDTO>>.broadcast();
+  io.Socket? _socket;
   double _centerLat = 0;
   double _centerLng = 0;
   double _radiusKm = 5;
@@ -22,9 +23,13 @@ io.Socket? _socket;
     final scheme = u.scheme.isEmpty ? 'http' : u.scheme;
     var host = u.host.isEmpty ? 'localhost' : u.host;
     final port = u.hasPort ? u.port : (scheme == 'https' ? 443 : 80);
-    if (!kIsWeb && (host == 'localhost' || host == '127.0.0.1')) host = '10.0.2.2';
+    if (!kIsWeb && (host == 'localhost' || host == '127.0.0.1')) {
+      host = '10.0.2.2';
+    }
     final base = Uri(scheme: scheme, host: host, port: port).toString();
-_socket = io.io(base, {'transports': ['websocket']});
+    _socket = io.io(base, {
+      'transports': ['websocket'],
+    });
     _socket!.on('connect', (_) {
       _socket!.emit('drivers:list', {'pattern': 'driver:*'});
     });
@@ -121,9 +126,12 @@ _socket = io.io(base, {'transports': ['websocket']});
     const R = 6371000.0;
     final dLat = _deg2rad(lat2 - lat1);
     final dLon = _deg2rad(lon2 - lon1);
-    final a = math.sin(dLat / 2) * math.sin(dLat / 2) +
-        math.cos(_deg2rad(lat1)) * math.cos(_deg2rad(lat2)) *
-            math.sin(dLon / 2) * math.sin(dLon / 2);
+    final a =
+        math.sin(dLat / 2) * math.sin(dLat / 2) +
+        math.cos(_deg2rad(lat1)) *
+            math.cos(_deg2rad(lat2)) *
+            math.sin(dLon / 2) *
+            math.sin(dLon / 2);
     final c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
     return R * c;
   }

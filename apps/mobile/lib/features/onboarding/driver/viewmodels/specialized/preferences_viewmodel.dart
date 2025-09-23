@@ -78,7 +78,9 @@ class PreferencesViewModel extends ChangeNotifier {
     // Persister immédiatement les préférences de notifications
     final prefs = <String, bool>{
       'activateSmsNotifications': _selectedNotifications.contains('SMS'),
-      'activateNotifications': _selectedNotifications.contains('Push notification mobile'),
+      'activateNotifications': _selectedNotifications.contains(
+        'Push notification mobile',
+      ),
       'activateEmailNotifications': _selectedNotifications.contains('E-mail'),
     };
     _service.saveNotificationPreferences(prefs);
@@ -107,7 +109,10 @@ class PreferencesViewModel extends ChangeNotifier {
     _selectedTheme = theme;
     notifyListeners();
 
-    _service.saveAppPreferences(theme: _selectedTheme, language: _selectedLanguage);
+    _service.saveAppPreferences(
+      theme: _selectedTheme,
+      language: _selectedLanguage,
+    );
   }
 
   void setSelectedTheme(String theme) {
@@ -120,8 +125,11 @@ class PreferencesViewModel extends ChangeNotifier {
     final code = _normalizeLanguage(language);
     _selectedLanguage = code;
     notifyListeners();
- 
-    _service.saveAppPreferences(theme: _selectedTheme, language: _selectedLanguage);
+
+    _service.saveAppPreferences(
+      theme: _selectedTheme,
+      language: _selectedLanguage,
+    );
   }
 
   void setSelectedLanguage(String language) {
@@ -135,8 +143,8 @@ class PreferencesViewModel extends ChangeNotifier {
     final themeLabel = _selectedTheme == 'clair'
         ? 'Clair'
         : _selectedTheme == 'sombre'
-            ? 'Sombre'
-            : 'Automatique';
+        ? 'Sombre'
+        : 'Automatique';
     return {
       'GPS': _gpsEnabled ? 'Activé' : 'Désactivé',
       'Notifications': _selectedNotifications.isNotEmpty
@@ -166,8 +174,12 @@ class PreferencesViewModel extends ChangeNotifier {
 
   String _normalizeLanguage(String language) {
     final lower = language.toLowerCase();
-    if (lower == 'fr' || lower == 'français' || lower == 'francais') return 'fr';
-    if (lower == 'en' || lower == 'english' || lower == 'anglais') return 'en';
+    if (lower == 'fr' || lower == 'français' || lower == 'francais') {
+      return 'fr';
+    }
+    if (lower == 'en' || lower == 'english' || lower == 'anglais') {
+      return 'en';
+    }
     return 'fr';
   }
 

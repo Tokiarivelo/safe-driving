@@ -10,11 +10,22 @@ import 'package:safe_driving/features/onboarding/user/viewmodels/user_onboarding
 
 void registerOnboardingUserModule(ServiceLocator sl) {
   if (GraphQLConfig.isConfigured) {
-    sl.registerLazySingleton<IUserDataSource>(() => UserDataSourceGraphQL(sl.get<GraphQLClientWrapper>()));
-    sl.registerLazySingleton<IUserOnboardingService>(() => UserOnboardingService(sl.get<IUserDataSource>()));
+    sl.registerLazySingleton<IUserDataSource>(
+      () => UserDataSourceGraphQL(sl.get<GraphQLClientWrapper>()),
+    );
+    sl.registerLazySingleton<IUserOnboardingService>(
+      () => UserOnboardingService(sl.get<IUserDataSource>()),
+    );
   } else {
-    sl.registerLazySingleton<IUserOnboardingService>(() => UserOnboardingService());
+    sl.registerLazySingleton<IUserOnboardingService>(
+      () => UserOnboardingService(),
+    );
   }
-  sl.registerLazySingleton<UserOnboardingRepository>(() => UserOnboardingRepository(service: sl.get<IUserOnboardingService>()));
-  sl.registerFactory<UserOnboardingViewModel>(() => UserOnboardingViewModel(repository: sl.get<UserOnboardingRepository>()));
+  sl.registerLazySingleton<UserOnboardingRepository>(
+    () => UserOnboardingRepository(service: sl.get<IUserOnboardingService>()),
+  );
+  sl.registerFactory<UserOnboardingViewModel>(
+    () =>
+        UserOnboardingViewModel(repository: sl.get<UserOnboardingRepository>()),
+  );
 }

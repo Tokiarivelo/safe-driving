@@ -17,13 +17,12 @@ class UserTransportSelectorWidget extends StatelessWidget {
     return Builder(
       builder: (context) {
         final bool isDark = Theme.of(context).brightness == Brightness.dark;
-        final borderColor = isDark ? AppColors.borderButtonDark : AppColors.borderButtonLight;
+        final borderColor = isDark
+            ? AppColors.borderButtonDark
+            : AppColors.borderButtonLight;
         return Container(
           decoration: BoxDecoration(
-            border: Border.all(
-              color: borderColor,
-              width: 1,
-            ),
+            border: Border.all(color: borderColor, width: 1),
             borderRadius: BorderRadius.circular(8),
           ),
           padding: const EdgeInsets.all(8),
@@ -38,16 +37,16 @@ class UserTransportSelectorWidget extends StatelessWidget {
                   color: isDark ? AppColors.textColorDark : null,
                 ),
                 label: Text(mode),
-            selected: isSelected,
-            onSelected: (selected) =>
-                onSelectionChanged(MapEntry(mode, selected)),
-            selectedColor: AppColors.fillButtonBackground.adapt(context),
-            checkmarkColor: AppColors.light.adapt(context),
-            side: BorderSide(color: borderColor),
-          );
-        }).toList(),
-      ),
-    );
+                selected: isSelected,
+                onSelected: (selected) =>
+                    onSelectionChanged(MapEntry(mode, selected)),
+                selectedColor: AppColors.fillButtonBackground.adapt(context),
+                checkmarkColor: AppColors.light.adapt(context),
+                side: BorderSide(color: borderColor),
+              );
+            }).toList(),
+          ),
+        );
       },
     );
   }

@@ -71,7 +71,8 @@ class SidebarHeader extends StatelessWidget {
                     ? Image.network(
                         imageUrl,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => _Initials(initials: initials),
+                        errorBuilder: (context, error, stackTrace) =>
+                            _Initials(initials: initials),
                       )
                     : _Initials(initials: initials),
               ),
@@ -80,7 +81,10 @@ class SidebarHeader extends StatelessWidget {
           const SizedBox(width: 12),
           const Expanded(child: SidebarProfile()),
           IconButton(
-            icon: Icon(Icons.close, color: isDark ? AppColors.light : AppColors.dark),
+            icon: Icon(
+              Icons.close,
+              color: isDark ? AppColors.light : AppColors.dark,
+            ),
             onPressed: onClose,
           ),
         ],

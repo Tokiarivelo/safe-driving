@@ -7,11 +7,9 @@ part 'upload_types.g.dart';
 class FileUploadResult {
   final String url;
 
-  FileUploadResult({
-    required this.url,
-  });
+  FileUploadResult({required this.url});
 
-  factory FileUploadResult.fromJson(Map<String, dynamic> json) => 
+  factory FileUploadResult.fromJson(Map<String, dynamic> json) =>
       _$FileUploadResultFromJson(json);
   Map<String, dynamic> toJson() => _$FileUploadResultToJson(this);
 }

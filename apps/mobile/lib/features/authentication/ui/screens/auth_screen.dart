@@ -71,7 +71,6 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-
       backgroundColor: isDark
           ? Theme.of(context).scaffoldBackgroundColor
           : AppColors.color1.adapt(context),

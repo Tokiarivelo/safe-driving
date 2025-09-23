@@ -41,7 +41,10 @@ class CapturedPhotosModalState
       textColor: AppColors.buttonWithoutBackGround.adapt(context),
       borderColor: AppColors.light.adapt(context),
       elevation: 2,
-      icon: Icon(Icons.delete, color: AppColors.buttonWithoutBackGround.adapt(context)),
+      icon: Icon(
+        Icons.delete,
+        color: AppColors.buttonWithoutBackGround.adapt(context),
+      ),
     );
   }
 }

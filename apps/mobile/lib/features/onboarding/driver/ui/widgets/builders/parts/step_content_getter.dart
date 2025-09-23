@@ -21,15 +21,15 @@ class StepContentGetter {
         step.stepType == DriverStepType.summary ||
         step.stepType == DriverStepType.completion;
 
-
     if (step.stepType == DriverStepType.completion) {
       return StepTwelveView(
         step: step,
         coordinator: coordinator,
-        onContinue: () {
-          coordinator
-              .markDriverVerified()
-              .whenComplete(() => Navigator.pushReplacementNamed(context, AppRoutes.home));
+        onContinue: () async {
+          await coordinator.markDriverVerified();
+          if (context.mounted) {
+            Navigator.pushReplacementNamed(context, AppRoutes.home);
+          }
         },
       );
     }
@@ -60,10 +60,12 @@ class StepContentGetter {
                   subtitle = context.l10n.driverVehicleInfoSubtitle;
                   break;
                 case DriverStepType.documents:
-                  if (step.additionalContent?.containsKey('carteIdentité') == true) {
+                  if (step.additionalContent?.containsKey('carteIdentité') ==
+                      true) {
                     title = context.l10n.driverIdentityVerificationTitle;
                     subtitle = context.l10n.driverIdentityVerificationSubtitle;
-                  } else if (step.additionalContent?.containsKey('documents') == true) {
+                  } else if (step.additionalContent?.containsKey('documents') ==
+                      true) {
                     title = context.l10n.driverVehicleDocumentsTitle;
                     subtitle = context.l10n.driverVehicleDocumentsSubtitle;
                   }
@@ -107,15 +109,13 @@ class StepContentGetter {
                   Text(
                     title,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.h1(
-                      context,
-                    ).copyWith(
+                    style: AppTextStyles.h1(context).copyWith(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
                       color: forceLightHeader
                           ? (Theme.of(context).brightness == Brightness.dark
-                              ? AppColors.light
-                              : Theme.of(context).colorScheme.onSurface)
+                                ? AppColors.light
+                                : Theme.of(context).colorScheme.onSurface)
                           : null,
                     ),
                   ),
@@ -126,9 +126,12 @@ class StepContentGetter {
                     style: AppTextStyles.body16(context).copyWith(
                       color: forceLightHeader
                           ? (Theme.of(context).brightness == Brightness.dark
-                              ? AppColors.light
-                              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7))
-                          : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                                ? AppColors.light
+                                : Theme.of(context).colorScheme.onSurface
+                                      .withValues(alpha: 0.7))
+                          : Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.7),
                       height: 1.5,
                     ),
                   ),

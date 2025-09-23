@@ -13,7 +13,14 @@ class FiltersLocalDataSource {
     final b = prefs.getBool(filtersBabySeat);
     final l = prefs.getString(filtersLang);
     final a = prefs.getBool(filtersAnimals);
-    return FilterModel(radiusKm: r, vehicleType: vt, passengers: p, babySeat: b, lang: l, animals: a);
+    return FilterModel(
+      radiusKm: r,
+      vehicleType: vt,
+      passengers: p,
+      babySeat: b,
+      lang: l,
+      animals: a,
+    );
   }
 
   Future<void> saveFilters(FilterModel f) async {

@@ -16,11 +16,15 @@ mixin MapDriversMixin {
     if (u == null) return;
     _driversSub?.cancel();
     _driversSub = repository
-        .watchDriversNearby(lat: u.latitude, lng: u.longitude, radiusKm: radiusKm)
+        .watchDriversNearby(
+          lat: u.latitude,
+          lng: u.longitude,
+          radiusKm: radiusKm,
+        )
         .listen((list) {
-      drivers = list;
-      notifyListeners();
-    });
+          drivers = list;
+          notifyListeners();
+        });
   }
 
   void stopDrivers() {

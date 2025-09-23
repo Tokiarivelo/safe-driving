@@ -7,13 +7,13 @@ part of 'vehicle_type_types.dart';
 // **************************************************************************
 
 VehicleType _$VehicleTypeFromJson(Map<String, dynamic> json) => VehicleType(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      icon: json['icon'] as String?,
-      description: json['description'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-    );
+  id: json['id'] as String,
+  name: json['name'] as String,
+  icon: json['icon'] as String?,
+  description: json['description'] as String?,
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
+);
 
 Map<String, dynamic> _$VehicleTypeToJson(VehicleType instance) =>
     <String, dynamic>{
@@ -26,47 +26,44 @@ Map<String, dynamic> _$VehicleTypeToJson(VehicleType instance) =>
     };
 
 VehicleTypeCreateInput _$VehicleTypeCreateInputFromJson(
-        Map<String, dynamic> json) =>
-    VehicleTypeCreateInput(
-      name: json['name'] as String,
-      icon: json['icon'] as String?,
-      description: json['description'] as String?,
-    );
+  Map<String, dynamic> json,
+) => VehicleTypeCreateInput(
+  name: json['name'] as String,
+  icon: json['icon'] as String?,
+  description: json['description'] as String?,
+);
 
 Map<String, dynamic> _$VehicleTypeCreateInputToJson(
-        VehicleTypeCreateInput instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'icon': instance.icon,
-      'description': instance.description,
-    };
+  VehicleTypeCreateInput instance,
+) => <String, dynamic>{
+  'name': instance.name,
+  'icon': instance.icon,
+  'description': instance.description,
+};
 
 VehicleTypeUpdateInput _$VehicleTypeUpdateInputFromJson(
-        Map<String, dynamic> json) =>
-    VehicleTypeUpdateInput(
-      name: json['name'] as String?,
-      icon: json['icon'] as String?,
-      description: json['description'] as String?,
-    );
+  Map<String, dynamic> json,
+) => VehicleTypeUpdateInput(
+  name: json['name'] as String?,
+  icon: json['icon'] as String?,
+  description: json['description'] as String?,
+);
 
 Map<String, dynamic> _$VehicleTypeUpdateInputToJson(
-        VehicleTypeUpdateInput instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'icon': instance.icon,
-      'description': instance.description,
-    };
+  VehicleTypeUpdateInput instance,
+) => <String, dynamic>{
+  'name': instance.name,
+  'icon': instance.icon,
+  'description': instance.description,
+};
 
 VehicleTypeWhereInput _$VehicleTypeWhereInputFromJson(
-        Map<String, dynamic> json) =>
-    VehicleTypeWhereInput(
-      id: json['id'] as String?,
-      name: json['name'] as String?,
-    );
+  Map<String, dynamic> json,
+) => VehicleTypeWhereInput(
+  id: json['id'] as String?,
+  name: json['name'] as String?,
+);
 
 Map<String, dynamic> _$VehicleTypeWhereInputToJson(
-        VehicleTypeWhereInput instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-    };
+  VehicleTypeWhereInput instance,
+) => <String, dynamic>{'id': instance.id, 'name': instance.name};

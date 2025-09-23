@@ -20,9 +20,10 @@ abstract class IDriverService {
 
   Future<void> completeDriverOnboarding(Map<String, dynamic> data);
 
-  
-  Future<void> saveLegalAcceptance({bool? cguAccepted, bool? privacyPolicyAccepted});
-
+  Future<void> saveLegalAcceptance({
+    bool? cguAccepted,
+    bool? privacyPolicyAccepted,
+  });
 
   Future<void> setUserVerified(bool value);
 
@@ -30,17 +31,14 @@ abstract class IDriverService {
 
   Future<void> clearAllData();
 
-
   Future<void> refreshBackendPhotoCounts();
   int get cachedPersonalPhotosCount;
   int get cachedVehiclePhotosCount;
   int get cachedTotalPhotosCount;
 
-
   int getTotalUploadedPhotosCount();
   int getPersonalUploadedPhotosCount();
   int getVehicleUploadedPhotosCount();
-
 
   Future<void> updateOnboardingStep({
     required int currentStep,

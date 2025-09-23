@@ -58,15 +58,22 @@ class _StepTwoViewState extends State<StepTwoView> {
       final email = user.email;
 
       final nameCtrl = widget.coordinator.personalInfoViewModel.nameController;
-      final emailCtrl = widget.coordinator.personalInfoViewModel.emailController;
+      final emailCtrl =
+          widget.coordinator.personalInfoViewModel.emailController;
 
       if (nameCtrl.text.trim().isEmpty) {
         nameCtrl.text = displayName;
-        widget.coordinator.personalInfoViewModel.updateFormField('name', displayName);
+        widget.coordinator.personalInfoViewModel.updateFormField(
+          'name',
+          displayName,
+        );
       }
       if (emailCtrl.text.trim().isEmpty) {
         emailCtrl.text = email;
-        widget.coordinator.personalInfoViewModel.updateFormField('email', email);
+        widget.coordinator.personalInfoViewModel.updateFormField(
+          'email',
+          email,
+        );
       }
       if (mounted) setState(() {});
     } catch (_) {}
@@ -84,10 +91,9 @@ class _StepTwoViewState extends State<StepTwoView> {
           Text(
             widget.step.title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.h1(context).copyWith(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.h1(
+              context,
+            ).copyWith(fontSize: 24, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 16),
           Text(
@@ -121,7 +127,8 @@ class _StepTwoViewState extends State<StepTwoView> {
             hint: 'example@email.com',
             icon: Icons.email,
             keyboardType: TextInputType.emailAddress,
-            controller: widget.coordinator.personalInfoViewModel.emailController,
+            controller:
+                widget.coordinator.personalInfoViewModel.emailController,
             showLabel: true,
             backgroundColor: AppColors.inputTextBackground,
             readOnly: true,
@@ -135,7 +142,8 @@ class _StepTwoViewState extends State<StepTwoView> {
             icon: Icons.phone,
             keyboardType: TextInputType.phone,
             showLabel: true,
-            controller: widget.coordinator.personalInfoViewModel.phoneController,
+            controller:
+                widget.coordinator.personalInfoViewModel.phoneController,
             onChanged: (value) => {},
             validator: (value) => value?.isEmpty == true
                 ? null

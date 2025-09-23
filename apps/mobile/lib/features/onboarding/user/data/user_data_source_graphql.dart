@@ -14,7 +14,6 @@ class UserDataSourceGraphQL implements IUserDataSource {
     required String userId,
     required Map<String, dynamic> preferences,
   }) async {
-  
     final input = <String, dynamic>{};
     if (preferences.containsKey('gpsEnabled')) {
       input['activateLocation'] = preferences['gpsEnabled'] == true;
@@ -38,10 +37,13 @@ class UserDataSourceGraphQL implements IUserDataSource {
       input['cguAccepted'] = preferences['cguAccepted'] == true;
     }
     if (preferences.containsKey('privacyPolicyAccepted')) {
-      input['privacyPolicyAccepted'] = preferences['privacyPolicyAccepted'] == true;
+      input['privacyPolicyAccepted'] =
+          preferences['privacyPolicyAccepted'] == true;
     }
     if (preferences.containsKey('selectedTransports')) {
-      final transports = (preferences['selectedTransports'] as List?)?.cast<String>() ?? const <String>[];
+      final transports =
+          (preferences['selectedTransports'] as List?)?.cast<String>() ??
+          const <String>[];
       if (transports.isNotEmpty) {
         final vtResp = await _client.executeQuery(
           document: getVehicleTypesQuery,
@@ -77,9 +79,17 @@ class UserDataSourceGraphQL implements IUserDataSource {
 
   String _normalize(String s) {
     var r = s.toLowerCase();
-    r = r.replaceAll('à', 'a').replaceAll('á', 'a').replaceAll('â', 'a').replaceAll('ä', 'a');
+    r = r
+        .replaceAll('à', 'a')
+        .replaceAll('á', 'a')
+        .replaceAll('â', 'a')
+        .replaceAll('ä', 'a');
     r = r.replaceAll('ç', 'c');
-    r = r.replaceAll('è', 'e').replaceAll('é', 'e').replaceAll('ê', 'e').replaceAll('ë', 'e');
+    r = r
+        .replaceAll('è', 'e')
+        .replaceAll('é', 'e')
+        .replaceAll('ê', 'e')
+        .replaceAll('ë', 'e');
     r = r.replaceAll('î', 'i').replaceAll('ï', 'i');
     r = r.replaceAll('ô', 'o').replaceAll('ö', 'o');
     r = r.replaceAll('û', 'u').replaceAll('ü', 'u');
@@ -94,20 +104,36 @@ class UserDataSourceGraphQL implements IUserDataSource {
     final compact = n.replaceAll(' ', '');
     // Map common localized names and synonyms to canonical keys
     // voiture/car/auto -> voiture
-    if (compact == 'car' || compact == 'auto' || compact == 'automobile') return 'voiture';
-    if (n == 'voiture') return 'voiture';
+    if (compact == 'car' || compact == 'auto' || compact == 'automobile') {
+      return 'voiture';
+    }
+    if (n == 'voiture') {
+      return 'voiture';
+    }
 
     // moto/motorcycle -> moto
-    if (compact == 'motorcycle' || compact == 'motorbike') return 'moto';
-    if (n == 'moto') return 'moto';
+    if (compact == 'motorcycle' || compact == 'motorbike') {
+      return 'moto';
+    }
+    if (n == 'moto') {
+      return 'moto';
+    }
 
     // vélo/bike/bicycle -> velo
-    if (compact == 'bike' || compact == 'bicycle') return 'velo';
-    if (n == 'velo' || n == 'vélo') return 'velo';
+    if (compact == 'bike' || compact == 'bicycle') {
+      return 'velo';
+    }
+    if (n == 'velo' || n == 'vélo') {
+      return 'velo';
+    }
 
     // tuk tuk variants -> tuktuk
-    if (compact == 'tuktuk' || compact == 'tuk') return 'tuktuk';
-    if (n.contains('tuk')) return 'tuktuk';
+    if (compact == 'tuktuk' || compact == 'tuk') {
+      return 'tuktuk';
+    }
+    if (n.contains('tuk')) {
+      return 'tuktuk';
+    }
 
     // fallback to compact token
     return compact;
@@ -132,10 +158,14 @@ class UserDataSourceGraphQL implements IUserDataSource {
     final transportsRaw = pref['preferedvelicles'];
     final transports = transportsRaw is List
         ? transportsRaw
-            .map((e) => e is Map<String, dynamic> ? (e['name'] as String? ?? '') : '')
-            .where((s) => s.isNotEmpty)
-            .cast<String>()
-            .toList()
+              .map(
+                (e) => e is Map<String, dynamic>
+                    ? (e['name'] as String? ?? '')
+                    : '',
+              )
+              .where((s) => s.isNotEmpty)
+              .cast<String>()
+              .toList()
         : <String>[];
     return <String, dynamic>{
       'gpsEnabled': pref['activateLocation'] == true,
@@ -156,7 +186,6 @@ class UserDataSourceGraphQL implements IUserDataSource {
 
   @override
   Future<Map<String, dynamic>> completeOnboarding(String userId) async {
- 
     final input = <String, dynamic>{
       'cguAccepted': true,
       'privacyPolicyAccepted': true,

@@ -30,8 +30,13 @@ class SidebarTheme extends StatelessWidget {
               },
               underline: const SizedBox(),
               isExpanded: true,
-              icon: Icon(Icons.arrow_drop_down, color: isDark ? AppColors.light : AppColors.dark),
-              dropdownColor: isDark ? AppColors.backgroundSecondary : AppColors.light,
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: isDark ? AppColors.light : AppColors.dark,
+              ),
+              dropdownColor: isDark
+                  ? AppColors.backgroundSecondary
+                  : AppColors.light,
               borderRadius: BorderRadius.circular(8),
               items: [
                 _buildDropdownItem(
@@ -71,9 +76,19 @@ class SidebarTheme extends StatelessWidget {
       value: value,
       child: Row(
         children: [
-          Icon(icon, color: isDark ? AppColors.light : AppColors.dark, size: 20),
+          Icon(
+            icon,
+            color: isDark ? AppColors.light : AppColors.dark,
+            size: 20,
+          ),
           const SizedBox(width: 12),
-          Text(title, style: TextStyle(color: isDark ? AppColors.light : AppColors.dark, fontSize: 14)),
+          Text(
+            title,
+            style: TextStyle(
+              color: isDark ? AppColors.light : AppColors.dark,
+              fontSize: 14,
+            ),
+          ),
         ],
       ),
     );

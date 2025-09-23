@@ -52,7 +52,6 @@ class DriverOnboardingCoordinator extends ChangeNotifier {
       _documentUploadViewModel;
   LegalViewModel get legalViewModel => _legalViewModel;
 
-
   void acceptLegal(int index) {
     _legalViewModel.setCguAccepted(index, true);
     try {
@@ -61,9 +60,7 @@ class DriverOnboardingCoordinator extends ChangeNotifier {
       } else if (index == 1) {
         _service.saveLegalAcceptance(privacyPolicyAccepted: true);
       }
-    } catch (_) {
-
-    }
+    } catch (_) {}
   }
 
   Future<void> markDriverVerified() async {

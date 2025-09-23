@@ -1,6 +1,8 @@
 import 'file_queries.dart';
 
-const String createFileMutation = filesQuery + r'''
+const String createFileMutation =
+    filesQuery +
+    r'''
 mutation CreateFile($input: FileCreateInput!) {
   createFile(input: $input) {
     id
@@ -48,4 +50,3 @@ mutation DeleteFilesByUserId {
   }
 }
 ''';
-

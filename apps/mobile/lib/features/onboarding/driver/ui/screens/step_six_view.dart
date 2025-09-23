@@ -32,10 +32,9 @@ class StepSixView extends StatelessWidget {
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.h1(context).copyWith(
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.h1(
+              context,
+            ).copyWith(fontSize: 22, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
           Text(
@@ -56,11 +55,16 @@ class StepSixView extends StatelessWidget {
                   'Positionnez-vous face à la caméra et assurez-vous que votre visage soit bien visible.',
               onPhotoTaken: (imagePath) async {
                 try {
-                  await coordinator.documentUploadViewModel.onSelfieTaken(imagePath);
+                  await coordinator.documentUploadViewModel.onSelfieTaken(
+                    imagePath,
+                  );
                   onContinue();
                 } catch (e) {
                   if (!context.mounted) return;
-                  SnackbarHelper.showError(context, 'Échec de l\'envoi du selfie. Vérifiez votre connexion et réessayez.');
+                  SnackbarHelper.showError(
+                    context,
+                    'Échec de l\'envoi du selfie. Vérifiez votre connexion et réessayez.',
+                  );
                 }
               },
               showInstructions: false,

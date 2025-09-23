@@ -14,12 +14,22 @@ import 'package:safe_driving/features/onboarding/driver/core/interfaces/driver_s
 void registerOnboardingDriverModule(ServiceLocator sl) {
   sl.registerLazySingleton<StorageService>(() => StorageService());
   if (GraphQLConfig.isConfigured) {
-    sl.registerLazySingleton<IDriverDataSource>(() => DriverDataSourceGraphQL(sl.get<GraphQLClientWrapper>()));
+    sl.registerLazySingleton<IDriverDataSource>(
+      () => DriverDataSourceGraphQL(sl.get<GraphQLClientWrapper>()),
+    );
   } else {
     sl.registerLazySingleton<IDriverDataSource>(() => DriverDataSourceLocal());
   }
-  sl.registerLazySingleton<DriverRepository>(() => DriverRepository(sl.get<IDriverDataSource>()));
-  sl.registerLazySingleton<IDriverService>(() => DriverService(sl.get<DriverRepository>(), sl.get(), sl.get()));
-  sl.registerFactory<DriverOnboardingCoordinator>(() => DriverOnboardingCoordinator(sl.get<IDriverService>()));
-  sl.registerFactory<DriverSummaryViewModel>(() => DriverSummaryViewModel(sl.get<IDriverService>()));
+  sl.registerLazySingleton<DriverRepository>(
+    () => DriverRepository(sl.get<IDriverDataSource>()),
+  );
+  sl.registerLazySingleton<IDriverService>(
+    () => DriverService(sl.get<DriverRepository>(), sl.get(), sl.get()),
+  );
+  sl.registerFactory<DriverOnboardingCoordinator>(
+    () => DriverOnboardingCoordinator(sl.get<IDriverService>()),
+  );
+  sl.registerFactory<DriverSummaryViewModel>(
+    () => DriverSummaryViewModel(sl.get<IDriverService>()),
+  );
 }

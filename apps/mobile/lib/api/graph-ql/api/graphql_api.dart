@@ -11,4 +11,3 @@ export 'package:graphql_flutter/graphql_flutter.dart'
         OperationException,
         WatchQueryOptions,
         SubscriptionOptions;
-

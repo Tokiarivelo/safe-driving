@@ -20,7 +20,6 @@ class DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
       GlobalKey<DriverPaginationWidgetState>();
 
   void _navigateToStep(int stepIndex, DriverOnboardingCoordinator coordinator) {
-
     _paginationKey.currentState?.goToStep(stepIndex + 1);
     coordinator.goToStep(stepIndex);
   }

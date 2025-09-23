@@ -72,7 +72,9 @@ mixin MapSearchMixin {
         final destPoint = LatLngPoint(destRes.lat, destRes.lng);
         if (startPoint != null) {
           route = await repository.getRoute(startPoint, destPoint);
-          routePolyline = route?.points.map((p) => LatLng(p.lat, p.lng)).toList();
+          routePolyline = route?.points
+              .map((p) => LatLng(p.lat, p.lng))
+              .toList();
         }
         center = LatLng(destRes.lat, destRes.lng);
         markers = [center];

@@ -15,25 +15,13 @@ class DocumentBuilder {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (carteIdentiteData.containsKey('rectoID'))
-          buildUploadSection(
-            'recto',
-            coordinator,
-            context,
-          ),
+          buildUploadSection('recto', coordinator, context),
         const SizedBox(height: 16),
         if (carteIdentiteData.containsKey('versoID'))
-          buildUploadSection(
-            'verso',
-            coordinator,
-            context,
-          ),
+          buildUploadSection('verso', coordinator, context),
         const SizedBox(height: 16),
         if (carteIdentiteData.containsKey('permisConduire'))
-          buildUploadSection(
-            'permis',
-            coordinator,
-            context,
-          ),
+          buildUploadSection('permis', coordinator, context),
       ],
     );
   }
@@ -47,25 +35,13 @@ class DocumentBuilder {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (documentsData.containsKey('certificatImmatriculation'))
-          buildDocumentSection(
-            'registration',
-            coordinator,
-            context,
-          ),
+          buildDocumentSection('registration', coordinator, context),
         const SizedBox(height: 16),
         if (documentsData.containsKey('attestationAssurance'))
-          buildDocumentSection(
-            'insurance',
-            coordinator,
-            context,
-          ),
+          buildDocumentSection('insurance', coordinator, context),
         const SizedBox(height: 16),
         if (documentsData.containsKey('photosVehicule'))
-          buildDocumentSection(
-            'photos',
-            coordinator,
-            context,
-          ),
+          buildDocumentSection('photos', coordinator, context),
       ],
     );
   }
@@ -162,7 +138,8 @@ class _UploadWithSingleSnackbar extends StatefulWidget {
   });
 
   @override
-  State<_UploadWithSingleSnackbar> createState() => _UploadWithSingleSnackbarState();
+  State<_UploadWithSingleSnackbar> createState() =>
+      _UploadWithSingleSnackbarState();
 }
 
 class _UploadWithSingleSnackbarState extends State<_UploadWithSingleSnackbar> {
@@ -172,13 +149,15 @@ class _UploadWithSingleSnackbarState extends State<_UploadWithSingleSnackbar> {
   Future<void> _onPhotosChanged(List<File> photos) async {
     final storageType = widget.storageTypeResolver();
 
-
     widget.coordinator.documentUploadViewModel.queuePhotosForUpload(
       photos,
       storageType,
     );
 
-    if (!_hasShownUploadSnack && _previousCount == 0 && photos.isNotEmpty && mounted) {
+    if (!_hasShownUploadSnack &&
+        _previousCount == 0 &&
+        photos.isNotEmpty &&
+        mounted) {
       final count = photos.length;
       SnackbarHelper.showSuccess(
         context,

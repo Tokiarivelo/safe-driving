@@ -10,10 +10,7 @@ class SnackbarHelper {
   }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          message,
-          style: const TextStyle(color: AppColors.light),
-        ),
+        content: Text(message, style: const TextStyle(color: AppColors.light)),
         backgroundColor: backgroundColor,
         duration: duration,
         behavior: SnackBarBehavior.floating,

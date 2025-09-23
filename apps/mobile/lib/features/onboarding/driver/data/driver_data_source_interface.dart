@@ -78,7 +78,6 @@ abstract class IDriverDataSource {
     Map<String, dynamic>? preferences,
   });
 
-
   Future<String> generatePresignedUrl({
     required String key,
     required String contentType,
@@ -87,7 +86,8 @@ abstract class IDriverDataSource {
 
   Future<List<Map<String, dynamic>>> createBatchPresignedUrls({
     required String type, // GraphQL FileType enum value
-    required List<Map<String, String>> files, // [{ originalName, contentType, uniqueId? }]
+    required List<Map<String, String>>
+    files, // [{ originalName, contentType, uniqueId? }]
   });
 
   Future<List<Map<String, dynamic>>> completeUploadBulk({
@@ -109,9 +109,9 @@ abstract class IDriverDataSource {
 
   // Associate uploaded files (by key) to current user as UserDocument entries
   Future<Map<String, dynamic>> uploadUserDocuments({
-    required List<Map<String, dynamic>> input, // [{ documentType, file: { key }, name? }]
+    required List<Map<String, dynamic>>
+    input, // [{ documentType, file: { key }, name? }]
   });
-
 
   Future<List<Map<String, dynamic>>> uploadVehicleImages({
     required String vehicleId,
@@ -120,7 +120,8 @@ abstract class IDriverDataSource {
 
   Future<List<Map<String, dynamic>>> uploadVehicleDocuments({
     required String vehicleId,
-    required List<Map<String, dynamic>> input, // [{ documentType, file: { key }, name? }]
+    required List<Map<String, dynamic>>
+    input, // [{ documentType, file: { key }, name? }]
   });
 
   Future<String> generateDriverQrCode({String? type});

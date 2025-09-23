@@ -144,18 +144,23 @@ class PhotoManagementModalState
       builder: (context) => CameraInterface(
         onPictureTaken: (imagePath) {
           if (imagePath != null) {
-    
             if (kIsWeb) {
               try {
                 if (imagePath.startsWith('data:')) {
                   final comma = imagePath.indexOf(',');
                   if (comma > 0) {
                     final header = imagePath.substring(0, comma);
-                    final match = RegExp(r'data:(.*?);base64').firstMatch(header);
+                    final match = RegExp(
+                      r'data:(.*?);base64',
+                    ).firstMatch(header);
                     String contentType = match?.group(1) ?? 'image/png';
                     final base64Data = imagePath.substring(comma + 1);
                     final bytes = base64Decode(base64Data);
-                    WebUploadRegistry.register(imagePath, bytes, contentType: contentType);
+                    WebUploadRegistry.register(
+                      imagePath,
+                      bytes,
+                      contentType: contentType,
+                    );
                   }
                 }
               } catch (_) {}

@@ -22,9 +22,9 @@ class HeaderBuilder {
         Text(
           stepData.subtitle,
           textAlign: TextAlign.center,
-          style: AppTextStyles.caption12(context).copyWith(
-            color: AppColors.titleColor.adapt(context).withAlpha(220),
-          ),
+          style: AppTextStyles.caption12(
+            context,
+          ).copyWith(color: AppColors.titleColor.adapt(context).withAlpha(220)),
         ),
         if (!isForgotPassword && stepData.subSubtitle.isNotEmpty) ...[
           const SizedBox(height: 8),

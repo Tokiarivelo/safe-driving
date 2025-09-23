@@ -4,7 +4,8 @@ import '../core/interfaces/i_route_provider.dart';
 
 class MapDataSource implements IMapDataSource {
   final IRouteProvider _routeProvider;
-  MapDataSource({required IRouteProvider routeProvider}) : _routeProvider = routeProvider;
+  MapDataSource({required IRouteProvider routeProvider})
+    : _routeProvider = routeProvider;
 
   @override
   Future<GeocodeResult?> forwardGeocode(String query) async {
@@ -14,8 +15,11 @@ class MapDataSource implements IMapDataSource {
     final features = (data['features'] as List?) ?? const [];
     if (features.isEmpty) return null;
     final f = (features.first as Map).cast<String, dynamic>();
-    final props = (f['properties'] as Map?)?.cast<String, dynamic>() ?? <String, dynamic>{};
-    final geom = (f['geometry'] as Map?)?.cast<String, dynamic>() ?? <String, dynamic>{};
+    final props =
+        (f['properties'] as Map?)?.cast<String, dynamic>() ??
+        <String, dynamic>{};
+    final geom =
+        (f['geometry'] as Map?)?.cast<String, dynamic>() ?? <String, dynamic>{};
     final List<dynamic> c = (geom['coordinates'] as List?) ?? const [];
     if (c.length < 2) return null;
     return GeocodeResult(
@@ -26,8 +30,10 @@ class MapDataSource implements IMapDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>?> route(LatLngPoint start, LatLngPoint end) async {
+  Future<Map<String, dynamic>?> route(
+    LatLngPoint start,
+    LatLngPoint end,
+  ) async {
     return _routeProvider.route(start, end);
   }
 }
-

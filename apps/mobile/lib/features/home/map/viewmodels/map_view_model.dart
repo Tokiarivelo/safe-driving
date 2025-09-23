@@ -11,11 +11,11 @@ import 'mixins/map_search_mixin.dart';
 import 'mixins/map_drivers_mixin.dart';
 import 'mixins/map_filters_mixin.dart';
 
-class MapViewModel extends ChangeNotifier with MapLocationMixin, MapSearchMixin, MapDriversMixin, MapFiltersMixin {
+class MapViewModel extends ChangeNotifier
+    with MapLocationMixin, MapSearchMixin, MapDriversMixin, MapFiltersMixin {
   final MapRepository _repository;
   final IMapTileProvider _tileProvider;
   final SessionService _session;
-
 
   String get tileUrlTemplate => _tileProvider.tileUrlTemplate;
   List<String> get tileSubdomains => _tileProvider.tileSubdomains;
@@ -30,9 +30,9 @@ class MapViewModel extends ChangeNotifier with MapLocationMixin, MapSearchMixin,
     required IDeviceLocationService deviceLocationService,
     required FiltersService filtersService,
     required PositionPersistenceService positionPersistence,
-  })  : _repository = repository,
-        _tileProvider = tileProvider,
-        _session = session {
+  }) : _repository = repository,
+       _tileProvider = tileProvider,
+       _session = session {
     this.repository = _repository;
     this.deviceLocationService = deviceLocationService;
     this.filtersService = filtersService;

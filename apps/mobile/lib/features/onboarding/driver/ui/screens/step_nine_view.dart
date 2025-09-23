@@ -129,7 +129,10 @@ class StepNineView extends StatelessWidget {
           const SizedBox(height: 32),
 
           ButtonRows.buttonRow(
-            buttonTitles: [context.l10n.driverOnboardingLater, context.l10n.driverDetailsValidate],
+            buttonTitles: [
+              context.l10n.driverOnboardingLater,
+              context.l10n.driverDetailsValidate,
+            ],
             onPressedList: [onSkip ?? () {}, onContinue],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             isLastButtonPrimary: true,

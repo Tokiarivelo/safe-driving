@@ -136,10 +136,7 @@ class DriverRepository implements RepositoryInterface {
     required String type,
   }) async {
     try {
-      return await _dataSource.completeUploadBulk(
-        keys: keys,
-        type: type,
-      );
+      return await _dataSource.completeUploadBulk(keys: keys, type: type);
     } catch (e) {
       throw Exception('Failed to complete upload bulk: $e');
     }
@@ -188,7 +185,10 @@ class DriverRepository implements RepositoryInterface {
     required List<String> keys,
   }) async {
     try {
-      return await _dataSource.uploadVehicleImages(vehicleId: vehicleId, keys: keys);
+      return await _dataSource.uploadVehicleImages(
+        vehicleId: vehicleId,
+        keys: keys,
+      );
     } catch (e) {
       throw Exception('Failed to attach vehicle images: $e');
     }
@@ -199,7 +199,10 @@ class DriverRepository implements RepositoryInterface {
     required List<Map<String, dynamic>> input,
   }) async {
     try {
-      return await _dataSource.uploadVehicleDocuments(vehicleId: vehicleId, input: input);
+      return await _dataSource.uploadVehicleDocuments(
+        vehicleId: vehicleId,
+        input: input,
+      );
     } catch (e) {
       throw Exception('Failed to attach vehicle documents: $e');
     }

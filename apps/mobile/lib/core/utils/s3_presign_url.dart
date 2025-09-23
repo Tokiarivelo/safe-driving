@@ -13,11 +13,12 @@ class PresignedUrlUtil {
       return url;
     }
 
-
     if (kIsWeb) {
-   
       if (uri.host == '10.0.2.2') {
-        final adjusted = uri.replace(host: 'localhost', port: uri.port == 0 ? 4566 : uri.port);
+        final adjusted = uri.replace(
+          host: 'localhost',
+          port: uri.port == 0 ? 4566 : uri.port,
+        );
         return adjusted.toString();
       }
       return url;
@@ -54,7 +55,9 @@ class PresignedUrlUtil {
     }
 
     if (portOverride != null && portOverride.trim().isNotEmpty) {
-      newPort = int.tryParse(portOverride.trim()) ?? (uri.port == 0 ? 4566 : uri.port);
+      newPort =
+          int.tryParse(portOverride.trim()) ??
+          (uri.port == 0 ? 4566 : uri.port);
     } else {
       newPort = uri.port == 0 ? 4566 : uri.port;
     }

@@ -50,7 +50,7 @@ class UserOnboardingData {
         buttonTitles: ['Plus tard', 'Valider'],
         additionalContent: {
           'themeLabel': 'Thème',
-'themeOptions': ['Automatique', 'Clair', 'Sombre'],
+          'themeOptions': ['Automatique', 'Clair', 'Sombre'],
           'transportLabel': 'Type de transport',
           'transportModes': ['Voiture', 'Moto', 'TukTuk', 'Vélo'],
         },
@@ -94,10 +94,7 @@ class UserOnboardingData {
     5: 'Récapitulatif',
   };
 
-  static const List<String> transportModes = [
-    'Voiture',
-    'Moto',
-  ];
+  static const List<String> transportModes = ['Voiture', 'Moto'];
 
   static const Map<String, IconData> transportIcons = {
     'Voiture': Icons.directions_car,

@@ -28,17 +28,17 @@ class PositionReport {
   });
 
   Map<String, dynamic> toJson() => {
-        'vehicleId': vehicleId,
-        'latitude': latitude,
-        'longitude': longitude,
-        if (altitude != null) 'altitude': altitude,
-        if (speed != null) 'speed': speed,
-        if (heading != null) 'heading': heading,
-        if (accuracy != null) 'accuracy': accuracy,
-        if (provider != null) 'provider': provider,
-        if (battery != null) 'battery': battery,
-        if (recordedAt != null) 'recordedAt': recordedAt!.toIso8601String(),
-        if (clientTempId != null) 'clientTempId': clientTempId,
-        if (createdBy != null) 'createdBy': createdBy,
-      };
+    'vehicleId': vehicleId,
+    'latitude': latitude,
+    'longitude': longitude,
+    if (altitude != null) 'altitude': altitude,
+    if (speed != null) 'speed': speed,
+    if (heading != null) 'heading': heading,
+    if (accuracy != null) 'accuracy': accuracy,
+    if (provider != null) 'provider': provider,
+    if (battery != null) 'battery': battery,
+    if (recordedAt != null) 'recordedAt': recordedAt!.toIso8601String(),
+    if (clientTempId != null) 'clientTempId': clientTempId,
+    if (createdBy != null) 'createdBy': createdBy,
+  };
 }

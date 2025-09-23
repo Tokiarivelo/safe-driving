@@ -14,12 +14,17 @@ class _NotificationsStep extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(context.l10n.stepNotificationsTitle, style: AppTextStyles.h1(context)),
+        Text(
+          context.l10n.stepNotificationsTitle,
+          style: AppTextStyles.h1(context),
+        ),
         const SizedBox(height: 8),
         Text(
           context.l10n.stepNotificationsSubtitle,
           style: AppTextStyles.body14(context).copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.75),
           ),
         ),
         const SizedBox(height: 16),

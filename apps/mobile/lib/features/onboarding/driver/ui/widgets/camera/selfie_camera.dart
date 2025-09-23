@@ -52,9 +52,7 @@ class _SelfieCameraState extends State<SelfieCamera> {
           const SizedBox(height: 12),
         ],
         // Utiliser l'espace disponible pour l'aperçu afin d'éviter tout overflow
-        Expanded(
-          child: _buildCameraPreview(),
-        ),
+        Expanded(child: _buildCameraPreview()),
         const SizedBox(height: 12),
         _buildCameraControls(),
       ],

@@ -8,16 +8,22 @@ class PositionRepository implements IPositionRepository {
   PositionRepository(this._service);
 
   @override
-  Future<LatLngPoint?> getCurrentPosition(String vehicleId) => _service.getCurrentPosition(vehicleId);
+  Future<LatLngPoint?> getCurrentPosition(String vehicleId) =>
+      _service.getCurrentPosition(vehicleId);
 
   @override
-  Future<List<LatLngPoint>> getRecentPositions(String vehicleId, {int limit = 100}) =>
-      _service.getRecentPositions(vehicleId, limit: limit);
+  Future<List<LatLngPoint>> getRecentPositions(
+    String vehicleId, {
+    int limit = 100,
+  }) => _service.getRecentPositions(vehicleId, limit: limit);
 
   @override
-  Future<List<LatLngPoint>> getRidePositions(String rideId, {int limit = 100}) =>
-      _service.getRidePositions(rideId, limit: limit);
+  Future<List<LatLngPoint>> getRidePositions(
+    String rideId, {
+    int limit = 100,
+  }) => _service.getRidePositions(rideId, limit: limit);
 
   @override
-  Future<bool> reportPosition(PositionReport report) => _service.reportPosition(report);
+  Future<bool> reportPosition(PositionReport report) =>
+      _service.reportPosition(report);
 }

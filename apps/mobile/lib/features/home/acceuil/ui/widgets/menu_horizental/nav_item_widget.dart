@@ -32,10 +32,17 @@ class NavItemWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 35),
           decoration: BoxDecoration(
-            color: isActive ? (isDark ? AppColors.backgroundSecondary : tabBackgroundColor) : null,
+            color: isActive
+                ? (isDark ? AppColors.backgroundSecondary : tabBackgroundColor)
+                : null,
             shape: BoxShape.circle,
             border: isActive
-                ? Border.all(color: isDark ? AppColors.light.withValues(alpha: 0.2) : tabBackgroundColor, width: 1)
+                ? Border.all(
+                    color: isDark
+                        ? AppColors.light.withValues(alpha: 0.2)
+                        : tabBackgroundColor,
+                    width: 1,
+                  )
                 : null,
             boxShadow: isActive
                 ? [
@@ -58,7 +65,9 @@ class NavItemWidget extends StatelessWidget {
               Text(
                 item.title,
                 style: TextStyle(
-                  color: isActive ? activeColor : (isDark ? AppColors.light : AppColors.dark),
+                  color: isActive
+                      ? activeColor
+                      : (isDark ? AppColors.light : AppColors.dark),
                   fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
                   fontSize: 11,
                 ),

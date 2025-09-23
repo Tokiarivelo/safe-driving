@@ -1,5 +1,3 @@
-
-
 const String loginMutation = r'''
 mutation Login($data: LoginInput!) {
   login(data: $data) {
@@ -42,4 +40,3 @@ mutation ResetPassword($sessionToken: String!, $newPassword: String!) {
   resetPassword(sessionToken: $sessionToken, newPassword: $newPassword)
 }
 ''';
-

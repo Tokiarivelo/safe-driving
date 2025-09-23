@@ -74,10 +74,7 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.buttonWithoutBackGround,
-          side: const BorderSide(
-            color: AppColors.borderButtonLight,
-            width: 1,
-          ),
+          side: const BorderSide(color: AppColors.borderButtonLight, width: 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -266,7 +263,9 @@ class AppTheme {
       ),
 
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(foregroundColor: AppColors.buttonWithoutBackGroundDark),
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.buttonWithoutBackGroundDark,
+        ),
       ),
 
       inputDecorationTheme: InputDecorationTheme(
@@ -274,19 +273,18 @@ class AppTheme {
         fillColor: AppColors.backgroundSecondary,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: AppColors.light.withValues(alpha: 0.2),
-          ),
+          borderSide: BorderSide(color: AppColors.light.withValues(alpha: 0.2)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: AppColors.light.withValues(alpha: 0.2),
-          ),
+          borderSide: BorderSide(color: AppColors.light.withValues(alpha: 0.2)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppColors.light.withValues(alpha: 0.4), width: 2),
+          borderSide: BorderSide(
+            color: AppColors.light.withValues(alpha: 0.4),
+            width: 2,
+          ),
         ),
         errorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -299,9 +297,7 @@ class AppTheme {
         hintStyle: _textTheme.bodySmall?.copyWith(
           color: AppColors.light.withValues(alpha: 0.7),
         ),
-        labelStyle: _textTheme.labelMedium?.copyWith(
-          color: AppColors.light,
-        ),
+        labelStyle: _textTheme.labelMedium?.copyWith(color: AppColors.light),
         prefixIconColor: AppColors.light,
         suffixIconColor: AppColors.light,
         errorStyle: _textTheme.labelSmall?.copyWith(color: AppColors.error),
@@ -319,15 +315,19 @@ class AppTheme {
         backgroundColor: AppColors.backgroundSoft,
         selectedColor: AppColors.color1,
         disabledColor: AppColors.unclickable.withValues(alpha: 0.3),
-        labelStyle: _textTheme.labelSmall?.copyWith(color: AppColors.textColorDark),
+        labelStyle: _textTheme.labelSmall?.copyWith(
+          color: AppColors.textColorDark,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
 
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: const Color(0xFF2A2A2A), 
+        backgroundColor: const Color(0xFF2A2A2A),
         selectedItemColor: AppColors.color1,
-        unselectedItemColor: AppColors.light.withValues(alpha: 0.5), // Gris plus doux pour les items non sélectionnés
+        unselectedItemColor: AppColors.light.withValues(
+          alpha: 0.5,
+        ), // Gris plus doux pour les items non sélectionnés
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         selectedLabelStyle: const TextStyle(
@@ -398,7 +398,8 @@ class AppTheme {
       case ThemeMode.dark:
         return darkTheme;
       case ThemeMode.light:
-      case ThemeMode.system: // Le mode automatique est supprimé: fallback => light
+      case ThemeMode
+          .system: // Le mode automatique est supprimé: fallback => light
         return lightTheme;
     }
   }

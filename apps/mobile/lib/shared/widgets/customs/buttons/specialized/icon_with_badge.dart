@@ -37,7 +37,7 @@ class IconButtonWithBadge extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: isDark ? const Color(0xFF2A2A2A) : backgroundColor, 
+        backgroundColor: isDark ? const Color(0xFF2A2A2A) : backgroundColor,
         foregroundColor: isDark ? AppColors.light : AppColors.dark,
         elevation: isDark ? 2 : 3,
         shadowColor: isDark
@@ -47,7 +47,9 @@ class IconButtonWithBadge extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: BorderSide(
-            color: isDark ? const Color(0xFF3A3A3A) : Colors.transparent, // Bordure subtile en mode sombre
+            color: isDark
+                ? const Color(0xFF3A3A3A)
+                : Colors.transparent, // Bordure subtile en mode sombre
             width: 1,
           ),
         ),
@@ -81,7 +83,9 @@ class IconButtonWithBadge extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    color: isDark ? AppColors.light.withValues(alpha: 0.85) : AppColors.dark,
+                    color: isDark
+                        ? AppColors.light.withValues(alpha: 0.85)
+                        : AppColors.dark,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

@@ -18,7 +18,9 @@ mixin MapLocationMixin {
     try {
       final p = await deviceLocationService.getCurrentPosition();
       await updatePositionInternal(p.latitude, p.longitude, p.accuracy ?? 0);
-      deviceLocationService.getPositionStream(distanceFilterMeters: 10).listen((d) {
+      deviceLocationService.getPositionStream(distanceFilterMeters: 10).listen((
+        d,
+      ) {
         updatePositionInternal(d.latitude, d.longitude, d.accuracy ?? 0);
       });
     } catch (_) {}
@@ -31,7 +33,11 @@ mixin MapLocationMixin {
     } catch (_) {}
   }
 
-  Future<void> updatePositionInternal(double lat, double lng, double accuracy) async {
+  Future<void> updatePositionInternal(
+    double lat,
+    double lng,
+    double accuracy,
+  ) async {
     currentLocation = LatLng(lat, lng);
     center = currentLocation!;
     try {

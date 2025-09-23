@@ -9,13 +9,12 @@ Widget _buildTransportModeChips({
   return Builder(
     builder: (context) {
       final bool isDark = Theme.of(context).brightness == Brightness.dark;
-      final borderColor = isDark ? AppColors.borderButtonDark : AppColors.borderButtonLight;
+      final borderColor = isDark
+          ? AppColors.borderButtonDark
+          : AppColors.borderButtonLight;
       return Container(
         decoration: BoxDecoration(
-          border: Border.all(
-            color: borderColor,
-            width: 1,
-          ),
+          border: Border.all(color: borderColor, width: 1),
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.all(8),

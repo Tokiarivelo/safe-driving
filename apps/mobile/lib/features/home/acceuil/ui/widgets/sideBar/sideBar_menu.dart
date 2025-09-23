@@ -78,8 +78,8 @@ class SidebarMenu extends StatelessWidget {
                 color: isSelected
                     ? AppColors.dark
                     : (Theme.of(context).brightness == Brightness.dark
-                        ? AppColors.light
-                        : AppColors.dark),
+                          ? AppColors.light
+                          : AppColors.dark),
                 size: 22,
               ),
               const SizedBox(width: 12),
@@ -89,8 +89,8 @@ class SidebarMenu extends StatelessWidget {
                   color: isSelected
                       ? AppColors.dark
                       : (Theme.of(context).brightness == Brightness.dark
-                          ? AppColors.light
-                          : AppColors.dark),
+                            ? AppColors.light
+                            : AppColors.dark),
                   fontSize: 16,
                 ),
               ),

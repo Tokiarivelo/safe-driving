@@ -15,7 +15,10 @@ class SidebarViewModel with ChangeNotifier {
   final ThemeController themeController;
   final LocaleProvider localeProvider;
 
-  SidebarViewModel({required this.themeController, required this.localeProvider}) {
+  SidebarViewModel({
+    required this.themeController,
+    required this.localeProvider,
+  }) {
     // Initialize from global controllers
     _currentTheme = _fromThemeMode(themeController.mode);
     _currentLanguage = _fromLocale(localeProvider.locale);

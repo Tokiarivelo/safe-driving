@@ -96,7 +96,9 @@ abstract class UnifiedPhotosModalState<T extends UnifiedPhotosModal>
             shape: BoxShape.circle,
             color: index == _currentIndex
                 ? AppColors.fillButtonBackground.adapt(context)
-                : AppColors.fillButtonBackground.adapt(context).withValues(alpha: 0.3),
+                : AppColors.fillButtonBackground
+                      .adapt(context)
+                      .withValues(alpha: 0.3),
           ),
         ),
       ),

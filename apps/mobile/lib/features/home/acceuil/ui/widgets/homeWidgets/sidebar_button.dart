@@ -68,7 +68,8 @@ class SidebarButton extends StatelessWidget {
                 ? Image.network(
                     imageUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => _Initials(initials: initials),
+                    errorBuilder: (context, error, stackTrace) =>
+                        _Initials(initials: initials),
                   )
                 : _Initials(initials: initials),
           ),

@@ -30,8 +30,11 @@ class SidebarLogout extends StatelessWidget {
           padding: const EdgeInsets.only(top: 12.0),
           child: Row(
             children: [
-              Icon(Icons.logout,
-                  color: isDark ? AppColors.light : AppColors.dark, size: 22),
+              Icon(
+                Icons.logout,
+                color: isDark ? AppColors.light : AppColors.dark,
+                size: 22,
+              ),
               const SizedBox(width: 24.0),
               Text(
                 context.l10n.logout,

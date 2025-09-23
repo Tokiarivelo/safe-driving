@@ -18,10 +18,7 @@ class HomeLogo extends StatelessWidget {
         height: 150,
         fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) {
-          return const Icon(
-            Icons.directions_car,
-            size: 64,
-          );
+          return const Icon(Icons.directions_car, size: 64);
         },
       ),
     );

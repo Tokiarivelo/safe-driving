@@ -26,7 +26,9 @@ class UserStepIndicator extends StatelessWidget {
             CircularProgressIndicator(
               value: currentStep / totalSteps,
               backgroundColor: AppColors.light.adapt(context),
-              valueColor: AlwaysStoppedAnimation(AppColors.progress.adapt(context)),
+              valueColor: AlwaysStoppedAnimation(
+                AppColors.progress.adapt(context),
+              ),
               strokeWidth: 4,
             ),
             Text(
