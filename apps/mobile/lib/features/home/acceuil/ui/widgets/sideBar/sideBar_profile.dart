@@ -7,8 +7,10 @@ class SidebarProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? AppColors.light : AppColors.dark;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -17,16 +19,16 @@ class SidebarProfile extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: AppColors.dark,
+              color: textColor,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             '« Pensionné de la route depuis 10 ans, votre confort et votre sécurité sont ma priorité. »',
             style: TextStyle(
               fontSize: 14,
               fontStyle: FontStyle.italic,
-              color: AppColors.dark,
+              color: textColor,
             ),
             maxLines: 3,
             overflow: TextOverflow.ellipsis,

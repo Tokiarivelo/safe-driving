@@ -66,10 +66,7 @@ class IconButtonWithBadge extends StatelessWidget {
                   iconPath,
                   width: iconSize,
                   height: iconSize,
-                  colorFilter: ColorFilter.mode(
-                    isDark ? AppColors.light.withValues(alpha: 0.9) : AppColors.dark,
-                    BlendMode.srcIn,
-                  ),
+                  // Keep original SVG color; do not override in dark mode
                   errorBuilder: (context, error, stackTrace) {
                     return Icon(
                       Icons.error,

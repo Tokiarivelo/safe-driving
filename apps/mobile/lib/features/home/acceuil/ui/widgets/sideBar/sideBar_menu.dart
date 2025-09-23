@@ -74,14 +74,22 @@ class SidebarMenu extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: isSelected ? AppColors.dark : AppColors.dark,
+                color: isSelected
+                    ? AppColors.dark
+                    : (Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.light
+                        : AppColors.dark),
                 size: 22,
               ),
               const SizedBox(width: 12),
               Text(
                 title,
                 style: TextStyle(
-                  color: isSelected ? AppColors.dark : AppColors.dark,
+                  color: isSelected
+                      ? AppColors.dark
+                      : (Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.light
+                          : AppColors.dark),
                   fontSize: 16,
                 ),
               ),

@@ -20,24 +20,19 @@ class SidebarButton extends StatelessWidget {
       top: 20,
       child: GestureDetector(
         onTap: onTap,
-        child: SizedBox(
+        child: Container(
           width: 50,
           height: 50,
-          child: ShaderMask(
-            shaderCallback: (bounds) => LinearGradient(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: const LinearGradient(
               colors: [AppColors.color1, AppColors.color2],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-            ).createShader(bounds),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.light, width: 2),
-                color: AppColors.dark.withValues(alpha: 0.2),
-              ),
-              child: const Icon(Icons.person, color: AppColors.dark, size: 30),
             ),
+            border: Border.all(color: AppColors.light, width: 2),
           ),
+          child: const Icon(Icons.person, color: AppColors.light, size: 30),
         ),
       ),
     );

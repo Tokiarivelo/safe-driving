@@ -54,10 +54,6 @@ class NavItemWidget extends StatelessWidget {
                 item.iconPath,
                 width: isActive ? 35 : 25,
                 height: isActive ? 35 : 25,
-                colorFilter: ColorFilter.mode(
-                  isDark ? AppColors.light : AppColors.dark,
-                  BlendMode.srcIn,
-                ),
               ),
               Text(
                 item.title,
