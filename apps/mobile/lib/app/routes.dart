@@ -5,9 +5,9 @@ import 'package:safe_driving/features/onboarding/driver/ui/screens/driver_onboar
 import 'package:safe_driving/features/onboarding/onboarding_screen.dart';
 
 import 'package:safe_driving/features/onboarding/user/ui/screens/user_onboarding_screen.dart';
-//-------
 import 'package:safe_driving/features/home/acceuil/ui/screens/exemple_page.dart';
 import 'package:safe_driving/features/home/acceuil/ui/screens/home_screen.dart';
+import 'package:safe_driving/features/home/map/ui/screens/map_screen.dart';
 
 class AppRoutes {
   static const String auth = '/auth';
@@ -17,6 +17,7 @@ class AppRoutes {
   static const String home = '/home';
   static const String exemple = '/exemple';
   static const String message = '/message';
+  static const String map = '/map';
 
   static Map<String, WidgetBuilder> routes = {
     auth: (context) => const AuthScreen(),
@@ -33,5 +34,6 @@ class AppRoutes {
     home: (context) => const HomeScreen(),
     exemple: (context) => const ExamplePage(),
     message: (context) => const MessageScreens(),
+    map: (context) => const MapScreen(),
   };
 }

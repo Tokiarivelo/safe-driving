@@ -989,9 +989,26 @@
   "@googleSignInNotImplemented": {
     "description": "Message: Google Sign-In non implémenté"
   },
-
+  
   "facebookSignInNotImplemented": "Facebook sign-in not implemented yet",
   "@facebookSignInNotImplemented": {
     "description": "Message: Facebook Sign-In non implémenté"
-  }
+  },
+
+  "mapSearchTitle": "Transport search",
+  "@mapSearchTitle": {"description": "Title for the map search screen"},
+  "mapFromPlaceholder": "Start address",
+  "@mapFromPlaceholder": {"description": "Placeholder for the start address input"},
+  "mapToPlaceholder": "Destination",
+  "@mapToPlaceholder": {"description": "Placeholder for the destination input"},
+  "mapLocate": "Locate me",
+  "@mapLocate": {"description": "Tooltip for the locate me FAB"},
+  "mapClear": "Clear",
+  "@mapClear": {"description": "Tooltip for the clear FAB"},
+  "mapPermissionDenied": "Location permission required to center the map on your position",
+  "@mapPermissionDenied": {"description": "Snackbar when location permission is denied"},
+  "mapNoResults": "No results found",
+  "@mapNoResults": {"description": "Snackbar when geocoding returns no results"},
+  "mapRouteSummary": "{distance} • {duration}",
+  "@mapRouteSummary": {"description": "Summary pill showing route distance and duration","placeholders": {"distance": {"type": "String"}, "duration": {"type": "String"}}}
 }

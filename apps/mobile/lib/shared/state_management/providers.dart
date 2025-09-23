@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/features/home/acceuil/viewmodels/navigation_viewmodel.dart';
-import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
 import '../../features/authentication/viewmodels/auth_view_model.dart';
 import '../../features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart';

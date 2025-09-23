@@ -63,6 +63,10 @@ class AppColors {
   static const Color snackbarSuccess = Color(0xFF4CAF50);
   static const Color snackbarWarning = Color(0xFFFFC107);
   static const Color snackbarInfo = Color(0xFF2196F3);
+
+  // Logo colors for theming
+  static const Color logoWhite = Color(0xFFFFFFFF);
+  static const Color logoDark = Color(0xFF121212);
 }
 
 extension AdaptiveColor on Color {

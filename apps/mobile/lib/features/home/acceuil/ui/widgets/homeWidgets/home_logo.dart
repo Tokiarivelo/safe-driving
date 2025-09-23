@@ -7,6 +7,7 @@ class HomeLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       child: SvgPicture.asset(
@@ -14,6 +15,10 @@ class HomeLogo extends StatelessWidget {
         width: 150,
         height: 150,
         fit: BoxFit.contain,
+        colorFilter: ColorFilter.mode(
+          isDark ? AppColors.logoWhite : AppColors.logoDark,
+          BlendMode.srcIn,
+        ),
         errorBuilder: (context, error, stackTrace) {
           return Container(
             width: 100,

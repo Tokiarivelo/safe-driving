@@ -34,8 +34,9 @@ class CustomNavBarController {
 
   void scrollToActiveItem() {
     if (_viewModel == null || _context == null) return;
-    if (_itemKeys.isEmpty || _viewModel!.currentIndex >= _itemKeys.length)
+    if (_itemKeys.isEmpty || _viewModel!.currentIndex >= _itemKeys.length) {
       return;
+    }
   }
 
   void dispose() {

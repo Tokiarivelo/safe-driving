@@ -21,6 +21,8 @@ class NavItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -30,10 +32,10 @@ class NavItemWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 35),
           decoration: BoxDecoration(
-            color: isActive ? tabBackgroundColor : null,
+            color: isActive ? (isDark ? AppColors.backgroundSecondary : tabBackgroundColor) : null,
             shape: BoxShape.circle,
             border: isActive
-                ? Border.all(color: tabBackgroundColor, width: 1)
+                ? Border.all(color: isDark ? AppColors.borderButtonDark : tabBackgroundColor, width: 1)
                 : null,
             boxShadow: isActive
                 ? [
@@ -52,11 +54,15 @@ class NavItemWidget extends StatelessWidget {
                 item.iconPath,
                 width: isActive ? 35 : 25,
                 height: isActive ? 35 : 25,
+                colorFilter: ColorFilter.mode(
+                  isDark ? AppColors.light : AppColors.dark,
+                  BlendMode.srcIn,
+                ),
               ),
               Text(
                 item.title,
                 style: TextStyle(
-                  color: isActive ? activeColor : AppColors.dark,
+                  color: isActive ? activeColor : (isDark ? AppColors.light : AppColors.dark),
                   fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
                   fontSize: 11,
                 ),

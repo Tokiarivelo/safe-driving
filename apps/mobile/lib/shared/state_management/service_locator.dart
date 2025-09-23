@@ -27,6 +27,23 @@ import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart
 import 'package:safe_driving/core/theme/theme_controller.dart';
 import 'dart:developer' as developer;
 
+import 'package:safe_driving/api/ors/ors_client.dart';
+import '../../features/home/map/data/map_data_source.dart';
+import '../../features/home/map/services/map_service.dart';
+import '../../features/home/map/repositories/map_repository.dart';
+import '../../features/home/map/viewmodels/map_view_model.dart';
+import '../../features/home/map/core/interfaces/i_map_data_source.dart';
+import '../../features/home/map/core/interfaces/i_map_service.dart';
+import '../../features/home/map/core/interfaces/i_map_tile_provider.dart';
+import '../../features/home/map/providers/tile/default_map_tile_provider.dart';
+import '../../features/home/map/core/interfaces/i_route_provider.dart';
+import '../../features/home/map/providers/route/ors_route_provider.dart';
+import '../../features/home/map/core/interfaces/i_position_data_source.dart';
+import '../../features/home/map/core/interfaces/i_position_service.dart';
+import '../../features/home/map/repositories/position_repository.dart';
+import '../../features/home/map/services/position_service.dart';
+import '../../features/home/map/data/position_data_source_graphql.dart';
+
 typedef _FactoryFunc<T> = T Function();
 typedef _Disposer = void Function(dynamic);
 
@@ -239,5 +256,41 @@ class ServiceLocator {
       () =>
           UserOnboardingViewModel(repository: get<UserOnboardingRepository>()),
     );
+
+    registerLazySingleton<OrsClient>(() => OrsClient());
+    registerLazySingleton<IMapTileProvider>(() => DefaultMapTileProvider());
+    registerLazySingleton<IRouteProvider>(() => OrsRouteProvider(client: get<OrsClient>()));
+    registerLazySingleton<IMapDataSource>(() => MapDataSource(routeProvider: get<IRouteProvider>()));
+    registerLazySingleton<IMapService>(() => MapService(dataSource: get<IMapDataSource>()));
+    registerLazySingleton<MapRepository>(() => MapRepository(service: get<IMapService>()));
+
+    // Position reporting via GraphQL (optional)
+    if (GraphQLConfig.isConfigured) {
+      // DataSource -> Service -> Repository for positions
+      registerLazySingleton<IPositionDataSource>(
+        () => PositionDataSourceGraphQL(get<GraphQLClientWrapper>()),
+      );
+      registerLazySingleton<IPositionService>(
+        () => PositionService(get<IPositionDataSource>()),
+      );
+      registerLazySingleton<PositionRepository>(
+        () => PositionRepository(get<IPositionService>()),
+      );
+
+      registerFactory<MapViewModel>(
+        () => MapViewModel(
+          repository: get<MapRepository>(),
+          positionRepository: get<PositionRepository>(),
+          tileProvider: get<IMapTileProvider>(),
+        ),
+      );
+    } else {
+      registerFactory<MapViewModel>(
+        () => MapViewModel(
+          repository: get<MapRepository>(),
+          tileProvider: get<IMapTileProvider>(),
+        ),
+      );
+    }
   }
 }

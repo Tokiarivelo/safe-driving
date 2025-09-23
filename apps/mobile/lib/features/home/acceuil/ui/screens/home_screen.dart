@@ -26,11 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _handleMenuItemSelected(int index) {
-    print('Menu item selected: $index');
+    debugPrint('Menu item selected: $index');
   }
 
   void _handleLogout() {
-    print('Déconnexion demandée');
+    debugPrint('Déconnexion demandée');
     setState(() {
       _isSidebarVisible = false;
     });
@@ -53,14 +53,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return ChangeNotifierProvider(
       create: (context) => HomeViewModel(),
       child: Scaffold(
-        backgroundColor: AppColors.dark,
         body: SafeArea(
           child: Stack(
             children: [
               // Contenu principal
               const Positioned.fill(child: HomeContent()),
-              // Sidebar animmation
-              const Expanded(child: HomeContent()),
+              // Sidebar animation
               AnimatedSidebar(
                 isVisible: _isSidebarVisible,
                 onProfileTap: _handleProfileTap,

@@ -234,5 +234,15 @@
   "registrationSuccess": "Inscription réussie ! Vous pouvez maintenant vous connecter.",
   "registrationError": "Erreur lors de l'inscription",
   "googleSignInNotImplemented": "Connexion Google non encore implémentée",
-  "facebookSignInNotImplemented": "Connexion Facebook non encore implémentée"
+  "facebookSignInNotImplemented": "Connexion Facebook non encore implémentée",
+
+  "mapSearchTitle": "Recherche transport",
+  "mapFromPlaceholder": "Adresse de départ",
+  "mapToPlaceholder": "Destination",
+  "mapLocate": "Me localiser",
+  "mapClear": "Effacer",
+  "mapPermissionDenied": "La permission de localisation est nécessaire pour vous localiser sur la carte",
+  "mapNoResults": "Aucun résultat trouvé",
+  "mapRouteSummary": "{distance} • {duration}",
+  "@mapRouteSummary": {"description": "Pilule de résumé affichant distance et durée","placeholders": {"distance": {"type": "String"}, "duration": {"type": "String"}}}
 }

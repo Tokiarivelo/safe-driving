@@ -640,4 +640,31 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get facebookSignInNotImplemented =>
       'Connexion Facebook non encore implémentée';
+
+  @override
+  String get mapSearchTitle => 'Recherche transport';
+
+  @override
+  String get mapFromPlaceholder => 'Adresse de départ';
+
+  @override
+  String get mapToPlaceholder => 'Destination';
+
+  @override
+  String get mapLocate => 'Me localiser';
+
+  @override
+  String get mapClear => 'Effacer';
+
+  @override
+  String get mapPermissionDenied =>
+      'La permission de localisation est nécessaire pour vous localiser sur la carte';
+
+  @override
+  String get mapNoResults => 'Aucun résultat trouvé';
+
+  @override
+  String mapRouteSummary(String distance, String duration) {
+    return '$distance • $duration';
+  }
 }

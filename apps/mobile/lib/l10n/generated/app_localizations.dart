@@ -1285,6 +1285,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Facebook sign-in not implemented yet'**
   String get facebookSignInNotImplemented;
+
+  /// Title for the map search screen
+  ///
+  /// In en, this message translates to:
+  /// **'Transport search'**
+  String get mapSearchTitle;
+
+  /// Placeholder for the start address input
+  ///
+  /// In en, this message translates to:
+  /// **'Start address'**
+  String get mapFromPlaceholder;
+
+  /// Placeholder for the destination input
+  ///
+  /// In en, this message translates to:
+  /// **'Destination'**
+  String get mapToPlaceholder;
+
+  /// Tooltip for the locate me FAB
+  ///
+  /// In en, this message translates to:
+  /// **'Locate me'**
+  String get mapLocate;
+
+  /// Tooltip for the clear FAB
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get mapClear;
+
+  /// Snackbar when location permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission required to center the map on your position'**
+  String get mapPermissionDenied;
+
+  /// Snackbar when geocoding returns no results
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get mapNoResults;
+
+  /// Summary pill showing route distance and duration
+  ///
+  /// In en, this message translates to:
+  /// **'{distance} • {duration}'**
+  String mapRouteSummary(String distance, String duration);
 }
 
 class _AppLocalizationsDelegate

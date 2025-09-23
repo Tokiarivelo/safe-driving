@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/menu_item_model.dart';
+import 'package:safe_driving/app/routes.dart';
 
 class HomeViewModel with ChangeNotifier {
   final List<MenuItemModel> _menuItems = [
@@ -82,6 +83,9 @@ class HomeViewModel with ChangeNotifier {
   void onMenuItemTap(int index, BuildContext context) {
     if (_menuItems[index].hasNotification) {
       resetNotificationCount(index);
+    }
+    if (index == 0) {
+      Navigator.pushNamed(context, AppRoutes.map);
     }
   }
 }
