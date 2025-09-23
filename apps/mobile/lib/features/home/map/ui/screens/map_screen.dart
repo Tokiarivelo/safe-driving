@@ -6,7 +6,6 @@ import 'package:safe_driving/shared/state_management/service_locator.dart';
 import 'package:safe_driving/l10n/l10n.dart';
 import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 import '../../core/map_config.dart';
-import '../widgets/search_fields.dart';
 import '../widgets/map_controls.dart';
 import '../widgets/route_summary.dart';
 
@@ -57,16 +56,12 @@ class _MapScreenViewState extends State<_MapScreenView> {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.l10n.mapSearchTitle),
-      ),
       body: Stack(
         children: [
           FlutterMap(
             options: MapOptions(
               initialCenter: vm.center,
               initialZoom: MapConfig.initialZoom,
-              onTap: (tapPosition, point) => vm.onMapTap(point),
             ),
             children: [
               TileLayer(
@@ -82,12 +77,6 @@ class _MapScreenViewState extends State<_MapScreenView> {
                     point: vm.currentLocation!,
                     child: const Icon(Icons.my_location, color: Colors.blue),
                   ),
-                ...vm.markers.map((pt) => Marker(
-                      width: 40,
-                      height: 40,
-                      point: pt,
-                      child: const Icon(Icons.location_on, color: Colors.red),
-                    )),
               ]),
               if (vm.routePolyline != null)
                 PolylineLayer(polylines: [
@@ -96,12 +85,22 @@ class _MapScreenViewState extends State<_MapScreenView> {
             ],
           ),
 
-          // Search fields overlay
-          const Positioned(
+
+          // Back button (top-left)
+          Positioned(
             left: 12,
-            right: 12,
             top: 12,
-            child: SearchFields(),
+            child: SafeArea(
+              child: Material(
+                color: Colors.black54,
+                shape: const CircleBorder(),
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => Navigator.of(context).maybePop(),
+                  tooltip: 'Back',
+                ),
+              ),
+            ),
           ),
 
           // Route summary pill (if any)

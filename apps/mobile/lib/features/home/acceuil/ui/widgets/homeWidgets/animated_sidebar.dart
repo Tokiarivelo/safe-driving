@@ -19,17 +19,42 @@ class AnimatedSidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedPositioned(
-      duration: const Duration(milliseconds: 300),
-      left: isVisible ? 0 : -280,
-      top: 0,
-      bottom: 0,
-      child: Sidebar(
-        onProfileTap: onProfileTap,
-        onMenuItemSelected: onMenuItemSelected,
-        onClose: onClose,
-        onLogout: onLogout,
-      ),
+    return Stack(
+      children: [
+ 
+        if (isVisible)
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: onClose,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: isVisible ? 0.4 : 0.0,
+                child: Container(color: Colors.black),
+              ),
+            ),
+          ),
+
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOutCubic,
+          left: isVisible ? 0 : -300,
+          top: 0,
+          bottom: 0,
+          child: Material(
+            elevation: 12,
+            color: Colors.transparent,
+            child: SizedBox(
+              width: 280,
+              child: Sidebar(
+                onProfileTap: onProfileTap,
+                onMenuItemSelected: onMenuItemSelected,
+                onClose: onClose,
+                onLogout: onLogout,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

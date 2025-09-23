@@ -34,9 +34,7 @@ class Sidebar extends StatelessWidget {
       child: Container(
         width: 280,
         decoration: BoxDecoration(
-          color: (Theme.of(context).brightness == Brightness.dark)
-              ? AppColors.backgroundSecondary.withValues(alpha: 0.95)
-              : AppColors.light.withValues(alpha: 0.95),
+          color: Theme.of(context).colorScheme.surface,
           boxShadow: [
             BoxShadow(
               color: (Theme.of(context).brightness == Brightness.dark)
@@ -46,6 +44,10 @@ class Sidebar extends StatelessWidget {
               offset: const Offset(2, 0),
             ),
           ],
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

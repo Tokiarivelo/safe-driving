@@ -42,6 +42,8 @@ class UserOnboardingService implements IUserOnboardingService {
           'selectedTheme': state.selectedTheme,
           'selectedTransports': state.selectedTransports,
           'selectedLanguage': state.selectedLanguage,
+          'cguAccepted': true,
+          'privacyPolicyAccepted': true,
         },
       );
     } catch (_) {}
@@ -88,9 +90,7 @@ class UserOnboardingService implements IUserOnboardingService {
     } catch (_) {}
 
     if (!context.mounted) return;
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const UserWelcomeScreen()),
-    );
+
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const UserWelcomeScreen()),
     );

@@ -14,7 +14,8 @@ class UserDataSourceGraphQL implements IUserDataSource {
     required String userId,
     required Map<String, dynamic> preferences,
   }) async {
-    final input = <String, dynamic>{'userId': userId};
+  
+    final input = <String, dynamic>{};
     if (preferences.containsKey('gpsEnabled')) {
       input['activateLocation'] = preferences['gpsEnabled'] == true;
     }
@@ -32,6 +33,12 @@ class UserDataSourceGraphQL implements IUserDataSource {
       if (language != null && language.isNotEmpty) {
         input['language'] = language;
       }
+    }
+    if (preferences.containsKey('cguAccepted')) {
+      input['cguAccepted'] = preferences['cguAccepted'] == true;
+    }
+    if (preferences.containsKey('privacyPolicyAccepted')) {
+      input['privacyPolicyAccepted'] = preferences['privacyPolicyAccepted'] == true;
     }
     if (preferences.containsKey('selectedTransports')) {
       final transports = (preferences['selectedTransports'] as List?)?.cast<String>() ?? const <String>[];
@@ -149,8 +156,8 @@ class UserDataSourceGraphQL implements IUserDataSource {
 
   @override
   Future<Map<String, dynamic>> completeOnboarding(String userId) async {
+ 
     final input = <String, dynamic>{
-      'userId': userId,
       'cguAccepted': true,
       'privacyPolicyAccepted': true,
     };

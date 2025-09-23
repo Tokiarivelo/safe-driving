@@ -1,20 +1,22 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:safe_driving/features/home/map/models/location_models.dart';
-import 'package:safe_driving/features/home/map/core/map_config.dart';
 
 class OrsClient {
-  OrsClient({String? baseUrl, String? apiKey});
+  OrsClient({required String baseUrl, String? apiKey, String? countryBoundary})
+      : _base = baseUrl,
+        _key = apiKey ?? '',
+        _countryBoundary = countryBoundary;
 
-  String get _base => MapConfig.orsBaseUrl;
-  String get _key => MapConfig.orsApiKey;
+  final String _base;
+  final String _key;
+  final String? _countryBoundary;
 
-  Future<Map<String, dynamic>?> forwardGeocode(String text) async {
+  Future<Map<String, dynamic>?> forwardGeocode(String text, {String? countryBoundary}) async {
     final qp = <String, String>{
       'text': text,
       'size': '1',
     };
-    final boundary = MapConfig.orsCountryBoundary.trim();
+    final boundary = (countryBoundary ?? _countryBoundary ?? '').trim();
     if (boundary.isNotEmpty) {
       qp['boundary.country'] = boundary;
     }
@@ -29,12 +31,12 @@ class OrsClient {
     return null;
   }
 
-  Future<Map<String, dynamic>?> route(LatLngPoint start, LatLngPoint end) async {
+  Future<Map<String, dynamic>?> route(double startLat, double startLng, double endLat, double endLng) async {
     final uri = Uri.parse('$_base/v2/directions/driving-car/geojson');
     final body = jsonEncode({
       'coordinates': [
-        [start.lng, start.lat],
-        [end.lng, end.lat]
+        [startLng, startLat],
+        [endLng, endLat]
       ]
     });
     final headers = <String, String>{'content-type': 'application/json'};
@@ -49,13 +51,13 @@ class OrsClient {
     return null;
   }
 
-  Future<Map<String, dynamic>?> reverseGeocode(double lat, double lon) async {
+  Future<Map<String, dynamic>?> reverseGeocode(double lat, double lon, {String? countryBoundary}) async {
     final qp = <String, String>{
       'point.lat': lat.toString(),
       'point.lon': lon.toString(),
       'size': '1',
     };
-    final boundary = MapConfig.orsCountryBoundary.trim();
+    final boundary = (countryBoundary ?? _countryBoundary ?? '').trim();
     if (boundary.isNotEmpty) {
       qp['boundary.country'] = boundary;
     }

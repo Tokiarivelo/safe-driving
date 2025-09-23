@@ -27,7 +27,6 @@ import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart
 import 'package:safe_driving/core/theme/theme_controller.dart';
 import 'dart:developer' as developer;
 
-import 'package:safe_driving/api/ors/ors_client.dart';
 import '../../features/home/map/data/map_data_source.dart';
 import '../../features/home/map/services/map_service.dart';
 import '../../features/home/map/repositories/map_repository.dart';
@@ -253,10 +252,9 @@ class ServiceLocator {
           UserOnboardingViewModel(repository: get<UserOnboardingRepository>()),
     );
 
-    registerLazySingleton<OrsClient>(() => OrsClient());
     registerLazySingleton<IMapTileProvider>(() => DefaultMapTileProvider());
     registerLazySingleton<IRouteProvider>(
-      () => OrsRouteProvider(client: get<OrsClient>()),
+      () => OrsRouteProvider(),
     );
     registerLazySingleton<IMapDataSource>(
       () => MapDataSource(routeProvider: get<IRouteProvider>()),

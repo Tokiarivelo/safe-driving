@@ -97,8 +97,6 @@ class UserOnboardingData {
   static const List<String> transportModes = [
     'Voiture',
     'Moto',
-    'TukTuk',
-    'Vélo',
   ];
 
   static const Map<String, IconData> transportIcons = {
