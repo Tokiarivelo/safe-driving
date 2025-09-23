@@ -34,14 +34,12 @@ class AppProviders {
       ),
     );
 
-    // Global theme controller
     list.add(
       ChangeNotifierProvider<ThemeController>(
         create: (_) => sl.get<ThemeController>(),
       ),
     );
 
-    // Global locale provider (with persistence)
     list.add(
       ChangeNotifierProvider<LocaleProvider>(create: (_) => LocaleProvider()),
     );

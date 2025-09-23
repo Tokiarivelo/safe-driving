@@ -1,15 +1,11 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/core/constants/constants.dart';
 import 'package:safe_driving/features/home/map/viewmodels/map_view_model.dart';
 import 'package:safe_driving/features/home/map/models/filter_model.dart';
 import 'package:safe_driving/shared/state_management/service_locator.dart';
-import 'package:geolocator/geolocator.dart';
 import '../../models/driver_models.dart';
 import 'pulsing_marker_widget.dart';
 import 'top_filter_bar.dart';
@@ -39,7 +35,6 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     showFilters = widget.openFilters;
-    _loadPrefs();
   }
 
   @override
@@ -52,24 +47,10 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       final vm = context.read<MapViewModel>();
-      Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: LocationAccuracy.best, distanceFilter: 10)).then((pos) {
-        vm.updatePosition(pos);
-      }).catchError((_) {});
+      vm.locateMe();
     }
   }
 
-  Future<void> _loadPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      radiusKm = prefs.getDouble(filtersRadiusKm) ?? 5;
-    });
-  }
-
-  Future<void> _savePrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(filtersSavedV7, true);
-    await prefs.setDouble(filtersRadiusKm, radiusKm);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,8 +110,16 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
               top: 50,
               left: 20,
               right: 20,
-              child: TopFilterBar(
-                onFiltersPressed: () => setState(() => showFilters = !showFilters),
+                child: TopFilterBar(
+                onFiltersPressed: () {
+                  final vm = context.read<MapViewModel>();
+                  setState(() {
+                    showFilters = !showFilters;
+                    if (showFilters) {
+                      radiusKm = vm.filters.radiusKm;
+                    }
+                  });
+                },
                 expanded: showFilters,
               ),
             ),
@@ -147,7 +136,6 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
                     setState(() { radiusKm = f.radiusKm; _vehicleType = null; _passengers = 2; _babySeat = false; _lang = null; _animals = false; });
                   },
                   onApply: () {
-                    _savePrefs();
                     final f = vm.filters.copyWith(radiusKm: radiusKm, vehicleType: _vehicleType, passengers: _passengers, babySeat: _babySeat, lang: _lang, animals: _animals);
                     context.read<MapViewModel>().applyFilters(f);
                     setState(() => showFilters = false);
