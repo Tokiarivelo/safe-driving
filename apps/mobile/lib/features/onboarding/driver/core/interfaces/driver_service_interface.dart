@@ -20,6 +20,12 @@ abstract class IDriverService {
 
   Future<void> completeDriverOnboarding(Map<String, dynamic> data);
 
+  
+  Future<void> saveLegalAcceptance({bool? cguAccepted, bool? privacyPolicyAccepted});
+
+
+  Future<void> setUserVerified(bool value);
+
   Future<String> generateDriverQrCode({String? type});
 
   Future<void> clearAllData();

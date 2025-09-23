@@ -27,7 +27,9 @@ class StepContentGetter {
         step: step,
         coordinator: coordinator,
         onContinue: () {
-          Navigator.pushReplacementNamed(context, AppRoutes.home);
+          coordinator
+              .markDriverVerified()
+              .whenComplete(() => Navigator.pushReplacementNamed(context, AppRoutes.home));
         },
       );
     }

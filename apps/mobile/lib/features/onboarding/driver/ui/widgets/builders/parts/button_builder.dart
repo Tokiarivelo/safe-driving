@@ -124,7 +124,7 @@ class ButtonBuilder {
                   titleContent: context.l10n.driverCguTitle,
                   content: coordinator.legalViewModel.getCguContent(context),
                   onAccept: () {
-                    coordinator.legalViewModel.setCguAccepted(0, true);
+                    coordinator.acceptLegal(0);
                   },
                 );
               },
@@ -144,7 +144,7 @@ class ButtonBuilder {
                   titleContent: context.l10n.driverPrivacyTitle,
                   content: coordinator.legalViewModel.getPrivacyPolicyContent(context),
                   onAccept: () {
-                    coordinator.legalViewModel.setCguAccepted(1, true);
+                    coordinator.acceptLegal(1);
                   },
                 );
               },

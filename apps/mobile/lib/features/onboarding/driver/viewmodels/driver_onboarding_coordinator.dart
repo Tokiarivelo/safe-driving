@@ -52,6 +52,24 @@ class DriverOnboardingCoordinator extends ChangeNotifier {
       _documentUploadViewModel;
   LegalViewModel get legalViewModel => _legalViewModel;
 
+
+  void acceptLegal(int index) {
+    _legalViewModel.setCguAccepted(index, true);
+    try {
+      if (index == 0) {
+        _service.saveLegalAcceptance(cguAccepted: true);
+      } else if (index == 1) {
+        _service.saveLegalAcceptance(privacyPolicyAccepted: true);
+      }
+    } catch (_) {
+
+    }
+  }
+
+  Future<void> markDriverVerified() async {
+    await _service.setUserVerified(true);
+  }
+
   int get currentStep => _flowViewModel.currentStep;
   bool get isLoading =>
       _flowViewModel.isLoading ||

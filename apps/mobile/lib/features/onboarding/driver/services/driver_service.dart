@@ -686,6 +686,37 @@ class DriverService implements IDriverService {
   }
 
   @override
+  Future<void> saveLegalAcceptance({bool? cguAccepted, bool? privacyPolicyAccepted}) async {
+    try {
+      final input = <String, dynamic>{};
+      if (cguAccepted != null) input['cguAccepted'] = cguAccepted;
+      if (privacyPolicyAccepted != null) {
+        input['privacyPolicyAccepted'] = privacyPolicyAccepted;
+      }
+      if (input.isEmpty) return;
+      await _repository.upsertUserPreference(input);
+    } catch (e) {
+      throw Exception('Failed to save legal acceptance: $e');
+    }
+  }
+
+  @override
+  Future<void> setUserVerified(bool value) async {
+    final userId = _getUserIdOrThrow();
+    try {
+      await _repository.updateDriverStatus(
+        userId: userId,
+        input: {
+          'isDriver': true,
+          'isVerified': value,
+        },
+      );
+    } catch (e) {
+      throw Exception('Failed to update verification status: $e');
+    }
+  }
+
+  @override
   Future<String> generateDriverQrCode({String? type}) async {
     try {
       return await _repository.generateDriverQrCode(type: type);

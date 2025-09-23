@@ -523,6 +523,7 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     required Map<String, dynamic> input,
   }) async {
     final isDriver = input['isDriver'] ?? false;
+    final dynamic verifiedValue = input['isVerified'];
     final roleName = isDriver ? 'DRIVER' : 'USER';
 
     // Step 1 — clear existing roles (exclusive assignment)
@@ -535,20 +536,25 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
       },
     );
 
-    // Step 2 — connect or create the desired role
+
+    final Map<String, dynamic> secondInput = {
+      'Role': {
+        'connectOrCreate': [
+          {
+            'where': {'name': roleName},
+            'create': {'name': roleName},
+          },
+        ],
+      },
+    };
+    if (verifiedValue != null) {
+      secondInput['isVerified'] = verifiedValue;
+    }
+
     final response = await _client.executeMutation(
       document: updateUserMutation,
       variables: {
-        'input': {
-          'Role': {
-            'connectOrCreate': [
-              {
-                'where': {'name': roleName},
-                'create': {'name': roleName},
-              },
-            ],
-          },
-        },
+        'input': secondInput,
       },
     );
 
