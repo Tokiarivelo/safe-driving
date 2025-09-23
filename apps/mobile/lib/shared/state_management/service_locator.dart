@@ -39,9 +39,10 @@ import '../../features/home/map/core/interfaces/i_route_provider.dart';
 import '../../features/home/map/providers/route/ors_route_provider.dart';
 import '../../features/home/map/core/interfaces/i_position_data_source.dart';
 import '../../features/home/map/core/interfaces/i_position_service.dart';
-import '../../features/home/map/repositories/position_repository.dart';
+import '../../features/home/map/core/interfaces/i_driver_service.dart' as map_driver;
 import '../../features/home/map/services/position_service.dart';
 import '../../features/home/map/data/position_data_source_graphql.dart';
+import '../../features/home/map/services/map_service_graphql.dart';
 
 typedef _FactoryFunc<T> = T Function();
 typedef _Disposer = void Function(dynamic);
@@ -259,11 +260,8 @@ class ServiceLocator {
     registerLazySingleton<IMapDataSource>(
       () => MapDataSource(routeProvider: get<IRouteProvider>()),
     );
-    registerLazySingleton<IMapService>(
+registerLazySingleton<IMapService>(
       () => MapService(dataSource: get<IMapDataSource>()),
-    );
-    registerLazySingleton<MapRepository>(
-      () => MapRepository(service: get<IMapService>()),
     );
 
     if (GraphQLConfig.isConfigured) {
@@ -273,22 +271,34 @@ class ServiceLocator {
       registerLazySingleton<IPositionService>(
         () => PositionService(get<IPositionDataSource>()),
       );
-      registerLazySingleton<PositionRepository>(
-        () => PositionRepository(get<IPositionService>()),
+      registerLazySingleton<map_driver.IDriverService>(
+        () => MapServiceGraphQL(get<GraphQLClientWrapper>()),
+      );
+
+      registerLazySingleton<MapRepository>(
+        () => MapRepository(
+          service: get<IMapService>(),
+          positionService: get<IPositionService>(),
+          driverService: get<map_driver.IDriverService>(),
+        ),
       );
 
       registerFactory<MapViewModel>(
         () => MapViewModel(
           repository: get<MapRepository>(),
-          positionRepository: get<PositionRepository>(),
           tileProvider: get<IMapTileProvider>(),
+          session: get<SessionService>(),
         ),
       );
     } else {
+      registerLazySingleton<MapRepository>(
+        () => MapRepository(service: get<IMapService>()),
+      );
       registerFactory<MapViewModel>(
         () => MapViewModel(
           repository: get<MapRepository>(),
           tileProvider: get<IMapTileProvider>(),
+          session: get<SessionService>(),
         ),
       );
     }

@@ -1,18 +1,23 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import '../models/models.dart';
-import '../repositories/map_repository.dart';
-import '../repositories/position_repository.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:safe_driving/core/constants/constants.dart';
+import 'package:safe_driving/features/authentication/services/session_service.dart';
+import '../models/models.dart';
+import '../models/filter_model.dart';
+import '../models/driver_models.dart';
+import '../repositories/map_repository.dart';
 import '../core/map_config.dart';
-
 import '../core/interfaces/i_map_tile_provider.dart';
+
 
 class MapViewModel extends ChangeNotifier {
   final MapRepository _repository;
-  final PositionRepository? _positionRepository;
   final IMapTileProvider _tileProvider;
+  final SessionService _session;
+
   final TextEditingController searchController = TextEditingController();
   final TextEditingController destinationController = TextEditingController();
 
@@ -22,6 +27,9 @@ class MapViewModel extends ChangeNotifier {
   List<LatLng>? routePolyline;
   RouteGeometry? route;
 
+  List<Driver> drivers = const [];
+  FilterModel filters = FilterModel.defaults();
+
   String get tileUrlTemplate => _tileProvider.tileUrlTemplate;
   List<String> get tileSubdomains => _tileProvider.tileSubdomains;
 
@@ -29,73 +37,135 @@ class MapViewModel extends ChangeNotifier {
   bool permissionDenied = false;
   String? _uiMessage;
   String? _errorMessage;
+
+  StreamSubscription<Position>? _posSub;
+  Timer? _driverTimer;
   Timer? _debounce;
 
   MapViewModel({
     required MapRepository repository,
-    PositionRepository? positionRepository,
     required IMapTileProvider tileProvider,
-  }) : _repository = repository,
-       _positionRepository = positionRepository,
-       _tileProvider = tileProvider;
+    required SessionService session,
+  })  : _repository = repository,
+        _tileProvider = tileProvider,
+        _session = session;
 
   Future<void> init() async {
+    filters = await FilterModel.fromPrefs();
     try {
-      final hasPermission = await _ensureLocationPermission();
-      if (hasPermission) {
+      final ok = await _ensureLocationPermission();
+      if (ok) {
         final pos = await Geolocator.getCurrentPosition(
-          locationSettings: const LocationSettings(
-            accuracy: LocationAccuracy.best,
-          ),
+          locationSettings: const LocationSettings(accuracy: LocationAccuracy.best, distanceFilter: 10),
         );
-        currentLocation = LatLng(pos.latitude, pos.longitude);
-        center = currentLocation!;
+        await updatePosition(pos);
+        _posSub?.cancel();
+        _posSub = Geolocator.getPositionStream(locationSettings: const LocationSettings(accuracy: LocationAccuracy.best, distanceFilter: 10)).listen((p) {
+          updatePosition(p);
+        });
       } else {
         permissionDenied = true;
       }
-    } catch (_) {
-      // ignore init errors
+    } catch (e) {
+      _errorMessage = e.toString();
     }
+    _startDriversPolling();
     notifyListeners();
   }
 
   Future<bool> _ensureLocationPermission() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
+    var p = await Geolocator.checkPermission();
+    if (p == LocationPermission.denied) {
+      p = await Geolocator.requestPermission();
     }
-    if (permission == LocationPermission.deniedForever ||
-        permission == LocationPermission.denied) {
-      return false;
+    if (p == LocationPermission.deniedForever || p == LocationPermission.denied) return false;
+    return p == LocationPermission.always || p == LocationPermission.whileInUse;
+  }
+
+  Future<void> updatePosition(Position p) async {
+    currentLocation = LatLng(p.latitude, p.longitude);
+    center = currentLocation!;
+    try {
+      final id = _session.userId;
+      if (id != null && id.isNotEmpty) {
+        await _repository.updateUserPosition(id, p.latitude, p.longitude, p.accuracy);
+      }
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setDouble(kPrefLastLat, p.latitude);
+      await prefs.setDouble(kPrefLastLng, p.longitude);
+      await prefs.setString(kPrefLastUpdatedAt, DateTime.now().toIso8601String());
+    } catch (e) {
+      _errorMessage = e.toString();
     }
-    return permission == LocationPermission.always ||
-        permission == LocationPermission.whileInUse;
+    notifyListeners();
+  }
+
+  void applyFilters(FilterModel f) async {
+    filters = f;
+    await FilterModel.toPrefs(f);
+    await _fetchDrivers();
+    notifyListeners();
+  }
+
+  void resetFilters() async {
+    filters = FilterModel.defaults();
+    await FilterModel.toPrefs(filters);
+    await _fetchDrivers();
+    notifyListeners();
+  }
+
+  void subscribeToDriverUpdates() {
+    _startDriversPolling();
+  }
+
+  Future<void> _fetchDrivers() async {
+    final u = currentLocation;
+    if (u == null) return;
+    try {
+      final list = await _repository.getDriversNearby(lat: u.latitude, lng: u.longitude, radiusKm: filters.radiusKm, filters: filters);
+      drivers = list;
+    } catch (e) {
+      drivers = const [];
+      _errorMessage = e.toString();
+    }
+    notifyListeners();
+  }
+
+  void _startDriversPolling() {
+    _driverTimer?.cancel();
+    _driverTimer = Timer.periodic(const Duration(seconds: 5), (_) {
+      _fetchDrivers();
+    });
+  }
+
+  Future<Driver?> getDriver(String driverId) async {
+    try {
+      return await _repository.getDriver(driverId);
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<void> locateMe() async {
     try {
-      final hasPermission = await _ensureLocationPermission();
-      if (!hasPermission) {
+      final ok = await _ensureLocationPermission();
+      if (!ok) {
         permissionDenied = true;
         notifyListeners();
         return;
       }
-      final pos = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.best,
-        ),
-      );
-      currentLocation = LatLng(pos.latitude, pos.longitude);
-      center = currentLocation!;
-      notifyListeners();
+      final pos = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: LocationAccuracy.best, distanceFilter: 10));
+      await updatePosition(pos);
     } catch (e) {
       _errorMessage = e.toString();
       notifyListeners();
     }
   }
 
-  void onMapTap(LatLng point) {
-    markers = [...markers, point];
+  void clear() {
+    markers = [];
+    routePolyline = null;
+    route = null;
     notifyListeners();
   }
 
@@ -110,22 +180,20 @@ class MapViewModel extends ChangeNotifier {
     final query = searchController.text.trim();
     if (query.isEmpty) return;
     if (!isDebounced) {
-      _setLoading(true);
+      isLoading = true;
+      notifyListeners();
     }
     try {
       final res = await _repository.searchAddress(query);
       if (res != null) {
         center = LatLng(res.lat, res.lng);
-
         markers = [center, ...markers];
-      } else {
-        _uiMessage = 'NO_RESULTS';
       }
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
       if (!isDebounced) {
-        _setLoading(false);
+        isLoading = false;
       }
       notifyListeners();
     }
@@ -135,15 +203,13 @@ class MapViewModel extends ChangeNotifier {
     final start = searchController.text.trim();
     final dest = destinationController.text.trim();
     if (dest.isEmpty) return;
-    _setLoading(true);
+    isLoading = true;
+    notifyListeners();
     try {
       LatLngPoint? startPoint;
       if (start.isEmpty) {
         if (currentLocation != null) {
-          startPoint = LatLngPoint(
-            currentLocation!.latitude,
-            currentLocation!.longitude,
-          );
+          startPoint = LatLngPoint(currentLocation!.latitude, currentLocation!.longitude);
         }
       } else {
         final startRes = await _repository.searchAddress(start);
@@ -151,79 +217,27 @@ class MapViewModel extends ChangeNotifier {
           startPoint = LatLngPoint(startRes.lat, startRes.lng);
         }
       }
-
       final destRes = await _repository.searchAddress(dest);
       if (destRes != null) {
         final destPoint = LatLngPoint(destRes.lat, destRes.lng);
         if (startPoint != null) {
           route = await _repository.getRoute(startPoint, destPoint);
-          routePolyline = route?.points
-              .map((p) => LatLng(p.lat, p.lng))
-              .toList();
+          routePolyline = route?.points.map((p) => LatLng(p.lat, p.lng)).toList();
         }
         center = LatLng(destRes.lat, destRes.lng);
         markers = [center];
-      } else {
-        _uiMessage = 'NO_RESULTS';
       }
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
-      _setLoading(false);
+      isLoading = false;
       notifyListeners();
     }
   }
 
-  void clear() {
-    markers = [];
-    routePolyline = null;
-    route = null;
+  void setCenter(LatLng value) {
+    center = value;
     notifyListeners();
-  }
-
-  Future<bool> reportMyLocation({required String vehicleId}) async {
-    try {
-      if (_positionRepository == null) return false;
-      if (currentLocation == null) {
-        await locateMe();
-      }
-      if (currentLocation == null) return false;
-      final ok = await _positionRepository.reportPosition(
-        PositionReport(
-          vehicleId: vehicleId,
-          latitude: currentLocation!.latitude,
-          longitude: currentLocation!.longitude,
-          recordedAt: DateTime.now(),
-          provider: 'device',
-        ),
-      );
-      if (ok) {
-        _uiMessage = 'LOCATION_REPORTED';
-        notifyListeners();
-      }
-      return ok;
-    } catch (e) {
-      _errorMessage = e.toString();
-      notifyListeners();
-      return false;
-    }
-  }
-
-  Future<void> loadRidePath(String rideId, {int limit = 200}) async {
-    try {
-      if (_positionRepository == null) return;
-      _setLoading(true);
-      final points = await _positionRepository.getRidePositions(
-        rideId,
-        limit: limit,
-      );
-      routePolyline = points.map((p) => LatLng(p.lat, p.lng)).toList();
-    } catch (e) {
-      _errorMessage = e.toString();
-    } finally {
-      _setLoading(false);
-      notifyListeners();
-    }
   }
 
   String? takeMessage() {
@@ -238,16 +252,10 @@ class MapViewModel extends ChangeNotifier {
     return e;
   }
 
-  void _setLoading(bool v) {
-    if (isLoading != v) {
-      isLoading = v;
-      notifyListeners();
-    }
-  }
-
   @override
   void dispose() {
-    _debounce?.cancel();
+    _posSub?.cancel();
+    _driverTimer?.cancel();
     searchController.dispose();
     destinationController.dispose();
     super.dispose();

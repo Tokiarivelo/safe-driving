@@ -96,3 +96,11 @@ Color _lighten(Color color, double amount) {
   final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
   return hslLight.toColor();
 }
+
+const kBluePulse = Color(0xFF2F80ED);
+const kDarkText = Color(0xFF222222);
+const kLightGray = Color(0xFFF2F2F2);
+const kAccentPink = Color(0xFFB93EBF);
+const kRedDriver = Color(0xFFB00020);
+const kSeatBlue = Color(0xFF2D9CDB);
+const kStarYellow = Color(0xFFF2C94C);

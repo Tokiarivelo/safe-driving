@@ -85,7 +85,7 @@ class HomeViewModel with ChangeNotifier {
       resetNotificationCount(index);
     }
     if (index == 0) {
-      Navigator.pushNamed(context, AppRoutes.map);
+      Navigator.pushNamed(context, AppRoutes.searchTransport);
     }
   }
 }

@@ -112,4 +112,14 @@ class AppTextStyles {
         fontWeight: FontWeight.w700,
         color: Theme.of(context).colorScheme.onPrimary,
       );
+
+  static TextStyle title24(BuildContext context) => Theme.of(context)
+      .textTheme
+      .headlineSmall!
+      .copyWith(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onSurface);
+
+  static TextStyle subtitle14(BuildContext context) => Theme.of(context)
+      .textTheme
+      .bodySmall!
+      .copyWith(fontSize: 14, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.onSurface);
 }
