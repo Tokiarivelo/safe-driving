@@ -4,6 +4,7 @@ import 'package:safe_driving/core/theme/app_text_styles.dart';
 import 'package:safe_driving/features/onboarding/driver/models/driver_onboarding_step_model.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/widgets/camera/selfie_camera.dart';
 import 'package:safe_driving/features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
+import 'package:safe_driving/shared/widgets/customs/snackbar/snackbar_helper.dart';
 
 class StepSixView extends StatelessWidget {
   final DriverOnboardingStepModel step;
@@ -54,10 +55,13 @@ class StepSixView extends StatelessWidget {
               instruction:
                   'Positionnez-vous face à la caméra et assurez-vous que votre visage soit bien visible.',
               onPhotoTaken: (imagePath) async {
-                await coordinator.documentUploadViewModel.onSelfieTaken(
-                  imagePath,
-                );
-                onContinue();
+                try {
+                  await coordinator.documentUploadViewModel.onSelfieTaken(imagePath);
+                  onContinue();
+                } catch (e) {
+                  if (!context.mounted) return;
+                  SnackbarHelper.showError(context, 'Échec de l\'envoi du selfie. Vérifiez votre connexion et réessayez.');
+                }
               },
               showInstructions: false,
             ),

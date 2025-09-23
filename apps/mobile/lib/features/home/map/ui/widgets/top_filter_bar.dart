@@ -44,11 +44,6 @@ class TopFilterBar extends StatelessWidget {
               ]),
             ),
           ),
-          IconButton(
-            onPressed: () {},
-            padding: const EdgeInsets.all(12),
-            icon: Icon(Icons.menu, color: Theme.of(context).colorScheme.onSurface, size: 24),
-          )
         ]),
       ),
     );

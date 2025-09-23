@@ -35,8 +35,7 @@ class DetailedFiltersPanel extends StatelessWidget {
               const Spacer(),
               Text('Filtres', style: AppTextStyles.subtitle14(context).copyWith(fontSize: 18, fontWeight: FontWeight.bold)),
               const Spacer(),
-              IconButton(onPressed: () {}, icon: Icon(Icons.keyboard_arrow_up, color: Theme.of(context).colorScheme.onSurface)),
-              IconButton(onPressed: onReset, icon: Icon(Icons.tune, color: Theme.of(context).colorScheme.onSurface))
+              IconButton(onPressed: () {}, icon: Icon(Icons.keyboard_arrow_up, color: Theme.of(context).colorScheme.onSurface))
             ]),
             const SizedBox(height: 16),
             Text('Rayon de recherche', style: AppTextStyles.subtitle14(context)),
@@ -75,10 +74,18 @@ class DetailedFiltersPanel extends StatelessWidget {
             const SizedBox(height: 16),
             Row(children: [Checkbox(value: lang != null, onChanged: (_) {}), Text('Langue', style: AppTextStyles.subtitle14(context))]),
             DropdownButtonFormField(
-              initialValue: lang,
-              items: const [DropdownMenuItem(value: 'Française', child: Text('Française'))],
+              isDense: true,
+              itemHeight: 40,
+              style: const TextStyle(fontSize: 14),
+              initialValue: lang ?? 'Française',
+              items: const [DropdownMenuItem(value: 'Française', child: Text('Française', style: TextStyle(fontSize: 14)))],
               onChanged: onLangChanged,
-              decoration: InputDecoration(filled: true, fillColor: kLightGray, border: OutlineInputBorder(borderRadius: BorderRadius.circular(Radii.r8), borderSide: BorderSide.none)),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: kLightGray,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(Radii.r8), borderSide: BorderSide.none),
+              ),
             ),
             const SizedBox(height: 8),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -100,8 +107,14 @@ class DetailedFiltersPanel extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: onReset,
-                  style: OutlinedButton.styleFrom(side: const BorderSide(color: kAccentPink), minimumSize: const Size.fromHeight(Sizes.h45), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Radii.r8))),
-                  child: Text('Restaurer les filtres', style: AppTextStyles.subtitle14(context).copyWith(color: kAccentPink)),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: kAccentPink),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    minimumSize: const Size.fromHeight(36),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Radii.r8)),
+                  ),
+                  child: Text('Restaurer les filtres', style: AppTextStyles.caption10(context).copyWith(color: kAccentPink, fontSize: 12)),
                 ),
               ),
               const SizedBox(width: 12),

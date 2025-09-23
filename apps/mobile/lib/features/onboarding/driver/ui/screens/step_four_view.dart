@@ -190,10 +190,13 @@ class _StepFourViewState extends State<StepFourView> {
                                 isExpanded: true,
                                 hint: const Text('ex: Voiture'),
                                 value: current,
+                                style: const TextStyle(fontSize: 14),
+                                itemHeight: 40,
+                                menuMaxHeight: 280,
                                 items: options
                                     .map((e) => DropdownMenuItem<String>(
                                           value: e,
-                                          child: Text(e),
+                                          child: Text(e, style: const TextStyle(fontSize: 14)),
                                         ))
                                     .toList(),
                                 onChanged: (val) {

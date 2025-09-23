@@ -18,7 +18,7 @@ class FilterModel {
     this.animals,
   });
 
-  factory FilterModel.defaults() => const FilterModel(radiusKm: 5);
+  factory FilterModel.defaults() => const FilterModel(radiusKm: 5, lang: 'Française');
 
   FilterModel copyWith({
     double? radiusKm,

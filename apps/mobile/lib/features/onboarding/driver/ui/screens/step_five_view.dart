@@ -51,13 +51,16 @@ class _StepFiveViewState extends State<StepFiveView> {
   }
 
   Future<void> _onValidate() async {
+    bool ok = true;
     try {
       await context.driverOnboardingVM.documentUploadViewModel.flushPendingUploads();
-    } catch (_) {
-   
-    } finally {
-      if (mounted) widget.onNext();
+    } catch (e) {
+      ok = false;
+      if (mounted) {
+        SnackbarHelper.showError(context, 'Échec du téléchargement des documents. Vérifiez votre connexion et réessayez.');
+      }
     }
+    if (ok && mounted) widget.onNext();
   }
 
   @override

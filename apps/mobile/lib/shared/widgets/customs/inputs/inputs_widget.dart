@@ -95,8 +95,8 @@ class CustomInputFieldState extends State<CustomInputField> {
                   )
                 : null,
             child: ConstrainedBox(
-              constraints: BoxConstraints.tightFor(
-                height: widget.fieldHeight ?? (widget.showLabel ? 52 : 44),
+              constraints: BoxConstraints(
+                minHeight: widget.fieldHeight ?? (widget.showLabel ? 52 : 44),
               ),
               child: TextFormField(
                 style: TextStyle(
@@ -143,20 +143,20 @@ class CustomInputFieldState extends State<CustomInputField> {
                         : (widget.showLabel ? AppColors.textColor : AppColors.icon),
                     size: widget.showLabel ? 20 : 24,
                   ),
-                  contentPadding: EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 0,
                   ),
+                  errorMaxLines: 2,
+                  errorStyle: AppTextStyles.error10(context),
                   border: widget.showLabel
                       ? InputBorder.none
                       : OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: hasError
-                                ? AppColors.error.adapt(context)
-                                : (Theme.of(context).brightness == Brightness.dark
-                                    ? AppColors.light.withValues(alpha: 0.2)
-                                    : AppColors.borderInputField),
-                            width: hasError ? 2 : 1,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.light.withValues(alpha: 0.2)
+                                : AppColors.borderInputField,
+                            width: 1,
                           ),
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -164,12 +164,10 @@ class CustomInputFieldState extends State<CustomInputField> {
                       ? InputBorder.none
                       : OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: hasError
-                                ? AppColors.error.adapt(context)
-                                : (Theme.of(context).brightness == Brightness.dark
-                                    ? AppColors.light.withValues(alpha: 0.2)
-                                    : AppColors.borderInputField),
-                            width: hasError ? 2 : 1,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.light.withValues(alpha: 0.2)
+                                : AppColors.borderInputField,
+                            width: 1,
                           ),
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -177,11 +175,27 @@ class CustomInputFieldState extends State<CustomInputField> {
                       ? InputBorder.none
                       : OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: hasError
-                                ? AppColors.error.adapt(context)
-                                : (Theme.of(context).brightness == Brightness.dark
-                                    ? AppColors.light.withValues(alpha: 0.4)
-                                    : AppColors.borderInputField),
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.light.withValues(alpha: 0.4)
+                                : AppColors.borderInputField,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                  errorBorder: widget.showLabel
+                      ? InputBorder.none
+                      : OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.error.adapt(context),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                  focusedErrorBorder: widget.showLabel
+                      ? InputBorder.none
+                      : OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.error.adapt(context),
                             width: 2,
                           ),
                           borderRadius: BorderRadius.circular(5),

@@ -181,6 +181,7 @@ class DocumentUploadViewModel extends ChangeNotifier {
       await _service.uploadSelfie(capturedFile);
     } catch (e) {
       _setError('Erreur lors du stockage du selfie: $e');
+      rethrow;
     } finally {
       _setLoading(false);
     }
