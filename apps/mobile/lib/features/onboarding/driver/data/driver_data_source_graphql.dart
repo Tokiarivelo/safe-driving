@@ -1,5 +1,4 @@
 import 'dart:developer' as developer;
-import 'dart:developer' as developer;
 import '../models/driver_onboarding_data.dart';
 import 'driver_data_source_interface.dart';
 import '../../../../api/graph-ql/graphql_client.dart';
@@ -35,10 +34,8 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
 
     final response = await _client.executeMutation(
       document: updateUserMutation,
-      document: updateUserMutation,
       variables: variables,
     );
-    return response['updateUser'];
     return response['updateUser'];
   }
 
@@ -48,8 +45,6 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     required String marque,
     required String modele,
     required String immatriculation,
-    int? places,
-    String? typeVehicule,
     int? places,
     String? typeVehicule,
   }) async {
@@ -111,7 +106,6 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     final variables = {'input': input};
 
     final response = await _client.executeMutation(
-      document: createDriverVehicleMutation,
       document: createDriverVehicleMutation,
       variables: variables,
     );
@@ -368,8 +362,6 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
         immatriculation: vehicleInfo['immatriculation'] ?? '',
         places: int.tryParse((vehicleInfo['places'] ?? '').toString()),
         typeVehicule: vehicleInfo['type'] ?? vehicleInfo['typeVehicule'],
-        places: int.tryParse((vehicleInfo['places'] ?? '').toString()),
-        typeVehicule: vehicleInfo['type'] ?? vehicleInfo['typeVehicule'],
       );
     }
 
@@ -461,8 +453,9 @@ class DriverDataSourceGraphQL implements IDriverDataSource {
     if (originalName != null) input['originalName'] = originalName;
     if (contentType != null) input['contentType'] = contentType;
     if (etag != null) input['etag'] = etag;
-    if (driverVehicleId != null && driverVehicleId.isNotEmpty)
+    if (driverVehicleId != null && driverVehicleId.isNotEmpty) {
       input['driverVehicleId'] = driverVehicleId;
+    }
     final response = await _client.executeMutation(
       document: createFileMutation,
       variables: {'input': input},

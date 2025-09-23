@@ -17,7 +17,6 @@ class AuthService {
 
   Future<AuthResult> signIn(String email, String password) async {
     try {
-    try {
       final request = SignInRequest(email: email, password: password);
       final result = await _dataSource.signIn(request);
       if (result.containsKey('token') && result.containsKey('user')) {
@@ -28,7 +27,11 @@ class AuthService {
         try {
           await _sessionService.saveUserId(user.id);
         } catch (_) {}
-        return AuthResult.success(user: user, token: token, refreshToken: refresh);
+        return AuthResult.success(
+          user: user,
+          token: token,
+          refreshToken: refresh,
+        );
       }
       return AuthResult.failure(errorMessage: 'Authentification échouée');
     } catch (e) {
@@ -47,11 +50,17 @@ class AuthService {
 
       if (result['success'] == false) {
         final msg = _formatRegisterError((result['message'] ?? '').toString());
-        return AuthResult.failure(errorMessage: msg, errorCode: result['errorCode']);
+        return AuthResult.failure(
+          errorMessage: msg,
+          errorCode: result['errorCode'],
+        );
       }
       if (result.containsKey('message')) {
         final msg = _formatRegisterError((result['message'] ?? '').toString());
-        return AuthResult.failure(errorMessage: msg, errorCode: result['errorCode']);
+        return AuthResult.failure(
+          errorMessage: msg,
+          errorCode: result['errorCode'],
+        );
       }
 
       return AuthResult.failure(errorMessage: 'Inscription échouée');
@@ -62,13 +71,21 @@ class AuthService {
     }
   }
 
-  Future<AuthResult> resetPasswordConfirm(String sessionToken, String newPassword) async {
+  Future<AuthResult> resetPasswordConfirm(
+    String sessionToken,
+    String newPassword,
+  ) async {
     try {
-      final result = await _dataSource.resetPasswordConfirm(sessionToken, newPassword);
+      final result = await _dataSource.resetPasswordConfirm(
+        sessionToken,
+        newPassword,
+      );
       if (result['success'] == true) {
         return AuthResult.success(message: 'Mot de passe mis à jour');
       }
-      return AuthResult.failure(errorMessage: result['message'] ?? 'Échec de la réinitialisation');
+      return AuthResult.failure(
+        errorMessage: result['message'] ?? 'Échec de la réinitialisation',
+      );
     } catch (e) {
       return AuthResult.failure(errorMessage: e.toString());
     }
@@ -76,16 +93,7 @@ class AuthService {
 
   Future<AuthResult> resetPassword(String email) async {
     try {
-    try {
       final request = ResetPasswordRequest(email: email);
-      final result = await _dataSource.resetPassword(request);
-      if (result.containsKey('email') && result.containsKey('resetLink')) {
-        return AuthResult.success(message: 'Lien envoyé');
-      }
-      return AuthResult.failure(errorMessage: 'Échec de l\'envoi du lien');
-    } catch (e) {
-      return AuthResult.failure(errorMessage: e.toString());
-    }
       final result = await _dataSource.resetPassword(request);
       if (result.containsKey('email') && result.containsKey('resetLink')) {
         return AuthResult.success(message: 'Lien envoyé');
@@ -118,15 +126,6 @@ class AuthService {
     } catch (e) {
       return AuthResult.failure(errorMessage: e.toString());
     }
-    try {
-      final result = await _dataSource.updateProfile(request);
-      if (result.isNotEmpty) {
-        return AuthResult.success(user: User.fromJson(result));
-      }
-      return AuthResult.failure(errorMessage: 'Erreur de mise à jour');
-    } catch (e) {
-      return AuthResult.failure(errorMessage: e.toString());
-    }
   }
 
   Future<AuthResult> changePassword(ChangePasswordRequest request) async {
@@ -145,7 +144,6 @@ class AuthService {
       }
       final result = await _dataSource.refreshToken(refreshToken);
       if (result['success'] == true && result['tokens'] != null) {
-      if (result['success'] == true && result['tokens'] != null) {
         await _saveTokens(
           result['tokens']['accessToken'],
           result['tokens']['refreshToken'],
@@ -156,7 +154,6 @@ class AuthService {
         );
       }
       return AuthResult.failure(
-        errorMessage: result['message'] ?? 'Rafraîchissement non supporté',
         errorMessage: result['message'] ?? 'Rafraîchissement non supporté',
       );
     } catch (e) {
@@ -205,11 +202,7 @@ class AuthService {
     try {
       final result = await operation();
       if (result.containsKey('token') && result.containsKey('user')) {
-      if (result.containsKey('token') && result.containsKey('user')) {
         final user = User.fromJson(result['user']);
-        final token = result['token'] as String;
-        await _saveTokens(token, null);
-        return AuthResult.success(user: user, token: token);
         final token = result['token'] as String;
         await _saveTokens(token, null);
         return AuthResult.success(user: user, token: token);
@@ -251,10 +244,12 @@ class AuthService {
     } else {
       await _sessionService.saveTokens(token, refreshToken);
     }
- 
+
     try {
-      GraphQLClientWrapper.instance
-          .updateTokens(accessToken: token, refreshToken: refreshToken);
+      GraphQLClientWrapper.instance.updateTokens(
+        accessToken: token,
+        refreshToken: refreshToken,
+      );
     } catch (_) {}
   }
 

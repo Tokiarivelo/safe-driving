@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
@@ -11,9 +9,7 @@ import 'package:safe_driving/shared/state_management/providers.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 import 'package:safe_driving/l10n/l10n.dart';
 import 'package:confetti/confetti.dart';
-import 'package:confetti/confetti.dart';
 
-class StepTwelveView extends StatefulWidget {
 class StepTwelveView extends StatefulWidget {
   final DriverOnboardingStepModel step;
   final DriverOnboardingCoordinator coordinator;
@@ -254,31 +250,7 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                   ),
                 ],
               ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundSecondary,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        width: 1,
-                      ),
-                    ),
-                    child: Text(
-                      context.l10n.driverCompleteThankYou,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.body14(context).copyWith(
-                        fontWeight: FontWeight.w500,
-                        height: 1.4,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
 
-              const SizedBox(height: 32),
               const SizedBox(height: 32),
 
               PrimaryButton.primaryButton(

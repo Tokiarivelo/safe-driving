@@ -94,7 +94,7 @@ class SummaryBuilder {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-          child: Text(
+                    child: Text(
                       _localizeSectionTitle(context, titre),
                       style: AppTextStyles.body16(context).copyWith(
                         fontWeight: FontWeight.bold,

@@ -119,7 +119,7 @@ class StepElevenView extends StatelessWidget {
                 ),
               ),
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.edit,
                   size: 16,
                   color: AppColors.light,

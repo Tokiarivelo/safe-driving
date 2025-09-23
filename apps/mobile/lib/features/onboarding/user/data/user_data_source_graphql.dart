@@ -3,9 +3,6 @@ import '../../../../api/graph-ql/graphql_client.dart';
 import '../../../../api/graph-ql/queries.dart';
 import '../../../../api/graph-ql/mutations.dart';
 import '../models/user_onboarding_data.dart';
-import '../../../../api/graph-ql/queries.dart';
-import '../../../../api/graph-ql/mutations.dart';
-import '../models/user_onboarding_data.dart';
 
 class UserDataSourceGraphQL implements IUserDataSource {
   final GraphQLClientWrapper _client;
@@ -140,41 +137,11 @@ class UserDataSourceGraphQL implements IUserDataSource {
       'selectedTransports': transports,
       'selectedLanguage': (pref['language'] as String?) ?? 'fr',
     };
-    final response = await _client.executeQuery(
-      document: getUserPreferencesQuery,
-      variables: {},
-    );
-    final pref = response['userPreference'] as Map<String, dynamic>?;
-    if (pref == null) {
-      return <String, dynamic>{
-        'gpsEnabled': false,
-        'notifEnabled': false,
-        'selectedTheme': 'Clair',
-        'selectedTransports': <String>[],
-        'selectedLanguage': 'fr',
-      };
-    }
-    final transportsRaw = pref['preferedvelicles'];
-    final transports = transportsRaw is List
-        ? transportsRaw
-            .map((e) => e is Map<String, dynamic> ? (e['name'] as String? ?? '') : '')
-            .where((s) => s.isNotEmpty)
-            .cast<String>()
-            .toList()
-        : <String>[];
-    return <String, dynamic>{
-      'gpsEnabled': pref['activateLocation'] == true,
-      'notifEnabled': pref['activateNotifications'] == true,
-      'selectedTheme': _toAppLabelTheme(pref['theme'] as String?),
-      'selectedTransports': transports,
-      'selectedLanguage': (pref['language'] as String?) ?? 'fr',
-    };
   }
 
   @override
   Future<Map<String, dynamic>> updateOnboardingData({
     required String userId,
-    required UserOnboardingData data,
     required UserOnboardingData data,
   }) async {
     throw UnimplementedError('updateOnboardingData not implemented yet');
@@ -182,32 +149,6 @@ class UserDataSourceGraphQL implements IUserDataSource {
 
   @override
   Future<Map<String, dynamic>> completeOnboarding(String userId) async {
-    final input = <String, dynamic>{
-      'userId': userId,
-      'cguAccepted': true,
-      'privacyPolicyAccepted': true,
-    };
-    final response = await _client.executeMutation(
-      document: upsertUserPreferenceMutation,
-      variables: {'input': input},
-    );
-    return response['upsertUserPreference'] is Map<String, dynamic>
-        ? response['upsertUserPreference'] as Map<String, dynamic>
-        : <String, dynamic>{'success': response['success'] ?? false};
-  }
-
-  String _toBackendTheme(String label) {
-    final l = label.toLowerCase();
-    if (l.contains('sombre') || l.contains('dark')) return 'dark';
-    if (l.contains('auto')) return 'system';
-    return 'light';
-  }
-
-  String _toAppLabelTheme(String? backend) {
-    final b = (backend ?? '').toLowerCase();
-    if (b == 'dark') return 'Sombre';
-    if (b == 'system') return 'Automatique';
-    return 'Clair';
     final input = <String, dynamic>{
       'userId': userId,
       'cguAccepted': true,

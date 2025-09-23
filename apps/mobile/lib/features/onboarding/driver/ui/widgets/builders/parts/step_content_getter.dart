@@ -83,7 +83,6 @@ class StepContentGetter {
                   subtitle = context.l10n.driverNotificationSubtitle;
                   break;
                 case DriverStepType.preferences:
-                  title = context.l10n.stepPreferencesTheme; // overridden by block below
                   title = context.l10n.driverCustomizeTitle;
                   subtitle = context.l10n.driverCustomizeSubtitle;
                   break;

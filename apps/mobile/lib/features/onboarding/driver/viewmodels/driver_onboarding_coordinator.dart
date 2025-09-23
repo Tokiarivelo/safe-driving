@@ -258,10 +258,6 @@ class DriverOnboardingCoordinator extends ChangeNotifier {
     return _service.generateDriverQrCode(type: type);
   }
 
-  Future<String> generateDriverQrCode({String? type}) {
-    return _service.generateDriverQrCode(type: type);
-  }
-
   String getFieldValue(String fieldName) {
     final summaryData = getSummaryData();
     return summaryData[fieldName] ?? 'Non renseigné';

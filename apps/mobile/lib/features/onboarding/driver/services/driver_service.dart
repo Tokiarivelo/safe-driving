@@ -2,9 +2,6 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:developer' as developer;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'dart:convert';
-import 'dart:developer' as developer;
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
@@ -67,9 +64,7 @@ class DriverService implements IDriverService {
 
     try {
       final userId = _getUserIdOrThrow();
-      final userId = _getUserIdOrThrow();
       await _repository.savePersonalInfo(
-        userId: userId,
         userId: userId,
         name: personalInfo['name'] ?? '',
         email: personalInfo['email'] ?? '',
@@ -150,9 +145,8 @@ class DriverService implements IDriverService {
     if (lower.endsWith('.png')) return 'image/png';
     if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return 'image/jpeg';
     if (lower.endsWith('.heic')) return 'image/heic';
-
     return 'image/jpeg';
-    }
+  }
 
   String _mapUserDocumentType(String type) {
     switch (type) {
@@ -566,7 +560,6 @@ class DriverService implements IDriverService {
       developer.log('uploadDocumentPhotos(mobile) done');
     } catch (e) {
       developer.log('uploadDocumentPhotos error: $e');
-      developer.log('uploadDocumentPhotos error: $e');
       throw Exception('Failed to upload document photos: $e');
     }
   }
@@ -574,9 +567,7 @@ class DriverService implements IDriverService {
   @override
   Future<void> uploadSelfie(File photo) async {
     final userId = _getUserIdOrThrow();
-    final userId = _getUserIdOrThrow();
     try {
- 
       await _storageService.storePhoto(photo, StorageService.selfieType);
 
       // 1) Presign and upload to S3 (LocalStack)
@@ -625,9 +616,7 @@ class DriverService implements IDriverService {
             },
           ],
         );
-      } catch (_) {
-  
-      }
+      } catch (_) {}
     } catch (e) {
       throw Exception('Failed to upload selfie: $e');
     }
@@ -639,9 +628,7 @@ class DriverService implements IDriverService {
   ) async {
     try {
       final userId = _getUserIdOrThrow();
-      final userId = _getUserIdOrThrow();
       await _repository.saveNotificationPreferences(
-        userId: userId,
         userId: userId,
         preferences: preferences,
       );
@@ -657,9 +644,7 @@ class DriverService implements IDriverService {
   }) async {
     try {
       final userId = _getUserIdOrThrow();
-      final userId = _getUserIdOrThrow();
       await _repository.saveAppPreferences(
-        userId: userId,
         userId: userId,
         theme: theme,
         language: language,
@@ -679,31 +664,7 @@ class DriverService implements IDriverService {
   }
 
   @override
-  Future<void> saveGpsPreference(bool enabled) async {
-    try {
-      await _repository.upsertUserPreference({'activateLocation': enabled});
-    } catch (e) {
-      throw Exception('Failed to save GPS preference: $e');
-    }
-  }
-
-  @override
   Future<void> completeDriverOnboarding(Map<String, dynamic> data) async {
-    final userId = _getUserIdOrThrow();
-    try {
-      final cgu = data['cgu_accepted'] == true;
-      final privacy = data['privacy_policy_accepted'] == true;
-      await _repository.upsertUserPreference({
-        'cguAccepted': cgu,
-        'privacyPolicyAccepted': privacy,
-        'driverTermsAccepted': true,
-      });
-      await _repository.updateDriverStatus(
-        userId: userId,
-        input: {
-          'isDriver': true,
-        },
-      );
     final userId = _getUserIdOrThrow();
     try {
       final cgu = data['cgu_accepted'] == true;
@@ -734,20 +695,9 @@ class DriverService implements IDriverService {
   }
 
   @override
-  Future<String> generateDriverQrCode({String? type}) async {
-    try {
-      return await _repository.generateDriverQrCode(type: type);
-    } catch (e) {
-      throw Exception('Failed to generate driver QR code: $e');
-    }
-  }
-
-  @override
   Future<void> clearAllData() async {
     try {
       await _storageService.clearAllPhotos();
-      _backendPersonalPhotos = 0;
-      _backendVehiclePhotos = 0;
       _backendPersonalPhotos = 0;
       _backendVehiclePhotos = 0;
     } catch (e) {
@@ -768,15 +718,12 @@ class DriverService implements IDriverService {
       for (final f in files) {
         final type = (f is Map && f['type'] is String) ? (f['type'] as String) : '';
         switch (type) {
-       
           case 'USER':
             personal += 1;
             break;
-       
           case 'VEHICLE':
             vehicle += 1;
             break;
-  
           case 'SELFIE':
           case 'ID_CARD_FRONT':
           case 'ID_CARD_BACK':
@@ -808,7 +755,6 @@ class DriverService implements IDriverService {
       _backendPersonalPhotos = personal;
       _backendVehiclePhotos = vehicle;
     } catch (e) {
-   
       throw Exception('Failed to refresh backend photo counts: $e');
     }
   }

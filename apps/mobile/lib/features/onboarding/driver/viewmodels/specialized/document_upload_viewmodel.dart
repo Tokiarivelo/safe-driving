@@ -11,17 +11,12 @@ class DocumentUploadViewModel extends ChangeNotifier {
   final List<File> _capturedPhotos = [];
 
   final Map<String, List<File>> _pendingUploads = {};
-
-  final Map<String, List<File>> _pendingUploads = {};
   // Compteur spécifique au Web pour suivre les téléchargements sans File système
   int _webUploadedCount = 0;
 
   final Map<String, int> _typeCounts = {};
   bool _isLoading = false;
   String? _errorMessage;
-
-  int? _backendPersonalCount;
-  int? _backendVehicleCount;
 
   int? _backendPersonalCount;
   int? _backendVehicleCount;
@@ -103,13 +98,7 @@ class DocumentUploadViewModel extends ChangeNotifier {
   }
 
   bool get hasPendingUploads => _pendingUploads.values.any((l) => l.isNotEmpty);
-}
 
-bool get hasPendingUploads => _pendingUploads.values.any((l) => l.isNotEmpty);
-
-// Perform the actual uploads for any pending files
-Future<void> flushPendingUploads() async {
-  if (!hasPendingUploads) return;
   // Perform the actual uploads for any pending files
   Future<void> flushPendingUploads() async {
     if (!hasPendingUploads) return;
@@ -120,24 +109,12 @@ Future<void> flushPendingUploads() async {
         await _service.uploadDocumentPhotos(entry.value, entry.key);
       }
       _pendingUploads.clear();
-      for (final entry in _pendingUploads.entries) {
-        if (entry.value.isEmpty) continue;
-        await _service.uploadDocumentPhotos(entry.value, entry.key);
-      }
-      _pendingUploads.clear();
     } catch (e) {
       _setError('Erreur lors de l\'upload des photos: $e');
-      rethrow;
       rethrow;
     } finally {
       _setLoading(false);
     }
-  }
-
-  // Immediate upload method (kept for backwards compatibility)
-  Future<void> uploadPhotos(List<File> photos, String documentType) async {
-    queuePhotosForUpload(photos, documentType);
-    await flushPendingUploads();
   }
 
   // Immediate upload method (kept for backwards compatibility)
@@ -188,8 +165,6 @@ Future<void> flushPendingUploads() async {
       _webUploadedCount += 1;
       // Assurer la prise en compte dans le total personnel
       _typeCounts['selfie'] = (_typeCounts['selfie'] ?? 0) + 1;
-      // Assurer la prise en compte dans le total personnel
-      _typeCounts['selfie'] = (_typeCounts['selfie'] ?? 0) + 1;
       notifyListeners();
       // Optionnel: implémenter un upload réel côté web dans le service si nécessaire
       return;
@@ -200,28 +175,12 @@ Future<void> flushPendingUploads() async {
     // Compter localement le selfie pour la section "Infos personnelles"
     _typeCounts['selfie'] = (_typeCounts['selfie'] ?? 0) + 1;
     notifyListeners();
-    // Compter localement le selfie pour la section "Infos personnelles"
-    _typeCounts['selfie'] = (_typeCounts['selfie'] ?? 0) + 1;
-    notifyListeners();
 
     _setLoading(true);
     try {
       await _service.uploadSelfie(capturedFile);
     } catch (e) {
       _setError('Erreur lors du stockage du selfie: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  Future<void> refreshBackendPhotoCounts() async {
-    _setLoading(true);
-    try {
-      await _service.refreshBackendPhotoCounts();
-      _backendPersonalCount = _service.cachedPersonalPhotosCount;
-      _backendVehicleCount = _service.cachedVehiclePhotosCount;
-    } catch (e) {
-      _setError('Erreur lors de la récupération des photos: $e');
     } finally {
       _setLoading(false);
     }

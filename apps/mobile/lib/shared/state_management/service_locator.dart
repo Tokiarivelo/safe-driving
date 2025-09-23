@@ -1,11 +1,11 @@
+import 'package:safe_driving/features/authentication/services/auth_service.dart';
 import 'package:safe_driving/features/authentication/services/session_service.dart';
 import 'package:safe_driving/api/graph-ql/graphql_client.dart';
 import 'package:safe_driving/api/graph-ql/client/graphql_config.dart';
 import '../../features/authentication/data/auth_data_source_interface.dart';
 import '../../features/authentication/data/auth_data_source_graphql.dart';
-import '../../features/authentication/services/auth_service.dart';
+
 import '../../features/authentication/repositories/user_repository.dart';
-import '../../features/authentication/repositories/auth_repository.dart';
 import '../../features/authentication/repositories/auth_repository.dart';
 import '../../features/authentication/viewmodels/auth_view_model.dart';
 import '../../features/onboarding/driver/core/interfaces/driver_service_interface.dart';
@@ -155,7 +155,6 @@ class ServiceLocator {
     if (GraphQLConfig.isConfigured) {
       registerSingleton<GraphQLClientWrapper>(GraphQLClientWrapper.instance);
       final session = get<SessionService>();
-      final session = get<SessionService>();
       get<GraphQLClientWrapper>().configure(
         accessToken: session.token,
         refreshToken: session.refreshToken,
@@ -165,7 +164,6 @@ class ServiceLocator {
           } catch (_) {}
         },
         onError: (error) {
-          // Log GraphQL client errors for easier diagnostics
           try {
             developer.log('[GraphQLClientWrapper] Error: $error');
           } catch (_) {}
@@ -202,10 +200,8 @@ class ServiceLocator {
       );
     }
 
-    // Storage service for local files
     registerLazySingleton<StorageService>(() => StorageService());
 
-    // Driver data source: GraphQL when available, otherwise local
     if (GraphQLConfig.isConfigured) {
       registerLazySingleton<IDriverDataSource>(
         () => DriverDataSourceGraphQL(get<GraphQLClientWrapper>()),
@@ -259,14 +255,20 @@ class ServiceLocator {
 
     registerLazySingleton<OrsClient>(() => OrsClient());
     registerLazySingleton<IMapTileProvider>(() => DefaultMapTileProvider());
-    registerLazySingleton<IRouteProvider>(() => OrsRouteProvider(client: get<OrsClient>()));
-    registerLazySingleton<IMapDataSource>(() => MapDataSource(routeProvider: get<IRouteProvider>()));
-    registerLazySingleton<IMapService>(() => MapService(dataSource: get<IMapDataSource>()));
-    registerLazySingleton<MapRepository>(() => MapRepository(service: get<IMapService>()));
+    registerLazySingleton<IRouteProvider>(
+      () => OrsRouteProvider(client: get<OrsClient>()),
+    );
+    registerLazySingleton<IMapDataSource>(
+      () => MapDataSource(routeProvider: get<IRouteProvider>()),
+    );
+    registerLazySingleton<IMapService>(
+      () => MapService(dataSource: get<IMapDataSource>()),
+    );
+    registerLazySingleton<MapRepository>(
+      () => MapRepository(service: get<IMapService>()),
+    );
 
-    // Position reporting via GraphQL (optional)
     if (GraphQLConfig.isConfigured) {
-      // DataSource -> Service -> Repository for positions
       registerLazySingleton<IPositionDataSource>(
         () => PositionDataSourceGraphQL(get<GraphQLClientWrapper>()),
       );

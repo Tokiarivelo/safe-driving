@@ -45,7 +45,6 @@ class UserOnboardingService implements IUserOnboardingService {
         },
       );
     } catch (_) {}
-    } catch (_) {}
   }
 
   @override

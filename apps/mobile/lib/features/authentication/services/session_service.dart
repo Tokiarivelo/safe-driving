@@ -77,15 +77,6 @@ class SessionService {
     await prefs.setString(_userIdKey, userId);
   }
 
-  Future<void> saveUserId(String userId) async {
-    if (userId.isEmpty) {
-      throw ArgumentError('L\'identifiant utilisateur ne peut pas être vide');
-    }
-    _userId = userId;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_userIdKey, userId);
-  }
-
   Future<void> clear() async {
     _token = null;
     _refreshToken = null;
