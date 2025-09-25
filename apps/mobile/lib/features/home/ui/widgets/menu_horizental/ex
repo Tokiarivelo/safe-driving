@@ -1,0 +1,31 @@
+import 'package:flutter/material.dart';
+import 'package:safe_driving/features/home/models/nav_item.dart';
+
+class NavigationViewModel extends ChangeNotifier {
+  int _currentIndex = 0;
+  final List<NavItem> _navItems = [];
+
+  int get currentIndex => _currentIndex;
+  List<NavItem> get navItems => _navItems;
+
+  void initializeItems(List<NavItem> items) {
+    _navItems.clear();
+    _navItems.addAll(items);
+    notifyListeners();
+  }
+
+  void changeIndex(int index) {
+    if (index >= 0 && index < _navItems.length) {
+      _currentIndex = index;
+      notifyListeners();
+    }
+  }
+
+  void addListener(VoidCallback listener) {
+    super.addListener(listener);
+  }
+
+  void removeListener(VoidCallback listener) {
+    super.removeListener(listener);
+  }
+}

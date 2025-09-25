@@ -1,93 +1,3 @@
-// import 'package:flutter/material.dart';
-
-// class CarouselNav extends StatefulWidget {
-//   final List<String> items;
-//   const CarouselNav({super.key, required this.items});
-
-//   @override
-//   State<CarouselNav> createState() => _CarouselNavState();
-// }
-
-// class _CarouselNavState extends State<CarouselNav> {
-//   late PageController _pageController;
-//   int _currentIndex = 0;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _pageController = PageController(
-//       viewportFraction: 1 / 5,
-//       initialPage: 1000,
-//     );
-//   }
-
-//   @override
-//   void dispose() {
-//     _pageController.dispose();
-//     super.dispose();
-//   }
-
-//   int _realIndex(int index) {
-//     return index % widget.items.length;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       child: PageView.builder(
-//         controller: _pageController,
-//         scrollDirection: Axis.horizontal,
-//         onPageChanged: (index) {
-//           setState(() {
-//             _currentIndex = _realIndex(index);
-//           });
-//         },
-//         itemBuilder: (context, index) {
-//           final realIndex = _realIndex(index);
-//           final isActive = realIndex == _currentIndex;
-
-//           return AnimatedScale(
-//             scale: isActive ? 1.2 : 1.0,
-//             duration: const Duration(milliseconds: 300),
-//             child: GestureDetector(
-//               onTap: () {
-//                 _pageController.animateToPage(
-//                   index,
-//                   duration: const Duration(milliseconds: 400),
-//                   curve: Curves.easeOut,
-//                 );
-//               },
-//               child: Container(
-//                 decoration: BoxDecoration(
-//                   color: isActive ? Colors.blueAccent : Colors.grey[300],
-//                   borderRadius: BorderRadius.circular(30),
-//                   boxShadow: isActive
-//                       ? [
-//                           BoxShadow(
-//                             color: Colors.black26,
-//                             blurRadius: 10,
-//                             offset: const Offset(0, 4),
-//                           ),
-//                         ]
-//                       : [],
-//                 ),
-//                 alignment: Alignment.center,
-//                 child: Text(
-//                   widget.items[realIndex],
-//                   style: TextStyle(
-//                     color: isActive ? Colors.white : Colors.black,
-//                     fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
@@ -99,14 +9,14 @@ class CustomNavBarView extends StatefulWidget {
   final Color activeColor;
   final Color tabBackgroundColor;
   final CustomNavBarController? controller;
-  final VoidCallback? onMessageTap; // Nouveau callback
+  final VoidCallback? onMessageTap;
 
   const CustomNavBarView({
     super.key,
     this.activeColor = AppColors.dark,
     this.tabBackgroundColor = AppColors.light,
     this.controller,
-    this.onMessageTap, // Callback optionnel
+    this.onMessageTap,
   });
 
   @override
@@ -148,7 +58,6 @@ class _CustomNavBarViewState extends State<CustomNavBarView> {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // Fond de la barre
           Positioned(
             bottom: 0,
             left: 0,
@@ -169,7 +78,6 @@ class _CustomNavBarViewState extends State<CustomNavBarView> {
             ),
           ),
 
-          // Indicateur central fixe
           Positioned(
             left: MediaQuery.of(context).size.width / 2 - 40,
             bottom: 25,
@@ -181,7 +89,7 @@ class _CustomNavBarViewState extends State<CustomNavBarView> {
                 border: Border.all(color: widget.tabBackgroundColor, width: 2),
                 boxShadow: [
                   BoxShadow(
-                    color: widget.activeColor.withOpacity(0.3),
+                    color: widget.activeColor.withValues(alpha: 0.3),
                     blurRadius: 14,
                     offset: const Offset(0, 6),
                   ),
@@ -190,7 +98,6 @@ class _CustomNavBarViewState extends State<CustomNavBarView> {
             ),
           ),
 
-          // Barre de navigation scrollable
           Positioned.fill(
             child: SingleChildScrollView(
               controller: _controller.scrollController,
@@ -215,7 +122,6 @@ class _CustomNavBarViewState extends State<CustomNavBarView> {
     final item = viewModel.navItems[index];
     final isActive = viewModel.currentIndex == index;
 
-    // Vérifier si c'est le bouton Message
     final isMessageButton = item.title.toLowerCase().contains('message');
 
     return NavItemWidget(
@@ -228,10 +134,8 @@ class _CustomNavBarViewState extends State<CustomNavBarView> {
       tabBackgroundColor: widget.tabBackgroundColor,
       onTap: () {
         if (isMessageButton && widget.onMessageTap != null) {
-          // Si c'est le bouton Message et qu'un callback est fourni
           widget.onMessageTap!();
         } else {
-          // Comportement normal pour les autres boutons
           _controller.onItemTap(index, viewModel, context);
         }
       },

@@ -1,115 +1,170 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:safe_driving/features/home/message/models/message_models.dart';
+import 'package:safe_driving/features/home/message/repositories/chat_repository.dart';
 
 class MessageViewmodels with ChangeNotifier {
+  final ChatRepository _chatRepository;
+
+  List<MessageModels> _messages = [];
+  List<MessageModels> _filteredMessages = [];
+  bool _isLoading = false;
   int _selectedTab = 0;
-  final List<String> _tabs = ['Tous', 'Non lus', 'Lus', 'Archivés'];
-  final List<MessageModels> _allMessages = [
-    MessageModels(
-      sender: 'Maria',
-      content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortique sollicitudin suscipit...',
-      time: '07:40 am',
-      unread: true,
-    ),
-    MessageModels(
-      sender: 'John',
-      content:
-          'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip...',
-      time: '07:40 am',
-      unread: true,
-    ),
-    MessageModels(
-      sender: 'Doe',
-      content:
-          'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat...',
-      time: '07:40 am',
-      unread: true,
-    ),
-    MessageModels(
-      sender: 'Monique',
-      content:
-          'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt...',
-      time: '07:40 am',
-      unread: true,
-    ),
-    MessageModels(
-      sender: 'Sarah',
-      content:
-          'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque...',
-      time: '07:40 am',
-      unread: true,
-    ),
-  ];
+  String _searchQuery = '';
 
+  MessageViewmodels({required ChatRepository chatRepository})
+    : _chatRepository = chatRepository;
+
+  List<MessageModels> get messages => _messages;
+  List<MessageModels> get filteredMessages => _filteredMessages;
+  bool get isLoading => _isLoading;
   int get selectedTab => _selectedTab;
-  List<String> get tabs => _tabs;
 
-  List<MessageModels> get message {
-    switch (_selectedTab) {
-      case 0:
-        return _allMessages;
-      case 1: // Non lus
-        return _allMessages.where((msg) => msg.unread).toList();
-      case 2: // Lus
-        return _allMessages.where((msg) => !msg.unread).toList();
-      case 3: // Archivés
-        return []; // liste vide pour archivés
-      default:
-        return _allMessages;
+  Future<void> loadMessages() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final messagesData = await _chatRepository.getMessages();
+
+      _messages = messagesData.map((messageJson) {
+        return MessageModels.fromJson(messageJson);
+      }).toList();
+
+      _applyFilters();
+    } catch (e) {
+      print('Erreur lors du chargement des messages: $e');
+      _messages = [];
+      _filteredMessages = [];
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
   void selectTab(int index) {
-    if (index >= 0 && index < _tabs.length) {
-      _selectedTab = index;
-      notifyListeners();
-    }
-  }
-
-  void markAsRead(MessageModels message) {
-    final index = _allMessages.indexWhere(
-      (m) => m.sender == message.sender && m.time == message.time,
-    );
-    if (index != -1 && _allMessages[index].unread) {
-      _allMessages[index] = MessageModels(
-        sender: message.sender,
-        content: message.content,
-        time: message.time,
-        unread: false,
-      );
-      notifyListeners();
-    }
-  }
-
-  void markAsUnread(MessageModels message) {
-    final index = _allMessages.indexWhere(
-      (m) => m.sender == message.sender && m.time == message.time,
-    );
-    if (index != -1 && !_allMessages[index].unread) {
-      _allMessages[index] = MessageModels(
-        sender: message.sender,
-        content: message.content,
-        time: message.time,
-        unread: true,
-      );
-      notifyListeners();
-    }
-  }
-
-  void deleteMessage(MessageModels message) {
-    _allMessages.removeWhere(
-      (m) => m.sender == message.sender && m.time == message.time,
-    );
+    _selectedTab = index;
+    _applyFilters();
     notifyListeners();
   }
 
-  void archiveMessage(MessageModels message) {
+  void setSearchQuery(String query) {
+    _searchQuery = query.toLowerCase();
+    _applyFilters();
     notifyListeners();
   }
 
-  void addMessage(MessageModels message) {
-    _allMessages.insert(0, message);
-    notifyListeners();
+  void _applyFilters() {
+    List<MessageModels> filtered = List.from(_messages);
+
+    // Filtre par tab
+    switch (_selectedTab) {
+      case 1: // Non lus
+        filtered = filtered.where((message) => message.unread).toList();
+        break;
+      case 2: // Lus
+        filtered = filtered.where((message) => !message.unread).toList();
+        break;
+      case 3:
+        filtered = filtered.where((message) => false).toList();
+        break;
+    }
+
+    if (_searchQuery.isNotEmpty) {
+      filtered = filtered.where((message) {
+        return message.sender.toLowerCase().contains(_searchQuery) ||
+            message.content.toLowerCase().contains(_searchQuery);
+      }).toList();
+    }
+
+    _filteredMessages = filtered;
+  }
+
+  Future<void> sendChatMessage({
+    required String content,
+    required String senderId,
+    String? conversationId,
+    String? rideId,
+    String? recipientId,
+  }) async {
+    try {
+      final newMessageData = await _chatRepository.sendMessage({
+        'content': content,
+        'senderId': senderId,
+        if (conversationId != null) 'conversationId': conversationId,
+        if (rideId != null) 'rideId': rideId,
+        if (recipientId != null) 'recipientId': recipientId,
+        'clientTempId': DateTime.now().millisecondsSinceEpoch.toString(),
+      });
+
+      final newMessage = MessageModels.fromJson(newMessageData);
+
+      _messages.insert(0, newMessage);
+      _applyFilters();
+      notifyListeners();
+    } catch (e) {
+      print('Erreur lors de l\'envoi du message: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> markAsRead(MessageModels message) async {
+    try {
+      await _chatRepository.markAsRead(message.id, message.senderId);
+
+      final index = _messages.indexWhere((m) => m.id == message.id);
+      if (index != -1) {
+        _messages[index] = message.copyWith(unread: false);
+        _applyFilters();
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Erreur lors du marquage comme lu: $e');
+    }
+  }
+
+  Future<void> deleteMessage(String messageId) async {
+    try {
+      await _chatRepository.deleteMessage(messageId);
+
+      _messages.removeWhere((msg) => msg.id == messageId);
+      _applyFilters();
+      notifyListeners();
+    } catch (e) {
+      print('Erreur lors de la suppression: $e');
+    }
+  }
+
+  List<MessageModels> getMessagesBySender(String sender) {
+    return _messages.where((message) => message.sender == sender).toList();
+  }
+
+  void searchMessages(String query) {
+    setSearchQuery(query);
+  }
+}
+
+extension MessageCopyWith on MessageModels {
+  MessageModels copyWith({
+    String? id,
+    String? content,
+    String? senderId,
+    String? sender,
+    DateTime? createdAt,
+    bool? unread,
+    String? conversationId,
+    String? rideId,
+    List<MessageModels>? replies,
+  }) {
+    return MessageModels(
+      id: id ?? this.id,
+      content: content ?? this.content,
+      senderId: senderId ?? this.senderId,
+      sender: sender ?? this.sender,
+      createdAt: createdAt ?? this.createdAt,
+      unread: unread ?? this.unread,
+      conversationId: conversationId ?? this.conversationId,
+      rideId: rideId ?? this.rideId,
+      replies: replies ?? this.replies,
+    );
   }
 }

@@ -15,6 +15,8 @@ export 'modules/qr/qr_queries.dart';
 export 'modules/upload/upload_queries.dart';
 export 'modules/role/role_queries.dart';
 
+export 'modules/chat/chat_queries.dart';
+
 const String getCurrentUserAuthQuery = r'''
 query GetCurrentUser {
   me {

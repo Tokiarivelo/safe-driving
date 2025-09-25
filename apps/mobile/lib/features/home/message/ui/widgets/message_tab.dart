@@ -19,14 +19,16 @@ class MessageTab extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
           color: isActive ? AppColors.color1 : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
+          border: isActive ? null : Border.all(color: Colors.grey.shade300),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isActive ? AppColors.light : AppColors.unclickable,
+            color: isActive ? AppColors.light : Colors.grey,
             fontWeight: FontWeight.w500,
           ),
         ),

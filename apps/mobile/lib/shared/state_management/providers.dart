@@ -11,32 +11,31 @@ import 'package:safe_driving/l10n/l10n.dart';
 
 class AppProviders {
   static List<ChangeNotifierProvider> get providers {
-    final sl = ServiceLocator.instance;
+    final serviceLocator = ServiceLocator.instance;
     final list = <ChangeNotifierProvider>[];
 
     if (GraphQLConfig.isConfigured) {
       list.add(
         ChangeNotifierProvider<AuthViewModel>(
-          create: (_) => sl.get<AuthViewModel>(),
+          create: (_) => serviceLocator.get<AuthViewModel>(),
         ),
       );
     }
 
     list.add(
       ChangeNotifierProvider<DriverOnboardingCoordinator>(
-        create: (_) => sl.get<DriverOnboardingCoordinator>(),
+        create: (_) => serviceLocator.get<DriverOnboardingCoordinator>(),
       ),
     );
 
     list.add(
       ChangeNotifierProvider<UserOnboardingViewModel>(
-        create: (_) => sl.get<UserOnboardingViewModel>(),
+        create: (_) => serviceLocator.get<UserOnboardingViewModel>(),
       ),
     );
-
     list.add(
       ChangeNotifierProvider<ThemeController>(
-        create: (_) => sl.get<ThemeController>(),
+        create: (_) => serviceLocator.get<ThemeController>(),
       ),
     );
 
@@ -44,17 +43,6 @@ class AppProviders {
       ChangeNotifierProvider<LocaleProvider>(create: (_) => LocaleProvider()),
     );
 
-    list.add(
-      ChangeNotifierProvider<AuthViewModel>(
-        create: (_) => ServiceLocator.instance.get<AuthViewModel>(),
-      ),
-    );
-    list.add(
-      ChangeNotifierProvider<DriverOnboardingCoordinator>(
-        create: (_) =>
-            ServiceLocator.instance.get<DriverOnboardingCoordinator>(),
-      ),
-    );
     list.add(
       ChangeNotifierProvider<NavigationViewModel>(
         create: (_) => NavigationViewModel(),

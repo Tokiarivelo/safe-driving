@@ -5,47 +5,36 @@ import 'package:safe_driving/features/home/message/models/message_models.dart';
 class MessageTile extends StatelessWidget {
   final MessageModels message;
   final VoidCallback? onTap;
-  final VoidCallback? onLongPress;
 
-  const MessageTile({
-    super.key,
-    required this.message,
-    this.onTap,
-    this.onLongPress,
-  });
+  const MessageTile({super.key, required this.message, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      onLongPress: onLongPress,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
-          color: AppColors.light,
+          color: Colors.white,
           border: Border(
-            bottom: BorderSide(
-              color: AppColors.unclickable.withValues(alpha: 0.2),
-              width: 1,
-            ),
+            bottom: BorderSide(color: Colors.grey.shade200, width: 1),
           ),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 40,
-              height: 40,
+              width: 44,
+              height: 44,
               decoration: BoxDecoration(
-                color: AppColors.color1,
+                color: _getAvatarColor(message.sender),
                 shape: BoxShape.circle,
               ),
               child: Center(
                 child: Text(
-                  message.sender[0],
+                  message.sender[0].toUpperCase(),
                   style: const TextStyle(
-                    color: AppColors.light,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -53,6 +42,7 @@ class MessageTile extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
+
             // Contenu du message
             Expanded(
               child: Column(
@@ -68,40 +58,42 @@ class MessageTile extends StatelessWidget {
                               ? FontWeight.bold
                               : FontWeight.w600,
                           fontSize: 16,
-                          color: AppColors.dark,
+                          color: Colors.black,
                         ),
                       ),
                       Text(
                         message.time,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.unclickable,
+                          color: Colors.grey.shade600,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 4),
+
                   Text(
                     message.content,
                     style: TextStyle(
                       fontSize: 14,
-                      color: AppColors.unclickable,
+                      color: Colors.grey.shade700,
                       fontWeight: message.unread
                           ? FontWeight.w500
                           : FontWeight.normal,
                     ),
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
+
             if (message.unread)
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Container(
-                  width: 10,
-                  height: 10,
+                  width: 8,
+                  height: 8,
                   decoration: const BoxDecoration(
                     color: AppColors.color1,
                     shape: BoxShape.circle,
@@ -112,5 +104,17 @@ class MessageTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color _getAvatarColor(String sender) {
+    final colors = [
+      AppColors.color1,
+      Colors.blue.shade600,
+      Colors.green.shade600,
+      Colors.orange.shade600,
+      Colors.purple.shade600,
+    ];
+    final index = sender.hashCode % colors.length;
+    return colors[index];
   }
 }

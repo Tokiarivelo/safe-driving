@@ -1,190 +1,359 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-import 'package:safe_driving/features/home/message/models/message_models.dart';
+import 'package:safe_driving/features/home/message/ui/screens/profil_detail_screen.dart';
+import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
 
-class MessageDetailScreen extends StatelessWidget {
-  final MessageModels message;
+class MessageDetailScreen extends StatefulWidget {
+  final String sender;
+  final MessageViewmodels viewModel;
 
-  const MessageDetailScreen({super.key, required this.message});
+  const MessageDetailScreen({
+    super.key,
+    required this.sender,
+    required this.viewModel,
+  });
+
+  @override
+  State<MessageDetailScreen> createState() => _MessageDetailScreenState();
+}
+
+class _MessageDetailScreenState extends State<MessageDetailScreen> {
+  final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.viewModel.addListener(_scrollToBottom);
+  }
+
+  @override
+  void dispose() {
+    widget.viewModel.removeListener(_scrollToBottom);
+    _controller.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final messagesFromSender = widget.viewModel.getMessagesBySender(
+      widget.sender,
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          message.sender,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.transparent,
-        foregroundColor: AppColors.dark,
-        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
+          color: AppColors.dark,
+        ),
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: AppColors.color1,
+              child: Text(
+                widget.sender[0],
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.sender,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const Text(
+                    "En ligne",
+                    style: TextStyle(fontSize: 12, color: Colors.green),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         actions: [
-          IconButton(icon: const Icon(Icons.more_vert), onPressed: () {}),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // En-tête du message
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Doc',
-                  style: TextStyle(fontSize: 14, color: AppColors.unclickable),
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ProfileDetailScreen(userName: widget.sender),
                 ),
-                Text(
-                  message.time,
-                  style: TextStyle(fontSize: 14, color: AppColors.unclickable),
+              );
+            },
+            color: AppColors.dark,
+          ),
+        ],
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          // Date du dernier message
+          if (messagesFromSender.isNotEmpty)
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                _getLastMessageDate(messagesFromSender),
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+              ),
+            ),
+
+          Expanded(
+            child: ListView.builder(
+              reverse: true,
+              controller: _scrollController,
+              padding: const EdgeInsets.all(16),
+              itemCount: messagesFromSender.length,
+              itemBuilder: (context, index) {
+                final message = messagesFromSender[index];
+                final isMe = message.senderId == "senderId";
+
+                return Column(
+                  crossAxisAlignment: isMe
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
+                  children: [
+                    if (_shouldShowTime(messagesFromSender, index))
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Text(
+                          _formatMessageTime(message.createdAt),
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey.shade500,
+                          ),
+                        ),
+                      ),
+                    Row(
+                      mainAxisAlignment: isMe
+                          ? MainAxisAlignment.end
+                          : MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        if (!isMe)
+                          CircleAvatar(
+                            radius: 12,
+                            backgroundColor: AppColors.color1,
+                            child: Text(
+                              widget.sender[0],
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                              ),
+                            ),
+                          ),
+                        if (!isMe) const SizedBox(width: 8),
+
+                        Flexible(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 2),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: isMe
+                                  ? AppColors.color1
+                                  : Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  message.content,
+                                  style: TextStyle(
+                                    color: isMe ? Colors.white : Colors.black,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      _formatTime(message.createdAt),
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: isMe
+                                            ? Colors.white70
+                                            : Colors.grey.shade600,
+                                      ),
+                                    ),
+                                    if (isMe) const SizedBox(width: 4),
+                                    if (isMe)
+                                      Icon(
+                                        message.unread
+                                            ? Icons.done
+                                            : Icons.done_all,
+                                        size: 12,
+                                        color: isMe
+                                            ? Colors.white70
+                                            : Colors.grey.shade600,
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        if (isMe) const SizedBox(width: 8),
+                        if (isMe)
+                          CircleAvatar(
+                            radius: 12,
+                            backgroundColor: Colors.blue,
+                            child: Text(
+                              "M",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(top: BorderSide(color: Colors.grey.shade300)),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.emoji_emotions,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.gif, color: Colors.grey),
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.keyboard_voice,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.photo_camera, color: Colors.grey),
+                      onPressed: () {},
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        decoration: const InputDecoration(
+                          hintText: "Écrire un message...",
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                        ),
+                        onSubmitted: (value) {
+                          _sendMessage();
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.send, color: AppColors.color1),
+                      onPressed: _sendMessage,
+                    ),
+                  ],
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-
-            // Titre principal
-            const Text(
-              'In Time...',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                height: 1.3,
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Contenu structuré comme sur la capture
-            _buildDocumentSection(
-              'Info.bm',
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortique sollicitudin suscipit. Ut vincor posuere nisi, eget molte mauris. Nullam blandiam nec erat ineu dignissim.',
-            ),
-
-            const SizedBox(height: 20),
-
-            _buildDocumentSection(
-              'Note here',
-              'Done ultricies felicidunt libero, porttitor pulvinar nostrud. Viverra et. in baiecium frigidus fior tortius sollicitudin. Sed nec dictum tercier, or gravide mauris.',
-            ),
-
-            const SizedBox(height: 20),
-
-            _buildDocumentSection(
-              'Info.bm',
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortique sollicitudin suscipit. Ut vincor posuere nisi, eget molte mauris. Nullam blandiam nec erat ineu dignissim.',
-            ),
-
-            const SizedBox(height: 20),
-
-            _buildDocumentSection(
-              'Note here',
-              'Done ultricies felicidunt libero, porttitor pulvinar nostrud. Viverra et. in baiecium frigidus fior tortius sollicitudin. Sed nec dictum tercier, or gravide mauris.',
-            ),
-
-            const SizedBox(height: 20),
-
-            _buildDocumentSection(
-              'Note here',
-              'Done ultricies felicidunt libero, porttitor pulvinar nostrud. Viverra et. in baiecium frigidus fior tortius sollicitudin. Sed nec dictum tercier, or gravide mauris.',
-            ),
-
-            const SizedBox(height: 20),
-
-            _buildDocumentSection(
-              'Note here',
-              'Done ultricies felicidunt libero, porttitor pulvinar nostrud. Viverra et. in baiecium frigidus fior tortius sollicitudin. Sed nec dictum tercier, or gravide mauris.',
-            ),
-
-            const SizedBox(height: 20),
-
-            _buildDocumentSection(
-              'Note here',
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortique sollicitudin suscipit. Ut vincor posuere nisi, eget molte mauris. Nullam blandiam nec erat ineu dignissim.',
-            ),
-
-            const SizedBox(height: 20),
-
-            _buildDocumentSection(
-              'Note here',
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortique sollicitudin suscipit. Ut vincor posuere nisi, eget molte mauris. Nullam blandiam nec erat ineu dignissim.',
-            ),
-
-            const SizedBox(height: 20),
-
-            // Ligne de séparation
-            const Divider(height: 30),
-            const SizedBox(height: 10),
-
-            // Paragraphe final
-            const Text(
-              'Sed mauris felis gravida sult fugula nec volutpat pulvinar est. Aenean floritus libero et massa volutpat purae. Ut feugiat ut lest ad consequat. Quisque dic totim nullam. Tincidunt lorem quis, luctus augue. Donec erat ipsum drip sapis duibeur, tincidunt facet quis nostrud. Iltip sed rutile aliquet, ut aliquet fecek dignitat. Duis quis celiflora magna. In venenatis congue piumine.',
-              style: TextStyle(fontSize: 16, height: 1.5),
-              textAlign: TextAlign.justify,
-            ),
-
-            const SizedBox(height: 30),
-          ],
-        ),
-      ),
-      // Actions en bas de l'écran
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: AppColors.light,
-          border: Border(top: BorderSide(color: Colors.grey.shade300)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: Icon(Icons.reply, color: AppColors.color1, size: 28),
-              onPressed: () {},
-              tooltip: 'Répondre',
-            ),
-            IconButton(
-              icon: Icon(Icons.forward, color: AppColors.color1, size: 28),
-              onPressed: () {},
-              tooltip: 'Transférer',
-            ),
-            IconButton(
-              icon: Icon(Icons.delete, color: AppColors.color1, size: 28),
-              onPressed: () {},
-              tooltip: 'Supprimer',
-            ),
-            IconButton(
-              icon: Icon(Icons.archive, color: AppColors.color1, size: 28),
-              onPressed: () {},
-              tooltip: 'Archiver',
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildDocumentSection(String title, String content) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-            height: 1.3,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          content,
-          style: const TextStyle(fontSize: 15, height: 1.4),
-          textAlign: TextAlign.justify,
-        ),
-      ],
+  void _sendMessage() {
+    if (_controller.text.trim().isNotEmpty) {
+      widget.viewModel.sendChatMessage(
+        content: _controller.text.trim(),
+        senderId: "senderId",
+        conversationId: "conversation_id",
+        recipientId: "recipient_id",
+      );
+      _controller.clear();
+    }
+  }
+
+  String _getLastMessageDate(List<dynamic> messages) {
+    if (messages.isEmpty) return "";
+
+    final lastMessage = messages.first;
+    final now = DateTime.now();
+    final messageDate = lastMessage.createdAt;
+
+    if (now.difference(messageDate).inDays == 0) {
+      return "Aujourd'hui";
+    } else if (now.difference(messageDate).inDays == 1) {
+      return "Hier";
+    } else {
+      return "${messageDate.day}/${messageDate.month}/${messageDate.year}";
+    }
+  }
+
+  bool _shouldShowTime(List<dynamic> messages, int index) {
+    if (index == messages.length - 1) return true;
+
+    final currentMessage = messages[index];
+    final previousMessage = messages[index + 1];
+
+    final timeDifference = previousMessage.createdAt.difference(
+      currentMessage.createdAt,
     );
+    return timeDifference.inMinutes.abs() > 5;
+  }
+
+  String _formatMessageTime(DateTime timestamp) {
+    final now = DateTime.now();
+    final difference = now.difference(timestamp);
+
+    if (difference.inDays == 0) {
+      return "Aujourd'hui";
+    } else if (difference.inDays == 1) {
+      return "Hier";
+    } else if (difference.inDays < 7) {
+      return "Il y a ${difference.inDays} jours";
+    } else {
+      return "${timestamp.day}/${timestamp.month}/${timestamp.year}";
+    }
+  }
+
+  String _formatTime(DateTime timestamp) {
+    return '${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}';
   }
 }
