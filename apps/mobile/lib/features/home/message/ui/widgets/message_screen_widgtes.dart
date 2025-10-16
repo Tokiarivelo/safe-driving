@@ -1,90 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/home/message/ui/screens/newMessageScreen.dart';
-import 'package:safe_driving/features/home/message/ui/widgets/message_title.dart';
 import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
-import 'message_detail_screen.dart';
-import 'conversation_tile.dart';
 
-class MessageScreen extends StatefulWidget {
-  const MessageScreen({super.key});
-
-  @override
-  State<MessageScreen> createState() => _MessageScreenState();
-}
-
-class _MessageScreenState extends State<MessageScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final viewModel = Provider.of<MessageViewmodels>(context, listen: false);
-      viewModel.loadMessages();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final messageViewModel = Provider.of<MessageViewmodels>(context);
-
-    return Scaffold(
-      backgroundColor: AppColors.light,
-      body: Column(
-        children: [
-          MessageScreenWidgets.buildCompleteHeader(
-            context,
-            messageViewModel,
-            () => MessageScreenWidgets.showSearchDialog(
-              context,
-              messageViewModel,
-            ),
-          ),
-          MessageScreenWidgets.buildTabBar(messageViewModel),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: () => viewModel.loadMessages(),
-              child: viewModel.isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : viewModel.filteredMessages.isEmpty
-                  ? _buildEmptyState()
-                  : ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemCount: viewModel.filteredMessages.length,
-                      itemBuilder: (context, index) {
-                        final message = viewModel.filteredMessages[index];
-                        return MessageTile(
-                          message: message,
-                          onTap: () {
-                            if (message.unread) {
-                              viewModel.markAsRead(message);
-                            }
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => MessageDetailScreen(
-                                  sender: message.sender,
-                                  viewModel: viewModel,
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCompleteHeader(
+class MessageScreenWidgets {
+  static Widget buildCompleteHeader(
     BuildContext context,
     MessageViewmodels viewModel,
+    VoidCallback onSearchPressed,
   ) {
     return Container(
-      color: Colors.white,
+      color: AppColors.light,
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + 16,
         left: 16,
@@ -107,30 +33,26 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
                   child: const Icon(
                     Icons.person,
-                    color: Colors.white,
+                    color: AppColors.light,
                     size: 20,
                   ),
                 ),
               ),
-
               const Text(
                 'Messages',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
-                  color: Colors.black,
+                  color: AppColors.dark,
                 ),
               ),
-
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      _showSearchDialog(context, viewModel);
-                    },
+                    onPressed: onSearchPressed,
                     icon: const Icon(
                       Icons.search,
-                      color: Colors.black,
+                      color: AppColors.dark,
                       size: 24,
                     ),
                   ),
@@ -142,10 +64,14 @@ class _MessageScreenState extends State<MessageScreen> {
                           builder: (_) => const NewMessageScreen(),
                         ),
                       ).then((_) {
-                        viewModel.loadMessages();
+                        viewModel.loadConversations();
                       });
                     },
-                    icon: const Icon(Icons.edit, color: Colors.black, size: 24),
+                    icon: const Icon(
+                      Icons.edit,
+                      color: AppColors.dark,
+                      size: 24,
+                    ),
                   ),
                 ],
               ),
@@ -157,9 +83,9 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 
-  Widget _buildTabBar(MessageViewmodels viewModel) {
+  static Widget buildTabBar(MessageViewmodels viewModel) {
     return Container(
-      color: Colors.white,
+      color: AppColors.light,
       child: Column(
         children: [
           Padding(
@@ -179,7 +105,11 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 
-  Widget _buildTab(String label, int index, MessageViewmodels viewModel) {
+  static Widget _buildTab(
+    String label,
+    int index,
+    MessageViewmodels viewModel,
+  ) {
     final isActive = viewModel.selectedTab == index;
     return GestureDetector(
       onTap: () => viewModel.selectTab(index),
@@ -206,7 +136,7 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 
-  Widget _buildEmptyState() {
+  static Widget buildEmptyState() {
     return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -214,15 +144,23 @@ class _MessageScreenState extends State<MessageScreen> {
           Icon(Icons.chat, size: 64, color: Colors.grey),
           SizedBox(height: 16),
           Text(
-            "Aucun message",
+            "Aucune conversation",
             style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+          SizedBox(height: 8),
+          Text(
+            "Commencez une nouvelle conversation",
+            style: TextStyle(color: Colors.grey, fontSize: 14),
           ),
         ],
       ),
     );
   }
 
-  void _showSearchDialog(BuildContext context, MessageViewmodels viewModel) {
+  static void showSearchDialog(
+    BuildContext context,
+    MessageViewmodels viewModel,
+  ) {
     final searchController = TextEditingController();
 
     showDialog(
@@ -240,7 +178,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 TextField(
                   controller: searchController,
                   decoration: InputDecoration(
-                    hintText: 'Rechercher un message...',
+                    hintText: 'Rechercher une conversation...',
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
