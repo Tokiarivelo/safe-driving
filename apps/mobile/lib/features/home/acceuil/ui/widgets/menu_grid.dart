@@ -56,6 +56,14 @@ class MenuGrid extends StatelessWidget {
     switch (title) {
       case 'Rechercher un transport':
         return l10n.homeSearchTransport;
+      case 'Rechercher des courses':
+        return l10n.homeSearchRides;
+      case 'Libre':
+        return l10n.homeDriverStatusAvailable;
+      case 'En pause':
+        return l10n.homeDriverStatusPaused;
+      case 'Indisponible':
+        return l10n.homeDriverStatusUnavailable;
       case 'Messages':
         return l10n.homeMessages;
       case 'Mes courses':

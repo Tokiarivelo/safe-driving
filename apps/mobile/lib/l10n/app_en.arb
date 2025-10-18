@@ -221,6 +221,23 @@
     "description": "Menu assistance"
   },
   
+  "homeSearchRides": "Search Rides",
+  "@homeSearchRides": {
+    "description": "Menu search rides for drivers"
+  },
+  "homeDriverStatusAvailable": "Available",
+  "@homeDriverStatusAvailable": {
+    "description": "Driver status: available"
+  },
+  "homeDriverStatusPaused": "Paused",
+  "@homeDriverStatusPaused": {
+    "description": "Driver status: paused"
+  },
+  "homeDriverStatusUnavailable": "Unavailable",
+  "@homeDriverStatusUnavailable": {
+    "description": "Driver status: unavailable"
+  },
+  
   "authForgotPasswordTitle": "🔒 Forgot Password?",
   "@authForgotPasswordTitle": {
     "description": "Titre de la page mot de passe oublié"

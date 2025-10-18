@@ -141,6 +141,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeHelp => 'Help';
 
   @override
+  String get homeSearchRides => 'Search Rides';
+
+  @override
+  String get homeDriverStatusAvailable => 'Available';
+
+  @override
+  String get homeDriverStatusPaused => 'Paused';
+
+  @override
+  String get homeDriverStatusUnavailable => 'Unavailable';
+
+  @override
   String get authForgotPasswordTitle => '🔒 Forgot Password?';
 
   @override

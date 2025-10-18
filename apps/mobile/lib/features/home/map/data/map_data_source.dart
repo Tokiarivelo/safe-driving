@@ -11,7 +11,7 @@ class MapDataSource implements IMapDataSource {
   Future<GeocodeResult?> forwardGeocode(String query) async {
     final data = await _routeProvider.forwardGeocodeRaw(query);
     if (data == null) return null;
-    // ORS geocode returns GeoJSON FeatureCollection with features[]
+
     final features = (data['features'] as List?) ?? const [];
     if (features.isEmpty) return null;
     final f = (features.first as Map).cast<String, dynamic>();

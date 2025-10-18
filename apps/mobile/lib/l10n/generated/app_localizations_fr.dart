@@ -142,6 +142,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeHelp => 'Assistance';
 
   @override
+  String get homeSearchRides => 'Rechercher des courses';
+
+  @override
+  String get homeDriverStatusAvailable => 'Libre';
+
+  @override
+  String get homeDriverStatusPaused => 'En pause';
+
+  @override
+  String get homeDriverStatusUnavailable => 'Indisponible';
+
+  @override
   String get authForgotPasswordTitle => '🔒 Mot de passe oublié ?';
 
   @override

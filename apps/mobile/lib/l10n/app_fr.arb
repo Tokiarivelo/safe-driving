@@ -260,5 +260,9 @@
   "homeProfile": "Profil",
   "homeOffers": "Offres & promotions",
   "homeSettings": "Paramètres",
-  "homeHelp": "Assistance"
+  "homeHelp": "Assistance",
+  "homeSearchRides": "Rechercher des courses",
+  "homeDriverStatusAvailable": "Libre",
+  "homeDriverStatusPaused": "En pause",
+  "homeDriverStatusUnavailable": "Indisponible"
 }

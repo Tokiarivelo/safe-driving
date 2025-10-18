@@ -41,7 +41,6 @@ class PositionGqlApi {
     }
   ''';
 
-  // Optionnel: positions d'une ride (si exposé côté serveur)
   static const String recentRidePositions = r'''
     query RecentRidePositions($rideId: String!, $limit: Float) {
       recentRidePositions(rideId: $rideId, limit: $limit) {

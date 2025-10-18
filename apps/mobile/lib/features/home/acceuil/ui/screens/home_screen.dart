@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_driving/shared/state_management/providers.dart';
 import '../../viewmodels/home_view_model.dart';
 import '../widgets/homeWidgets/home_content.dart';
 import '../widgets/homeWidgets/sidebar_button.dart';
@@ -50,7 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => HomeViewModel(),
+      create: (context) => HomeViewModel(
+        isDriver: context.authVMWatch.currentUser?.isDriver ?? false,
+      )..init(),
       child: Scaffold(
         body: SafeArea(
           child: Stack(

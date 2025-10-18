@@ -362,6 +362,30 @@ abstract class AppLocalizations {
   /// **'Help'**
   String get homeHelp;
 
+  /// Menu search rides for drivers
+  ///
+  /// In en, this message translates to:
+  /// **'Search Rides'**
+  String get homeSearchRides;
+
+  /// Driver status: available
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get homeDriverStatusAvailable;
+
+  /// Driver status: paused
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get homeDriverStatusPaused;
+
+  /// Driver status: unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get homeDriverStatusUnavailable;
+
   /// Titre de la page mot de passe oublié
   ///
   /// In en, this message translates to:
