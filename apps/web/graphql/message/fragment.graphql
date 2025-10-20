@@ -4,6 +4,13 @@ fragment messageFragment on Message {
   senderId
   clientTempId
   parentMessageId
+  parentMessage {
+    id
+    content
+    sender {
+      ...userMessageFragment
+    }
+  }
   edited
   editedAt
   deleted
@@ -14,15 +21,6 @@ fragment messageFragment on Message {
   state
   sender {
     ...userMessageFragment
-  }
-  replies {
-    id
-    content
-    senderId
-    createdAt
-    sender {
-      ...userMessageFragment
-    }
   }
 }
 
@@ -35,6 +33,13 @@ fragment mutationMessageFragment on Message {
   createdAt
   sentAt
   state
+  parentMessage {
+    id
+    content
+    sender {
+      ...userMessageFragment
+    }
+  }
   sender {
     ...userMessageFragment
   }
@@ -46,6 +51,13 @@ fragment subscriptionMessageFragment on Message {
   senderId
   clientTempId
   parentMessageId
+  parentMessage {
+    id
+    content
+    sender {
+      ...userMessageFragment
+    }
+  }
   edited
   editedAt
   deleted
@@ -56,14 +68,5 @@ fragment subscriptionMessageFragment on Message {
   state
   sender {
     ...userMessageFragment
-  }
-  replies {
-    id
-    content
-    senderId
-    createdAt
-    sender {
-      ...userMessageFragment
-    }
   }
 }

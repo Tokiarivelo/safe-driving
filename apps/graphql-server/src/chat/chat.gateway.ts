@@ -188,8 +188,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         20,
       );
 
-      console.log('recentMessages :>> ', recentMessages);
-
       // Envoyer les messages récents au client
       client.emit('recentMessages', recentMessages);
 

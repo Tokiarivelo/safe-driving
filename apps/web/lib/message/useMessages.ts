@@ -36,8 +36,6 @@ export const useMessages = (options: UseMessagesOptions) => {
     }
   }, [data?.messages]);
 
-  console.log('data :>>>>>>>>>><< ', data);
-
   const [sendMessageMutation, { data: sendMessageData }] = useSendMessageMutation({
     onCompleted: data => {
       // Retirer le message optimiste une fois confirmé

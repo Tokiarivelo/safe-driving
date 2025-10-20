@@ -24,8 +24,6 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log('value :>>', value);
-
   const handleSelect = (optionValue: string) => {
     const newValue = value.includes(optionValue)
       ? value.filter(v => v !== optionValue)

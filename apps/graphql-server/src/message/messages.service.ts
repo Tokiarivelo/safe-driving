@@ -254,7 +254,18 @@ export class MessageService {
       },
       include: {
         sender: true,
-        replies: { include: { sender: true } },
+        parentMessage: {
+          include: {
+            sender: {
+              include: { avatar: true },
+            },
+          },
+        },
+        replies: {
+          include: {
+            sender: true,
+          },
+        },
       },
     });
 
@@ -330,6 +341,13 @@ export class MessageService {
       },
       include: {
         sender: true,
+        parentMessage: {
+          include: {
+            sender: {
+              include: { avatar: true },
+            },
+          },
+        },
         replies: {
           include: {
             sender: true,
@@ -357,6 +375,13 @@ export class MessageService {
       },
       include: {
         sender: true,
+        parentMessage: {
+          include: {
+            sender: {
+              include: { avatar: true },
+            },
+          },
+        },
         replies: {
           include: {
             sender: true,
@@ -365,8 +390,14 @@ export class MessageService {
       },
     });
 
-    await this.chatCache.updateMessage(messageId, {
+    // Mettre à jour le cache du message individuel
+    await this.chatCache.cacheMessage({
+      id: message.id,
       content: JSON.stringify(message),
+      senderId: message.senderId,
+      timestamp: message.createdAt.toISOString(),
+      conversationId: message.conversationId,
+      rideId: message.rideId,
     });
 
     // Notifier la mise à jour
@@ -384,7 +415,7 @@ export class MessageService {
     return message;
   }
 
-  async editMessage(messageId: string, userId: string, newContent: string) {
+  async editMessage(messageId: string, newContent: string, userId: string) {
     // Vérifier que l'utilisateur peut éditer ce message
     const message = await this.prisma.message.findUnique({
       where: { id: messageId },
@@ -408,6 +439,13 @@ export class MessageService {
       },
       include: {
         sender: true,
+        parentMessage: {
+          include: {
+            sender: {
+              include: { avatar: true },
+            },
+          },
+        },
         replies: {
           include: {
             sender: true,
@@ -423,7 +461,7 @@ export class MessageService {
     // Mettre à jour le cache du message individuel
     await this.chatCache.cacheMessage({
       id: updatedMessage.id,
-      content: updatedMessage.content,
+      content: JSON.stringify(updatedMessage),
       senderId: updatedMessage.senderId,
       timestamp: updatedMessage.createdAt.toISOString(),
       conversationId: updatedMessage.conversationId,

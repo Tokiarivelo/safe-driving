@@ -34,7 +34,7 @@ export class DriverVehicleResolver {
   }
 
   @UseGuards(JwtAuthGuard) // 👈 protège la route
-  @Mutation(() => DriverVehicle, { name: 'createDriverVehicle' })
+  @Mutation(() => DriverVehicle, { name: 'updateDriverVehicle' })
   async updateDriverVehicle(
     @CurrentUser() user: User,
     @Args('vehicleId') vehicleId: string,
