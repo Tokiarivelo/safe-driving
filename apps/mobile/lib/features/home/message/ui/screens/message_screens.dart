@@ -281,4 +281,28 @@ class _MessageScreenState extends State<MessageScreen> {
       viewModel.searchMessages('');
     });
   }
+
+  // void _navigateToConversation(dynamic conversation) {
+  //   // Vérifier que le widget est toujours monté
+  //   if (!mounted) return;
+
+  //   // Utiliser un délai pour éviter le problème de contexte pendant les animations
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     if (!mounted) return;
+
+  //     try {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => MessageDetailScreen(
+  //             conversation: conversation,
+  //             viewModel: _viewModel,
+  //           ),
+  //         ),
+  //       );
+  //     } catch (e) {
+  //       print('Erreur navigation: $e');
+  //     }
+  //   });
+  // }
 }

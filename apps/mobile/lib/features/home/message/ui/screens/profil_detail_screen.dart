@@ -19,7 +19,7 @@ class ProfileDetailScreen extends StatelessWidget {
           "Profil de $userName",
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.light,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -36,7 +36,7 @@ class ProfileDetailScreen extends StatelessWidget {
                     child: Text(
                       userName[0],
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppColors.light,
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
                       ),

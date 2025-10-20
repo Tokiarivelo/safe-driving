@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:safe_driving/features/authentication/services/session_service.dart';
 import 'package:safe_driving/features/home/message/service/message_service.dart';
+import 'package:safe_driving/shared/state_management/service_locator.dart';
 import 'message_conversation_manager.dart';
 import 'message_state_manager.dart';
 
@@ -8,6 +10,7 @@ class MessageManager {
   final List<dynamic> _messages = [];
   final Map<String, List<dynamic>> _messagesByConversation = {};
   final Map<String, List<dynamic>> _conversationMessages = {};
+  final Map<String, bool> _conversationReadStatus = {};
   StreamSubscription<Map<String, dynamic>?>? _messageSubscription;
 
   List<dynamic> get messages => _messages;
@@ -41,6 +44,54 @@ class MessageManager {
     }
 
     return filtered;
+  }
+
+  void markConversationAsRead(
+    String conversationId,
+    VoidCallback notifyListeners,
+  ) {
+    _conversationReadStatus[conversationId] = true;
+    final messages = _conversationMessages[conversationId] ?? [];
+    for (var message in messages) {
+      if (message is Map<String, dynamic>) {
+        message['isRead'] = true;
+      }
+    }
+    notifyListeners();
+  }
+
+  void toggleConversationReadStatus(
+    Scene conversationId,
+    VoidCallback notifyListeners,
+  ) {
+    final messages = _conversationMessages[conversationId] ?? [];
+    if (messages.isNotEmpty) {
+      final firstMessage = messages.first;
+      if (firstMessage is Map<String, dynamic>) {
+        final currentStatus = firstMessage['isArchived'] ?? false;
+        for (var message in messages) {
+          if (message is Map<String, dynamic>) {
+            message['isArchived'] = !currentStatus;
+          }
+        }
+      }
+    }
+    notifyListeners();
+  }
+
+  bool hasUnreadMessages(String conversationId) {
+    final messages = _conversationMessages[conversationId] ?? [];
+    return messages.any(
+      (message) =>
+          message is Map<String, dynamic> &&
+          (message['readAt'] == null) &&
+          message['senderId'] != _getCurrentUserId(),
+    );
+  }
+
+  String? _getCurrentUserId() {
+    final sessionService = ServiceLocator.instance.get<SessionService>();
+    return sessionService.userId;
   }
 
   Future<void> loadMessages(
@@ -135,24 +186,35 @@ class MessageManager {
     required String conversationId,
     required String content,
     required MessageService messageService,
-    required String? currentUserId,
     required VoidCallback notifyListeners,
   }) async {
     try {
-      final String effectiveUserId =
-          currentUserId ?? 'c27b034e-241d-46a4-bfc2-4d8f226d0e63';
+      final sessionService = ServiceLocator.instance.get<SessionService>();
+      await sessionService.loadUserId();
+      final currentUserId = sessionService.userId;
+
+      if (currentUserId == null || currentUserId.isEmpty) {
+        throw Exception("Utilisateur non connecté");
+      }
+
       final tempMessage = {
         'id': 'temp-${DateTime.now().millisecondsSinceEpoch}',
         'conversationId': conversationId,
-        'senderId': effectiveUserId,
+        'senderId': currentUserId,
         'content': content,
         'createdAt': DateTime.now().toIso8601String(),
-        'sender': {'id': effectiveUserId, 'firstName': 'Moi', 'lastName': ''},
+        'sender': {
+          'id': currentUserId,
+          'firstName': 'Moi',
+          'lastName': '',
+          'email': '',
+        },
+        'isTemp': true,
       };
 
-      final messages = _messagesByConversation[conversationId] ?? [];
+      final messages = _conversationMessages[conversationId] ?? [];
       messages.add(tempMessage);
-      _messagesByConversation[conversationId] = messages;
+      _conversationMessages[conversationId] = messages;
       _messages.clear();
       _messages.addAll(messages);
       notifyListeners();
@@ -169,12 +231,24 @@ class MessageManager {
         messages.add(sentMessage);
       }
 
-      _messagesByConversation[conversationId] = messages;
+      _conversationMessages[conversationId] = messages;
       _messages.clear();
       _messages.addAll(messages);
       notifyListeners();
+
+      print(
+        'Message envoyé et affiché instantanément par l\'utilisateur: $currentUserId',
+      );
     } catch (e) {
       print('Erreur envoi message: $e');
+      final messages = _conversationMessages[conversationId] ?? [];
+      messages.removeWhere((m) => m['isTemp'] == true);
+      _conversationMessages[conversationId] = messages;
+      _messages.clear();
+      _messages.addAll(messages);
+      notifyListeners();
+
+      rethrow;
     }
   }
 
@@ -187,21 +261,44 @@ class MessageManager {
 
     _messageSubscription = messageService
         .subscribeToMessages(conversationId)
-        .listen((newMessage) {
-          if (newMessage == null) return;
+        .listen(
+          (newMessage) {
+            if (newMessage == null) return;
 
-          final list = _messagesByConversation[conversationId] ?? [];
-          final exists = list.any((msg) => msg['id'] == newMessage['id']);
+            print('Nouveau message subscription reçu:');
+            print('Content: ${newMessage['content']}');
+            print('Sender: ${newMessage['sender']}');
+            print('SenderId: ${newMessage['senderId']}');
 
-          if (!exists) {
-            list.add(newMessage);
-            _messagesByConversation[conversationId] = list;
-            _messages.clear();
-            _messages.addAll(list);
-            notifyListeners();
-            print('Message ajouté automatiquement depuis la subscription.');
-          }
-        });
+            if (newMessage['sender'] == null ||
+                newMessage['sender']['firstName'] == null) {
+              print('Structure sender incomplète, correction...');
+              newMessage['sender'] = {
+                'id': newMessage['senderId'],
+                'firstName': 'Utilisateur',
+                'lastName': '',
+                'email': '',
+              };
+            }
+
+            final list = _conversationMessages[conversationId] ?? [];
+            final exists = list.any((msg) => msg['id'] == newMessage['id']);
+
+            if (!exists) {
+              list.add(newMessage);
+              _conversationMessages[conversationId] = list;
+              _messages.clear();
+              _messages.addAll(list);
+              notifyListeners();
+              print(
+                'Message ajouté automatiquement depuis la subscription avec sender: ${newMessage['sender']['firstName']}',
+              );
+            }
+          },
+          onError: (error) {
+            print('Erreur subscription: $error');
+          },
+        );
   }
 
   void dispose() {
