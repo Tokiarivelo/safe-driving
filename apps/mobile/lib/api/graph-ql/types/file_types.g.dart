@@ -7,30 +7,30 @@ part of 'file_types.dart';
 // **************************************************************************
 
 File _$FileFromJson(Map<String, dynamic> json) => File(
-      id: json['id'] as String,
-      userId: json['userId'] as String,
-      fileName: json['fileName'] as String,
-      fileUrl: json['fileUrl'] as String,
-      fileType: json['fileType'] as String?,
-      fileSize: (json['fileSize'] as num?)?.toInt(),
-      mimeType: json['mimeType'] as String?,
-      metadata: json['metadata'] as Map<String, dynamic>?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-    );
+  id: json['id'] as String,
+  userId: json['userId'] as String,
+  fileName: json['fileName'] as String,
+  fileUrl: json['fileUrl'] as String,
+  fileType: json['fileType'] as String?,
+  fileSize: (json['fileSize'] as num?)?.toInt(),
+  mimeType: json['mimeType'] as String?,
+  metadata: json['metadata'] as Map<String, dynamic>?,
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
+);
 
 Map<String, dynamic> _$FileToJson(File instance) => <String, dynamic>{
-      'id': instance.id,
-      'userId': instance.userId,
-      'fileName': instance.fileName,
-      'fileUrl': instance.fileUrl,
-      'fileType': instance.fileType,
-      'fileSize': instance.fileSize,
-      'mimeType': instance.mimeType,
-      'metadata': instance.metadata,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
-    };
+  'id': instance.id,
+  'userId': instance.userId,
+  'fileName': instance.fileName,
+  'fileUrl': instance.fileUrl,
+  'fileType': instance.fileType,
+  'fileSize': instance.fileSize,
+  'mimeType': instance.mimeType,
+  'metadata': instance.metadata,
+  'createdAt': instance.createdAt.toIso8601String(),
+  'updatedAt': instance.updatedAt.toIso8601String(),
+};
 
 FileCreateInput _$FileCreateInputFromJson(Map<String, dynamic> json) =>
     FileCreateInput(

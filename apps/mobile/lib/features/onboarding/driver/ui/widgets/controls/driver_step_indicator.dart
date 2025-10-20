@@ -41,7 +41,7 @@ class DriverStepIndicator extends StatelessWidget {
           Container(
             width: 50,
             height: 50,
-              decoration: BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: AppColors.light.adapt(context).withValues(alpha: 0.2),
             ),
@@ -53,8 +53,12 @@ class DriverStepIndicator extends StatelessWidget {
             child: CircularProgressIndicator(
               value: progress,
               strokeWidth: 3,
-              backgroundColor: AppColors.light.adapt(context).withValues(alpha: 0.3),
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.light.adapt(context)),
+              backgroundColor: AppColors.light
+                  .adapt(context)
+                  .withValues(alpha: 0.3),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                AppColors.light.adapt(context),
+              ),
             ),
           ),
           // Step text (displayed from 2 to 13 as per spec)

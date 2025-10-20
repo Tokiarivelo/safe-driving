@@ -8,4 +8,3 @@ fragment DriverVehicleFragment on DriverVehicle {
   vehicleTypeId
 }
 ''';
-

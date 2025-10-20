@@ -21,23 +21,20 @@ class NavigationLinksBuilder {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(stepData.navigationPrefix, style: AppTextStyles.navPrefix12(context)),
+        Text(
+          stepData.navigationPrefix,
+          style: AppTextStyles.navPrefix12(context),
+        ),
         GestureDetector(
           onTap: onTap,
           child: Container(
             margin: const EdgeInsets.only(top: 1),
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  color: underlineColor,
-                  width: 1.5,
-                ),
+                bottom: BorderSide(color: underlineColor, width: 1.5),
               ),
             ),
-            child: Text(
-              stepData.navigationLink,
-              style: linkStyle,
-            ),
+            child: Text(stepData.navigationLink, style: linkStyle),
           ),
         ),
       ],
@@ -62,10 +59,7 @@ class NavigationLinksBuilder {
               const SizedBox(width: 8),
               Text(
                 backText,
-                style: TextStyle(
-                  fontFamily: 'Inder',
-                  color: color,
-                ),
+                style: TextStyle(fontFamily: 'Inder', color: color),
               ),
             ],
           ),

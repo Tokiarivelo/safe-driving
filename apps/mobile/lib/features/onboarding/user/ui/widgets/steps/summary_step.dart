@@ -10,7 +10,6 @@ class _SummaryStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-  
     String themeNameRaw = viewModel.appState.selectedTheme;
     final raw = themeNameRaw.toLowerCase();
     final themeName = (raw.contains('sombre') || raw.contains('dark'))
@@ -25,7 +24,9 @@ class _SummaryStep extends StatelessWidget {
         Text(
           l10n.stepSummarySubtitle,
           style: AppTextStyles.body14(context).copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.75),
           ),
         ),
         const SizedBox(height: 16),
@@ -39,7 +40,9 @@ class _SummaryStep extends StatelessWidget {
             Builder(
               builder: (context) => Text(
                 l10n.stepSummaryGps,
-                style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
             ),
           ],
@@ -54,7 +57,9 @@ class _SummaryStep extends StatelessWidget {
             Builder(
               builder: (context) => Text(
                 l10n.stepSummaryNotifications,
-                style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
             ),
           ],
@@ -111,8 +116,9 @@ class _SummaryStep extends StatelessWidget {
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           onDeleted: () => viewModel.removeTransport(transport),
-                          backgroundColor:
-                              Theme.of(context).colorScheme.surface,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.surface,
                           side: BorderSide(
                             color: ColorsWidget.subtleBorderColor(context),
                             width: 1,
@@ -125,7 +131,9 @@ class _SummaryStep extends StatelessWidget {
                 Text(
                   l10n.stepSummaryNoTransports,
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.75),
                     fontStyle: FontStyle.italic,
                   ),
                 ),

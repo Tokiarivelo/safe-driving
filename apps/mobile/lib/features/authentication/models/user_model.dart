@@ -43,10 +43,9 @@ class User {
       createdAt = DateTime.now();
     }
     final updatedRaw = json['updatedAt'];
-    final DateTime? updatedAt =
-        (updatedRaw is String && updatedRaw.isNotEmpty)
-            ? DateTime.tryParse(updatedRaw)
-            : null;
+    final DateTime? updatedAt = (updatedRaw is String && updatedRaw.isNotEmpty)
+        ? DateTime.tryParse(updatedRaw)
+        : null;
 
     return User(
       id: json['id'] ?? '',

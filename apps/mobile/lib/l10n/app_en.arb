@@ -151,6 +151,93 @@
     "description": "Sélecteur de langue"
   },
   
+  "languageFrench": "French",
+  "@languageFrench": {
+    "description": "Langue française"
+  },
+  
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "Langue anglaise"
+  },
+  
+  "themeDark": "Dark",
+  "@themeDark": {
+    "description": "Thème sombre"
+  },
+  
+  "themeLight": "Light",
+  "@themeLight": {
+    "description": "Thème clair"
+  },
+  
+  "themeSystem": "System",
+  "@themeSystem": {
+    "description": "Thème système"
+  },
+  
+  "homeSearchTransport": "Search Transport",
+  "@homeSearchTransport": {
+    "description": "Menu rechercher un transport"
+  },
+  
+  "homeMessages": "Messages",
+  "@homeMessages": {
+    "description": "Menu messages"
+  },
+  
+  "homeMyRides": "My Rides",
+  "@homeMyRides": {
+    "description": "Menu mes courses"
+  },
+  
+  "homeScanQr": "Scan QR",
+  "@homeScanQr": {
+    "description": "Menu scanner QR code"
+  },
+  
+  "homeCurrentTrip": "Current Trip",
+  "@homeCurrentTrip": {
+    "description": "Menu trajet en cours"
+  },
+  
+  "homeProfile": "Profile",
+  "@homeProfile": {
+    "description": "Menu profil"
+  },
+  
+  "homeOffers": "Offers & Promotions",
+  "@homeOffers": {
+    "description": "Menu offres et promotions"
+  },
+  
+  "homeSettings": "Settings",
+  "@homeSettings": {
+    "description": "Menu paramètres"
+  },
+  
+  "homeHelp": "Help",
+  "@homeHelp": {
+    "description": "Menu assistance"
+  },
+  
+  "homeSearchRides": "Search Rides",
+  "@homeSearchRides": {
+    "description": "Menu search rides for drivers"
+  },
+  "homeDriverStatusAvailable": "Available",
+  "@homeDriverStatusAvailable": {
+    "description": "Driver status: available"
+  },
+  "homeDriverStatusPaused": "Paused",
+  "@homeDriverStatusPaused": {
+    "description": "Driver status: paused"
+  },
+  "homeDriverStatusUnavailable": "Unavailable",
+  "@homeDriverStatusUnavailable": {
+    "description": "Driver status: unavailable"
+  },
+  
   "authForgotPasswordTitle": "🔒 Forgot Password?",
   "@authForgotPasswordTitle": {
     "description": "Titre de la page mot de passe oublié"
@@ -989,9 +1076,42 @@
   "@googleSignInNotImplemented": {
     "description": "Message: Google Sign-In non implémenté"
   },
-
+  
   "facebookSignInNotImplemented": "Facebook sign-in not implemented yet",
   "@facebookSignInNotImplemented": {
     "description": "Message: Facebook Sign-In non implémenté"
-  }
+  },
+
+  "mapSearchTitle": "Transport search",
+  "@mapSearchTitle": {"description": "Title for the map search screen"},
+  "mapFromPlaceholder": "Start address",
+  "@mapFromPlaceholder": {"description": "Placeholder for the start address input"},
+  "mapToPlaceholder": "Destination",
+  "@mapToPlaceholder": {"description": "Placeholder for the destination input"},
+  "mapLocate": "Locate me",
+  "@mapLocate": {"description": "Tooltip for the locate me FAB"},
+  "mapClear": "Clear",
+  "@mapClear": {"description": "Tooltip for the clear FAB"},
+  "mapPermissionDenied": "Location permission required to center the map on your position",
+  "@mapPermissionDenied": {"description": "Snackbar when location permission is denied"},
+  "mapNoResults": "No results found",
+  "@mapNoResults": {"description": "Snackbar when geocoding returns no results"},
+  "mapRouteSummary": "{distance} • {duration}",
+  "@mapRouteSummary": {"description": "Summary pill showing distance and duration","placeholders": {"distance": {"type": "String"}, "duration": {"type": "String"}}},
+  "theme": "Theme",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeSystem": "System",
+  "language": "Language",
+  "languageFrench": "French",
+  "languageEnglish": "English",
+  "homeSearchTransport": "Search transport",
+  "homeMessages": "Messages",
+  "homeMyRides": "My rides",
+  "homeScanQr": "Scan QR",
+  "homeCurrentTrip": "Ongoing trip",
+  "homeProfile": "Profile",
+  "homeOffers": "Offers & promotions",
+  "homeSettings": "Settings",
+  "homeHelp": "Help"
 }

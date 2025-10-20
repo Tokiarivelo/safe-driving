@@ -53,7 +53,7 @@ class FileCreateInput {
     this.metadata,
   });
 
-  factory FileCreateInput.fromJson(Map<String, dynamic> json) => 
+  factory FileCreateInput.fromJson(Map<String, dynamic> json) =>
       _$FileCreateInputFromJson(json);
   Map<String, dynamic> toJson() => _$FileCreateInputToJson(this);
 }
@@ -76,7 +76,7 @@ class FileUpdateInput {
     this.metadata,
   });
 
-  factory FileUpdateInput.fromJson(Map<String, dynamic> json) => 
+  factory FileUpdateInput.fromJson(Map<String, dynamic> json) =>
       _$FileUpdateInputFromJson(json);
   Map<String, dynamic> toJson() => _$FileUpdateInputToJson(this);
 }

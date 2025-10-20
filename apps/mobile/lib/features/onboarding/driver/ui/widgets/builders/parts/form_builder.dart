@@ -37,34 +37,37 @@ class FormBuilder {
         builder: (context) {
           _prefillPersonalInfo(context, coordinator);
           return CustomInputField(
-          label: context.l10n.driverDetailsFullName,
-          hint: context.l10n.driverDetailsFullNamePlaceholder,
-          icon: Icons.person,
-          showLabel: true,
-          backgroundColor: AppColors.inputTextBackground,
-          controller: coordinator.personalInfoViewModel.getController('name'),
-          readOnly: true,
-          enabled: false,
-          validator: (value) => RegexFormatter.getNameValidationMessage(value!),
-        );
-      },
+            label: context.l10n.driverDetailsFullName,
+            hint: context.l10n.driverDetailsFullNamePlaceholder,
+            icon: Icons.person,
+            showLabel: true,
+            backgroundColor: AppColors.inputTextBackground,
+            controller: coordinator.personalInfoViewModel.getController('name'),
+            readOnly: true,
+            enabled: false,
+            validator: (value) =>
+                RegexFormatter.getNameValidationMessage(value!),
+          );
+        },
       ),
       const SizedBox(height: 16),
       Builder(
         builder: (context) {
           _prefillPersonalInfo(context, coordinator);
           return CustomInputField(
-          label: context.l10n.driverDetailsEmail,
-          hint: context.l10n.driverDetailsEmailPlaceholder,
-          icon: Icons.email,
-          keyboardType: TextInputType.emailAddress,
-          controller: coordinator.personalInfoViewModel.getController('email'),
-          showLabel: true,
-          backgroundColor: AppColors.inputTextBackground,
-          readOnly: true,
-          enabled: false,
-        );
-      },
+            label: context.l10n.driverDetailsEmail,
+            hint: context.l10n.driverDetailsEmailPlaceholder,
+            icon: Icons.email,
+            keyboardType: TextInputType.emailAddress,
+            controller: coordinator.personalInfoViewModel.getController(
+              'email',
+            ),
+            showLabel: true,
+            backgroundColor: AppColors.inputTextBackground,
+            readOnly: true,
+            enabled: false,
+          );
+        },
       ),
       const SizedBox(height: 16),
       Builder(
@@ -91,7 +94,9 @@ class FormBuilder {
   ) {
     try {
       final nameCtrl = coordinator.personalInfoViewModel.getController('name');
-      final emailCtrl = coordinator.personalInfoViewModel.getController('email');
+      final emailCtrl = coordinator.personalInfoViewModel.getController(
+        'email',
+      );
       if (nameCtrl.text.trim().isNotEmpty && emailCtrl.text.trim().isNotEmpty) {
         return;
       }
@@ -128,7 +133,8 @@ class FormBuilder {
           ? lastNameAuth
           : (lastNameSess ?? '');
       // Treat various "Non spécifié" forms as empty
-      final lastName = (lastNameRaw.toLowerCase().replaceAll('é', 'e') == 'non specifie')
+      final lastName =
+          (lastNameRaw.toLowerCase().replaceAll('é', 'e') == 'non specifie')
           ? (lastNameSess ?? '')
           : lastNameRaw;
       final email = (emailAuth != null && emailAuth.isNotEmpty)
@@ -228,8 +234,10 @@ class FormBuilder {
               InputDecorator(
                 decoration: InputDecoration(
                   isDense: true,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   filled: true,
                   fillColor: AppColors.inputTextBackground.adapt(context),
                   border: OutlineInputBorder(
@@ -272,10 +280,12 @@ class FormBuilder {
                       return v.isEmpty ? null : v;
                     }(),
                     items: options
-                        .map((e) => DropdownMenuItem<String>(
-                              value: e,
-                              child: Text(e),
-                            ))
+                        .map(
+                          (e) => DropdownMenuItem<String>(
+                            value: e,
+                            child: Text(e),
+                          ),
+                        )
                         .toList(),
                     onChanged: (val) {
                       final text = val ?? '';
@@ -283,8 +293,10 @@ class FormBuilder {
                           .getController('typeVehicule');
                       if (ctrl.text != text) {
                         ctrl.text = text;
-                        coordinator.vehicleInfoViewModel
-                            .updateFormField('typeVehicule', text);
+                        coordinator.vehicleInfoViewModel.updateFormField(
+                          'typeVehicule',
+                          text,
+                        );
                       }
                     },
                   ),

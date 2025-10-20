@@ -4,7 +4,7 @@ import 'package:safe_driving/features/home/message/models/message_models.dart';
 
 class MessageTitle extends StatelessWidget {
   final MessageModels message;
-  const MessageTitle({Key? key, required this.message}) : super(key: key);
+  const MessageTitle({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {

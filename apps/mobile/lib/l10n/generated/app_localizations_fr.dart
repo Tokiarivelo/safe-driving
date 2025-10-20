@@ -100,6 +100,60 @@ class AppLocalizationsFr extends AppLocalizations {
   String get language => 'Langue';
 
   @override
+  String get languageFrench => 'Français';
+
+  @override
+  String get languageEnglish => 'Anglais';
+
+  @override
+  String get themeDark => 'Sombre';
+
+  @override
+  String get themeLight => 'Clair';
+
+  @override
+  String get themeSystem => 'Système';
+
+  @override
+  String get homeSearchTransport => 'Rechercher un transport';
+
+  @override
+  String get homeMessages => 'Messages';
+
+  @override
+  String get homeMyRides => 'Mes courses';
+
+  @override
+  String get homeScanQr => 'Scanner QR';
+
+  @override
+  String get homeCurrentTrip => 'Trajet en cours';
+
+  @override
+  String get homeProfile => 'Profil';
+
+  @override
+  String get homeOffers => 'Offres & promotions';
+
+  @override
+  String get homeSettings => 'Paramètres';
+
+  @override
+  String get homeHelp => 'Assistance';
+
+  @override
+  String get homeSearchRides => 'Rechercher des courses';
+
+  @override
+  String get homeDriverStatusAvailable => 'Libre';
+
+  @override
+  String get homeDriverStatusPaused => 'En pause';
+
+  @override
+  String get homeDriverStatusUnavailable => 'Indisponible';
+
+  @override
   String get authForgotPasswordTitle => '🔒 Mot de passe oublié ?';
 
   @override
@@ -640,4 +694,34 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get facebookSignInNotImplemented =>
       'Connexion Facebook non encore implémentée';
+
+  @override
+  String get mapSearchTitle => 'Recherche transport';
+
+  @override
+  String get mapFromPlaceholder => 'Adresse de départ';
+
+  @override
+  String get mapToPlaceholder => 'Destination';
+
+  @override
+  String get mapLocate => 'Me localiser';
+
+  @override
+  String get mapClear => 'Effacer';
+
+  @override
+  String get mapPermissionDenied =>
+      'La permission de localisation est nécessaire pour vous localiser sur la carte';
+
+  @override
+  String get mapNoResults => 'Aucun résultat trouvé';
+
+  @override
+  String mapRouteSummary(String distance, String duration) {
+    return '$distance • $duration';
+  }
+
+  @override
+  String get theme => 'Thème';
 }

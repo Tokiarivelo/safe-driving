@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/app_text_styles.dart';
@@ -11,9 +9,7 @@ import 'package:safe_driving/shared/state_management/providers.dart';
 import 'package:safe_driving/shared/widgets/customs/buttons/basic/primary_button.dart';
 import 'package:safe_driving/l10n/l10n.dart';
 import 'package:confetti/confetti.dart';
-import 'package:confetti/confetti.dart';
 
-class StepTwelveView extends StatefulWidget {
 class StepTwelveView extends StatefulWidget {
   final DriverOnboardingStepModel step;
   final DriverOnboardingCoordinator coordinator;
@@ -38,7 +34,8 @@ class _StepTwelveViewState extends State<StepTwelveView> {
   @override
   void initState() {
     super.initState();
-    _confetti = ConfettiController(duration: const Duration(seconds: 2))..play();
+    _confetti = ConfettiController(duration: const Duration(seconds: 2))
+      ..play();
   }
 
   @override
@@ -85,13 +82,10 @@ class _StepTwelveViewState extends State<StepTwelveView> {
               Text(
                 context.l10n.driverCompleteSubtitle,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.body16(
-                  context,
-                ).copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.7),
+                style: AppTextStyles.body16(context).copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                   height: 1.5,
                 ),
               ),
@@ -104,9 +98,7 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                   Text(
                     context.l10n.driverCompleteQrCodeSubtitle,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.body16(
-                      context,
-                    ).copyWith(
+                    style: AppTextStyles.body16(context).copyWith(
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
@@ -114,7 +106,9 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                   const SizedBox(height: 16),
 
                   FutureBuilder<String>(
-                    future: widget.coordinator.generateDriverQrCode(type: 'png'),
+                    future: widget.coordinator.generateDriverQrCode(
+                      type: 'png',
+                    ),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Container(
@@ -160,7 +154,9 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                           child: Icon(
                             Icons.qr_code_2,
                             size: 80,
-                            color: AppColors.fillButtonBackground.adapt(context),
+                            color: AppColors.fillButtonBackground.adapt(
+                              context,
+                            ),
                           ),
                         );
                       }
@@ -208,8 +204,9 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                               : Icon(
                                   Icons.qr_code_2,
                                   size: 80,
-                                  color: AppColors.fillButtonBackground
-                                      .adapt(context),
+                                  color: AppColors.fillButtonBackground.adapt(
+                                    context,
+                                  ),
                                 ),
                         ),
                       );
@@ -222,10 +219,9 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.7),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
                       height: 1.4,
                       fontFamily: 'Inder',
                     ),
@@ -254,37 +250,16 @@ class _StepTwelveViewState extends State<StepTwelveView> {
                   ),
                 ],
               ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundSecondary,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        width: 1,
-                      ),
-                    ),
-                    child: Text(
-                      context.l10n.driverCompleteThankYou,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.body14(context).copyWith(
-                        fontWeight: FontWeight.w500,
-                        height: 1.4,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
 
-              const SizedBox(height: 32),
               const SizedBox(height: 32),
 
               PrimaryButton.primaryButton(
                 text: context.l10n.driverCompleteStart,
                 onPressed: widget.onContinue,
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 40,
+                ),
               ),
             ],
           ),

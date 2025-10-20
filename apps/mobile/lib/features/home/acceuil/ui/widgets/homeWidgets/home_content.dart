@@ -11,8 +11,9 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      color: AppColors.light,
+      color: isDark ? AppColors.backgroundPrimary : AppColors.light,
       child: Column(
         children: [
           const HomeHeader(),

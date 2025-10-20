@@ -43,7 +43,11 @@ class LegalViewModel extends ChangeNotifier {
       }
       return DriverOnboardingData.getCguContent();
     } catch (e) {
-      return codeFallback(context, fr: "Erreur: Impossible de charger les conditions générales d'utilisation.", en: 'Error: Unable to load the Terms of Service.');
+      return codeFallback(
+        context,
+        fr: "Erreur: Impossible de charger les conditions générales d'utilisation.",
+        en: 'Error: Unable to load the Terms of Service.',
+      );
     }
   }
 
@@ -55,11 +59,19 @@ class LegalViewModel extends ChangeNotifier {
       }
       return DriverOnboardingData.getPrivacyPolicyContent();
     } catch (e) {
-      return codeFallback(context, fr: 'Erreur: Impossible de charger la politique de confidentialité.', en: 'Error: Unable to load the Privacy Policy.');
+      return codeFallback(
+        context,
+        fr: 'Erreur: Impossible de charger la politique de confidentialité.',
+        en: 'Error: Unable to load the Privacy Policy.',
+      );
     }
   }
 
-  String codeFallback(BuildContext context, {required String fr, required String en}) {
+  String codeFallback(
+    BuildContext context, {
+    required String fr,
+    required String en,
+  }) {
     final code = Localizations.localeOf(context).languageCode.toLowerCase();
     return code == 'en' ? en : fr;
   }

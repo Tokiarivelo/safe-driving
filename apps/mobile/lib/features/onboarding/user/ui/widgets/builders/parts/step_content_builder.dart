@@ -26,7 +26,9 @@ Widget _buildStepContent({
           builder: (context) => Text(
             subtitle,
             style: TextStyle(
-              color: AppColors.buttonWithoutBackGround.adapt(context).withValues(alpha: 0.75),
+              color: AppColors.buttonWithoutBackGround
+                  .adapt(context)
+                  .withValues(alpha: 0.75),
             ),
             textAlign: TextAlign.center,
           ),

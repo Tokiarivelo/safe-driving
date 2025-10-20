@@ -39,7 +39,9 @@ class StepFiveView extends StatelessWidget {
         Text(
           stepContent.subtitle,
           style: AppTextStyles.body14(context).copyWith(
-            color: AppColors.buttonWithoutBackGround.adapt(context).withValues(alpha: 0.75),
+            color: AppColors.buttonWithoutBackGround
+                .adapt(context)
+                .withValues(alpha: 0.75),
           ),
         ),
         const SizedBox(height: 16),
@@ -48,7 +50,9 @@ class StepFiveView extends StatelessWidget {
         Builder(
           builder: (context) => Text(
             themeLabel,
-            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+            style: TextStyle(
+              color: AppColors.buttonWithoutBackGround.adapt(context),
+            ),
           ),
         ),
         Row(
@@ -72,14 +76,18 @@ class StepFiveView extends StatelessWidget {
         Builder(
           builder: (context) => Text(
             transportLabel,
-            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+            style: TextStyle(
+              color: AppColors.buttonWithoutBackGround.adapt(context),
+            ),
           ),
         ),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: AppColors.fillButtonBackground.adapt(context).withValues(alpha: 0.3),
+              color: AppColors.fillButtonBackground
+                  .adapt(context)
+                  .withValues(alpha: 0.3),
               width: 1,
             ),
             borderRadius: BorderRadius.circular(8),

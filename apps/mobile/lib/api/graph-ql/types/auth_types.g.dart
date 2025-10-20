@@ -7,26 +7,20 @@ part of 'auth_types.dart';
 // **************************************************************************
 
 LoginInput _$LoginInputFromJson(Map<String, dynamic> json) => LoginInput(
-      email: json['email'] as String,
-      password: json['password'] as String,
-    );
+  email: json['email'] as String,
+  password: json['password'] as String,
+);
 
 Map<String, dynamic> _$LoginInputToJson(LoginInput instance) =>
-    <String, dynamic>{
-      'email': instance.email,
-      'password': instance.password,
-    };
+    <String, dynamic>{'email': instance.email, 'password': instance.password};
 
 LoginOutput _$LoginOutputFromJson(Map<String, dynamic> json) => LoginOutput(
-      token: json['token'] as String,
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
-    );
+  token: json['token'] as String,
+  user: User.fromJson(json['user'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$LoginOutputToJson(LoginOutput instance) =>
-    <String, dynamic>{
-      'token': instance.token,
-      'user': instance.user,
-    };
+    <String, dynamic>{'token': instance.token, 'user': instance.user};
 
 RegisterInput _$RegisterInputFromJson(Map<String, dynamic> json) =>
     RegisterInput(
@@ -49,20 +43,20 @@ Map<String, dynamic> _$RegisterInputToJson(RegisterInput instance) =>
     };
 
 ForgotPasswordOutput _$ForgotPasswordOutputFromJson(
-        Map<String, dynamic> json) =>
-    ForgotPasswordOutput(
-      success: json['success'] as bool,
-      message: json['message'] as String?,
-      sessionToken: json['sessionToken'] as String?,
-    );
+  Map<String, dynamic> json,
+) => ForgotPasswordOutput(
+  success: json['success'] as bool,
+  message: json['message'] as String?,
+  sessionToken: json['sessionToken'] as String?,
+);
 
 Map<String, dynamic> _$ForgotPasswordOutputToJson(
-        ForgotPasswordOutput instance) =>
-    <String, dynamic>{
-      'success': instance.success,
-      'message': instance.message,
-      'sessionToken': instance.sessionToken,
-    };
+  ForgotPasswordOutput instance,
+) => <String, dynamic>{
+  'success': instance.success,
+  'message': instance.message,
+  'sessionToken': instance.sessionToken,
+};
 
 ResetPasswordInput _$ResetPasswordInputFromJson(Map<String, dynamic> json) =>
     ResetPasswordInput(

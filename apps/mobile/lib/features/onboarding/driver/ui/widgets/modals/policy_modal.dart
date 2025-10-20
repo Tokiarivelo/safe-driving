@@ -52,7 +52,10 @@ class _PolicyModalState extends State<PolicyModal> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return AlertDialog(
-      title: Text(widget.titleContent, style: AppTextStyles.h2BoldNeutral(context)),
+      title: Text(
+        widget.titleContent,
+        style: AppTextStyles.h2BoldNeutral(context),
+      ),
 
       content: SizedBox(
         width: double.maxFinite,
@@ -101,9 +104,7 @@ class _PolicyModalState extends State<PolicyModal> {
                 : null,
           ),
           child: Builder(
-            builder: (context) => Text(
-              context.l10n.driverCguAccept,
-            ),
+            builder: (context) => Text(context.l10n.driverCguAccept),
           ),
         ),
       ],

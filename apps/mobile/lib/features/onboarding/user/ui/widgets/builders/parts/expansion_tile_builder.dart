@@ -39,7 +39,7 @@ Widget _buildExpansionTile({
           ],
         ),
       ),
-      ),
+    ),
   );
 }
 
@@ -85,7 +85,9 @@ Widget _buildExpansionTileContent(Widget content) {
           bottomLeft: Radius.circular(12),
           bottomRight: Radius.circular(12),
         ),
-        border: Border(top: BorderSide(color: AppColors.light.adapt(context), width: 1)),
+        border: Border(
+          top: BorderSide(color: AppColors.light.adapt(context), width: 1),
+        ),
       ),
       padding: const EdgeInsets.all(16),
       child: content,

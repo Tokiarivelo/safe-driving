@@ -164,7 +164,10 @@ abstract class BaseDocumentWidgetState<T extends BaseDocumentWidget>
     addDocument(mockPath);
 
     if (!_hasShownUploadSnack && mounted) {
-      SnackbarHelper.showSuccess(context, 'Document sélectionné depuis la galerie');
+      SnackbarHelper.showSuccess(
+        context,
+        'Document sélectionné depuis la galerie',
+      );
       _hasShownUploadSnack = true;
     }
   }

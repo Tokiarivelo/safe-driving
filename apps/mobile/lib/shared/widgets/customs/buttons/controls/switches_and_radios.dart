@@ -78,8 +78,9 @@ class SwitchesAndRadios {
         ),
         value: value,
         onChanged: onChanged,
-        activeColor:
-            (activeColor ?? AppColors.buttonWithoutBackGround).adapt(context),
+        activeColor: (activeColor ?? AppColors.buttonWithoutBackGround).adapt(
+          context,
+        ),
         checkColor: (checkColor ?? AppColors.light).adapt(context),
         controlAffinity: ListTileControlAffinity.leading,
         contentPadding: EdgeInsets.zero,

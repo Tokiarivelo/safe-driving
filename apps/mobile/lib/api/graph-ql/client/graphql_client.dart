@@ -207,7 +207,8 @@ class GraphQLClientWrapper {
       String? newAccessToken;
       if (data['refreshToken'] is Map) {
         final rt = data['refreshToken'] as Map<String, dynamic>;
-        newAccessToken = (rt['accessToken'] as String?) ?? (rt['token'] as String?);
+        newAccessToken =
+            (rt['accessToken'] as String?) ?? (rt['token'] as String?);
       } else if (data['token'] is String) {
         newAccessToken = data['token'] as String;
       }

@@ -1,6 +1,8 @@
 import 'user_fragments.dart';
 
-const String meQuery = userFragment + r'''
+const String meQuery =
+    userFragment +
+    r'''
 query Me {
   me {
     ...UserFragment
@@ -8,7 +10,9 @@ query Me {
 }
 ''';
 
-const String userQuery = userFragment + r'''
+const String userQuery =
+    userFragment +
+    r'''
 query User($id: String!) {
   user(id: $id) {
     ...UserFragment
@@ -16,7 +20,9 @@ query User($id: String!) {
 }
 ''';
 
-const String usersQuery = userFragment + r'''
+const String usersQuery =
+    userFragment +
+    r'''
 query Users($where: UserWhereInput, $take: Int, $skip: Int) {
   users(where: $where, take: $take, skip: $skip) {
     ...UserFragment
@@ -24,7 +30,9 @@ query Users($where: UserWhereInput, $take: Int, $skip: Int) {
 }
 ''';
 
-const String usersForAdminQuery = userFragment + r'''
+const String usersForAdminQuery =
+    userFragment +
+    r'''
 query UsersForAdmin($where: UserWhereInput, $take: Int, $skip: Int) {
   usersForAdmin(where: $where, take: $take, skip: $skip) {
     ...UserFragment
@@ -32,7 +40,9 @@ query UsersForAdmin($where: UserWhereInput, $take: Int, $skip: Int) {
 }
 ''';
 
-const String userByTokenQuery = userFragment + r'''
+const String userByTokenQuery =
+    userFragment +
+    r'''
 query UserByToken($token: String!) {
   userByToken(token: $token) {
     ...UserFragment
@@ -115,5 +125,3 @@ query UserFiles {
   }
 }
 ''';
-
-

@@ -99,6 +99,60 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language => 'Language';
 
   @override
+  String get languageFrench => 'French';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get homeSearchTransport => 'Search transport';
+
+  @override
+  String get homeMessages => 'Messages';
+
+  @override
+  String get homeMyRides => 'My rides';
+
+  @override
+  String get homeScanQr => 'Scan QR';
+
+  @override
+  String get homeCurrentTrip => 'Ongoing trip';
+
+  @override
+  String get homeProfile => 'Profile';
+
+  @override
+  String get homeOffers => 'Offers & promotions';
+
+  @override
+  String get homeSettings => 'Settings';
+
+  @override
+  String get homeHelp => 'Help';
+
+  @override
+  String get homeSearchRides => 'Search Rides';
+
+  @override
+  String get homeDriverStatusAvailable => 'Available';
+
+  @override
+  String get homeDriverStatusPaused => 'Paused';
+
+  @override
+  String get homeDriverStatusUnavailable => 'Unavailable';
+
+  @override
   String get authForgotPasswordTitle => '🔒 Forgot Password?';
 
   @override
@@ -630,4 +684,34 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get facebookSignInNotImplemented =>
       'Facebook sign-in not implemented yet';
+
+  @override
+  String get mapSearchTitle => 'Transport search';
+
+  @override
+  String get mapFromPlaceholder => 'Start address';
+
+  @override
+  String get mapToPlaceholder => 'Destination';
+
+  @override
+  String get mapLocate => 'Locate me';
+
+  @override
+  String get mapClear => 'Clear';
+
+  @override
+  String get mapPermissionDenied =>
+      'Location permission required to center the map on your position';
+
+  @override
+  String get mapNoResults => 'No results found';
+
+  @override
+  String mapRouteSummary(String distance, String duration) {
+    return '$distance • $duration';
+  }
+
+  @override
+  String get theme => 'Theme';
 }

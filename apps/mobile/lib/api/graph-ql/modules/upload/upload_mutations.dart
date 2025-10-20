@@ -43,7 +43,6 @@ const String completeUploadBulkMutation = r'''
   }
 ''';
 
-
 const String uploadUserImagesMutation = r'''
   mutation uploadUserImages($keys: [String!]!) {
     uploadUserImages(keys: $keys) {

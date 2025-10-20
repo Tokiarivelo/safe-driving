@@ -40,7 +40,7 @@ mixin UserOnboardingPreferencesMixin on UserOnboardingContract {
   void updateTheme(String theme) {
     _appState = _appState.copyWith(selectedTheme: theme);
     notifyListeners();
-  
+
     _savePreferences();
   }
 
@@ -53,7 +53,7 @@ mixin UserOnboardingPreferencesMixin on UserOnboardingContract {
     }
     _appState = _appState.copyWith(selectedTransports: newTransports);
     notifyListeners();
- 
+
     _savePreferences();
   }
 
@@ -69,7 +69,7 @@ mixin UserOnboardingPreferencesMixin on UserOnboardingContract {
   void updateLanguage(String language) {
     _appState = _appState.copyWith(selectedLanguage: language);
     notifyListeners();
-   
+
     _savePreferences();
   }
 }

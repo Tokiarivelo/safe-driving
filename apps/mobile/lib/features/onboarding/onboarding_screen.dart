@@ -118,44 +118,66 @@ class OnboardingScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                           ButtonRows.roleChoiceButtons(
-onUserPressed: () async {
+                            onUserPressed: () async {
                               try {
-                                final session = ServiceLocator.instance.get<SessionService>();
+                                final session = ServiceLocator.instance
+                                    .get<SessionService>();
                                 await session.savePendingRole('USER');
                                 final uid = session.userId ?? '';
-                                developer.log('Role selection: USER; userId=$uid');
-                                final svc = ServiceLocator.instance.get<IDriverService>();
+                                developer.log(
+                                  'Role selection: USER; userId=$uid',
+                                );
+                                final svc = ServiceLocator.instance
+                                    .get<IDriverService>();
                                 if (uid.isNotEmpty) {
                                   await svc.setUserRole(isDriver: false);
                                   await session.clearPendingRole();
-                                  developer.log('Role USER assigned successfully');
+                                  developer.log(
+                                    'Role USER assigned successfully',
+                                  );
                                 }
                               } catch (e) {
-                                developer.log('Role USER assignment failed: $e');
+                                developer.log(
+                                  'Role USER assignment failed: $e',
+                                );
                                 if (!context.mounted) return;
                                 if (Navigator.canPop(context)) {
-                                  SnackbarHelper.showError(context, 'Échec de l\'assignation du rôle utilisateur');
+                                  SnackbarHelper.showError(
+                                    context,
+                                    'Échec de l\'assignation du rôle utilisateur',
+                                  );
                                 }
                               }
                               onUserPressed();
                             },
-onDriverPressed: () async {
+                            onDriverPressed: () async {
                               try {
-                                final session = ServiceLocator.instance.get<SessionService>();
+                                final session = ServiceLocator.instance
+                                    .get<SessionService>();
                                 await session.savePendingRole('DRIVER');
                                 final uid = session.userId ?? '';
-                                developer.log('Role selection: DRIVER; userId=$uid');
-                                final svc = ServiceLocator.instance.get<IDriverService>();
+                                developer.log(
+                                  'Role selection: DRIVER; userId=$uid',
+                                );
+                                final svc = ServiceLocator.instance
+                                    .get<IDriverService>();
                                 if (uid.isNotEmpty) {
                                   await svc.setUserRole(isDriver: true);
                                   await session.clearPendingRole();
-                                  developer.log('Role DRIVER assigned successfully');
+                                  developer.log(
+                                    'Role DRIVER assigned successfully',
+                                  );
                                 }
                               } catch (e) {
-                                developer.log('Role DRIVER assignment failed: $e');
+                                developer.log(
+                                  'Role DRIVER assignment failed: $e',
+                                );
                                 if (!context.mounted) return;
                                 if (Navigator.canPop(context)) {
-                                  SnackbarHelper.showError(context, 'Échec de l\'assignation du rôle chauffeur');
+                                  SnackbarHelper.showError(
+                                    context,
+                                    'Échec de l\'assignation du rôle chauffeur',
+                                  );
                                 }
                               }
                               onDriverPressed();

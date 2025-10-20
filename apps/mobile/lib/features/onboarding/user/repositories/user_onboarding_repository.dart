@@ -10,10 +10,11 @@ class UserOnboardingRepository {
   final IUserOnboardingService _service;
 
   UserOnboardingRepository({IUserOnboardingService? service})
-      : _service = service ??
-            UserOnboardingService(
-              UserDataSourceGraphQL(GraphQLClientWrapper.instance),
-            );
+    : _service =
+          service ??
+          UserOnboardingService(
+            UserDataSourceGraphQL(GraphQLClientWrapper.instance),
+          );
 
   Future<bool> requestGpsPermission(BuildContext context) {
     return _service.requestGpsPermission(context);
@@ -54,7 +55,9 @@ class UserOnboardingRepository {
   }
 
   Future<void> saveTransportPreferences(List<String> transports) async {
-    await _service.saveUserPreferences(AppState(selectedTransports: transports));
+    await _service.saveUserPreferences(
+      AppState(selectedTransports: transports),
+    );
   }
 
   Future<void> saveLanguagePreference(String language) async {

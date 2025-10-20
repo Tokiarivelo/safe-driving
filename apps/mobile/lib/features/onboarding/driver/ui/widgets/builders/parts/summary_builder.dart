@@ -23,7 +23,11 @@ class SummaryBuilder {
   }
 
   // Localize field labels depending on section when necessary
-  static String _localizeFieldLabel(BuildContext context, String fieldKey, String sectionTitle) {
+  static String _localizeFieldLabel(
+    BuildContext context,
+    String fieldKey,
+    String sectionTitle,
+  ) {
     switch (fieldKey) {
       case 'Nom':
         return context.l10n.driverSummaryPersonalInfoName;
@@ -59,6 +63,7 @@ class SummaryBuilder {
         return fieldKey;
     }
   }
+
   static Widget buildSummary(
     List resumeData,
     DriverOnboardingCoordinator coordinator,
@@ -77,24 +82,17 @@ class SummaryBuilder {
           decoration: BoxDecoration(
             color: AppColors.backgroundSecondary,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: AppColors.light,
-              width: 1,
-            ),
+            border: Border.all(color: AppColors.light, width: 1),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  Icon(
-                    getSectionIcon(titre),
-                    size: 20,
-                    color: AppColors.light,
-                  ),
+                  Icon(getSectionIcon(titre), size: 20, color: AppColors.light),
                   const SizedBox(width: 8),
                   Expanded(
-          child: Text(
+                    child: Text(
                       _localizeSectionTitle(context, titre),
                       style: AppTextStyles.body16(context).copyWith(
                         fontWeight: FontWeight.bold,
@@ -109,10 +107,7 @@ class SummaryBuilder {
                     decoration: BoxDecoration(
                       color: AppColors.backgroundSecondary,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: AppColors.light,
-                        width: 1,
-                      ),
+                      border: Border.all(color: AppColors.light, width: 1),
                     ),
                     child: IconButton(
                       icon: const Icon(
@@ -154,28 +149,24 @@ class SummaryBuilder {
   ) {
     final localizedLabel = _localizeFieldLabel(context, element, sectionTitle);
     if (element == 'Photos uploadées') {
- 
       final isVehicle = sectionTitle == 'Véhicule';
       final totalPhotos = isVehicle
           ? coordinator.documentUploadViewModel.getVehicleUploadedPhotosCount()
-          : coordinator.documentUploadViewModel.getPersonalUploadedPhotosCount();
+          : coordinator.documentUploadViewModel
+                .getPersonalUploadedPhotosCount();
       final stepIndex = isVehicle ? 4 : 2;
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: Row(
           children: [
-            Icon(
-              getFieldIcon(element),
-              size: 16,
-              color: AppColors.light,
-            ),
+            Icon(getFieldIcon(element), size: 16, color: AppColors.light),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
                 '$localizedLabel : $totalPhotos',
-                style: AppTextStyles.body14(context).copyWith(
-                  color: AppColors.light,
-                ),
+                style: AppTextStyles.body14(
+                  context,
+                ).copyWith(color: AppColors.light),
               ),
             ),
             const SizedBox(width: 8),
@@ -185,17 +176,10 @@ class SummaryBuilder {
               decoration: BoxDecoration(
                 color: AppColors.backgroundSecondary,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: AppColors.light,
-                  width: 1,
-                ),
+                border: Border.all(color: AppColors.light, width: 1),
               ),
               child: IconButton(
-                icon: const Icon(
-                  Icons.edit,
-                  size: 16,
-                  color: AppColors.light,
-                ),
+                icon: const Icon(Icons.edit, size: 16, color: AppColors.light),
                 padding: EdgeInsets.zero,
                 onPressed: () {
                   navigateToStep(stepIndex);
@@ -213,11 +197,7 @@ class SummaryBuilder {
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         children: [
-          Icon(
-            getFieldIcon(element),
-            size: 16,
-            color: AppColors.light,
-          ),
+          Icon(getFieldIcon(element), size: 16, color: AppColors.light),
           const SizedBox(width: 8),
           Expanded(
             child: RichText(
@@ -232,9 +212,9 @@ class SummaryBuilder {
                   ),
                   TextSpan(
                     text: fieldValue,
-                    style: AppTextStyles.body14(context).copyWith(
-                      color: AppColors.light,
-                    ),
+                    style: AppTextStyles.body14(
+                      context,
+                    ).copyWith(color: AppColors.light),
                   ),
                 ],
               ),
@@ -245,7 +225,10 @@ class SummaryBuilder {
     );
   }
 
-  static Widget buildCompletionContent(Map<String, dynamic> content, BuildContext context) {
+  static Widget buildCompletionContent(
+    Map<String, dynamic> content,
+    BuildContext context,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -272,7 +255,9 @@ class SummaryBuilder {
             color: AppColors.inputTextBackground.adapt(context).withAlpha(100),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: AppColors.fillButtonBackground.adapt(context).withAlpha(100),
+              color: AppColors.fillButtonBackground
+                  .adapt(context)
+                  .withAlpha(100),
               width: 2,
             ),
           ),
@@ -294,7 +279,9 @@ class SummaryBuilder {
               fontSize: 14,
               color: Theme.of(context).brightness == Brightness.dark
                   ? AppColors.light
-                  : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                  : Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
               height: 1.4,
               fontFamily: 'Inder',
             ),
@@ -307,10 +294,7 @@ class SummaryBuilder {
             decoration: BoxDecoration(
               color: AppColors.backgroundSecondary,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: AppColors.light,
-                width: 1,
-              ),
+              border: Border.all(color: AppColors.light, width: 1),
             ),
             child: Text(
               context.l10n.driverCompleteThankYou,

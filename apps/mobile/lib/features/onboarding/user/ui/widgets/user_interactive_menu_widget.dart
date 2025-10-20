@@ -107,7 +107,11 @@ class UserInteractiveMenuWidget extends StatelessWidget {
                               style: const TextStyle(fontSize: 24),
                             )
                           else if (stepInfo.icon != null)
-                            Icon(stepInfo.icon!, color: AppColors.light.adapt(context), size: 24)
+                            Icon(
+                              stepInfo.icon!,
+                              color: AppColors.light.adapt(context),
+                              size: 24,
+                            )
                           else
                             Icon(
                               Icons.help,
@@ -151,7 +155,10 @@ class UserInteractiveMenuWidget extends StatelessWidget {
                               bottomRight: Radius.circular(12),
                             ),
                             border: Border(
-                              top: BorderSide(color: AppColors.light.adapt(context), width: 1),
+                              top: BorderSide(
+                                color: AppColors.light.adapt(context),
+                                width: 1,
+                              ),
                             ),
                           ),
                           padding: const EdgeInsets.all(16),

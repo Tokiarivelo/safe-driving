@@ -7,11 +7,7 @@ part of 'upload_types.dart';
 // **************************************************************************
 
 FileUploadResult _$FileUploadResultFromJson(Map<String, dynamic> json) =>
-    FileUploadResult(
-      url: json['url'] as String,
-    );
+    FileUploadResult(url: json['url'] as String);
 
 Map<String, dynamic> _$FileUploadResultToJson(FileUploadResult instance) =>
-    <String, dynamic>{
-      'url': instance.url,
-    };
+    <String, dynamic>{'url': instance.url};

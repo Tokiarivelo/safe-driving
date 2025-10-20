@@ -16,13 +16,9 @@ class QrCodeResponse {
   final String? userId;
   final String? type;
 
-  QrCodeResponse({
-    required this.dataUrl,
-    this.userId,
-    this.type,
-  });
+  QrCodeResponse({required this.dataUrl, this.userId, this.type});
 
-  factory QrCodeResponse.fromJson(Map<String, dynamic> json) => 
+  factory QrCodeResponse.fromJson(Map<String, dynamic> json) =>
       _$QrCodeResponseFromJson(json);
   Map<String, dynamic> toJson() => _$QrCodeResponseToJson(this);
 }

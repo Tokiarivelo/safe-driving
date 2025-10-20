@@ -76,11 +76,6 @@ class DriverDataSourceLocal implements IDriverDataSource {
       'filePath': filePath,
       'id': 'local_selfie_1',
     };
-    _store['selfie'] = {
-      'userId': userId,
-      'filePath': filePath,
-      'id': 'local_selfie_1',
-    };
     return {
       'success': true,
       'message': 'Stored locally',
@@ -93,10 +88,6 @@ class DriverDataSourceLocal implements IDriverDataSource {
     required String userId,
     required Map<String, bool> preferences,
   }) async {
-    _store['notification_preferences'] = {
-      'userId': userId,
-      'preferences': preferences,
-    };
     _store['notification_preferences'] = {
       'userId': userId,
       'preferences': preferences,
@@ -115,11 +106,6 @@ class DriverDataSourceLocal implements IDriverDataSource {
       'theme': theme,
       'language': language,
     };
-    _store['app_preferences'] = {
-      'userId': userId,
-      'theme': theme,
-      'language': language,
-    };
     return {'success': true, 'message': 'Saved locally'};
   }
 
@@ -131,7 +117,6 @@ class DriverDataSourceLocal implements IDriverDataSource {
 
   @override
   Future<Map<String, dynamic>> getDriverOnboardingData(String userId) async {
-    return {'success': true, 'data': _store};
     return {'success': true, 'data': _store};
   }
 
@@ -145,9 +130,6 @@ class DriverDataSourceLocal implements IDriverDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> getDocumentValidationStatus(
-    String userId,
-  ) async {
   Future<Map<String, dynamic>> getDocumentValidationStatus(
     String userId,
   ) async {
@@ -201,7 +183,6 @@ class DriverDataSourceLocal implements IDriverDataSource {
   Future<Map<String, dynamic>> getDriverStats(String userId) async {
     return {
       'success': true,
-      'data': {'rides': 0, 'rating': 0},
       'data': {'rides': 0, 'rating': 0},
     };
   }

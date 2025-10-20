@@ -19,7 +19,7 @@ class UserPreferenceUpsertInput {
     this.settings,
   });
 
-  factory UserPreferenceUpsertInput.fromJson(Map<String, dynamic> json) => 
+  factory UserPreferenceUpsertInput.fromJson(Map<String, dynamic> json) =>
       _$UserPreferenceUpsertInputFromJson(json);
   Map<String, dynamic> toJson() => _$UserPreferenceUpsertInputToJson(this);
 }

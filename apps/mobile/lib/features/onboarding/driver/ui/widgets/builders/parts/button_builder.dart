@@ -33,7 +33,6 @@ class ButtonBuilder {
         return PrimaryButton.primaryButton(
           text: context.l10n.next,
           onPressed: () {
-      
             coordinator.nextStep().whenComplete(nextStep);
           },
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
@@ -46,20 +45,32 @@ class ButtonBuilder {
       List<String> usedTitles;
       switch (step.stepType) {
         case DriverStepType.welcome:
-          usedTitles = [context.l10n.driverOnboardingLater, context.l10n.driverOnboardingStart];
+          usedTitles = [
+            context.l10n.driverOnboardingLater,
+            context.l10n.driverOnboardingStart,
+          ];
           break;
         case DriverStepType.personalInfo:
         case DriverStepType.vehicleInfo:
         case DriverStepType.documents:
         case DriverStepType.photos:
         case DriverStepType.selfie:
-          usedTitles = [context.l10n.driverOnboardingLater, context.l10n.driverDetailsValidate];
+          usedTitles = [
+            context.l10n.driverOnboardingLater,
+            context.l10n.driverDetailsValidate,
+          ];
           break;
         case DriverStepType.notifications:
-          usedTitles = [context.l10n.driverOnboardingLater, context.l10n.stepPreferencesValidate];
+          usedTitles = [
+            context.l10n.driverOnboardingLater,
+            context.l10n.stepPreferencesValidate,
+          ];
           break;
         case DriverStepType.preferences:
-          usedTitles = [context.l10n.driverOnboardingLater, context.l10n.stepPreferencesValidate];
+          usedTitles = [
+            context.l10n.driverOnboardingLater,
+            context.l10n.stepPreferencesValidate,
+          ];
           break;
         case DriverStepType.summary:
           usedTitles = [context.l10n.driverSummaryValidate];
@@ -124,7 +135,7 @@ class ButtonBuilder {
                   titleContent: context.l10n.driverCguTitle,
                   content: coordinator.legalViewModel.getCguContent(context),
                   onAccept: () {
-                    coordinator.legalViewModel.setCguAccepted(0, true);
+                    coordinator.acceptLegal(0);
                   },
                 );
               },
@@ -142,9 +153,11 @@ class ButtonBuilder {
               builder: (context) {
                 return PolicyModal(
                   titleContent: context.l10n.driverPrivacyTitle,
-                  content: coordinator.legalViewModel.getPrivacyPolicyContent(context),
+                  content: coordinator.legalViewModel.getPrivacyPolicyContent(
+                    context,
+                  ),
                   onAccept: () {
-                    coordinator.legalViewModel.setCguAccepted(1, true);
+                    coordinator.acceptLegal(1);
                   },
                 );
               },

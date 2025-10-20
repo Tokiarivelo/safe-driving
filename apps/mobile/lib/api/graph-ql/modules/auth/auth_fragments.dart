@@ -6,4 +6,3 @@ fragment AuthUserFields on User {
   lastName
 }
 ''';
-

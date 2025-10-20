@@ -16,7 +16,9 @@ class _GpsStep extends StatelessWidget {
         Text(
           context.l10n.stepGpsSubtitle,
           style: AppTextStyles.body14(context).copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.75),
           ),
         ),
         const SizedBox(height: 16),
@@ -53,8 +55,12 @@ class _GpsStep extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         PrimaryButton.primaryButton(
-          text: context.l10n.next,
-          onPressed: viewModel.nextStepImmediate,
+          text: context.l10n.stepPreferencesValidate,
+          onPressed: () async {
+            await viewModel.saveCurrentPreferences();
+            if (!context.mounted) return;
+            viewModel.nextStepImmediate();
+          },
           fontSize: 14,
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
         ),

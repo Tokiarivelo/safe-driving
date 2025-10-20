@@ -49,7 +49,9 @@ class ColorsWidget {
   // - Clair: texte par défaut de l’app
   static Color onBackground(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return isDark ? const Color(0xFFF5F5F5) : AppColors.textColor.adapt(context);
+    return isDark
+        ? const Color(0xFFF5F5F5)
+        : AppColors.textColor.adapt(context);
   }
 
   // Couleur de bordure "subtile" à utiliser pour des boutons/containers
@@ -60,7 +62,9 @@ class ColorsWidget {
     if (isDark) {
       return const Color(0xFFFFFFFF).withValues(alpha: 0.25);
     }
-    return AppColors.buttonWithoutBackGround.adapt(context).withValues(alpha: 0.3);
+    return AppColors.buttonWithoutBackGround
+        .adapt(context)
+        .withValues(alpha: 0.3);
   }
 
   static BorderSide subtleButtonBorder(BuildContext context) {

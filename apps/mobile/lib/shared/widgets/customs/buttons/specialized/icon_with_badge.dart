@@ -32,15 +32,27 @@ class IconButtonWithBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        foregroundColor: AppColors.dark,
-        elevation: 3,
-        shadowColor: AppColors.dark.withValues(alpha: 0.1),
+        backgroundColor: isDark ? const Color(0xFF2A2A2A) : backgroundColor,
+        foregroundColor: isDark ? AppColors.light : AppColors.dark,
+        elevation: isDark ? 2 : 3,
+        shadowColor: isDark
+            ? Colors.black.withValues(alpha: 0.3)
+            : AppColors.dark.withValues(alpha: 0.1),
         padding: const EdgeInsets.all(5),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(
+            color: isDark
+                ? const Color(0xFF3A3A3A)
+                : Colors.transparent, // Bordure subtile en mode sombre
+            width: 1,
+          ),
+        ),
         animationDuration: const Duration(milliseconds: 100),
       ),
       child: Container(
@@ -56,6 +68,7 @@ class IconButtonWithBadge extends StatelessWidget {
                   iconPath,
                   width: iconSize,
                   height: iconSize,
+                  // Keep original SVG color; do not override in dark mode
                   errorBuilder: (context, error, stackTrace) {
                     return Icon(
                       Icons.error,
@@ -67,10 +80,12 @@ class IconButtonWithBadge extends StatelessWidget {
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.dark,
+                    color: isDark
+                        ? AppColors.light.withValues(alpha: 0.85)
+                        : AppColors.dark,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -89,7 +104,10 @@ class IconButtonWithBadge extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: badgeColor,
                     shape: BoxShape.circle,
-                    border: Border.all(color: backgroundColor, width: 2),
+                    border: Border.all(
+                      color: isDark ? const Color(0xFF2A2A2A) : backgroundColor,
+                      width: 2,
+                    ),
                   ),
                   child: Center(
                     child: Text(

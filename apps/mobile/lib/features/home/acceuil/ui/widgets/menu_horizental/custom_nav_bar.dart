@@ -86,16 +86,23 @@ class _CustomNavBarViewState extends State<CustomNavBarView> {
   }
 
   Widget _buildBackground() {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return Container(
       height: 75,
       decoration: BoxDecoration(
-        color: AppColors.light,
+        color: isDark ? const Color(0xFF2A2A2A) : AppColors.light,
         boxShadow: [
           BoxShadow(
-            color: AppColors.unclickable.withValues(alpha: 0.3),
-            blurRadius: 8,
-            spreadRadius: 1,
-            offset: const Offset(0, 2),
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.4)
+                : AppColors.unclickable.withValues(alpha: 0.3),
+            blurRadius: isDark ? 6 : 8,
+            spreadRadius: isDark ? 0 : 1,
+            offset: const Offset(
+              0,
+              -2,
+            ), // Ombre vers le haut pour la navigation bar
           ),
         ],
       ),

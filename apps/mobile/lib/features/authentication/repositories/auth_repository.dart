@@ -62,7 +62,10 @@ class AuthRepository {
     return await _service.changePassword(request);
   }
 
-  Future<AuthResult> resetPasswordConfirm(String sessionToken, String newPassword) async {
+  Future<AuthResult> resetPasswordConfirm(
+    String sessionToken,
+    String newPassword,
+  ) async {
     return await _service.resetPasswordConfirm(sessionToken, newPassword);
   }
 

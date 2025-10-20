@@ -24,16 +24,17 @@ class SigninViewModel extends ChangeNotifier {
 
     if (success) {
       bool hasRole = false;
+      Map<String, dynamic>? meUser;
       try {
         final me = await GraphQLClientWrapper.instance.executeQuery(
           document: meFullQuery,
           variables: const {},
         );
-        final user = me['me'] as Map<String, dynamic>?;
-        final role = (user != null) ? (user['role'] as String?) : null;
+        meUser = me['me'] as Map<String, dynamic>?;
+        final role = (meUser != null) ? (meUser['role'] as String?) : null;
         hasRole = role != null && role.trim().isNotEmpty;
-        if (!hasRole && user != null) {
-          final roles = user['Role'] as List<dynamic>?;
+        if (!hasRole && meUser != null) {
+          final roles = meUser['Role'] as List<dynamic>?;
           hasRole = roles != null && roles.isNotEmpty;
         }
       } catch (_) {
@@ -51,11 +52,11 @@ class SigninViewModel extends ChangeNotifier {
               document: meFullQuery,
               variables: const {},
             );
-            final user2 = me2['me'] as Map<String, dynamic>?;
-            final role2 = (user2 != null) ? (user2['role'] as String?) : null;
+            meUser = me2['me'] as Map<String, dynamic>?;
+            final role2 = (meUser != null) ? (meUser['role'] as String?) : null;
             hasRole = role2 != null && role2.trim().isNotEmpty;
-            if (!hasRole && user2 != null) {
-              final roles2 = user2['Role'] as List<dynamic>?;
+            if (!hasRole && meUser != null) {
+              final roles2 = meUser['Role'] as List<dynamic>?;
               hasRole = roles2 != null && roles2.isNotEmpty;
             }
           }
@@ -66,6 +67,11 @@ class SigninViewModel extends ChangeNotifier {
         return;
       }
 
+      final bool isVerified = meUser != null && (meUser['isVerified'] == true);
+      if (!isVerified) {
+        Navigator.pushReplacementNamed(_context!, AppRoutes.onboarding);
+        return;
+      }
 
       bool completed = false;
       try {

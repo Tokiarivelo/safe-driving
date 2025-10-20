@@ -56,8 +56,8 @@ class CustomInputFieldState extends State<CustomInputField> {
     bool isVisible = widget.isPassword
         ? _isPasswordVisible
         : widget.isConfirmPassword
-            ? _isConfirmPasswordVisible
-            : false;
+        ? _isConfirmPasswordVisible
+        : false;
 
     final screenHeight = MediaQuery.of(context).size.height;
     final bool isSmallScreen = screenHeight < 700;
@@ -65,7 +65,8 @@ class CustomInputFieldState extends State<CustomInputField> {
         widget.errorMessage != null && widget.errorMessage!.isNotEmpty;
 
     return Padding(
-      padding: widget.padding ??
+      padding:
+          widget.padding ??
           EdgeInsets.symmetric(vertical: isSmallScreen ? 4.0 : 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +82,8 @@ class CustomInputFieldState extends State<CustomInputField> {
           Container(
             decoration: widget.showLabel
                 ? BoxDecoration(
-                    color: (widget.backgroundColor?.adapt(context)) ??
+                    color:
+                        (widget.backgroundColor?.adapt(context)) ??
                         (Theme.of(context).brightness == Brightness.dark
                             ? AppColors.backgroundSecondary
                             : AppColors.softBackgroundColor),
@@ -95,8 +97,8 @@ class CustomInputFieldState extends State<CustomInputField> {
                   )
                 : null,
             child: ConstrainedBox(
-              constraints: BoxConstraints.tightFor(
-                height: widget.fieldHeight ?? (widget.showLabel ? 52 : 44),
+              constraints: BoxConstraints(
+                minHeight: widget.fieldHeight ?? (widget.showLabel ? 52 : 44),
               ),
               child: TextFormField(
                 style: TextStyle(
@@ -120,43 +122,44 @@ class CustomInputFieldState extends State<CustomInputField> {
                   fillColor: widget.showLabel
                       ? null
                       : (Theme.of(context).brightness == Brightness.dark
-                          ? AppColors.backgroundSecondary
-                          : AppColors.inputTextBackground),
+                            ? AppColors.backgroundSecondary
+                            : AppColors.inputTextBackground),
                   hintText: widget.hint,
                   hintStyle: widget.showLabel
                       ? AppTextStyles.hint14(context).copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withValues(alpha: 0.7),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
                         )
                       : AppTextStyles.hint10(context).copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withValues(alpha: 0.7),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
                         ),
                   prefixIcon: Icon(
                     widget.icon,
                     color: Theme.of(context).brightness == Brightness.dark
                         ? AppColors.light
-                        : (widget.showLabel ? AppColors.textColor : AppColors.icon),
+                        : (widget.showLabel
+                              ? AppColors.textColor
+                              : AppColors.icon),
                     size: widget.showLabel ? 20 : 24,
                   ),
-                  contentPadding: EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 0,
                   ),
+                  errorMaxLines: 2,
+                  errorStyle: AppTextStyles.error10(context),
                   border: widget.showLabel
                       ? InputBorder.none
                       : OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: hasError
-                                ? AppColors.error.adapt(context)
-                                : (Theme.of(context).brightness == Brightness.dark
-                                    ? AppColors.light.withValues(alpha: 0.2)
-                                    : AppColors.borderInputField),
-                            width: hasError ? 2 : 1,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.light.withValues(alpha: 0.2)
+                                : AppColors.borderInputField,
+                            width: 1,
                           ),
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -164,12 +167,11 @@ class CustomInputFieldState extends State<CustomInputField> {
                       ? InputBorder.none
                       : OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: hasError
-                                ? AppColors.error.adapt(context)
-                                : (Theme.of(context).brightness == Brightness.dark
-                                    ? AppColors.light.withValues(alpha: 0.2)
-                                    : AppColors.borderInputField),
-                            width: hasError ? 2 : 1,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.light.withValues(alpha: 0.2)
+                                : AppColors.borderInputField,
+                            width: 1,
                           ),
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -177,11 +179,28 @@ class CustomInputFieldState extends State<CustomInputField> {
                       ? InputBorder.none
                       : OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: hasError
-                                ? AppColors.error.adapt(context)
-                                : (Theme.of(context).brightness == Brightness.dark
-                                    ? AppColors.light.withValues(alpha: 0.4)
-                                    : AppColors.borderInputField),
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.light.withValues(alpha: 0.4)
+                                : AppColors.borderInputField,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                  errorBorder: widget.showLabel
+                      ? InputBorder.none
+                      : OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.error.adapt(context),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                  focusedErrorBorder: widget.showLabel
+                      ? InputBorder.none
+                      : OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.error.adapt(context),
                             width: 2,
                           ),
                           borderRadius: BorderRadius.circular(5),
@@ -189,9 +208,7 @@ class CustomInputFieldState extends State<CustomInputField> {
                   suffixIcon: widget.obscureText
                       ? IconButton(
                           icon: Icon(
-                            isVisible
-                                ? Icons.visibility_off
-                                : Icons.visibility,
+                            isVisible ? Icons.visibility_off : Icons.visibility,
                           ),
                           color: Theme.of(context).brightness == Brightness.dark
                               ? AppColors.light
@@ -218,7 +235,6 @@ class CustomInputFieldState extends State<CustomInputField> {
             ),
           ),
 
-        
           AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             height: hasError ? 20 : 0,

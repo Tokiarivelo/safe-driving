@@ -83,7 +83,10 @@ class _StepFourViewState extends State<StepFourView> {
                     controller: vm.getController('marque'),
                     backgroundColor: AppColors.inputTextBackground,
                     validator: (value) {
-                      final msg = RegexFormatter.getVehicleNameValidationMessage(value ?? '');
+                      final msg =
+                          RegexFormatter.getVehicleNameValidationMessage(
+                            value ?? '',
+                          );
                       return msg.isEmpty ? null : msg;
                     },
                   ),
@@ -97,7 +100,10 @@ class _StepFourViewState extends State<StepFourView> {
                     controller: vm.getController('modele'),
                     backgroundColor: AppColors.inputTextBackground,
                     validator: (value) {
-                      final msg = RegexFormatter.getVehicleNameValidationMessage(value ?? '');
+                      final msg =
+                          RegexFormatter.getVehicleNameValidationMessage(
+                            value ?? '',
+                          );
                       return msg.isEmpty ? null : msg;
                     },
                   ),
@@ -111,7 +117,10 @@ class _StepFourViewState extends State<StepFourView> {
                     controller: vm.getController('immatriculation'),
                     backgroundColor: AppColors.inputTextBackground,
                     validator: (value) {
-                      final msg = RegexFormatter.getLicensePlateValidationMessage(value ?? '');
+                      final msg =
+                          RegexFormatter.getLicensePlateValidationMessage(
+                            value ?? '',
+                          );
                       return msg.isEmpty ? null : msg;
                     },
                   ),
@@ -126,18 +135,21 @@ class _StepFourViewState extends State<StepFourView> {
                     controller: vm.getController('places'),
                     backgroundColor: AppColors.inputTextBackground,
                     validator: (value) {
-                      final msg = RegexFormatter.getSeatCountValidationMessage(value ?? '');
+                      final msg = RegexFormatter.getSeatCountValidationMessage(
+                        value ?? '',
+                      );
                       return msg.isEmpty ? null : msg;
                     },
                   ),
                   const SizedBox(height: 16),
 
-             
                   Builder(
                     builder: (context) {
                       final options = <String>['Voiture', 'Moto', 'TukTuk'];
                       final ctrl = vm.getController('typeVehicule');
-                      final current = ctrl.text.trim().isEmpty ? null : ctrl.text.trim();
+                      final current = ctrl.text.trim().isEmpty
+                          ? null
+                          : ctrl.text.trim();
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -153,13 +165,19 @@ class _StepFourViewState extends State<StepFourView> {
                           InputDecorator(
                             decoration: InputDecoration(
                               isDense: true,
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
                               filled: true,
-                              fillColor: AppColors.inputTextBackground.adapt(context),
+                              fillColor: AppColors.inputTextBackground.adapt(
+                                context,
+                              ),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Theme.of(context).brightness == Brightness.dark
+                                  color:
+                                      Theme.of(context).brightness ==
+                                          Brightness.dark
                                       ? AppColors.light.withValues(alpha: 0.2)
                                       : AppColors.borderInputField,
                                   width: 1,
@@ -168,7 +186,9 @@ class _StepFourViewState extends State<StepFourView> {
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Theme.of(context).brightness == Brightness.dark
+                                  color:
+                                      Theme.of(context).brightness ==
+                                          Brightness.dark
                                       ? AppColors.light.withValues(alpha: 0.2)
                                       : AppColors.borderInputField,
                                   width: 1,
@@ -177,7 +197,9 @@ class _StepFourViewState extends State<StepFourView> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Theme.of(context).brightness == Brightness.dark
+                                  color:
+                                      Theme.of(context).brightness ==
+                                          Brightness.dark
                                       ? AppColors.light.withValues(alpha: 0.4)
                                       : AppColors.borderInputField,
                                   width: 2,
@@ -190,11 +212,19 @@ class _StepFourViewState extends State<StepFourView> {
                                 isExpanded: true,
                                 hint: const Text('ex: Voiture'),
                                 value: current,
+                                style: const TextStyle(fontSize: 14),
+                                itemHeight: 40,
+                                menuMaxHeight: 280,
                                 items: options
-                                    .map((e) => DropdownMenuItem<String>(
-                                          value: e,
-                                          child: Text(e),
-                                        ))
+                                    .map(
+                                      (e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Text(
+                                          e,
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                      ),
+                                    )
                                     .toList(),
                                 onChanged: (val) {
                                   final text = val ?? '';

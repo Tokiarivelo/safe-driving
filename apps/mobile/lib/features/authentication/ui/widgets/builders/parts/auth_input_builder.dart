@@ -39,7 +39,9 @@ class AuthInputBuilder {
         if (!isForgotPassword) ...[
           Builder(
             builder: (context) => InputBuilder.buildInputFieldWithValidation(
-              hint: isLogin ? context.l10n.emailOrUsername : context.l10n.firstName,
+              hint: isLogin
+                  ? context.l10n.emailOrUsername
+                  : context.l10n.firstName,
               icon: isLogin ? Icons.person_outline : Icons.badge_outlined,
               controller: isLogin ? emailController : firstNameController,
               errorMessage: isLogin ? null : firstNameError,

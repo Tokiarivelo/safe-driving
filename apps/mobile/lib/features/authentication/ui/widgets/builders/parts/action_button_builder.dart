@@ -19,10 +19,12 @@ class ActionButtonBuilder {
           child: ElevatedButton(
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  isDark ? AppColors.color1 : AppColors.fillButtonBackground,
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+              backgroundColor: isDark
+                  ? AppColors.color1
+                  : AppColors.fillButtonBackground,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
             ),
             child: Text(
               buttonText,
@@ -183,7 +185,9 @@ class _AnimatedAuthContentState extends State<_AnimatedAuthContent>
                   widget.stepData.socialText,
                   style: TextStyle(
                     fontFamily: 'Inder',
-                    color: isDark ? AppColors.light : AppColors.textColor.adapt(context),
+                    color: isDark
+                        ? AppColors.light
+                        : AppColors.textColor.adapt(context),
                   ),
                 ),
               ),

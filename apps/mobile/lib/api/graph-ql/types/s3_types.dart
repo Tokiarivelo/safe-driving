@@ -9,11 +9,7 @@ class PresignedUrl {
   final String url;
   final double expiresIn;
 
-  PresignedUrl({
-    required this.key,
-    required this.url,
-    required this.expiresIn,
-  });
+  PresignedUrl({required this.key, required this.url, required this.expiresIn});
 
   factory PresignedUrl.fromJson(Map<String, dynamic> json) =>
       _$PresignedUrlFromJson(json);
@@ -45,11 +41,7 @@ class FileMetaInput {
   final String contentType;
   final int? size;
 
-  FileMetaInput({
-    required this.fileName,
-    required this.contentType,
-    this.size,
-  });
+  FileMetaInput({required this.fileName, required this.contentType, this.size});
 
   factory FileMetaInput.fromJson(Map<String, dynamic> json) =>
       _$FileMetaInputFromJson(json);

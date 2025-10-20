@@ -91,14 +91,19 @@ class DriverCameraServiceWebState extends State<PlatformDriverCameraService> {
         width: 350,
         height: 300,
         decoration: BoxDecoration(
-          border: Border.all(color: AppColors.fillButtonBackground.adapt(context), width: 3),
+          border: Border.all(
+            color: AppColors.fillButtonBackground.adapt(context),
+            width: 3,
+          ),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Container(
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             border: Border.all(
-              color: AppColors.fillButtonBackground.adapt(context).withValues(alpha: 0.5),
+              color: AppColors.fillButtonBackground
+                  .adapt(context)
+                  .withValues(alpha: 0.5),
               width: 0.2,
             ),
             borderRadius: BorderRadius.circular(8),

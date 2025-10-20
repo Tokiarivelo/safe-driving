@@ -7,40 +7,40 @@ part of 'user_types.dart';
 // **************************************************************************
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      id: json['id'] as String,
-      email: json['email'] as String,
-      firstName: json['firstName'] as String?,
-      lastName: json['lastName'] as String?,
-      phoneNumber: json['phoneNumber'] as String?,
-      profileImageUrl: json['profileImageUrl'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-      role: json['role'] as String?,
-      isActive: json['isActive'] as bool?,
-      isVerified: json['isVerified'] as bool?,
-      preference: json['preference'] == null
-          ? null
-          : UserPreference.fromJson(json['preference'] as Map<String, dynamic>),
-      vehicles: (json['vehicles'] as List<dynamic>?)
-          ?.map((e) => DriverVehicle.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+  id: json['id'] as String,
+  email: json['email'] as String,
+  firstName: json['firstName'] as String?,
+  lastName: json['lastName'] as String?,
+  phoneNumber: json['phoneNumber'] as String?,
+  profileImageUrl: json['profileImageUrl'] as String?,
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
+  role: json['role'] as String?,
+  isActive: json['isActive'] as bool?,
+  isVerified: json['isVerified'] as bool?,
+  preference: json['preference'] == null
+      ? null
+      : UserPreference.fromJson(json['preference'] as Map<String, dynamic>),
+  vehicles: (json['vehicles'] as List<dynamic>?)
+      ?.map((e) => DriverVehicle.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'id': instance.id,
-      'email': instance.email,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'phoneNumber': instance.phoneNumber,
-      'profileImageUrl': instance.profileImageUrl,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
-      'role': instance.role,
-      'isActive': instance.isActive,
-      'isVerified': instance.isVerified,
-      'preference': instance.preference,
-      'vehicles': instance.vehicles,
-    };
+  'id': instance.id,
+  'email': instance.email,
+  'firstName': instance.firstName,
+  'lastName': instance.lastName,
+  'phoneNumber': instance.phoneNumber,
+  'profileImageUrl': instance.profileImageUrl,
+  'createdAt': instance.createdAt.toIso8601String(),
+  'updatedAt': instance.updatedAt.toIso8601String(),
+  'role': instance.role,
+  'isActive': instance.isActive,
+  'isVerified': instance.isVerified,
+  'preference': instance.preference,
+  'vehicles': instance.vehicles,
+};
 
 UserPreference _$UserPreferenceFromJson(Map<String, dynamic> json) =>
     UserPreference(

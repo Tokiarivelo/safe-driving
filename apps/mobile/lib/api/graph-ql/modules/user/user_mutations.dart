@@ -1,6 +1,8 @@
 import 'user_fragments.dart';
 
-const String createUserMutation = userFragment + r'''
+const String createUserMutation =
+    userFragment +
+    r'''
 mutation CreateUser($input: UserCreateInput!) {
   createUser(input: $input) {
     ...UserFragment
@@ -8,7 +10,9 @@ mutation CreateUser($input: UserCreateInput!) {
 }
 ''';
 
-const String updateUserMutation = userFragment + r'''
+const String updateUserMutation =
+    userFragment +
+    r'''
 mutation UpdateUser($input: UserUpdateInput!) {
   updateUser(input: $input) {
     ...UserFragment
@@ -24,4 +28,3 @@ mutation SetUserRole($userId: String!, $role: String!) {
   }
 }
 ''';
-

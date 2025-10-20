@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/shared/state_management/providers.dart';
 import '../../viewmodels/home_view_model.dart';
 import '../widgets/homeWidgets/home_content.dart';
 import '../widgets/homeWidgets/sidebar_button.dart';
@@ -26,11 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _handleMenuItemSelected(int index) {
-    print('Menu item selected: $index');
+    debugPrint('Menu item selected: $index');
   }
 
   void _handleLogout() {
-    print('Déconnexion demandée');
+    debugPrint('Déconnexion demandée');
     setState(() {
       _isSidebarVisible = false;
     });
@@ -51,16 +51,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => HomeViewModel(),
+      create: (context) => HomeViewModel(
+        isDriver: context.authVMWatch.currentUser?.isDriver ?? false,
+      )..init(),
       child: Scaffold(
-        backgroundColor: AppColors.dark,
         body: SafeArea(
           child: Stack(
             children: [
               // Contenu principal
               const Positioned.fill(child: HomeContent()),
-              // Sidebar animmation
-              const Expanded(child: HomeContent()),
+              // Sidebar animation
               AnimatedSidebar(
                 isVisible: _isSidebarVisible,
                 onProfileTap: _handleProfileTap,

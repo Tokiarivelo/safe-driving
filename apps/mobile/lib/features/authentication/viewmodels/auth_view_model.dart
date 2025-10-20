@@ -24,11 +24,9 @@ class AuthViewModel extends ChangeNotifier {
     final result = await _repository.signIn(email, password);
 
     if (result.isSuccess) {
-   
       _currentUser = result.user;
       notifyListeners();
 
-   
       try {
         final me = await _repository.getCurrentUser();
         if (me.isSuccess) {
@@ -69,11 +67,17 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> resetPasswordConfirm(String sessionToken, String newPassword) async {
+  Future<bool> resetPasswordConfirm(
+    String sessionToken,
+    String newPassword,
+  ) async {
     _setLoading(true);
     _clearError();
 
-    final result = await _repository.resetPasswordConfirm(sessionToken, newPassword);
+    final result = await _repository.resetPasswordConfirm(
+      sessionToken,
+      newPassword,
+    );
 
     if (result.isSuccess) {
       _setLoading(false);

@@ -9,12 +9,9 @@ class LoginInput {
   final String email;
   final String password;
 
-  LoginInput({
-    required this.email,
-    required this.password,
-  });
+  LoginInput({required this.email, required this.password});
 
-  factory LoginInput.fromJson(Map<String, dynamic> json) => 
+  factory LoginInput.fromJson(Map<String, dynamic> json) =>
       _$LoginInputFromJson(json);
   Map<String, dynamic> toJson() => _$LoginInputToJson(this);
 }
@@ -24,12 +21,9 @@ class LoginOutput {
   final String token;
   final User user;
 
-  LoginOutput({
-    required this.token,
-    required this.user,
-  });
+  LoginOutput({required this.token, required this.user});
 
-  factory LoginOutput.fromJson(Map<String, dynamic> json) => 
+  factory LoginOutput.fromJson(Map<String, dynamic> json) =>
       _$LoginOutputFromJson(json);
   Map<String, dynamic> toJson() => _$LoginOutputToJson(this);
 }
@@ -52,7 +46,7 @@ class RegisterInput {
     this.role,
   });
 
-  factory RegisterInput.fromJson(Map<String, dynamic> json) => 
+  factory RegisterInput.fromJson(Map<String, dynamic> json) =>
       _$RegisterInputFromJson(json);
   Map<String, dynamic> toJson() => _$RegisterInputToJson(this);
 }
@@ -69,7 +63,7 @@ class ForgotPasswordOutput {
     this.sessionToken,
   });
 
-  factory ForgotPasswordOutput.fromJson(Map<String, dynamic> json) => 
+  factory ForgotPasswordOutput.fromJson(Map<String, dynamic> json) =>
       _$ForgotPasswordOutputFromJson(json);
   Map<String, dynamic> toJson() => _$ForgotPasswordOutputToJson(this);
 }
@@ -79,12 +73,9 @@ class ResetPasswordInput {
   final String sessionToken;
   final String newPassword;
 
-  ResetPasswordInput({
-    required this.sessionToken,
-    required this.newPassword,
-  });
+  ResetPasswordInput({required this.sessionToken, required this.newPassword});
 
-  factory ResetPasswordInput.fromJson(Map<String, dynamic> json) => 
+  factory ResetPasswordInput.fromJson(Map<String, dynamic> json) =>
       _$ResetPasswordInputFromJson(json);
   Map<String, dynamic> toJson() => _$ResetPasswordInputToJson(this);
 }

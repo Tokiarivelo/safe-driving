@@ -25,4 +25,3 @@ class WebUploadRegistry {
     _contentTypeByPath.clear();
   }
 }
-

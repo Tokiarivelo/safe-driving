@@ -41,7 +41,9 @@ class StepSixView extends StatelessWidget {
         Text(
           stepContent.subtitle,
           style: AppTextStyles.body14(context).copyWith(
-            color: AppColors.buttonWithoutBackGround.adapt(context).withValues(alpha: 0.75),
+            color: AppColors.buttonWithoutBackGround
+                .adapt(context)
+                .withValues(alpha: 0.75),
           ),
         ),
         const SizedBox(height: 16),
@@ -56,7 +58,9 @@ class StepSixView extends StatelessWidget {
             Builder(
               builder: (context) => Text(
                 summaryLabels['gps'],
-                style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+                style: TextStyle(
+                  color: AppColors.buttonWithoutBackGround.adapt(context),
+                ),
               ),
             ),
           ],
@@ -72,7 +76,9 @@ class StepSixView extends StatelessWidget {
             Builder(
               builder: (context) => Text(
                 summaryLabels['notifications'],
-                style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+                style: TextStyle(
+                  color: AppColors.buttonWithoutBackGround.adapt(context),
+                ),
               ),
             ),
           ],
@@ -83,7 +89,9 @@ class StepSixView extends StatelessWidget {
         Builder(
           builder: (context) => Text(
             '${summaryLabels['theme']} : ${appState.selectedTheme}',
-            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+            style: TextStyle(
+              color: AppColors.buttonWithoutBackGround.adapt(context),
+            ),
           ),
         ),
 
@@ -92,14 +100,18 @@ class StepSixView extends StatelessWidget {
         Builder(
           builder: (context) => Text(
             '${summaryLabels['transport']} :',
-            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+            style: TextStyle(
+              color: AppColors.buttonWithoutBackGround.adapt(context),
+            ),
           ),
         ),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: AppColors.fillButtonBackground.adapt(context).withValues(alpha: 0.3),
+              color: AppColors.fillButtonBackground
+                  .adapt(context)
+                  .withValues(alpha: 0.3),
               width: 1,
             ),
             borderRadius: BorderRadius.circular(8),
@@ -128,9 +140,9 @@ class StepSixView extends StatelessWidget {
                 Text(
                   summaryLabels['noTransport'],
                   style: TextStyle(
-                    color: AppColors.buttonWithoutBackGround.adapt(context).withValues(
-                      alpha: 0.6,
-                    ),
+                    color: AppColors.buttonWithoutBackGround
+                        .adapt(context)
+                        .withValues(alpha: 0.6),
                     fontStyle: FontStyle.italic,
                   ),
                 ),
@@ -143,7 +155,9 @@ class StepSixView extends StatelessWidget {
         Builder(
           builder: (context) => Text(
             '${summaryLabels['language']} :',
-            style: TextStyle(color: AppColors.buttonWithoutBackGround.adapt(context)),
+            style: TextStyle(
+              color: AppColors.buttonWithoutBackGround.adapt(context),
+            ),
           ),
         ),
         const SizedBox(height: 8),

@@ -63,6 +63,10 @@ class AppColors {
   static const Color snackbarSuccess = Color(0xFF4CAF50);
   static const Color snackbarWarning = Color(0xFFFFC107);
   static const Color snackbarInfo = Color(0xFF2196F3);
+
+  // Logo colors for theming
+  static const Color logoWhite = Color(0xFFFFFFFF);
+  static const Color logoDark = Color(0xFF121212);
 }
 
 extension AdaptiveColor on Color {
@@ -92,3 +96,11 @@ Color _lighten(Color color, double amount) {
   final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
   return hslLight.toColor();
 }
+
+const kBluePulse = Color(0xFF2F80ED);
+const kDarkText = Color(0xFF222222);
+const kLightGray = Color(0xFFF2F2F2);
+const kAccentPink = Color(0xFFB93EBF);
+const kRedDriver = Color(0xFFB00020);
+const kSeatBlue = Color(0xFF2D9CDB);
+const kStarYellow = Color(0xFFF2C94C);

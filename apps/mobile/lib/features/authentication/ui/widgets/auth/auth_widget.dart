@@ -138,10 +138,18 @@ class AuthWidgetState extends State<AuthWidget> {
       lastNameError: _lastNameError,
       confirmPasswordError: _confirmPasswordError,
       onEmailChanged: (value) => setState(() {
-        _emailError = AuthValidationHandler.validateField(context, value, 'email');
+        _emailError = AuthValidationHandler.validateField(
+          context,
+          value,
+          'email',
+        );
       }),
       onPasswordChanged: (value) => setState(() {
-        _passwordError = AuthValidationHandler.validateField(context, value, 'password');
+        _passwordError = AuthValidationHandler.validateField(
+          context,
+          value,
+          'password',
+        );
         if (!widget.isLogin && _confirmPasswordController.text.isNotEmpty) {
           _confirmPasswordError = AuthValidationHandler.validateConfirmPassword(
             context,
@@ -158,7 +166,11 @@ class AuthWidgetState extends State<AuthWidget> {
         );
       }),
       onLastNameChanged: (value) => setState(() {
-        _lastNameError = AuthValidationHandler.validateField(context, value, 'username');
+        _lastNameError = AuthValidationHandler.validateField(
+          context,
+          value,
+          'username',
+        );
       }),
       onConfirmPasswordChanged: (value) => setState(() {
         _confirmPasswordError = AuthValidationHandler.validateConfirmPassword(

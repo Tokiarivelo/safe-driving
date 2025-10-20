@@ -1,31 +1,9 @@
-import 'package:safe_driving/features/authentication/services/session_service.dart';
-import 'package:safe_driving/api/graph-ql/graphql_client.dart';
-import 'package:safe_driving/api/graph-ql/client/graphql_config.dart';
-import '../../features/authentication/data/auth_data_source_interface.dart';
-import '../../features/authentication/data/auth_data_source_graphql.dart';
-import '../../features/authentication/services/auth_service.dart';
-import '../../features/authentication/repositories/user_repository.dart';
-import '../../features/authentication/repositories/auth_repository.dart';
-import '../../features/authentication/repositories/auth_repository.dart';
-import '../../features/authentication/viewmodels/auth_view_model.dart';
-import '../../features/onboarding/driver/core/interfaces/driver_service_interface.dart';
-import '../../features/onboarding/driver/services/driver_service.dart';
-import '../../features/onboarding/driver/services/storage_service.dart';
-import '../../features/onboarding/driver/repositories/driver_repository.dart';
-
-import '../../features/onboarding/driver/data/driver_data_source_interface.dart';
-import '../../features/onboarding/driver/data/driver_data_source_graphql.dart';
-import '../../features/onboarding/driver/data/driver_data_source_local.dart';
-import '../../features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
-import '../../features/onboarding/driver/viewmodels/driver_summary_view_model.dart';
-import '../../features/onboarding/user/data/user_data_source_interface.dart';
-import '../../features/onboarding/user/data/user_data_source_graphql.dart';
-import '../../features/onboarding/user/repositories/user_onboarding_repository.dart';
-import '../../features/onboarding/user/core/interfaces/user_service_interface.dart';
-import '../../features/onboarding/user/services/user_service.dart';
-import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart';
-import 'package:safe_driving/core/theme/theme_controller.dart';
-import 'dart:developer' as developer;
+import 'package:safe_driving/shared/state_management/modules/core_module.dart';
+import 'package:safe_driving/shared/state_management/modules/graphql_module.dart';
+import 'package:safe_driving/features/authentication/di.dart';
+import 'package:safe_driving/features/onboarding/driver/di.dart';
+import 'package:safe_driving/features/onboarding/user/di.dart';
+import 'package:safe_driving/features/home/map/di.dart';
 
 typedef _FactoryFunc<T> = T Function();
 typedef _Disposer = void Function(dynamic);
@@ -129,115 +107,13 @@ class ServiceLocator {
   }
 
   void setupDependencies() {
-    registerLazySingleton<SessionService>(() => SessionService());
-    try {
-      get<SessionService>().initialize();
-    } catch (_) {}
+    registerCoreModule(this);
 
-    // Register GraphQL only if configured
-    if (GraphQLConfig.isConfigured) {
-      registerSingleton<GraphQLClientWrapper>(GraphQLClientWrapper.instance);
-      final session = get<SessionService>();
-      final session = get<SessionService>();
-      get<GraphQLClientWrapper>().configure(
-        accessToken: session.token,
-        refreshToken: session.refreshToken,
-        onTokenRefresh: (newToken) async {
-          try {
-            await session.saveToken(newToken);
-          } catch (_) {}
-        },
-        onError: (error) {
-          // Log GraphQL client errors for easier diagnostics
-          try {
-            developer.log('[GraphQLClientWrapper] Error: $error');
-          } catch (_) {}
-        },
-      );
-    }
+    registerGraphQLModule(this);
 
-    // Theme controller
-    registerLazySingleton<ThemeController>(() => ThemeController());
-
-    if (GraphQLConfig.isConfigured) {
-      registerLazySingleton<IAuthDataSource>(
-        () => AuthDataSourceGraphQL(get<GraphQLClientWrapper>()),
-      );
-
-      registerLazySingleton<UserRepository>(
-        () => UserRepository(get<GraphQLClientWrapper>()),
-      );
-
-      registerLazySingleton<AuthService>(
-        () => AuthService(
-          get<IAuthDataSource>(),
-          get<SessionService>(),
-          get<UserRepository>(),
-        ),
-      );
-
-      registerLazySingleton<AuthRepository>(
-        () => AuthRepository(get<AuthService>()),
-      );
-
-      registerFactory<AuthViewModel>(
-        () => AuthViewModel(get<AuthRepository>()),
-      );
-    }
-
-    // Storage service for local files
-    registerLazySingleton<StorageService>(() => StorageService());
-
-    // Driver data source: GraphQL when available, otherwise local
-    if (GraphQLConfig.isConfigured) {
-      registerLazySingleton<IDriverDataSource>(
-        () => DriverDataSourceGraphQL(get<GraphQLClientWrapper>()),
-      );
-    } else {
-      registerLazySingleton<IDriverDataSource>(() => DriverDataSourceLocal());
-    }
-
-    registerLazySingleton<DriverRepository>(
-      () => DriverRepository(get<IDriverDataSource>()),
-    );
-
-    registerLazySingleton<IDriverService>(
-      () => DriverService(
-        get<DriverRepository>(),
-        get<StorageService>(),
-        get<SessionService>(),
-      ),
-    );
-
-    registerFactory<DriverOnboardingCoordinator>(
-      () => DriverOnboardingCoordinator(get<IDriverService>()),
-    );
-
-    registerFactory<DriverSummaryViewModel>(
-      () => DriverSummaryViewModel(get<IDriverService>()),
-    );
-
-    // User onboarding stack
-    if (GraphQLConfig.isConfigured) {
-      registerLazySingleton<IUserDataSource>(
-        () => UserDataSourceGraphQL(get<GraphQLClientWrapper>()),
-      );
-      registerLazySingleton<IUserOnboardingService>(
-        () => UserOnboardingService(get<IUserDataSource>()),
-      );
-    } else {
-      registerLazySingleton<IUserOnboardingService>(
-        () => UserOnboardingService(),
-      );
-    }
-
-    registerLazySingleton<UserOnboardingRepository>(
-      () => UserOnboardingRepository(service: get<IUserOnboardingService>()),
-    );
-
-    registerFactory<UserOnboardingViewModel>(
-      () =>
-          UserOnboardingViewModel(repository: get<UserOnboardingRepository>()),
-    );
+    registerAuthModule(this);
+    registerOnboardingDriverModule(this);
+    registerOnboardingUserModule(this);
+    registerMapModule(this);
   }
 }

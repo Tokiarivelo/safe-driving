@@ -18,12 +18,19 @@ class UserThemeSelectorWidget extends StatelessWidget {
     // Supprimer toute option "Automatique"/"System" si elle arrive via les données
     final options = themeOptions.where((t) {
       final l = t.trim().toLowerCase();
-      return !(l == 'automatique' || l == 'auto' || l == 'system' || l == 'système' || l == 'systeme' || l == 'automatic');
+      return !(l == 'automatique' ||
+          l == 'auto' ||
+          l == 'system' ||
+          l == 'système' ||
+          l == 'systeme' ||
+          l == 'automatic');
     }).toList();
 
     final theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
-    final borderColor = isDark ? AppColors.borderButtonDark : AppColors.borderButtonLight;
+    final borderColor = isDark
+        ? AppColors.borderButtonDark
+        : AppColors.borderButtonLight;
 
     return Row(
       children: [
@@ -40,8 +47,8 @@ class UserThemeSelectorWidget extends StatelessWidget {
                 color: selectedTheme == opt
                     ? AppColors.light
                     : (isDark
-                        ? theme.colorScheme.onSurface
-                        : AppColors.buttonWithoutBackGround),
+                          ? theme.colorScheme.onSurface
+                          : AppColors.buttonWithoutBackGround),
               ),
             ),
           ),

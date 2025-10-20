@@ -126,7 +126,9 @@ class UploadWidgetState extends State<UploadWidget> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.7),
               fontFamily: 'Inder',
             ),
           ),
@@ -154,7 +156,11 @@ class UploadWidgetState extends State<UploadWidget> {
             color: AppColors.color1.adapt(context),
           ),
           padding: const EdgeInsets.all(16),
-          child: Icon(Icons.check, color: AppColors.light.adapt(context), size: 32),
+          child: Icon(
+            Icons.check,
+            color: AppColors.light.adapt(context),
+            size: 32,
+          ),
         ),
         const SizedBox(height: 16),
         Builder(

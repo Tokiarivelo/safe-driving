@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/l10n/l10n.dart';
 import '../../../viewmodels/sidebar_view_model.dart';
 import '../sideBar/sideBar_language.dart';
 
@@ -21,7 +22,7 @@ class SidebarMenu extends StatelessWidget {
           context: context,
           index: 0,
           icon: Icons.settings,
-          title: 'Account Settings',
+          title: context.l10n.homeSettings,
           isSelected: viewModel.selectedIndex == 0,
           onTap: () {
             viewModel.selectMenuItem(0);
@@ -33,7 +34,7 @@ class SidebarMenu extends StatelessWidget {
           context: context,
           index: 1,
           icon: Icons.tune,
-          title: 'Preference',
+          title: context.l10n.onboardingPreferences,
           isSelected: viewModel.selectedIndex == 1,
           onTap: () {
             viewModel.selectMenuItem(1);
@@ -74,14 +75,22 @@ class SidebarMenu extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: isSelected ? AppColors.dark : AppColors.dark,
+                color: isSelected
+                    ? AppColors.dark
+                    : (Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.light
+                          : AppColors.dark),
                 size: 22,
               ),
               const SizedBox(width: 12),
               Text(
                 title,
                 style: TextStyle(
-                  color: isSelected ? AppColors.dark : AppColors.dark,
+                  color: isSelected
+                      ? AppColors.dark
+                      : (Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.light
+                            : AppColors.dark),
                   fontSize: 16,
                 ),
               ),
