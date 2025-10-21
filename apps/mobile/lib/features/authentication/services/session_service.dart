@@ -130,4 +130,6 @@ class SessionService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_pendingRoleKey);
   }
+
+  Future<void> loadUserId() async {}
 }
