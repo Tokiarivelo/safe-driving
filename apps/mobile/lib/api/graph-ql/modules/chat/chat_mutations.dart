@@ -56,3 +56,28 @@ mutation MarkMessageAsRead($messageId: String!, $userId: String!) {
   }
 }
 ''';
+
+const String createConversationMutation = r''' 
+mutation CreateConversation($input: CreateConversationInput!) {
+  createConversation(input: $input) {
+    id
+    title
+    type
+    participants {
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+}
+
+''';
+
+const String createConversationInput = r''' 
+  input CreateConversationInput{
+    participationIds:[String!]!
+    rideId: String
+  }
+''';

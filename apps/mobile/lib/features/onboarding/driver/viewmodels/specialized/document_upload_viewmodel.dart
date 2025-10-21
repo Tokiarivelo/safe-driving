@@ -287,5 +287,5 @@ class DocumentUploadViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  refreshBackendPhotoCounts() {}
+  // refreshBackendPhotoCounts() {}
 }

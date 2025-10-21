@@ -61,7 +61,7 @@ class MessageManager {
   }
 
   void toggleConversationReadStatus(
-    Scene conversationId,
+    String conversationId,
     VoidCallback notifyListeners,
   ) {
     final messages = _conversationMessages[conversationId] ?? [];
@@ -180,6 +180,71 @@ class MessageManager {
 
   List<dynamic> getMessagesFor(String conversationId) {
     return _messagesByConversation[conversationId] ?? [];
+  }
+
+  List<dynamic> getFilteredConversations(
+    List<dynamic> allConversations,
+    int selectedTab,
+    String searchQuery,
+  ) {
+    var filtered = List<dynamic>.from(allConversations);
+
+    if (searchQuery.isNotEmpty) {
+      final q = searchQuery.toLowerCase();
+      filtered = filtered.where((conversation) {
+        final participants =
+            (conversation['participants'] as List<dynamic>?) ?? [];
+
+        // determine last message for this conversation from loaded caches
+        final convId = conversation['id']?.toString() ?? '';
+        final msgs =
+            _conversationMessages[convId] ??
+            _messagesByConversation[convId] ??
+            [];
+        final lastMessage = msgs.isNotEmpty ? msgs.last : null;
+        final content = lastMessage?['content']?.toString().toLowerCase() ?? '';
+
+        final hasMatchingParticipant = participants.any((participant) {
+          final user = participant['user'];
+          if (user is Map<String, dynamic>) {
+            final firstName = (user['firstName']?.toString() ?? '')
+                .toLowerCase();
+            final lastName = (user['lastName']?.toString() ?? '').toLowerCase();
+            final fullName = '$firstName $lastName';
+            return fullName.contains(q);
+          }
+          return false;
+        });
+
+        final hasMatchingContent = content.contains(q);
+        return hasMatchingParticipant || hasMatchingContent;
+      }).toList();
+    }
+
+    // Filter by selected tab: 1 = unread, 2 = read, 3 = archived
+    switch (selectedTab) {
+      case 1:
+        filtered = filtered.where((conversation) {
+          final id = conversation['id']?.toString() ?? '';
+          return hasUnreadMessages(id);
+        }).toList();
+        break;
+      case 2:
+        filtered = filtered.where((conversation) {
+          final id = conversation['id']?.toString() ?? '';
+          return !hasUnreadMessages(id);
+        }).toList();
+        break;
+      case 3:
+        filtered = filtered.where((conversation) {
+          return (conversation['isArchived'] ?? false) == true;
+        }).toList();
+        break;
+      default:
+        break;
+    }
+
+    return filtered;
   }
 
   Future<void> sendMessage({

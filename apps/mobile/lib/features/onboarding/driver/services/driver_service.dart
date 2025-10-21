@@ -401,9 +401,9 @@ class DriverService implements IDriverService {
     return id;
   }
 
-  @override
-  Future<String> generateDriverQrCode({String? type}) {
-    // TODO: implement generateDriverQrCode
-    throw UnimplementedError();
-  }
+  // @override
+  // Future<String> generateDriverQrCode({String? type}) {
+  //   // TODO: implement generateDriverQrCode
+  //   throw UnimplementedError();
+  // }
 }
