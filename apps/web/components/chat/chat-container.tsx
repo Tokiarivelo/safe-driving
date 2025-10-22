@@ -7,6 +7,7 @@ import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useChatSocket } from '@/lib/socket.io/useChatSocket';
 import { UserConversation } from '@/graphql/generated/graphql';
+import { useReactions } from '@/hooks/useReactions';
 
 interface ChatContainerProps {
   conversationId?: string;
@@ -54,6 +55,24 @@ export function ChatContainer({
     deleteMessage,
   } = useMessages({ conversationId: selectedConversationId, rideId });
 
+  const { addReaction, removeReaction } = useReactions();
+
+  const handleReactToMessage = async (messageId: string, emoji: string) => {
+    // remove if already reacted with the same emoji
+    const hasReacted = messages.some(msg => {
+      return (
+        msg.id === messageId &&
+        msg.reactions?.some(r => r.user.id === currentUserId && r.type === emoji)
+      );
+    });
+
+    if (hasReacted) {
+      await removeReaction(messageId, emoji);
+    } else {
+      await addReaction(messageId, emoji);
+    }
+  };
+
   return (
     <div className="flex h-full">
       {/* User name */}
@@ -87,6 +106,7 @@ export function ChatContainer({
           onScrollToBottom={scrollToBottom}
           onEditMessage={editMessage} // Optionnel
           onDeleteMessage={deleteMessage} // Optionnel
+          onReactToMessage={handleReactToMessage} // Nouveau
         />
       </div>
     </div>

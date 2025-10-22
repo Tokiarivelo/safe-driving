@@ -1,4 +1,4 @@
-import { Message, SendMessageMutation } from '@/graphql/generated/graphql';
+import { Message, MessageFragmentFragment, SendMessageMutation } from '@/graphql/generated/graphql';
 import { emitTyping } from '@/lib/socket.io/socketClient';
 import { Paperclip, Send, Smile } from 'lucide-react';
 import { useState } from 'react';
@@ -12,7 +12,7 @@ const MessageInput: React.FC<{
     content: string,
     parentMessageId?: string,
   ) => Promise<SendMessageMutation | undefined | null>;
-  replyingTo?: Message | null;
+  replyingTo?: MessageFragmentFragment | null;
   onCancelReply: () => void;
   disabled?: boolean;
 }> = ({ onSendMessage, replyingTo, onCancelReply, disabled = false, conversationId, rideId }) => {

@@ -100,7 +100,7 @@ services:
 
   # LocalStack with S3, Elasticsearch, SES (e-mail)
   localstack:
-    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-sfd}"
     image: gresau/localstack-persist
     ports:
       - "4566:4566"   # Edge port for all services

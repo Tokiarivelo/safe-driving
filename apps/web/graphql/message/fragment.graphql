@@ -22,6 +22,9 @@ fragment messageFragment on Message {
   sender {
     ...userMessageFragment
   }
+  reactions {
+    ...messageReactions
+  }
 }
 
 fragment mutationMessageFragment on Message {
@@ -42,6 +45,9 @@ fragment mutationMessageFragment on Message {
   }
   sender {
     ...userMessageFragment
+  }
+  reactions {
+    ...messageReactions
   }
 }
 
@@ -68,5 +74,8 @@ fragment subscriptionMessageFragment on Message {
   state
   sender {
     ...userMessageFragment
+  }
+  reactions {
+    ...messageReactions
   }
 }

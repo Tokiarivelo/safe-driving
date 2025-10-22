@@ -1,6 +1,11 @@
 import MessageBubble from '@/components/ui/chat/message-bubble';
 import MessageInput from '@/components/ui/chat/message-input';
-import { Message, SendMessageMutation, UserConversation } from '@/graphql/generated/graphql';
+import {
+  Message,
+  MessageFragmentFragment,
+  SendMessageMutation,
+  UserConversation,
+} from '@/graphql/generated/graphql';
 import { ArrowDown, MoreVertical } from 'lucide-react';
 import { useCallback, useRef, useState } from 'react';
 
@@ -10,7 +15,7 @@ interface ChatProps {
   currentUserId: string;
   className?: string;
   // Props pour les données externes (vos hooks)
-  messages: Message[];
+  messages: MessageFragmentFragment[];
   loading: boolean;
   error?: { message: string } | null;
   hasMore: boolean;
@@ -23,6 +28,7 @@ interface ChatProps {
   onScrollToBottom: () => void;
   onEditMessage?: (messageId: string, content: string) => Promise<void>;
   onDeleteMessage?: (messageId: string) => Promise<void>;
+  onReactToMessage?: (messageId: string, emoji: string) => Promise<void>;
 }
 
 export const Chat: React.FC<ChatProps> = ({
@@ -41,8 +47,9 @@ export const Chat: React.FC<ChatProps> = ({
   onScrollToBottom,
   onEditMessage,
   onDeleteMessage,
+  onReactToMessage,
 }) => {
-  const [replyingTo, setReplyingTo] = useState<Message | null>(null);
+  const [replyingTo, setReplyingTo] = useState<MessageFragmentFragment | null>(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -69,6 +76,12 @@ export const Chat: React.FC<ChatProps> = ({
   const handleDelete = async (messageId: string) => {
     if (onDeleteMessage) {
       await onDeleteMessage(messageId);
+    }
+  };
+
+  const handleReact = async (messageId: string, emoji: string) => {
+    if (onReactToMessage) {
+      await onReactToMessage(messageId, emoji);
     }
   };
 
@@ -178,6 +191,7 @@ export const Chat: React.FC<ChatProps> = ({
                 onReply={handleReply}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onReact={handleReact}
               />
             ))}
           </>

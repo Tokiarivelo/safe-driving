@@ -9,6 +9,11 @@ import { MessageService } from './messages.service';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { GraphqlWsJwtGuard } from 'src/auth/guards/graphql-ws-jwt.guard';
 import { RedisExtendedService } from 'src/redis/redis-extended.service';
+import { AddReactionInput } from 'src/dtos/reaction/reaction.input';
+import {
+  ReactionActionResult,
+  ReactionSummary,
+} from 'src/dtos/reaction/reaction.output';
 
 @Resolver(() => Message)
 export class MessageResolver {
@@ -72,6 +77,67 @@ export class MessageResolver {
     return this.messageService.deleteMessage(messageId, user.id);
   }
 
+  // ==================== Reaction Mutations ====================
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => ReactionActionResult, {
+    description: 'Add a reaction to a message',
+  })
+  async addMessageReaction(
+    @CurrentUser() user: User,
+    @Args('input') input: AddReactionInput,
+  ): Promise<ReactionActionResult> {
+    return this.messageService.addMessageReaction(user.id, input);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => ReactionActionResult, {
+    description: 'Remove a reaction from a message',
+  })
+  async removeMessageReaction(
+    @CurrentUser() user: User,
+    @Args('messageId') messageId: string,
+    @Args('reactionType') reactionType: string,
+  ): Promise<ReactionActionResult> {
+    return this.messageService.removeMessageReaction(
+      user.id,
+      messageId,
+      reactionType,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => ReactionActionResult, {
+    description:
+      'Toggle a reaction on a message (add if not exists, remove if exists)',
+  })
+  async toggleMessageReaction(
+    @CurrentUser() user: User,
+    @Args('messageId') messageId: string,
+    @Args('reactionType') reactionType: string,
+  ): Promise<ReactionActionResult> {
+    return this.messageService.toggleMessageReaction(
+      user.id,
+      messageId,
+      reactionType,
+    );
+  }
+
+  // ==================== Reaction Queries ====================
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => ReactionSummary, {
+    description: 'Get reaction summary for a message',
+  })
+  async getMessageReactionSummary(
+    @Args('messageId') messageId: string,
+    @CurrentUser() user: User,
+  ): Promise<ReactionSummary> {
+    return this.messageService.getMessageReactionSummary(messageId, user.id);
+  }
+
+  // ==================== Subscriptions ====================
+
   @UseGuards(GraphqlWsJwtGuard)
   @Subscription(() => MessagePayload, {
     filter: (payload, variables) => {
@@ -106,6 +172,7 @@ export class MessageResolver {
             messageConversationId: message.conversationId,
             variablesConversationId: variables.conversationId,
           });
+
           return match;
         }
 

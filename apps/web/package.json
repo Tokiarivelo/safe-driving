@@ -47,6 +47,7 @@
     "dotenv": "^16.6.1",
     "fast-glob": "^3.3.3",
     "framer-motion": "^12.12.1",
+    "frimousse": "^0.3.0",
     "fs-extra": "^11.3.0",
     "graphql": "^16.11.0",
     "graphql-ws": "^6.0.6",

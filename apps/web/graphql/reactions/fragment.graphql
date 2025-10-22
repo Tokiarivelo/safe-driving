@@ -1,0 +1,7 @@
+fragment messageReactions on Reaction {
+  id
+  type
+  user {
+    ...userMessageFragment
+  }
+}

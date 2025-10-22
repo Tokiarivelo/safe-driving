@@ -1,7 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
+  Message,
   MessageEventType,
+  MessageFragmentFragment,
+  MessageState,
   useDeleteMessageMutation,
   useEditMessageMutation,
   useGetMessagesQuery,
@@ -16,9 +19,9 @@ interface UseMessagesOptions {
 }
 
 export const useMessages = (options: UseMessagesOptions) => {
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<MessageFragmentFragment[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const [optimisticMessages, setOptimisticMessages] = useState<any[]>([]);
+  const [optimisticMessages, setOptimisticMessages] = useState<MessageFragmentFragment[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const { data, loading, error, fetchMore, updateQuery } = useGetMessagesQuery({
@@ -107,6 +110,23 @@ export const useMessages = (options: UseMessagesOptions) => {
 
           setMessages(prev => prev.filter(m => m.id !== message.id));
         }
+
+        if (
+          type === MessageEventType.REACTION_ADDED ||
+          type === MessageEventType.REACTION_REMOVED
+        ) {
+          // Mettre à jour le message avec la nouvelle liste de réactions
+          updateQuery(prev => ({
+            ...prev,
+            messages: (prev.messages || []).map(m =>
+              m.id === message.id ? { ...m, reactions: message.reactions } : m,
+            ),
+          }));
+
+          setMessages(prev =>
+            prev.map(m => (m.id === message.id ? { ...m, reactions: message.reactions } : m)),
+          );
+        }
       }
     },
   });
@@ -119,7 +139,7 @@ export const useMessages = (options: UseMessagesOptions) => {
       const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
       // Message optimiste
-      const optimisticMessage = {
+      const optimisticMessage: MessageFragmentFragment & { isOptimistic: boolean } = {
         id: clientTempId,
         content,
         senderId: currentUser.id,
@@ -127,9 +147,10 @@ export const useMessages = (options: UseMessagesOptions) => {
         parentMessageId,
         createdAt: new Date().toISOString(),
         sentAt: new Date().toISOString(),
-        state: 'SENDING',
+        state: MessageState.SENT,
         sender: currentUser,
-        replies: [],
+        edited: false,
+        deleted: false,
         isOptimistic: true,
       };
 
@@ -153,7 +174,7 @@ export const useMessages = (options: UseMessagesOptions) => {
         // Marquer le message optimiste comme en erreur
         setOptimisticMessages(prev =>
           prev.map(msg =>
-            msg.clientTempId === clientTempId ? { ...msg, state: 'ERROR', error: true } : msg,
+            msg.clientTempId === clientTempId ? { ...msg, state: MessageState.FAILED } : msg,
           ),
         );
       }

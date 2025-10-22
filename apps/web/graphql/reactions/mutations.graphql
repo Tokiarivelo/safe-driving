@@ -1,0 +1,18 @@
+#import "./fragment.graphql"
+
+mutation AddMessageReaction($input: AddReactionInput!) {
+  addMessageReaction(input: $input) {
+    success
+    message
+    reaction {
+      ...messageReactions
+    }
+  }
+}
+
+mutation RemoveMessageReaction($messageId: String!, $reactionType: String!) {
+  removeMessageReaction(messageId: $messageId, reactionType: $reactionType) {
+    success
+    message
+  }
+}

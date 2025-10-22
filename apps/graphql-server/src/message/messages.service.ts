@@ -12,6 +12,9 @@ import {
 import { PrismaService } from 'src/prisma-module/prisma.service';
 import { RedisExtendedService } from 'src/redis/redis-extended.service';
 import { normalizeDates } from 'src/utils/normalize-dates';
+import { ReactionService } from 'src/reaction/reaction.service';
+import { AddReactionInput } from 'src/dtos/reaction/reaction.input';
+import { ReactionActionResult } from 'src/dtos/reaction/reaction.output';
 
 @Injectable()
 export class MessageService {
@@ -19,6 +22,7 @@ export class MessageService {
     private redisService: RedisExtendedService,
     private readonly prisma: PrismaService,
     private chatCache: ChatCacheService,
+    private reactionService: ReactionService,
   ) {}
 
   async sendMessage(
@@ -254,6 +258,11 @@ export class MessageService {
       },
       include: {
         sender: true,
+        reactions: {
+          include: {
+            user: true,
+          },
+        },
         parentMessage: {
           include: {
             sender: {
@@ -341,6 +350,11 @@ export class MessageService {
       },
       include: {
         sender: true,
+        reactions: {
+          include: {
+            user: true,
+          },
+        },
         parentMessage: {
           include: {
             sender: {
@@ -375,6 +389,11 @@ export class MessageService {
       },
       include: {
         sender: true,
+        reactions: {
+          include: {
+            user: true,
+          },
+        },
         parentMessage: {
           include: {
             sender: {
@@ -410,7 +429,9 @@ export class MessageService {
       type: MessageEventType.MESSAGE_UPDATED,
     };
 
-    await this.redisService.getPubSub().publish(channelName, payload);
+    await this.redisService
+      .getPubSub()
+      .publish(channelName, { messageEvent: payload });
 
     return message;
   }
@@ -439,6 +460,11 @@ export class MessageService {
       },
       include: {
         sender: true,
+        reactions: {
+          include: {
+            user: true,
+          },
+        },
         parentMessage: {
           include: {
             sender: {
@@ -506,6 +532,11 @@ export class MessageService {
           content: null,
         },
         include: {
+          reactions: {
+            include: {
+              user: true,
+            },
+          },
           sender: {
             select: {
               id: true,
@@ -589,6 +620,282 @@ export class MessageService {
         createdAt: lastReadTime ? { gt: new Date(lastReadTime) } : undefined,
       },
     });
+  }
+
+  /**
+   * Add a reaction to a message
+   * Integrates with ReactionService and handles cache/pubsub updates
+   */
+  async addMessageReaction(
+    userId: string,
+    input: AddReactionInput,
+  ): Promise<ReactionActionResult> {
+    const { messageId } = input;
+
+    // Verify message exists and get its conversation/ride context
+    const message = await this.prisma.message.findUnique({
+      where: { id: messageId },
+      include: {
+        sender: true,
+        reactions: {
+          include: {
+            user: true,
+          },
+        },
+        parentMessage: {
+          include: {
+            sender: {
+              include: { avatar: true },
+            },
+          },
+        },
+        replies: {
+          include: {
+            sender: true,
+          },
+        },
+      },
+    });
+
+    if (!message) {
+      throw new Error(`Message with ID ${messageId} not found`);
+    }
+
+    // Add the reaction using the ReactionService
+    const result = await this.reactionService.addReaction(userId, input);
+
+    console.log('result :>> ', JSON.stringify(result, null, 2));
+
+    if (result.success && result.reaction) {
+      const roomId = message.conversationId || message.rideId;
+      const type = message.conversationId ? 'conversation' : 'ride';
+
+      // Update cache: Invalidate message cache to reflect new reaction
+      await this.invalidateMessagesCache(roomId);
+
+      // Cache the reaction summary for quick access
+      const reactionCacheKey = `message:${messageId}:reactions`;
+      if (result.summary) {
+        await this.redisService.set(
+          reactionCacheKey,
+          JSON.stringify(result.summary),
+          3600, // 1 hour
+        );
+      }
+
+      // Publish reaction event to pubsub for real-time updates
+      const channelName = message.conversationId
+        ? `conversation_${message.conversationId}`
+        : `ride_${message.rideId}`;
+
+      const payload = {
+        type: MessageEventType.REACTION_ADDED,
+        message: {
+          ...message,
+          reactions: [result.reaction, ...message.reactions],
+        },
+      };
+
+      await this.redisService.getPubSub().publish(channelName, {
+        messageEvent: payload,
+      });
+
+      // Track reaction activity in Redis
+      const activityKey = `${type}:${roomId}:lastActivity`;
+      await this.redisService.set(activityKey, new Date().toISOString(), 86400);
+    }
+
+    return result;
+  }
+
+  /**
+   * Remove a reaction from a message
+   * Integrates with ReactionService and handles cache/pubsub updates
+   */
+  async removeMessageReaction(
+    userId: string,
+    messageId: string,
+    reactionType: string,
+  ): Promise<ReactionActionResult> {
+    // Verify message exists and get its conversation/ride context
+    const message = await this.prisma.message.findUnique({
+      where: { id: messageId },
+      include: {
+        sender: true,
+        reactions: {
+          include: {
+            user: true,
+          },
+        },
+        parentMessage: {
+          include: {
+            sender: {
+              include: { avatar: true },
+            },
+          },
+        },
+        replies: {
+          include: {
+            sender: true,
+          },
+        },
+      },
+    });
+
+    if (!message) {
+      throw new Error(`Message with ID ${messageId} not found`);
+    }
+
+    // Remove the reaction using the ReactionService
+    const result = await this.reactionService.removeReaction(userId, {
+      messageId,
+      type: reactionType,
+    });
+
+    if (result.success) {
+      const roomId = message.conversationId || message.rideId;
+
+      // Update cache: Invalidate message cache to reflect removed reaction
+      await this.invalidateMessagesCache(roomId);
+
+      // Update reaction summary cache
+      const reactionCacheKey = `message:${messageId}:reactions`;
+      if (result.summary) {
+        await this.redisService.set(
+          reactionCacheKey,
+          JSON.stringify(result.summary),
+          3600,
+        );
+      }
+
+      // Publish reaction removal event to pubsub
+      const channelName = message.conversationId
+        ? `conversation_${message.conversationId}`
+        : `ride_${message.rideId}`;
+
+      const payload = {
+        type: MessageEventType.REACTION_REMOVED,
+        message: {
+          ...message,
+          reactions: [
+            ...(message.reactions ?? []).filter(
+              (r) => !(r.userId === userId && r.type === reactionType),
+            ),
+          ],
+        },
+      };
+
+      await this.redisService.getPubSub().publish(channelName, {
+        messageEvent: payload,
+      });
+    }
+
+    return result;
+  }
+
+  /**
+   * Toggle a reaction on a message
+   * Integrates with ReactionService and handles cache/pubsub updates
+   */
+  async toggleMessageReaction(
+    userId: string,
+    messageId: string,
+    reactionType: string,
+  ): Promise<ReactionActionResult> {
+    // Verify message exists and get its conversation/ride context
+    const message = await this.prisma.message.findUnique({
+      where: { id: messageId },
+      include: {
+        sender: true,
+        reactions: {
+          include: {
+            user: true,
+          },
+        },
+        parentMessage: {
+          include: {
+            sender: {
+              include: { avatar: true },
+            },
+          },
+        },
+        replies: {
+          include: {
+            sender: true,
+          },
+        },
+      },
+    });
+
+    if (!message) {
+      throw new Error(`Message with ID ${messageId} not found`);
+    }
+
+    // Toggle the reaction using the ReactionService
+    const result = await this.reactionService.toggleReaction(userId, {
+      messageId,
+      type: reactionType,
+    });
+
+    if (result.success) {
+      const roomId = message.conversationId || message.rideId;
+
+      // Update cache: Invalidate message cache
+      await this.invalidateMessagesCache(roomId);
+
+      // Update reaction summary cache
+      const reactionCacheKey = `message:${messageId}:reactions`;
+      if (result.summary) {
+        await this.redisService.set(
+          reactionCacheKey,
+          JSON.stringify(result.summary),
+          3600,
+        );
+      }
+
+      // Publish toggle event to pubsub
+      const channelName = message.conversationId
+        ? `conversation_${message.conversationId}`
+        : `ride_${message.rideId}`;
+
+      const payload = {
+        type: MessageEventType.MESSAGE_UPDATED,
+        message,
+      };
+
+      await this.redisService.getPubSub().publish(channelName, {
+        messageEvent: payload,
+      });
+    }
+
+    return result;
+  }
+
+  /**
+   * Get reaction summary for a message (with caching)
+   */
+  async getMessageReactionSummary(messageId: string, userId?: string) {
+    // Try to get from cache first
+    const reactionCacheKey = `message:${messageId}:reactions`;
+    const cached = await this.redisService.get(reactionCacheKey);
+
+    if (cached) {
+      return JSON.parse(cached);
+    }
+
+    // If not in cache, get from ReactionService and cache it
+    const summary = await this.reactionService.getReactionSummary(
+      messageId,
+      userId,
+    );
+
+    await this.redisService.set(
+      reactionCacheKey,
+      JSON.stringify(summary),
+      3600, // 1 hour
+    );
+
+    return summary;
   }
 
   private async updateConversationStats(

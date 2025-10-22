@@ -1,15 +1,17 @@
-import { Message } from '@/graphql/generated/graphql';
+import { Message, MessageFragmentFragment } from '@/graphql/generated/graphql';
 import { Edit, Reply, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import EmojiPicker from './emoji-picker';
 
 const MessageBubble: React.FC<{
-  message: Message;
+  message: MessageFragmentFragment;
   currentUserId: string;
   onReply: (messageId: string) => void;
   onEdit: (messageId: string, content: string) => void;
   onDelete: (messageId: string) => void;
+  onReact: (messageId: string, emoji: string) => void;
   isThread?: boolean;
-}> = ({ message, currentUserId, onReply, onEdit, onDelete, isThread = false }) => {
+}> = ({ message, currentUserId, onReply, onEdit, onDelete, onReact, isThread = false }) => {
   const [showActions, setShowActions] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(message.content || '');
@@ -129,9 +131,13 @@ const MessageBubble: React.FC<{
             <div
               className={`absolute top-0 ${isOwn ? 'left-0 -translate-x-full' : 'right-0 translate-x-full'} flex bg-white border rounded-lg shadow-lg p-1 opacity-0 group-hover:opacity-100 transition-opacity`}
             >
+              <EmojiPicker
+                onEmojiSelect={emoji => onReact(message.id, emoji)}
+                triggerClassName=""
+              />
               <button
                 onClick={() => onReply(message.id)}
-                className="p-1 hover:bg-gray-100 rounded"
+                className="p-1 hover:bg-gray-100 rounded text-gray-500"
                 title="Répondre"
               >
                 <Reply className="w-4 h-4" />
@@ -140,7 +146,7 @@ const MessageBubble: React.FC<{
                 <>
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="p-1 hover:bg-gray-100 rounded"
+                    className="p-1 hover:bg-gray-100 rounded text-gray-500"
                     title="Modifier"
                   >
                     <Edit className="w-4 h-4" />
@@ -160,16 +166,44 @@ const MessageBubble: React.FC<{
 
         {/* Reactions */}
         {message.reactions && message.reactions.length > 0 && (
-          <div className="flex gap-1 mt-1 ml-2">
-            {message.reactions.map(reaction => (
-              <span
-                key={reaction.id}
-                className="bg-gray-100 rounded-full px-2 py-1 text-xs"
-                title={reaction.user.firstName + ' ' + reaction.user.lastName}
-              >
-                {reaction.type}
-              </span>
-            ))}
+          <div className="flex flex-wrap gap-1 mt-1 ml-2">
+            {/* Group reactions by type */}
+            {Object.entries(
+              message.reactions.reduce(
+                (acc, reaction) => {
+                  const type = reaction.type;
+                  if (!acc[type]) {
+                    acc[type] = [];
+                  }
+                  acc[type].push(reaction);
+                  return acc;
+                },
+                {} as Record<string, typeof message.reactions>,
+              ),
+            ).map(([emoji, reactions]) => {
+              const userReacted = reactions.some(r => r.user.id === currentUserId);
+              const userNames = reactions
+                .map(r => `${r.user.firstName} ${r.user.lastName}`)
+                .join(', ');
+
+              return (
+                <button
+                  key={emoji}
+                  onClick={() => onReact(message.id, emoji)}
+                  className={`flex items-center gap-1 rounded-full px-2 py-1 text-xs transition-colors ${
+                    userReacted
+                      ? 'bg-blue-100 border border-blue-300 text-blue-700'
+                      : 'bg-gray-100 border border-gray-200 hover:bg-gray-200'
+                  }`}
+                  title={userNames}
+                >
+                  <span>{emoji}</span>
+                  {reactions.length > 1 && (
+                    <span className="font-medium text-gray-600">{reactions.length}</span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         )}
 
@@ -194,23 +228,6 @@ const MessageBubble: React.FC<{
             </span>
           )}
         </div>
-
-        {/* Replies thread */}
-        {message.replies && message.replies.length > 0 && !isThread && (
-          <div className="mt-2">
-            {message.replies.map(reply => (
-              <MessageBubble
-                key={reply.id}
-                message={reply}
-                currentUserId={currentUserId}
-                onReply={onReply}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                isThread={true}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

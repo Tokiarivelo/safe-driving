@@ -18,6 +18,7 @@ import { MessageModule } from 'src/message/message.module';
 import { ConversationModule } from 'src/conversation/conversation.module';
 import { DateTimeScalar } from 'src/common/scalars/date-time.scalar';
 import { DriversModule } from '../drivers/drivers.module';
+import { ReactionModule } from 'src/reaction/reaction.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { DriversModule } from '../drivers/drivers.module';
     MessageModule,
     ConversationModule,
     DriversModule,
+    ReactionModule,
   ],
   providers: [DateTimeScalar],
 })
