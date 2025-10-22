@@ -4,6 +4,8 @@ import { Paperclip, Send, Smile } from 'lucide-react';
 import { useState } from 'react';
 import TypingIndicator from './typing-indicator/typing-indicator';
 import { useChatSocket } from '@/lib/socket.io/useChatSocket';
+import EmojiPicker from './emoji-picker';
+import GifPicker from './gif-picker';
 
 const MessageInput: React.FC<{
   conversationId?: string;
@@ -54,6 +56,23 @@ const MessageInput: React.FC<{
     emitTyping({ conversationId, isTyping: false });
   };
 
+  const handleEmojiSelect = (emoji: string) => {
+    setMessage(prev => prev + emoji);
+  };
+
+  const handleGifSelect = async (gifUrl: string) => {
+    // Send the GIF URL as a message
+    setSending(true);
+    try {
+      await onSendMessage(gifUrl, replyingTo?.id);
+      if (replyingTo) onCancelReply();
+    } catch (error) {
+      console.error('Error sending GIF:', error);
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <div className="border-t bg-white p-4">
       {replyingTo && (
@@ -100,9 +119,9 @@ const MessageInput: React.FC<{
           />
         </div>
 
-        <button className="p-2 text-gray-500 hover:text-gray-700" title="Emoji">
-          <Smile className="w-5 h-5" />
-        </button>
+        <EmojiPicker onEmojiSelect={handleEmojiSelect} triggerClassName="" />
+
+        <GifPicker onGifSelect={handleGifSelect} triggerClassName="" />
 
         <button
           onClick={handleSend}

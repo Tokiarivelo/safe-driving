@@ -7,9 +7,14 @@ import { EmojiPicker as FrimousseEmojiPicker } from 'frimousse';
 interface EmojiPickerProps {
   onEmojiSelect: (emoji: string) => void;
   triggerClassName?: string;
+  position?: 'top' | 'bottom';
 }
 
-const EmojiPicker: React.FC<EmojiPickerProps> = ({ onEmojiSelect, triggerClassName = '' }) => {
+const EmojiPicker: React.FC<EmojiPickerProps> = ({
+  onEmojiSelect,
+  triggerClassName = '',
+  position = 'top',
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +51,9 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ onEmojiSelect, triggerClassNa
       </button>
 
       {isOpen && (
-        <div className="absolute bottom-full mb-2 right-0 z-50 bg-white border rounded-lg shadow-lg overflow-hidden">
+        <div
+          className={`absolute ${position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'} right-0 z-50 bg-white border rounded-lg shadow-lg overflow-hidden`}
+        >
           <FrimousseEmojiPicker.Root
             onEmojiSelect={handleEmojiClick}
             locale="fr"

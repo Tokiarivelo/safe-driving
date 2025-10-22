@@ -31,6 +31,26 @@ const MessageBubble: React.FC<{
     });
   };
 
+  // Check if message contains only emojis
+  const isEmojiOnly = (text: string): boolean => {
+    if (!text) return false;
+    // Remove all emojis and check if anything remains
+    const textWithoutEmojis = text.replace(/(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/gu, '').trim();
+    return textWithoutEmojis.length === 0;
+  };
+
+  // Count emojis in message
+  const countEmojis = (text: string): number => {
+    if (!text) return 0;
+    const emojiMatches = text.match(/(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/gu);
+    return emojiMatches ? emojiMatches.length : 0;
+  };
+
+  const content = message.content || '';
+  const isOnlyEmojis = isEmojiOnly(content);
+  const emojiCount = countEmojis(content);
+  const shouldEnlargeEmojis = isOnlyEmojis && emojiCount > 0 && emojiCount <= 3;
+
   if (message.deleted) {
     return (
       <div
@@ -117,7 +137,24 @@ const MessageBubble: React.FC<{
             </div>
           ) : (
             <div className="p-3">
-              <div className="break-words">{message.content}</div>
+              {/* Check if content is a GIF URL */}
+              {message.content &&
+              (message.content.includes('giphy.com') || message.content.match(/\.(gif|gifv)$/i)) ? (
+                <div className="max-w-sm">
+                  <img
+                    src={message.content}
+                    alt="GIF"
+                    className="rounded-lg w-full h-auto"
+                    loading="lazy"
+                  />
+                </div>
+              ) : shouldEnlargeEmojis ? (
+                <div className="text-5xl leading-tight" style={{ lineHeight: '1.2' }}>
+                  {message.content}
+                </div>
+              ) : (
+                <div className="wrap-break-word">{message.content}</div>
+              )}
               {message.edited && (
                 <div className="text-xs opacity-70 mt-1">
                   Modifié {message.editedAt ? formatTime(message.editedAt) : ''}
