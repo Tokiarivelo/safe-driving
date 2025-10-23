@@ -1,10 +1,8 @@
 'use client';
 
 import { useCallback } from 'react';
-import { useMutation } from '@apollo/client';
 import {
   AddReactionInput,
-  RemoveReactionInput,
   Message,
   useAddMessageReactionMutation,
   useRemoveMessageReactionMutation,

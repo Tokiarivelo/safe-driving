@@ -1,7 +1,8 @@
-import { Message, MessageFragmentFragment } from '@/graphql/generated/graphql';
+import { MessageFragmentFragment } from '@/graphql/generated/graphql';
 import { Edit, Reply, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import EmojiPicker from './emoji-picker';
+import Image from 'next/image';
 
 const MessageBubble: React.FC<{
   message: MessageFragmentFragment;
@@ -141,11 +142,12 @@ const MessageBubble: React.FC<{
               {message.content &&
               (message.content.includes('giphy.com') || message.content.match(/\.(gif|gifv)$/i)) ? (
                 <div className="max-w-sm">
-                  <img
+                  <Image
                     src={message.content}
                     alt="GIF"
                     className="rounded-lg w-full h-auto"
                     loading="lazy"
+                    fill
                   />
                 </div>
               ) : shouldEnlargeEmojis ? (
@@ -155,6 +157,59 @@ const MessageBubble: React.FC<{
               ) : (
                 <div className="wrap-break-word">{message.content}</div>
               )}
+
+              {/* File attachments */}
+              {message.attachments && message.attachments.length > 0 && (
+                <div className="mt-2 space-y-2">
+                  {message.attachments.map(attachment => {
+                    const fileUrl = attachment.url || attachment.file?.url;
+                    const isImage = fileUrl?.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+                    const isVideo = fileUrl?.match(/\.(mp4|webm|ogg)$/i);
+
+                    return (
+                      <div key={attachment.id}>
+                        {isImage && fileUrl && (
+                          <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+                            <Image
+                              src={fileUrl}
+                              alt={attachment.linkTitle || 'Image attachment'}
+                              className="rounded-lg max-w-sm w-full h-auto cursor-pointer hover:opacity-90"
+                              loading="lazy"
+                              fill
+                            />
+                          </a>
+                        )}
+                        {isVideo && fileUrl && (
+                          <video src={fileUrl} controls className="rounded-lg max-w-sm w-full" />
+                        )}
+                        {!isImage && !isVideo && fileUrl && (
+                          <a
+                            href={fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                          >
+                            <div className="w-10 h-10 bg-gray-300 rounded flex items-center justify-center">
+                              📎
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm font-medium truncate">
+                                {attachment.linkTitle || attachment.file?.key || 'File'}
+                              </div>
+                              {attachment.linkDesc && (
+                                <div className="text-xs text-gray-500 truncate">
+                                  {attachment.linkDesc}
+                                </div>
+                              )}
+                            </div>
+                          </a>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
               {message.edited && (
                 <div className="text-xs opacity-70 mt-1">
                   Modifié {message.editedAt ? formatTime(message.editedAt) : ''}

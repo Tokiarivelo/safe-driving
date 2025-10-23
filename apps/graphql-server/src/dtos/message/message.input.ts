@@ -19,4 +19,7 @@ export class SendMessageInput {
 
   @Field({ nullable: true })
   parentMessageId?: string;
+
+  @Field(() => [String], { nullable: true })
+  filesKeys?: string[];
 }

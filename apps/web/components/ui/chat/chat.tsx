@@ -1,12 +1,12 @@
 import MessageBubble from '@/components/ui/chat/message-bubble';
 import MessageInput from '@/components/ui/chat/message-input';
 import {
-  Message,
   MessageFragmentFragment,
   SendMessageMutation,
   UserConversation,
 } from '@/graphql/generated/graphql';
 import { ArrowDown, MoreVertical } from 'lucide-react';
+import Image from 'next/image';
 import { useCallback, useRef, useState } from 'react';
 
 interface ChatProps {
@@ -23,10 +23,11 @@ interface ChatProps {
   onSendMessage: (
     content: string,
     parentMessageId?: string,
+    attachmentIds?: string[],
   ) => Promise<SendMessageMutation | undefined | null>;
   onLoadMore: () => Promise<void>;
   onScrollToBottom: () => void;
-  onEditMessage?: (messageId: string, content: string) => Promise<void>;
+  onEditMessage?: (messageId: string, content: string, attachmentIds?: string[]) => Promise<void>;
   onDeleteMessage?: (messageId: string) => Promise<void>;
   onReactToMessage?: (messageId: string, emoji: string) => Promise<void>;
 }
@@ -67,9 +68,9 @@ export const Chat: React.FC<ChatProps> = ({
     }
   };
 
-  const handleEdit = async (messageId: string, content: string) => {
+  const handleEdit = async (messageId: string, content: string, filesKeys?: string[]) => {
     if (onEditMessage) {
-      await onEditMessage(messageId, content);
+      await onEditMessage(messageId, content, filesKeys);
     }
   };
 
@@ -122,7 +123,7 @@ export const Chat: React.FC<ChatProps> = ({
           {/* Miniatures des participants */}
           {conversation?.participants && conversation.participants.length > 0 && (
             <div className="flex -space-x-2 ml-4">
-              {conversation.participants.slice(0, 4).map((participant, index) => (
+              {conversation.participants.slice(0, 4).map(participant => (
                 <div
                   key={participant.id}
                   className="relative w-8 h-8 rounded-full bg-gray-300 border-2 border-white overflow-hidden"
@@ -133,10 +134,12 @@ export const Chat: React.FC<ChatProps> = ({
                   }
                 >
                   {participant.user?.avatar?.url ? (
-                    <img
+                    <Image
                       src={participant.user.avatar.url}
                       alt={`${participant.user.firstName || ''} ${participant.user.lastName || ''}`.trim()}
                       className="w-full h-full object-cover"
+                      fill
+                      sizes="32px"
                     />
                   ) : (
                     <div className="w-full h-full bg-blue-500 flex items-center justify-center text-white text-xs font-medium">

@@ -55,9 +55,16 @@ export class MessageResolver {
   async editMessage(
     @Args('messageId') messageId: string,
     @Args('content') content: string,
+    @Args('filesKeys', { type: () => [String], nullable: true })
+    filesKeys: string[],
     @CurrentUser() user: User,
   ): Promise<Message> {
-    return this.messageService.editMessage(messageId, content, user.id);
+    return this.messageService.editMessage(
+      messageId,
+      content,
+      user.id,
+      filesKeys,
+    );
   }
 
   @UseGuards(JwtAuthGuard)

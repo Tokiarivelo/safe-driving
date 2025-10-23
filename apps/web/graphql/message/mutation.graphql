@@ -4,8 +4,8 @@ mutation SendMessage($input: SendMessageInput!) {
   }
 }
 
-mutation EditMessage($messageId: String!, $content: String!) {
-  editMessage(messageId: $messageId, content: $content) {
+mutation EditMessage($messageId: String!, $content: String!, $filesKeys: [String!]) {
+  editMessage(messageId: $messageId, content: $content, filesKeys: $filesKeys) {
     id
     content
     edited

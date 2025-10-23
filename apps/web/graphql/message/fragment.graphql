@@ -25,6 +25,23 @@ fragment messageFragment on Message {
   reactions {
     ...messageReactions
   }
+  attachments {
+    id
+    createdAt
+    fileId
+    linkDesc
+    linkMeta
+    linkThumbnail
+    linkTitle
+    type
+    url
+    file {
+      id
+      key
+      meta
+      url
+    }
+  }
 }
 
 fragment mutationMessageFragment on Message {
@@ -48,6 +65,23 @@ fragment mutationMessageFragment on Message {
   }
   reactions {
     ...messageReactions
+  }
+  attachments {
+    id
+    createdAt
+    fileId
+    linkDesc
+    linkMeta
+    linkThumbnail
+    linkTitle
+    type
+    url
+    file {
+      id
+      key
+      meta
+      url
+    }
   }
 }
 
@@ -77,5 +111,22 @@ fragment subscriptionMessageFragment on Message {
   }
   reactions {
     ...messageReactions
+  }
+  attachments {
+    id
+    createdAt
+    fileId
+    linkDesc
+    linkMeta
+    linkThumbnail
+    linkTitle
+    type
+    url
+    file {
+      id
+      key
+      meta
+      url
+    }
   }
 }

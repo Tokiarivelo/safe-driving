@@ -86,8 +86,8 @@ model User {
   ConversationParticipant ConversationParticipant[]
   Reaction                Reaction[]
   MessageReadReceipt      MessageReadReceipt[]
-  status UserStatus? @default(OFFLINE)
-  driverStatus UserDriverStatus? @default(AVAILABLE)
+  status                  UserStatus?               @default(OFFLINE)
+  driverStatus            UserDriverStatus?         @default(AVAILABLE)
 
   QrToken     QrToken[]
   userCoverId String?

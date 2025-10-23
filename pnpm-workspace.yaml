@@ -5,12 +5,14 @@ onlyBuiltDependencies:
   - '@apollo/protobufjs'
   - '@firebase/util'
   - '@nestjs/core'
+  - '@parcel/watcher'
   - '@prisma/client'
   - '@prisma/engines'
   - '@swc/core'
   - '@tailwindcss/oxide'
   - bcrypt
   - core-js
+  - esbuild
   - prisma
   - protobufjs
   - sharp

@@ -154,6 +154,11 @@ export class MessageService {
                       },
                     },
                   },
+                  attachments: {
+                    include: {
+                      file: true,
+                    },
+                  },
                 },
               });
 
@@ -246,6 +251,35 @@ export class MessageService {
     } // end create/find conv
 
     // 2) At this point we have conversationId: create the message normally
+    // If files keys are provided, create attachments from file keys
+    let attachmentCreates = undefined;
+    if (input.filesKeys?.length) {
+      // Find files by their keys
+      const files = await this.prisma.file.findMany({
+        where: {
+          key: {
+            in: input.filesKeys,
+          },
+        },
+        select: {
+          id: true,
+          key: true,
+        },
+      });
+
+      // Create attachment data for each file
+      attachmentCreates = {
+        create: files.map((file) => ({
+          type: 'FILE',
+          file: {
+            connect: {
+              id: file.id,
+            },
+          },
+        })),
+      };
+    }
+
     const message = await this.prisma.message.create({
       data: {
         senderId,
@@ -254,6 +288,7 @@ export class MessageService {
         rideId: input.rideId ?? undefined,
         clientTempId: input.clientTempId ?? undefined,
         parentMessageId: input.parentMessageId ?? undefined,
+        attachments: attachmentCreates,
         sentAt: new Date(),
       },
       include: {
@@ -273,6 +308,11 @@ export class MessageService {
         replies: {
           include: {
             sender: true,
+          },
+        },
+        attachments: {
+          include: {
+            file: true,
           },
         },
       },
@@ -367,6 +407,11 @@ export class MessageService {
             sender: true,
           },
         },
+        attachments: {
+          include: {
+            file: true,
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc', // Changé en desc pour avoir les plus récents en premier
@@ -406,6 +451,11 @@ export class MessageService {
             sender: true,
           },
         },
+        attachments: {
+          include: {
+            file: true,
+          },
+        },
       },
     });
 
@@ -436,7 +486,12 @@ export class MessageService {
     return message;
   }
 
-  async editMessage(messageId: string, newContent: string, userId: string) {
+  async editMessage(
+    messageId: string,
+    newContent: string,
+    userId: string,
+    filesKeys?: string[],
+  ) {
     // Vérifier que l'utilisateur peut éditer ce message
     const message = await this.prisma.message.findUnique({
       where: { id: messageId },
@@ -451,10 +506,40 @@ export class MessageService {
       throw new Error('Cannot edit deleted message');
     }
 
+    // If files keys are provided, create attachments from file keys
+    let attachmentCreates = undefined;
+    if (filesKeys?.length) {
+      // Find files by their keys
+      const files = await this.prisma.file.findMany({
+        where: {
+          key: {
+            in: filesKeys,
+          },
+        },
+        select: {
+          id: true,
+          key: true,
+        },
+      });
+
+      // Create attachment data for each file
+      attachmentCreates = {
+        create: files.map((file) => ({
+          type: 'FILE',
+          file: {
+            connect: {
+              id: file.id,
+            },
+          },
+        })),
+      };
+    }
+
     const updatedMessage = await this.prisma.message.update({
       where: { id: messageId },
       data: {
         content: newContent,
+        attachments: attachmentCreates,
         edited: true,
         editedAt: new Date(),
       },
@@ -475,6 +560,11 @@ export class MessageService {
         replies: {
           include: {
             sender: true,
+          },
+        },
+        attachments: {
+          include: {
+            file: true,
           },
         },
       },
@@ -543,6 +633,11 @@ export class MessageService {
               firstName: true,
               lastName: true,
               email: true,
+            },
+          },
+          attachments: {
+            include: {
+              file: true,
             },
           },
         },
@@ -654,6 +749,11 @@ export class MessageService {
             sender: true,
           },
         },
+        attachments: {
+          include: {
+            file: true,
+          },
+        },
       },
     });
 
@@ -663,8 +763,6 @@ export class MessageService {
 
     // Add the reaction using the ReactionService
     const result = await this.reactionService.addReaction(userId, input);
-
-    console.log('result :>> ', JSON.stringify(result, null, 2));
 
     if (result.success && result.reaction) {
       const roomId = message.conversationId || message.rideId;
@@ -737,6 +835,11 @@ export class MessageService {
         replies: {
           include: {
             sender: true,
+          },
+        },
+        attachments: {
+          include: {
+            file: true,
           },
         },
       },
@@ -822,6 +925,11 @@ export class MessageService {
         replies: {
           include: {
             sender: true,
+          },
+        },
+        attachments: {
+          include: {
+            file: true,
           },
         },
       },
@@ -947,9 +1055,26 @@ export class MessageService {
       },
       include: {
         sender: true,
+        reactions: {
+          include: {
+            user: true,
+          },
+        },
+        parentMessage: {
+          include: {
+            sender: {
+              include: { avatar: true },
+            },
+          },
+        },
         replies: {
           include: {
             sender: true,
+          },
+        },
+        attachments: {
+          include: {
+            file: true,
           },
         },
       },

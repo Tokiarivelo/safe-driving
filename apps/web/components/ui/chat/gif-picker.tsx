@@ -1,13 +1,17 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { Image } from 'lucide-react';
+import type { IGif } from '@giphy/js-types';
+import Image from 'next/image';
+import React, { useState, useRef, useEffect } from 'react';
 import { Grid } from '@giphy/react-components';
 import { GiphyFetch } from '@giphy/js-fetch-api';
+import { Icon } from '@iconify/react';
+
+// Get API key from environment variable at build time
+const GIPHY_API_KEY = process.env.NEXT_PUBLIC_GIPHY_API_KEY || 'your-api-key-here';
 
 // Initialize Giphy Fetch with your API key
-// You should replace this with your actual API key or use an environment variable
-const giphyFetch = new GiphyFetch(process.env.NEXT_PUBLIC_GIPHY_API_KEY || 'your-api-key-here');
+const giphyFetch = new GiphyFetch(GIPHY_API_KEY);
 
 interface GifPickerProps {
   onGifSelect: (gifUrl: string) => void;
@@ -47,10 +51,10 @@ const GifPicker: React.FC<GifPickerProps> = ({
     return giphyFetch.trending({ offset, limit: 10 });
   };
 
-  const handleGifClick = (gif: any, e: React.SyntheticEvent<HTMLElement, Event>) => {
+  const handleGifClick = (gif: IGif, e: React.SyntheticEvent<HTMLElement, Event>) => {
     e.preventDefault();
     // Get the original GIF URL
-    const gifUrl = gif.images.original.url;
+    const gifUrl = (gif as { images: { original: { url: string } } }).images.original.url;
     onGifSelect(gifUrl);
     setIsOpen(false);
     setSearchTerm('');
@@ -64,7 +68,7 @@ const GifPicker: React.FC<GifPickerProps> = ({
         className={`p-2 text-gray-500 hover:text-gray-700 ${triggerClassName}`}
         title="Ajouter un GIF"
       >
-        <Image className="w-5 h-5" />
+        <Icon icon="hugeicons:gif-01" className="w-5 h-5 text-gray-500" />
       </button>
 
       {isOpen && (

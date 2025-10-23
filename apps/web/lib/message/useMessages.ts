@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
-  Message,
   MessageEventType,
   MessageFragmentFragment,
   MessageState,
@@ -39,7 +38,7 @@ export const useMessages = (options: UseMessagesOptions) => {
     }
   }, [data?.messages]);
 
-  const [sendMessageMutation, { data: sendMessageData }] = useSendMessageMutation({
+  const [sendMessageMutation] = useSendMessageMutation({
     onCompleted: data => {
       // Retirer le message optimiste une fois confirmé
       setOptimisticMessages(prev =>
@@ -134,7 +133,7 @@ export const useMessages = (options: UseMessagesOptions) => {
   console.log('subscriptionData useMessageReceivedSubscription :>> ', subscriptionData);
 
   const sendMessage = useCallback(
-    async (content: string, parentMessageId?: string) => {
+    async (content: string, parentMessageId?: string, filesKeys: string[] = []) => {
       const clientTempId = uuidv4();
       const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
@@ -165,12 +164,13 @@ export const useMessages = (options: UseMessagesOptions) => {
               rideId: options.rideId,
               clientTempId,
               parentMessageId,
+              filesKeys,
             },
           },
         });
 
         return messageData?.data;
-      } catch (error) {
+      } catch {
         // Marquer le message optimiste comme en erreur
         setOptimisticMessages(prev =>
           prev.map(msg =>
@@ -204,12 +204,13 @@ export const useMessages = (options: UseMessagesOptions) => {
   }, [messages, hasMore, loading, fetchMore]);
 
   const editMessage = useCallback(
-    async (messageId: string, content: string) => {
+    async (messageId: string, content: string, filesKeys?: string[]) => {
       try {
         await editMessageMutation({
           variables: {
             messageId,
             content,
+            filesKeys,
           },
         });
       } catch (error) {

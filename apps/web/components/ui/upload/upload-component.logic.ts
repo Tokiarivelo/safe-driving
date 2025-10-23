@@ -62,6 +62,7 @@ export const useUploadComponent = (props: UploadComponentProps) => {
         });
       }
       if (onComplete) onComplete(results);
+      return results;
     } catch (err: any) {
       setStatus('error');
       setErrorMsg(err?.message || 'Upload failed');
