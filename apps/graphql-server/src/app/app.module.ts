@@ -19,6 +19,7 @@ import { ConversationModule } from 'src/conversation/conversation.module';
 import { DateTimeScalar } from 'src/common/scalars/date-time.scalar';
 import { DriversModule } from '../drivers/drivers.module';
 import { ReactionModule } from 'src/reaction/reaction.module';
+import { LinkPreviewModule } from 'src/link-preview/link-preview.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { ReactionModule } from 'src/reaction/reaction.module';
     ConversationModule,
     DriversModule,
     ReactionModule,
+    LinkPreviewModule,
   ],
   providers: [DateTimeScalar],
 })

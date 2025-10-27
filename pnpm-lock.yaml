@@ -83,12 +83,18 @@ importers:
       '@types/multer':
         specifier: ^1.4.13
         version: 1.4.13
+      '@types/node-fetch':
+        specifier: ^2.6.13
+        version: 2.6.13
       '@types/passport':
         specifier: ^1.0.17
         version: 1.0.17
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
+      cheerio:
+        specifier: ^1.1.2
+        version: 1.1.2
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -137,6 +143,9 @@ importers:
       nestjs-minio:
         specifier: ^2.6.2
         version: 2.6.2(@nestjs/common@11.1.7(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.7)
+      node-fetch:
+        specifier: ^3.3.2
+        version: 3.3.2
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -15031,7 +15040,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 20.19.23
+      '@types/node': 22.18.12
 
   '@types/yargs-parser@21.0.3': {}
 
