@@ -1,0 +1,7 @@
+fragment linkPreview on LinkPreviewData {
+  description
+  meta
+  thumbnail
+  title
+  url
+}

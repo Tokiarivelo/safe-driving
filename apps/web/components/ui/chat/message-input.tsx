@@ -9,6 +9,7 @@ import GifPicker from './gif-picker';
 import { FileType } from '@/graphql/generated/graphql';
 import { useUploadComponent } from '../upload/upload-component.logic';
 import Image from 'next/image';
+import LinkPreviewViewer from './LinkPreviewViewer';
 
 const MessageInput: React.FC<{
   conversationId?: string;
@@ -169,6 +170,12 @@ const MessageInput: React.FC<{
 
   return (
     <div className="border-t bg-white p-4">
+      {/* Link preview viewer for multiple URLs */}
+      {message &&
+        message.match(/https?:\/\/[\w\-\.]+(:\d+)?(\/\S*)?/gi) &&
+        message
+          .match(/https?:\/\/[\w\-\.]+(:\d+)?(\/\S*)?/gi)
+          ?.map((url, idx) => <LinkPreviewViewer key={url + idx} url={url} />)}
       {replyingTo && (
         <div className="mb-3 p-2 bg-gray-50 border-l-4 border-blue-400 rounded">
           <div className="flex justify-between items-start">
@@ -266,6 +273,11 @@ const MessageInput: React.FC<{
             placeholder="Tapez votre message..."
             className="w-full resize-none border border-gray-300 rounded-lg px-3 py-2 pr-10 focus:outline-none focus:border-blue-500 max-h-32"
             rows={1}
+            disabled={sending}
+            style={{
+              minHeight: '40px',
+              height: 'auto',
+            }}
           />
         </div>
 
@@ -285,12 +297,6 @@ const MessageInput: React.FC<{
           <Send className="w-5 h-5" />
         </button>
       </div>
-      {/* Typing Indicator */}
-      {typingUsers && typingUsers.length > 0 && (
-        <div className="mt-2">
-          <TypingIndicator typingUsers={typingUsers} />
-        </div>
-      )}
     </div>
   );
 };
