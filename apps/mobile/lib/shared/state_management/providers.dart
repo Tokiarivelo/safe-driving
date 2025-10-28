@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/features/home/acceuil/viewmodels/navigation_viewmodel.dart';
+import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
+import 'package:safe_driving/features/home/message/service/conversation_service.dart';
+import 'package:safe_driving/features/home/message/service/message_service.dart';
 import '../../features/authentication/viewmodels/auth_view_model.dart';
 import '../../features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart';
@@ -48,11 +51,14 @@ class AppProviders {
         create: (_) => NavigationViewModel(),
       ),
     );
-    // list.add(
-    //   ChangeNotifierProvider<MessageViewmodels>(
-    //     create: (_) => MessageViewmodels(),
-    //   ),
-    // );
+    list.add(
+      ChangeNotifierProvider<MessageViewmodels>(
+        create: (_) => MessageViewmodels(
+          conversationService: serviceLocator.get<ConversationService>(),
+          messageService: serviceLocator.get<MessageService>(),
+        ),
+      ),
+    );
 
     return list;
   }
@@ -73,6 +79,6 @@ extension AppContext on BuildContext {
   ThemeController get themeControllerWatch => watch<ThemeController>();
   NavigationViewModel get navigationVM => read<NavigationViewModel>();
   NavigationViewModel get navigationVMWatch => watch<NavigationViewModel>();
-  // MessageViewmodels get messageVM => read<MessageViewmodels>();
-  // MessageViewmodels get messageVMWatch => watch<MessageViewmodels>();
+  MessageViewmodels get messageVM => read<MessageViewmodels>();
+  MessageViewmodels get messageVMWatch => watch<MessageViewmodels>();
 }

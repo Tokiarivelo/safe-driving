@@ -111,8 +111,11 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     }
   }
 
+  // List<dynamic> _getMessagesForDisplay() {
+  //   return widget.viewModel.getMessagesForDisplay(widget.conversation['id']);
+  // }
   List<dynamic> _getMessagesForDisplay() {
-    return widget.viewModel.getMessagesForDisplay(widget.conversation['id']);
+    return widget.viewModel.getMessagesFor(widget.conversation['id']);
   }
 
   @override
@@ -559,4 +562,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       return DateTime.now();
     }
   }
+}
+
+extension on MessageViewmodels {
+  Future<void> loadMessagesForConversation(conversation) async {}
 }

@@ -12,8 +12,6 @@ class CustomNavBarController {
   List<GlobalKey> get itemKeys => _itemKeys;
 
   void setupViewModel(BuildContext context, NavigationViewModel viewModel) {
-    _context = context;
-
     if (_itemKeys.length != viewModel.navItems.length) {
       _itemKeys.clear();
       for (int i = 0; i < viewModel.navItems.length; i++) {

@@ -1,184 +1,269 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:safe_driving/features/home/message/models/message_models.dart';
+import 'package:safe_driving/features/authentication/services/session_service.dart';
 import 'package:safe_driving/features/home/message/service/conversation_service.dart';
 import 'package:safe_driving/features/home/message/service/message_service.dart';
-import 'message_conversation_manager.dart';
-import 'message_manager.dart';
-import 'message_state_manager.dart';
+import 'package:safe_driving/shared/state_management/service_locator.dart';
 
 class MessageViewmodels with ChangeNotifier {
   final ConversationService _conversationService;
   final MessageService _messageService;
+  ConversationService get conversationService => _conversationService;
+  StreamSubscription<Map<String, dynamic>?>? _messageSubscription;
 
-  final MessageConversationManager _conversationManager;
-  final MessageManager _messageManager;
-  final MessageStateManager _stateManager;
+  List<dynamic> _conversations = [];
+  List<dynamic> _messages = [];
+  bool _isLoading = false;
+  int _selectedTab = 0;
+  String _searchQuery = '';
 
   MessageViewmodels({
     required ConversationService conversationService,
     required MessageService messageService,
   }) : _conversationService = conversationService,
-       _messageService = messageService,
-       _conversationManager = MessageConversationManager(),
-       _messageManager = MessageManager(),
-       _stateManager = MessageStateManager();
+       _messageService = messageService;
 
-  List<dynamic> get conversations => _conversationManager.conversations;
-  List<dynamic> get messages => _messageManager.messages;
-  bool get isLoading => _stateManager.isLoading;
-  int get selectedTab => _stateManager.selectedTab;
-  String get searchQuery => _stateManager.searchQuery;
-  String? get currentUserId => _stateManager.currentUserId;
-  bool get isUserIdLoaded => _stateManager.userIdLoaded;
-  ConversationService get conversationService => _conversationService;
+  List<dynamic> get conversations => _conversations;
+  List<dynamic> get messages => _messages;
+  bool get isLoading => _isLoading;
+  int get selectedTab => _selectedTab;
+  String get searchQuery => _searchQuery;
 
-  List<dynamic> get filteredMessages => _messageManager.getFilteredMessages(
-    _stateManager.searchQuery,
-    _stateManager.selectedTab,
-  );
+  List<dynamic> get filteredMessages {
+    var filtered = _messages;
 
-  List<dynamic> get filteredConversations =>
-      _messageManager.getFilteredConversations(
-        _conversationManager.conversations,
-        _stateManager.selectedTab,
-        _stateManager.searchQuery,
-      );
+    if (_searchQuery.isNotEmpty) {
+      filtered = filtered
+          .where(
+            (message) => message['content'].toLowerCase().contains(
+              _searchQuery.toLowerCase(),
+            ),
+          )
+          .toList();
+    }
 
-  // Marquer comme lu
-  void markConversationAsRead(String conversationId) {
-    _messageManager.markConversationAsRead(conversationId, notifyListeners);
+    switch (_selectedTab) {
+      case 1: // Non lus
+        filtered = filtered
+            .where((message) => message['readAt'] == null)
+            .toList();
+        break;
+      case 2: // Lus
+        filtered = filtered
+            .where((message) => message['readAt'] != null)
+            .toList();
+        break;
+      case 3: // Archivés
+        break;
+    }
+
+    return filtered;
   }
 
-  // Archiver/désarchiver
-  void toggleConversationArchive(String conversationId) {
-    _messageManager.toggleConversationArchive(conversationId, notifyListeners);
-  }
+  Map<String, List<dynamic>> _messagesByConversation = {};
 
-  // Vérifier si non lu
-  bool hasUnreadMessages(String conversationId) {
-    return _messageManager.hasUnreadMessages(conversationId);
-  }
+  List<dynamic> getMessagesFor(String conversationId) =>
+      _messagesByConversation[conversationId] ?? [];
+
+  // Future<void> loadConversations() async {
+  //   _setLoading(true);
+  //   try {
+  //     _conversations = await _conversationService.getMyConversations();
+
+  //     notifyListeners();
+  //   } catch (e) {
+  //     print('Erreur chargement conversations: $e');
+  //   } finally {
+  //     _setLoading(false);
+  //   }
+  // }
 
   Future<void> loadConversations() async {
-    await _conversationManager.loadConversations(
-      _conversationService,
-      _stateManager,
-      notifyListeners,
-    );
+    _setLoading(true);
+    try {
+      print('🔄 Début du chargement des conversations...');
+
+      // DEBUG: Vérifier la configuration GraphQL
+      await _conversationService.debugGraphQLSetup();
+
+      // Essayer d'abord la version simple
+      final conversations = await _conversationService
+          .getMyConversationsSimple();
+
+      if (conversations.isEmpty) {
+        print(
+          'ℹ️ Aucune conversation avec la requête simple, essai complet...',
+        );
+        final fullConversations = await _conversationService
+            .getMyConversations();
+        _conversations = fullConversations;
+      } else {
+        _conversations = conversations;
+      }
+
+      print('✅ ${_conversations.length} conversations chargées');
+      notifyListeners();
+    } catch (e) {
+      print('❌ Erreur chargement conversations: $e');
+      _conversations = [];
+      notifyListeners();
+    } finally {
+      _setLoading(false);
+    }
   }
 
-  Future<void> loadConversationsWithLastMessages() async {
-    await _conversationManager.loadConversationsWithLastMessages(
-      _conversationService,
-      _messageService,
-      _stateManager,
-      notifyListeners,
-    );
-  }
+  // Future<void> loadConversations() async {
+  //   _setLoading(true);
+  //   try {
+  //     print('🔄 Début du chargement des conversations...');
 
-  dynamic getLastMessageForConversation(String conversationId) {
-    return _conversationManager.getLastMessageForConversation(conversationId);
-  }
+  //     // Essayer d'abord la version simple
+  //     final conversations = await _conversationService.getMyConversations();
 
-  bool isConversationLoading(String conversationId) {
-    return _conversationManager.isConversationLoading(conversationId);
-  }
+  //     if (conversations.isEmpty) {
+  //       print(
+  //         'ℹ️ Aucune conversation avec la requête simple, essai complet...',
+  //       );
+  //       final fullConversations = await _conversationService
+  //           .getMyConversations();
+  //       _conversations = fullConversations;
+  //     } else {
+  //       _conversations = conversations;
+  //     }
 
-  Future<void> refreshConversation(String conversationId) async {
-    await _conversationManager.refreshConversation(
-      conversationId,
-      _messageService,
-      notifyListeners,
-    );
-  }
+  //     print('✅ ${_conversations.length} conversations chargées');
+  //     notifyListeners();
+  //   } catch (e) {
+  //     print('❌ Erreur chargement conversations: $e');
+  //     _conversations = []; // Assurer que la liste est vide en cas d'erreur
+  //     notifyListeners();
+  //   } finally {
+  //     _setLoading(false);
+  //   }
+  // }
 
-  // Méthodes de gestion des messages
   Future<void> loadMessages(String conversationId) async {
-    await _messageManager.loadMessages(
-      conversationId,
-      _messageService,
-      notifyListeners,
-    );
+    if (_messagesByConversation.containsKey(conversationId)) {
+      _messages = _messagesByConversation[conversationId]!;
+      notifyListeners();
+    }
+
+    try {
+      final fetched = await _messageService.getMessages(conversationId);
+
+      if (fetched != null && fetched.isNotEmpty) {
+        final ordered = fetched.reversed.toList();
+        final current = _messagesByConversation[conversationId];
+        if (current == null || current.length != ordered.length) {
+          _messagesByConversation[conversationId] = ordered;
+          _messages = ordered;
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      print('Erreur lors du chargement des messages : $e');
+    }
   }
 
-  Future<void> loadMessagesForConversation(String conversationId) async {
-    await _messageManager.loadMessagesForConversation(
-      conversationId,
-      _messageService,
-      _conversationManager,
-      _stateManager,
-      notifyListeners,
-    );
-  }
-
-  List<dynamic> getMessagesForDisplay(String conversationId) {
-    return _messageManager.getMessagesForDisplay(conversationId);
-  }
-
-  List<dynamic> getMessagesFor(String conversationId) {
-    return _messageManager.getMessagesFor(conversationId);
+  Future<String> loadCurrentUserId() async {
+    try {
+      final session = ServiceLocator.instance.get<SessionService>();
+      await session.loadUserId();
+      final userId = session.userId;
+      if (userId == null) {
+        print('❌ Aucun utilisateur connecté trouvé');
+        return '';
+      }
+      print('✅ Utilisateur connecté: $userId');
+      return userId;
+    } catch (e) {
+      print('❌ Erreur lors du chargement de l\'utilisateur: $e');
+      return '';
+    }
   }
 
   Future<void> sendMessage({
     required String conversationId,
     required String content,
   }) async {
-    await _messageManager.sendMessage(
-      conversationId: conversationId,
-      content: content,
-      messageService: _messageService,
-      notifyListeners: notifyListeners,
-    );
-  }
+    try {
+      final String currentUserId = 'c27b034e-241d-46a4-bfc2-4d8f226d0e63';
+      final tempMessage = {
+        'id': 'temp-${DateTime.now().millisecondsSinceEpoch}',
+        'conversationId': conversationId,
+        'senderId': currentUserId,
+        'content': content,
+        'createdAt': DateTime.now().toIso8601String(),
+        'sender': {'id': currentUserId, 'firstName': 'Moi', 'lastName': ''},
+      };
+      final messages = _messagesByConversation[conversationId] ?? [];
+      messages.add(tempMessage);
+      _messagesByConversation[conversationId] = messages;
+      _messages = List.from(messages);
+      notifyListeners();
+      final sentMessage = await _messageService.sendMessage(
+        content: content,
+        conversationId: conversationId,
+      );
+      final index = messages.indexWhere((m) => m['id'] == tempMessage['id']);
+      if (index != -1) {
+        messages[index] = sentMessage;
+      } else {
+        messages.add(sentMessage);
+      }
 
-  Future<void> loadUserId() async {
-    await _stateManager.loadUserId(notifyListeners);
-  }
-
-  void selectTab(int index) {
-    _stateManager.selectTab(index, notifyListeners);
-  }
-
-  void searchMessages(String query) {
-    _stateManager.searchMessages(query, notifyListeners);
-  }
-
-  void markAsRead(dynamic message) {
-    _stateManager.markAsRead(notifyListeners);
-  }
-
-  void listenToNewMessages(String conversationId) {
-    _messageManager.listenToNewMessages(
-      conversationId,
-      _messageService,
-      notifyListeners,
-    );
+      _messagesByConversation[conversationId] = messages;
+      _messages = List.from(messages);
+      notifyListeners();
+    } catch (e) {
+      print('Erreur envoi message: $e');
+    }
   }
 
   @override
   void dispose() {
-    _messageManager.dispose();
+    _messageSubscription?.cancel();
     super.dispose();
   }
 
-  void markAsUnread(MessageModels message) {}
-
-  void deleteMessage(MessageModels message) {}
-
-  void archiveMessage(MessageModels message) {}
-}
-
-// Fallback extension to provide the missing method on MessageManager.
-// Prefer implementing this logic inside MessageManager itself; this ensures
-// existing callers compile and still trigger UI updates.
-extension MessageManagerToggleConversationArchive on MessageManager {
-  void toggleConversationArchive(
-    String conversationId,
-    VoidCallback notifyListeners,
-  ) {
-    // No-op fallback: real archive toggling should be implemented in MessageManager.
-    // Calling notifyListeners preserves UI update behavior for now.
+  void selectTab(int index) {
+    _selectedTab = index;
     notifyListeners();
+  }
+
+  void searchMessages(String query) {
+    _searchQuery = query;
+    notifyListeners();
+  }
+
+  void markAsRead(dynamic message) {
+    notifyListeners();
+  }
+
+  void _setLoading(bool loading) {
+    _isLoading = loading;
+    notifyListeners();
+  }
+
+  void listenToNewMessages(String conversationId) {
+    _messageSubscription?.cancel();
+
+    _messageSubscription = _messageService
+        .subscribeToMessages(conversationId)
+        .listen((newMessage) {
+          if (newMessage == null) return;
+
+          final list = _messagesByConversation[conversationId] ?? [];
+          final exists = list.any((msg) => msg['id'] == newMessage['id']);
+
+          if (!exists) {
+            list.add(newMessage);
+            _messagesByConversation[conversationId] = list;
+            _messages = List.from(list);
+            notifyListeners();
+            print('Message ajouté automatiquement depuis la subscription.');
+          }
+        });
   }
 }

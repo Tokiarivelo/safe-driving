@@ -198,7 +198,10 @@ class DriverService implements IDriverService {
     try {
       await _repository.updateDriverStatus(
         userId: userId,
-        input: {'isDriver': true, 'isVerified': value},
+        input: {
+          'isDriver': true,
+          'isVerified': {'set': value},
+        },
       );
     } catch (e) {
       throw Exception('Failed to update verification status: $e');

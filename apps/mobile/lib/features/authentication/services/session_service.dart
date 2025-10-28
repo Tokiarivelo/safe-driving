@@ -131,5 +131,17 @@ class SessionService {
     await prefs.remove(_pendingRoleKey);
   }
 
-  Future<void> loadUserId() async {}
+  Future<void> loadUserId() async {
+    try {
+      if (_userId == null) {
+        final prefs = await SharedPreferences.getInstance();
+        _userId = prefs.getString(_userIdKey);
+        print('UserID chargé depuis SharedPreferences: $_userId');
+      } else {
+        print('UserID déjà en mémoire: $_userId');
+      }
+    } catch (e) {
+      print('Erreur lors du chargement du UserID: $e');
+    }
+  }
 }
