@@ -1,7 +1,6 @@
 'use client';
 
 import type { IGif } from '@giphy/js-types';
-import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
 import { Grid } from '@giphy/react-components';
 import { GiphyFetch } from '@giphy/js-fetch-api';

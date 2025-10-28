@@ -8,6 +8,7 @@ import {
 import { ArrowDown, MoreVertical } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useRef, useState } from 'react';
+
 interface ChatProps {
   conversation?: UserConversation;
   rideId?: string;
@@ -95,15 +96,14 @@ export const Chat: React.FC<ChatProps> = ({
       </div>
     );
   }
+
   return (
-    <div className={`flex flex-col h-full bg-gray-500 ${className}`}>
-      {/*///////////////////////////////////////////*/}
+    <div className={`flex flex-col h-full bg-gray-50 ${className}`}>
       {/* Header */}
       <div className="border-b bg-white p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div>
-            <h2 className="font-semibold bg-amber-300">
-              {/*=================================================================*/}
+            <h2 className="font-semibold">
               {conversation?.title || (rideId ? 'Chat de course' : 'Chat')}
             </h2>
             <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -161,7 +161,7 @@ export const Chat: React.FC<ChatProps> = ({
           )}
         </div>
 
-        <button className="p-2 hover:bg-gray-100 rounded-">
+        <button className="p-2 hover:bg-gray-100 rounded-lg">
           <MoreVertical className="w-5 h-5" />
         </button>
       </div>
@@ -182,7 +182,7 @@ export const Chat: React.FC<ChatProps> = ({
 
         {loading && messages.length === 0 ? (
           <div className="flex items-center justify-center h-32">
-            <div className="text-gray-500 ">Chargement des messages...</div>
+            <div className="text-gray-500">Chargement des messages...</div>
           </div>
         ) : (
           <>

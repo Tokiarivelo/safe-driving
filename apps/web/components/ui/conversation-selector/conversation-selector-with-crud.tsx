@@ -23,7 +23,7 @@ export function ConversationSelectorWithCRUD({
 }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [editingConversation, setEditingConversation] = useState<any>(null);
+  const [editingConversation, setEditingConversation] = useState<UserConversation | null>(null);
 
   const {
     conversations,
@@ -54,7 +54,7 @@ export function ConversationSelectorWithCRUD({
       const newConversation = await createConversation(data);
       setShowCreateModal(false);
       if (newConversation) {
-        onConversationSelect(newConversation.id, newConversation as any);
+        onConversationSelect(newConversation.id, newConversation as UserConversation);
       }
       onConversationChange?.(conversations);
     } catch (error) {
@@ -94,7 +94,7 @@ export function ConversationSelectorWithCRUD({
 
   return (
     <div
-      className={`bg-violet-400 border border-gray-200 rounded-lg shadow-sm ${className}`}
+      className={`bg-white border border-gray-200 rounded-lg shadow-sm ${className}`}
       style={style}
     >
       {/* Header */}
@@ -111,17 +111,7 @@ export function ConversationSelectorWithCRUD({
             </button>
           )}
         </div>
-         {/*==================================================================================================================*/}
 
-
-
-
-
-
-
-
-
-         {/*==================================================================================================================*/}
         {showSearch && (
           <div className="relative">
             <input
@@ -157,33 +147,32 @@ export function ConversationSelectorWithCRUD({
       </div>
 
       {/* Lista de conversations */}
-      <div className="overflow-y-auto h-100 bg-amber-200" style={{ maxHeight }}>
+      <div className="overflow-y-auto" style={{ maxHeight }}>
         {loading ? (
-          <div className="p-4 text-center text-red-500 ">
+          <div className="p-4 text-center text-gray-500">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
             <div className="mt-2">Chargement...</div>
           </div>
         ) : filteredConversations.length === 0 ? (
-          <div className="p-4 text-center text-red-500">
+          <div className="p-4 text-center text-gray-500">
             {searchTerm ? 'Aucune conversation trouvée' : 'Aucune conversation disponible'}
           </div>
         ) : (
-          <div className="divide-y divide-green-100 w-full bg-green-800">
+          <div className="divide-y divide-gray-100">
             {filteredConversations.map(conversation => (
-              <div key={conversation.id} className="">{/*====================================================*/}
-                <div className='bg-green-600'>
+              <div key={conversation.id} className="relative group">
                 <ConversationItem
                   conversation={conversation}
                   isSelected={selectedConversationId === conversation.id}
                   onClick={() => onConversationSelect(conversation.id, conversation)}
                 />
-                </div>
+
                 {/* Actions menu */}
-                {/* <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="flex space-x-1">
                     <button
                       onClick={e => {
-                        e.stopPropagation();   
+                        e.stopPropagation();
                         setEditingConversation(conversation);
                       }}
                       className="p-1 text-gray-400 hover:text-blue-600 rounded"
@@ -226,7 +215,7 @@ export function ConversationSelectorWithCRUD({
                       </svg>
                     </button>
                   </div>
-                </div> */}
+                </div>
               </div>
             ))}
           </div>
@@ -234,7 +223,7 @@ export function ConversationSelectorWithCRUD({
       </div>
 
       {/* Footer avec informations */}
-      <div className="p-3 border-t border-gray-200 bg-gray-500 text-xs text-gray-500 text-center">
+      <div className="p-3 border-t border-gray-200 bg-gray-50 text-xs text-gray-500 text-center">
         {filteredConversations.length} conversation{filteredConversations.length > 1 ? 's' : ''}
         {searchTerm && ` trouvée${filteredConversations.length > 1 ? 's' : ''}`}
       </div>
