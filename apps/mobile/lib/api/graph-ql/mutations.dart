@@ -19,6 +19,8 @@ export 'modules/qr/qr_mutations.dart';
 import 'modules/auth/auth_mutations.dart';
 import 'modules/s3/s3_mutations.dart' as s3;
 
+export 'modules/chat/chat_mutations.dart';
+
 const String signInMutation = loginMutation;
 const String signUpMutation = registerMutation;
 const String resetPasswordAuthMutation = resetPasswordMutation;

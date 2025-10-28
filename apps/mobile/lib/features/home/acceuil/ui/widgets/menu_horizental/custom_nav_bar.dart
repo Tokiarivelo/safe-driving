@@ -7,11 +7,13 @@ import 'package:safe_driving/features/home/acceuil/ui/widgets/menu_horizental/na
 class CustomNavBarView extends StatefulWidget {
   final Color activeColor;
   final Color tabBackgroundColor;
+  final VoidCallback? onMessageTap;
 
   const CustomNavBarView({
     super.key,
     this.activeColor = AppColors.dark,
     this.tabBackgroundColor = AppColors.light,
+    this.onMessageTap,
   });
 
   @override
@@ -68,12 +70,17 @@ class _CustomNavBarViewState extends State<CustomNavBarView> {
                     activeColor: widget.activeColor,
                     tabBackgroundColor: widget.tabBackgroundColor,
                     onTap: () {
-                      _pageController.animateToPage(
-                        index,
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.easeOut,
-                      );
-                      viewModel.changeIndex(realIndex);
+                      if (item.title == "Messages" &&
+                          widget.onMessageTap != null) {
+                        widget.onMessageTap!();
+                      } else {
+                        _pageController.animateToPage(
+                          index,
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeOut,
+                        );
+                        viewModel.changeIndex(realIndex);
+                      }
                     },
                   ),
                 );

@@ -35,10 +35,7 @@ class HomeViewModel with ChangeNotifier {
     if (isDriver) {
       // 0: Status button
       _menuItems.add(
-        MenuItemModel(
-          iconPath: _statusIconPath,
-          title: _statusTitleFr,
-        ),
+        MenuItemModel(iconPath: _statusIconPath, title: _statusTitleFr),
       );
       // 1: Search rides
       _menuItems.add(
@@ -210,7 +207,9 @@ class HomeViewModel with ChangeNotifier {
       final status = _statusToBackend();
       await GraphQLClientWrapper.instance.executeMutation(
         document: upsertUserPreferenceMutation,
-        variables: {'input': {'driverAvailability': status}},
+        variables: {
+          'input': {'driverAvailability': status},
+        },
       );
     } catch (_) {
       // best-effort
@@ -301,18 +300,24 @@ class HomeViewModel with ChangeNotifier {
     if (_menuItems[index].hasNotification) {
       resetNotificationCount(index);
     }
+
     if (isDriver) {
       if (index == 0) {
         _showStatusPicker(context);
         return;
-      }
-      if (index == 1) {
+      } else if (index == 1) {
         Navigator.pushNamed(context, AppRoutes.searchTransport);
+        return;
+      } else if (index == 2) {
+        Navigator.pushNamed(context, AppRoutes.message);
         return;
       }
     } else {
       if (index == 0) {
         Navigator.pushNamed(context, AppRoutes.searchTransport);
+        return;
+      } else if (index == 1) {
+        Navigator.pushNamed(context, AppRoutes.message);
         return;
       }
     }

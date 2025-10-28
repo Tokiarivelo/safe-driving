@@ -1,9 +1,13 @@
+import 'package:safe_driving/features/home/message/service/conversation_service.dart';
+import 'package:safe_driving/features/home/message/service/message_service.dart';
 import 'package:safe_driving/shared/state_management/modules/core_module.dart';
 import 'package:safe_driving/shared/state_management/modules/graphql_module.dart';
 import 'package:safe_driving/features/authentication/di.dart';
 import 'package:safe_driving/features/onboarding/driver/di.dart';
 import 'package:safe_driving/features/onboarding/user/di.dart';
 import 'package:safe_driving/features/home/map/di.dart';
+
+import '../../api/graph-ql/api/graphql_api.dart';
 
 typedef _FactoryFunc<T> = T Function();
 typedef _Disposer = void Function(dynamic);
@@ -108,12 +112,20 @@ class ServiceLocator {
 
   void setupDependencies() {
     registerCoreModule(this);
-
     registerGraphQLModule(this);
-
     registerAuthModule(this);
     registerOnboardingDriverModule(this);
     registerOnboardingUserModule(this);
     registerMapModule(this);
+
+    registerLazySingleton<ConversationService>(() {
+      final client = get<GraphQLClient>();
+      return ConversationService(client: client);
+    });
+
+    registerLazySingleton<MessageService>(() {
+      final client = get<GraphQLClient>();
+      return MessageService(client: client);
+    });
   }
 }

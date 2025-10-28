@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/features/home/acceuil/viewmodels/navigation_viewmodel.dart';
+import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
+import 'package:safe_driving/features/home/message/service/conversation_service.dart';
+import 'package:safe_driving/features/home/message/service/message_service.dart';
 import '../../features/authentication/viewmodels/auth_view_model.dart';
 import '../../features/onboarding/driver/viewmodels/driver_onboarding_coordinator.dart';
 import '../../features/onboarding/user/viewmodels/user_onboarding_viewmodel.dart';
@@ -11,32 +14,31 @@ import 'package:safe_driving/l10n/l10n.dart';
 
 class AppProviders {
   static List<ChangeNotifierProvider> get providers {
-    final sl = ServiceLocator.instance;
+    final serviceLocator = ServiceLocator.instance;
     final list = <ChangeNotifierProvider>[];
 
     if (GraphQLConfig.isConfigured) {
       list.add(
         ChangeNotifierProvider<AuthViewModel>(
-          create: (_) => sl.get<AuthViewModel>(),
+          create: (_) => serviceLocator.get<AuthViewModel>(),
         ),
       );
     }
 
     list.add(
       ChangeNotifierProvider<DriverOnboardingCoordinator>(
-        create: (_) => sl.get<DriverOnboardingCoordinator>(),
+        create: (_) => serviceLocator.get<DriverOnboardingCoordinator>(),
       ),
     );
 
     list.add(
       ChangeNotifierProvider<UserOnboardingViewModel>(
-        create: (_) => sl.get<UserOnboardingViewModel>(),
+        create: (_) => serviceLocator.get<UserOnboardingViewModel>(),
       ),
     );
-
     list.add(
       ChangeNotifierProvider<ThemeController>(
-        create: (_) => sl.get<ThemeController>(),
+        create: (_) => serviceLocator.get<ThemeController>(),
       ),
     );
 
@@ -45,19 +47,16 @@ class AppProviders {
     );
 
     list.add(
-      ChangeNotifierProvider<AuthViewModel>(
-        create: (_) => ServiceLocator.instance.get<AuthViewModel>(),
-      ),
-    );
-    list.add(
-      ChangeNotifierProvider<DriverOnboardingCoordinator>(
-        create: (_) =>
-            ServiceLocator.instance.get<DriverOnboardingCoordinator>(),
-      ),
-    );
-    list.add(
       ChangeNotifierProvider<NavigationViewModel>(
         create: (_) => NavigationViewModel(),
+      ),
+    );
+    list.add(
+      ChangeNotifierProvider<MessageViewmodels>(
+        create: (_) => MessageViewmodels(
+          conversationService: serviceLocator.get<ConversationService>(),
+          messageService: serviceLocator.get<MessageService>(),
+        ),
       ),
     );
 
@@ -80,4 +79,6 @@ extension AppContext on BuildContext {
   ThemeController get themeControllerWatch => watch<ThemeController>();
   NavigationViewModel get navigationVM => read<NavigationViewModel>();
   NavigationViewModel get navigationVMWatch => watch<NavigationViewModel>();
+  MessageViewmodels get messageVM => read<MessageViewmodels>();
+  MessageViewmodels get messageVMWatch => watch<MessageViewmodels>();
 }

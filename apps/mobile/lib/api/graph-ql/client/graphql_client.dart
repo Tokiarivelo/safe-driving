@@ -239,4 +239,6 @@ class GraphQLClientWrapper {
 
     return 'Unknown GraphQL error';
   }
+
+  GraphQLClient get client => _client;
 }

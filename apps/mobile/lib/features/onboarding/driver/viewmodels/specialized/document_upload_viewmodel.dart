@@ -286,4 +286,6 @@ class DocumentUploadViewModel extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
   }
+
+  // refreshBackendPhotoCounts() {}
 }

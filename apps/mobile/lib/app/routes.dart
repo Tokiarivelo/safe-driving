@@ -36,7 +36,7 @@ class AppRoutes {
     driveronboarding: (context) => const DriverOnboardingScreen(),
     home: (context) => const HomeScreen(),
     exemple: (context) => const ExamplePage(),
-    message: (context) => const MessageScreens(),
+    message: (context) => const MessageScreen(),
     map: (context) => const MapScreen(),
     searchTransport: (context) {
       final args = ModalRoute.of(context)?.settings.arguments;

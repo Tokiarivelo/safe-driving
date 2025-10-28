@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/features/home/message/ui/screens/message_screens.dart';
 
 class ContentPages {
   static List<Widget> getAllPages() {
@@ -18,53 +19,7 @@ class ContentPages {
   }
 
   static Widget _buildMessagesContent() {
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        _buildMessageTile('Jean Dupont', 'Salut, ça va?', '10:30', true),
-        _buildMessageTile(
-          'Marie Curie',
-          'Merci pour le trajet!',
-          '09:15',
-          false,
-        ),
-        _buildMessageTile(
-          'Transport SA',
-          'Nouvelle offre disponible',
-          'Hier',
-          true,
-        ),
-      ],
-    );
-  }
-
-  static ListTile _buildMessageTile(
-    String name,
-    String message,
-    String time,
-    bool unread,
-  ) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: AppColors.color1,
-        child: Text(name[0], style: const TextStyle(color: AppColors.light)),
-      ),
-      title: Text(
-        name,
-        style: TextStyle(
-          fontWeight: unread ? FontWeight.bold : FontWeight.normal,
-        ),
-      ),
-      subtitle: Text(message),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(time, style: const TextStyle(fontSize: 12)),
-          if (unread)
-            const Icon(Icons.circle, color: AppColors.color1, size: 12),
-        ],
-      ),
-    );
+    return const MessageScreen();
   }
 
   static Widget _buildNotificationsContent() {

@@ -1,48 +1,9 @@
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:safe_driving/features/home/message/ui/widgets/message_title.dart';
-// import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
-
-// class MessageScreens extends StatelessWidget {
-//   const MessageScreens({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final viewModel = Provider.of<MessageViewmodels>(context);
-
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('Messages')),
-//       body: ListView.builder(
-//         padding: const EdgeInsets.all(8),
-//         itemCount: viewModel.messages.length,
-//         itemBuilder: (context, index) {
-//           final msg = viewModel.messages[index];
-//           return MessageTitle(message: msg);
-//         },
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
-
-void main() {
-  runApp(const MessageScreens());
-}
-
-class MessageScreens extends StatelessWidget {
-  const MessageScreens({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Safe Driving - Messages',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MessageScreen(),
-    );
-  }
-}
+import 'package:safe_driving/features/home/message/ui/screens/newMessageScreen.dart';
+import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
+import 'message_detail_screen.dart';
 
 class MessageScreen extends StatefulWidget {
   const MessageScreen({super.key});
@@ -52,193 +13,353 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-  int _selectedTab = 0;
-  final List<String> _tabs = ['Tous', 'Non lus', 'Lus', 'Archivés'];
+  String? _currentUserId;
 
-  final List<Message> _messages = [
-    Message(
-      sender: 'Maria',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      time: '07:40 am',
-      unread: true,
-    ),
-    Message(
-      sender: 'John',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      time: '07:40 am',
-      unread: true,
-    ),
-    Message(
-      sender: 'Doe',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      time: '07:40 am',
-      unread: false,
-    ),
-    Message(
-      sender: 'Monique',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      time: '07:40 am',
-      unread: true,
-    ),
-    Message(
-      sender: 'Sarah',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      time: '07:40 am',
-      unread: false,
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentUser();
+  }
+
+  Future<void> _loadCurrentUser() async {
+    final messageViewModel = Provider.of<MessageViewmodels>(
+      context,
+      listen: false,
+    );
+    _currentUserId = await messageViewModel.loadCurrentUserId();
+    messageViewModel.loadConversations();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<MessageViewmodels>(context);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Messages',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.black,
-      ),
+      backgroundColor: Colors.white,
       body: Column(
         children: [
-          // Barre de navigation horizontale
-          SizedBox(
-            height: 50,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _tabs.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: ChoiceChip(
-                    label: Text(_tabs[index]),
-                    selected: _selectedTab == index,
-                    selectedColor: AppColors.color1,
-                    labelStyle: TextStyle(
-                      color: _selectedTab == index
-                          ? Colors.white
-                          : Colors.black,
-                    ),
-                    onSelected: (bool selected) {
-                      setState(() {
-                        _selectedTab = selected ? index : 0;
-                      });
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 16),
-          // Liste des messages
+          _buildCompleteHeader(context, viewModel),
+          _buildTabBar(viewModel),
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                return MessageTile(message: message);
-              },
+            child: RefreshIndicator(
+              onRefresh: () => viewModel.loadConversations(),
+              child: viewModel.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : viewModel.conversations.isEmpty
+                  ? _buildEmptyState()
+                  : _buildConversationsList(viewModel),
             ),
           ),
         ],
       ),
     );
   }
-}
 
-class Message {
-  final String sender;
-  final String content;
-  final String time;
-  final bool unread;
+  Widget _buildConversationsList(MessageViewmodels viewModel) {
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      itemCount: viewModel.conversations.length,
+      itemBuilder: (context, index) {
+        final conversation = viewModel.conversations[index];
+        final participants = conversation['participants'] as List? ?? [];
 
-  Message({
-    required this.sender,
-    required this.content,
-    required this.time,
-    required this.unread,
-  });
-}
+        // Trouver l'autre participant (pas l'utilisateur courant)
+        final otherParticipant = participants.firstWhere(
+          (p) => p['user']?['id'] != _currentUserId,
+          orElse: () => participants.isNotEmpty ? participants.first : {},
+        );
 
-class MessageTile extends StatelessWidget {
-  final Message message;
+        final messages = conversation['messages'] as List? ?? [];
+        final lastMessage = messages.isNotEmpty ? messages.last : null;
 
-  const MessageTile({super.key, required this.message});
+        return ConversationTile(
+          conversation: conversation,
+          otherParticipant:
+              otherParticipant['user'] ?? {}, // Accéder à l'objet user
+          lastMessage: lastMessage,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MessageDetailScreen(
+                  conversation: conversation,
+                  viewModel: viewModel,
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
+  // Le reste de votre code reste inchangé...
+  Widget _buildCompleteHeader(
+    BuildContext context,
+    MessageViewmodels viewModel,
+  ) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.2),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+      color: Colors.white,
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top + 16,
+        left: 16,
+        right: 16,
+        bottom: 16,
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.color1,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+              ),
+
+              const Text(
+                'Messages',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
+
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      _showSearchDialog(context, viewModel);
+                    },
+                    icon: const Icon(
+                      Icons.search,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const NewMessageScreen(),
+                        ),
+                      ).then((_) {
+                        viewModel.loadConversations();
+                      });
+                    },
+                    icon: const Icon(Icons.edit, color: Colors.black, size: 24),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTabBar(MessageViewmodels viewModel) {
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Expanded(child: _buildTab('Tous', 0, viewModel)),
+                Expanded(child: _buildTab('Non lus', 1, viewModel)),
+                Expanded(child: _buildTab('Lus', 2, viewModel)),
+                Expanded(child: _buildTab('Archivés', 3, viewModel)),
+              ],
+            ),
+          ),
+          Container(height: 2, color: Colors.grey.shade400),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTab(String label, int index, MessageViewmodels viewModel) {
+    final isActive = viewModel.selectedTab == index;
+    return GestureDetector(
+      onTap: () => viewModel.selectTab(index),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: isActive ? AppColors.color1 : Colors.transparent,
+              width: 3,
+            ),
+          ),
+        ),
+        child: Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: isActive ? AppColors.color1 : Colors.grey.shade700,
+            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+            fontSize: 14,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.chat, size: 64, color: Colors.grey),
+          SizedBox(height: 16),
+          Text(
+            "Aucune conversation",
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+          SizedBox(height: 8),
+          Text(
+            "Commencez une nouvelle conversation",
+            style: TextStyle(color: Colors.grey, fontSize: 14),
           ),
         ],
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Avatar
-          CircleAvatar(
-            backgroundColor: AppColors.color1,
-            child: Text(
-              message.sender[0],
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+    );
+  }
+
+  void _showSearchDialog(BuildContext context, MessageViewmodels viewModel) {
+    final searchController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-          const SizedBox(width: 16),
-          // Contenu du message
-          Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      message.sender,
-                      style: TextStyle(
-                        fontWeight: message.unread
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                        fontSize: 16,
-                      ),
+                TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Rechercher une conversation...',
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    Text(
-                      message.time,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                  autofocus: true,
+                  onChanged: (value) {
+                    viewModel.searchMessages(value);
+                  },
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        viewModel.searchMessages('');
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Annuler'),
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: () {
+                        viewModel.searchMessages(searchController.text);
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Rechercher'),
                     ),
                   ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  message.content,
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
           ),
-          // Indicateur de message non lu
-          if (message.unread)
-            const Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: Icon(Icons.circle, color: AppColors.color1, size: 12),
-            ),
-        ],
+        );
+      },
+    ).then((_) {
+      viewModel.searchMessages('');
+    });
+  }
+}
+
+class ConversationTile extends StatelessWidget {
+  final dynamic conversation;
+  final dynamic otherParticipant;
+  final dynamic lastMessage;
+  final VoidCallback onTap;
+
+  const ConversationTile({
+    super.key,
+    required this.conversation,
+    required this.otherParticipant,
+    required this.lastMessage,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final name =
+        '${otherParticipant['firstName'] ?? 'Utilisateur'} '
+                '${otherParticipant['lastName'] ?? ''}'
+            .trim();
+
+    final lastMsg = lastMessage?['content'] ?? 'Aucun message';
+    final createdAt =
+        lastMessage?['createdAt'] ?? conversation['updatedAt'] ?? '';
+
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: AppColors.color1,
+        child: Text(
+          name.isNotEmpty ? name[0].toUpperCase() : 'U',
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
+      title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: Text(lastMsg, maxLines: 1, overflow: TextOverflow.ellipsis),
+      trailing: Text(
+        _formatDate(createdAt),
+        style: const TextStyle(fontSize: 12, color: Colors.grey),
+      ),
+      onTap: onTap,
     );
+  }
+
+  String _formatDate(String? dateString) {
+    if (dateString == null || dateString.isEmpty) return '';
+    try {
+      final date = DateTime.parse(dateString).toLocal();
+      final now = DateTime.now();
+      if (now.difference(date).inDays == 0) {
+        return '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      } else if (now.difference(date).inDays == 1) {
+        return 'Hier';
+      } else {
+        return '${date.day}/${date.month}';
+      }
+    } catch (_) {
+      return '';
+    }
   }
 }
