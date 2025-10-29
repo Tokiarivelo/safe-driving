@@ -1,8 +1,9 @@
-import { MessageFragmentFragment } from '@/graphql/generated/graphql';
+import { AttachmentType, MessageFragmentFragment } from '@/graphql/generated/graphql';
 import { Edit, Reply, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import EmojiPicker from './emoji-picker';
 import Image from 'next/image';
+import LinkPreviewViewer from './LinkPreviewViewer';
 
 const MessageBubble: React.FC<{
   message: MessageFragmentFragment;
@@ -162,9 +163,11 @@ const MessageBubble: React.FC<{
               {message.attachments && message.attachments.length > 0 && (
                 <div className="mt-2 space-y-2">
                   {message.attachments.map(attachment => {
-                    const fileUrl = attachment.url || attachment.file?.url;
+                    const fileUrl =
+                      attachment.url || attachment.file?.url || attachment.linkThumbnail;
                     const isImage = fileUrl?.match(/\.(jpg|jpeg|png|gif|webp)$/i);
                     const isVideo = fileUrl?.match(/\.(mp4|webm|ogg)$/i);
+                    const isLink = attachment.type === AttachmentType.LINK;
 
                     return (
                       <div key={attachment.id}>
@@ -182,7 +185,10 @@ const MessageBubble: React.FC<{
                         {isVideo && fileUrl && (
                           <video src={fileUrl} controls className="rounded-lg max-w-sm w-full" />
                         )}
-                        {!isImage && !isVideo && fileUrl && (
+
+                        {isLink && fileUrl && <LinkPreviewViewer url={fileUrl} />}
+
+                        {!isImage && !isVideo && !isLink && fileUrl && (
                           <a
                             href={fileUrl}
                             target="_blank"

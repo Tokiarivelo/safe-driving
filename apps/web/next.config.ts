@@ -14,6 +14,10 @@ const nextConfig = {
         port: '4566',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: '**', // Autorise tous les domaines
+      },
     ],
   },
 };

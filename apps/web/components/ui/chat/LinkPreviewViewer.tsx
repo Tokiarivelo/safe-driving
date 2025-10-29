@@ -41,7 +41,7 @@ const LinkPreviewViewer: React.FC<LinkPreviewViewerProps> = ({ url }) => {
   return (
     <div className="mb-2 p-2 border rounded bg-gray-50">
       {preview.image && (
-        <img
+        <Image
           src={preview.image}
           alt={preview.title || 'Link preview'}
           width={64}
