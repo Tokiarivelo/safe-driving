@@ -1,8 +1,9 @@
-import { MessageFragmentFragment } from '@/graphql/generated/graphql';
+import { AttachmentType, MessageFragmentFragment } from '@/graphql/generated/graphql';
 import { Edit, Reply, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import EmojiPicker from './emoji-picker';
 import Image from 'next/image';
+import LinkPreviewViewer from './LinkPreviewViewer';
 
 const MessageBubble: React.FC<{
   message: MessageFragmentFragment;
@@ -66,7 +67,7 @@ const MessageBubble: React.FC<{
 
   return (
     <div
-      className={`flex ${isOwn ? 'justify-end' : 'justify-start'} mb-4 ${isThread ? 'ml-4 border-l-2 border-gray-200 pl-4' : ''}`}
+      className={`flex  ${isOwn ? 'justify-end' : 'justify-start'} mb-4 ${isThread ? 'ml-4 border-l-2 border-gray-200 pl-4' : ''}`}
     >
       <div className={`max-w-md ${isOwn ? 'order-2' : 'order-1'}`}>
         {!isOwn && (
@@ -162,9 +163,11 @@ const MessageBubble: React.FC<{
               {message.attachments && message.attachments.length > 0 && (
                 <div className="mt-2 space-y-2">
                   {message.attachments.map(attachment => {
-                    const fileUrl = attachment.url || attachment.file?.url;
+                    const fileUrl =
+                      attachment.url || attachment.file?.url || attachment.linkThumbnail;
                     const isImage = fileUrl?.match(/\.(jpg|jpeg|png|gif|webp)$/i);
                     const isVideo = fileUrl?.match(/\.(mp4|webm|ogg)$/i);
+                    const isLink = attachment.type === AttachmentType.LINK;
 
                     return (
                       <div key={attachment.id}>
@@ -182,7 +185,10 @@ const MessageBubble: React.FC<{
                         {isVideo && fileUrl && (
                           <video src={fileUrl} controls className="rounded-lg max-w-sm w-full" />
                         )}
-                        {!isImage && !isVideo && fileUrl && (
+
+                        {isLink && fileUrl && <LinkPreviewViewer url={fileUrl} />}
+
+                        {!isImage && !isVideo && !isLink && fileUrl && (
                           <a
                             href={fileUrl}
                             target="_blank"

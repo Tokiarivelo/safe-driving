@@ -9,6 +9,7 @@ import GifPicker from './gif-picker';
 import { FileType } from '@/graphql/generated/graphql';
 import { useUploadComponent } from '../upload/upload-component.logic';
 import Image from 'next/image';
+import LinkPreviewViewer from './LinkPreviewViewer';
 
 const MessageInput: React.FC<{
   conversationId?: string;
@@ -169,6 +170,12 @@ const MessageInput: React.FC<{
 
   return (
     <div className="border-t bg-white p-4">
+      {/* Link preview viewer for multiple URLs */}
+      {message &&
+        message.match(/https?:\/\/[\w\-\.]+(:\d+)?(\/\S*)?/gi) &&
+        message
+          .match(/https?:\/\/[\w\-\.]+(:\d+)?(\/\S*)?/gi)
+          ?.map((url, idx) => <LinkPreviewViewer key={url + idx} url={url} />)}
       {replyingTo && (
         <div className="mb-3 p-2 bg-gray-50 border-l-4 border-blue-400 rounded">
           <div className="flex justify-between items-start">

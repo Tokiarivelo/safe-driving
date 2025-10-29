@@ -256,8 +256,6 @@ export default function Map({ coordinates }: Props) {
     if (validLocations.length >= 2) {
       const coordinates = validLocations.map(loc => [loc.lon, loc.lat]); // ORS expects [lon, lat]
 
-      console.log('process.env.NEXT_PUBLIC_ORS_URL :>> ', process.env.NEXT_PUBLIC_ORS_URL);
-
       fetch(process.env.NEXT_PUBLIC_ORS_URL || '', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -287,6 +285,7 @@ export default function Map({ coordinates }: Props) {
         width: '100%',
         position: 'relative',
         overflow: 'hidden',
+        zIndex: 0,
       }}
     >
       <MapContainer

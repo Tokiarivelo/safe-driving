@@ -1,0 +1,11 @@
+query GetLinkPreview($url: String!) {
+  getLinkPreview(url: $url) {
+    ...linkPreview
+  }
+}
+
+query GetMultipleLinkPreviews($urls: [String!]!) {
+  getMultipleLinkPreviews(urls: $urls) {
+    ...linkPreview
+  }
+}

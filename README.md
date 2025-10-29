@@ -262,8 +262,7 @@ pnpm translate
 | **Racine** | `pnpm install`                           | Installe tout                      |
 |            | `pnpm web:dev`                           | Dev Next.js (turbopack)            |
 |            | `pnpm web:dev:wt`                        | Dev Next.js (sans turbopack)       |
-|            | `
-`                      | GraphQL Codegen                    |
+|            | `pnpm web:generate`                      | GraphQL Codegen                    |
 |            | `pnpm web:build`                         | Build Next.js                      |
 |            | `pnpm web:translate`                     | Lancer la translation de textes    |
 |            | `pnpm graphql:dev`                       | Dev NestJS (+ Prisma, GraphQL)     |
@@ -271,7 +270,7 @@ pnpm translate
 |            | `pnpm graphql:start:prod`                | Lancement prod NestJS              |
 |            | `pnpm graphql:prisma:generate`           | `prisma generate`                  |
 |            | `pnpm graphql:prisma:migrate [-- <nom>]` | Génère + applique migration (dev)  |
-|            | `pnpm graphql:prisma:migrate:apply`              | Applique migrations en dev         |
+|            | `pnpm graphql:prisma:migrate:apply`      | Applique migrations en dev         |
 |            | `pnpm graphql:prisma:deploy`             | Déploiement migrations (CI / prod) |
 |            | `pnpm graphql:prisma:db-push`            | Pousse schema direct               |
 |            | `pnpm graphql:prisma:studio`             | Ouvre Prisma Studio                |

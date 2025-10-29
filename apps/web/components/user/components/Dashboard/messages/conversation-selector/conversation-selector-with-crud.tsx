@@ -3,6 +3,10 @@ import { ConversationSelectorProps } from './conversation-selector.interface';
 import { ConversationItem } from './conversation-item';
 import { ConversationFormModal } from './conversation-form-modal';
 import { useConversations } from '@/lib/conversation/useConversations';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input-rechercher';
+import { Icon } from '@iconify/react';
+import styles from '../messages.module.css';
 import {
   CreateConversationInput,
   UpdateConversationInput,
@@ -23,7 +27,7 @@ export function ConversationSelectorWithCRUD({
 }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [editingConversation, setEditingConversation] = useState<UserConversation | null>(null);
+  const [editingConversation, setEditingConversation] = useState<any>(null);
 
   const {
     conversations,
@@ -54,7 +58,7 @@ export function ConversationSelectorWithCRUD({
       const newConversation = await createConversation(data);
       setShowCreateModal(false);
       if (newConversation) {
-        onConversationSelect(newConversation.id, newConversation as UserConversation);
+        onConversationSelect(newConversation.id, newConversation as any);
       }
       onConversationChange?.(conversations);
     } catch (error) {
@@ -93,48 +97,27 @@ export function ConversationSelectorWithCRUD({
   };
 
   return (
-    <div
-      className={`bg-white border border-gray-200 rounded-lg shadow-sm ${className}`}
-      style={style}
-    >
-      {/* Header */}
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-semibold text-gray-900">Conversations</h2>
-          {showCreateButton && (
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-              disabled={loading}
-            >
-              Nouvelle
-            </button>
-          )}
+    <div className={`${className}`} style={style}>
+      <div className={styles.auth_msg5}>
+        <div className={styles.auth_msg6}>
+          <h1 className="text-black">Messages</h1>
         </div>
-
+        <hr className="text-black" />
         {showSearch && (
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Rechercher une conversation..."
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-              <svg
-                className="w-4 h-4 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
+          <div className={styles.auth_msg7}>
+            <div className={styles.auth_msg8}>
+              <Input
+                type="text"
+                placeholder="Rechercher message / utilisateur"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                startOrnerIcon={
+                  <Icon icon="material-symbols:search" width="24" height="24" color="black" />
+                }
+              />
+            </div>
+            <div className={styles.auth_msg9}>
+              <Icon icon="gridicons:filter" width="30" height="30" color="black" />
             </div>
           </div>
         )}
@@ -145,34 +128,34 @@ export function ConversationSelectorWithCRUD({
           </div>
         )}
       </div>
-
-      {/* Lista de conversations */}
-      <div className="overflow-y-auto" style={{ maxHeight }}>
+      <div className="overflow-y-auto h-[73%]">
         {loading ? (
-          <div className="p-4 text-center text-gray-500">
+          <div className="p-4 text-center text-red-500 ">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
             <div className="mt-2">Chargement...</div>
           </div>
         ) : filteredConversations.length === 0 ? (
-          <div className="p-4 text-center text-gray-500">
+          <div className="p-4 text-center text-red-500">
             {searchTerm ? 'Aucune conversation trouvée' : 'Aucune conversation disponible'}
           </div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-green-100 w-full">
             {filteredConversations.map(conversation => (
-              <div key={conversation.id} className="relative group">
-                <ConversationItem
-                  conversation={conversation}
-                  isSelected={selectedConversationId === conversation.id}
-                  onClick={() => onConversationSelect(conversation.id, conversation)}
-                />
-
+              <div key={conversation.id} className="">
+                {/*====================================================*/}
+                <div>
+                  <ConversationItem
+                    conversation={conversation}
+                    isSelected={selectedConversationId === conversation.id}
+                    onClick={() => onConversationSelect(conversation.id, conversation)}
+                  />
+                </div>
                 {/* Actions menu */}
-                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                {/* <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="flex space-x-1">
                     <button
                       onClick={e => {
-                        e.stopPropagation();
+                        e.stopPropagation();   
                         setEditingConversation(conversation);
                       }}
                       className="p-1 text-gray-400 hover:text-blue-600 rounded"
@@ -215,7 +198,7 @@ export function ConversationSelectorWithCRUD({
                       </svg>
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>
@@ -223,11 +206,15 @@ export function ConversationSelectorWithCRUD({
       </div>
 
       {/* Footer avec informations */}
-      <div className="p-3 border-t border-gray-200 bg-gray-50 text-xs text-gray-500 text-center">
+      <div className="p-3 border-t border-gray-200 bg-gray-100  text-xs text-gray-500 text-center h-[5%]">
+        {' '}
+        {/*important*/}
         {filteredConversations.length} conversation{filteredConversations.length > 1 ? 's' : ''}
         {searchTerm && ` trouvée${filteredConversations.length > 1 ? 's' : ''}`}
       </div>
-
+      <div className="w-full h-[8%] flex items-center justify-center">
+        <Button className="bg-pink-500 w-35 h-8 text-white">charger plus</Button>
+      </div>
       {/* Modals */}
       {showCreateModal && (
         <ConversationFormModal

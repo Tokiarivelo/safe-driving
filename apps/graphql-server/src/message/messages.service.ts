@@ -11,10 +11,10 @@ import {
 
 import { PrismaService } from 'src/prisma-module/prisma.service';
 import { RedisExtendedService } from 'src/redis/redis-extended.service';
-import { normalizeDates } from 'src/utils/normalize-dates';
 import { ReactionService } from 'src/reaction/reaction.service';
 import { AddReactionInput } from 'src/dtos/reaction/reaction.input';
 import { ReactionActionResult } from 'src/dtos/reaction/reaction.output';
+import { LinkPreviewService } from 'src/link-preview';
 
 @Injectable()
 export class MessageService {
@@ -23,6 +23,7 @@ export class MessageService {
     private readonly prisma: PrismaService,
     private chatCache: ChatCacheService,
     private reactionService: ReactionService,
+    private linkPreviewService: LinkPreviewService,
   ) {}
 
   async sendMessage(
@@ -252,32 +253,54 @@ export class MessageService {
 
     // 2) At this point we have conversationId: create the message normally
     // If files keys are provided, create attachments from file keys
-    let attachmentCreates = undefined;
+    // --- FILE ATTACHMENTS ---
+    let attachmentCreates: any = undefined;
+    const fileAttachments: any[] = [];
     if (input.filesKeys?.length) {
-      // Find files by their keys
       const files = await this.prisma.file.findMany({
-        where: {
-          key: {
-            in: input.filesKeys,
-          },
-        },
-        select: {
-          id: true,
-          key: true,
-        },
+        where: { key: { in: input.filesKeys } },
+        select: { id: true, key: true },
       });
-
-      // Create attachment data for each file
-      attachmentCreates = {
-        create: files.map((file) => ({
+      fileAttachments.push(
+        ...files.map((file) => ({
           type: 'FILE',
-          file: {
-            connect: {
-              id: file.id,
-            },
-          },
+          file: { connect: { id: file.id } },
         })),
-      };
+      );
+    }
+
+    // --- LINK ATTACHMENTS ---
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const foundLinks = input.content.match(urlRegex) || [];
+    const linkAttachments: any[] = [];
+    if (foundLinks.length) {
+      // Dynamically import the LinkPreviewService from NestJS DI
+      // If you have it injected, use this.linkPreviewService
+      // Otherwise, get it from the module context
+      // Here, assuming you have it injected as this.linkPreviewService
+      if (!('linkPreviewService' in this)) {
+        throw new Error(
+          'LinkPreviewService must be injected in MessageService',
+        );
+      }
+      const previews =
+        await this.linkPreviewService.getMultipleLinkPreviews(foundLinks);
+      for (const preview of previews) {
+        linkAttachments.push({
+          type: 'LINK',
+          url: preview.url,
+          linkTitle: preview.title,
+          linkDesc: preview.description,
+          linkThumbnail: preview.thumbnail,
+          linkMeta: preview.meta,
+        });
+      }
+    }
+
+    // Combine file and link attachments
+    const allAttachments = [...fileAttachments, ...linkAttachments];
+    if (allAttachments.length) {
+      attachmentCreates = { create: allAttachments };
     }
 
     const message = await this.prisma.message.create({
