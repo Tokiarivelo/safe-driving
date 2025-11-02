@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { MessageResolver } from 'src/message/messages.resolver';
 import { MessageService } from 'src/message/messages.service';
+import { MessageSearchService } from 'src/message/message-search.service';
 import { ChatGateway } from '../chat/chat.gateway';
 import { AuthModule } from 'src/auth/auth.module';
 import { ChatCacheService } from 'src/chat/chat-cache.service';
@@ -10,7 +11,13 @@ import { ReactionModule } from 'src/reaction/reaction.module';
 import { LinkPreviewModule } from 'src/link-preview';
 
 @Module({
-  providers: [MessageService, MessageResolver, ChatGateway, ChatCacheService],
+  providers: [
+    MessageService,
+    MessageResolver,
+    MessageSearchService,
+    ChatGateway,
+    ChatCacheService,
+  ],
   imports: [
     PrismaModule,
     AuthModule,
@@ -18,6 +25,12 @@ import { LinkPreviewModule } from 'src/link-preview';
     ReactionModule,
     LinkPreviewModule,
   ],
-  exports: [MessageService, ChatGateway],
+  exports: [MessageService, ChatGateway, MessageSearchService],
 })
-export class MessageModule {}
+export class MessageModule implements OnModuleInit {
+  constructor(private readonly messageSearchService: MessageSearchService) {}
+
+  async onModuleInit() {
+    await this.messageSearchService.createIndexIfNotExists();
+  }
+}

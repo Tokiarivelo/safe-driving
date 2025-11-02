@@ -1,0 +1,90 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "analysis": {
+      "filter": {
+        "edge_ngram_filter": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 20
+        }
+      },
+      "analyzer": {
+        "edge_ngram_analyzer": {
+          "tokenizer": "standard",
+          "filter": ["lowercase", "asciifolding", "edge_ngram_filter"]
+        },
+        "search_analyzer": {
+          "tokenizer": "standard",
+          "filter": ["lowercase", "asciifolding"]
+        }
+      },
+      "normalizer": {
+        "keyword_lowercase": {
+          "type": "custom",
+          "filter": ["lowercase", "asciifolding"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": { "type": "keyword" },
+      "title": {
+        "type": "text",
+        "analyzer": "edge_ngram_analyzer",
+        "search_analyzer": "search_analyzer",
+        "fields": {
+          "raw": { "type": "keyword", "normalizer": "keyword_lowercase" }
+        }
+      },
+      "type": { "type": "keyword" },
+      "createdAt": { "type": "date" },
+      "createdAt_text": {
+        "type": "text",
+        "analyzer": "edge_ngram_analyzer",
+        "search_analyzer": "search_analyzer"
+      },
+
+      "participants": {
+        "type": "nested",
+        "properties": {
+          "id": { "type": "keyword" },
+          "conversationId": { "type": "keyword" },
+          "userId": { "type": "keyword" },
+          "role": { "type": "keyword" },
+          "isMuted": { "type": "boolean" },
+          "joinedAt": { "type": "date" },
+          "displayName": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer",
+            "search_analyzer": "search_analyzer",
+            "fields": {
+              "raw": { "type": "keyword", "normalizer": "keyword_lowercase" }
+            }
+          },
+          "username": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer",
+            "search_analyzer": "search_analyzer",
+            "fields": {
+              "raw": { "type": "keyword", "normalizer": "keyword_lowercase" }
+            }
+          },
+          "email": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer",
+            "search_analyzer": "search_analyzer",
+            "fields": {
+              "raw": { "type": "keyword", "normalizer": "keyword_lowercase" }
+            }
+          }
+        }
+      },
+
+      "lastMessageAt": { "type": "date" },
+      "messageCount": { "type": "integer" }
+    }
+  }
+}

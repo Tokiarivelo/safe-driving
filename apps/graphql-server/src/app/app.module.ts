@@ -20,6 +20,8 @@ import { DateTimeScalar } from 'src/common/scalars/date-time.scalar';
 import { DriversModule } from '../drivers/drivers.module';
 import { ReactionModule } from 'src/reaction/reaction.module';
 import { LinkPreviewModule } from 'src/link-preview/link-preview.module';
+import { ElasticModule } from 'src/elasticsearch/elastic/elastic.module';
+import { RideModule } from 'src/ride/drivers.module';
 
 @Module({
   imports: [
@@ -60,6 +62,8 @@ import { LinkPreviewModule } from 'src/link-preview/link-preview.module';
     DriversModule,
     ReactionModule,
     LinkPreviewModule,
+    ElasticModule,
+    RideModule,
   ],
   providers: [DateTimeScalar],
 })

@@ -1,11 +1,19 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  Subscription,
+  Int,
+} from '@nestjs/graphql';
 import { Logger } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Message, User } from 'src/dtos/@generated';
 import { SendMessageInput } from 'src/dtos/message/message.input';
 import { MessagePayload } from 'src/dtos/message/message.output';
 import { MessageService } from './messages.service';
+import { MessageSearchService } from './message-search.service';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { GraphqlWsJwtGuard } from 'src/auth/guards/graphql-ws-jwt.guard';
 import { RedisExtendedService } from 'src/redis/redis-extended.service';
@@ -14,6 +22,7 @@ import {
   ReactionActionResult,
   ReactionSummary,
 } from 'src/dtos/reaction/reaction.output';
+import { MessageSearchResponse } from 'src/dtos/message/message-search.output';
 
 @Resolver(() => Message)
 export class MessageResolver {
@@ -21,6 +30,7 @@ export class MessageResolver {
 
   constructor(
     private messageService: MessageService,
+    private messageSearchService: MessageSearchService,
     private redisService: RedisExtendedService,
   ) {}
 
@@ -239,5 +249,29 @@ export class MessageResolver {
     }
 
     return iterator;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => MessageSearchResponse)
+  async searchMessages(
+    @CurrentUser() user: User,
+    @Args('q', { nullable: true }) q: string | null,
+    @Args('conversationId', { nullable: true }) conversationId?: string,
+    @Args('page', { type: () => Int, defaultValue: 0 }) page?: number,
+    @Args('size', { type: () => Int, defaultValue: 20 }) size?: number,
+  ): Promise<MessageSearchResponse> {
+    return this.messageSearchService.searchMessages(q, {
+      page,
+      size,
+      conversationId,
+      userId: user.id, // ✅ Sécurité: filtrer par utilisateur
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => Boolean)
+  async recreateAndBulkMessages() {
+    await this.messageSearchService.recreateAndBulkIndex();
+    return true;
   }
 }

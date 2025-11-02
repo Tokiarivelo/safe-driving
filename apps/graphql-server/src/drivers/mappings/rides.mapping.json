@@ -1,0 +1,103 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "analysis": {
+      "filter": {
+        "edge_ngram_filter": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 20
+        }
+      },
+      "analyzer": {
+        "edge_ngram_analyzer": {
+          "tokenizer": "standard",
+          "filter": ["lowercase", "asciifolding", "edge_ngram_filter"]
+        },
+        "search_analyzer": {
+          "tokenizer": "standard",
+          "filter": ["lowercase", "asciifolding"]
+        }
+      },
+      "normalizer": {
+        "keyword_lowercase": {
+          "type": "custom",
+          "filter": ["lowercase", "asciifolding"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": { "type": "keyword" },
+      "driverId": { "type": "keyword" },
+      "status": { "type": "keyword" },
+      "startedAt": { "type": "date" },
+      "finishedAt": { "type": "date" },
+      "createdAt": { "type": "date" },
+      "driver": {
+        "properties": {
+          "id": { "type": "keyword" },
+          "email": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer",
+            "search_analyzer": "search_analyzer",
+            "fields": {
+              "raw": { "type": "keyword", "normalizer": "keyword_lowercase" }
+            }
+          },
+          "firstName": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer",
+            "search_analyzer": "search_analyzer",
+            "fields": {
+              "raw": { "type": "keyword", "normalizer": "keyword_lowercase" }
+            }
+          },
+          "lastName": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer",
+            "search_analyzer": "search_analyzer",
+            "fields": {
+              "raw": { "type": "keyword", "normalizer": "keyword_lowercase" }
+            }
+          },
+          "username": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer",
+            "search_analyzer": "search_analyzer",
+            "fields": {
+              "raw": { "type": "keyword", "normalizer": "keyword_lowercase" }
+            }
+          }
+        }
+      },
+      "participants": {
+        "type": "nested",
+        "properties": {
+          "id": { "type": "keyword" },
+          "rideId": { "type": "keyword" },
+          "userId": { "type": "keyword" },
+          "role": { "type": "keyword" },
+          "joinedAt": { "type": "date" },
+          "firstName": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer",
+            "search_analyzer": "search_analyzer"
+          },
+          "lastName": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer",
+            "search_analyzer": "search_analyzer"
+          },
+          "email": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer",
+            "search_analyzer": "search_analyzer"
+          }
+        }
+      }
+    }
+  }
+}

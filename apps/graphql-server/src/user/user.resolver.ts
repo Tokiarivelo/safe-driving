@@ -1,5 +1,6 @@
 import {
   Args,
+  Int,
   Mutation,
   Parent,
   Query,
@@ -8,6 +9,7 @@ import {
 } from '@nestjs/graphql';
 
 import { UsersService } from './users.service';
+import { UserSearchService } from './user-search.service';
 import {
   FindManyUserArgs,
   User,
@@ -18,11 +20,15 @@ import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UploadUserDocumentsInput } from 'src/dtos/user/user.input';
+import { UserSearchResponse } from 'src/dtos/user/user-search.output';
 
 @Resolver(() => User)
 @UseGuards(JwtAuthGuard) // 👈 protège la route
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly userSearchService: UserSearchService,
+  ) {}
 
   @ResolveField(() => String, { nullable: true })
   UserPreference(@Parent() user: User, @CurrentUser() me: User) {
@@ -154,5 +160,20 @@ export class UsersResolver {
     @CurrentUser() user: User,
   ): Promise<User> {
     return this.usersService.deleteUserImageByKey(user.id, key);
+  }
+
+  @Query(() => UserSearchResponse)
+  async searchUsers(
+    @Args('q', { nullable: true }) q: string | null,
+    @Args('page', { type: () => Int, defaultValue: 0 }) page?: number,
+    @Args('size', { type: () => Int, defaultValue: 20 }) size?: number,
+  ): Promise<UserSearchResponse> {
+    return this.userSearchService.searchUsers(q, { page, size });
+  }
+
+  @Mutation(() => Boolean)
+  async recreateAndBulkUsers() {
+    await this.userSearchService.recreateAndBulkIndex();
+    return true;
   }
 }

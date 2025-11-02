@@ -23,14 +23,18 @@ import {
   ConversationParticipantPayload,
   UserConversation,
 } from '../dtos/conversation/conversation.output';
+import { ConversationSearchResponse } from '../dtos/conversation/conversation-search.output';
 import { RedisService } from '../redis/redis.service';
 import { ConversationService } from './conversation.service';
+import { ConversationSearchService } from './conversation-search.service';
+import { GraphQLJSON } from 'graphql-type-json';
 
 @Resolver(() => UserConversation)
 export class ConversationResolver {
   constructor(
     private conversationService: ConversationService,
     private redisService: RedisService,
+    private conversationSearchService: ConversationSearchService,
   ) {}
 
   // QUERIES
@@ -144,6 +148,35 @@ export class ConversationResolver {
     return this.redisService
       .getPubSub()
       .asyncIterator(`conversation_${conversationId}`);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => ConversationSearchResponse)
+  async searchConversations(
+    @CurrentUser() user: User,
+    @Args('q', { nullable: true }) q: string | null,
+    @Args('page', { type: () => Int, defaultValue: 0 }) page: number,
+    @Args('size', { type: () => Int, defaultValue: 20 }) size: number,
+  ): Promise<ConversationSearchResponse> {
+    return this.conversationSearchService.searchConversations(q, {
+      page,
+      size,
+      userId: user.id, // ✅ Sécurité: ne rechercher que les conversations de l'utilisateur
+    });
+  }
+
+  @Mutation(() => Boolean)
+  async recreateAndBulkConversation() {
+    await this.conversationSearchService.recreateAndBulkIndex();
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async bulkIndexAllConversations() {
+    await this.conversationSearchService.bulkIndexAllConversations({
+      refresh: true,
+    });
+    return true;
   }
 
   // FIELD RESOLVERS (if needed for complex fields)
