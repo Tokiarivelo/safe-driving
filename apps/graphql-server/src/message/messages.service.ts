@@ -15,6 +15,7 @@ import { ReactionService } from 'src/reaction/reaction.service';
 import { AddReactionInput } from 'src/dtos/reaction/reaction.input';
 import { ReactionActionResult } from 'src/dtos/reaction/reaction.output';
 import { LinkPreviewService } from 'src/link-preview';
+import { MessageSearchService } from './message-search.service';
 
 @Injectable()
 export class MessageService {
@@ -24,6 +25,7 @@ export class MessageService {
     private chatCache: ChatCacheService,
     private reactionService: ReactionService,
     private linkPreviewService: LinkPreviewService,
+    private messageSearchService: MessageSearchService,
   ) {}
 
   async sendMessage(
@@ -374,6 +376,11 @@ export class MessageService {
       message,
     );
 
+    // ✅ ELASTICSEARCH: Indexer le nouveau message
+    await this.messageSearchService.indexMessage(message.id, {
+      refresh: true, // Refresh immédiatement pour que le message soit cherchable
+    });
+
     return message;
   }
 
@@ -634,6 +641,11 @@ export class MessageService {
       messageEvent: payload,
     });
 
+    // ✅ ELASTICSEARCH: Réindexer le message modifié
+    await this.messageSearchService.indexMessage(updatedMessage.id, {
+      refresh: true,
+    });
+
     return updatedMessage;
   }
 
@@ -704,6 +716,11 @@ export class MessageService {
 
     await this.redisService.getPubSub().publish(channelName, {
       messageEvent: payload,
+    });
+
+    // ✅ ELASTICSEARCH: Supprimer le message de l'index
+    await this.messageSearchService.deleteMessage(messageId, {
+      refresh: true,
     });
 
     return deletedMessage;

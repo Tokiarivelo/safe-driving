@@ -47,6 +47,14 @@ query {
 
 **Filtrage** : Uniquement les messages des conversations où l'utilisateur est participant
 
+**Indexation automatique** : ✅ Tous les messages sont automatiquement indexés lors de :
+
+- ✅ Création (`sendMessage`) → Indexation immédiate
+- ✅ Édition (`editMessage`) → Réindexation immédiate
+- ✅ Suppression (`deleteMessage`) → Suppression de l'index
+
+> 📚 Voir [ELASTICSEARCH_MESSAGE_INDEXING.md](./ELASTICSEARCH_MESSAGE_INDEXING.md) pour les détails
+
 **Deux scénarios** :
 
 #### A. Recherche globale (sans `conversationId`)

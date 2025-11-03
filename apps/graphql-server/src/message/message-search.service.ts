@@ -118,6 +118,30 @@ export class MessageSearchService extends AbstractSearchService {
   }
 
   /**
+   * Delete a message from the index
+   */
+  async deleteMessage(
+    messageId: string,
+    opts?: { refresh?: boolean | 'wait_for' },
+  ) {
+    try {
+      await this.es.delete({
+        index: this.index,
+        id: messageId,
+        refresh: opts?.refresh,
+      });
+      this.logger.log(`Message ${messageId} deleted from index.`);
+    } catch (error) {
+      if (error.meta?.statusCode === 404) {
+        this.logger.warn(`Message ${messageId} not found in index.`);
+      } else {
+        this.logger.error(`Error deleting message ${messageId}:`, error);
+        throw error;
+      }
+    }
+  }
+
+  /**
    * Search messages
    * @param q Search query
    * @param options Search options including userId for security filtering
