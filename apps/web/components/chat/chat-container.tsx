@@ -50,9 +50,9 @@ export function ChatContainer({
     hasMore,
     sendMessage,
     loadMore,
-    scrollToBottom,
     editMessage,
     deleteMessage,
+    loadMessageContext,
   } = useMessages({ conversationId: selectedConversationId, rideId });
 
   const { addReaction, removeReaction } = useReactions();
@@ -103,10 +103,10 @@ export function ChatContainer({
           connected={isConnected}
           onSendMessage={sendMessage}
           onLoadMore={loadMore}
-          onScrollToBottom={scrollToBottom}
-          onEditMessage={editMessage} // Optionnel
-          onDeleteMessage={deleteMessage} // Optionnel
-          onReactToMessage={handleReactToMessage} // Nouveau
+          onEditMessage={editMessage}
+          onDeleteMessage={deleteMessage}
+          onReactToMessage={handleReactToMessage}
+          onLoadMessageContext={loadMessageContext}
         />
       </div>
     </div>

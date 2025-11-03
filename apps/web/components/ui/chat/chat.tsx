@@ -1,35 +1,36 @@
-import MessageBubble from '@/components/ui/chat/message-bubble';
 import MessageInput from '@/components/ui/chat/message-input';
+import { ChatHeader } from '@/components/ui/chat/chat-header';
+import { ChatSearch } from '@/components/ui/chat/chat-search';
+import { ChatMessagesList } from '@/components/ui/chat/chat-messages-list';
 import {
   MessageFragmentFragment,
   SendMessageMutation,
   UserConversation,
 } from '@/graphql/generated/graphql';
-import { ArrowDown, MoreVertical } from 'lucide-react';
-import Image from 'next/image';
-import { useCallback, useRef, useState } from 'react';
+import { useState } from 'react';
 
 interface ChatProps {
   conversation?: UserConversation;
   rideId?: string;
   currentUserId: string;
   className?: string;
-  // Props pour les données externes (vos hooks)
+  // Message data
   messages: MessageFragmentFragment[];
   loading: boolean;
   error?: { message: string } | null;
   hasMore: boolean;
   connected: boolean;
+  // Message actions
   onSendMessage: (
     content: string,
     parentMessageId?: string,
     attachmentIds?: string[],
   ) => Promise<SendMessageMutation | undefined | null>;
   onLoadMore: () => Promise<void>;
-  onScrollToBottom: () => void;
   onEditMessage?: (messageId: string, content: string, attachmentIds?: string[]) => Promise<void>;
   onDeleteMessage?: (messageId: string) => Promise<void>;
   onReactToMessage?: (messageId: string, emoji: string) => Promise<void>;
+  onLoadMessageContext?: (messageId: string, messageDate: string) => Promise<boolean>;
 }
 
 export const Chat: React.FC<ChatProps> = ({
@@ -37,30 +38,26 @@ export const Chat: React.FC<ChatProps> = ({
   rideId,
   currentUserId,
   className = '',
-  // Props des données
+  // Message data
   messages,
   loading,
   error,
   hasMore,
   connected,
+  // Message actions
   onSendMessage,
   onLoadMore,
-  onScrollToBottom,
   onEditMessage,
   onDeleteMessage,
   onReactToMessage,
+  onLoadMessageContext,
 }) => {
+  // State management
   const [replyingTo, setReplyingTo] = useState<MessageFragmentFragment | null>(null);
-  const [showScrollButton, setShowScrollButton] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [showSearch, setShowSearch] = useState(false);
+  const [scrollToMessageId, setScrollToMessageId] = useState<string | null>(null);
 
-  // Gestion du scroll pour afficher le bouton "descendre"
-  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-    const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
-    setShowScrollButton(!isNearBottom);
-  }, []);
-
+  // Message action handlers
   const handleReply = (messageId: string) => {
     const message = messages.find(m => m.id === messageId);
     if (message) {
@@ -86,6 +83,47 @@ export const Chat: React.FC<ChatProps> = ({
     }
   };
 
+  // Search handlers
+  const handleSearchClick = () => {
+    setShowSearch(true);
+  };
+
+  const handleSearchClose = () => {
+    setShowSearch(false);
+  };
+
+  const handleMessageClick = async (messageId: string, messageDate: string) => {
+    // Check if message is already loaded
+    const messageExists = messages.find(m => m.id === messageId);
+
+    if (messageExists) {
+      // Message is loaded, just scroll to it
+      setScrollToMessageId(messageId);
+      setTimeout(() => setScrollToMessageId(null), 3000);
+    } else {
+      // Message not loaded - try to load it if callback provided
+      if (onLoadMessageContext) {
+        const loaded = await onLoadMessageContext(messageId, messageDate);
+        if (loaded) {
+          // Give time for messages to render
+          setTimeout(() => {
+            setScrollToMessageId(messageId);
+            setTimeout(() => setScrollToMessageId(null), 3000);
+          }, 500);
+        } else {
+          alert(
+            'Impossible de charger le message. Veuillez charger plus de messages anciens et réessayer.',
+          );
+        }
+      } else {
+        alert(
+          "Ce message n'est pas encore chargé. Veuillez charger plus de messages anciens et réessayer.",
+        );
+      }
+    }
+  };
+
+  // Error state
   if (error) {
     return (
       <div className={`flex items-center justify-center h-full ${className}`}>
@@ -98,128 +136,40 @@ export const Chat: React.FC<ChatProps> = ({
   }
 
   return (
-    <div className={`flex flex-col h-full bg-gray-50 ${className}`}>
+    <div className={`relative flex flex-col h-full bg-gray-50 ${className}`}>
       {/* Header */}
-      <div className="border-b bg-white p-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div>
-            <h2 className="font-semibold">
-              {conversation?.title || (rideId ? 'Chat de course' : 'Chat')}
-            </h2>
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <div
-                className={`w-2 h-2 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'}`}
-              ></div>
-              {connected ? 'En ligne' : 'Hors ligne'}
-              {conversation?.participants && (
-                <span className="ml-2">
-                  • {conversation.participants.length} participant
-                  {conversation.participants.length > 1 ? 's' : ''}
-                </span>
-              )}
-            </div>
-          </div>
+      <ChatHeader
+        conversation={conversation}
+        rideId={rideId}
+        connected={connected}
+        onSearchClick={handleSearchClick}
+      />
 
-          {/* Miniatures des participants */}
-          {conversation?.participants && conversation.participants.length > 0 && (
-            <div className="flex -space-x-2 ml-4">
-              {conversation.participants.slice(0, 4).map(participant => (
-                <div
-                  key={participant.id}
-                  className="relative w-8 h-8 rounded-full bg-gray-300 border-2 border-white overflow-hidden"
-                  title={
-                    `${participant.user?.firstName || ''} ${participant.user?.lastName || ''}`.trim() ||
-                    participant.user?.email ||
-                    ''
-                  }
-                >
-                  {participant.user?.avatar?.url ? (
-                    <Image
-                      src={participant.user.avatar.url}
-                      alt={`${participant.user.firstName || ''} ${participant.user.lastName || ''}`.trim()}
-                      className="w-full h-full object-cover"
-                      fill
-                      sizes="32px"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-blue-500 flex items-center justify-center text-white text-xs font-medium">
-                      {(
-                        participant.user?.firstName?.[0] ||
-                        participant.user?.email?.[0] ||
-                        '?'
-                      ).toUpperCase()}
-                    </div>
-                  )}
-                </div>
-              ))}
-              {conversation.participants.length > 4 && (
-                <div className="w-8 h-8 rounded-full bg-gray-400 border-2 border-white flex items-center justify-center text-white text-xs font-medium">
-                  +{conversation.participants.length - 4}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+      {/* Search overlay */}
+      {showSearch && <ChatSearch onClose={handleSearchClose} onMessageClick={handleMessageClick} />}
 
-        <button className="p-2 hover:bg-gray-100 rounded-lg">
-          <MoreVertical className="w-5 h-5" />
-        </button>
-      </div>
+      {/* Messages list */}
+      <ChatMessagesList
+        messages={messages}
+        loading={loading}
+        hasMore={hasMore}
+        currentUserId={currentUserId}
+        onLoadMore={onLoadMore}
+        onReply={handleReply}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onReact={handleReact}
+        scrollToMessageId={scrollToMessageId}
+      />
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2" onScroll={handleScroll}>
-        {hasMore && (
-          <div className="text-center py-2">
-            <button
-              onClick={onLoadMore}
-              disabled={loading}
-              className="text-blue-500 hover:text-blue-700 text-sm"
-            >
-              {loading ? 'Chargement...' : 'Charger plus de messages'}
-            </button>
-          </div>
-        )}
-
-        {loading && messages.length === 0 ? (
-          <div className="flex items-center justify-center h-32">
-            <div className="text-gray-500">Chargement des messages...</div>
-          </div>
-        ) : (
-          <>
-            {messages.map(message => (
-              <MessageBubble
-                key={message.id}
-                message={message}
-                currentUserId={currentUserId}
-                onReply={handleReply}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                onReact={handleReact}
-              />
-            ))}
-          </>
-        )}
-
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Scroll to bottom button */}
-      {showScrollButton && (
-        <button
-          onClick={onScrollToBottom}
-          className="absolute bottom-20 right-6 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition-colors"
-        >
-          <ArrowDown className="w-5 h-5" />
-        </button>
-      )}
-
-      {/* Message Input */}
+      {/* Message input */}
       <MessageInput
         onSendMessage={onSendMessage}
         replyingTo={replyingTo}
         onCancelReply={() => setReplyingTo(null)}
         disabled={!connected}
         conversationId={conversation?.id}
+        rideId={rideId}
       />
     </div>
   );

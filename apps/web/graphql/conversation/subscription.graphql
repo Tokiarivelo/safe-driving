@@ -7,8 +7,8 @@ subscription ConversationUpdated {
   }
 }
 
-subscription ParticipantUpdated($conversationId: String!) {
-  participantUpdated(conversationId: $conversationId) {
+subscription ParticipantUpdated($rideId: String!) {
+  participantUpdated(rideId: $rideId) {
     participant {
       id
       userId
@@ -19,6 +19,5 @@ subscription ParticipantUpdated($conversationId: String!) {
       }
     }
     action
-    conversationId
   }
 }

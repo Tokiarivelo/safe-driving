@@ -83,7 +83,8 @@
             "fields": {
               "raw": { "type": "keyword", "normalizer": "keyword_lowercase" }
             }
-          }
+          },
+          "avatarUrl": { "type": "keyword" }
         }
       },
       "attachments": {

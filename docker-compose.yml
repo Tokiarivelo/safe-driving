@@ -105,9 +105,9 @@ services:
     ports:
       - "4566:4566"   # Edge port for all services
       # Optional legacy ports (not required when using edge)
-      - "4510-4559:4510-4559"   # Legacy S3 port,Legacy Elasticsearch port, Legacy SES port
+      - "4510-4559:4510-4559"   # Legacy S3 port,Legacy, Legacy SES port
     environment:
-      - SERVICES=s3,logs,es
+      - SERVICES=s3,logs
       - DEBUG=1                  # Enable debug logs
         # Configuration AWS
       - AWS_DEFAULT_REGION=us-east-1
@@ -128,9 +128,7 @@ services:
       
       # Configuration Lambda
       - LAMBDA_EXECUTOR=docker
-      
-      # Configuration Elasticsearch
-      - ES_JAVA_OPTS="-Xms512m -Xmx512m"
+
       
       # IMPORTANT: Désactiver l'auto-suppression
       - CLEAR_TMP_FOLDER=0
@@ -154,37 +152,44 @@ services:
       start_period: 30s
 
   # Elasticsearch
-  # elasticsearch:
-  #   container_name: elasticsearch
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:9.1.0
-  #   environment:
-  #     - node.name=elasticsearch
-  #     - cluster.name=es-docker-cluster
-  #     - discovery.type=single-node
-  #     - bootstrap.memory_lock=true
-  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-  #     - xpack.security.enabled=false
-  #     - xpack.security.enrollment.enabled=false
-  #   ulimits:
-  #     memlock:
-  #       soft: -1
-  #       hard: -1
-  #   volumes:
-  #     - elasticsearch-data:/usr/share/elasticsearch/data
-  #   ports:
-  #     - "9200:9200"
-  #     - "9300:9300"
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.2.0
+    environment:
+      - node.name=elasticsearch
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+      # Ajuster les seuils de disque pour environnement de développement
+      - cluster.routing.allocation.disk.threshold_enabled=true
+      - cluster.routing.allocation.disk.watermark.low=95%
+      - cluster.routing.allocation.disk.watermark.high=97%
+      - cluster.routing.allocation.disk.watermark.flood_stage=99%
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
 
   # Kibana (optionnel, pour l'interface Elasticsearch)
   kibana:
     container_name: kibana
-    image: docker.elastic.co/kibana/kibana:9.1.0
+    image: docker.elastic.co/kibana/kibana:9.2.0
     environment:
-      - ELASTICSEARCH_HOSTS=http://localstack:4566
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
       - "5601:5601"
     depends_on:
-      - localstack
+      - elasticsearch
+
+  # Redis pour cache et Pub/Sub
   redis:
     image: redis:8.2.1
     container_name: redis_pubsub

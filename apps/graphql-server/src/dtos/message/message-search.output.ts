@@ -16,6 +16,9 @@ export class MessageSenderSource {
 
   @Field(() => String, { nullable: true })
   username?: string | null;
+
+  @Field(() => String, { nullable: true })
+  avatarUrl?: string | null;
 }
 
 @ObjectType()

@@ -14,6 +14,7 @@ import {
   MessageSearchHit,
   MessageSource,
 } from 'src/dtos/message/message-search.output';
+import { Message } from 'src/dtos/@generated';
 
 @Injectable()
 export class MessageSearchService extends AbstractSearchService {
@@ -218,7 +219,7 @@ export class MessageSearchService extends AbstractSearchService {
     return { total, hits };
   }
 
-  private buildMessageDoc(message: any) {
+  private buildMessageDoc(message: Message) {
     const sender = message.sender
       ? {
           id: message.sender.id,
@@ -226,6 +227,7 @@ export class MessageSearchService extends AbstractSearchService {
           firstName: message.sender.firstName ?? null,
           lastName: message.sender.lastName ?? null,
           username: message.sender.username ?? null,
+          avatarUrl: message.sender.avatar?.url ?? null,
         }
       : null;
 

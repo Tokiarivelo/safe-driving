@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
+  CursorDirection,
   MessageEventType,
   MessageFragmentFragment,
   MessageState,
@@ -28,7 +29,10 @@ export const useMessages = (options: UseMessagesOptions) => {
       conversationId: options.conversationId,
       rideId: options.rideId,
       limit: 20,
+      direction: CursorDirection.BEFORE, // Load messages before the cursor (older messages)
     },
+    // Ensure fetchMore merges results properly
+    notifyOnNetworkStatusChange: true,
   });
 
   // Replace onCompleted with useEffect
@@ -69,10 +73,10 @@ export const useMessages = (options: UseMessagesOptions) => {
         const { message, type } = data.data.messageEvent;
 
         if (type === MessageEventType.NEW_MESSAGE) {
-          // Mettre à jour le cache Apollo
+          // Mettre à jour le cache Apollo - add new message at the END (bottom)
           updateQuery(prev => ({
             ...prev,
-            messages: [message, ...(prev.messages || [])].filter(
+            messages: [...(prev.messages || []), message].filter(
               (msg, index, self) => self.findIndex(m => m.id === msg.id) === index,
             ),
           }));
@@ -81,7 +85,8 @@ export const useMessages = (options: UseMessagesOptions) => {
             // Éviter les doublons
             const exists = prev.some(m => m.id === message.id);
             if (exists) return prev;
-            return [message, ...prev];
+            // Add new message at the END (bottom)
+            return [...prev, message];
           });
 
           // Marquer comme délivré si ce n'est pas notre message
@@ -153,7 +158,8 @@ export const useMessages = (options: UseMessagesOptions) => {
         isOptimistic: true,
       };
 
-      setOptimisticMessages(prev => [optimisticMessage, ...prev]);
+      // Add optimistic message at the END (bottom) so it appears near the input
+      setOptimisticMessages(prev => [...prev, optimisticMessage]);
 
       try {
         const messageData = await sendMessageMutation({
@@ -185,13 +191,35 @@ export const useMessages = (options: UseMessagesOptions) => {
   const loadMore = useCallback(async () => {
     if (!hasMore || loading) return;
 
-    const lastMessage = messages[messages.length - 1];
-    if (!lastMessage) return;
+    // Get the actual oldest message (the first one in the list)
+    const oldestMessage = messages[messages.length - 1];
+    if (!oldestMessage) return;
 
     try {
       const result = await fetchMore({
         variables: {
-          cursor: lastMessage.createdAt,
+          cursor: oldestMessage.createdAt,
+          direction: CursorDirection.BEFORE, // Load older messages before this cursor
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult || !fetchMoreResult.messages) {
+            return previousResult;
+          }
+
+          // Merge old messages with new older messages
+          // fetchMoreResult contains older messages, so they go BEFORE existing ones
+          const newMessages = fetchMoreResult.messages;
+          const existingMessages = previousResult.messages || [];
+
+          // Remove duplicates and merge
+          const mergedMessages = [...newMessages, ...existingMessages].filter(
+            (msg, index, self) => self.findIndex(m => m.id === msg.id) === index,
+          );
+
+          return {
+            ...previousResult,
+            messages: mergedMessages,
+          };
         },
       });
 
@@ -237,6 +265,50 @@ export const useMessages = (options: UseMessagesOptions) => {
     [deleteMessageMutation],
   );
 
+  const loadMessageContext = useCallback(
+    async (messageId: string, messageDate: string): Promise<boolean> => {
+      try {
+        // Load messages up to the searched message date
+        const result = await fetchMore({
+          variables: {
+            cursor: messageDate,
+            limit: 50, // Load more messages to ensure context
+            direction: CursorDirection.BEFORE, // Load older messages to get context
+          },
+        });
+
+        // Check if the message is now loaded
+        const messageLoaded = result.data.messages.some(
+          (m: MessageFragmentFragment) => m.id === messageId,
+        );
+
+        if (!messageLoaded && result.data.messages.length >= 50) {
+          // Message still not found, might need to load more
+          // Try one more time with earlier cursor
+          const earliestMessage = result.data.messages[result.data.messages.length - 1];
+          if (earliestMessage) {
+            const secondResult = await fetchMore({
+              variables: {
+                cursor: earliestMessage.createdAt,
+                limit: 50,
+                direction: CursorDirection.BEFORE,
+              },
+            });
+            return secondResult.data.messages.some(
+              (m: MessageFragmentFragment) => m.id === messageId,
+            );
+          }
+        }
+
+        return messageLoaded;
+      } catch (error) {
+        console.error('Failed to load message context:', error);
+        return false;
+      }
+    },
+    [fetchMore],
+  );
+
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
@@ -250,8 +322,9 @@ export const useMessages = (options: UseMessagesOptions) => {
   }, [messages.length, optimisticMessages.length, scrollToBottom]);
 
   // Fusionner messages confirmés et optimistes
+  // Sort in ASCENDING order (oldest first, newest at bottom)
   const allMessages = [...optimisticMessages, ...messages].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
   );
 
   return {
@@ -265,5 +338,6 @@ export const useMessages = (options: UseMessagesOptions) => {
     scrollToBottom,
     editMessage,
     deleteMessage,
+    loadMessageContext,
   };
 };

@@ -23,6 +23,7 @@ import {
   ReactionSummary,
 } from 'src/dtos/reaction/reaction.output';
 import { MessageSearchResponse } from 'src/dtos/message/message-search.output';
+import { CursorDirection } from 'src/dtos/enums/cursor-direction.enum';
 
 @Resolver(() => Message)
 export class MessageResolver {
@@ -41,12 +42,21 @@ export class MessageResolver {
     @Args('rideId', { nullable: true }) rideId?: string,
     @Args('cursor', { nullable: true }) cursor?: string,
     @Args('limit', { defaultValue: 20 }) limit?: number,
+    @Args('direction', {
+      type: () => CursorDirection,
+      nullable: true,
+      defaultValue: CursorDirection.BEFORE,
+      description:
+        'Direction for pagination: BEFORE for older messages, AFTER for newer messages',
+    })
+    direction?: CursorDirection,
   ): Promise<Message[]> {
     return this.messageService.getMessages(
       conversationId,
       rideId,
       cursor,
       limit,
+      direction,
     );
   }
 

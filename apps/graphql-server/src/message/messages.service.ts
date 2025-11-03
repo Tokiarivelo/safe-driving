@@ -382,6 +382,7 @@ export class MessageService {
     rideId?: string,
     cursor?: string,
     limit = 20,
+    direction: 'BEFORE' | 'AFTER' = 'BEFORE',
   ) {
     if (!conversationId && !rideId) {
       throw new Error('No conversationId or rideId provided');
@@ -391,7 +392,7 @@ export class MessageService {
     const where = conversationId ? { conversationId } : { rideId };
 
     // Essayer d'abord le cache Redis pour les messages récents
-    const cacheKey = `messages:${roomId}:${cursor || 'latest'}:${limit}`;
+    const cacheKey = `messages:${roomId}:${cursor || 'latest'}:${limit}:${direction}`;
     const cached = await this.redisService.get(cacheKey);
 
     if (cached) {
@@ -400,16 +401,24 @@ export class MessageService {
       return jsonCached;
     }
 
+    // Construire la condition de date selon la direction
+    let dateCondition = {};
+    if (cursor) {
+      if (direction === 'BEFORE') {
+        // Charger les messages plus anciens (avant le cursor)
+        dateCondition = { lt: new Date(cursor) };
+      } else {
+        // Charger les messages plus récents (après le cursor)
+        dateCondition = { gt: new Date(cursor) };
+      }
+    }
+
     // Si pas dans le cache, récupérer depuis la DB
     const messages = await this.prisma.message.findMany({
       where: {
         ...where,
         deleted: false,
-        ...(cursor && {
-          createdAt: {
-            lt: new Date(cursor),
-          },
-        }),
+        ...(cursor && { createdAt: dateCondition }),
       },
       include: {
         sender: true,
@@ -437,15 +446,19 @@ export class MessageService {
         },
       },
       orderBy: {
-        createdAt: 'desc', // Changé en desc pour avoir les plus récents en premier
+        createdAt: direction === 'BEFORE' ? 'desc' : 'asc',
       },
       take: limit,
     });
 
-    // Cache les résultats pour 5 minutes
-    await this.redisService.set(cacheKey, JSON.stringify(messages), 300);
+    // Si on charge les messages plus récents (AFTER), inverser l'ordre pour avoir le bon affichage
+    const orderedMessages =
+      direction === 'AFTER' ? messages.reverse() : messages;
 
-    return messages;
+    // Cache les résultats pour 5 minutes
+    await this.redisService.set(cacheKey, JSON.stringify(orderedMessages), 300);
+
+    return orderedMessages;
   }
 
   async markAsDelivered(messageId: string) {

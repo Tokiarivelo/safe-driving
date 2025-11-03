@@ -1,5 +1,23 @@
-query GetMessages($conversationId: String, $rideId: String, $cursor: String, $limit: Float) {
-  messages(conversationId: $conversationId, rideId: $rideId, cursor: $cursor, limit: $limit) {
+query GetMessages(
+  $conversationId: String
+  $rideId: String
+  $cursor: String
+  $limit: Float
+  $direction: CursorDirection
+) {
+  messages(
+    conversationId: $conversationId
+    rideId: $rideId
+    cursor: $cursor
+    limit: $limit
+    direction: $direction
+  ) {
     ...messageFragment
+  }
+}
+
+query SearchMessages($q: String!, $size: Int!, $page: Int!) {
+  searchMessages(q: $q, size: $size, page: $page) {
+    ...messageSearchFragment
   }
 }

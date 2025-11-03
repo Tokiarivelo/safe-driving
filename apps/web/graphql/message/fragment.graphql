@@ -130,3 +130,61 @@ fragment subscriptionMessageFragment on Message {
     }
   }
 }
+
+fragment messageSenderSourceFragment on MessageSenderSource {
+  email
+  firstName
+  id
+  lastName
+  username
+  avatarUrl
+}
+
+fragment messageAttachmentSourceFragment on MessageAttachmentSource {
+  id
+  type
+  fileId
+  url
+  linkTitle
+  rideId
+}
+
+fragment messageSourceFragment on MessageSource {
+  attachments {
+    ...messageAttachmentSourceFragment
+  }
+  clientTempId
+  content
+  conversationId
+  createdAt
+  deleted
+  deletedAt
+  deliveredAt
+  edited
+  editedAt
+  id
+  parentMessageId
+  rideId
+  sender {
+    ...messageSenderSourceFragment
+  }
+  senderId
+  sentAt
+  state
+}
+
+fragment messageSearchHitFragment on MessageSearchHit {
+  _id
+  _index
+  _score
+  _source {
+    ...messageSourceFragment
+  }
+}
+
+fragment messageSearchFragment on MessageSearchResponse {
+  hits {
+    ...messageSearchHitFragment
+  }
+  total
+}
