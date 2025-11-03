@@ -46,6 +46,9 @@ export class UserSource {
 
   @Field(() => [UserRoleSource])
   roles: UserRoleSource[];
+
+  @Field(() => String, { nullable: true })
+  avatarUrl?: string | null;
 }
 
 @ObjectType()

@@ -14,6 +14,7 @@ import {
   ConversationSearchHit,
   ConversationSource,
 } from 'src/dtos/conversation/conversation-search.output';
+import { Conversation } from 'src/dtos/@generated';
 
 @Injectable()
 export class ConversationSearchService extends AbstractSearchService {
@@ -114,6 +115,32 @@ export class ConversationSearchService extends AbstractSearchService {
     const doc = this.buildConversationDoc(convo);
     await this.indexOne(this.index, doc.id, doc, { refresh: opts?.refresh });
   }
+
+  /**
+   * Delete a conversation from Elasticsearch
+   */
+  async deleteConversation(
+    conversationId: string,
+    opts?: { refresh?: boolean | 'wait_for' },
+  ) {
+    try {
+      await this.es.delete({
+        index: this.index,
+        id: conversationId,
+        refresh: opts?.refresh,
+      });
+      this.logger.debug(`Conversation ${conversationId} deleted from index`);
+    } catch (error: any) {
+      if (error?.meta?.body?.result === 'not_found') {
+        this.logger.warn(
+          `Conversation ${conversationId} not found in index (already deleted?)`,
+        );
+      } else {
+        throw error;
+      }
+    }
+  }
+
   // basic search wrapper: q scans messages, participants, title, createdAt_text
   async searchConversations(
     q: string | null,
@@ -182,8 +209,8 @@ export class ConversationSearchService extends AbstractSearchService {
     return { total, hits };
   }
 
-  private buildConversationDoc(convo: any) {
-    const participants = (convo.participants ?? []).map((p: any) => {
+  private buildConversationDoc(convo: Conversation) {
+    const participants = (convo.participants ?? []).map((p) => {
       // Construire le displayName à partir de firstName et lastName
       const displayName = p.user?.firstName
         ? `${p.user.firstName}${p.user.lastName ? ' ' + p.user.lastName : ''}`
@@ -199,6 +226,7 @@ export class ConversationSearchService extends AbstractSearchService {
         displayName,
         username: p.user?.username ?? null,
         email: p.user?.email ?? null,
+        avatarUrl: p.user?.avatar?.url ?? null,
       };
     });
 

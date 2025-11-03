@@ -76,6 +76,7 @@
       "updatedAt": { "type": "date" },
       "status": { "type": "keyword" },
       "driverStatus": { "type": "keyword" },
+      "avatarUrl": { "type": "keyword" },
       "roles": {
         "type": "nested",
         "properties": {

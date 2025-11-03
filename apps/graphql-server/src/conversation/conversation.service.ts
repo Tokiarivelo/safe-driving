@@ -2,6 +2,7 @@ import {
   Injectable,
   ForbiddenException,
   NotFoundException,
+  Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma-module/prisma.service';
 import { RedisService } from '../redis/redis.service';
@@ -16,12 +17,16 @@ import {
   UserConversation,
   UserConversationsResponse,
 } from '../dtos/conversation/conversation.output';
+import { ConversationSearchService } from './conversation-search.service';
 
 @Injectable()
 export class ConversationService {
+  private readonly logger = new Logger(ConversationService.name);
+
   constructor(
     private prisma: PrismaService,
     private redisService: RedisService,
+    private conversationSearchService: ConversationSearchService,
   ) {}
 
   async getUserConversations(
@@ -170,6 +175,22 @@ export class ConversationService {
       },
     });
 
+    // Index in Elasticsearch (with refresh for immediate searchability)
+    try {
+      await this.conversationSearchService.indexConversation(conversation.id, {
+        refresh: true,
+      });
+      this.logger.debug(
+        `Conversation ${conversation.id} indexed in Elasticsearch`,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Failed to index conversation ${conversation.id}:`,
+        error,
+      );
+      // Don't throw - conversation was created successfully
+    }
+
     // Notify all participants about the new conversation
     await this.notifyConversationChange(
       conversation as UserConversation,
@@ -203,6 +224,22 @@ export class ConversationService {
         },
       },
     });
+
+    // Re-index in Elasticsearch (update)
+    try {
+      await this.conversationSearchService.indexConversation(conversation.id, {
+        refresh: true,
+      });
+      this.logger.debug(
+        `Conversation ${conversation.id} re-indexed in Elasticsearch`,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Failed to re-index conversation ${conversation.id}:`,
+        error,
+      );
+      // Don't throw - conversation was updated successfully
+    }
 
     // Notify all participants about the update
     await this.notifyConversationChange(
@@ -245,6 +282,22 @@ export class ConversationService {
       where: { id: conversationId },
     });
 
+    // Delete from Elasticsearch
+    try {
+      await this.conversationSearchService.deleteConversation(conversationId, {
+        refresh: true,
+      });
+      this.logger.debug(
+        `Conversation ${conversationId} deleted from Elasticsearch`,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Failed to delete conversation ${conversationId} from Elasticsearch:`,
+        error,
+      );
+      // Don't throw - conversation was deleted successfully from DB
+    }
+
     // Notify all participants about the deletion
     await this.notifyConversationChange(
       conversation as UserConversation,
@@ -285,6 +338,22 @@ export class ConversationService {
       },
     });
 
+    // Re-index conversation in Elasticsearch (participant list changed)
+    try {
+      await this.conversationSearchService.indexConversation(
+        input.conversationId,
+        { refresh: true },
+      );
+      this.logger.debug(
+        `Conversation ${input.conversationId} re-indexed after adding participant`,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Failed to re-index conversation ${input.conversationId}:`,
+        error,
+      );
+    }
+
     // Notify about participant addition
     await this.notifyParticipantChange(
       participant as ConversationParticipant,
@@ -321,6 +390,22 @@ export class ConversationService {
     await this.prisma.conversationParticipant.delete({
       where: { id: participant.id },
     });
+
+    // Re-index conversation in Elasticsearch (participant list changed)
+    try {
+      await this.conversationSearchService.indexConversation(
+        input.conversationId,
+        { refresh: true },
+      );
+      this.logger.debug(
+        `Conversation ${input.conversationId} re-indexed after removing participant`,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Failed to re-index conversation ${input.conversationId}:`,
+        error,
+      );
+    }
 
     // Notify about participant removal
     await this.notifyParticipantChange(

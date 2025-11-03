@@ -34,3 +34,9 @@ query UserByToken($token: String!) {
     ...userFragment
   }
 }
+
+query SearchUsers($q: String!, $page: Int!, $size: Int!) {
+  searchUsers(q: $q, page: $page, size: $size) {
+    ...userSearchResponseFragment
+  }
+}

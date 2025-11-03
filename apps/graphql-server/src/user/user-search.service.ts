@@ -14,6 +14,7 @@ import {
   UserSearchHit,
   UserSource,
 } from 'src/dtos/user/user-search.output';
+import { User } from 'src/dtos/@generated';
 
 @Injectable()
 export class UserSearchService extends AbstractSearchService {
@@ -158,7 +159,7 @@ export class UserSearchService extends AbstractSearchService {
     return { total, hits };
   }
 
-  private buildUserDoc(user: any) {
+  private buildUserDoc(user: User) {
     const roles = (user.Role ?? []).map((role: any) => ({
       id: role.id,
       name: role.name,
@@ -176,6 +177,7 @@ export class UserSearchService extends AbstractSearchService {
       updatedAt: user.updatedAt ?? null,
       status: user.status ?? null,
       driverStatus: user.driverStatus ?? null,
+      avatarUrl: user.avatar?.url ?? null,
       roles,
     };
   }

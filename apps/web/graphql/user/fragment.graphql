@@ -41,3 +41,38 @@ fragment userMessageFragment on User {
     name
   }
 }
+
+fragment userSourceFragment on UserSource {
+  avatarUrl
+  createdAt
+  driverStatus
+  email
+  firstName
+  id
+  isVerified
+  lastName
+  phone
+  roles {
+    id
+    name
+  }
+  status
+  updatedAt
+  username
+}
+
+fragment userSearchHitFragment on UserSearchHit {
+  _id
+  _score
+  _index
+  _source {
+    ...userSourceFragment
+  }
+}
+
+fragment userSearchResponseFragment on UserSearchResponse {
+  total
+  hits {
+    ...userSearchHitFragment
+  }
+}

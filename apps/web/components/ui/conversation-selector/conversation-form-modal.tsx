@@ -1,56 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { useUsersQuery } from '@/graphql/generated/graphql';
+import { X } from 'lucide-react';
+import { ConversationFormModalProps, ConversationFormData } from './types';
+import { UserSelector } from './user-selector';
 
-interface ConversationFormModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (data: any) => void;
-  title: string;
-  initialData?: any;
-}
-
-export function ConversationFormModal({
+export const ConversationFormModal: React.FC<ConversationFormModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
   title,
   initialData,
-}: ConversationFormModalProps) {
-  const [formData, setFormData] = useState({
+}) => {
+  const [formData, setFormData] = useState<ConversationFormData>({
     title: '',
-    type: 'DIRECT' as 'DIRECT' | 'GROUP' | 'RIDE_LINKED',
-    participantIds: [] as string[],
-    selectedUserId: '', // Pour le select des utilisateurs
-  });
-
-  // Charger la liste des utilisateurs
-  const { data: usersData, loading: usersLoading } = useUsersQuery({
-    variables: {
-      take: 100, // Limiter à 100 utilisateurs pour performance
-      orderBy: [{ firstName: 'asc' as any }],
-    },
-    errorPolicy: 'all',
+    type: 'DIRECT',
+    participantIds: [],
   });
 
   useEffect(() => {
     if (initialData) {
       setFormData({
         title: initialData.title || '',
-        type: initialData.type || 'DIRECT',
-        participantIds: initialData.participants?.map((p: any) => p.userId) || [],
-        selectedUserId: '',
+        type: (initialData.type as 'DIRECT' | 'GROUP' | 'RIDE_LINKED') || 'DIRECT',
+        participantIds:
+          initialData.participants?.map(p => p.userId).filter((id): id is string => Boolean(id)) ||
+          [],
       });
     } else {
       setFormData({
         title: '',
         type: 'DIRECT',
         participantIds: [],
-        selectedUserId: '',
       });
     }
   }, [initialData, isOpen]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formData.title.trim()) {
@@ -63,26 +47,21 @@ export function ConversationFormModal({
       return;
     }
 
-    const submitData = {
+    onSubmit({
       title: formData.title.trim(),
       type: formData.type,
       participantIds: formData.participantIds,
-    };
-
-    onSubmit(submitData);
+    });
   };
 
-  const addParticipant = () => {
-    if (formData.selectedUserId && !formData.participantIds.includes(formData.selectedUserId)) {
-      setFormData(prev => ({
-        ...prev,
-        participantIds: [...prev.participantIds, prev.selectedUserId],
-        selectedUserId: '',
-      }));
-    }
+  const handleAddUser = (userId: string) => {
+    setFormData(prev => ({
+      ...prev,
+      participantIds: [...prev.participantIds, userId],
+    }));
   };
 
-  const removeParticipant = (userId: string) => {
+  const handleRemoveUser = (userId: string) => {
     setFormData(prev => ({
       ...prev,
       participantIds: prev.participantIds.filter(id => id !== userId),
@@ -92,19 +71,12 @@ export function ConversationFormModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-red-500 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600" type="button">
+            <X className="w-6 h-6" />
           </button>
         </div>
 
@@ -145,84 +117,15 @@ export function ConversationFormModal({
             </select>
           </div>
 
-          {/* Participants (seulement si ce n'est pas DIRECT ou en création) */}
+          {/* Participants */}
           {(formData.type !== 'DIRECT' || !initialData) && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Participants</label>
-
-              {/* Ajouter un participant */}
-              <div className="flex space-x-2 mb-2">
-                <select
-                  value={formData.selectedUserId}
-                  onChange={e => setFormData(prev => ({ ...prev, selectedUserId: e.target.value }))}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  disabled={usersLoading}
-                >
-                  <option value="">
-                    {usersLoading ? 'Chargement...' : 'Sélectionner un utilisateur'}
-                  </option>
-                  {usersData?.users
-                    ?.filter(user => !formData.participantIds.includes(user.id))
-                    ?.map(user => (
-                      <option key={user.id} value={user.id}>
-                        {user.firstName} {user.lastName} ({user.email})
-                      </option>
-                    ))}
-                </select>
-                <button
-                  type="button"
-                  onClick={addParticipant}
-                  disabled={!formData.selectedUserId || usersLoading}
-                  className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                >
-                  Ajouter
-                </button>
-              </div>
-
-              {/* Liste des participants */}
-              {formData.participantIds.length > 0 && (
-                <div className="space-y-2">
-                  {formData.participantIds.map(userId => {
-                    const user = usersData?.users?.find(u => u.id === userId);
-                    return (
-                      <div
-                        key={userId}
-                        className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded"
-                      >
-                        <span className="text-sm text-gray-700">
-                          {user ? (
-                            <>
-                              {user.firstName} {user.lastName}
-                              <span className="text-gray-500 ml-2">({user.email})</span>
-                            </>
-                          ) : (
-                            userId
-                          )}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => removeParticipant(userId)}
-                          className="text-red-600 hover:text-red-800"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+              <label className="block text-sm font-medium text-gray-700 mb-2">Participants</label>
+              <UserSelector
+                selectedUserIds={formData.participantIds}
+                onAddUser={handleAddUser}
+                onRemoveUser={handleRemoveUser}
+              />
             </div>
           )}
 
@@ -246,4 +149,4 @@ export function ConversationFormModal({
       </div>
     </div>
   );
-}
+};

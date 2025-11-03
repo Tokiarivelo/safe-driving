@@ -29,3 +29,44 @@ fragment ConversationWithParticipants on UserConversation {
     }
   }
 }
+
+fragment conversationParticipantSourceFragment on ConversationParticipantSource {
+  avatarUrl
+  conversationId
+  displayName
+  email
+  id
+  isMuted
+  joinedAt
+  role
+  userId
+  username
+}
+
+fragment conversationSearchHitFragmentSource on ConversationSource {
+  id
+  title
+  type
+  createdAt
+  createdAt_text
+  participants {
+    ...conversationParticipantSourceFragment
+  }
+  messageCount
+}
+
+fragment conversationSearchHitFragment on ConversationSearchHit {
+  _id
+  _score
+  _index
+  _source {
+    ...conversationSearchHitFragmentSource
+  }
+}
+
+fragment conversationSearchResponseFragment on ConversationSearchResponse {
+  total
+  hits {
+    ...conversationSearchHitFragment
+  }
+}

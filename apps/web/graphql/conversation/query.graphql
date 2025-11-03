@@ -13,3 +13,9 @@ query GetConversationById($id: String!) {
     ...ConversationWithParticipants
   }
 }
+
+query SearchConversations($q: String!, $page: Int!, $size: Int!) {
+  searchConversations(q: $q, page: $page, size: $size) {
+    ...conversationSearchResponseFragment
+  }
+}
