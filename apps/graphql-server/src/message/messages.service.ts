@@ -468,6 +468,193 @@ export class MessageService {
     return orderedMessages;
   }
 
+  /**
+   * Get messages around a specific message (context window)
+   * Useful when clicking on a search result to see surrounding messages
+   */
+  async getMessagesAroundMessage(
+    messageId: string,
+    userId: string,
+    beforeCount: number = 10,
+    afterCount: number = 10,
+  ) {
+    // 1. Récupérer le message ciblé
+    const targetMessage = await this.prisma.message.findUnique({
+      where: { id: messageId },
+      select: {
+        id: true,
+        createdAt: true,
+        conversationId: true,
+        rideId: true,
+      },
+    });
+
+    if (!targetMessage) {
+      throw new Error('Message not found');
+    }
+
+    // 2. Vérifier que l'utilisateur a accès à cette conversation
+    if (targetMessage.conversationId) {
+      const participant = await this.prisma.conversationParticipant.findUnique({
+        where: {
+          conversationId_userId: {
+            conversationId: targetMessage.conversationId,
+            userId,
+          },
+        },
+      });
+
+      if (!participant) {
+        throw new Error(
+          'Unauthorized: User is not a participant of this conversation',
+        );
+      }
+    }
+
+    const roomId = targetMessage.conversationId || targetMessage.rideId;
+    const where = targetMessage.conversationId
+      ? { conversationId: targetMessage.conversationId }
+      : { rideId: targetMessage.rideId };
+
+    // 3. Récupérer les messages AVANT le message ciblé
+    const messagesBefore = await this.prisma.message.findMany({
+      where: {
+        ...where,
+        deleted: false,
+        createdAt: {
+          lt: targetMessage.createdAt,
+        },
+      },
+      include: {
+        sender: true,
+        reactions: {
+          include: {
+            user: true,
+          },
+        },
+        parentMessage: {
+          include: {
+            sender: {
+              include: { avatar: true },
+            },
+          },
+        },
+        replies: {
+          include: {
+            sender: true,
+          },
+        },
+        attachments: {
+          include: {
+            file: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc', // Plus récents en premier
+      },
+      take: beforeCount,
+    });
+
+    // 4. Récupérer le message ciblé complet
+    const targetMessageFull = await this.prisma.message.findUnique({
+      where: { id: messageId },
+      include: {
+        sender: true,
+        reactions: {
+          include: {
+            user: true,
+          },
+        },
+        parentMessage: {
+          include: {
+            sender: {
+              include: { avatar: true },
+            },
+          },
+        },
+        replies: {
+          include: {
+            sender: true,
+          },
+        },
+        attachments: {
+          include: {
+            file: true,
+          },
+        },
+      },
+    });
+
+    // 5. Récupérer les messages APRÈS le message ciblé
+    const messagesAfter = await this.prisma.message.findMany({
+      where: {
+        ...where,
+        deleted: false,
+        createdAt: {
+          gt: targetMessage.createdAt,
+        },
+      },
+      include: {
+        sender: true,
+        reactions: {
+          include: {
+            user: true,
+          },
+        },
+        parentMessage: {
+          include: {
+            sender: {
+              include: { avatar: true },
+            },
+          },
+        },
+        replies: {
+          include: {
+            sender: true,
+          },
+        },
+        attachments: {
+          include: {
+            file: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'asc', // Plus anciens en premier
+      },
+      take: afterCount,
+    });
+
+    // 6. Combiner tous les messages dans l'ordre chronologique
+    const allMessages = [
+      ...messagesBefore.reverse(), // Inverser pour avoir l'ordre chronologique
+      targetMessageFull!,
+      ...messagesAfter,
+    ];
+
+    // 7. Calculer la position du message ciblé dans la conversation complète
+    const targetPosition = await this.prisma.message.count({
+      where: {
+        ...where,
+        deleted: false,
+        createdAt: {
+          lt: targetMessage.createdAt,
+        },
+      },
+    });
+
+    return {
+      messages: allMessages,
+      targetMessageId: messageId,
+      targetPosition, // Position 0-based du message ciblé dans la conversation
+      beforeCount: messagesBefore.length,
+      afterCount: messagesAfter.length,
+      hasMoreBefore: messagesBefore.length === beforeCount,
+      hasMoreAfter: messagesAfter.length === afterCount,
+    };
+  }
+
   async markAsDelivered(messageId: string) {
     const message = await this.prisma.message.update({
       where: { id: messageId },

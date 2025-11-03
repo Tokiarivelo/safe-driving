@@ -21,3 +21,9 @@ query SearchMessages($q: String!, $size: Int!, $page: Int!) {
     ...messageSearchFragment
   }
 }
+
+query GetMessagesAroundMessage($messageId: String!, $beforeCount: Int, $afterCount: Int) {
+  messagesAroundMessage(messageId: $messageId, beforeCount: $beforeCount, afterCount: $afterCount) {
+    ...messagesAroundOutputFragment
+  }
+}

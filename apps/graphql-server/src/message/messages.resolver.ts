@@ -24,6 +24,7 @@ import {
 } from 'src/dtos/reaction/reaction.output';
 import { MessageSearchResponse } from 'src/dtos/message/message-search.output';
 import { CursorDirection } from 'src/dtos/enums/cursor-direction.enum';
+import { MessagesAroundOutput } from 'src/dtos/message/messages-around.output';
 
 @Resolver(() => Message)
 export class MessageResolver {
@@ -57,6 +58,37 @@ export class MessageResolver {
       cursor,
       limit,
       direction,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => MessagesAroundOutput, {
+    description:
+      'Get messages around a specific message (useful when clicking on a search result to see context)',
+  })
+  async messagesAroundMessage(
+    @CurrentUser() user: User,
+    @Args('messageId') messageId: string,
+    @Args('beforeCount', {
+      type: () => Int,
+      nullable: true,
+      defaultValue: 10,
+      description: 'Number of messages to load before the target message',
+    })
+    beforeCount?: number,
+    @Args('afterCount', {
+      type: () => Int,
+      nullable: true,
+      defaultValue: 10,
+      description: 'Number of messages to load after the target message',
+    })
+    afterCount?: number,
+  ): Promise<MessagesAroundOutput> {
+    return this.messageService.getMessagesAroundMessage(
+      messageId,
+      user.id,
+      beforeCount,
+      afterCount,
     );
   }
 

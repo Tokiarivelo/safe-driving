@@ -177,6 +177,7 @@ fragment messageSearchHitFragment on MessageSearchHit {
   _id
   _index
   _score
+  position
   _source {
     ...messageSourceFragment
   }
@@ -187,4 +188,16 @@ fragment messageSearchFragment on MessageSearchResponse {
     ...messageSearchHitFragment
   }
   total
+}
+
+fragment messagesAroundOutputFragment on MessagesAroundOutput {
+  targetMessageId
+  targetPosition
+  beforeCount
+  afterCount
+  hasMoreBefore
+  hasMoreAfter
+  messages {
+    ...messageFragment
+  }
 }

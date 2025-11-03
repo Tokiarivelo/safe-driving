@@ -109,6 +109,12 @@ export class MessageSearchHit {
 
   @Field(() => MessageSource)
   _source: MessageSource;
+
+  @Field(() => Int, {
+    nullable: true,
+    description: 'Position of the message in the conversation (0-based index)',
+  })
+  position?: number;
 }
 
 @ObjectType()

@@ -7,8 +7,10 @@ interface ChatMessagesListProps {
   messages: MessageFragmentFragment[];
   loading: boolean;
   hasMore: boolean;
+  hasMoreAfter: boolean;
   currentUserId: string;
   onLoadMore: () => Promise<void>;
+  onLoadMoreAfter: () => Promise<void>;
   onReply: (messageId: string) => void;
   onEdit: (messageId: string, content: string, attachmentIds?: string[]) => Promise<void>;
   onDelete: (messageId: string) => Promise<void>;
@@ -20,8 +22,10 @@ export const ChatMessagesList: React.FC<ChatMessagesListProps> = ({
   messages,
   loading,
   hasMore,
+  hasMoreAfter,
   currentUserId,
   onLoadMore,
+  onLoadMoreAfter,
   onReply,
   onEdit,
   onDelete,
@@ -131,6 +135,19 @@ export const ChatMessagesList: React.FC<ChatMessagesListProps> = ({
               </div>
             ))}
           </>
+        )}
+
+        {/* Load newer messages button at bottom */}
+        {hasMoreAfter && (
+          <div className="text-center py-2">
+            <button
+              onClick={onLoadMoreAfter}
+              disabled={loading}
+              className="text-blue-500 hover:text-blue-700 text-sm disabled:opacity-50"
+            >
+              {loading ? 'Chargement...' : 'Charger les messages plus récents'}
+            </button>
+          </div>
         )}
 
         {/* Anchor for scrolling to bottom */}

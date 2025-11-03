@@ -21,6 +21,7 @@ interface UseMessagesOptions {
 export const useMessages = (options: UseMessagesOptions) => {
   const [messages, setMessages] = useState<MessageFragmentFragment[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [hasMoreAfter, setHasMoreAfter] = useState(false); // For newer messages
   const [optimisticMessages, setOptimisticMessages] = useState<MessageFragmentFragment[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -309,6 +310,65 @@ export const useMessages = (options: UseMessagesOptions) => {
     [fetchMore],
   );
 
+  const loadMessagesAround = useCallback(
+    (newMessages: MessageFragmentFragment[], hasMoreBefore: boolean, hasMoreAfter: boolean) => {
+      // Replace current messages with the new messages around the searched message
+      setMessages(newMessages);
+
+      // Update hasMore states based on the messagesAroundMessage response
+      setHasMore(hasMoreBefore); // Can load older messages
+      setHasMoreAfter(hasMoreAfter); // Can load newer messages
+
+      // Update Apollo cache as well
+      updateQuery(() => ({
+        messages: newMessages,
+      }));
+    },
+    [updateQuery],
+  );
+
+  const loadMoreAfter = useCallback(async () => {
+    if (!hasMoreAfter || loading) return;
+
+    // Get the newest message (last one in the list)
+    const newestMessage = messages[messages.length - 1];
+    if (!newestMessage) return;
+
+    try {
+      const result = await fetchMore({
+        variables: {
+          cursor: newestMessage.createdAt,
+          direction: CursorDirection.AFTER, // Load newer messages after this cursor
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult || !fetchMoreResult.messages) {
+            return previousResult;
+          }
+
+          // Merge existing messages with new newer messages
+          const newMessages = fetchMoreResult.messages;
+          const existingMessages = previousResult.messages || [];
+
+          // Remove duplicates and merge (new messages go AFTER existing ones)
+          const mergedMessages = [...existingMessages, ...newMessages].filter(
+            (msg, index, self) => self.findIndex(m => m.id === msg.id) === index,
+          );
+
+          return {
+            ...previousResult,
+            messages: mergedMessages,
+          };
+        },
+      });
+
+      if (result.data.messages.length < 20) {
+        setHasMoreAfter(false);
+      }
+    } catch (error) {
+      console.error('Failed to load newer messages:', error);
+    }
+  }, [messages, hasMoreAfter, loading, fetchMore]);
+
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
@@ -332,12 +392,15 @@ export const useMessages = (options: UseMessagesOptions) => {
     loading,
     error,
     hasMore,
+    hasMoreAfter,
     messagesEndRef,
     sendMessage,
     loadMore,
+    loadMoreAfter,
     scrollToBottom,
     editMessage,
     deleteMessage,
     loadMessageContext,
+    loadMessagesAround,
   };
 };

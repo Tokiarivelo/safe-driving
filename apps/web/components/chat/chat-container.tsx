@@ -48,11 +48,13 @@ export function ChatContainer({
     loading,
     error,
     hasMore,
+    hasMoreAfter,
     sendMessage,
     loadMore,
+    loadMoreAfter,
     editMessage,
     deleteMessage,
-    loadMessageContext,
+    loadMessagesAround,
   } = useMessages({ conversationId: selectedConversationId, rideId });
 
   const { addReaction, removeReaction } = useReactions();
@@ -100,13 +102,15 @@ export function ChatContainer({
           loading={loading}
           error={error}
           hasMore={hasMore}
+          hasMoreAfter={hasMoreAfter}
           connected={isConnected}
           onSendMessage={sendMessage}
           onLoadMore={loadMore}
+          onLoadMoreAfter={loadMoreAfter}
           onEditMessage={editMessage}
           onDeleteMessage={deleteMessage}
           onReactToMessage={handleReactToMessage}
-          onLoadMessageContext={loadMessageContext}
+          onLoadMessagesAround={loadMessagesAround}
         />
       </div>
     </div>

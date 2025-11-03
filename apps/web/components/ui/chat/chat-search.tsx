@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 interface ChatSearchProps {
   onClose: () => void;
-  onMessageClick: (messageId: string, messageDate: string) => void;
+  onMessageClick: (messageId: string) => void;
 }
 
 export const ChatSearch: React.FC<ChatSearchProps> = ({ onClose, onMessageClick }) => {
@@ -87,7 +87,7 @@ export const ChatSearch: React.FC<ChatSearchProps> = ({ onClose, onMessageClick 
               <div
                 key={message.id}
                 onClick={() => {
-                  onMessageClick(message.id, message.createdAt);
+                  onMessageClick(message.id);
                   onClose();
                 }}
                 className="p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"

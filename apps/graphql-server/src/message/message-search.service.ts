@@ -233,12 +233,35 @@ export class MessageSearchService extends AbstractSearchService {
         ? res.hits.total
         : (res.hits.total?.value ?? 0);
 
-    const hits: MessageSearchHit[] = res.hits.hits.map((hit) => ({
-      _index: hit._index,
-      _id: hit._id!,
-      _score: hit._score ?? 0,
-      _source: hit._source as MessageSource,
-    }));
+    // Calculer la position de chaque message dans la conversation
+    const hits: MessageSearchHit[] = await Promise.all(
+      res.hits.hits.map(async (hit) => {
+        const messageSource = hit._source as MessageSource;
+
+        // Calculer la position: compter les messages avant celui-ci dans la conversation
+        let position: number | undefined;
+        if (messageSource.conversationId) {
+          const countBefore = await this.prisma.message.count({
+            where: {
+              conversationId: messageSource.conversationId,
+              deleted: false,
+              createdAt: {
+                lt: messageSource.createdAt,
+              },
+            },
+          });
+          position = countBefore;
+        }
+
+        return {
+          _index: hit._index,
+          _id: hit._id!,
+          _score: hit._score ?? 0,
+          _source: messageSource,
+          position,
+        };
+      }),
+    );
 
     return { total, hits };
   }
