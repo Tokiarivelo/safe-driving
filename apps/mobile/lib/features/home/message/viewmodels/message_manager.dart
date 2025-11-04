@@ -195,7 +195,6 @@ class MessageManager {
         final participants =
             (conversation['participants'] as List<dynamic>?) ?? [];
 
-        // determine last message for this conversation from loaded caches
         final convId = conversation['id']?.toString() ?? '';
         final msgs =
             _conversationMessages[convId] ??
@@ -220,8 +219,6 @@ class MessageManager {
         return hasMatchingParticipant || hasMatchingContent;
       }).toList();
     }
-
-    // Filter by selected tab: 1 = unread, 2 = read, 3 = archived
     switch (selectedTab) {
       case 1:
         filtered = filtered.where((conversation) {
@@ -369,4 +366,8 @@ class MessageManager {
   void dispose() {
     _messageSubscription?.cancel();
   }
+}
+
+extension on MessageService {
+  subscribeToMessages(String conversationId) {}
 }

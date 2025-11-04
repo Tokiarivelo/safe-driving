@@ -1,23 +1,18 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:safe_driving/features/authentication/services/session_service.dart';
 import 'package:safe_driving/features/home/message/service/conversation_service.dart';
 import 'package:safe_driving/features/home/message/service/message_service.dart';
-import 'package:safe_driving/shared/state_management/service_locator.dart';
 
 class MessageViewmodels with ChangeNotifier {
   final ConversationService _conversationService;
   final MessageService _messageService;
   ConversationService get conversationService => _conversationService;
-  StreamSubscription<Map<String, dynamic>?>? _messageSubscription;
 
   List<dynamic> _conversations = [];
   List<dynamic> _messages = [];
   bool _isLoading = false;
   int _selectedTab = 0;
   String _searchQuery = '';
-
+  String? currentUserId;
   MessageViewmodels({
     required ConversationService conversationService,
     required MessageService messageService,
@@ -66,165 +61,124 @@ class MessageViewmodels with ChangeNotifier {
   List<dynamic> getMessagesFor(String conversationId) =>
       _messagesByConversation[conversationId] ?? [];
 
-  // Future<void> loadConversations() async {
-  //   _setLoading(true);
-  //   try {
-  //     _conversations = await _conversationService.getMyConversations();
-
-  //     notifyListeners();
-  //   } catch (e) {
-  //     print('Erreur chargement conversations: $e');
-  //   } finally {
-  //     _setLoading(false);
-  //   }
-  // }
-
   Future<void> loadConversations() async {
     _setLoading(true);
     try {
-      print('🔄 Début du chargement des conversations...');
-
-      // DEBUG: Vérifier la configuration GraphQL
-      await _conversationService.debugGraphQLSetup();
-
-      // Essayer d'abord la version simple
-      final conversations = await _conversationService
-          .getMyConversationsSimple();
-
-      if (conversations.isEmpty) {
-        print(
-          'ℹ️ Aucune conversation avec la requête simple, essai complet...',
-        );
-        final fullConversations = await _conversationService
-            .getMyConversations();
-        _conversations = fullConversations;
-      } else {
-        _conversations = conversations;
-      }
-
-      print('✅ ${_conversations.length} conversations chargées');
+      _conversations = await _conversationService.getConversations() ?? [];
       notifyListeners();
     } catch (e) {
-      print('❌ Erreur chargement conversations: $e');
-      _conversations = [];
-      notifyListeners();
+      print('Erreur chargement conversations: $e');
     } finally {
       _setLoading(false);
     }
   }
 
-  // Future<void> loadConversations() async {
+  Future<void> loadMessages({required String conversationId}) async {
+    _setLoading(true);
+    try {
+      print('🔄 loadMessages appelé pour: $conversationId');
+      final fetched = await _messageService.getMessages(conversationId);
+      print('📨 Messages récupérés du service: ${fetched?.length}');
+
+      if (fetched != null) {
+        for (var msg in fetched) {
+          print('   - ${msg['content']} (id: ${msg['id']})');
+        }
+      }
+
+      _messagesByConversation[conversationId] = fetched ?? [];
+      print(
+        '💾 Messages stockés: ${_messagesByConversation[conversationId]?.length}',
+      );
+      notifyListeners();
+    } catch (e) {
+      print('❌ Erreur chargement messages: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // Future<void> loadMessages({required String conversationId}) async {
   //   _setLoading(true);
   //   try {
-  //     print('🔄 Début du chargement des conversations...');
-
-  //     // Essayer d'abord la version simple
-  //     final conversations = await _conversationService.getMyConversations();
-
-  //     if (conversations.isEmpty) {
-  //       print(
-  //         'ℹ️ Aucune conversation avec la requête simple, essai complet...',
-  //       );
-  //       final fullConversations = await _conversationService
-  //           .getMyConversations();
-  //       _conversations = fullConversations;
-  //     } else {
-  //       _conversations = conversations;
+  //     final fetched = await _messageService.getMessages(conversationId);
+  //     if (fetched != null) {
+  //       final mappedMessages = fetched.map(_mapMessage).toList();
+  //       // _messagesByConversation[conversationId] = mappedMessages;
+  //       _messagesByConversation[conversationId] = (fetched ?? [])
+  //           .map(_mapMessage)
+  //           .toList();
+  //       notifyListeners();
   //     }
-
-  //     print('✅ ${_conversations.length} conversations chargées');
-  //     notifyListeners();
   //   } catch (e) {
-  //     print('❌ Erreur chargement conversations: $e');
-  //     _conversations = []; // Assurer que la liste est vide en cas d'erreur
-  //     notifyListeners();
+  //     print('Erreur chargement messages: $e');
   //   } finally {
   //     _setLoading(false);
   //   }
   // }
 
-  Future<void> loadMessages(String conversationId) async {
-    if (_messagesByConversation.containsKey(conversationId)) {
-      _messages = _messagesByConversation[conversationId]!;
-      notifyListeners();
-    }
-
-    try {
-      final fetched = await _messageService.getMessages(conversationId);
-
-      if (fetched != null && fetched.isNotEmpty) {
-        final ordered = fetched.reversed.toList();
-        final current = _messagesByConversation[conversationId];
-        if (current == null || current.length != ordered.length) {
-          _messagesByConversation[conversationId] = ordered;
-          _messages = ordered;
-          notifyListeners();
-        }
-      }
-    } catch (e) {
-      print('Erreur lors du chargement des messages : $e');
-    }
+  Map<String, dynamic> _mapMessage(dynamic rawMessage) {
+    return {
+      'id': rawMessage['id'],
+      'conversationId': rawMessage['conversationId'],
+      'content': rawMessage['content'],
+      'createdAt': rawMessage['createdAt'],
+      'sender': {
+        'id': rawMessage['sender']['id'],
+        'firstName': rawMessage['sender']['firstName'],
+        'lastName': rawMessage['sender']['lastName'],
+        'email': rawMessage['sender']['email'],
+      },
+    };
   }
 
-  Future<String> loadCurrentUserId() async {
-    try {
-      final session = ServiceLocator.instance.get<SessionService>();
-      await session.loadUserId();
-      final userId = session.userId;
-      if (userId == null) {
-        print('❌ Aucun utilisateur connecté trouvé');
-        return '';
+  // List<dynamic> getMessagesForConversation(String conversationId) {
+  //   return _messagesByConversation[conversationId] ?? [];
+  // }
+  // Dans MessageViewmodels
+  List<dynamic> getMessagesForConversation(String conversationId) {
+    final messages = _messagesByConversation[conversationId] ?? [];
+    print('📂 getMessagesForConversation:');
+    print('   Conversation: $conversationId');
+    print('   Messages trouvés: ${messages.length}');
+    print('   Toutes les conversations: ${_messagesByConversation.keys}');
+
+    if (messages.isNotEmpty) {
+      for (var msg in messages) {
+        print('     - ${msg['content']} (sender: ${msg['sender']?['id']})');
       }
-      print('✅ Utilisateur connecté: $userId');
-      return userId;
-    } catch (e) {
-      print('❌ Erreur lors du chargement de l\'utilisateur: $e');
-      return '';
     }
+
+    return messages;
   }
 
   Future<void> sendMessage({
     required String conversationId,
     required String content,
   }) async {
+    if (content.trim().isEmpty) return;
+
     try {
-      final String currentUserId = 'c27b034e-241d-46a4-bfc2-4d8f226d0e63';
-      final tempMessage = {
-        'id': 'temp-${DateTime.now().millisecondsSinceEpoch}',
-        'conversationId': conversationId,
-        'senderId': currentUserId,
-        'content': content,
-        'createdAt': DateTime.now().toIso8601String(),
-        'sender': {'id': currentUserId, 'firstName': 'Moi', 'lastName': ''},
-      };
-      final messages = _messagesByConversation[conversationId] ?? [];
-      messages.add(tempMessage);
-      _messagesByConversation[conversationId] = messages;
-      _messages = List.from(messages);
-      notifyListeners();
       final sentMessage = await _messageService.sendMessage(
         content: content,
         conversationId: conversationId,
       );
-      final index = messages.indexWhere((m) => m['id'] == tempMessage['id']);
-      if (index != -1) {
-        messages[index] = sentMessage;
-      } else {
-        messages.add(sentMessage);
-      }
 
-      _messagesByConversation[conversationId] = messages;
-      _messages = List.from(messages);
-      notifyListeners();
+      if (sentMessage != null) {
+        final mapped = _mapMessage(sentMessage);
+        final messages = _messagesByConversation[conversationId] ?? [];
+        messages.add(mapped);
+        _messagesByConversation[conversationId] = messages;
+        notifyListeners();
+      }
     } catch (e) {
       print('Erreur envoi message: $e');
     }
   }
 
-  @override
-  void dispose() {
-    _messageSubscription?.cancel();
-    super.dispose();
+  void setCurrentUserId(String id) {
+    currentUserId = id;
+    notifyListeners();
   }
 
   void selectTab(int index) {
@@ -244,26 +198,5 @@ class MessageViewmodels with ChangeNotifier {
   void _setLoading(bool loading) {
     _isLoading = loading;
     notifyListeners();
-  }
-
-  void listenToNewMessages(String conversationId) {
-    _messageSubscription?.cancel();
-
-    _messageSubscription = _messageService
-        .subscribeToMessages(conversationId)
-        .listen((newMessage) {
-          if (newMessage == null) return;
-
-          final list = _messagesByConversation[conversationId] ?? [];
-          final exists = list.any((msg) => msg['id'] == newMessage['id']);
-
-          if (!exists) {
-            list.add(newMessage);
-            _messagesByConversation[conversationId] = list;
-            _messages = List.from(list);
-            notifyListeners();
-            print('Message ajouté automatiquement depuis la subscription.');
-          }
-        });
   }
 }

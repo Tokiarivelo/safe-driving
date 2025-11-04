@@ -1,5 +1,6 @@
 import 'package:safe_driving/features/home/message/service/conversation_service.dart';
 import 'package:safe_driving/features/home/message/service/message_service.dart';
+import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
 import 'package:safe_driving/shared/state_management/modules/core_module.dart';
 import 'package:safe_driving/shared/state_management/modules/graphql_module.dart';
 import 'package:safe_driving/features/authentication/di.dart';
@@ -117,7 +118,6 @@ class ServiceLocator {
     registerOnboardingDriverModule(this);
     registerOnboardingUserModule(this);
     registerMapModule(this);
-
     registerLazySingleton<ConversationService>(() {
       final client = get<GraphQLClient>();
       return ConversationService(client: client);
@@ -126,6 +126,13 @@ class ServiceLocator {
     registerLazySingleton<MessageService>(() {
       final client = get<GraphQLClient>();
       return MessageService(client: client);
+    });
+
+    registerLazySingleton<MessageViewmodels>(() {
+      return MessageViewmodels(
+        conversationService: get<ConversationService>(),
+        messageService: get<MessageService>(),
+      );
     });
   }
 }

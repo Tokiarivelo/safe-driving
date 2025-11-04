@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_driving/features/authentication/services/session_service.dart';
 import 'package:safe_driving/features/authentication/viewmodels/auth_view_model.dart';
+import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
+import 'package:safe_driving/shared/state_management/service_locator.dart';
 import '../../viewmodels/home_view_model.dart';
 import '../widgets/homeWidgets/home_content.dart';
 import '../widgets/homeWidgets/sidebar_button.dart';
@@ -16,6 +19,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isSidebarVisible = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _initUser();
+  }
+
+  Future<void> _initUser() async {
+    final sessionService = SessionService();
+    final userId = await sessionService.getUserId();
+
+    if (userId != null) {
+      final viewModel = ServiceLocator.instance.get<MessageViewmodels>();
+      viewModel.setCurrentUserId(userId);
+      await viewModel.loadConversations();
+    }
+  }
+
   void _handleProfileTap() {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -29,11 +49,20 @@ class _HomeScreenState extends State<HomeScreen> {
     debugPrint('Menu item selected: $index');
   }
 
-  void _handleLogout() {
-    debugPrint('Déconnexion demandée');
-    setState(() {
-      _isSidebarVisible = false;
-    });
+  void _handleLogout() async {
+    debugPrint('Déconnexion en cours...');
+
+    // final sessionService = SessionService();
+    // final viewModel = ServiceLocator.instance.get<MessageViewmodels>();
+
+    // viewModel.clearData();
+    // await sessionService.clear();
+    // await sessionService.initialize();
+    // if (mounted) {
+    //   Navigator.pushNamedAndRemoveUntil(context, '/auth', (route) => false);
+    // }
+
+    debugPrint('✅ Déconnexion réussie et données nettoyées');
   }
 
   void _openSidebar() {
