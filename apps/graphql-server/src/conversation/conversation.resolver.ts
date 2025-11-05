@@ -24,6 +24,11 @@ import {
   UserConversation,
 } from '../dtos/conversation/conversation.output';
 import { ConversationSearchResponse } from '../dtos/conversation/conversation-search.output';
+import {
+  ConversationAttachmentsResponse,
+  ConversationAttachmentsSummary,
+  FileTypeFilter,
+} from '../dtos/conversation/conversation-attachments.output';
 import { RedisService } from '../redis/redis.service';
 import { ConversationService } from './conversation.service';
 import { ConversationSearchService } from './conversation-search.service';
@@ -177,6 +182,49 @@ export class ConversationResolver {
       refresh: true,
     });
     return true;
+  }
+
+  // ATTACHMENTS QUERIES
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => ConversationAttachmentsResponse, {
+    description:
+      'Get all attachments (files, links, rides) from a conversation with filtering',
+  })
+  async conversationAttachments(
+    @CurrentUser() user: User,
+    @Args('conversationId') conversationId: string,
+    @Args('filter', {
+      type: () => FileTypeFilter,
+      nullable: true,
+      defaultValue: FileTypeFilter.ALL,
+      description: 'Filter attachments by type (ALL, IMAGES, VIDEOS, etc.)',
+    })
+    filter: FileTypeFilter,
+    @Args('limit', { type: () => Int, defaultValue: 20 })
+    limit: number,
+    @Args('cursor', { nullable: true })
+    cursor?: string,
+  ): Promise<ConversationAttachmentsResponse> {
+    return this.conversationService.getConversationAttachments(
+      conversationId,
+      user.id,
+      { filter, limit, cursor },
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => ConversationAttachmentsSummary, {
+    description: 'Get summary of all attachment types in a conversation',
+  })
+  async conversationAttachmentsSummary(
+    @CurrentUser() user: User,
+    @Args('conversationId') conversationId: string,
+  ): Promise<ConversationAttachmentsSummary> {
+    return this.conversationService.getConversationAttachmentsSummary(
+      conversationId,
+      user.id,
+    );
   }
 
   // FIELD RESOLVERS (if needed for complex fields)

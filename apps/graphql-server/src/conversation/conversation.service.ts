@@ -18,6 +18,12 @@ import {
   UserConversationsResponse,
 } from '../dtos/conversation/conversation.output';
 import { ConversationSearchService } from './conversation-search.service';
+import {
+  ConversationAttachment,
+  ConversationAttachmentsResponse,
+  ConversationAttachmentsSummary,
+  FileTypeFilter,
+} from '../dtos/conversation/conversation-attachments.output';
 
 @Injectable()
 export class ConversationService {
@@ -497,5 +503,281 @@ export class ConversationService {
     await this.redisService
       .getPubSub()
       .publish(`conversation_${participant.conversationId}`, payload);
+  }
+
+  /**
+   * Get all attachments (files, links, rides) from a conversation
+   * with filtering by type and pagination
+   */
+  async getConversationAttachments(
+    conversationId: string,
+    userId: string,
+    options?: {
+      filter?: FileTypeFilter;
+      limit?: number;
+      cursor?: string;
+    },
+  ): Promise<ConversationAttachmentsResponse> {
+    // Verify user is participant
+    await this.ensureUserIsParticipant(conversationId, userId);
+
+    const filter = options?.filter || FileTypeFilter.ALL;
+    const limit = options?.limit || 20;
+    const cursor = options?.cursor;
+
+    // Build where clause based on filter
+    const whereClause: any = {
+      message: {
+        conversationId,
+        deleted: false,
+      },
+    };
+
+    // Apply type filter
+    if (filter !== FileTypeFilter.ALL) {
+      if (filter === FileTypeFilter.LINKS) {
+        whereClause.type = 'LINK';
+      } else if (filter === FileTypeFilter.RIDES) {
+        whereClause.type = 'RIDE';
+      } else if (filter === FileTypeFilter.IMAGES) {
+        whereClause.AND = [
+          { type: 'FILE' },
+          {
+            file: {
+              contentType: {
+                startsWith: 'image/',
+              },
+            },
+          },
+        ];
+      } else if (filter === FileTypeFilter.VIDEOS) {
+        whereClause.AND = [
+          { type: 'FILE' },
+          {
+            file: {
+              contentType: {
+                startsWith: 'video/',
+              },
+            },
+          },
+        ];
+      } else if (filter === FileTypeFilter.AUDIO) {
+        whereClause.AND = [
+          { type: 'FILE' },
+          {
+            file: {
+              contentType: {
+                startsWith: 'audio/',
+              },
+            },
+          },
+        ];
+      } else if (filter === FileTypeFilter.DOCUMENTS) {
+        whereClause.AND = [
+          { type: 'FILE' },
+          {
+            file: {
+              contentType: {
+                not: {
+                  startsWith: 'image/',
+                },
+              },
+            },
+          },
+          {
+            file: {
+              contentType: {
+                not: {
+                  startsWith: 'video/',
+                },
+              },
+            },
+          },
+          {
+            file: {
+              contentType: {
+                not: {
+                  startsWith: 'audio/',
+                },
+              },
+            },
+          },
+        ];
+      }
+    }
+
+    // Pagination
+    const take = limit + 1; // Take one extra to check if there's a next page
+    const cursorClause = cursor ? { id: cursor } : undefined;
+
+    const attachments = await this.prisma.attachment.findMany({
+      where: whereClause,
+      include: {
+        file: true,
+        message: {
+          include: {
+            sender: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+        },
+        ride: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take,
+      cursor: cursorClause ? { id: cursorClause.id } : undefined,
+      skip: cursor ? 1 : 0,
+    });
+
+    const hasNextPage = attachments.length > limit;
+    const resultAttachments = hasNextPage
+      ? attachments.slice(0, -1)
+      : attachments;
+    const nextCursor = hasNextPage
+      ? resultAttachments[resultAttachments.length - 1].id
+      : null;
+
+    // Get total count
+    const total = await this.prisma.attachment.count({
+      where: whereClause,
+    });
+
+    // Map to response format
+    const mappedAttachments: ConversationAttachment[] = resultAttachments.map(
+      (att) => ({
+        id: att.id,
+        messageId: att.messageId,
+        type: att.type,
+        file: att.file,
+        url: att.url,
+        linkTitle: att.linkTitle,
+        linkDesc: att.linkDesc,
+        linkThumbnail: att.linkThumbnail,
+        linkMeta: att.linkMeta,
+        rideId: att.rideId,
+        createdAt: att.createdAt,
+        senderName: att.message?.sender
+          ? `${att.message.sender.firstName} ${att.message.sender.lastName || ''}`.trim()
+          : undefined,
+        messageCreatedAt: att.message?.createdAt,
+      }),
+    );
+
+    return {
+      attachments: mappedAttachments,
+      total,
+      hasNextPage,
+      cursor: nextCursor,
+    };
+  }
+
+  /**
+   * Get summary of all attachment types in a conversation
+   */
+  async getConversationAttachmentsSummary(
+    conversationId: string,
+    userId: string,
+  ): Promise<ConversationAttachmentsSummary> {
+    // Verify user is participant
+    await this.ensureUserIsParticipant(conversationId, userId);
+
+    const baseWhere = {
+      message: {
+        conversationId,
+        deleted: false,
+      },
+    };
+
+    // Count by main types
+    const [totalLinks, totalRides, filesData, mimeTypeCounts] =
+      await Promise.all([
+        // Count links
+        this.prisma.attachment.count({
+          where: {
+            ...baseWhere,
+            type: 'LINK',
+          },
+        }),
+
+        // Count rides
+        this.prisma.attachment.count({
+          where: {
+            ...baseWhere,
+            type: 'RIDE',
+          },
+        }),
+
+        // Get all files with contentType
+        this.prisma.attachment.findMany({
+          where: {
+            ...baseWhere,
+            type: 'FILE',
+          },
+          include: {
+            file: {
+              select: {
+                contentType: true,
+              },
+            },
+          },
+        }),
+
+        // Group by contentType
+        this.prisma.$queryRaw<Array<{ contentType: string; count: bigint }>>`
+          SELECT f."contentType", COUNT(*) as count
+          FROM "Attachment" a
+          INNER JOIN "Message" m ON a."messageId" = m.id
+          INNER JOIN "File" f ON a."fileId" = f.id
+          WHERE m."conversationId" = ${conversationId}
+            AND m.deleted = false
+            AND a.type = 'FILE'
+          GROUP BY f."contentType"
+          ORDER BY count DESC
+        `,
+      ]);
+
+    // Categorize files
+    let totalImages = 0;
+    let totalVideos = 0;
+    let totalAudio = 0;
+    let totalDocuments = 0;
+
+    filesData.forEach((att) => {
+      const contentType = att.file?.contentType || '';
+      if (contentType.startsWith('image/')) {
+        totalImages++;
+      } else if (contentType.startsWith('video/')) {
+        totalVideos++;
+      } else if (contentType.startsWith('audio/')) {
+        totalAudio++;
+      } else {
+        totalDocuments++;
+      }
+    });
+
+    const totalFiles = filesData.length;
+
+    // Map contentType counts
+    const byMimeType = mimeTypeCounts.map((row) => ({
+      type: row.contentType,
+      count: Number(row.count),
+    }));
+
+    return {
+      totalFiles,
+      totalImages,
+      totalVideos,
+      totalDocuments,
+      totalAudio,
+      totalLinks,
+      totalRides,
+      byMimeType,
+    };
   }
 }
