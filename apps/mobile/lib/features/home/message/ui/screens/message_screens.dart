@@ -126,19 +126,30 @@ class _MessageScreenState extends State<MessageScreen> {
         return ConversationTile(
           conversation: conversation,
           otherParticipant: safeParticipant,
-          lastMessage: lastMessage, // Passe le lastMessage CORRECT
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => MessageDetailScreen(
-                  conversation: conversation,
-                  viewModel: viewModel,
-                ),
-              ),
-            );
-          },
+          lastMessage: lastMessage,
+          onTap: onTap,
+          onDelete: (convId) => viewModel.deleteConversation(convId),
+          onArchive: (convId) => viewModel.archiveConversation(convId),
+          onRename: (convId, newName) =>
+              viewModel.updateConversationTitle(convId, newName),
         );
+
+        // return ConversationTile(
+        //   conversation: conversation,
+
+        //   lastMessage: lastMessage, // Passe le lastMessage CORRECT
+        //   onTap: () {
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (_) => MessageDetailScreen(
+        //           conversation: conversation,
+        //           viewModel: viewModel,
+        //         ),
+        //       ),
+        //     );
+        //   },
+        // );
       },
     );
   }

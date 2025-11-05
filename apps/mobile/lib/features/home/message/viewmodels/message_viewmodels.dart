@@ -98,25 +98,6 @@ class MessageViewmodels with ChangeNotifier {
     }
   }
 
-  // Future<void> loadMessages({required String conversationId}) async {
-  //   _setLoading(true);
-  //   try {
-  //     final fetched = await _messageService.getMessages(conversationId);
-  //     if (fetched != null) {
-  //       final mappedMessages = fetched.map(_mapMessage).toList();
-  //       // _messagesByConversation[conversationId] = mappedMessages;
-  //       _messagesByConversation[conversationId] = (fetched ?? [])
-  //           .map(_mapMessage)
-  //           .toList();
-  //       notifyListeners();
-  //     }
-  //   } catch (e) {
-  //     print('Erreur chargement messages: $e');
-  //   } finally {
-  //     _setLoading(false);
-  //   }
-  // }
-
   Map<String, dynamic> _mapMessage(dynamic rawMessage) {
     return {
       'id': rawMessage['id'],
@@ -132,10 +113,6 @@ class MessageViewmodels with ChangeNotifier {
     };
   }
 
-  // List<dynamic> getMessagesForConversation(String conversationId) {
-  //   return _messagesByConversation[conversationId] ?? [];
-  // }
-  // Dans MessageViewmodels
   List<dynamic> getMessagesForConversation(String conversationId) {
     final messages = _messagesByConversation[conversationId] ?? [];
     print('📂 getMessagesForConversation:');
@@ -173,6 +150,74 @@ class MessageViewmodels with ChangeNotifier {
       }
     } catch (e) {
       print('Erreur envoi message: $e');
+    }
+  }
+
+  Future<void> deleteConversation(String conversationId) async {
+    try {
+      final success = await _conversationService.deleteConversation(
+        conversationId,
+      );
+
+      if (success) {
+        _conversations.removeWhere((conv) => conv['id'] == conversationId);
+        _messagesByConversation.remove(conversationId);
+        notifyListeners();
+
+        print('Conversation supprimée localement: $conversationId');
+      }
+    } catch (e) {
+      print('Erreur suppression conversation: $e');
+    }
+  }
+
+  Future<void> archiveConversation(String conversationId) async {
+    try {
+      final success = await _conversationService.archiveConversation(
+        conversationId,
+      );
+
+      if (success) {
+        final conversation = _conversations.firstWhere(
+          (conv) => conv['id'] == conversationId,
+          orElse: () => {},
+        );
+
+        if (conversation.isNotEmpty) {
+          conversation['isArchived'] = true;
+          notifyListeners();
+          print('Conversation archivée: $conversationId');
+        }
+      }
+    } catch (e) {
+      print('Erreur archivage conversation: $e');
+    }
+  }
+
+  Future<void> updateConversationTitle(
+    String conversationId,
+    String newTitle,
+  ) async {
+    try {
+      final updated = await _conversationService.updateConversation(
+        conversationId: conversationId,
+        input: {'title': newTitle},
+      );
+
+      if (updated != null) {
+        final conversation = _conversations.firstWhere(
+          (conv) => conv['id'] == conversationId,
+          orElse: () => {},
+        );
+
+        if (conversation.isNotEmpty) {
+          conversation['title'] = newTitle;
+          notifyListeners();
+          print('Titre mis à jour: $newTitle');
+        }
+      }
+    } catch (e) {
+      print('Erreur update titre: $e');
     }
   }
 

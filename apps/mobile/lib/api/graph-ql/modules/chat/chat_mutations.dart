@@ -81,3 +81,24 @@ const String createConversationInput = r'''
     rideId: String
   }
 ''';
+
+const String deleteConversationMutation = r''' 
+  mutation DeleteConversation(\$conversationId: ID!){
+    deleteConversation(conversationId: \$conversationId){
+      id
+      success
+    }
+  }
+''';
+
+const String updateConversationMutation = r''' 
+  mutation UpdateConversation(\$conversationId: ID!, \$input: UpdateConversationInput!){
+    updateConversation(conversationId: \$conversationId, input: \$input){
+      id
+      title
+      type
+      isArchived
+      updatedAt
+    }
+  }
+''';
