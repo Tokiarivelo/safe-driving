@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
+import 'package:safe_driving/features/authentication/services/session_service.dart';
+import 'package:safe_driving/features/home/message/ui/screens/conversation_tile.dart';
 import 'package:safe_driving/features/home/message/ui/screens/newMessageScreen.dart';
 import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
 import 'message_detail_screen.dart';
@@ -13,21 +15,25 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-  String? _currentUserId;
-
   @override
   void initState() {
     super.initState();
-    _loadCurrentUser();
-  }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final viewModel = Provider.of<MessageViewmodels>(context, listen: false);
 
-  Future<void> _loadCurrentUser() async {
-    final messageViewModel = Provider.of<MessageViewmodels>(
-      context,
-      listen: false,
-    );
-    _currentUserId = await messageViewModel.loadCurrentUserId();
-    messageViewModel.loadConversations();
+      final sessionService = SessionService();
+      final currentId = await sessionService.getUserId();
+      if (currentId != null) {
+        viewModel.setCurrentUserId(currentId);
+      }
+
+      await viewModel.loadConversations();
+
+      if (viewModel.conversations.isNotEmpty) {
+        final firstConversation = viewModel.conversations.first;
+        await viewModel.loadMessages(conversationId: firstConversation['id']);
+      }
+    });
   }
 
   @override
@@ -56,27 +62,71 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   Widget _buildConversationsList(MessageViewmodels viewModel) {
+    final currentUserId = viewModel.currentUserId;
+
     return ListView.builder(
       padding: EdgeInsets.zero,
       itemCount: viewModel.conversations.length,
       itemBuilder: (context, index) {
         final conversation = viewModel.conversations[index];
-        final participants = conversation['participants'] as List? ?? [];
+        final participants = (conversation['participants'] as List?) ?? [];
 
-        // Trouver l'autre participant (pas l'utilisateur courant)
-        final otherParticipant = participants.firstWhere(
-          (p) => p['user']?['id'] != _currentUserId,
-          orElse: () => participants.isNotEmpty ? participants.first : {},
+        // RÉCUPÉRATION CORRECTE du dernier message
+        final lastMessage =
+            conversation['lastMessage'] ??
+            conversation['latestMessage'] ??
+            conversation['messages']?.last;
+
+        print('🔍 Conversation ${conversation['id']}');
+        print('   LastMessage disponible: $lastMessage');
+
+        // FILTRE CRITIQUE: Vérifie si l'utilisateur courant est dans les participants
+        bool isUserInConversation = false;
+        Map<String, dynamic>? otherParticipant;
+
+        for (var p in participants) {
+          if (p is Map && p['user'] != null) {
+            final user = p['user'];
+            final userId = user['id']?.toString();
+
+            if (userId == currentUserId) {
+              isUserInConversation = true;
+              print('   ✅ User $currentUserId est dans cette conversation');
+            } else if (userId != null && userId != currentUserId) {
+              otherParticipant = Map<String, dynamic>.from(user);
+            }
+          }
+        }
+
+        // N'affiche QUE si l'utilisateur courant participe à la conversation
+        if (!isUserInConversation) {
+          print(
+            '   ❌ User $currentUserId N\'EST PAS dans cette conversation - IGNORÉ',
+          );
+          return SizedBox.shrink(); // Cache complètement
+        }
+
+        // Si aucun autre participant n'est trouvé, utilise le premier
+        if (otherParticipant == null && participants.isNotEmpty) {
+          final firstUser = participants.first['user'];
+          if (firstUser != null) {
+            otherParticipant = Map<String, dynamic>.from(firstUser);
+          }
+        }
+
+        // Fallback si toujours null
+        final safeParticipant =
+            otherParticipant ??
+            {'firstName': 'Utilisateur', 'lastName': '', 'id': 'unknown'};
+
+        print(
+          '   👥 Affiche conversation avec: ${safeParticipant['firstName']}',
         );
-
-        final messages = conversation['messages'] as List? ?? [];
-        final lastMessage = messages.isNotEmpty ? messages.last : null;
 
         return ConversationTile(
           conversation: conversation,
-          otherParticipant:
-              otherParticipant['user'] ?? {}, // Accéder à l'objet user
-          lastMessage: lastMessage,
+          otherParticipant: safeParticipant,
+          lastMessage: lastMessage, // Passe le lastMessage CORRECT
           onTap: () {
             Navigator.push(
               context,
@@ -93,7 +143,6 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 
-  // Le reste de votre code reste inchangé...
   Widget _buildCompleteHeader(
     BuildContext context,
     MessageViewmodels viewModel,
@@ -300,66 +349,5 @@ class _MessageScreenState extends State<MessageScreen> {
     ).then((_) {
       viewModel.searchMessages('');
     });
-  }
-}
-
-class ConversationTile extends StatelessWidget {
-  final dynamic conversation;
-  final dynamic otherParticipant;
-  final dynamic lastMessage;
-  final VoidCallback onTap;
-
-  const ConversationTile({
-    super.key,
-    required this.conversation,
-    required this.otherParticipant,
-    required this.lastMessage,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final name =
-        '${otherParticipant['firstName'] ?? 'Utilisateur'} '
-                '${otherParticipant['lastName'] ?? ''}'
-            .trim();
-
-    final lastMsg = lastMessage?['content'] ?? 'Aucun message';
-    final createdAt =
-        lastMessage?['createdAt'] ?? conversation['updatedAt'] ?? '';
-
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: AppColors.color1,
-        child: Text(
-          name.isNotEmpty ? name[0].toUpperCase() : 'U',
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
-      title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text(lastMsg, maxLines: 1, overflow: TextOverflow.ellipsis),
-      trailing: Text(
-        _formatDate(createdAt),
-        style: const TextStyle(fontSize: 12, color: Colors.grey),
-      ),
-      onTap: onTap,
-    );
-  }
-
-  String _formatDate(String? dateString) {
-    if (dateString == null || dateString.isEmpty) return '';
-    try {
-      final date = DateTime.parse(dateString).toLocal();
-      final now = DateTime.now();
-      if (now.difference(date).inDays == 0) {
-        return '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
-      } else if (now.difference(date).inDays == 1) {
-        return 'Hier';
-      } else {
-        return '${date.day}/${date.month}';
-      }
-    } catch (_) {
-      return '';
-    }
   }
 }

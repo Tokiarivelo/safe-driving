@@ -32,7 +32,7 @@ class MessageService {
 
       final data = result.data?['sendMessage'];
       print('Message envoyé: $data');
-      print('Résultat brut getMessages: ${result.data}');
+      print('🧾 Résultat brut getMessages: ${result.data}');
       return data;
     } catch (e) {
       print('Erreur envoi message: $e');
@@ -40,6 +40,7 @@ class MessageService {
     }
   }
 
+  // Dans message_service.dart - Modifiez la méthode getMessages
   Future<List<dynamic>?> getMessages(String conversationId) async {
     try {
       final QueryOptions options = QueryOptions(
@@ -55,46 +56,48 @@ class MessageService {
         return null;
       }
 
-      print('Données messages reçues: ${result.data}');
-      return result.data?['messages'];
+      final messages = result.data?['messages'];
+
+      // DEBUG: Afficher les détails des messages
+      if (messages != null) {
+        for (var message in messages) {
+          print('📨 Message reçu:');
+          print('   ID: ${message['id']}');
+          print('   Contenu: ${message['content']}');
+          print('   Sender ID: ${message['sender']?['id']}');
+          print(
+            '   Sender Name: ${message['sender']?['firstName']} ${message['sender']?['lastName']}',
+          );
+          print('   Conversation ID: ${message['conversationId']}');
+        }
+      }
+
+      return messages;
     } catch (e) {
       print('Erreur récupération messages: $e');
       return null;
     }
   }
 
-  Stream<Map<String, dynamic>?> subscribeToMessages(String conversationId) {
-    try {
-      final stream = client.subscribe(
-        SubscriptionOptions(
-          document: gql(newMessageSubscription),
-          variables: {'conversationId': conversationId},
-        ),
-      );
+  // Future<List<dynamic>?> getMessages(String conversationId) async {
+  //   try {
+  //     final QueryOptions options = QueryOptions(
+  //       document: gql(getMessagesQuery),
+  //       variables: {'conversationId': conversationId},
+  //       fetchPolicy: FetchPolicy.networkOnly,
+  //     );
 
-      return stream.map((result) {
-        if (result.hasException) {
-          print('Erreur subscription: ${result.exception}');
-          return null;
-        }
+  //     final QueryResult result = await client.query(options);
 
-        final newMessage = result.data?['newMessage'];
-        if (newMessage != null) {
-          print('Nouveau message reçu via subscription: $newMessage');
-          if (newMessage['sender'] == null) {
-            newMessage['sender'] = {
-              'id': newMessage['senderId'],
-              'firstName': 'Utilisateur',
-              'lastName': '',
-              'email': '',
-            };
-          }
-        }
-        return newMessage as Map<String, dynamic>?;
-      });
-    } catch (e) {
-      print('Erreur subscription: $e');
-      return const Stream.empty();
-    }
-  }
+  //     if (result.hasException) {
+  //       print('Erreur récupération messages: ${result.exception}');
+  //       return null;
+  //     }
+
+  //     return result.data?['messages'];
+  //   } catch (e) {
+  //     print('Erreur récupération messages: $e');
+  //     return null;
+  //   }
+  // }
 }

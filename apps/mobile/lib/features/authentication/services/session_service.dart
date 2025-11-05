@@ -64,6 +64,20 @@ class SessionService {
     await prefs.setString(_refreshTokenKey, refreshToken);
   }
 
+  Future<String?> getUserId() async {
+    if (_userId != null && _userId!.isNotEmpty) {
+      print('UserID récupéré depuis la mémoire: $_userId');
+      return _userId;
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    final storedId = prefs.getString(_userIdKey);
+    _userId = storedId;
+
+    print('UserID récupéré depuis SharedPreferences: $_userId');
+    return storedId;
+  }
+
   Future<void> saveTokens(String token, String refreshToken) async {
     await Future.wait([saveToken(token), saveRefreshToken(refreshToken)]);
   }

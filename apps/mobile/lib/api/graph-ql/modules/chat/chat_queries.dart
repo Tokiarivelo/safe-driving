@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 const String getMessagesQuery = r'''
 query GetMessages($conversationId: String!) {
   messages(conversationId: $conversationId) {
@@ -16,24 +14,6 @@ query GetMessages($conversationId: String!) {
     }
   }
 }
-''';
-
-const String newMessageSubscription = r''' 
-  subscription NewMessage($conversationId: String!) {
-    newMessage(conversationId: $conversationId) {
-      id
-      content
-      senderId
-      conversationId
-      createdAt
-      sender {
-        id
-        firstName
-        lastName
-        email
-      }
-    }
-  }
 ''';
 
 const String getConversationsQuery = r'''
@@ -57,53 +37,26 @@ query GetConversations {
 
 const String UserConversations = r''' 
   query UserConversations($limit: Int, $cursor: String) {
-  userConversations(limit: $limit, cursor: $cursor) {
-    conversations {
-      id
-      title
-      type
-      lastMessage {
+    userConversations(limit: $limit, cursor: $cursor) {
+      conversations {
         id
-        content
-        createdAt
-        senderId
-      }
-      participants {
-        user {
-          id
-          firstName
-          lastName
-          email
+        title
+        type
+        participants {
+          user {
+            id
+            firstName
+            lastName
+          }
         }
       }
-    }
-    hasNextPage
-    cursor
-  }
-}
-
-
-''';
-const String GetUserConversations = r''' 
- query GetUserConversations($userId: String!) {
-  userConversations(userId: $userId) {
-    id
-    participants {
-      id
-      firstName
-      lastName
-      email
-    }
-    messages(orderBy: { createdAt: desc }, take: 1) {
-      id
-      content
-      createdAt
-      senderId
+      hasNextPage
+      cursor
     }
   }
-}
 
 ''';
+
 const String getUnreadCountQuery = r'''
 query GetUnreadCount($userId: String!, $conversationId: String, $rideId: String) {
   unreadCount(userId: $userId, conversationId: $conversationId, rideId: $rideId)
