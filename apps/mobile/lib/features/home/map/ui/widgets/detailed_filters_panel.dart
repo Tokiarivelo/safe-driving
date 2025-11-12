@@ -206,7 +206,7 @@ class DetailedFiltersPanel extends StatelessWidget {
                 isDense: true,
                 itemHeight: 40,
                 style: const TextStyle(fontSize: 14),
-                initialValue: lang ?? 'Française',
+                value: lang ?? 'Française',
                 items: const [
                   DropdownMenuItem(
                     value: 'Française',

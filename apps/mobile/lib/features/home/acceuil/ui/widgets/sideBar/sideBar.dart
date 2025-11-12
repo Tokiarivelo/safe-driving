@@ -5,10 +5,10 @@ import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/core/theme/theme_controller.dart';
 import 'package:safe_driving/l10n/l10n.dart';
 import 'package:safe_driving/features/home/acceuil/viewmodels/sidebar_view_model.dart';
-import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sidebar_menu.dart';
-import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sidebar_theme.dart';
-import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sidebar_logout.dart';
-import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sidebar_header.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sideBar_menu.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sideBar_theme.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sideBar_logout.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sideBar_header.dart';
 
 class Sidebar extends StatelessWidget {
   final VoidCallback onProfileTap;

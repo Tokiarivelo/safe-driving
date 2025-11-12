@@ -505,7 +505,7 @@ class DriverOnboardingData {
           "messageConfiance":
               "Merci de faire partie de la communauté Safe Driving. Nous vous souhaitons de bons trajets en toute sécurité !",
         },
-        buttonTitles: ["C'est parti"],
+        buttonTitles: ["C'est partis"],
       ),
     ];
   }

@@ -87,6 +87,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 import 'package:safe_driving/features/home/acceuil/viewmodels/navigation_viewmodel.dart';
 import 'package:safe_driving/features/home/message/service/local_reaction_service.dart';
 import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
@@ -99,11 +100,14 @@ import 'service_locator.dart';
 import 'package:safe_driving/core/theme/theme_controller.dart';
 import 'package:safe_driving/api/graph-ql/client/graphql_config.dart';
 import 'package:safe_driving/l10n/l10n.dart';
+import 'package:safe_driving/features/authentication/providers/auth_provider.dart';
 
 class AppProviders {
-  static List<ChangeNotifierProvider> get providers {
+  static List<SingleChildWidget> get providers {
     final serviceLocator = ServiceLocator.instance;
-    final list = <ChangeNotifierProvider>[];
+    final list = <SingleChildWidget>[
+      ChangeNotifierProvider(create: (_) => AuthProvider()),
+    ];
 
     if (GraphQLConfig.isConfigured) {
       list.add(

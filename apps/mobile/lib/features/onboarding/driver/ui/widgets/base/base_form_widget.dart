@@ -152,7 +152,7 @@ abstract class BaseFormWidgetState<T extends BaseFormWidget> extends State<T> {
 
   Widget _buildDropdownField(DropdownFormFieldConfig config) {
     return DropdownButtonFormField(
-      initialValue: _dropdownValues[config.key],
+      value: _dropdownValues[config.key],
       decoration: InputDecoration(
         labelText: config.label,
         border: const OutlineInputBorder(),

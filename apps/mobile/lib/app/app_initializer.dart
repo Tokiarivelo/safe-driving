@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/app/routes.dart';
-
 import 'package:safe_driving/api/graph-ql/client/graphql_config.dart';
-
 import 'package:safe_driving/shared/state_management/providers.dart';
 import 'package:safe_driving/shared/state_management/service_locator.dart';
 import 'package:safe_driving/core/theme/app_theme.dart';
@@ -27,11 +25,10 @@ class SafeDriving extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: context.watch<ThemeController>().mode,
-
           localizationsDelegates: L10n.localizationsDelegates,
           supportedLocales: L10n.supportedLocales,
           locale: context.watch<LocaleProvider>().locale,
-          initialRoute: AppRoutes.auth,
+          initialRoute: AppRoutes.loading,
           routes: AppRoutes.routes,
         ),
       ),
