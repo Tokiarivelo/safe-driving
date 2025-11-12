@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:safe_driving/api/graph-ql/client/graphql_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:safe_driving/api/graph-ql/modules/user/user_queries.dart';
 
@@ -19,7 +20,7 @@ class AuthProvider extends ChangeNotifier {
   bool get hasCheckedAuth => _hasCheckedAuth;
   Map<String, dynamic>? get userData => _userData;
 
-  Future<void> checkAuthStatus(GraphQLClient? client) async {
+  Future<void> checkAuthStatus(GraphQLClientWrapper? client) async {
     if (_hasCheckedAuth) return;
 
     _isLoading = true;
@@ -50,21 +51,25 @@ class AuthProvider extends ChangeNotifier {
         return;
       }
 
-      final result = await client.query(
-        QueryOptions(
-          document: gql(meQuery),
-          fetchPolicy: FetchPolicy.networkOnly,
-        ),
+      try {
+        client.updateTokens(accessToken: token);
+      } catch (_) {}
+
+      final data = await client.executeQuery(
+        document: meQuery,
+        fetchPolicy: FetchPolicy.networkOnly,
       );
 
-      if (result.hasException || result.data == null) {
+      final result = data['me'];
+
+      if (result == null) {
         debugPrint('Auth check failed: ${result.exception}');
         _isAuthenticated = false;
         _isVerified = false;
         // Clear invalid token
         await clearTokens();
       } else {
-        _userData = result.data!['me'];
+        _userData = result!;
         _isAuthenticated = true;
         _isVerified = _userData?['isVerified'] ?? false;
         debugPrint('User data loaded: ${_userData?['email']}');

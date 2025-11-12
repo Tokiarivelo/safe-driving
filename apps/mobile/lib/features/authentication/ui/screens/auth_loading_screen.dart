@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_driving/api/graph-ql/client/graphql_client.dart';
 import 'package:safe_driving/features/authentication/providers/auth_provider.dart';
 
 class AuthLoadingScreen extends StatefulWidget {
@@ -25,7 +25,7 @@ class _AuthLoadingScreenState extends State<AuthLoadingScreen> {
 
   Future<void> _checkAuthAndNavigate() async {
     final authProvider = context.read<AuthProvider>();
-    final client = GraphQLProvider.of(context).value;
+    final client = GraphQLClientWrapper.instance;
 
     await authProvider.checkAuthStatus(client);
 
