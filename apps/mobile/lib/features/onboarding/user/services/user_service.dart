@@ -69,11 +69,25 @@ class UserOnboardingService implements IUserOnboardingService {
 
   @override
   Future<void> completeOnboarding(BuildContext context) async {
+    final client = GraphQLClientWrapper.instance;
+    final variables = {
+      'input': {
+        'isVerified': {'set': true},
+      },
+    };
+
     try {
       if (_dataSource != null) {
         await _dataSource.completeOnboarding('current');
       }
     } catch (_) {}
+
+    try {
+      await client.executeMutation(
+        document: updateUserMutation,
+        variables: variables,
+      );
+    } catch (e) {}
 
     // Ensure role USER is persisted and a QR code is created for the current user
     try {
@@ -82,7 +96,7 @@ class UserOnboardingService implements IUserOnboardingService {
     } catch (_) {}
     try {
       // Generate and persist a personal QR code (server-side stores it)
-      final client = GraphQLClientWrapper.instance;
+
       await client.executeMutation(
         document: createUserQrMutation,
         variables: const {'type': 'png'},

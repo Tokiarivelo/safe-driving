@@ -1,8 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:safe_driving/api/graph-ql/modules/user/user_queries.dart';
 
 class AuthProvider extends ChangeNotifier {
+  static const String _tokenKey = 'auth_token';
+  static const String _refreshTokenKey = 'refresh_token';
+
   bool _isAuthenticated = false;
   bool _isVerified = false;
   bool _isLoading = true;
@@ -33,11 +37,12 @@ class AuthProvider extends ChangeNotifier {
     try {
       final token = await _getStoredToken();
 
-      // log token
+      debugPrint('Token retrieved: ${token != null ? "exists" : "null"}');
 
       if (token == null) {
         _isAuthenticated = false;
         _isVerified = false;
+        _hasCheckedAuth = true;
         _isLoading = false;
         notifyListeners();
         return;
@@ -51,14 +56,19 @@ class AuthProvider extends ChangeNotifier {
       );
 
       if (result.hasException || result.data == null) {
+        debugPrint('Auth check failed: ${result.exception}');
         _isAuthenticated = false;
         _isVerified = false;
+        // Clear invalid token
+        await clearTokens();
       } else {
         _userData = result.data!['me'];
         _isAuthenticated = true;
         _isVerified = _userData?['isVerified'] ?? false;
+        debugPrint('User data loaded: ${_userData?['email']}');
       }
     } catch (e) {
+      debugPrint('Error checking auth status: $e');
       _isAuthenticated = false;
       _isVerified = false;
     } finally {
@@ -69,12 +79,59 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<String?> _getStoredToken() async {
-    // Implement token retrieval
-    return null;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString(_tokenKey);
+    } catch (e) {
+      debugPrint('Error getting stored token: $e');
+      return null;
+    }
+  }
+
+  Future<void> saveToken(String token, {String? refreshToken}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_tokenKey, token);
+      if (refreshToken != null) {
+        await prefs.setString(_refreshTokenKey, refreshToken);
+      }
+      debugPrint('Token saved successfully');
+    } catch (e) {
+      debugPrint('Error saving token: $e');
+    }
+  }
+
+  Future<String?> getRefreshToken() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString(_refreshTokenKey);
+    } catch (e) {
+      debugPrint('Error getting refresh token: $e');
+      return null;
+    }
+  }
+
+  Future<void> clearTokens() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_tokenKey);
+      await prefs.remove(_refreshTokenKey);
+      _isAuthenticated = false;
+      _isVerified = false;
+      _userData = null;
+      notifyListeners();
+      debugPrint('Tokens cleared successfully');
+    } catch (e) {
+      debugPrint('Error clearing tokens: $e');
+    }
+  }
+
+  Future<void> logout() async {
+    await clearTokens();
+    _hasCheckedAuth = false;
   }
 
   String getInitialRoute() {
-    // log auth status
     debugPrint(
       'Auth Status: isAuthenticated=$_isAuthenticated, isVerified=$_isVerified',
     );
