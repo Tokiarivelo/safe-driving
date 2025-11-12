@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../models/auth_models.dart';
 import '../models/auth_request.dart';
 import '../data/auth_data_source_interface.dart';
@@ -239,6 +241,7 @@ class AuthService {
   }
 
   Future<void> _saveTokens(String token, String? refreshToken) async {
+    debugPrint('Token $token');
     if (refreshToken == null || refreshToken.isEmpty) {
       await _sessionService.saveToken(token);
     } else {

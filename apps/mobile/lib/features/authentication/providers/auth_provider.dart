@@ -37,7 +37,9 @@ class AuthProvider extends ChangeNotifier {
     try {
       final token = await _getStoredToken();
 
-      debugPrint('Token retrieved: ${token != null ? "exists" : "null"}');
+      debugPrint(
+        'Token retrieved: ${token != null ? "exists" : "null"}, $token',
+      );
 
       if (token == null) {
         _isAuthenticated = false;
