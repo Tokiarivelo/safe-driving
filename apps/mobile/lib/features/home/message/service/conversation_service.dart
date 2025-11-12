@@ -228,22 +228,28 @@ class ConversationService {
 
   Future<bool> deleteConversation(String conversationId) async {
     try {
-      print('Suppression de la conversation: $conversationId');
+      print('🗑️ Suppression conversation: $conversationId');
+
       final result = await client.mutate(
         MutationOptions(
           document: gql(deleteConversationMutation),
-          variables: {'conversationId': conversationId},
+          variables: {
+            'conversationId': conversationId, // SANS antislash ici
+          },
         ),
       );
+
       if (result.hasException) {
-        print('Erreur supression: ${result.exception}');
+        print('❌ Erreur suppression: ${result.exception}');
+        print('❌ Détails: ${result.exception?.graphqlErrors}');
         return false;
       }
+
       final success = result.data?['deleteConversation']?['success'] ?? false;
-      print('Suppression : $success');
+      print('✅ Suppression réussie: $success');
       return success;
     } catch (e) {
-      print('Erreur suppression conversation: $e');
+      print('❌ Erreur suppression conversation: $e');
       return false;
     }
   }

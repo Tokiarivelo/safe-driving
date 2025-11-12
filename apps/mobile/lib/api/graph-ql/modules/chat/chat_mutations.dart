@@ -82,23 +82,40 @@ const String createConversationInput = r'''
   }
 ''';
 
-const String deleteConversationMutation = r''' 
-  mutation DeleteConversation(\$conversationId: ID!){
-    deleteConversation(conversationId: \$conversationId){
+const String deleteConversationMutation = r'''
+  mutation DeleteConversation($conversationId: ID!) {
+    deleteConversation(conversationId: $conversationId) {
       id
       success
     }
   }
 ''';
 
-const String updateConversationMutation = r''' 
-  mutation UpdateConversation(\$conversationId: ID!, \$input: UpdateConversationInput!){
-    updateConversation(conversationId: \$conversationId, input: \$input){
+const String updateConversationMutation = r'''
+  mutation UpdateConversation($conversationId: ID!, $input: UpdateConversationInput!) {
+    updateConversation(conversationId: $conversationId, input: $input) {
       id
       title
       type
       isArchived
       updatedAt
+    }
+  }
+''';
+
+// Mutation pour ajouter/supprimer une réaction
+const String toggleReactionMutation = r'''
+  mutation ToggleReaction($messageId: String!, $emoji: String!) {
+    toggleReaction(messageId: $messageId, emoji: $emoji) {
+      id
+      reactions {
+        emoji
+        users {
+          id
+          firstName
+          lastName
+        }
+      }
     }
   }
 ''';

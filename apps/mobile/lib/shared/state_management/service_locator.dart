@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:safe_driving/features/home/message/service/conversation_service.dart';
+import 'package:safe_driving/features/home/message/service/local_reaction_service.dart';
 import 'package:safe_driving/features/home/message/service/message_service.dart';
 import 'package:safe_driving/features/home/message/viewmodels/message_viewmodels.dart';
 import 'package:safe_driving/shared/state_management/modules/core_module.dart';
@@ -118,6 +120,10 @@ class ServiceLocator {
     registerOnboardingDriverModule(this);
     registerOnboardingUserModule(this);
     registerMapModule(this);
+
+    // Services pour les messages
+    registerLazySingleton<LocalReactionService>(() => LocalReactionService());
+
     registerLazySingleton<ConversationService>(() {
       final client = get<GraphQLClient>();
       return ConversationService(client: client);
@@ -129,10 +135,48 @@ class ServiceLocator {
     });
 
     registerLazySingleton<MessageViewmodels>(() {
-      return MessageViewmodels(
+      final viewModel = MessageViewmodels(
         conversationService: get<ConversationService>(),
         messageService: get<MessageService>(),
+        reactionService: get<LocalReactionService>(),
       );
+
+      // Initialiser les réactions au démarrage
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        viewModel.initializeReactions();
+      });
+
+      return viewModel;
     });
   }
+
+  // void setupDependencies() {
+  //   registerCoreModule(this);
+  //   registerGraphQLModule(this);
+  //   registerAuthModule(this);
+  //   registerOnboardingDriverModule(this);
+  //   registerOnboardingUserModule(this);
+  //   registerMapModule(this);
+
+  //   // ⭐⭐ AJOUTEZ CES LIGNES POUR LES SERVICES DE MESSAGE ⭐⭐
+  //   registerLazySingleton<LocalReactionService>(() => LocalReactionService());
+
+  //   registerLazySingleton<ConversationService>(() {
+  //     final client = get<GraphQLClient>();
+  //     return ConversationService(client: client);
+  //   });
+
+  //   registerLazySingleton<MessageService>(() {
+  //     final client = get<GraphQLClient>();
+  //     return MessageService(client: client);
+  //   });
+
+  //   registerLazySingleton<MessageViewmodels>(() {
+  //     return MessageViewmodels(
+  //       conversationService: get<ConversationService>(),
+  //       messageService: get<MessageService>(),
+  //       reactionService: get<LocalReactionService>(), // ⭐⭐ CORRIGÉ ⭐⭐
+  //     );
+  //   });
+  // }
 }

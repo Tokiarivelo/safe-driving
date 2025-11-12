@@ -32,20 +32,24 @@ export class UserSearchService extends AbstractSearchService {
    * Create the users index with mapping/settings if it does not exist
    */
   async createUsersIndexIfNotExists() {
-    const exists = await this.es.indices.exists({ index: this.index });
-    if (exists) {
-      this.logger.log(`Index '${this.index}' already exists.`);
-      return false;
+    try {
+      const exists = await this.es.indices.exists({ index: this.index });
+      if (exists) {
+        this.logger.log(`Index '${this.index}' already exists.`);
+        return false;
+      }
+      await this.es.indices.create({
+        index: this.index,
+        settings: usersMapping.settings as any,
+        mappings: usersMapping.mappings as any,
+      });
+      this.logger.log(
+        `Index '${this.index}' created with custom mapping/settings.`,
+      );
+      return true;
+    } catch (error) {
+      console.error("Error creating users index:", error);
     }
-    await this.es.indices.create({
-      index: this.index,
-      settings: usersMapping.settings as any,
-      mappings: usersMapping.mappings as any,
-    });
-    this.logger.log(
-      `Index '${this.index}' created with custom mapping/settings.`,
-    );
-    return true;
   }
 
   /**

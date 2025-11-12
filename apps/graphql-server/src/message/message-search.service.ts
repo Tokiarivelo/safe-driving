@@ -32,20 +32,22 @@ export class MessageSearchService extends AbstractSearchService {
    * Create the messages index with mapping/settings if it does not exist
    */
   async createMessagesIndexIfNotExists() {
-    const exists = await this.es.indices.exists({ index: this.index });
-    if (exists) {
-      this.logger.log(`Index '${this.index}' already exists.`);
-      return false;
-    }
-    await this.es.indices.create({
-      index: this.index,
-      settings: messagesMapping.settings as any,
-      mappings: messagesMapping.mappings as any,
-    });
-    this.logger.log(
-      `Index '${this.index}' created with custom mapping/settings.`,
-    );
-    return true;
+    try {
+      const exists = await this.es.indices.exists({ index: this.index });
+      if (exists) {
+        this.logger.log(`Index '${this.index}' already exists.`);
+        return false;
+      }
+      await this.es.indices.create({
+        index: this.index,
+        settings: messagesMapping.settings as any,
+        mappings: messagesMapping.mappings as any,
+      });
+      this.logger.log(
+        `Index '${this.index}' created with custom mapping/settings.`,
+      );
+      return true;
+    } catch (error) { console.error("Error creating messages index:", error); }
   }
 
   /**
@@ -269,13 +271,13 @@ export class MessageSearchService extends AbstractSearchService {
   private buildMessageDoc(message: Message) {
     const sender = message.sender
       ? {
-          id: message.sender.id,
-          email: message.sender.email ?? null,
-          firstName: message.sender.firstName ?? null,
-          lastName: message.sender.lastName ?? null,
-          username: message.sender.username ?? null,
-          avatarUrl: message.sender.avatar?.url ?? null,
-        }
+        id: message.sender.id,
+        email: message.sender.email ?? null,
+        firstName: message.sender.firstName ?? null,
+        lastName: message.sender.lastName ?? null,
+        username: message.sender.username ?? null,
+        avatarUrl: message.sender.avatar?.url ?? null,
+      }
       : null;
 
     const attachments = (message.attachments ?? []).map((att: any) => ({

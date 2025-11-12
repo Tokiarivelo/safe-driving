@@ -32,20 +32,22 @@ export class ConversationSearchService extends AbstractSearchService {
    * Create the conversations index with mapping/settings if it does not exist
    */
   async createConversationsIndexIfNotExists() {
-    const exists = await this.es.indices.exists({ index: this.index });
-    if (exists) {
-      this.logger.log(`Index '${this.index}' already exists.`);
-      return false;
-    }
-    await this.es.indices.create({
-      index: this.index,
-      settings: conversationsMapping.settings as any,
-      mappings: conversationsMapping.mappings as any,
-    });
-    this.logger.log(
-      `Index '${this.index}' created with custom mapping/settings.`,
-    );
-    return true;
+    try {
+      const exists = await this.es.indices.exists({ index: this.index });
+      if (exists) {
+        this.logger.log(`Index '${this.index}' already exists.`);
+        return false;
+      }
+      await this.es.indices.create({
+        index: this.index,
+        settings: conversationsMapping.settings as any,
+        mappings: conversationsMapping.mappings as any,
+      });
+      this.logger.log(
+        `Index '${this.index}' created with custom mapping/settings.`,
+      );
+      return true;
+    } catch (error) { console.error("Error creating conversations index:", error); }
   }
 
   /**
