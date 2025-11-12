@@ -43,6 +43,7 @@ Feature/
 - **Repository Pattern** pour l'abstraction des données
 
 #### Composants
+
 - `AuthViewModel` : Logique d'authentification
 - `SigninViewModel` : Gestion spécifique de la connexion
 - `AuthFormViewModel` : Validation et état des formulaires
@@ -54,12 +55,14 @@ Feature/
 **Architecture séparée par rôles** :
 
 #### User Onboarding
+
 - **5 étapes interactives** avec navigation fluide
 - **ViewModel dédié** pour la logique métier
 - **State immutable** avec gestion centralisée
 - **Widgets réutilisables** et modulaires
 
-#### Driver Onboarding  
+#### Driver Onboarding
+
 - **12 étapes spécialisées** pour les chauffeurs
 - **Gestion avancée de la caméra** (mobile/web)
 - **Upload et validation de documents**
@@ -188,10 +191,12 @@ Feature/
 ## Stack Technique MVVM
 
 ### Framework & Langage
+
 - **Flutter** : Framework UI multiplateforme
 - **Dart** : Langage orienté objet avec null safety
 
 ### Architecture & Patterns
+
 - **MVVM (Model-View-ViewModel)** : Séparation des responsabilités
 - **Repository Pattern** : Abstraction de la couche de données
 - **Factory Pattern** : Création d'objets complexes
@@ -199,24 +204,28 @@ Feature/
 - **Service Locator** : Injection de dépendances
 
 ### State Management
+
 - **Modèles immutables** avec méthodes `copyWith()`
 - **ViewModels réactifs** avec `ChangeNotifier`
 - **State centralisé** par feature
 - **Providers** pour l'injection de dépendances
 
 ### Communication & Données
+
 - **GraphQL** : API de communication type-safe
 - **Repository abstrait** : Interfaces pour la flexibilité
 - **Data Sources multiples** : API, cache, stockage local
 - **Error Handling** : Gestion centralisée des erreurs
 
 ### UI & UX
+
 - **Material Design 3** : Système de design moderne
 - **Thèmes dynamiques** : Support clair/sombre
 - **Animations fluides** : Micro-interactions intégrées
 - **Responsive Design** : Adaptation multi-écrans
 
 ### Qualité & Maintenance
+
 - **Feature-based organization** : Structure scalable
 - **Barrel exports** : Imports simplifiés
 - **Interface-driven development** : Facilite les tests
@@ -229,18 +238,21 @@ Feature/
 ### Séparation des Responsabilités
 
 **Models (Données)**
+
 - Modèles immutables avec validation intégrée
 - Méthodes `copyWith()` pour les mises à jour
 - Sérialisation JSON automatisée
 - Types sécurisés avec enums et sealed classes
 
 **ViewModels (Logique Métier)**
+
 - État réactif avec `ChangeNotifier`
 - Gestion asynchrone avec `Future` et `Stream`
 - Validation en temps réel des formulaires
 - Communication avec les services via injection
 
 **Views (Interface)**
+
 - Widgets stateless consommant les ViewModels
 - Builder pattern pour les UI conditionnelles
 - Animations déclaratives intégrées
@@ -249,6 +261,7 @@ Feature/
 ### Architecture Multi-Features
 
 **Authentication Feature**
+
 - `AuthViewModel` : Gestion de l'état d'authentification
 - `SigninViewModel` : Logique spécifique de connexion
 - `AuthFormViewModel` : Validation des formulaires
@@ -256,6 +269,7 @@ Feature/
 - `UserRepository` : Abstraction des données
 
 **Onboarding Features**
+
 - Séparation User/Driver avec ViewModels dédiés
 - Services spécialisés (Camera, Storage)
 - Repository pattern pour la persistance
@@ -339,23 +353,27 @@ lib/
 Chaque feature suit le pattern MVVM :
 
 #### Models (Données)
+
 - **Modèles immutables** avec validation
 - **DTOs** pour les échanges API
 - **Enums** et constantes spécifiques
 
 #### ViewModels (Logique Métier)
+
 - **État réactif** avec notifications
 - **Gestion des interactions** utilisateur
 - **Communication** avec les services
 - **Validation** et transformation des données
 
 #### Views (Interface Utilisateur)
+
 - **Écrans** consommant les ViewModels
 - **Widgets composés** et réutilisables
 - **Builders** pour les UI complexes
 - **Animations** et micro-interactions
 
 #### Services & Repository
+
 - **Services métier** encapsulant la logique
 - **Repository** abstrayant l'accès aux données
 - **Data Sources** (API, cache, local)
@@ -371,6 +389,9 @@ Chaque feature suit le pattern MVVM :
 ### Commandes
 
 ```bash
+# Installer les dépendaces de l'application Flutter
+flutter pub get
+
 # Lancer l'application Flutter
 flutter run
 

@@ -11,8 +11,13 @@ class SwitchesAndRadios {
       builder: (context) => Switch(
         value: value,
         onChanged: onChanged,
-        activeThumbColor: AppColors.light,
-        activeTrackColor: (activeColor ?? AppColors.progress).adapt(context),
+        thumbColor: WidgetStateProperty.all(AppColors.light),
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return (activeColor ?? AppColors.progress).adapt(context);
+          }
+          return null;
+        }),
       ),
     );
   }

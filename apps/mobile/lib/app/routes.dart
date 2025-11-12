@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:safe_driving/features/authentication/ui/screens/auth_screen.dart';
+import 'package:safe_driving/features/authentication/ui/screens/auth_loading_screen.dart';
 import 'package:safe_driving/features/home/message/ui/screens/message_screens.dart';
 import 'package:safe_driving/features/onboarding/driver/ui/screens/driver_onboarding_screen.dart';
 import 'package:safe_driving/features/onboarding/onboarding_screen.dart';
-
 import 'package:safe_driving/features/onboarding/user/ui/screens/user_onboarding_screen.dart';
 import 'package:safe_driving/features/home/acceuil/ui/screens/exemple_page.dart';
 import 'package:safe_driving/features/home/acceuil/ui/screens/home_screen.dart';
@@ -12,6 +12,7 @@ import 'package:safe_driving/features/home/map/ui/widgets/map_view.dart';
 import 'package:latlong2/latlong.dart';
 
 class AppRoutes {
+  static const String loading = '/';
   static const String auth = '/auth';
   static const String onboarding = "/onboarding";
   static const String useronboarding = '/user_onboarding';
@@ -23,6 +24,7 @@ class AppRoutes {
   static const String searchTransport = '/home/search_transport';
 
   static Map<String, WidgetBuilder> routes = {
+    loading: (context) => const AuthLoadingScreen(),
     auth: (context) => const AuthScreen(),
     onboarding: (context) => OnboardingScreen(
       onUserPressed: () {

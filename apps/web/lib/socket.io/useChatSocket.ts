@@ -16,6 +16,7 @@ export const useChatSocket = (options?: UseChatSocketOptions) => {
 
   useEffect(() => {
     mountedRef.current = true;
+    const typingTimeouts = typingTimeoutsRef.current;
     const cleanupFns: Array<() => void> = [];
 
     if (!socket || !isConnected) return;
@@ -82,8 +83,8 @@ export const useChatSocket = (options?: UseChatSocketOptions) => {
       });
 
       // Clear all typing timeouts
-      typingTimeoutsRef.current.forEach(t => clearTimeout(t));
-      typingTimeoutsRef.current.clear();
+      typingTimeouts.forEach(t => clearTimeout(t));
+      typingTimeouts.clear();
     };
   }, [socket, isConnected, options?.conversationId, options?.rideId]);
 

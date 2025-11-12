@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_driving/core/constants/colors/colors.dart';
 import 'package:safe_driving/features/authentication/viewmodels/auth_view_model.dart';
-import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sidebar_profile.dart';
+import 'package:safe_driving/features/home/acceuil/ui/widgets/sideBar/sideBar_profile.dart';
 
 class SidebarHeader extends StatelessWidget {
   final VoidCallback onProfileTap;
