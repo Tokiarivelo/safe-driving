@@ -7,6 +7,9 @@ class ConversationTile extends StatelessWidget {
   final dynamic lastMessage;
   final bool isLoading;
   final VoidCallback onTap;
+  final Function(String)? onDelete;
+  final Function(String)? onArchive;
+  final Function(String, String)? onRename;
 
   const ConversationTile({
     super.key,
@@ -15,6 +18,9 @@ class ConversationTile extends StatelessWidget {
     required this.lastMessage,
     this.isLoading = false,
     required this.onTap,
+    this.onDelete,
+    this.onArchive,
+    this.onRename,
   });
 
   @override
@@ -86,7 +92,100 @@ class ConversationTile extends StatelessWidget {
         _formatDate(createdAt),
         style: const TextStyle(fontSize: 12, color: Colors.grey),
       ),
-      onTap: isLoading ? null : onTap,
+      // onTap: isLoading ? null : onTap,
+      onTap: onTap,
+      onLongPress: () => _showContextMenu(context),
+    );
+  }
+
+  void _showContextMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(Icons.archive),
+              title: Text('Archiver'),
+              onTap: () {
+                Navigator.pop(context);
+                onArchive?.call(conversation['id']);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.edit),
+              title: Text('Renommer'),
+              onTap: () {
+                Navigator.pop(context);
+                _showRenameDialog(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.delete, color: Colors.red),
+              title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+              onTap: () {
+                Navigator.pop(context);
+                _showDeleteConfirmation(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDeleteConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Supprimer la conversation ?'),
+        content: Text('Cette action est irréversible.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              onDelete?.call(conversation['id']);
+            },
+            child: Text('Supprimer', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showRenameDialog(BuildContext context) {
+    final controller = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Renommer la conversation'),
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(hintText: 'Nouveau nom'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (controller.text.trim().isNotEmpty) {
+                Navigator.pop(context);
+                onRename?.call(conversation['id'], controller.text.trim());
+              }
+            },
+            child: Text('Renommer'),
+          ),
+        ],
+      ),
     );
   }
 

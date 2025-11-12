@@ -70,17 +70,13 @@ class _MessageScreenState extends State<MessageScreen> {
       itemBuilder: (context, index) {
         final conversation = viewModel.conversations[index];
         final participants = (conversation['participants'] as List?) ?? [];
-
-        // RÉCUPÉRATION CORRECTE du dernier message
         final lastMessage =
-            conversation['lastMessage'] ??
-            conversation['latestMessage'] ??
-            conversation['messages']?.last;
+            conversation['lastMessage'] ?? conversation['latestMessage'];
 
-        print('🔍 Conversation ${conversation['id']}');
-        print('   LastMessage disponible: $lastMessage');
+        // RÉDUISEZ CES LOGS pour les performances
+        // print('🔍 Conversation ${conversation['id']}');
+        // print('   LastMessage disponible: $lastMessage');
 
-        // FILTRE CRITIQUE: Vérifie si l'utilisateur courant est dans les participants
         bool isUserInConversation = false;
         Map<String, dynamic>? otherParticipant;
 
@@ -91,57 +87,127 @@ class _MessageScreenState extends State<MessageScreen> {
 
             if (userId == currentUserId) {
               isUserInConversation = true;
-              print('   ✅ User $currentUserId est dans cette conversation');
+              // print('   ✅ User $currentUserId est dans cette conversation');
             } else if (userId != null && userId != currentUserId) {
               otherParticipant = Map<String, dynamic>.from(user);
             }
           }
         }
 
-        // N'affiche QUE si l'utilisateur courant participe à la conversation
         if (!isUserInConversation) {
-          print(
-            '   ❌ User $currentUserId N\'EST PAS dans cette conversation - IGNORÉ',
-          );
-          return SizedBox.shrink(); // Cache complètement
+          return SizedBox.shrink();
         }
 
-        // Si aucun autre participant n'est trouvé, utilise le premier
-        if (otherParticipant == null && participants.isNotEmpty) {
-          final firstUser = participants.first['user'];
-          if (firstUser != null) {
-            otherParticipant = Map<String, dynamic>.from(firstUser);
-          }
-        }
-
-        // Fallback si toujours null
         final safeParticipant =
             otherParticipant ??
             {'firstName': 'Utilisateur', 'lastName': '', 'id': 'unknown'};
 
-        print(
-          '   👥 Affiche conversation avec: ${safeParticipant['firstName']}',
-        );
+        void onTap() {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => MessageDetailScreen(
+                conversation: conversation,
+                viewModel: viewModel,
+              ),
+            ),
+          );
+        }
 
         return ConversationTile(
           conversation: conversation,
           otherParticipant: safeParticipant,
-          lastMessage: lastMessage, // Passe le lastMessage CORRECT
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => MessageDetailScreen(
-                  conversation: conversation,
-                  viewModel: viewModel,
-                ),
-              ),
-            );
-          },
+          lastMessage: lastMessage,
+          onTap: onTap,
+          onDelete: (convId) => viewModel.deleteConversation(convId),
+          onArchive: (convId) => viewModel.archiveConversation(convId),
+          onRename: (convId, newName) =>
+              viewModel.updateConversationTitle(convId, newName),
         );
       },
     );
   }
+  // Widget _buildConversationsList(MessageViewmodels viewModel) {
+  //   final currentUserId = viewModel.currentUserId;
+
+  //   return ListView.builder(
+  //     padding: EdgeInsets.zero,
+  //     itemCount: viewModel.conversations.length,
+  //     itemBuilder: (context, index) {
+  //       final conversation = viewModel.conversations[index];
+  //       final participants = (conversation['participants'] as List?) ?? [];
+
+  //       // RÉCUPÉRATION CORRECTE du dernier message
+  //       final lastMessage =
+  //           conversation['lastMessage'] ??
+  //           conversation['latestMessage'] ??
+  //           conversation['messages']?.last;
+
+  //       print('🔍 Conversation ${conversation['id']}');
+  //       print('   LastMessage disponible: $lastMessage');
+
+  //       bool isUserInConversation = false;
+  //       Map<String, dynamic>? otherParticipant;
+
+  //       for (var p in participants) {
+  //         if (p is Map && p['user'] != null) {
+  //           final user = p['user'];
+  //           final userId = user['id']?.toString();
+
+  //           if (userId == currentUserId) {
+  //             isUserInConversation = true;
+  //             print('   ✅ User $currentUserId est dans cette conversation');
+  //           } else if (userId != null && userId != currentUserId) {
+  //             otherParticipant = Map<String, dynamic>.from(user);
+  //           }
+  //         }
+  //       }
+
+  //       if (!isUserInConversation) {
+  //         print(
+  //           '   ❌ User $currentUserId N\'EST PAS dans cette conversation - IGNORÉ',
+  //         );
+  //         return SizedBox.shrink();
+  //       }
+  //       if (otherParticipant == null && participants.isNotEmpty) {
+  //         final firstUser = participants.first['user'];
+  //         if (firstUser != null) {
+  //           otherParticipant = Map<String, dynamic>.from(firstUser);
+  //         }
+  //       }
+  //       final safeParticipant =
+  //           otherParticipant ??
+  //           {'firstName': 'Utilisateur', 'lastName': '', 'id': 'unknown'};
+
+  //       print(
+  //         '   👥 Affiche conversation avec: ${safeParticipant['firstName']}',
+  //       );
+
+  //       void onTap() {
+  //         Navigator.push(
+  //           context,
+  //           MaterialPageRoute(
+  //             builder: (_) => MessageDetailScreen(
+  //               conversation: conversation,
+  //               viewModel: viewModel,
+  //             ),
+  //           ),
+  //         );
+  //       }
+
+  //       return ConversationTile(
+  //         conversation: conversation,
+  //         otherParticipant: safeParticipant,
+  //         lastMessage: lastMessage,
+  //         onTap: onTap,
+  //         onDelete: (convId) => viewModel.deleteConversation(convId),
+  //         onArchive: (convId) => viewModel.archiveConversation(convId),
+  //         onRename: (convId, newName) =>
+  //             viewModel.updateConversationTitle(convId, newName),
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget _buildCompleteHeader(
     BuildContext context,
@@ -291,63 +357,285 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 
+  // void _showSearchDialog(BuildContext context, MessageViewmodels viewModel) {
+  //   final searchController = TextEditingController();
+
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Dialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(12),
+  //         ),
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(16),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               TextField(
+  //                 controller: searchController,
+  //                 decoration: InputDecoration(
+  //                   hintText: 'Rechercher une conversation...',
+  //                   prefixIcon: const Icon(Icons.search),
+  //                   border: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(8),
+  //                   ),
+  //                 ),
+  //                 autofocus: true,
+  //                 onChanged: (value) {
+  //                   viewModel.searchMessages(value);
+  //                 },
+  //               ),
+  //               const SizedBox(height: 16),
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.end,
+  //                 children: [
+  //                   TextButton(
+  //                     onPressed: () {
+  //                       viewModel.searchMessages('');
+  //                       Navigator.pop(context);
+  //                     },
+  //                     child: const Text('Annuler'),
+  //                   ),
+  //                   const SizedBox(width: 8),
+  //                   ElevatedButton(
+  //                     onPressed: () {
+  //                       viewModel.searchMessages(searchController.text);
+  //                       Navigator.pop(context);
+  //                     },
+  //                     child: const Text('Rechercher'),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   ).then((_) {
+  //     viewModel.searchMessages('');
+  //   });
+  // }
+
   void _showSearchDialog(BuildContext context, MessageViewmodels viewModel) {
     final searchController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Rechercher une conversation...',
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  autofocus: true,
-                  onChanged: (value) {
-                    viewModel.searchMessages(value);
-                  },
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Container(
+                constraints: BoxConstraints(maxHeight: 500),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        viewModel.searchMessages('');
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Annuler'),
+                    // Header de recherche
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Rechercher une conversation...',
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon: viewModel.isSearching
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                )
+                              : searchController.text.isNotEmpty
+                              ? IconButton(
+                                  icon: const Icon(Icons.clear, size: 20),
+                                  onPressed: () {
+                                    searchController.clear();
+                                    viewModel.cancelSearch();
+                                    setState(() {}); // Force rebuild
+                                  },
+                                )
+                              : null,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        autofocus: true,
+                        onChanged: (value) {
+                          print('📝 Texte saisi: "$value"');
+                          viewModel.searchConversations(value);
+                          setState(() {}); // Important pour mettre à jour l'UI
+                        },
+                      ),
                     ),
-                    const SizedBox(width: 8),
-                    ElevatedButton(
-                      onPressed: () {
-                        viewModel.searchMessages(searchController.text);
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Rechercher'),
+
+                    // Résultats de recherche
+                    Expanded(child: _buildSearchResults(viewModel, context)),
+
+                    // Footer
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: Colors.grey.shade300),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              viewModel.cancelSearch();
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Fermer'),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     ).then((_) {
-      viewModel.searchMessages('');
+      viewModel.cancelSearch();
     });
+  }
+
+  Widget _buildSearchResults(
+    MessageViewmodels viewModel,
+    BuildContext context,
+  ) {
+    // Utilisez Consumer pour réagir aux changements du ViewModel
+    return Consumer<MessageViewmodels>(
+      builder: (context, viewModel, child) {
+        print(
+          '🔄 UI mise à jour - Recherche: "${viewModel.currentSearchQuery}"',
+        );
+        print('   Résultats: ${viewModel.searchResults.length}');
+        print('   En cours: ${viewModel.isSearching}');
+
+        // État de recherche en cours
+        if (viewModel.isSearching) {
+          return const Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text('Recherche en cours...'),
+              ],
+            ),
+          );
+        }
+
+        // Aucune recherche
+        if (viewModel.currentSearchQuery.isEmpty) {
+          return const Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.search, size: 64, color: Colors.grey),
+                SizedBox(height: 16),
+                Text('Commencez à taper pour rechercher'),
+              ],
+            ),
+          );
+        }
+
+        // Aucun résultat
+        if (viewModel.searchResults.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.search_off, size: 64, color: Colors.grey),
+                SizedBox(height: 16),
+                Text('Aucun résultat trouvé'),
+                SizedBox(height: 8),
+                Text(
+                  'Aucune conversation ne correspond à "${viewModel.currentSearchQuery}"',
+                  style: TextStyle(color: Colors.grey),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
+        }
+
+        // Affichage des résultats
+        return ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: viewModel.searchResults.length,
+          itemBuilder: (context, index) {
+            final conversation = viewModel.searchResults[index];
+            final participants = (conversation['participants'] as List?) ?? [];
+
+            // Trouver l'autre participant
+            Map<String, dynamic>? otherParticipant;
+            for (var p in participants) {
+              if (p is Map && p['user'] != null) {
+                final user = p['user'];
+                final userId = user['id']?.toString();
+                if (userId != viewModel.currentUserId) {
+                  otherParticipant = Map<String, dynamic>.from(user);
+                  break;
+                }
+              }
+            }
+
+            final safeParticipant =
+                otherParticipant ??
+                {'firstName': 'Utilisateur', 'lastName': '', 'id': 'unknown'};
+
+            return Card(
+              margin: const EdgeInsets.symmetric(vertical: 4),
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: AppColors.color1,
+                  child: Text(
+                    safeParticipant['firstName']?.toString().isNotEmpty == true
+                        ? safeParticipant['firstName'][0].toUpperCase()
+                        : 'U',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                title: Text(
+                  '${safeParticipant['firstName'] ?? ''} ${safeParticipant['lastName'] ?? ''}',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  'Tapez pour ouvrir la conversation',
+                  style: TextStyle(color: Colors.grey[600]),
+                ),
+                onTap: () {
+                  viewModel.cancelSearch();
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => MessageDetailScreen(
+                        conversation: conversation,
+                        viewModel: viewModel,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }

@@ -40,7 +40,6 @@ class MessageService {
     }
   }
 
-  // Dans message_service.dart - Modifiez la méthode getMessages
   Future<List<dynamic>?> getMessages(String conversationId) async {
     try {
       final QueryOptions options = QueryOptions(
@@ -79,25 +78,57 @@ class MessageService {
     }
   }
 
-  // Future<List<dynamic>?> getMessages(String conversationId) async {
-  //   try {
-  //     final QueryOptions options = QueryOptions(
-  //       document: gql(getMessagesQuery),
-  //       variables: {'conversationId': conversationId},
-  //       fetchPolicy: FetchPolicy.networkOnly,
-  //     );
+  Future<Map<String, dynamic>?> editMessage({
+    required String messageId,
+    required String content,
+  }) async {
+    try {
+      print('✏️ Modification du message: $messageId');
 
-  //     final QueryResult result = await client.query(options);
+      final MutationOptions options = MutationOptions(
+        document: gql(editMessageMutation),
+        variables: {'messageId': messageId, 'content': content},
+      );
 
-  //     if (result.hasException) {
-  //       print('Erreur récupération messages: ${result.exception}');
-  //       return null;
-  //     }
+      final QueryResult result = await client.mutate(options);
 
-  //     return result.data?['messages'];
-  //   } catch (e) {
-  //     print('Erreur récupération messages: $e');
-  //     return null;
-  //   }
-  // }
+      if (result.hasException) {
+        print('❌ Erreur modification message: ${result.exception}');
+        return null;
+      }
+
+      final data = result.data?['editMessage'];
+      print('✅ Message modifié: $data');
+      return data;
+    } catch (e) {
+      print('❌ Erreur modification message: $e');
+      return null;
+    }
+  }
+
+  Future<bool> deleteMessage(String messageId) async {
+    try {
+      print('🗑️ Suppression du message: $messageId');
+
+      final MutationOptions options = MutationOptions(
+        document: gql(deleteMessageMutation),
+        variables: {'messageId': messageId},
+      );
+
+      final QueryResult result = await client.mutate(options);
+
+      if (result.hasException) {
+        print('❌ Erreur suppression message: ${result.exception}');
+        return false;
+      }
+
+      final data = result.data?['deleteMessage'];
+      final success = data?['deleted'] ?? false;
+      print('✅ Message supprimé: $success');
+      return success;
+    } catch (e) {
+      print('❌ Erreur suppression message: $e');
+      return false;
+    }
+  }
 }

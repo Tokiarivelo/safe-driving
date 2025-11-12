@@ -225,4 +225,73 @@ class ConversationService {
     final data = result.data?['getMyConversations'] as List<dynamic>?;
     return data?.cast<Map<String, dynamic>>() ?? [];
   }
+
+  Future<bool> deleteConversation(String conversationId) async {
+    try {
+      print('🗑️ Suppression conversation: $conversationId');
+
+      final result = await client.mutate(
+        MutationOptions(
+          document: gql(deleteConversationMutation),
+          variables: {
+            'conversationId': conversationId, // SANS antislash ici
+          },
+        ),
+      );
+
+      if (result.hasException) {
+        print('❌ Erreur suppression: ${result.exception}');
+        print('❌ Détails: ${result.exception?.graphqlErrors}');
+        return false;
+      }
+
+      final success = result.data?['deleteConversation']?['success'] ?? false;
+      print('✅ Suppression réussie: $success');
+      return success;
+    } catch (e) {
+      print('❌ Erreur suppression conversation: $e');
+      return false;
+    }
+  }
+
+  Future<Map<String, dynamic>?> updateConversation({
+    required String conversationId,
+    required Map<String, dynamic> input,
+  }) async {
+    try {
+      print('Update conversation: $conversationId');
+      final result = await client.mutate(
+        MutationOptions(
+          document: gql(updateConversationMutation),
+          variables: {'conversationId': conversationId, 'input': input},
+        ),
+      );
+      if (result.hasException) {
+        print('Erreur update: ${result.exception}');
+        return null;
+      }
+      final updated = result.data?['updateConversation'];
+      print('Conversation mise à jour: ${updated?['id']}');
+      return updated;
+    } catch (e) {
+      print('Erreur update conversation: $e');
+      return null;
+    }
+  }
+
+  Future<bool> archiveConversation(String conversationId) async {
+    return await updateConversation(
+          conversationId: conversationId,
+          input: {'isArchived': true},
+        ) !=
+        null;
+  }
+
+  Future<bool> unarchiveConversation(String conversationId) async {
+    return await updateConversation(
+          conversationId: conversationId,
+          input: {'isArchived': false},
+        ) !=
+        null;
+  }
 }
