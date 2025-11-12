@@ -14,7 +14,7 @@ export class UsersService {
     private readonly prisma: PrismaService,
     private readonly qrService: QrService,
     private readonly uploadService: UploadService,
-  ) {}
+  ) { }
 
   async create(input: UserCreateInput): Promise<User> {
     const hash = await bcrypt.hash(input.password, SALT_ROUNDS);
@@ -50,6 +50,7 @@ export class UsersService {
         Role: input.Role,
         status: input.status?.set,
         driverStatus: input.driverStatus?.set,
+        isVerified: input.isVerified?.set,
       },
     });
 
