@@ -1,0 +1,27 @@
+const String nearbyDriversQuery = r'''
+query NearbyDrivers(
+  $lat: Float!
+  $lng: Float!
+  $radiusMeters: Int
+  $limit: Int
+  $mock: Boolean
+) {
+  nearbyDrivers(
+    lat: $lat
+    lng: $lng
+    radiusMeters: $radiusMeters
+    limit: $limit
+    mock: $mock
+  ) {
+    count
+    drivers {
+      id
+      name
+      vehicle
+      lat
+      lng
+      status
+    }
+  }
+}
+''';

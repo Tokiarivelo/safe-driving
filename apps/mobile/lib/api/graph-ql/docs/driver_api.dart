@@ -15,6 +15,22 @@ class DriverGqlApi {
     }
   ''';
 
+  static const String nearbyDrivers = r'''
+    query NearbyDrivers($lat: Float!, $lng: Float!, $radiusMeters: Int, $limit: Int, $mock: Boolean) {
+      nearbyDrivers(lat: $lat, lng: $lng, radiusMeters: $radiusMeters, limit: $limit, mock: $mock) {
+        count
+        drivers {
+          id
+          name
+          vehicle
+          lat
+          lng
+          status
+        }
+      }
+    }
+  ''';
+
   static const String driverById = r'''
     query DriverById($id: String!) {
       driver(id: $id) {

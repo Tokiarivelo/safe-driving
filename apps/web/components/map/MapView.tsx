@@ -13,6 +13,7 @@ import { arrayMove } from '@dnd-kit/sortable';
 import * as polyline from '@mapbox/polyline';
 import { TempMarker } from '@/components/map/TempMarker';
 import RealTimeDriverZone from '@/components/map/RealTimeDriverZone';
+import { NearbyDriversZone } from '@/components/map/NearbyDriversZone';
 import { distanceMeters } from '@/components/map/MapUtils';
 
 // Fix Leaflet's default icon paths for Next.js
@@ -380,6 +381,14 @@ export default function Map({ coordinates }: Props) {
             );
             console.log('drivers inside radius:', inRadius);
           }}
+        />
+
+        {/* Show nearby drivers using GraphQL query with mock data */}
+        <NearbyDriversZone
+          userLocation={userLocation}
+          radiusMeters={1500}
+          limit={50}
+          mock={true}
         />
       </MapContainer>
 
