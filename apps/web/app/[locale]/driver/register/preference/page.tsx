@@ -1,5 +1,5 @@
 'use client';
-import ExperiencePreferences from '@/components/Driver/register/preference/preference';
+import ExperiencePreferences from '@/components/driver/register/preference/preference';
 import { useTranslation } from 'react-i18next';
 
 export default function ExperiencePreferencesPage() {

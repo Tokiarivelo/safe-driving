@@ -30,7 +30,7 @@ export const PickRole = () => {
           <div className={styles.auth_pickrole6}>{t('title2')}</div>
         </Link>
 
-        <Link href="/welcome" className={styles.auth_pickrole7}>
+        <Link href="/driver/register/welcome" className={styles.auth_pickrole7}>
           <div className={styles.auth_pickrole8}>{t('title3')}</div>
         </Link>
       </div>

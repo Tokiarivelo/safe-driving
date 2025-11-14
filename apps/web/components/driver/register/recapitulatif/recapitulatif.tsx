@@ -1,41 +1,37 @@
-'use client'
+'use client';
 
-import { useQuery, useMutation } from '@apollo/client'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useTranslation } from 'react-i18next'
-import { 
-  GetVehiclesDocument, 
-  MeDocument, 
+import { Button } from '@/components/ui/button';
+import {
   GetMyUserPreferenceDocument,
-  CreateUserQrsDocument
-} from '@/graphql/generated/graphql'
+  GetVehiclesDocument,
+  MeDocument,
+} from '@/graphql/generated/graphql';
+import { useQuery } from '@apollo/client';
+import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
+import styles from './recapitulatif.module.css';
 import { useQrCodeForRecap } from './useAction';
-import styles from '../../../user/components/Form/recapitulatif/driver-recap.module.css'
 
 export function Recap() {
-  const { t } = useTranslation(['registerDriver/step11'])
-  const router = useRouter()
+  const { t } = useTranslation(['registerDriver/step11']);
 
-  const { data: userDataRes, loading: loadingUser } = useQuery(MeDocument)
-  const { data: vehicleDataRes, loading: loadingVehicle } = useQuery(GetVehiclesDocument)
-  const { data: prefDataRes, loading: loadingPref } = useQuery(GetMyUserPreferenceDocument)
-  const [createUserQr] = useMutation(CreateUserQrsDocument)
+  const { data: userDataRes, loading: loadingUser } = useQuery(MeDocument);
+  const { data: vehicleDataRes, loading: loadingVehicle } = useQuery(GetVehiclesDocument);
+  const { data: prefDataRes, loading: loadingPref } = useQuery(GetMyUserPreferenceDocument);
   const { handleCreateQrAndRedirect, loading } = useQrCodeForRecap();
 
-  const userData = userDataRes?.me
-  const vehicles = vehicleDataRes?.vehicles || []
-  const userPref = prefDataRes?.userPreference
+  const userData = userDataRes?.me;
+  const vehicles = vehicleDataRes?.vehicles || [];
+  const userPref = prefDataRes?.userPreference;
 
-  const uploadedDocsCount = userData?.UserDocument?.length ?? 0
-  const gpsStatus = userPref?.activateLocation ? 'Activé' : 'Désactivé'
-  const notificationsStatus = userPref?.activateNotifications ? 'Email, Push' : 'Aucune'
-  const language = userPref?.language ?? '-'
-  const theme = userPref?.theme ?? '-'
+  const uploadedDocsCount = userData?.UserDocument?.length ?? 0;
+  const gpsStatus = userPref?.activateLocation ? 'Activé' : 'Désactivé';
+  const notificationsStatus = userPref?.activateNotifications ? 'Email, Push' : 'Aucune';
+  const language = userPref?.language ?? '-';
+  const theme = userPref?.theme ?? '-';
 
   if (loadingUser || loadingVehicle || loadingPref) {
-    return <div className="flex justify-center items-center h-screen">Chargement...</div>
+    return <div className="flex justify-center items-center h-screen">Chargement...</div>;
   }
 
   return (
@@ -52,10 +48,14 @@ export function Recap() {
             <div className={styles.cardHeader}>
               <h2 className={styles.cardTitle}>Infos personnelles</h2>
               <Link href="/personalInfo">
-                <Button variant="outline" size="sm">Modifier</Button>
+                <Button variant="outline" size="sm">
+                  Modifier
+                </Button>
               </Link>
             </div>
-            <p>Nom : {userData?.firstName} {userData?.lastName}</p>
+            <p>
+              Nom : {userData?.firstName} {userData?.lastName}
+            </p>
             <p>Email : {userData?.email}</p>
             <p>Téléphone : {userData?.phone}</p>
             <p>Photos uploadées : {uploadedDocsCount}</p>
@@ -67,7 +67,9 @@ export function Recap() {
               <div className={styles.cardHeader}>
                 <h2 className={styles.cardTitle}>Véhicule</h2>
                 <Link href={`/vehiculeInfo`}>
-                  <Button variant="outline" size="sm">Modifier</Button>
+                  <Button variant="outline" size="sm">
+                    Modifier
+                  </Button>
                 </Link>
               </div>
               <p>Type : {vehicle.type?.name || '-'}</p>
@@ -95,12 +97,17 @@ export function Recap() {
           </div>
 
           <div className="text-center">
-            <Button variant="default" onClick={handleCreateQrAndRedirect} disabled={loading} className={styles.buttonPrimary}>
+            <Button
+              variant="default"
+              onClick={handleCreateQrAndRedirect}
+              disabled={loading}
+              className={styles.buttonPrimary}
+            >
               {loading ? 'Création du QR code...' : 'Continuer'}
             </Button>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

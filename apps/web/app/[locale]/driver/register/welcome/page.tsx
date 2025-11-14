@@ -1,5 +1,5 @@
-import { WelcomeStep } from '@/components/Driver/register/welcome/WelcomeStep'
+import { WelcomeStep } from '@/components/driver/register/welcome/WelcomeStep';
 
 export default function WelcomePage() {
-  return <WelcomeStep />
+  return <WelcomeStep />;
 }

@@ -1,9 +1,9 @@
 'use client';
 import React, { useRef, useState, useEffect } from 'react';
-import styles from '../Driver/register/selfieVerif/selfieVerif.module.css'; 
+import styles from '../driver/register/selfieVerif/selfieVerif.module.css';
 
 type PhotoCaptureProps = {
-  onCapture?: (image: string) => void; 
+  onCapture?: (image: string) => void;
 };
 
 export default function PhotoCapture({ onCapture }: PhotoCaptureProps) {
@@ -28,7 +28,7 @@ export default function PhotoCapture({ onCapture }: PhotoCaptureProps) {
 
   const stopCamera = () => {
     const stream = videoRef.current?.srcObject as MediaStream;
-    stream?.getTracks().forEach((track) => track.stop());
+    stream?.getTracks().forEach(track => track.stop());
     setStreaming(false);
   };
 
@@ -66,7 +66,10 @@ export default function PhotoCapture({ onCapture }: PhotoCaptureProps) {
       {!photo && (
         <>
           <div>
-            <video ref={videoRef} style={{ width: '100%', maxWidth: 400, borderRadius: '0.5rem' }} />
+            <video
+              ref={videoRef}
+              style={{ width: '100%', maxWidth: 400, borderRadius: '0.5rem' }}
+            />
           </div>
           <div className={styles.buttonContainer}>
             {!streaming ? (

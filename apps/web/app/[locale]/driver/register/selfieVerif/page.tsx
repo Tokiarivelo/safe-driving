@@ -1,8 +1,5 @@
-import { SelfieVerification } from '@/components/Driver/register/selfieVerif/selfieVerif'
-
+import { SelfieVerification } from '@/components/driver/register/selfieVerif/selfieVerif';
 
 export default function SelfieVerificationPage() {
-  return (
-      <SelfieVerification />
-  );
+  return <SelfieVerification />;
 }

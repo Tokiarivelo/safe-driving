@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { usepreference } from './recapitulatifAction';
+import { usePreference } from './recapitulatifAction';
 import { MultiSelect } from '@/components/ui/multi-select';
 import { useGetMyUserPreferenceQuery } from '@/graphql/generated/graphql';
 
@@ -62,7 +62,7 @@ export default function Recapitulatif() {
   }, [data?.userPreference]);
 
   const router = useRouter();
-  const { datas, loading, errors, submitClientData, setErrors } = usepreference();
+  const { datas, loading, errors, submitClientData, setErrors } = usePreference();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,11 +1,11 @@
 'use client';
-import { LocationPermission } from '@/components/Driver/register/gps/gps';
-import { LocationProvider } from '@/components/Driver/register/gps/LocationContext';
+import { LocationPermission } from '@/components/driver/register/gps/gps';
+import { LocationProvider } from '@/components/driver/register/gps/LocationContext';
 import { useTranslation } from 'react-i18next';
 
 export default function LocationPermissionPage() {
   const { t } = useTranslation();
-  
+
   const handleUpdate = (data: any) => {
     console.log('Permissions mises à jour:', data);
   };

@@ -2,7 +2,7 @@ import { Check } from 'lucide-react';
 import React from 'react';
 import styles from './toproles.module.css';
 import { useTranslation } from 'react-i18next';
-function toprole() {
+function useToprole() {
   const { t, ready } = useTranslation('registerDriver/picktop');
 
   if (!ready) return null;
@@ -31,4 +31,4 @@ function toprole() {
   );
 }
 
-export default toprole;
+export default useToprole;

@@ -5,6 +5,7 @@ fragment userFragment on User {
   email
   phone
   username
+  isVerified
   UserImage {
     ...Image
   }
@@ -23,6 +24,21 @@ fragment userFragment on User {
   Role {
     id
     name
+  }
+  UserPreference {
+    cguAccepted
+    activateLocation
+    activateNotifications
+    createdAt
+    id
+    language
+    theme
+    updatedAt
+    userId
+    preferedvelicles {
+      id
+      name
+    }
   }
 }
 

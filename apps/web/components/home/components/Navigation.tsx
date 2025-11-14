@@ -51,7 +51,7 @@ function ThemeToggle() {
 }
 
 export default function Navigation({ mobileMenuOpen, setMobileMenuOpen }: NavigationProps) {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const isAuthenticated = status === 'authenticated';
 
   // État pour gérer quel menu est ouvert

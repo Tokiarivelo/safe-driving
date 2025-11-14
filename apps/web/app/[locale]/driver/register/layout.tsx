@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import React from 'react';
 import styles from './driver.module.css';
-import FormButton from '../../../../components/Driver/register/formbutton/formbutton';
-import TopRole from '../../../../components/Driver/register/picktopnoir/toprole';
-import TopRoles from '../../../../components/Driver/register/picktopgreen/toprole';
+import FormButton from '../../../../components/driver/register/formbutton/formbutton';
+import TopRole from '../../../../components/driver/register/picktopnoir/toprole';
+import TopRoles from '../../../../components/driver/register/picktopgreen/toprole';
 import { usePathname } from 'next/navigation';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { motion } from 'framer-motion';

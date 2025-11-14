@@ -17,7 +17,7 @@ import { VehicleInfoForm } from '../vehiculeInfo/VehicleInfo';
 import { VehicleDocumentsForm } from '../vehiculeUpload/vehiculeUpload';
 import { SelfieVerification } from '../selfieVerif/selfieVerif';
 import { LocationPermission } from '../gps/gps';
-import { NotificationPreferences} from '../notif/notif';
+import { NotificationPreferences } from '../notif/notif';
 import { ExperiencePreferences } from '../preference/preference';
 import { Recap } from '../recapitulatif/recapitulatif';
 import {
@@ -26,7 +26,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { identity } from 'lodash';
 
 function FormButton() {
   const {
@@ -103,7 +102,8 @@ function FormButton() {
       setOpenItem(null);
       setCurrentStep(1);
     }
-  }, [    datawelcome,
+  }, [
+    datawelcome,
     datapersonalInfo,
     dataidentityUpload,
     datavehicle,
@@ -112,7 +112,8 @@ function FormButton() {
     datagps,
     datanotif,
     datapref,
-    datarecap]);
+    datarecap,
+  ]);
 
   const getDescription = () => {
     if (datawelcome) return 'Bienvenue';
@@ -136,12 +137,8 @@ function FormButton() {
 
   const router = useRouter();
   const { t, ready } = useTranslation('registerDriver/stepList');
-  const handleSubmit = async (data: { name: string; email: string; phone: string }) => { }
-  const handleUpdateNotif = (data: {
-    sms: boolean;
-    email: boolean;
-    push: boolean;
-  }) => {
+  const handleSubmit = async (data: { name: string; email: string; phone: string }) => {};
+  const handleUpdateNotif = (data: { sms: boolean; email: boolean; push: boolean }) => {
     console.log('Préférences de notification mises à jour:', data);
   };
   const handleUpdatePref = (data: {
@@ -239,7 +236,7 @@ function FormButton() {
       >
         <div className={styles.auth_btn14}>
           <div>
-            <Link href="register/welcome">
+            <Link href="/driver/register/welcome">
               <AccordionItem
                 value="item-1"
                 className={`tag ${datawelcome ? styles.auth_btn15 : ''}`}
@@ -264,7 +261,7 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="register/personalInfo">
+            <Link href="/driver/register/personalInfo">
               <AccordionItem
                 value="item-2"
                 className={`tag ${datapersonalInfo ? styles.auth_btn23 : ''}`}
@@ -296,13 +293,13 @@ function FormButton() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className={styles.auth_btn32}>
-                <PersonalInfoForm onSubmit={handleSubmit} />
+                  <PersonalInfoForm onSubmit={handleSubmit} />
                 </AccordionContent>
               </AccordionItem>
             </Link>
           </div>
           <div>
-            <Link href="register/identityUpload">
+            <Link href="/driver/register/identityUpload">
               <AccordionItem
                 value="item-3"
                 className={`tog ${dataidentityUpload ? styles.auth_btn33 : ''}`}
@@ -340,7 +337,7 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="register/vehiculeInfo">
+            <Link href="/driver/register/vehiculeInfo">
               <AccordionItem
                 value="item-4"
                 className={`teg ${datavehicle ? styles.auth_btn43 : ''}`}
@@ -378,7 +375,7 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="register/vehiculeUpload">
+            <Link href="/driver/register/vehiculeUpload">
               <AccordionItem
                 value="item-5"
                 className={`tig ${datauploadVehicle ? styles.auth_btn53 : ''}`}
@@ -416,7 +413,7 @@ function FormButton() {
             </Link>
           </div>
           <div>
-            <Link href="register/selfieVerif">
+            <Link href="/driver/register/selfieVerif">
               <AccordionItem
                 value="item-6"
                 className={`tag ${dataselfie ? styles.auth_btn23 : ''}`}
@@ -448,13 +445,13 @@ function FormButton() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className={styles.auth_btn32}>
-                <SelfieVerification />
+                  <SelfieVerification />
                 </AccordionContent>
               </AccordionItem>
             </Link>
           </div>
           <div>
-            <Link href="register/gps">
+            <Link href="/driver/register/gps">
               <AccordionItem
                 value="item-7"
                 className={`tag ${datagps ? styles.auth_btn23 : ''}`}
@@ -486,13 +483,13 @@ function FormButton() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className={styles.auth_btn32}>
-                <LocationPermission />
+                  <LocationPermission />
                 </AccordionContent>
               </AccordionItem>
             </Link>
           </div>
           <div>
-            <Link href="register/notif">
+            <Link href="/driver/register/notif">
               <AccordionItem
                 value="item-8"
                 className={`tag ${datanotif ? styles.auth_btn23 : ''}`}
@@ -524,13 +521,13 @@ function FormButton() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className={styles.auth_btn32}>
-                <NotificationPreferences onUpdate={handleUpdateNotif} />
+                  <NotificationPreferences onUpdate={handleUpdateNotif} />
                 </AccordionContent>
               </AccordionItem>
             </Link>
           </div>
           <div>
-            <Link href="register/preferences">
+            <Link href="/driver/register/preferences">
               <AccordionItem
                 value="item-9"
                 className={`tag ${datapref ? styles.auth_btn23 : ''}`}
@@ -562,13 +559,13 @@ function FormButton() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className={styles.auth_btn32}>
-                <ExperiencePreferences onUpdate={handleUpdatePref} />;
+                  <ExperiencePreferences onUpdate={handleUpdatePref} />;
                 </AccordionContent>
               </AccordionItem>
             </Link>
           </div>
           <div>
-            <Link href="register/recapituatif">
+            <Link href="/driver/register/recapitulatif">
               <AccordionItem
                 value="item-10"
                 className={`tag ${datarecap ? styles.auth_btn23 : ''}`}
@@ -600,7 +597,7 @@ function FormButton() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className={styles.auth_btn32}>
-                <Recap />
+                  <Recap />
                 </AccordionContent>
               </AccordionItem>
             </Link>

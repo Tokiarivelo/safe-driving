@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Navigation from './components/Navigation';
 import LoadingScreen from './components/LoadingScreen';
 import FloatingParticles from './components/FloatingParticles';
@@ -14,27 +14,8 @@ import CTASection from './components/CTASection';
 import Footer from './components/Footer';
 
 export default function Acceuil() {
-  const { t, ready } = useTranslation('accueil');
+  const { ready } = useTranslation('accueil');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const isDark =
-        localStorage.getItem('theme') === 'dark' ||
-        (!localStorage.getItem('theme') &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches);
-      setDarkMode(isDark);
-      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    const newTheme = !darkMode;
-    setDarkMode(newTheme);
-    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', newTheme ? 'dark' : 'light');
-  };
 
   if (!ready) {
     return <LoadingScreen />;

@@ -3,14 +3,14 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTheme } from '@/lib/contexts/ThemeContext';
+import { useTheme } from 'next-themes';
 import { useRouter, usePathname } from 'next/navigation';
 import { experiencePreferencesSchema, ExperiencePreferencesValues } from './schema';
 import { useTranslation } from 'react-i18next';
 import { useSession } from 'next-auth/react';
-import { 
-  useUpsertUserPreferenceMutation, 
-  useGetMyUserPreferenceQuery  
+import {
+  useUpsertUserPreferenceMutation,
+  useGetMyUserPreferenceQuery,
 } from '@/graphql/generated/graphql';
 import { toast } from 'sonner';
 import '@/lib/i18n';
@@ -24,7 +24,7 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
 
   const [upsertUserPreference] = useUpsertUserPreferenceMutation();
   const { data: preferenceData, refetch: refetchPreferences } = useGetMyUserPreferenceQuery({
-    skip: !session?.user?.id
+    skip: !session?.user?.id,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,10 +35,10 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
     defaultValues: {
       theme: {
         light: initialValues?.theme?.light ?? theme === 'light',
-        dark: initialValues?.theme?.dark ?? theme === 'dark'
+        dark: initialValues?.theme?.dark ?? theme === 'dark',
       },
-      language: initialValues?.language ?? (i18n.language === 'fr' ? 'french' : 'english')
-    }
+      language: initialValues?.language ?? (i18n.language === 'fr' ? 'french' : 'english'),
+    },
   });
 
   // Synchroniser les valeurs du formulaire avec la base
@@ -50,7 +50,7 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
       if (dbTheme) {
         form.setValue('theme', {
           light: dbTheme === 'light',
-          dark: dbTheme === 'dark'
+          dark: dbTheme === 'dark',
         });
         setTheme(dbTheme as 'light' | 'dark');
       }
@@ -93,9 +93,9 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
             activateSmsNotifications: existingPreference?.activateSmsNotifications ?? false,
             activateEmailNotifications: existingPreference?.activateEmailNotifications ?? false,
             cguAccepted: existingPreference?.cguAccepted ?? false,
-            privacyPolicyAccepted: existingPreference?.privacyPolicyAccepted ?? false
-          }
-        }
+            privacyPolicyAccepted: existingPreference?.privacyPolicyAccepted ?? false,
+          },
+        },
       });
 
       if (errors) throw new Error(errors.map(e => e.message).join(', '));
@@ -141,9 +141,9 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
             activateSmsNotifications: existingPreference?.activateSmsNotifications ?? false,
             activateEmailNotifications: existingPreference?.activateEmailNotifications ?? false,
             cguAccepted: existingPreference?.cguAccepted ?? false,
-            privacyPolicyAccepted: existingPreference?.privacyPolicyAccepted ?? false
-          }
-        }
+            privacyPolicyAccepted: existingPreference?.privacyPolicyAccepted ?? false,
+          },
+        },
       });
 
       if (errors) throw new Error(errors.map(e => e.message).join(', '));
@@ -172,12 +172,14 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
             theme: selectedTheme,
             activateLocation: preferenceData?.userPreference?.activateLocation ?? false,
             activateNotifications: preferenceData?.userPreference?.activateNotifications ?? false,
-            activateSmsNotifications: preferenceData?.userPreference?.activateSmsNotifications ?? false,
-            activateEmailNotifications: preferenceData?.userPreference?.activateEmailNotifications ?? false,
+            activateSmsNotifications:
+              preferenceData?.userPreference?.activateSmsNotifications ?? false,
+            activateEmailNotifications:
+              preferenceData?.userPreference?.activateEmailNotifications ?? false,
             cguAccepted: preferenceData?.userPreference?.cguAccepted ?? false,
-            privacyPolicyAccepted: preferenceData?.userPreference?.privacyPolicyAccepted ?? false
-          }
-        }
+            privacyPolicyAccepted: preferenceData?.userPreference?.privacyPolicyAccepted ?? false,
+          },
+        },
       });
 
       if (errors) throw new Error(errors.map(e => e.message).join(', '));
@@ -210,6 +212,6 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
     handleThemeChange,
     handleLanguageChange,
     onSubmit: form.handleSubmit(onSubmit),
-    userPreference: preferenceData?.userPreference
+    userPreference: preferenceData?.userPreference,
   };
 };
