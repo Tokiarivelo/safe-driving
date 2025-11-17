@@ -74,6 +74,9 @@ export const NearbyDriversZone = ({
           lat={driver.lat}
           lng={driver.lng}
           status={driver.status}
+          rating={driver.rating}
+          phone={driver.phone}
+          nbPlaces={driver.nbPlaces}
         />
       ))}
     </>
