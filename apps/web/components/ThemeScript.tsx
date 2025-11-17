@@ -9,11 +9,24 @@ export default function ThemeScript() {
         __html: `
           (function() {
             try {
-              var theme = localStorage.getItem('safe-drive-theme') || 
-                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-              document.documentElement.classList.add(theme);
-              document.documentElement.style.colorScheme = theme;
-            } catch (e) {}
+              // Only run on client side
+              if (typeof window === 'undefined') return;
+              
+              var theme = localStorage.getItem('safe-drive-theme');
+              
+              // If no stored theme, check system preference
+              if (!theme) {
+                theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+              }
+              
+              // Apply theme to document
+              if (theme) {
+                document.documentElement.classList.add(theme);
+                document.documentElement.style.colorScheme = theme;
+              }
+            } catch (e) {
+              // Fail silently
+            }
           })();
         `,
       }}

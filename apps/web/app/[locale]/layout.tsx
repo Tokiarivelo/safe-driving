@@ -6,7 +6,6 @@ import { ClientI18nProvider } from './client-i18n-provider';
 import '../global.css';
 import { SocketProvider } from '@/lib/socket.io/SocketProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
-import ThemeScript from '@/components/ThemeScript';
 
 export const metadata = {
   title: {
@@ -19,6 +18,7 @@ export const metadata = {
     shortcut: '/logo.svg',
     apple: '/logo.svg',
   },
+  manifest: '/manifest.json',
 };
 
 export default async function RootLayout({
@@ -32,9 +32,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <head>
-        <ThemeScript />
-      </head>
+      <head />
       <body suppressHydrationWarning>
         <main>
           <SocketProvider>
