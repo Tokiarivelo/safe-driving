@@ -17,15 +17,15 @@ interface DriverMarkerProps {
   nbPlaces?: number | null;
 }
 
-export const DriverMarker = ({ 
-  name, 
-  vehicle, 
-  lat, 
-  lng, 
-  status, 
-  rating = 4.2, 
+export const DriverMarker = ({
+  name,
+  vehicle,
+  lat,
+  lng,
+  status,
+  rating = 4.2,
   phone = '(+261) 34 ....',
-  nbPlaces = 4 
+  nbPlaces = 4,
 }: DriverMarkerProps) => {
   const [message, setMessage] = useState('');
 
@@ -43,7 +43,7 @@ export const DriverMarker = ({
 
   // Create a custom icon using SVG marker
   const markerColor = getMarkerColor(status);
-  
+
   // Create a simple SVG marker icon instead of using Iconify
   const iconHtml = `
     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3))">
@@ -126,8 +126,8 @@ export const DriverMarker = ({
             <input
               type="text"
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              onChange={e => setMessage(e.target.value)}
+              onKeyPress={e => e.key === 'Enter' && handleSendMessage()}
               placeholder="Envoyer un message"
               className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

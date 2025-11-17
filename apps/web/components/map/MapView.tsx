@@ -12,10 +12,8 @@ import { defaultLocations, Location } from '@/components/map/Location';
 import { arrayMove } from '@dnd-kit/sortable';
 import * as polyline from '@mapbox/polyline';
 import { TempMarker } from '@/components/map/TempMarker';
-import RealTimeDriverZone from '@/components/map/RealTimeDriverZone';
 import { NearbyDriversZone } from '@/components/map/NearbyDriversZone';
 import { UserPositionZone } from '@/components/map/UserPositionZone';
-import { distanceMeters } from '@/components/map/MapUtils';
 import { useRouteWorker, useGeocodingWorker } from '@/hooks/useMapWorkers';
 
 // Fix Leaflet's default icon paths for Next.js
@@ -312,12 +310,8 @@ export default function Map({ coordinates }: Props) {
         {userLocation && (
           <>
             {/* User position marker with limited zone */}
-            <UserPositionZone 
-              position={userLocation} 
-              radiusMeters={1500}
-              showZone={true}
-            />
-            
+            <UserPositionZone position={userLocation} radiusMeters={1500} showZone={true} />
+
             {/* Original interactive marker for adding location */}
             {isCenteredOnMyLocation && (
               <Marker
@@ -373,29 +367,8 @@ export default function Map({ coordinates }: Props) {
 
         <TempMarker setTempMarker={setTempMarker} addLocationAt={addLocationAt} />
 
-        <RealTimeDriverZone
-          initialCenter={center}
-          radius={500} // meters
-          onCenterChange={(lat: number, lng: number) => {
-            console.log('new center:', lat, lng);
-            // optional: filter drivers by distance
-            const inRadius = locations.filter(
-              loc =>
-                loc.lat !== undefined &&
-                loc.lon !== undefined &&
-                distanceMeters(lat, lng, loc.lat, loc.lon) <= 500,
-            );
-            console.log('drivers inside radius:', inRadius);
-          }}
-        />
-
         {/* Show nearby drivers using GraphQL query with mock data */}
-        <NearbyDriversZone
-          userLocation={userLocation}
-          radiusMeters={1500}
-          limit={50}
-          mock={true}
-        />
+        <NearbyDriversZone userLocation={userLocation} radiusMeters={1500} limit={50} mock={true} />
       </MapContainer>
 
       <MapPills mapRef={mapRef} />
