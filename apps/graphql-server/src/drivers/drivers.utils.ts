@@ -76,6 +76,9 @@ export function generateRandomDriversAround(
   lat: number;
   lng: number;
   status: string;
+  rating: number;
+  phone: string;
+  nbPlaces: number;
 }> {
   const drivers = [];
   const vehicleTypes = ['Sedan', 'SUV', 'Van', 'Truck', 'Compact', 'Luxury'];
@@ -111,6 +114,15 @@ export function generateRandomDriversAround(
     const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
     const vehicle = vehicleTypes[Math.floor(Math.random() * vehicleTypes.length)];
     const status = statuses[Math.floor(Math.random() * statuses.length)];
+    
+    // Generate random rating between 3.0 and 5.0
+    const rating = Math.round((3 + Math.random() * 2) * 10) / 10;
+    
+    // Generate random phone number
+    const phone = `(+261) 34 ${Math.floor(10 + Math.random() * 90)} ${Math.floor(100 + Math.random() * 900)} ${Math.floor(10 + Math.random() * 90)}`;
+    
+    // Generate random number of places (2-7)
+    const nbPlaces = Math.floor(2 + Math.random() * 6);
 
     drivers.push({
       id: `driver-${Date.now()}-${i}`,
@@ -119,6 +131,9 @@ export function generateRandomDriversAround(
       lat: point.lat,
       lng: point.lng,
       status,
+      rating,
+      phone,
+      nbPlaces,
     });
   }
 

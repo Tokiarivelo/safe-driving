@@ -54,6 +54,15 @@ export class Driver {
 
   @Field({ nullable: true })
   status?: string;
+
+  @Field(() => Float, { nullable: true })
+  rating?: number;
+
+  @Field({ nullable: true })
+  phone?: string;
+
+  @Field(() => Int, { nullable: true })
+  nbPlaces?: number;
 }
 
 @ObjectType()
