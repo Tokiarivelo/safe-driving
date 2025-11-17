@@ -3,7 +3,6 @@
 import L from 'leaflet';
 import { Marker as LeafletMarker, Popup } from 'react-leaflet';
 import { Icon } from '@iconify/react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import { useState } from 'react';
 
 interface DriverMarkerProps {
@@ -42,18 +41,15 @@ export const DriverMarker = ({
     }
   };
 
-  // Create a custom icon using Iconify foundation:marker
+  // Create a custom icon using SVG marker
   const markerColor = getMarkerColor(status);
-  const iconHtml = renderToStaticMarkup(
-    <Icon 
-      icon="foundation:marker" 
-      style={{ 
-        color: markerColor,
-        fontSize: '40px',
-        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
-      }} 
-    />
-  );
+  
+  // Create a simple SVG marker icon instead of using Iconify
+  const iconHtml = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3))">
+      <path fill="${markerColor}" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+    </svg>
+  `;
 
   const driverIcon = new L.DivIcon({
     html: iconHtml,
