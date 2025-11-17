@@ -16,8 +16,10 @@ import RealTimeDriverZone from '@/components/map/RealTimeDriverZone';
 import { NearbyDriversZone } from '@/components/map/NearbyDriversZone';
 import { UserPositionZone } from '@/components/map/UserPositionZone';
 import { distanceMeters } from '@/components/map/MapUtils';
+import { useRouteWorker, useGeocodingWorker } from '@/hooks/useMapWorkers';
 
 // Fix Leaflet's default icon paths for Next.js
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: '/leaflet/images/marker-icon-2x.png',
@@ -70,32 +72,6 @@ function MapController({
   return null;
 }
 
-async function reverseGeocode(lat: number, lon: number): Promise<string> {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_NOMINATIM_URL}?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
-      { headers: { 'User-Agent': 'safe-driving' } }, // Nominatim requires UA
-    );
-    const data = await res.json();
-
-    if (!data.address) return 'Unknown location';
-
-    const road = data.address.road || data.address.highway;
-    const neighbourhood =
-      data.address.neighbourhood || data.address.suburb || data.address.city_district;
-
-    // Format: road name above, neighborhood below
-    if (road && neighbourhood) return `${road}, ${neighbourhood}`;
-    if (road) return road;
-    if (neighbourhood) return neighbourhood;
-
-    return data.display_name || 'Unnamed place';
-  } catch (e) {
-    console.error('Reverse geocoding failed:', e);
-    return 'Unknown location';
-  }
-}
-
 export default function Map({ coordinates }: Props) {
   const [center, setCenter] = useState<[number, number]>(
     coordinates || [-18.8792, 47.5079], // fallback
@@ -114,6 +90,10 @@ export default function Map({ coordinates }: Props) {
   const [locations, setLocations] = useState<Location[]>(defaultLocations);
 
   const [tempMarkerLabel, setTempMarkerLabel] = useState<string>('');
+
+  // Use web workers for heavy operations
+  const { calculateRoute: calculateRouteWorker } = useRouteWorker();
+  const { reverseGeocode: reverseGeocodeWorker } = useGeocodingWorker();
 
   const addLocation = () => {
     const newLocation: Location = {
@@ -147,26 +127,34 @@ export default function Map({ coordinates }: Props) {
     setLocations(items => arrayMove(items, oldIndex, newIndex));
   };
 
-  const addLocationAt = async (lat: number, lon: number) => {
-    const label = await reverseGeocode(lat, lon);
+  const addLocationAt = (lat: number, lon: number) => {
+    // Use worker for geocoding
+    reverseGeocodeWorker(lat, lon, process.env.NEXT_PUBLIC_NOMINATIM_URL || '', result => {
+      if (result.type === 'GEOCODE_RESULT') {
+        const label = result.data.locationName;
 
-    const firstEmpty = locations.find(loc => loc.value === '');
-    if (firstEmpty) {
-      updateLocation(firstEmpty.id, label, lat, lon, 'marker');
-    } else {
-      const newLocation: Location = {
-        id: Date.now().toString(),
-        placeholder: `Stop ${locations.length - 1}`,
-        value: label,
-        lat,
-        lon,
-        source: 'marker',
-      };
-      const newLocations = [...locations];
-      newLocations.splice(newLocations.length - 1, 0, newLocation);
-      setLocations(newLocations);
-    }
-    setTempMarker(null); // remove after adding
+        const firstEmpty = locations.find(loc => loc.value === '');
+        if (firstEmpty) {
+          updateLocation(firstEmpty.id, label, lat, lon, 'marker');
+        } else {
+          const newLocation: Location = {
+            id: Date.now().toString(),
+            placeholder: `Stop ${locations.length - 1}`,
+            value: label,
+            lat,
+            lon,
+            source: 'marker',
+          };
+          const newLocations = [...locations];
+          newLocations.splice(newLocations.length - 1, 0, newLocation);
+          setLocations(newLocations);
+        }
+        setTempMarker(null); // remove after adding
+      } else if (result.type === 'GEOCODE_ERROR') {
+        console.error('Geocoding failed:', result.error);
+        setTempMarker(null);
+      }
+    });
   };
 
   const cleanLocations = () => {
@@ -240,11 +228,23 @@ export default function Map({ coordinates }: Props) {
 
   useEffect(() => {
     if (tempMarker) {
-      reverseGeocode(tempMarker.lat, tempMarker.lon).then(setTempMarkerLabel);
+      // Use worker for geocoding
+      reverseGeocodeWorker(
+        tempMarker.lat,
+        tempMarker.lon,
+        process.env.NEXT_PUBLIC_NOMINATIM_URL || '',
+        result => {
+          if (result.type === 'GEOCODE_RESULT') {
+            setTempMarkerLabel(result.data.locationName);
+          } else {
+            setTempMarkerLabel('Unknown location');
+          }
+        },
+      );
     } else {
       setTempMarkerLabel('');
     }
-  }, [tempMarker]);
+  }, [tempMarker, reverseGeocodeWorker]);
 
   useEffect(() => {
     if (!coordinates) {
@@ -252,33 +252,30 @@ export default function Map({ coordinates }: Props) {
     }
   }, [coordinates]);
 
-  // inside your Map component
+  // Route calculation with worker
   useEffect(() => {
     const validLocations = locations.filter(loc => loc.lat != null && loc.lon != null);
     if (validLocations.length >= 2) {
       const coordinates = validLocations.map(loc => [loc.lon, loc.lat]); // ORS expects [lon, lat]
 
-      fetch(process.env.NEXT_PUBLIC_ORS_URL || '', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ coordinates }),
-      })
-        .then(res => res.json())
-        .then(data => {
-          const coords = polyline.decode(data.routes[0].geometry) as [number, number][];
+      // Use worker for route calculation
+      calculateRouteWorker(coordinates, process.env.NEXT_PUBLIC_ORS_URL || '', result => {
+        if (result.type === 'ROUTE_CALCULATED') {
+          const coords = polyline.decode(result.data.geometry) as [number, number][];
           setRoute(coords);
-          const distance = (data.routes[0].summary.distance / 1000).toFixed(2);
+          const distance = (result.data.distance / 1000).toFixed(2);
           setDistKm(distance);
-          const duration = (data.routes[0].summary.duration / 60).toFixed(2);
+          const duration = (result.data.duration / 60).toFixed(2);
           setDurationMin(duration);
-        })
-        .catch(err => {
-          console.error('ORS request failed:', err);
-        });
+        } else if (result.type === 'ROUTE_ERROR') {
+          console.error('Route calculation failed:', result.error);
+          cleanRouteInformation();
+        }
+      });
     } else {
       cleanRouteInformation();
     }
-  }, [locations]); // run whenever locations change
+  }, [locations, calculateRouteWorker]);
 
   return (
     <div
