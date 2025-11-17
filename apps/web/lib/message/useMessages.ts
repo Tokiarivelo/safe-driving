@@ -4,6 +4,7 @@ import {
   CursorDirection,
   MessageEventType,
   MessageFragmentFragment,
+  Message,
   MessageState,
   useDeleteMessageMutation,
   useEditMessageMutation,

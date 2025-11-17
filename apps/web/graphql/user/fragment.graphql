@@ -6,8 +6,27 @@ fragment userFragment on User {
   phone
   username
   isVerified
+  avatar {
+    id
+    url
+    type
+    meta
+    name
+  }
   UserImage {
     ...Image
+  }
+  UserCover {
+    id
+    fileId
+    createdAt
+    file {
+      id
+      url
+      type
+      meta
+      name
+    }
   }
   UserDocument {
     id

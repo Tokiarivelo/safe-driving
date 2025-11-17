@@ -204,7 +204,7 @@ function Dashboard() {
               </Link>
 
               {/* Bloc Messages */}
-              <Link href="/user/form/name/bjr">
+              <Link href="/driver/dashboard/messages">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="streamline-ultimate-color:messages-logo" width="58" height="58" />
@@ -234,7 +234,7 @@ function Dashboard() {
             {/* Deuxième ligne */}
             <div className="w-full p-5 sm:p-0 flex justify-between items-center mb-5">
               {/* Bloc Scanner */}
-              <Link href="/register/scan">
+              <Link href="/driver/dashboard/scan">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="w-16 h-16 bg-[#C8E6FF] rounded-full flex items-center justify-center">
@@ -284,7 +284,7 @@ function Dashboard() {
               </Link>
 
               {/* Bloc Profil */}
-              <Link href="/recapitulatif">
+              <Link href="/driver/dashboard/profile">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="w-16 h-16 bg-[#9EDD28] rounded-full flex items-center justify-center">

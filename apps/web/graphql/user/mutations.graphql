@@ -19,3 +19,21 @@ mutation uploadUserDocument($input: [UploadUserDocumentsInput!]!) {
     ...userFragment
   }
 }
+
+mutation uploadAvatar($key: String!) {
+  uploadAvatar(key: $key) {
+    ...userFragment
+  }
+}
+
+mutation uploadCover($key: String!) {
+  uploadCover(key: $key) {
+    ...userFragment
+  }
+}
+
+mutation uploadUserImages($keys: [String!]!) {
+  uploadUserImages(keys: $keys) {
+    ...userFragment
+  }
+}

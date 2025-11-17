@@ -2,7 +2,8 @@
 import React from 'react';
 import MpMessage from './centre.child';
 import Fichier from './right.child';
-import ConversationItem from './left.child';
+import Left from './left.child';
+import Sidebare from '../sidebare/sidebare';
 import styles from './messages.module.css';
 import { useMessages } from '@/lib/message/useMessages';
 import { Chat } from './chat/chat';
@@ -11,6 +12,8 @@ import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useChatSocket } from '@/lib/socket.io/useChatSocket';
 import { UserConversation } from '@/graphql/generated/graphql';
+import { useSearchParams } from 'next/navigation';
+import { useReactions } from '@/hooks/useReactions';
 
 interface ChatContainerProps {
   conversationId?: string;
@@ -25,9 +28,10 @@ export function ChatContainer({
 }: ChatContainerProps) {
   const [session, setSession] = useState<any>(null);
   const [currentUserId, setCurrentUserId] = useState<string>('');
-  const [selectedConversationId, setSelectedConversationId] = useState(conversationId);
+  const [selectedConversationId, setSelectedConversationId] = useState<string | undefined>(undefined);
   const [selectedConversation, setSelectedConversation] = useState<UserConversation | undefined>();
   const [userName, setUserName] = useState<string>('');
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -46,10 +50,14 @@ export function ChatContainer({
     fetchSession();
   }, []);
 
-  // Update selected conversation when prop changes
   useEffect(() => {
-    setSelectedConversationId(conversationId);
-  }, [conversationId]);
+    const conversationIdFromUrl = searchParams.get('conversationId');
+    if (conversationIdFromUrl) {
+      setSelectedConversationId(conversationIdFromUrl);
+    } else if (conversationId) {
+      setSelectedConversationId(conversationId);
+    }
+  }, [searchParams, conversationId]);
 
   const handleConversationSelect = (newConversationId: string, conversation?: UserConversation) => {
     setSelectedConversationId(newConversationId);
@@ -71,22 +79,32 @@ export function ChatContainer({
     deleteMessage,
   } = useMessages({ conversationId: selectedConversationId, rideId });
 
+  const { addReaction, removeReaction } = useReactions();
+
+  const handleReactToMessage = async (messageId: string, emoji: string) => {
+    const hasReacted = messages.some(msg => {
+      return (
+        msg.id === messageId &&
+        msg.reactions?.some(r => r.user.id === currentUserId && r.type === emoji)
+      );
+    });
+
+    if (hasReacted) {
+      await removeReaction(messageId, emoji);
+    } else {
+      await addReaction(messageId, emoji);
+    }
+  };
+
   return (
     <div className={styles.auth_msg1}>
       <div className={styles.auth_msg2}>
-        <div className={styles.auth_msg3}></div>
+        <Sidebare />
         <div className={styles.auth_msg4}>
-          <ConversationSelectorWithCRUD
+          <Left
             selectedConversationId={selectedConversationId}
             onConversationSelect={handleConversationSelect}
-            className="h-full"
-            showSearch={true}
-            showCreateButton={true}
-            onConversationChange={(conversations) => {
-              console.log('Conversations updated:', conversations);
-            }}
           />
-          {/* <ConversationItem/> */}
         </div>
         <div className={styles.auth_msg11}>
           <Chat
@@ -102,11 +120,11 @@ export function ChatContainer({
             onScrollToBottom={scrollToBottom}
             onEditMessage={editMessage}
             onDeleteMessage={deleteMessage}
+            onReactToMessage={handleReactToMessage}
           />
-          {/* <MpMessage/> */}
         </div>
         <div className={styles.auth_msg12}>
-          <Fichier />
+          <Fichier conversation={selectedConversation} currentUserId={currentUserId} messages={messages} />
         </div>
       </div>
     </div>
@@ -114,3 +132,4 @@ export function ChatContainer({
 }
 
 export default ChatContainer;
+

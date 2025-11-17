@@ -4,15 +4,14 @@ import { usePathname } from 'next/navigation';
 
 export const usebutton = () => {
   const pathname = usePathname();
-  const datahome = pathname.includes('/home');
+  const datahome = pathname.includes('/dashboard');
   const datarechercher = pathname.includes('/recherche');
   const datamessages = pathname.includes('/messages');
   const datacourses = pathname.includes('/courses');
-  const datascanner = pathname.includes('/scanner');
+  const datascanner = pathname.includes('/scan');
   const datanotifications = pathname.includes('/notifications');
   const datatrajet = pathname.includes('/trajet');
-  const dataprofil = pathname.includes('/profil');
-  const dataoffre = pathname.includes('/offre');
+  const dataprofil = pathname.includes('/profile');
   const dataparametre = pathname.includes('/parametre');
   const dataassistance = pathname.includes('/assistance');
   {/*========================================*/}
@@ -24,7 +23,6 @@ export const usebutton = () => {
   const notifications = () => {};
   const trajet = () => {};
   const profil = () => {};
-  const offre = () => {};
   const parametre = () => {};
   const assistance = () => {};
   
@@ -37,7 +35,6 @@ export const usebutton = () => {
     datanotifications,
     datatrajet,
     dataprofil,
-    dataoffre,
     dataparametre,
     dataassistance,
     home,
@@ -48,7 +45,6 @@ export const usebutton = () => {
     notifications,
     trajet,
     profil,
-    offre,
     parametre,
     assistance,
   };
