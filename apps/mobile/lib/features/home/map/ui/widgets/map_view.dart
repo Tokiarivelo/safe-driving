@@ -11,6 +11,7 @@ import 'pulsing_marker_widget.dart';
 import 'top_filter_bar.dart';
 import 'detailed_filters_panel.dart';
 import 'driver_popup.dart';
+import 'driver_marker_widget.dart';
 
 class MapView extends StatefulWidget {
   final LatLng? initialCenter;
@@ -104,27 +105,15 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
                           ),
                         for (final d in vm.drivers)
                           Marker(
-                            width: 30,
-                            height: 30,
+                            width: 40,
+                            height: 40,
                             point: LatLng(d.lat, d.lng),
-                            child: GestureDetector(
+                            child: DriverMarkerWidget(
+                              status: d.status,
                               onTap: () async {
                                 final full = await vm.getDriver(d.id);
                                 setState(() => _selected = full ?? d);
                               },
-                              child: Container(
-                                width: 24,
-                                height: 24,
-                                decoration: const BoxDecoration(
-                                  color: kRedDriver,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.local_taxi,
-                                  color: Colors.white,
-                                  size: 14,
-                                ),
-                              ),
                             ),
                           ),
                       ],

@@ -40,16 +40,19 @@ class MapServiceGraphQL implements IDriverService {
       final status = m['status']?.toString() ?? 'AVAILABLE';
       final lat = (m['lat'] as num?)?.toDouble() ?? 0;
       final lng = (m['lng'] as num?)?.toDouble() ?? 0;
+      final rating = (m['rating'] as num?)?.toDouble() ?? 4.2;
+      final phone = m['phone']?.toString() ?? '(+261) 34 ....';
+      final nbPlaces = (m['nbPlaces'] as num?)?.toInt() ?? 4;
 
       // Map the new format to the existing DriverDTO format
       return DriverDTO(
         id: id,
         name: name,
-        rating: 4.5, // Default rating for mock drivers
+        rating: rating,
         statusText: status,
         vehicleModel: vehicle,
-        seats: 4, // Default seats
-        phone: '+1234567890', // Default phone
+        seats: nbPlaces,
+        phone: phone,
         lat: lat,
         lng: lng,
       );

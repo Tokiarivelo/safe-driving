@@ -5,6 +5,9 @@ class Driver {
   final double lat;
   final double lng;
   final String? status;
+  final double? rating;
+  final String? phone;
+  final int? nbPlaces;
 
   Driver({
     required this.id,
@@ -13,6 +16,9 @@ class Driver {
     required this.lat,
     required this.lng,
     this.status,
+    this.rating,
+    this.phone,
+    this.nbPlaces,
   });
 
   factory Driver.fromJson(Map<String, dynamic> json) {
@@ -23,6 +29,9 @@ class Driver {
       lat: (json['lat'] as num).toDouble(),
       lng: (json['lng'] as num).toDouble(),
       status: json['status'] as String?,
+      rating: json['rating'] != null ? (json['rating'] as num).toDouble() : null,
+      phone: json['phone'] as String?,
+      nbPlaces: json['nbPlaces'] as int?,
     );
   }
 
@@ -34,6 +43,9 @@ class Driver {
       'lat': lat,
       'lng': lng,
       'status': status,
+      'rating': rating,
+      'phone': phone,
+      'nbPlaces': nbPlaces,
     };
   }
 }
