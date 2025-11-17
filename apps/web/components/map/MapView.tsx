@@ -14,6 +14,7 @@ import * as polyline from '@mapbox/polyline';
 import { TempMarker } from '@/components/map/TempMarker';
 import RealTimeDriverZone from '@/components/map/RealTimeDriverZone';
 import { NearbyDriversZone } from '@/components/map/NearbyDriversZone';
+import { UserPositionZone } from '@/components/map/UserPositionZone';
 import { distanceMeters } from '@/components/map/MapUtils';
 
 // Fix Leaflet's default icon paths for Next.js
@@ -313,6 +314,14 @@ export default function Map({ coordinates }: Props) {
         )}
         {userLocation && (
           <>
+            {/* User position marker with limited zone */}
+            <UserPositionZone 
+              position={userLocation} 
+              radiusMeters={1500}
+              showZone={true}
+            />
+            
+            {/* Original interactive marker for adding location */}
             {isCenteredOnMyLocation && (
               <Marker
                 position={userLocation}

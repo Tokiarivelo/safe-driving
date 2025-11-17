@@ -1423,6 +1423,24 @@
   display: block;
 }
 
+/* User position marker styles */
+.user-position-marker {
+  background: transparent;
+  border: none;
+}
+
+/* Pulse animation for user position marker */
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0.5;
+  }
+}
+
 /* Leaflet popup custom styles for driver markers */
 .driver-popup .leaflet-popup-content-wrapper {
   border-radius: 12px;
