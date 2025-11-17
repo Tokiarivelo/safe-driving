@@ -1,45 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
 import { DriverMarker } from './DriverMarker';
-
-const NEARBY_DRIVERS_QUERY = gql`
-  query NearbyDrivers(
-    $lat: Float!
-    $lng: Float!
-    $radiusMeters: Int
-    $limit: Int
-    $mock: Boolean
-  ) {
-    nearbyDrivers(
-      lat: $lat
-      lng: $lng
-      radiusMeters: $radiusMeters
-      limit: $limit
-      mock: $mock
-    ) {
-      count
-      drivers {
-        id
-        name
-        vehicle
-        lat
-        lng
-        status
-      }
-    }
-  }
-`;
-
-interface Driver {
-  id: string;
-  name: string;
-  vehicle?: string;
-  lat: number;
-  lng: number;
-  status?: string;
-}
+import { Driver, useNearbyDriversQuery } from '@/graphql/generated/graphql';
 
 interface NearbyDriversZoneProps {
   userLocation: [number, number] | null;
@@ -56,7 +19,7 @@ export const NearbyDriversZone = ({
 }: NearbyDriversZoneProps) => {
   const [drivers, setDrivers] = useState<Driver[]>([]);
 
-  const { data, loading, error, refetch } = useQuery(NEARBY_DRIVERS_QUERY, {
+  const { data, loading, error, refetch } = useNearbyDriversQuery({
     variables: {
       lat: userLocation?.[0] || 0,
       lng: userLocation?.[1] || 0,
@@ -102,7 +65,7 @@ export const NearbyDriversZone = ({
 
   return (
     <>
-      {drivers.map((driver) => (
+      {drivers.map(driver => (
         <DriverMarker
           key={driver.id}
           id={driver.id}

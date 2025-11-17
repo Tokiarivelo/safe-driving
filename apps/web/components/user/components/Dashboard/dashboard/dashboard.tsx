@@ -12,7 +12,6 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
 import {
@@ -21,15 +20,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-function dashboard() {
+function Dashboard() {
   const [selected, setSelected] = useState('');
-  const [position, setPosition] = React.useState<string>('bottom');
-  const mika = () => {};
-  const {
-    data,
-    error,
-    loading: queryLoading,
-  } = useMeQuery({
+  const { data } = useMeQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
@@ -329,4 +322,4 @@ function dashboard() {
   );
 }
 
-export default dashboard;
+export default Dashboard;

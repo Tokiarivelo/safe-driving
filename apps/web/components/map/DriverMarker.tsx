@@ -6,13 +6,13 @@ import { Marker as LeafletMarker, Popup } from 'react-leaflet';
 interface DriverMarkerProps {
   id: string;
   name: string;
-  vehicle?: string;
+  vehicle?: string | null;
   lat: number;
   lng: number;
-  status?: string;
+  status?: string | null;
 }
 
-export const DriverMarker = ({ id, name, vehicle, lat, lng, status }: DriverMarkerProps) => {
+export const DriverMarker = ({ name, vehicle, lat, lng, status }: DriverMarkerProps) => {
   // Create a custom icon for drivers
   const driverIcon = new L.Icon({
     iconUrl: '/leaflet/images/marker-icon.png',
@@ -37,7 +37,11 @@ export const DriverMarker = ({ id, name, vehicle, lat, lng, status }: DriverMark
             <p className="text-xs mb-1">
               <span
                 className={`inline-block w-2 h-2 rounded-full mr-1 ${
-                  status === 'AVAILABLE' ? 'bg-green-500' : status === 'BUSY' ? 'bg-red-500' : 'bg-gray-500'
+                  status === 'AVAILABLE'
+                    ? 'bg-green-500'
+                    : status === 'BUSY'
+                      ? 'bg-red-500'
+                      : 'bg-gray-500'
                 }`}
               />
               {status}

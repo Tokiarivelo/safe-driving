@@ -8,6 +8,7 @@ plugins {
 android {
     namespace = "com.example.safe_driving"
     compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
