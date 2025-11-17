@@ -1409,3 +1409,32 @@
     transition: background-color 0.3s, color 0.3s;
   }
 }
+
+/* Custom driver marker styles */
+.custom-driver-marker {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-driver-marker svg {
+  display: block;
+}
+
+/* Leaflet popup custom styles for driver markers */
+.driver-popup .leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 0;
+}
+
+.driver-popup .leaflet-popup-content {
+  margin: 0;
+  width: auto !important;
+}
+
+.driver-popup .leaflet-popup-tip {
+  border-radius: 2px;
+}

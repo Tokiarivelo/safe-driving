@@ -21,6 +21,9 @@ query NearbyDrivers(
       lat
       lng
       status
+      rating
+      phone
+      nbPlaces
     }
   }
 }

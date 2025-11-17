@@ -87,6 +87,9 @@ export class DriversService {
                 lat: parseFloat(driverData.lat),
                 lng: parseFloat(driverData.lon),
                 status: driverData.status || 'AVAILABLE',
+                rating: driverData.rating ? parseFloat(driverData.rating) : 4.2,
+                phone: driverData.phone || '(+261) 34 ....',
+                nbPlaces: driverData.nbPlaces ? parseInt(driverData.nbPlaces) : 4,
               });
             }
           }
@@ -107,6 +110,9 @@ export class DriversService {
         lat: d.lat,
         lng: d.lng,
         status: d.status,
+        rating: d.rating,
+        phone: d.phone,
+        nbPlaces: d.nbPlaces,
       }));
     }
 
