@@ -1,4 +1,4 @@
-@reference '../../../../app/global.css';
+@reference '../../../../../app/global.css';
 
 .auth_msg1 {
   @apply w-full h-screen bg-green-300 absolute;
@@ -61,7 +61,7 @@
   @apply w-[30%] flex items-center text-[13px] text-black;
 }
 .auth_left9 {
-  @apply w-[10%] h-10 flex items-center justify-center ;
+  @apply w-[10%] h-10 flex items-center justify-center;
 }
 .auth_left10 {
   @apply w-2 h-6 space-y-1 cursor-pointer ml-2;
@@ -136,17 +136,17 @@
   @apply w-full h-20 flex items-center;
 }
 .auth_right12 {
-  @apply w-full flex items-center space-x-2 border-b-2 border-[#E5E7EB] ;
+  @apply w-full flex items-center space-x-2 border-b-2 border-[#E5E7EB];
 }
 .auth_right13 {
-  @apply auth-background w-4 h-4 text-white text-[12px] rounded-full ml-5 flex items-center justify-center ;
+  @apply auth-background w-4 h-4 text-white text-[12px] rounded-full ml-5 flex items-center justify-center;
 }
 .auth_right14 {
-  @apply w-full flex items-center space-x-2 border-b-2 border-[#E5E7EB] ;
+  @apply w-full flex items-center space-x-2 border-b-2 border-[#E5E7EB];
 }
 .auth_right15 {
-  @apply auth-background w-4 h-4 text-white text-[10px] rounded-full ml-7 flex items-center justify-center ;
+  @apply auth-background w-4 h-4 text-white text-[10px] rounded-full ml-7 flex items-center justify-center;
 }
 .auth_right16 {
-  @apply ml-30 ;
+  @apply ml-30;
 }

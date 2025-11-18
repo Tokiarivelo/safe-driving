@@ -1,13 +1,11 @@
 'use client';
 import React from 'react';
-import MpMessage from './centre.child';
 import Fichier from './right.child';
 import Left from './left.child';
 import Sidebare from '../sidebare/sidebare';
 import styles from './messages.module.css';
 import { useMessages } from '@/lib/message/useMessages';
 import { Chat } from './chat/chat';
-import { ConversationSelectorWithCRUD } from './conversation-selector';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useChatSocket } from '@/lib/socket.io/useChatSocket';
@@ -28,7 +26,9 @@ export function ChatContainer({
 }: ChatContainerProps) {
   const [session, setSession] = useState<any>(null);
   const [currentUserId, setCurrentUserId] = useState<string>('');
-  const [selectedConversationId, setSelectedConversationId] = useState<string | undefined>(undefined);
+  const [selectedConversationId, setSelectedConversationId] = useState<string | undefined>(
+    undefined,
+  );
   const [selectedConversation, setSelectedConversation] = useState<UserConversation | undefined>();
   const [userName, setUserName] = useState<string>('');
   const searchParams = useSearchParams();
@@ -40,13 +40,15 @@ export function ChatContainer({
         setSession(sessionData);
         if (sessionData?.user?.id) {
           setCurrentUserId(sessionData.user.id);
-          setUserName(`${sessionData.user.firstName || ''} ${sessionData.user.lastName || ''}`.trim());
+          setUserName(
+            `${sessionData.user.firstName || ''} ${sessionData.user.lastName || ''}`.trim(),
+          );
         }
       } catch (error) {
         console.error('Error fetching session:', error);
       }
     };
-    
+
     fetchSession();
   }, []);
 
@@ -124,7 +126,11 @@ export function ChatContainer({
           />
         </div>
         <div className={styles.auth_msg12}>
-          <Fichier conversation={selectedConversation} currentUserId={currentUserId} messages={messages} />
+          <Fichier
+            conversation={selectedConversation}
+            currentUserId={currentUserId}
+            messages={messages}
+          />
         </div>
       </div>
     </div>
@@ -132,4 +138,3 @@ export function ChatContainer({
 }
 
 export default ChatContainer;
-

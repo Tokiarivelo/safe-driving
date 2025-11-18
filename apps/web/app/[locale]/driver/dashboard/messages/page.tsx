@@ -1,5 +1,5 @@
-import Messages from '../../../../../components/Driver/Dashboard/messages/messages';
+import ChatContainer from '@/components/driver/dashboard/messages/messages';
 
 export default function DriverDashboardMessagesPage() {
-  return <Messages />;
+  return <ChatContainer />;
 }

@@ -1,5 +1,5 @@
-import ScanQrPage from "@/components/Driver/Dashboard/scan/scan"
+import ScanPage from '@/components/driver/dashboard/scan/scan';
 
 export default function Page() {
-  return <ScanQrPage />
+  return <ScanPage />;
 }

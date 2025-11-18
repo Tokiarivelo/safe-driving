@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-export const usebutton = () => {
+export const useButton = () => {
   const pathname = usePathname();
   const datahome = pathname.includes('/dashboard');
   const datarechercher = pathname.includes('/recherche');
@@ -14,7 +14,9 @@ export const usebutton = () => {
   const dataprofil = pathname.includes('/profile');
   const dataparametre = pathname.includes('/parametre');
   const dataassistance = pathname.includes('/assistance');
-  {/*========================================*/}
+  {
+    /*========================================*/
+  }
   const home = () => {};
   const recherche = () => {};
   const messages = () => {};
@@ -25,7 +27,7 @@ export const usebutton = () => {
   const profil = () => {};
   const parametre = () => {};
   const assistance = () => {};
-  
+
   return {
     datahome,
     datarechercher,

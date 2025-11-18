@@ -1,4 +1,5 @@
-import Sidebare from '../../../../../components/Driver/Dashboard/sidebare/sidebare';
+import Sidebare from '@/components/driver/dashboard/sidebare/sidebare';
+
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <>

@@ -27,12 +27,7 @@ const blockClass =
 
 function Dashboard() {
   const [selected, setSelected] = useState('');
-  const [position, setPosition] = React.useState<string>('bottom');
-  const {
-    data,
-    error,
-    loading: queryLoading,
-  } = useMeQuery({
+  const { data } = useMeQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
@@ -183,7 +178,7 @@ function Dashboard() {
               </Popover.Root>
 
               {/* Bloc Rechercher */}
-              <Link href="/user/form/name/bjr">
+              <Link href="/driver/dashboard/search">
                 <div
                   className={`${blockClass} border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984]`}
                 >
@@ -219,7 +214,7 @@ function Dashboard() {
               </Link>
 
               {/* Bloc Mes Courses */}
-              <Link href="/user/form/name/bjr">
+              <Link href="/driver/dashboard/courses">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="streamline-kameleon-color:map" width="58" height="58" />

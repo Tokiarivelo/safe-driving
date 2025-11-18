@@ -1,7 +1,7 @@
-@reference '../../../../../app/global.css';
+@reference '../../../../../../app/global.css';
 
 .auth_left1 {
-  @apply h-15 border-b-2 border-[#E5E7EB] flex w-full ;
+  @apply h-15 border-b-2 border-[#E5E7EB] flex w-full;
 }
 .auth_left2 {
   @apply w-[27%] h-15 flex justify-center items-center;
