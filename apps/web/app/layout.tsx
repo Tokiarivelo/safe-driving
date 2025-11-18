@@ -1,7 +1,3 @@
-import { redirect } from 'next/navigation';
-import { getLocale } from '@/lib/getLocale';
-import { headers } from 'next/headers';
-
 export default async function RootLayout({
   children,
 }: {
