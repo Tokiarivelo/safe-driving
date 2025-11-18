@@ -27,12 +27,7 @@ const blockClass =
 
 function Dashboard() {
   const [selected, setSelected] = useState('');
-  const [position, setPosition] = React.useState<string>('bottom');
-  const {
-    data,
-    error,
-    loading: queryLoading,
-  } = useMeQuery({
+  const { data } = useMeQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
@@ -183,7 +178,7 @@ function Dashboard() {
               </Popover.Root>
 
               {/* Bloc Rechercher */}
-              <Link href="/user/form/name/bjr">
+              <Link href="/driver/dashboard/search">
                 <div
                   className={`${blockClass} border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984]`}
                 >
@@ -204,7 +199,7 @@ function Dashboard() {
               </Link>
 
               {/* Bloc Messages */}
-              <Link href="/user/form/name/bjr">
+              <Link href="/driver/dashboard/messages">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="streamline-ultimate-color:messages-logo" width="58" height="58" />
@@ -219,7 +214,7 @@ function Dashboard() {
               </Link>
 
               {/* Bloc Mes Courses */}
-              <Link href="/user/form/name/bjr">
+              <Link href="/driver/dashboard/courses">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="streamline-kameleon-color:map" width="58" height="58" />
@@ -234,7 +229,7 @@ function Dashboard() {
             {/* Deuxième ligne */}
             <div className="w-full p-5 sm:p-0 flex justify-between items-center mb-5">
               {/* Bloc Scanner */}
-              <Link href="/register/scan">
+              <Link href="/driver/dashboard/scan">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="w-16 h-16 bg-[#C8E6FF] rounded-full flex items-center justify-center">
@@ -284,7 +279,7 @@ function Dashboard() {
               </Link>
 
               {/* Bloc Profil */}
-              <Link href="/recapitulatif">
+              <Link href="/driver/dashboard/profile">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="w-16 h-16 bg-[#9EDD28] rounded-full flex items-center justify-center">

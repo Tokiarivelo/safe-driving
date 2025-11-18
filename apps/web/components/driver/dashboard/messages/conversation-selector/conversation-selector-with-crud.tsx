@@ -1,0 +1,239 @@
+import React, { useState } from 'react';
+import { ConversationSelectorProps } from './conversation-selector.interface';
+import { ConversationItem } from './conversation-item';
+import { ConversationFormModal } from './conversation-form-modal';
+import { useConversations } from '@/lib/conversation/useConversations';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input-rechercher';
+import { Icon } from '@iconify/react';
+import styles from '../messages.module.css';
+import {
+  CreateConversationInput,
+  UpdateConversationInput,
+  UserConversation,
+} from '@/graphql/generated/graphql';
+
+export function ConversationSelectorWithCRUD({
+  selectedConversationId,
+  onConversationSelect,
+  className = '',
+  style,
+  maxHeight = '400px',
+  showSearch = true,
+  showCreateButton = true,
+  onConversationChange,
+}: ConversationSelectorProps & {
+  onConversationChange?: (conversations: UserConversation[]) => void;
+}) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editingConversation, setEditingConversation] = useState<any>(null);
+
+  const {
+    conversations,
+    loading,
+    error,
+    createConversation,
+    updateConversation,
+    deleteConversation,
+  } = useConversations();
+
+  // Filtrer les conversations en fonction du terme de recherche
+  const filteredConversations = conversations.filter(conversation => {
+    if (!searchTerm) return true;
+
+    const titleMatch = conversation.title?.toLowerCase().includes(searchTerm.toLowerCase());
+    const participantMatch = conversation.participants?.some(participant => {
+      const firstName = participant.user.firstName?.toLowerCase() || '';
+      const lastName = participant.user.lastName?.toLowerCase() || '';
+      const fullName = `${firstName} ${lastName}`.trim();
+      return fullName.includes(searchTerm.toLowerCase());
+    });
+
+    return titleMatch || participantMatch;
+  });
+
+  const handleCreateConversation = async (data: CreateConversationInput) => {
+    try {
+      const newConversation = await createConversation(data);
+      setShowCreateModal(false);
+      if (newConversation) {
+        onConversationSelect(newConversation.id, newConversation as any);
+      }
+      onConversationChange?.(conversations);
+    } catch (error) {
+      console.error('Erreur lors de la création:', error);
+    }
+  };
+
+  const handleUpdateConversation = async (data: UpdateConversationInput) => {
+    if (!editingConversation) return;
+
+    try {
+      await updateConversation(editingConversation.id, {
+        title: data.title,
+      });
+      setEditingConversation(null);
+      onConversationChange?.(conversations);
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour:', error);
+    }
+  };
+
+  const handleDeleteConversation = async (conversationId: string) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette conversation ?')) {
+      return;
+    }
+
+    try {
+      await deleteConversation(conversationId);
+      if (selectedConversationId === conversationId) {
+        onConversationSelect('', undefined);
+      }
+      onConversationChange?.(conversations);
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error);
+    }
+  };
+
+  return (
+    <div className={`${className}`} style={style}>
+      <div className={styles.auth_msg5}>
+        <div className={styles.auth_msg6}>
+          <h1 className="text-black">Messages</h1>
+        </div>
+        <hr className="text-black" />
+        {showSearch && (
+          <div className={styles.auth_msg7}>
+            <div className={styles.auth_msg8}>
+              <Input
+                type="text"
+                placeholder="Rechercher message / utilisateur"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                startOrnerIcon={
+                  <Icon icon="material-symbols:search" width="24" height="24" color="black" />
+                }
+              />
+            </div>
+            <div className={styles.auth_msg9}>
+              <Icon icon="gridicons:filter" width="30" height="30" color="black" />
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div className="mt-2 p-2 bg-red-100 border border-red-300 text-red-700 rounded-md text-sm">
+            {error}
+          </div>
+        )}
+      </div>
+      <div className="overflow-y-auto h-[73%]">
+        {loading ? (
+          <div className="p-4 text-center text-red-500 ">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+            <div className="mt-2">Chargement...</div>
+          </div>
+        ) : filteredConversations.length === 0 ? (
+          <div className="p-4 text-center text-red-500">
+            {searchTerm ? 'Aucune conversation trouvée' : 'Aucune conversation disponible'}
+          </div>
+        ) : (
+          <div className="divide-y divide-green-100 w-full">
+            {filteredConversations.map(conversation => (
+              <div key={conversation.id} className="">
+                {/*====================================================*/}
+                <div>
+                  <ConversationItem
+                    conversation={conversation}
+                    isSelected={selectedConversationId === conversation.id}
+                    onClick={() => onConversationSelect(conversation.id, conversation)}
+                  />
+                </div>
+                {/* Actions menu */}
+                {/* <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex space-x-1">
+                    <button
+                      onClick={e => {
+                        e.stopPropagation();   
+                        setEditingConversation(conversation);
+                      }}
+                      className="p-1 text-gray-400 hover:text-blue-600 rounded"
+                      title="Modifier"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={e => {
+                        e.stopPropagation();
+                        handleDeleteConversation(conversation.id);
+                      }}
+                      className="p-1 text-gray-400 hover:text-red-600 rounded"
+                      title="Supprimer"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div> */}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Footer avec informations */}
+      <div className="p-3 border-t border-gray-200 bg-gray-100  text-xs text-gray-500 text-center h-[5%]">
+        {' '}
+        {/*important*/}
+        {filteredConversations.length} conversation{filteredConversations.length > 1 ? 's' : ''}
+        {searchTerm && ` trouvée${filteredConversations.length > 1 ? 's' : ''}`}
+      </div>
+      <div className="w-full h-[8%] flex items-center justify-center">
+        <Button className="bg-pink-500 w-35 h-8 text-white">charger plus</Button>
+      </div>
+      {/* Modals */}
+      {showCreateModal && (
+        <ConversationFormModal
+          isOpen={showCreateModal}
+          onClose={() => setShowCreateModal(false)}
+          onSubmit={handleCreateConversation}
+          title="Créer une nouvelle conversation"
+        />
+      )}
+
+      {editingConversation && (
+        <ConversationFormModal
+          isOpen={!!editingConversation}
+          onClose={() => setEditingConversation(null)}
+          onSubmit={handleUpdateConversation}
+          title="Modifier la conversation"
+          initialData={editingConversation}
+        />
+      )}
+    </div>
+  );
+}

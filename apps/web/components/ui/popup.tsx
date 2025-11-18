@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 interface PopupProps {
   title: string;
-  content: string;
+  content: React.ReactNode;
   onClose: () => void;
   onAccept?: () => void;
   closeText?: string;
@@ -33,7 +33,7 @@ export const Popup = ({
             &times;
           </button>
         </div>
-        <div className="overflow-y-auto flex-1 whitespace-pre-line mb-4">
+        <div className="overflow-y-auto flex-1 mb-4">
           {content}
         </div>
         <div className="flex justify-end gap-2">

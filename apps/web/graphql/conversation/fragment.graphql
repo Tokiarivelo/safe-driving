@@ -23,6 +23,7 @@ fragment ConversationWithParticipants on UserConversation {
       id
       firstName
       lastName
+      phone
       avatar {
         ...ParticipantAvatar
       }

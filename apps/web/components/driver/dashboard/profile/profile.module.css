@@ -1,0 +1,266 @@
+.container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+  }
+  
+  .mainContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .loadingContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%;
+  }
+  
+  /* Cover Section - Pleine largeur */
+  .coverSection {
+    width: 100%;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background-color: #f0f0f0; /* Couleur de fallback */
+  }
+  
+  .coverUploadButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgb(0 0 0 / 0.5);
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.875rem;
+  }
+  
+  .coverUploadButton:hover {
+    background-color: rgb(0 0 0 / 0.7);
+  }
+  
+  /* Grid pour les deux colonnes */
+  .contentGrid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    padding: 2rem;
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 2rem; /* Espace entre le cover et le contenu */
+  }
+  
+  /* Colonne de gauche - Profil */
+  .leftColumn {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .profileSection {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    position: relative;
+    z-index: 10;
+    margin-top: 0; /* Supprimé le margin-top négatif */
+  }
+  
+  /* Profile Image - Positionné plus bas */
+  .profileImageContainer {
+    width: 120px;
+    height: 120px;
+    border-radius: 9999px;
+    border: 4px solid white;
+    background-color: rgb(209 213 219);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 0 auto 1.5rem auto; /* Centré avec marge en bas */
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  }
+  
+  .profileImageContainer:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+  
+  .profileImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .uploadPlaceholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: rgb(75 85 99);
+    font-size: 1.5rem;
+    font-weight: 300;
+  }
+  
+  /* User Info */
+  .userInfo {
+    text-align: center;
+  }
+  
+  .userName {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgb(17 24 39);
+    margin-bottom: 0.5rem;
+  }
+  
+  .userContact {
+    color: rgb(75 85 99);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .rating {
+    color: rgb(245 158 11);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  
+  .qrLoading, .qrUnavailable {
+    margin-top: 1rem;
+    color: rgb(107 114 128);
+  }
+  
+  .qrContainer {
+    margin-top: 1.5rem;
+  }
+  
+  .qrImage {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+  
+  /* Colonne de droite - Galerie */
+  .rightColumn {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .gallerySection {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    height: fit-content;
+  }
+  
+  .galleryHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .galleryTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgb(17 24 39);
+  }
+  
+  .uploadButton {
+    background-color: rgb(59 130 246);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .uploadButton:hover {
+    background-color: rgb(37 99 235);
+    transform: translateY(-1px);
+  }
+  
+  .galleryGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .galleryImage {
+    border-radius: 0.75rem;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: all 0.3s;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+  
+  .galleryImage:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+  
+  .hiddenInput {
+    display: none;
+  }
+  
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .contentGrid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1.5rem;
+    }
+    
+    .profileSection {
+      margin-top: 0;
+    }
+    
+    .profileImageContainer {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 1rem auto;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .coverSection {
+      height: 200px;
+    }
+    
+    .contentGrid {
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .profileSection,
+    .gallerySection {
+      padding: 1.5rem;
+    }
+    
+    .galleryGrid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+    
+    .galleryImage {
+      height: 150px;
+    }
+  }
