@@ -11,8 +11,8 @@ export default async function RootLayout({
   // The middleware will redirect to locale-based routes
   // But Next.js still requires a root layout
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

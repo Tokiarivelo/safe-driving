@@ -3,7 +3,11 @@
 import L from 'leaflet';
 import { Marker as LeafletMarker, Popup } from 'react-leaflet';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useSession } from 'next-auth/react';
+import { useConversations } from '@/lib/conversation/useConversations';
+import { useSendMessageMutation, ConversationType } from '@/graphql/generated/graphql';
+import { toast } from 'sonner';
 
 interface DriverMarkerProps {
   id: string;
@@ -18,6 +22,7 @@ interface DriverMarkerProps {
 }
 
 export const DriverMarker = ({
+  id,
   name,
   vehicle,
   lat,
@@ -28,6 +33,10 @@ export const DriverMarker = ({
   nbPlaces = 4,
 }: DriverMarkerProps) => {
   const [message, setMessage] = useState('');
+  const [sending, setSending] = useState(false);
+  const { data: session } = useSession();
+  const { conversations, createConversation } = useConversations();
+  const [sendMessageMutation] = useSendMessageMutation();
 
   // Determine marker color based on status
   const getMarkerColor = (status?: string | null) => {
@@ -71,13 +80,58 @@ export const DriverMarker = ({
     }
   };
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      // TODO: Implement actual message sending logic
-      console.log('Sending message:', message, 'to driver:', name);
-      setMessage('');
+  const handleSendMessage = useCallback(async () => {
+    if (!message.trim() || sending) return;
+
+    if (!session?.user) {
+      toast.error('Vous devez être connecté pour envoyer un message');
+      return;
     }
-  };
+
+    setSending(true);
+    try {
+      // Check if a conversation already exists with this driver
+      let conversationId: string | undefined;
+      const existingConversation = conversations.find(conv => 
+        conv.type === 'DIRECT' && 
+        conv.participants?.some(p => p.user.id === id)
+      );
+
+      if (existingConversation) {
+        conversationId = existingConversation.id;
+      } else {
+        // Create a new conversation with the driver
+        const newConversation = await createConversation({
+          type: ConversationType.DIRECT,
+          participantIds: [id],
+        });
+        conversationId = newConversation?.id;
+      }
+
+      if (!conversationId) {
+        throw new Error('Failed to create or find conversation');
+      }
+
+      // Send the message
+      await sendMessageMutation({
+        variables: {
+          input: {
+            content: message.trim(),
+            conversationId,
+            clientTempId: `${Date.now()}-${Math.random()}`,
+          },
+        },
+      });
+
+      toast.success('Message envoyé avec succès');
+      setMessage('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast.error('Erreur lors de l\'envoi du message');
+    } finally {
+      setSending(false);
+    }
+  }, [message, sending, session, id, conversations, createConversation, sendMessageMutation]);
 
   return (
     <LeafletMarker position={[lat, lng]} icon={driverIcon}>
@@ -129,14 +183,24 @@ export const DriverMarker = ({
               onChange={e => setMessage(e.target.value)}
               onKeyPress={e => e.key === 'Enter' && handleSendMessage()}
               placeholder="Envoyer un message"
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={sending}
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
             />
             <button
               onClick={handleSendMessage}
-              className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+              disabled={!message.trim() || sending}
+              className={`p-2 rounded-md transition-colors ${
+                !message.trim() || sending
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-blue-500 text-white hover:bg-blue-600'
+              }`}
               aria-label="Send message"
             >
-              <Icon icon="mdi:send" className="text-lg" />
+              {sending ? (
+                <Icon icon="mdi:loading" className="text-lg animate-spin" />
+              ) : (
+                <Icon icon="mdi:send" className="text-lg" />
+              )}
             </button>
           </div>
         </div>
