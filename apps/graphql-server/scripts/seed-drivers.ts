@@ -2,7 +2,7 @@
 /**
  * Seed Drivers Script
  *
- * Generate and persist random driver positions to database for testing purposes.
+ * Generate and persist driver users to database for testing purposes.
  *
  * Usage:
  *   npm run seed:drivers -- --count=50 --lat=48.8566 --lng=2.3522 --radiusMeters=1500
@@ -16,6 +16,7 @@
 
 import { PrismaClient } from '@prisma/client';
 import { generateRandomDriversAround } from '../src/drivers/drivers.utils';
+import * as bcrypt from 'bcrypt';
 
 interface SeedOptions {
   count: number;
@@ -67,7 +68,7 @@ async function seed() {
   console.log('');
 
   try {
-    // Generate random drivers
+    // Generate random driver data
     const drivers = generateRandomDriversAround(
       options.lat,
       options.lng,
@@ -77,28 +78,47 @@ async function seed() {
 
     console.log('💾 Persisting drivers to database...');
 
-    // Clear existing drivers
-    await prisma.driver.deleteMany({});
+    // Get or create DRIVER role
+    const driverRole = await prisma.role.upsert({
+      where: { name: 'DRIVER' },
+      update: {},
+      create: { name: 'DRIVER' },
+    });
 
-    // Save drivers to database using Prisma
-    const createPromises = drivers.map((driver) =>
-      prisma.driver.create({
-        data: {
-          name: driver.name,
-          vehicle: driver.vehicle,
-          status: driver.status as any, // Will match UserDriverStatus enum
-          rating: driver.rating,
-          phone: driver.phone,
-          nbPlaces: driver.nbPlaces,
-          lat: driver.lat,
-          lng: driver.lng,
-        },
-      }),
-    );
+    // Hash a default password for all test drivers
+    const defaultPassword = await bcrypt.hash('driver123', 10);
 
-    await Promise.all(createPromises);
+    // Create users with DRIVER role
+    let createdCount = 0;
+    for (const driver of drivers) {
+      const [firstName, lastName] = driver.name.split(' ');
+      const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@driver.test`;
+      const username = `${firstName.toLowerCase()}_${lastName.toLowerCase()}_${Date.now()}_${createdCount}`;
 
-    console.log(`✅ Successfully persisted ${drivers.length} drivers to database`);
+      try {
+        await prisma.user.create({
+          data: {
+            email,
+            firstName,
+            lastName,
+            phone: driver.phone,
+            username,
+            password: defaultPassword,
+            isVerified: true,
+            driverStatus: driver.status as any,
+            Role: {
+              connect: { id: driverRole.id },
+            },
+          },
+        });
+        createdCount++;
+      } catch (error) {
+        // Skip if user already exists
+        console.log(`Skipping duplicate user: ${email}`);
+      }
+    }
+
+    console.log(`✅ Successfully created ${createdCount} driver users in database`);
   } catch (error) {
     console.error('❌ Error persisting drivers:', error);
     process.exit(1);

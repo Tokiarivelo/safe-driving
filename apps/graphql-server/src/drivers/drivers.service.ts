@@ -48,7 +48,7 @@ export class DriversService {
 
   /**
    * Get nearby drivers around a coordinate
-   * Fetches drivers from database and positions them randomly around the user's location
+   * Fetches users with DRIVER role from database and positions them randomly around the user's location
    */
   async getNearbyDrivers(
     lat: number,
@@ -61,30 +61,44 @@ export class DriversService {
 
     if (!mock) {
       try {
-        // Fetch drivers from database
-        const dbDrivers = await this.prisma.driver.findMany({
+        // Fetch users with DRIVER role from database
+        const driverUsers = await this.prisma.user.findMany({
           where: {
-            status: {
+            Role: {
+              some: {
+                name: 'DRIVER',
+              },
+            },
+            driverStatus: {
               in: ['AVAILABLE', 'BUSY'],
+            },
+          },
+          include: {
+            vehicles: {
+              include: {
+                type: true,
+              },
+              take: 1,
             },
           },
           take: limit,
         });
 
-        if (dbDrivers && dbDrivers.length > 0) {
+        if (driverUsers && driverUsers.length > 0) {
           // Position each driver randomly around the user's location
-          drivers = dbDrivers.map((dbDriver) => {
+          drivers = driverUsers.map((user) => {
             const position = randomPointAround(lat, lng, radiusMeters);
+            const vehicle = user.vehicles[0];
             return {
-              id: dbDriver.id,
-              name: dbDriver.name,
-              vehicle: dbDriver.vehicle,
+              id: user.id,
+              name: `${user.firstName} ${user.lastName || ''}`.trim(),
+              vehicle: vehicle?.type?.name || 'Sedan',
               lat: position.lat,
               lng: position.lng,
-              status: dbDriver.status,
-              rating: dbDriver.rating,
-              phone: dbDriver.phone,
-              nbPlaces: dbDriver.nbPlaces,
+              status: user.driverStatus || 'AVAILABLE',
+              rating: 4.2, // Default rating, could be calculated from reviews
+              phone: user.phone || '(+261) 34 ....',
+              nbPlaces: vehicle?.place || 4,
             };
           });
         }
