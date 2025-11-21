@@ -1,11 +1,13 @@
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  // This layout is for the root page only
-  // The middleware will redirect to locale-based routes
-  // But Next.js still requires a root layout
+'use client';
+
+import { registerServiceWorker } from '@/utils/notifications';
+import { useEffect } from 'react';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>{children}</body>

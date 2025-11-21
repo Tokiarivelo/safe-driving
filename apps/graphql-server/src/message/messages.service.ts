@@ -16,6 +16,7 @@ import { AddReactionInput } from 'src/dtos/reaction/reaction.input';
 import { ReactionActionResult } from 'src/dtos/reaction/reaction.output';
 import { LinkPreviewService } from 'src/link-preview';
 import { MessageSearchService } from './message-search.service';
+import { makeDirectHash } from 'src/utils/make-direct-hash';
 
 @Injectable()
 export class MessageService {
@@ -48,12 +49,6 @@ export class MessageService {
       });
       if (existing) return existing;
     }
-
-    // helper: create directHash for 1-1 chats
-    const makeDirectHash = (a: string, b: string) => {
-      const s = [a, b].sort();
-      return `${s[0]}|${s[1]}`;
-    };
 
     let conversationId = input.conversationId;
 

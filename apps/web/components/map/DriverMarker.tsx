@@ -35,7 +35,7 @@ export const DriverMarker = ({
   const [message, setMessage] = useState('');
   const [sending, setSending] = useState(false);
   const { data: session } = useSession();
-  const { conversations, createConversation } = useConversations();
+  const { getDirectConversationBetweenUsers, createConversation } = useConversations();
   const [sendMessageMutation] = useSendMessageMutation();
 
   // Determine marker color based on status
@@ -91,11 +91,13 @@ export const DriverMarker = ({
     setSending(true);
     try {
       // Check if a conversation already exists with this driver
+
       let conversationId: string | undefined;
-      const existingConversation = conversations.find(conv => 
-        conv.type === 'DIRECT' && 
-        conv.participants?.some(p => p.user.id === id)
-      );
+
+      const conversation = await getDirectConversationBetweenUsers({
+        variables: { otherUserId: id },
+      });
+      const existingConversation = conversation.data?.directConversationBetweenUsers;
 
       if (existingConversation) {
         conversationId = existingConversation.id;
@@ -118,6 +120,7 @@ export const DriverMarker = ({
           input: {
             content: message.trim(),
             conversationId,
+            recipientId: id,
             clientTempId: `${Date.now()}-${Math.random()}`,
           },
         },
@@ -127,11 +130,19 @@ export const DriverMarker = ({
       setMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
-      toast.error('Erreur lors de l\'envoi du message');
+      toast.error("Erreur lors de l'envoi du message");
     } finally {
       setSending(false);
     }
-  }, [message, sending, session, id, conversations, createConversation, sendMessageMutation]);
+  }, [
+    message,
+    sending,
+    session,
+    id,
+    getDirectConversationBetweenUsers,
+    createConversation,
+    sendMessageMutation,
+  ]);
 
   return (
     <LeafletMarker position={[lat, lng]} icon={driverIcon}>

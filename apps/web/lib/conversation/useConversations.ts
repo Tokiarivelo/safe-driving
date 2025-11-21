@@ -12,6 +12,7 @@ import {
   AddParticipantInput,
   RemoveParticipantInput,
   UserConversation,
+  useGetDirectConversationBetweenUsersLazyQuery,
 } from '@/graphql/generated/graphql';
 
 export function useConversations() {
@@ -34,6 +35,7 @@ export function useConversations() {
   const [deleteConversationMutation] = useDeleteConversationMutation();
   const [addParticipantMutation] = useAddParticipantMutation();
   const [removeParticipantMutation] = useRemoveParticipantMutation();
+  const [getDirectConversationBetweenUsers] = useGetDirectConversationBetweenUsersLazyQuery();
 
   useEffect(() => {
     if (data?.userConversations?.conversations) {
@@ -194,6 +196,7 @@ export function useConversations() {
     addParticipant,
     removeParticipant,
     getConversationById,
+    getDirectConversationBetweenUsers,
     refetch,
   };
 }

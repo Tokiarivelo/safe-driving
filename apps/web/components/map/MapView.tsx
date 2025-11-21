@@ -254,7 +254,7 @@ export default function Map({ coordinates }: Props) {
   useEffect(() => {
     const validLocations = locations.filter(loc => loc.lat != null && loc.lon != null);
     if (validLocations.length >= 2) {
-      const coordinates = validLocations.map(loc => [loc.lon, loc.lat]); // ORS expects [lon, lat]
+      const coordinates = validLocations.map(loc => [loc.lon!, loc.lat!] as [number, number]); // ORS expects [lon, lat]
 
       // Use worker for route calculation
       calculateRouteWorker(coordinates, process.env.NEXT_PUBLIC_ORS_URL || '', result => {

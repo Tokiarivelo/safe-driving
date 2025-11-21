@@ -24,6 +24,7 @@ import {
   ConversationAttachmentsSummary,
   FileTypeFilter,
 } from '../dtos/conversation/conversation-attachments.output';
+import { makeDirectHash } from 'src/utils/make-direct-hash';
 
 @Injectable()
 export class ConversationService {
@@ -123,6 +124,13 @@ export class ConversationService {
     return conversation as UserConversation;
   }
 
+  async getDirectConversationBetweenUsers(
+    userId1: string,
+    userId2: string,
+  ): Promise<UserConversation | null> {
+    return this.findDirectConversation(userId1, userId2);
+  }
+
   async createConversation(
     userId: string,
     input: CreateConversationInput,
@@ -148,8 +156,7 @@ export class ConversationService {
       input.type === ConversationType.DIRECT &&
       input.participantIds.length === 1
     ) {
-      const userIds = [userId, input.participantIds[0]].sort();
-      directHash = userIds.join('-');
+      directHash = makeDirectHash(userId, input.participantIds[0]);
     }
 
     const conversation = await this.prisma.conversation.create({

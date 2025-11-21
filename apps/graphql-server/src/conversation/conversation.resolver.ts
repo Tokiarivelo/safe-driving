@@ -227,6 +227,21 @@ export class ConversationResolver {
     );
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Query(() => UserConversation, {
+    description: 'Get direct conversation between two users',
+    nullable: true,
+  })
+  async directConversationBetweenUsers(
+    @CurrentUser() user: User,
+    @Args('otherUserId') otherUserId: string,
+  ): Promise<UserConversation | null> {
+    return this.conversationService.getDirectConversationBetweenUsers(
+      user.id,
+      otherUserId,
+    );
+  }
+
   // FIELD RESOLVERS (if needed for complex fields)
 
   // You can add field resolvers here if you need to resolve specific fields

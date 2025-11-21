@@ -63,8 +63,8 @@ export function listenForMessages(callback: (payload: FCMNotificationPayload) =>
 
 export function showTestNotification(): void {
   if ('Notification' in window && Notification.permission === 'granted') {
-    const notification = new (window as any).Notification('Test Notification', {
-      body: "🎉Notification push fonctionne bien !🔔",
+    const notification = new Notification('Test Notification', {
+      body: '🎉Notification push fonctionne bien !🔔',
       icon: '/favicon.ico',
       badge: '/favicon.ico',
     });
@@ -93,12 +93,14 @@ export function getNotificationPermission(): NotificationPermission {
 }
 
 export async function registerServiceWorker(): Promise<void> {
+  console.log('navigator :>> ', navigator);
+
   if ('serviceWorker' in navigator) {
     try {
       // Register the enhanced service worker
       const registration = await navigator.serviceWorker.register('/sw.js');
       console.log('Service Worker registered:', registration);
-      
+
       // Handle updates
       registration.addEventListener('updatefound', () => {
         const newWorker = registration.installing;

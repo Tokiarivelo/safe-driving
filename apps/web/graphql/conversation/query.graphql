@@ -19,3 +19,10 @@ query SearchConversations($q: String!, $page: Int!, $size: Int!) {
     ...conversationSearchResponseFragment
   }
 }
+
+query getDirectConversationBetweenUsers($otherUserId: String!) {
+  directConversationBetweenUsers(otherUserId: $otherUserId) {
+    id
+    directHash
+  }
+}
