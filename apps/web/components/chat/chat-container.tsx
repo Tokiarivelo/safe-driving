@@ -5,6 +5,7 @@
 import { useMessages } from '@/lib/message/useMessages';
 import { Chat } from '../ui/chat/chat';
 import { ConversationSelectorWithCRUD } from '../ui/conversation-selector';
+import { ConversationDetailsSidebar } from '../ui/chat/conversation-details-sidebar';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useChatSocket } from '@/lib/socket.io/useChatSocket';
@@ -78,25 +79,33 @@ export function ChatContainer({
   };
 
   return (
-    <div className="flex h-full">
-      {/* User name */}
-      <div className="p-4 border-b bg-white">
-        <h3 className="text-lg font-semibold">Bonjour, {userName || 'Utilisateur'}</h3>
+    <div className="flex h-full bg-white">
+      {/* Left Sidebar - Conversation List */}
+      <div className="w-80 border-r border-gray-200 flex flex-col bg-white">
+        {/* User greeting header */}
+        <div className="p-4 border-b border-gray-200 bg-white">
+          <h3 className="text-lg font-semibold text-gray-900">
+            Bonjour, {userName || 'Utilisateur'}
+          </h3>
+        </div>
+        
+        {/* Conversation Selector */}
+        <div className="flex-1 overflow-hidden">
+          <ConversationSelectorWithCRUD
+            selectedConversationId={selectedConversationId}
+            onConversationSelect={handleConversationSelect}
+            className="h-full border-0 shadow-none"
+            showSearch={true}
+            showCreateButton={true}
+            onConversationChange={conversations => {
+              console.log('Conversations updated:', conversations);
+            }}
+          />
+        </div>
       </div>
-      {/* Conversation Selector */}
-      <div className="w-80 border-r border-gray-200 bg-gray-50">
-        <ConversationSelectorWithCRUD
-          selectedConversationId={selectedConversationId}
-          onConversationSelect={handleConversationSelect}
-          className="h-full"
-          showSearch={true}
-          showCreateButton={true}
-          onConversationChange={conversations => {
-            console.log('Conversations updated:', conversations);
-          }}
-        />
-      </div>
-      <div className="flex-1">
+
+      {/* Center - Chat Messages */}
+      <div className="flex-1 flex flex-col min-w-0">
         <Chat
           conversation={selectedConversation}
           currentUserId={currentUserId}
@@ -115,6 +124,15 @@ export function ChatContainer({
           onLoadMessagesAround={loadMessagesAround}
         />
       </div>
+
+      {/* Right Sidebar - Conversation/User Details */}
+      {selectedConversation && (
+        <ConversationDetailsSidebar
+          conversation={selectedConversation}
+          messages={messages}
+          currentUserId={currentUserId}
+        />
+      )}
     </div>
   );
 }

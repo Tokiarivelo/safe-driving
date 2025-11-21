@@ -26,3 +26,47 @@ query getDirectConversationBetweenUsers($otherUserId: String!) {
     directHash
   }
 }
+
+query GetConversationAttachmentsSummary($conversationId: String!) {
+  conversationAttachmentsSummary(conversationId: $conversationId) {
+    totalFiles
+    totalImages
+    totalVideos
+    totalDocuments
+    totalAudio
+    totalLinks
+    totalRides
+    byMimeType {
+      type
+      count
+    }
+  }
+}
+
+query GetConversationAttachments($conversationId: String!, $filter: FileTypeFilter, $limit: Int, $cursor: String) {
+  conversationAttachments(conversationId: $conversationId, filter: $filter, limit: $limit, cursor: $cursor) {
+    attachments {
+      id
+      messageId
+      type
+      file {
+        id
+        key
+        url
+        meta
+      }
+      url
+      linkTitle
+      linkDesc
+      linkThumbnail
+      linkMeta
+      rideId
+      createdAt
+      senderName
+      messageCreatedAt
+    }
+    total
+    hasNextPage
+    cursor
+  }
+}
