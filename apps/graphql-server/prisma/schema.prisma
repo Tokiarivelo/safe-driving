@@ -106,6 +106,23 @@ model QrToken {
   user      User     @relation(fields: [userId], references: [id])
 }
 
+// --------------- Driver Seed Data -----------------------//
+model Driver {
+  id        String            @id @default(uuid())
+  name      String
+  vehicle   String
+  status    UserDriverStatus  @default(AVAILABLE)
+  rating    Float             @default(4.2)
+  phone     String
+  nbPlaces  Int               @default(4)
+  lat       Float
+  lng       Float
+  createdAt DateTime          @default(now())
+  updatedAt DateTime?         @updatedAt
+
+  @@index([lat, lng])
+}
+
 model Review {
   id        String    @id @default(uuid())
   userId    String

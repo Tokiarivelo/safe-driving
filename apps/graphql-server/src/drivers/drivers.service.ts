@@ -1,11 +1,21 @@
 import { Injectable } from '@nestjs/common';
+import { UserDriverStatus } from '@prisma/client';
 import { RedisService } from '../redis/redis.service';
-import { generateRandomDriversAround } from './drivers.utils';
+import { PrismaService } from '../prisma-module/prisma.service';
+import { generateRandomDriversAround, randomPointAround } from './drivers.utils';
 import { Driver, NearbyDriversResult } from './drivers.dto';
+
+// Default rating for drivers without reviews
+const DEFAULT_DRIVER_RATING = 4.2;
+// Default phone placeholder when phone is not available
+const DEFAULT_PHONE_PLACEHOLDER = '(+261) 34 ....';
 
 @Injectable()
 export class DriversService {
-  constructor(private readonly redis: RedisService) {}
+  constructor(
+    private readonly redis: RedisService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   async saveDrivers(cars: any[]) {
     const timestamp = Date.now();
@@ -44,8 +54,7 @@ export class DriversService {
 
   /**
    * Get nearby drivers around a coordinate
-   * If mock is true or no real drivers exist, returns randomly generated drivers
-   * Otherwise, queries Redis for real drivers within the radius
+   * Fetches users with DRIVER role from database and positions them randomly around the user's location
    */
   async getNearbyDrivers(
     lat: number,
@@ -58,45 +67,53 @@ export class DriversService {
 
     if (!mock) {
       try {
-        // Query Redis for nearby drivers using GEORADIUS
-        const nearbyKeys = await this.redis
-          .getPublisher()
-          .georadius(
-            'drivers:geo',
-            lng,
-            lat,
-            radiusMeters,
-            'm',
-            'WITHDIST',
-            'COUNT',
-            limit,
-          );
+        // Fetch users with DRIVER role from database
+        const driverUsers = await this.prisma.user.findMany({
+          where: {
+            Role: {
+              some: {
+                name: 'DRIVER',
+              },
+            },
+            driverStatus: {
+              in: [UserDriverStatus.AVAILABLE, UserDriverStatus.BUSY],
+            },
+          },
+          include: {
+            vehicles: {
+              include: {
+                type: true,
+              },
+              take: 1,
+            },
+          },
+          take: limit,
+        });
 
-        if (nearbyKeys && nearbyKeys.length > 0) {
-          // Fetch driver details from Redis hashes
-          for (const item of nearbyKeys as any[]) {
-            const driverId = item[0];
-            const key = `driver:${driverId}`;
-            const driverData = await this.redis.hgetall(key);
-
-            if (driverData && driverData.lat && driverData.lon) {
-              drivers.push({
-                id: driverData.id || driverId,
-                name: driverData.name || `Driver ${driverId}`,
-                vehicle: driverData.vehicle || 'Sedan',
-                lat: parseFloat(driverData.lat),
-                lng: parseFloat(driverData.lon),
-                status: driverData.status || 'AVAILABLE',
-                rating: driverData.rating ? parseFloat(driverData.rating) : 4.2,
-                phone: driverData.phone || '(+261) 34 ....',
-                nbPlaces: driverData.nbPlaces ? parseInt(driverData.nbPlaces) : 4,
-              });
-            }
-          }
+        if (driverUsers && driverUsers.length > 0) {
+          // Position each driver randomly around the user's location
+          drivers = driverUsers.map((user) => {
+            const position = randomPointAround(lat, lng, radiusMeters);
+            const vehicle = user.vehicles[0];
+            const fullName = user.lastName 
+              ? `${user.firstName} ${user.lastName}` 
+              : user.firstName;
+            return {
+              id: user.id,
+              name: fullName,
+              vehicle: vehicle?.type?.name || 'Sedan',
+              lat: position.lat,
+              lng: position.lng,
+              status: user.driverStatus || UserDriverStatus.AVAILABLE,
+              rating: DEFAULT_DRIVER_RATING,
+              phone: user.phone || DEFAULT_PHONE_PLACEHOLDER,
+              nbPlaces: vehicle?.place || 4,
+            };
+          });
         }
       } catch (error) {
-        console.error('Error querying Redis for drivers:', error);
-        // Fall through to mock data if Redis query fails
+        console.error('Error querying database for drivers:', error);
+        // Fall through to mock data if database query fails
       }
     }
 
