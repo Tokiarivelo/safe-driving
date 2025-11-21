@@ -19,6 +19,13 @@ export const NearbyDriversZone = ({
 }: NearbyDriversZoneProps) => {
   const [drivers, setDrivers] = useState<Driver[]>([]);
 
+  console.log('object :>> ', {
+    userLocation,
+    radiusMeters,
+    limit,
+    mock,
+  });
+
   const { data, loading, error, refetch } = useNearbyDriversQuery({
     variables: {
       lat: userLocation?.[0] || 0,

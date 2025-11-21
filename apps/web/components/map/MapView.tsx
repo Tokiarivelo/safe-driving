@@ -368,7 +368,12 @@ export default function Map({ coordinates }: Props) {
         <TempMarker setTempMarker={setTempMarker} addLocationAt={addLocationAt} />
 
         {/* Show nearby drivers using GraphQL query with mock data */}
-        <NearbyDriversZone userLocation={userLocation} radiusMeters={1500} limit={50} mock={true} />
+        <NearbyDriversZone
+          userLocation={userLocation}
+          radiusMeters={1500}
+          limit={50}
+          mock={false}
+        />
       </MapContainer>
 
       <MapPills mapRef={mapRef} />

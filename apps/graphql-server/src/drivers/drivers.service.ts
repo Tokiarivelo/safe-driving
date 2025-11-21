@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { UserDriverStatus } from '@prisma/client';
 import { RedisService } from '../redis/redis.service';
 import { PrismaService } from '../prisma-module/prisma.service';
-import { generateRandomDriversAround, randomPointAround } from './drivers.utils';
+import {
+  generateRandomDriversAround,
+  randomPointAround,
+} from './drivers.utils';
 import { Driver, NearbyDriversResult } from './drivers.dto';
 
 // Default rating for drivers without reviews
@@ -95,8 +98,8 @@ export class DriversService {
           drivers = driverUsers.map((user) => {
             const position = randomPointAround(lat, lng, radiusMeters);
             const vehicle = user.vehicles[0];
-            const fullName = user.lastName 
-              ? `${user.firstName} ${user.lastName}` 
+            const fullName = user.lastName
+              ? `${user.firstName} ${user.lastName}`
               : user.firstName;
             return {
               id: user.id,
@@ -110,6 +113,8 @@ export class DriversService {
               nbPlaces: vehicle?.place || 4,
             };
           });
+
+          console.log('drivers :>> ', drivers);
         }
       } catch (error) {
         console.error('Error querying database for drivers:', error);
@@ -119,7 +124,12 @@ export class DriversService {
 
     // If mock is true or no drivers found, generate random drivers
     if (mock || drivers.length === 0) {
-      const randomDrivers = generateRandomDriversAround(lat, lng, radiusMeters, limit);
+      const randomDrivers = generateRandomDriversAround(
+        lat,
+        lng,
+        radiusMeters,
+        limit,
+      );
       drivers = randomDrivers.map((d) => ({
         id: d.id,
         name: d.name,
