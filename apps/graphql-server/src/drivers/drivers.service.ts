@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '../redis/redis.service';
-import { generateRandomDriversAround } from './drivers.utils';
+import { PrismaService } from '../prisma-module/prisma.service';
+import { generateRandomDriversAround, randomPointAround } from './drivers.utils';
 import { Driver, NearbyDriversResult } from './drivers.dto';
 
 @Injectable()
 export class DriversService {
-  constructor(private readonly redis: RedisService) {}
+  constructor(
+    private readonly redis: RedisService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   async saveDrivers(cars: any[]) {
     const timestamp = Date.now();
@@ -44,8 +48,7 @@ export class DriversService {
 
   /**
    * Get nearby drivers around a coordinate
-   * If mock is true or no real drivers exist, returns randomly generated drivers
-   * Otherwise, queries Redis for real drivers within the radius
+   * Fetches drivers from database and positions them randomly around the user's location
    */
   async getNearbyDrivers(
     lat: number,
@@ -58,45 +61,36 @@ export class DriversService {
 
     if (!mock) {
       try {
-        // Query Redis for nearby drivers using GEORADIUS
-        const nearbyKeys = await this.redis
-          .getPublisher()
-          .georadius(
-            'drivers:geo',
-            lng,
-            lat,
-            radiusMeters,
-            'm',
-            'WITHDIST',
-            'COUNT',
-            limit,
-          );
+        // Fetch drivers from database
+        const dbDrivers = await this.prisma.driver.findMany({
+          where: {
+            status: {
+              in: ['AVAILABLE', 'BUSY'],
+            },
+          },
+          take: limit,
+        });
 
-        if (nearbyKeys && nearbyKeys.length > 0) {
-          // Fetch driver details from Redis hashes
-          for (const item of nearbyKeys as any[]) {
-            const driverId = item[0];
-            const key = `driver:${driverId}`;
-            const driverData = await this.redis.hgetall(key);
-
-            if (driverData && driverData.lat && driverData.lon) {
-              drivers.push({
-                id: driverData.id || driverId,
-                name: driverData.name || `Driver ${driverId}`,
-                vehicle: driverData.vehicle || 'Sedan',
-                lat: parseFloat(driverData.lat),
-                lng: parseFloat(driverData.lon),
-                status: driverData.status || 'AVAILABLE',
-                rating: driverData.rating ? parseFloat(driverData.rating) : 4.2,
-                phone: driverData.phone || '(+261) 34 ....',
-                nbPlaces: driverData.nbPlaces ? parseInt(driverData.nbPlaces) : 4,
-              });
-            }
-          }
+        if (dbDrivers && dbDrivers.length > 0) {
+          // Position each driver randomly around the user's location
+          drivers = dbDrivers.map((dbDriver) => {
+            const position = randomPointAround(lat, lng, radiusMeters);
+            return {
+              id: dbDriver.id,
+              name: dbDriver.name,
+              vehicle: dbDriver.vehicle,
+              lat: position.lat,
+              lng: position.lng,
+              status: dbDriver.status,
+              rating: dbDriver.rating,
+              phone: dbDriver.phone,
+              nbPlaces: dbDriver.nbPlaces,
+            };
+          });
         }
       } catch (error) {
-        console.error('Error querying Redis for drivers:', error);
-        // Fall through to mock data if Redis query fails
+        console.error('Error querying database for drivers:', error);
+        // Fall through to mock data if database query fails
       }
     }
 

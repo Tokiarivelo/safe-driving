@@ -2,22 +2,19 @@
 /**
  * Seed Drivers Script
  *
- * Generate and optionally persist random driver positions for testing purposes.
+ * Generate and persist random driver positions to database for testing purposes.
  *
  * Usage:
- *   npm run seed:drivers -- --count=50 --lat=48.8566 --lng=2.3522 --radiusMeters=1500 --persist=true
+ *   npm run seed:drivers -- --count=50 --lat=48.8566 --lng=2.3522 --radiusMeters=1500
  *
  * Options:
  *   --count         Number of drivers to generate (default: 50)
  *   --lat           Center latitude (default: 48.8566 - Paris)
  *   --lng           Center longitude (default: 2.3522 - Paris)
  *   --radiusMeters  Radius in meters (default: 1500)
- *   --persist       Whether to save to Redis (default: false)
  */
 
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../src/app/app.module';
-import { DriversService } from '../src/drivers/drivers.service';
+import { PrismaClient } from '@prisma/client';
 import { generateRandomDriversAround } from '../src/drivers/drivers.utils';
 
 interface SeedOptions {
@@ -25,7 +22,6 @@ interface SeedOptions {
   lat: number;
   lng: number;
   radiusMeters: number;
-  persist: boolean;
 }
 
 function parseArgs(): SeedOptions {
@@ -35,7 +31,6 @@ function parseArgs(): SeedOptions {
     lat: 48.8566, // Paris
     lng: 2.3522, // Paris
     radiusMeters: 1500,
-    persist: false,
   };
 
   args.forEach((arg) => {
@@ -55,9 +50,6 @@ function parseArgs(): SeedOptions {
       case 'radiusMeters':
         options.radiusMeters = parseInt(value, 10);
         break;
-      case 'persist':
-        options.persist = value.toLowerCase() === 'true';
-        break;
     }
   });
 
@@ -66,52 +58,52 @@ function parseArgs(): SeedOptions {
 
 async function seed() {
   const options = parseArgs();
+  const prisma = new PrismaClient();
 
   console.log('🌱 Seeding drivers with options:');
   console.log(`   Count: ${options.count}`);
   console.log(`   Center: (${options.lat}, ${options.lng})`);
   console.log(`   Radius: ${options.radiusMeters}m`);
-  console.log(`   Persist: ${options.persist}`);
   console.log('');
 
-  // Generate random drivers
-  const drivers = generateRandomDriversAround(
-    options.lat,
-    options.lng,
-    options.radiusMeters,
-    options.count,
-  );
+  try {
+    // Generate random drivers
+    const drivers = generateRandomDriversAround(
+      options.lat,
+      options.lng,
+      options.radiusMeters,
+      options.count,
+    );
 
-  if (options.persist) {
-    console.log('💾 Persisting drivers to Redis...');
+    console.log('💾 Persisting drivers to database...');
 
-    try {
-      // Bootstrap NestJS app to get access to DriversService
-      const app = await NestFactory.createApplicationContext(AppModule);
-      const driversService = app.get(DriversService);
+    // Clear existing drivers
+    await prisma.driver.deleteMany({});
 
-      // Convert drivers to the format expected by saveDrivers
-      const cars = drivers.map((driver, index) => ({
-        id: index + 1,
-        coords: [driver.lat, driver.lng],
-        name: driver.name,
-        vehicle: driver.vehicle,
-        status: driver.status,
-      }));
+    // Save drivers to database using Prisma
+    const createPromises = drivers.map((driver) =>
+      prisma.driver.create({
+        data: {
+          name: driver.name,
+          vehicle: driver.vehicle,
+          status: driver.status as any, // Will match UserDriverStatus enum
+          rating: driver.rating,
+          phone: driver.phone,
+          nbPlaces: driver.nbPlaces,
+          lat: driver.lat,
+          lng: driver.lng,
+        },
+      }),
+    );
 
-      // Save to Redis
-      await driversService.saveDrivers(cars);
+    await Promise.all(createPromises);
 
-      console.log(`✅ Successfully persisted ${drivers.length} drivers to Redis`);
-
-      await app.close();
-    } catch (error) {
-      console.error('❌ Error persisting drivers:', error);
-      process.exit(1);
-    }
-  } else {
-    console.log('📋 Generated drivers (not persisted):');
-    console.log(JSON.stringify(drivers, null, 2));
+    console.log(`✅ Successfully persisted ${drivers.length} drivers to database`);
+  } catch (error) {
+    console.error('❌ Error persisting drivers:', error);
+    process.exit(1);
+  } finally {
+    await prisma.$disconnect();
   }
 
   console.log('');
