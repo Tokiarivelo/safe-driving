@@ -124,6 +124,9 @@ export const DriverMarker = ({
             clientTempId: `${Date.now()}-${Math.random()}`,
           },
         },
+      }).then(() => {
+        // push to dashboard/messages/conversationId
+        window.history.pushState({}, '', `/user/dashboard/messages/${conversationId}`);
       });
 
       toast.success('Message envoyé avec succès');

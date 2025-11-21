@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { UserConversation } from '@/graphql/generated/graphql';
 import { useConversations } from '@/lib/conversation/useConversations';
+import Image from 'next/image';
 
 interface LeftProps {
   selectedConversationId?: string;
@@ -25,11 +26,11 @@ function Left({ selectedConversationId, onConversationSelect }: LeftProps) {
   console.log('🔍 Conversations:', conversations);
   console.log('🔍 Loading:', loading);
   console.log('🔍 Conversations length:', conversations.length);
-  
+
   const filteredConversations = conversations.filter(conv => {
-    const otherUser = conv.participants?.find(
-      (p) => p.user.id !== conv.participants?.[0]?.user.id
-    )?.user || conv.participants?.[0]?.user;
+    const otherUser =
+      conv.participants?.find(p => p.user.id !== conv.participants?.[0]?.user.id)?.user ||
+      conv.participants?.[0]?.user;
     const name = `${otherUser?.firstName || ''} ${otherUser?.lastName || ''}`.toLowerCase();
     return name.includes(searchQuery.toLowerCase());
   });
@@ -43,39 +44,40 @@ function Left({ selectedConversationId, onConversationSelect }: LeftProps) {
     <>
       <div className={styles.auth_msg5}>
         <div className={styles.auth_msg6}>
-          <h1 className='text-black'>Messages</h1>
+          <h1 className="text-black">Messages</h1>
         </div>
-        <hr className='text-black'/>
+        <hr className="text-black" />
         <div className={styles.auth_msg7}>
           <div className={styles.auth_msg8}>
             <Input
               type="text"
               placeholder="Rechercher message / utilisateur"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              startOrnerIcon={<Icon icon="material-symbols:search" width="24" height="24" color='black'/>}
+              onChange={e => setSearchQuery(e.target.value)}
+              startOrnerIcon={
+                <Icon icon="material-symbols:search" width="24" height="24" color="black" />
+              }
             />
           </div>
           <div className={styles.auth_msg9}>
-            <Icon icon="gridicons:filter" width="30" height="30" color='black'/>
+            <Icon icon="gridicons:filter" width="30" height="30" color="black" />
           </div>
         </div>
       </div>
 
       <div className={styles.auth_msg10}>
         {loading && conversations.length === 0 ? (
-          <div className="flex items-center justify-center h-32 text-gray-500">
-            Chargement...
-          </div>
+          <div className="flex items-center justify-center h-32 text-gray-500">Chargement...</div>
         ) : filteredConversations.length === 0 ? (
           <div className="flex items-center justify-center h-32 text-gray-500 text-sm">
             Aucune conversation
           </div>
         ) : (
-          filteredConversations.map((conversation) => {
-            const otherUser = conversation.participants?.find(
-              (p) => p.user.id !== conversation.participants?.[0]?.user.id
-            )?.user || conversation.participants?.[0]?.user;
+          filteredConversations.map(conversation => {
+            const otherUser =
+              conversation.participants?.find(
+                p => p.user.id !== conversation.participants?.[0]?.user.id,
+              )?.user || conversation.participants?.[0]?.user;
 
             return (
               <button
@@ -88,14 +90,17 @@ function Left({ selectedConversationId, onConversationSelect }: LeftProps) {
                     <div className={styles.auth_left2}>
                       <div className={styles.auth_left3}>
                         {otherUser?.avatar ? (
-                          <img
-                            src={otherUser.avatar}
+                          <Image
+                            src={otherUser.avatar.url || ''}
                             alt={`${otherUser.firstName} ${otherUser.lastName}`}
                             className="w-full h-full object-cover rounded-full"
+                            width={40}
+                            height={40}
                           />
                         ) : (
                           <div className="w-full h-full bg-gray-400 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                            {otherUser?.firstName?.[0]}{otherUser?.lastName?.[0]}
+                            {otherUser?.firstName?.[0]}
+                            {otherUser?.lastName?.[0]}
                           </div>
                         )}
                       </div>
@@ -167,4 +172,3 @@ function Left({ selectedConversationId, onConversationSelect }: LeftProps) {
 }
 
 export default Left;
-

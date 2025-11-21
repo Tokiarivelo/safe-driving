@@ -1,5 +1,7 @@
 // Dans votre composant parent
 
+'use client';
+
 import { useMessages } from '@/lib/message/useMessages';
 import { Chat } from '../ui/chat/chat';
 import { ConversationSelectorWithCRUD } from '../ui/conversation-selector';
