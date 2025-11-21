@@ -92,8 +92,9 @@ async function seed() {
     let createdCount = 0;
     for (const driver of drivers) {
       const [firstName, lastName = ''] = driver.name.split(' ');
-      const email = `${firstName.toLowerCase()}.${lastName.toLowerCase() || 'driver'}@driver.test`;
-      const username = `${firstName.toLowerCase()}_${lastName.toLowerCase() || 'driver'}_${Date.now()}_${createdCount}`;
+      const lastNamePart = lastName || 'driver';
+      const email = `${firstName.toLowerCase()}.${lastNamePart.toLowerCase()}@driver.test`;
+      const username = `${firstName.toLowerCase()}_${lastNamePart.toLowerCase()}_${Date.now()}_${createdCount}`;
 
       try {
         await prisma.user.create({
@@ -113,8 +114,12 @@ async function seed() {
         });
         createdCount++;
       } catch (error) {
-        // Skip if user already exists
-        console.log(`Skipping duplicate user: ${email}`);
+        // Skip if user already exists or log other errors
+        if (error.code === 'P2002') {
+          console.log(`Skipping duplicate user: ${email}`);
+        } else {
+          console.error(`Error creating user ${email}:`, error.message);
+        }
       }
     }
 

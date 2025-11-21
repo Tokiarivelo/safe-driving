@@ -7,6 +7,8 @@ import { Driver, NearbyDriversResult } from './drivers.dto';
 
 // Default rating for drivers without reviews
 const DEFAULT_DRIVER_RATING = 4.2;
+// Default phone placeholder when phone is not available
+const DEFAULT_PHONE_PLACEHOLDER = '(+261) 34 ....';
 
 @Injectable()
 export class DriversService {
@@ -93,15 +95,18 @@ export class DriversService {
           drivers = driverUsers.map((user) => {
             const position = randomPointAround(lat, lng, radiusMeters);
             const vehicle = user.vehicles[0];
+            const fullName = user.lastName 
+              ? `${user.firstName} ${user.lastName}` 
+              : user.firstName;
             return {
               id: user.id,
-              name: `${user.firstName} ${user.lastName || ''}`.trim(),
+              name: fullName,
               vehicle: vehicle?.type?.name || 'Sedan',
               lat: position.lat,
               lng: position.lng,
               status: user.driverStatus || UserDriverStatus.AVAILABLE,
               rating: DEFAULT_DRIVER_RATING,
-              phone: user.phone || '(+261) 34 ....',
+              phone: user.phone || DEFAULT_PHONE_PLACEHOLDER,
               nbPlaces: vehicle?.place || 4,
             };
           });
