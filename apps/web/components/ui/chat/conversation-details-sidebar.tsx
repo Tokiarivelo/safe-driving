@@ -4,12 +4,14 @@ import { useState } from 'react';
 interface ConversationDetailsSidebarProps {
   conversation: UserConversation;
   messages: MessageFragmentFragment[];
+  currentUserId?: string;
   onSearchInMessages?: (query: string) => void;
 }
 
 export const ConversationDetailsSidebar: React.FC<ConversationDetailsSidebarProps> = ({
   conversation,
   messages,
+  currentUserId,
   onSearchInMessages,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,10 +20,13 @@ export const ConversationDetailsSidebar: React.FC<ConversationDetailsSidebarProp
     links: false,
   });
 
-  // Get the other participant (assuming direct conversation)
-  const displayParticipant = conversation.participants?.[0];
+  // Get the other participant (excluding current user)
+  const displayParticipant = conversation.participants?.find(
+    p => p.user.id !== currentUserId,
+  ) || conversation.participants?.[0];
 
   // Filter messages with attachments
+  // TODO: Use AttachmentType enum from generated types once available
   const fileAttachments = messages.flatMap(m => m.attachments?.filter(a => a.type === 'FILE') || []);
   const linkAttachments = messages.flatMap(
     m => m.attachments?.filter(a => a.type === 'LINK' || a.linkTitle) || [],

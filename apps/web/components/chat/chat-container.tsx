@@ -127,7 +127,11 @@ export function ChatContainer({
 
       {/* Right Sidebar - Conversation/User Details */}
       {selectedConversation && (
-        <ConversationDetailsSidebar conversation={selectedConversation} messages={messages} />
+        <ConversationDetailsSidebar
+          conversation={selectedConversation}
+          messages={messages}
+          currentUserId={currentUserId}
+        />
       )}
     </div>
   );
