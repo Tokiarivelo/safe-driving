@@ -14,7 +14,7 @@
  *   --radiusMeters  Radius in meters (default: 1500)
  */
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, UserDriverStatus } from '@prisma/client';
 import { generateRandomDriversAround } from '../src/drivers/drivers.utils';
 import * as bcrypt from 'bcrypt';
 
@@ -91,21 +91,21 @@ async function seed() {
     // Create users with DRIVER role
     let createdCount = 0;
     for (const driver of drivers) {
-      const [firstName, lastName] = driver.name.split(' ');
-      const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@driver.test`;
-      const username = `${firstName.toLowerCase()}_${lastName.toLowerCase()}_${Date.now()}_${createdCount}`;
+      const [firstName, lastName = ''] = driver.name.split(' ');
+      const email = `${firstName.toLowerCase()}.${lastName.toLowerCase() || 'driver'}@driver.test`;
+      const username = `${firstName.toLowerCase()}_${lastName.toLowerCase() || 'driver'}_${Date.now()}_${createdCount}`;
 
       try {
         await prisma.user.create({
           data: {
             email,
             firstName,
-            lastName,
+            lastName: lastName || null,
             phone: driver.phone,
             username,
             password: defaultPassword,
             isVerified: true,
-            driverStatus: driver.status as any,
+            driverStatus: driver.status as UserDriverStatus,
             Role: {
               connect: { id: driverRole.id },
             },

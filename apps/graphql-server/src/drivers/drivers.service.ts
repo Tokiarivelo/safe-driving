@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { UserDriverStatus } from '@prisma/client';
 import { RedisService } from '../redis/redis.service';
 import { PrismaService } from '../prisma-module/prisma.service';
 import { generateRandomDriversAround, randomPointAround } from './drivers.utils';
 import { Driver, NearbyDriversResult } from './drivers.dto';
+
+// Default rating for drivers without reviews
+const DEFAULT_DRIVER_RATING = 4.2;
 
 @Injectable()
 export class DriversService {
@@ -70,7 +74,7 @@ export class DriversService {
               },
             },
             driverStatus: {
-              in: ['AVAILABLE', 'BUSY'],
+              in: [UserDriverStatus.AVAILABLE, UserDriverStatus.BUSY],
             },
           },
           include: {
@@ -95,8 +99,8 @@ export class DriversService {
               vehicle: vehicle?.type?.name || 'Sedan',
               lat: position.lat,
               lng: position.lng,
-              status: user.driverStatus || 'AVAILABLE',
-              rating: 4.2, // Default rating, could be calculated from reviews
+              status: user.driverStatus || UserDriverStatus.AVAILABLE,
+              rating: DEFAULT_DRIVER_RATING,
               phone: user.phone || '(+261) 34 ....',
               nbPlaces: vehicle?.place || 4,
             };
