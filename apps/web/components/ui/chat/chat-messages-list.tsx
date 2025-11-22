@@ -95,10 +95,10 @@ export const ChatMessagesList: React.FC<ChatMessagesListProps> = ({
   }, []);
 
   return (
-    <div className="relative flex-1 flex flex-col max-h-full w-full">
+    <div className="relative flex-1 overflow-hidden">
       <div
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-2"
+        className="h-full overflow-y-auto p-4 space-y-2"
         onScroll={handleScroll}
       >
         {/* Load more button at top */}

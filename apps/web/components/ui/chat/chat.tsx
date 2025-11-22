@@ -167,7 +167,7 @@ export const Chat: React.FC<ChatProps> = ({
   // Error state
   if (error) {
     return (
-      <div className={`flex items-center justify-center h-full ${className}`}>
+      <div className={`flex items-center justify-center h-screen ${className}`}>
         <div className="text-center text-red-500">
           <p>Erreur de chargement des messages</p>
           <p className="text-sm">{error.message}</p>
@@ -177,7 +177,7 @@ export const Chat: React.FC<ChatProps> = ({
   }
 
   return (
-    <div className={`relative flex flex-col h-full w-full bg-gray-50 ${className}`}>
+    <div className={`relative flex flex-col h-screen w-full bg-gray-50 ${className}`}>
       {/* Loading overlay when fetching messages around searched message */}
       {loadingAround && (
         <div className="absolute inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
@@ -190,7 +190,7 @@ export const Chat: React.FC<ChatProps> = ({
         </div>
       )}
 
-      {/* Header */}
+      {/* Header - fixed height */}
       <ChatHeader
         conversation={conversation}
         rideId={rideId}
@@ -201,7 +201,7 @@ export const Chat: React.FC<ChatProps> = ({
       {/* Search overlay */}
       {showSearch && <ChatSearch onClose={handleSearchClose} onMessageClick={handleMessageClick} />}
 
-      {/* Messages list */}
+      {/* Messages list - flexible height */}
       <ChatMessagesList
         messages={messages}
         loading={loading}
@@ -217,7 +217,7 @@ export const Chat: React.FC<ChatProps> = ({
         scrollToMessageId={scrollToMessageId}
       />
 
-      {/* Message input */}
+      {/* Message input - fixed height */}
       <MessageInput
         onSendMessage={onSendMessage}
         replyingTo={replyingTo}
