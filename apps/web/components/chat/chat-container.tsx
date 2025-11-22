@@ -3,6 +3,7 @@
 'use client';
 
 import { useMessages } from '@/lib/message/useMessages';
+import { usePathname } from 'next/navigation';
 import { Chat } from '../ui/chat/chat';
 import { ConversationSelectorWithCRUD } from '../ui/conversation-selector';
 import { ConversationDetailsSidebar } from '../ui/chat/conversation-details-sidebar';
@@ -35,10 +36,19 @@ export function ChatContainer({
     });
   }, [session]);
 
+  const pathname = usePathname();
+
   const handleConversationSelect = (newConversationId: string, conversation?: UserConversation) => {
     setSelectedConversationId(newConversationId);
     setSelectedConversation(conversation);
     onConversationChange?.(newConversationId);
+
+    if (pathname) {
+      const basePath = pathname.split('/messages')[0];
+      if (basePath) {
+        window.history.pushState({}, '', `${basePath}/messages/${newConversationId}`);
+      }
+    }
   };
 
   const { isConnected } = useChatSocket({ conversationId: selectedConversationId, rideId });
