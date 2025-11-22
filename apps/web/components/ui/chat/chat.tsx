@@ -8,8 +8,7 @@ import {
   UserConversation,
   useGetMessagesAroundMessageLazyQuery,
 } from '@/graphql/generated/graphql';
-import { useEffect, useState } from 'react';
-import { getSession } from 'next-auth/react';
+import { useState } from 'react';
 import { useReactions } from '@/hooks/useReactions';
 
 interface ChatProps {

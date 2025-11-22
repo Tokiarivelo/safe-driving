@@ -1,8 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { DriverMarker } from './DriverMarker';
 import { Driver, useNearbyDriversQuery } from '@/graphql/generated/graphql';
+import dynamic from 'next/dynamic';
+
+// Dynamically import MarkerClusterGroup to avoid SSR issues
+const MarkerClusterGroup = dynamic(() => import('react-leaflet-cluster'), {
+  ssr: false,
+});
 
 interface NearbyDriversZoneProps {
   userLocation: [number, number] | null;
@@ -19,22 +25,29 @@ export const NearbyDriversZone = ({
 }: NearbyDriversZoneProps) => {
   const [drivers, setDrivers] = useState<Driver[]>([]);
 
-  console.log('object :>> ', {
-    userLocation,
-    radiusMeters,
-    limit,
-    mock,
-  });
+  // Debounce user location to avoid frequent refetches when moving
+  // If useDebounce is not available, I'll use a local effect
+  const [debouncedLocation, setDebouncedLocation] = useState(userLocation);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedLocation(userLocation);
+    }, 1000); // 1 second debounce
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [userLocation]);
 
   const { data, loading, error, refetch } = useNearbyDriversQuery({
     variables: {
-      lat: userLocation?.[0] || 0,
-      lng: userLocation?.[1] || 0,
+      lat: debouncedLocation?.[0] || 0,
+      lng: debouncedLocation?.[1] || 0,
       radiusMeters,
       limit,
       mock,
     },
-    skip: !userLocation,
+    skip: !debouncedLocation,
     fetchPolicy: 'cache-and-network',
   });
 
@@ -44,18 +57,23 @@ export const NearbyDriversZone = ({
     }
   }, [data]);
 
-  // Refetch when user location changes
-  useEffect(() => {
-    if (userLocation && refetch) {
-      refetch({
-        lat: userLocation[0],
-        lng: userLocation[1],
-        radiusMeters,
-        limit,
-        mock,
-      });
-    }
-  }, [userLocation, radiusMeters, limit, mock, refetch]);
+  // Memoize the driver markers to prevent unnecessary re-renders
+  const driverMarkers = useMemo(() => {
+    return drivers.map(driver => (
+      <DriverMarker
+        key={driver.id}
+        id={driver.id}
+        name={driver.name}
+        vehicle={driver.vehicle}
+        lat={driver.lat}
+        lng={driver.lng}
+        status={driver.status}
+        rating={driver.rating}
+        phone={driver.phone}
+        nbPlaces={driver.nbPlaces}
+      />
+    ));
+  }, [drivers]);
 
   if (!userLocation) {
     return null;
@@ -71,21 +89,8 @@ export const NearbyDriversZone = ({
   }
 
   return (
-    <>
-      {drivers.map(driver => (
-        <DriverMarker
-          key={driver.id}
-          id={driver.id}
-          name={driver.name}
-          vehicle={driver.vehicle}
-          lat={driver.lat}
-          lng={driver.lng}
-          status={driver.status}
-          rating={driver.rating}
-          phone={driver.phone}
-          nbPlaces={driver.nbPlaces}
-        />
-      ))}
-    </>
+    <MarkerClusterGroup chunkedLoading maxClusterRadius={60} spiderfyOnMaxZoom={true}>
+      {driverMarkers}
+    </MarkerClusterGroup>
   );
 };

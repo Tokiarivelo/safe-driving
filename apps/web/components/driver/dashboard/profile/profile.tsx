@@ -1,6 +1,5 @@
 'use client';
 
-import LeftSidebarMenu from '../sidebare/left-sidebar-menu';
 import React, { useRef, useState } from 'react';
 import {
   useMeQuery,
@@ -241,8 +240,6 @@ export default function ProfilePage() {
 
   return (
     <div className={styles.container}>
-      <LeftSidebarMenu />
-
       <div className={styles.mainContent}>
         {/* Bannière pleine largeur en haut */}
         <div

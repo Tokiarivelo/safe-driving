@@ -32,7 +32,6 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <head />
       <body suppressHydrationWarning>
         <main>
           <SocketProvider>

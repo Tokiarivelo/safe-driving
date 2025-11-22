@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { MapContainer, Polyline, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -30,7 +30,7 @@ type Props = {
 };
 
 // Component to handle map events and reference
-function MapController({
+const MapController = React.memo(function MapController({
   mapRef,
   userLocation,
   setIsCenteredOnMyLocation,
@@ -68,7 +68,7 @@ function MapController({
   });
 
   return null;
-}
+});
 
 export default function Map({ coordinates }: Props) {
   const [center, setCenter] = useState<[number, number]>(
@@ -93,85 +93,96 @@ export default function Map({ coordinates }: Props) {
   const { calculateRoute: calculateRouteWorker } = useRouteWorker();
   const { reverseGeocode: reverseGeocodeWorker } = useGeocodingWorker();
 
-  const addLocation = () => {
-    const newLocation: Location = {
-      id: Date.now().toString(),
-      placeholder: `Stop ${locations.length - 1}`,
-      value: '',
-      source: 'user',
-    };
-    const newLocations = [...locations];
-    newLocations.splice(-1, 0, newLocation);
-    setLocations(newLocations);
-  };
-
-  const updateLocation = (
-    id: string,
-    value: string,
-    lat?: number,
-    lon?: number,
-    source: 'user' | 'marker' = 'user',
-  ) => {
-    setLocations(prev =>
-      prev.map(loc => (loc.id === id ? { ...loc, value, lat, lon, source } : loc)),
-    );
-  };
-
-  const deleteLocation = (id: string) => {
-    if (locations.length > 2) setLocations(prev => prev.filter(loc => loc.id !== id));
-  };
-
-  const reorderLocations = (oldIndex: number, newIndex: number) => {
-    setLocations(items => arrayMove(items, oldIndex, newIndex));
-  };
-
-  const addLocationAt = (lat: number, lon: number) => {
-    // Use worker for geocoding
-    reverseGeocodeWorker(lat, lon, process.env.NEXT_PUBLIC_NOMINATIM_URL || '', result => {
-      if (result.type === 'GEOCODE_RESULT') {
-        const label = result.data.locationName;
-
-        const firstEmpty = locations.find(loc => loc.value === '');
-        if (firstEmpty) {
-          updateLocation(firstEmpty.id, label, lat, lon, 'marker');
-        } else {
-          const newLocation: Location = {
-            id: Date.now().toString(),
-            placeholder: `Stop ${locations.length - 1}`,
-            value: label,
-            lat,
-            lon,
-            source: 'marker',
-          };
-          const newLocations = [...locations];
-          newLocations.splice(newLocations.length - 1, 0, newLocation);
-          setLocations(newLocations);
-        }
-        setTempMarker(null); // remove after adding
-      } else if (result.type === 'GEOCODE_ERROR') {
-        console.error('Geocoding failed:', result.error);
-        setTempMarker(null);
-      }
+  const addLocation = useCallback(() => {
+    setLocations(prev => {
+      const newLocation: Location = {
+        id: Date.now().toString(),
+        placeholder: `Stop ${prev.length - 1}`,
+        value: '',
+        source: 'user',
+      };
+      const newLocations = [...prev];
+      newLocations.splice(-1, 0, newLocation);
+      return newLocations;
     });
-  };
+  }, []);
 
-  const cleanLocations = () => {
+  const updateLocation = useCallback(
+    (id: string, value: string, lat?: number, lon?: number, source: 'user' | 'marker' = 'user') => {
+      setLocations(prev =>
+        prev.map(loc => (loc.id === id ? { ...loc, value, lat, lon, source } : loc)),
+      );
+    },
+    [],
+  );
+
+  const deleteLocation = useCallback((id: string) => {
+    setLocations(prev => {
+      if (prev.length > 2) return prev.filter(loc => loc.id !== id);
+      return prev;
+    });
+  }, []);
+
+  const reorderLocations = useCallback((oldIndex: number, newIndex: number) => {
+    setLocations(items => arrayMove(items, oldIndex, newIndex));
+  }, []);
+
+  const addLocationAt = useCallback(
+    (lat: number, lon: number) => {
+      // Use worker for geocoding
+      reverseGeocodeWorker(lat, lon, process.env.NEXT_PUBLIC_NOMINATIM_URL || '', result => {
+        if (result.type === 'GEOCODE_RESULT') {
+          const label = result.data.locationName;
+
+          setLocations(prev => {
+            const firstEmpty = prev.find(loc => loc.value === '');
+            if (firstEmpty) {
+              return prev.map(loc =>
+                loc.id === firstEmpty.id
+                  ? { ...loc, value: label, lat, lon, source: 'marker' }
+                  : loc,
+              );
+            } else {
+              const newLocation: Location = {
+                id: Date.now().toString(),
+                placeholder: `Stop ${prev.length - 1}`,
+                value: label,
+                lat,
+                lon,
+                source: 'marker',
+              };
+              const newLocations = [...prev];
+              newLocations.splice(newLocations.length - 1, 0, newLocation);
+              return newLocations;
+            }
+          });
+          setTempMarker(null); // remove after adding
+        } else if (result.type === 'GEOCODE_ERROR') {
+          console.error('Geocoding failed:', result.error);
+          setTempMarker(null);
+        }
+      });
+    },
+    [reverseGeocodeWorker],
+  );
+
+  const cleanLocations = useCallback(() => {
     setLocations(defaultLocations);
     setDurationMin('-');
     setDistKm('-');
-  };
+  }, []);
 
-  const cleanRouteInformation = () => {
+  const cleanRouteInformation = useCallback(() => {
     setDistKm('-');
     setDurationMin('-');
     setRoute([]);
-  };
+  }, []);
 
-  const reverseLocations = () => {
+  const reverseLocations = useCallback(() => {
     setLocations(prev => [...prev].reverse());
-  };
+  }, []);
 
-  const getLocation = () => {
+  const getLocation = useCallback(() => {
     if (!navigator.geolocation) {
       alert('Geolocation is not supported by your browser.');
       return;
@@ -214,15 +225,15 @@ export default function Map({ coordinates }: Props) {
         maximumAge: 60000,
       },
     );
-  };
+  }, []);
 
-  const zoomIn = () => {
+  const zoomIn = useCallback(() => {
     mapRef.current?.zoomIn();
-  };
+  }, []);
 
-  const zoomOut = () => {
+  const zoomOut = useCallback(() => {
     mapRef.current?.zoomOut();
-  };
+  }, []);
 
   useEffect(() => {
     if (tempMarker) {
@@ -248,7 +259,7 @@ export default function Map({ coordinates }: Props) {
     if (!coordinates) {
       getLocation();
     }
-  }, [coordinates]);
+  }, [coordinates, getLocation]);
 
   // Route calculation with worker
   useEffect(() => {
@@ -273,7 +284,22 @@ export default function Map({ coordinates }: Props) {
     } else {
       cleanRouteInformation();
     }
-  }, [locations, calculateRouteWorker]);
+  }, [locations, calculateRouteWorker, cleanRouteInformation]);
+
+  const locationMarkers = useMemo(
+    () =>
+      locations.map((location, index) =>
+        location.lat && location.lon ? (
+          <Marker
+            key={location.id}
+            position={[location.lat, location.lon]}
+            text={location.value}
+            color={index === 0 ? 'blue' : index === locations.length - 1 ? 'red' : 'green'}
+          />
+        ) : null,
+      ),
+    [locations],
+  );
 
   return (
     <div
@@ -297,16 +323,9 @@ export default function Map({ coordinates }: Props) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {route.length > 0 && <Polyline positions={route} color="blue" weight={4} />}
-        {locations.map((location, index) =>
-          location.lat && location.lon ? (
-            <Marker
-              key={location.id}
-              position={[location.lat, location.lon]}
-              text={location.value}
-              color={index === 0 ? 'blue' : index === locations.length - 1 ? 'red' : 'green'}
-            />
-          ) : null,
-        )}
+
+        {locationMarkers}
+
         {userLocation && (
           <>
             {/* User position marker with limited zone */}
