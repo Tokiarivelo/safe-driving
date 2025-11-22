@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useButton } from './sidebareAction';
 import { useMeQuery } from '@/graphql/generated/graphql';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-function Sidebare() {
+function LeftSidebarMenu() {
   const {
     datahome,
     datarechercher,
@@ -30,11 +30,7 @@ function Sidebare() {
     parametre,
     assistance,
   } = useButton();
-  const {
-    data,
-    error,
-    loading: queryLoading,
-  } = useMeQuery({
+  const { data } = useMeQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
@@ -48,7 +44,7 @@ function Sidebare() {
   }
   const bgColor = stringToColor(`${data?.me?.firstName}${data?.me?.lastName}`);
   return (
-    <div className="w-16 h-auto fixed z-100 ml-5 mt-3">
+    <div className="w-16 h-auto z-100 ml-5 mt-3">
       <div className="w-16 h-16 mb-5 flex justify-center items-center rounded-full border-2 border-pink-600">
         <div
           className="text-white flex justify-center items-center w-14 h-14 rounded-full"
@@ -58,11 +54,11 @@ function Sidebare() {
           {data?.me?.lastName?.[0]}
         </div>
       </div>
-      <div className="bg-white w-16 h-auto space-y-4 rounded-[23px] shadow-auth-card">
+      <div className="bg-white w-16 h-auto space-y-4 rounded-full shadow-auth-card">
         <div>
           <Link href="/driver/dashboard">
             <div
-              className={`bg-white w-16 h-16 rounded-full border-1 flex justify-center items-center ${datahome ? 'border-pink-600 shadow-md shadow-gray-400' : 'border-white'}`}
+              className={`bg-white w-16 h-16 rounded-full border flex justify-center items-center ${datahome ? 'border-pink-600 shadow-md shadow-gray-400' : 'border-white'}`}
             >
               <Tooltip>
                 <TooltipTrigger
@@ -315,4 +311,4 @@ function Sidebare() {
   );
 }
 
-export default Sidebare;
+export default LeftSidebarMenu;

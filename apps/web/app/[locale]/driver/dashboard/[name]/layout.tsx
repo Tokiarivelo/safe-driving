@@ -1,10 +1,10 @@
-import Sidebare from '@/components/driver/dashboard/sidebare/sidebare';
+import LeftSidebarMenu from '@/components/driver/dashboard/sidebare/left-sidebar-menu';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="w-full h-screen">
-        <Sidebare />
+        <LeftSidebarMenu />
         {children}
       </div>
     </>

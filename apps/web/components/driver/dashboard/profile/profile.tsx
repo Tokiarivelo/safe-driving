@@ -1,8 +1,17 @@
 'use client';
 
-import Sidebare from '../sidebare/sidebare';
+import LeftSidebarMenu from '../sidebare/left-sidebar-menu';
 import React, { useRef, useState } from 'react';
-import { useMeQuery, useGetqrQuery, useUploadAvatarMutation, useUploadCoverMutation, useUploadUserImagesMutation, useCreateBatchPresignedUrlsMutation, useCompleteUploadBulkMutation, FileType } from '@/graphql/generated/graphql';
+import {
+  useMeQuery,
+  useGetqrQuery,
+  useUploadAvatarMutation,
+  useUploadCoverMutation,
+  useUploadUserImagesMutation,
+  useCreateBatchPresignedUrlsMutation,
+  useCompleteUploadBulkMutation,
+  FileType,
+} from '@/graphql/generated/graphql';
 import { uploadMultipleWithLimit } from '@/components/ui/upload/upload-component.service';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
@@ -16,7 +25,11 @@ export default function ProfilePage() {
   const coverInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
-  const { data: meData, loading: meLoading, refetch: refetchMe } = useMeQuery({
+  const {
+    data: meData,
+    loading: meLoading,
+    refetch: refetchMe,
+  } = useMeQuery({
     fetchPolicy: 'cache-and-network',
   });
 
@@ -71,7 +84,7 @@ export default function ProfilePage() {
           [file],
           () => {},
           1,
-          1
+          1,
         );
 
         const successResults = results.filter(r => r.success);
@@ -130,7 +143,7 @@ export default function ProfilePage() {
           [file],
           () => {},
           1,
-          1
+          1,
         );
 
         const successResults = results.filter(r => r.success);
@@ -188,7 +201,7 @@ export default function ProfilePage() {
           files,
           () => {},
           files.length,
-          files.length
+          files.length,
         );
 
         const successResults = results.filter(r => r.success);
@@ -228,7 +241,7 @@ export default function ProfilePage() {
 
   return (
     <div className={styles.container}>
-      <Sidebare />
+      <LeftSidebarMenu />
 
       <div className={styles.mainContent}>
         {/* Bannière pleine largeur en haut */}
@@ -238,14 +251,11 @@ export default function ProfilePage() {
             backgroundImage: coverImage
               ? `url('${coverImage}')`
               : userCover?.file?.url
-              ? `url('${userCover.file.url}')`
-              : 'none',
+                ? `url('${userCover.file.url}')`
+                : 'none',
           }}
         >
-          <button
-            className={styles.coverUploadButton}
-            onClick={handleCoverClick}
-          >
+          <button className={styles.coverUploadButton} onClick={handleCoverClick}>
             Upload Cover
           </button>
         </div>
@@ -255,26 +265,13 @@ export default function ProfilePage() {
           {/* Colonne de gauche (1/3) - Profil et infos */}
           <div className={styles.leftColumn}>
             <div className={styles.profileSection}>
-              <div
-                className={styles.profileImageContainer}
-                onClick={handleProfileClick}
-              >
+              <div className={styles.profileImageContainer} onClick={handleProfileClick}>
                 {profileImage ? (
-                  <img
-                    src={profileImage}
-                    alt="Profil"
-                    className={styles.profileImage}
-                  />
+                  <img src={profileImage} alt="Profil" className={styles.profileImage} />
                 ) : user?.avatar?.url ? (
-                  <img
-                    src={user.avatar.url}
-                    alt="Profil"
-                    className={styles.profileImage}
-                  />
+                  <img src={user.avatar.url} alt="Profil" className={styles.profileImage} />
                 ) : (
-                  <div className={styles.uploadPlaceholder}>
-                    + Upload
-                  </div>
+                  <div className={styles.uploadPlaceholder}>+ Upload</div>
                 )}
               </div>
 
@@ -284,16 +281,12 @@ export default function ProfilePage() {
                 </h2>
                 <p className={styles.userContact}>{user?.phone || user?.username}</p>
                 <p className={styles.rating}>⭐ 4.2</p>
-                
+
                 {qrLoading ? (
                   <div className={styles.qrLoading}>Loading QR...</div>
                 ) : qrData?.getUserQr ? (
                   <div className={styles.qrContainer}>
-                    <img
-                      src={qrData.getUserQr}
-                      alt="QR Code"
-                      className={styles.qrImage}
-                    />
+                    <img src={qrData.getUserQr} alt="QR Code" className={styles.qrImage} />
                   </div>
                 ) : (
                   <div className={styles.qrUnavailable}>QR Code not available</div>
@@ -322,15 +315,12 @@ export default function ProfilePage() {
             <div className={styles.gallerySection}>
               <div className={styles.galleryHeader}>
                 <h3 className={styles.galleryTitle}>Mes Photos</h3>
-                <button
-                  className={styles.uploadButton}
-                  onClick={handleGalleryClick}
-                >
+                <button className={styles.uploadButton} onClick={handleGalleryClick}>
                   Upload Photos
                 </button>
               </div>
               <div className={styles.galleryGrid}>
-                {userImages.map((image) => (
+                {userImages.map(image => (
                   <img
                     key={image.id}
                     src={image.file.url || ''}

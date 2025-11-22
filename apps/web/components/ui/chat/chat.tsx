@@ -8,7 +8,9 @@ import {
   UserConversation,
   useGetMessagesAroundMessageLazyQuery,
 } from '@/graphql/generated/graphql';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getSession } from 'next-auth/react';
+import { useReactions } from '@/hooks/useReactions';
 
 interface ChatProps {
   conversation?: UserConversation;
@@ -58,7 +60,6 @@ export const Chat: React.FC<ChatProps> = ({
   onLoadMoreAfter,
   onEditMessage,
   onDeleteMessage,
-  onReactToMessage,
   onLoadMessagesAround,
 }) => {
   // State management
@@ -68,6 +69,23 @@ export const Chat: React.FC<ChatProps> = ({
 
   // GraphQL query for loading messages around a specific message
   const [getMessagesAround, { loading: loadingAround }] = useGetMessagesAroundMessageLazyQuery();
+  const { addReaction, removeReaction } = useReactions();
+
+  const handleReactToMessage = async (messageId: string, emoji: string) => {
+    // remove if already reacted with the same emoji
+    const hasReacted = messages.some(msg => {
+      return (
+        msg.id === messageId &&
+        msg.reactions?.some(r => r.user.id === currentUserId && r.type === emoji)
+      );
+    });
+
+    if (hasReacted) {
+      await removeReaction(messageId, emoji);
+    } else {
+      await addReaction(messageId, emoji);
+    }
+  };
 
   // Message action handlers
   const handleReply = (messageId: string) => {
@@ -86,12 +104,6 @@ export const Chat: React.FC<ChatProps> = ({
   const handleDelete = async (messageId: string) => {
     if (onDeleteMessage) {
       await onDeleteMessage(messageId);
-    }
-  };
-
-  const handleReact = async (messageId: string, emoji: string) => {
-    if (onReactToMessage) {
-      await onReactToMessage(messageId, emoji);
     }
   };
 
@@ -165,7 +177,7 @@ export const Chat: React.FC<ChatProps> = ({
   }
 
   return (
-    <div className={`relative flex flex-col h-full bg-gray-50 ${className}`}>
+    <div className={`relative flex flex-col h-full w-full bg-gray-50 ${className}`}>
       {/* Loading overlay when fetching messages around searched message */}
       {loadingAround && (
         <div className="absolute inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
@@ -201,7 +213,7 @@ export const Chat: React.FC<ChatProps> = ({
         onReply={handleReply}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        onReact={handleReact}
+        onReact={handleReactToMessage}
         scrollToMessageId={scrollToMessageId}
       />
 

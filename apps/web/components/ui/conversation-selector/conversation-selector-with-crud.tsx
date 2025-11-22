@@ -105,7 +105,7 @@ export function ConversationSelectorWithCRUD({
       {/* Header */}
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-semibold text-gray-900">Conversations</h2>
+          <h2 className="text-lg font-semibold text-gray-900">Messages</h2>
           {showCreateButton && (
             <button
               onClick={() => setShowCreateModal(true)}

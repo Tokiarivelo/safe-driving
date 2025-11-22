@@ -1,6 +1,6 @@
 'use client';
 
-import Sidebare from '../sidebare/sidebare';
+import LeftSidebarMenu from '../sidebare/left-sidebar-menu';
 import { useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -158,7 +158,7 @@ export default function ScanPage() {
 
   return (
     <div className="flex min-h-screen">
-      <Sidebare />
+      <LeftSidebarMenu />
 
       <div className="flex flex-col flex-1 items-center py-8 space-y-6">
         <h1 className="text-xl font-bold">Scan QR Code</h1>

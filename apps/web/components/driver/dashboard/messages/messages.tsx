@@ -2,7 +2,7 @@
 import React from 'react';
 import Fichier from './right.child';
 import Left from './left.child';
-import Sidebare from '../sidebare/sidebare';
+import LeftSidebarMenu from '../sidebare/left-sidebar-menu';
 import styles from './messages.module.css';
 import { useMessages } from '@/lib/message/useMessages';
 import { Chat } from './chat/chat';
@@ -101,7 +101,7 @@ export function ChatContainer({
   return (
     <div className={styles.auth_msg1}>
       <div className={styles.auth_msg2}>
-        <Sidebare />
+        <LeftSidebarMenu />
         <div className={styles.auth_msg4}>
           <Left
             selectedConversationId={selectedConversationId}

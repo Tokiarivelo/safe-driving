@@ -95,7 +95,7 @@ export const ChatMessagesList: React.FC<ChatMessagesListProps> = ({
   }, []);
 
   return (
-    <div className="relative flex-1 flex flex-col">
+    <div className="relative flex-1 flex flex-col max-h-full w-full">
       <div
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto p-4 space-y-2"
