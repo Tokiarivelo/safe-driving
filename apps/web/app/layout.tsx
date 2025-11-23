@@ -3,7 +3,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { SessionProvider } from 'next-auth/react';
 import { type Locale } from '@/lib/i18n';
 import { ClientI18nProvider } from './client-i18n-provider';
-import '../global.css';
+import './global.css';
 import { SocketProvider } from '@/lib/socket.io/SocketProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 

@@ -36,6 +36,12 @@ export function ChatContainer({
     });
   }, [session]);
 
+  useEffect(() => {
+    if (conversationId) {
+      setSelectedConversationId(conversationId);
+    }
+  }, [conversationId]);
+
   const pathname = usePathname();
 
   const handleConversationSelect = (newConversationId: string, conversation?: UserConversation) => {
@@ -43,8 +49,11 @@ export function ChatContainer({
     setSelectedConversation(conversation);
     onConversationChange?.(newConversationId);
 
+    console.log('pathname :>> ', pathname);
+
     if (pathname) {
       const basePath = pathname.split('/messages')[0];
+      console.log('basePath :>> ', basePath);
       if (basePath) {
         window.history.pushState({}, '', `${basePath}/messages/${newConversationId}`);
       }

@@ -30,8 +30,6 @@ function LeftSidebarMenu({ menuItems }: LeftSidebarMenuProps) {
   }
   const bgColor = stringToColor(`${data?.me?.firstName}${data?.me?.lastName}`);
 
-  console.log('menuItems :>> ', menuItems);
-
   return (
     <div className="w-16 h-auto z-100 ml-5 mt-3">
       <div className="w-16 h-16 mb-5 flex justify-center items-center rounded-full border-2 border-pink-600">

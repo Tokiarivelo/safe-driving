@@ -3,12 +3,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { DriverMarker } from './DriverMarker';
 import { Driver, useNearbyDriversQuery } from '@/graphql/generated/graphql';
-import dynamic from 'next/dynamic';
-
-// Dynamically import MarkerClusterGroup to avoid SSR issues
-const MarkerClusterGroup = dynamic(() => import('react-leaflet-cluster'), {
-  ssr: false,
-});
+import MarkerClusterGroup from './MarkerClusterGroup';
 
 interface NearbyDriversZoneProps {
   userLocation: [number, number] | null;
@@ -39,7 +34,7 @@ export const NearbyDriversZone = ({
     };
   }, [userLocation]);
 
-  const { data, loading, error, refetch } = useNearbyDriversQuery({
+  const { data, loading, error } = useNearbyDriversQuery({
     variables: {
       lat: debouncedLocation?.[0] || 0,
       lng: debouncedLocation?.[1] || 0,
