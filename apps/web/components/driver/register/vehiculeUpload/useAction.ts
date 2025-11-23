@@ -145,9 +145,9 @@ export const useVehicleDocumentsAction = (
       toast.success('Documents véhicule uploadés avec succès');
       router.push('selfieVerif');
       
-    } catch (error: any) {
+    } catch (error) {
       console.error('Erreur lors de l\'upload:', error);
-      toast.error(error.message || 'Erreur lors de l\'enregistrement des documents');
+      toast.error(error instanceof Error ? error.message : 'Erreur lors de l\'enregistrement des documents');
     }
   };
 

@@ -3,8 +3,6 @@ import ExperiencePreferences from '@/components/driver/register/preference/prefe
 import { useTranslation } from 'react-i18next';
 
 export default function ExperiencePreferencesPage() {
-  const { t } = useTranslation();
-
   const handleUpdate = (data: {
     theme: {
       light: boolean;

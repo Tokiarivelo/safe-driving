@@ -3,13 +3,6 @@
 import { Icon } from '@iconify/react';
 import Image from 'next/image';
 
-const vehicleTypes = [
-  { icon: '🚗', label: 'Voiture' },
-  { icon: '🏍️', label: 'Moto' },
-  { icon: '🛺', label: 'Tuktuk' },
-  { icon: '🚲', label: 'Vélo' },
-];
-
 export default function PhoneMockup() {
   return (
     <div className="relative mx-auto w-72 h-[600px] animate-float">

@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-export const usebutton = () => {
+export const useButton = () => {
   const pathname = usePathname();
   const databjr = pathname.includes('/bjr');
   const datagps = pathname.includes('/gps');

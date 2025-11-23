@@ -72,7 +72,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-gray-400 dark:text-gray-300 max-w-sm">
-              L'avenir de la mobilité urbaine sécurisée. Intelligence artificielle, suivi temps réel
+              L&apos;avenir de la mobilité urbaine sécurisée. Intelligence artificielle, suivi temps réel
               et protection avancée.
             </p>
             <div className="flex space-x-4">

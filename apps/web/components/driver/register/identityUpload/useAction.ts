@@ -93,7 +93,7 @@ export const useIdentityUploadAction = () => {
       // 1. Obtenir les URLs présignées
       const { data: presignedData } = await createPresignedUrls({
         variables: {
-          files: fileMetas.map(({ documentType, ...rest }) => rest),
+          files: fileMetas.map(({ documentType: _, ...rest }) => rest),
           type: FileType.USER,
         },
       });
@@ -143,9 +143,9 @@ export const useIdentityUploadAction = () => {
 
       toast.success('Documents uploadés et liés avec succès');
       router.push('/vehiculeInfo');
-    } catch (error: any) {
+    } catch (error) {
       console.error('Erreur lors du processus:', error);
-      toast.error(error.message || 'Erreur lors du traitement des documents');
+      toast.error(error instanceof Error ? error.message : 'Erreur lors du traitement des documents');
     } finally {
       setIsUploading(false);
     }

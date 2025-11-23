@@ -100,7 +100,7 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
 
     // Sauvegarder immédiatement en base de données
     try {
-      let input: any = {};
+      let input: Record<string, boolean> = {};
       
       switch (field) {
         case 'push':

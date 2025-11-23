@@ -10,8 +10,6 @@ export function UploadComponent(props: UploadComponentProps) {
     className,
     style,
     fileTypes = ['JPG', 'PNG', 'JPEG', 'PDF'],
-    progressBarClassName,
-    progressBarStyle,
   } = props;
 
   const { files, uploadProgress, status, errorMsg, handleChange, removeFile, handleStartUpload } =

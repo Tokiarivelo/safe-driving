@@ -1,11 +1,11 @@
 'use client';
 
-import React, { use } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import styles from './toprolex.module.css';
 import { useTranslation } from 'react-i18next';
-function toprole() {
+function TopRole() {
   const { t, ready } = useTranslation('user/picktop');
 
   if (!ready) return null;
@@ -85,4 +85,4 @@ function toprole() {
   );
 }
 
-export default toprole;
+export default TopRole;

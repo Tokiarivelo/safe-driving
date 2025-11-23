@@ -24,13 +24,13 @@ export default function CTASection() {
             </span>
           </h2>
           <p className="text-xl text-white/90 max-w-3xl mx-auto">
-            Rejoignez des milliers d'utilisateurs qui ont choisi l'avenir de la mobilité urbaine
+            Rejoignez des milliers d&apos;utilisateurs qui ont choisi l&apos;avenir de la mobilité urbaine
             sécurisée.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <button className="inline-flex items-center space-x-3 px-8 py-4 rounded-2xl bg-white text-blue-600 font-bold text-lg hover:bg-gray-50 hover:scale-105 shadow-2xl hover:shadow-3xl transition-all duration-300 group">
-              <span>Télécharger l'application</span>
+              <span>Télécharger l&apos;application</span>
               <Icon
                 icon="material-symbols:download"
                 className="w-5 h-5 group-hover:translate-x-1 transition-transform"

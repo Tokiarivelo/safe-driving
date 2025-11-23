@@ -19,7 +19,6 @@ import styles from './profile.module.css';
 export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [coverImage, setCoverImage] = useState<string | null>(null);
-  const [galleryImages, setGalleryImages] = useState<File[]>([]);
   const profileInputRef = useRef<HTMLInputElement>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
@@ -105,9 +104,9 @@ export default function ProfilePage() {
         });
 
         refetchMe();
-      } catch (error: any) {
+      } catch (error) {
         console.error('Upload failed:', error);
-        toast.error(error.message || "Erreur lors de l'upload de la photo");
+        toast.error(error instanceof Error ? error.message : "Erreur lors de l'upload de la photo");
         setProfileImage(null);
       }
     }
@@ -164,9 +163,9 @@ export default function ProfilePage() {
         });
 
         refetchMe();
-      } catch (error: any) {
+      } catch (error) {
         console.error('Upload failed:', error);
-        toast.error(error.message || "Erreur lors de l'upload de la couverture");
+        toast.error(error instanceof Error ? error.message : "Erreur lors de l'upload de la couverture");
         setCoverImage(null);
       }
     }
@@ -175,8 +174,6 @@ export default function ProfilePage() {
   const handleGalleryChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length > 0) {
-      setGalleryImages(prev => [...prev, ...files]);
-
       try {
         const fileMetas = files.map(file => ({
           originalName: file.name,
@@ -222,10 +219,9 @@ export default function ProfilePage() {
         });
 
         refetchMe();
-      } catch (error: any) {
+      } catch (error) {
         console.error('Upload failed:', error);
-        toast.error(error.message || "Erreur lors de l'upload des photos");
-        setGalleryImages([]);
+        toast.error(error instanceof Error ? error.message : "Erreur lors de l'upload des photos");
       }
     }
   };

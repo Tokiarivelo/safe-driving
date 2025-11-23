@@ -6,7 +6,6 @@ import styles from './driver.module.css';
 import FormButton from '../../../../components/driver/register/formbutton/formbutton';
 import TopRole from '../../../../components/driver/register/picktopnoir/toprole';
 import TopRoles from '../../../../components/driver/register/picktopgreen/toprole';
-import { usePathname } from 'next/navigation';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { motion } from 'framer-motion';
 interface AuthLayoutProps {
@@ -14,8 +13,6 @@ interface AuthLayoutProps {
 }
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
-  const pathname = usePathname();
-
   // const name = pathname.split('/').pop();
   const segment = useSelectedLayoutSegment();
   return (

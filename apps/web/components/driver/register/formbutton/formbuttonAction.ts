@@ -1,9 +1,8 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import path from 'path';
 
-export const usebutton = () => {
+export const useButton = () => {
   const pathname = usePathname();
   const datawelcome = pathname.includes('/welcome');
   const datapersonalInfo = pathname.includes('/personalInfo');

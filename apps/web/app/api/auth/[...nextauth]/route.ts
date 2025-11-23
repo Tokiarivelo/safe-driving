@@ -63,7 +63,7 @@ const { handlers } = NextAuth({
     // Injecte le token dans le JWT
     async jwt({ token, user }) {
       if (user) {
-        token.accessToken = (user as any).token;
+        token.accessToken = (user as User & { token?: string }).token;
 
         const u = user as User;
         token.user = {

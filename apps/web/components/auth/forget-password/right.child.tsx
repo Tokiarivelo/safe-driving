@@ -13,7 +13,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 function RightChild() {
-  const { t, ready } = useTranslation('auth/forget-password');
+  const { t } = useTranslation('auth/forget-password');
   const { form, loading, submit } = useForgotPassword();
   return (
     <>

@@ -24,7 +24,6 @@ export const Notification: React.FC = () => {
 
   const {
     data,
-    error,
     loading: queryLoading,
   } = useGetMyUserPreferenceQuery({
     fetchPolicy: 'cache-and-network',

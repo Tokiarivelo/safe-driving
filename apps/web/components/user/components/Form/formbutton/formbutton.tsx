@@ -35,10 +35,9 @@ function FormButton() {
     butnot,
     butpref,
     butreca,
-  } = usebutton();
+  } = useButton();
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [openItem, setOpenItem] = useState<string | null>(null);
   const totalSteps = 6;
 
   const updateProgress = () => {
@@ -84,14 +83,9 @@ function FormButton() {
     return '';
   };
 
-  const getButtonText = () => {
-    return currentStep === totalSteps ? 'Commencer' : 'Continuer';
-  };
-
   const { strokeDashoffset, circumference } = updateProgress();
 
   const router = useRouter();
-  const { t, ready } = useTranslation('user/formbutton');
 
   if (!ready) return null;
   return (

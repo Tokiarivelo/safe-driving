@@ -2,7 +2,7 @@ import { Check } from 'lucide-react';
 import React from 'react';
 import styles from './toprole.module.css';
 import { useTranslation } from 'react-i18next';
-function toprole() {
+function TopRole() {
   const { t, ready } = useTranslation('user/picktop');
 
   if (!ready) return null;
@@ -31,4 +31,4 @@ function toprole() {
   );
 }
 
-export default toprole;
+export default TopRole;

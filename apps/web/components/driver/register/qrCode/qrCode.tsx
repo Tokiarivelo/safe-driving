@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import styles from '../../../user/components/Form/codeqr/codeqr.module.css'
 
 export default function UserQrPage() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const qrUrl = searchParams.get('qrUrl')
 

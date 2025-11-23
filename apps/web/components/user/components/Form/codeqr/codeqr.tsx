@@ -38,7 +38,8 @@ export const PickRole = () => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-    } catch (error) {
+    } catch {
+      // Fallback method if fetch fails
       try {
         const img = document.querySelector(`img[src="${data.getUserQr}"]`) as HTMLImageElement;
         if (img) {
@@ -58,14 +59,8 @@ export const PickRole = () => {
           link.download = `qr-code-${meData?.me?.firstName || 'user'}.png`;
           link.href = canvas.toDataURL('image/png');
           link.click();
-        } else {
-          const link = document.createElement('a');
-          link.href = data.getUserQr;
-          link.download = `qr-code-${meData?.me?.firstName || 'user'}.png`;
-          link.target = '_blank';
-          link.click();
         }
-      } catch (fallbackError) {
+      } catch {
         alert('Tsy afaka na-download ny QR code. Andramo indray.');
       }
     }

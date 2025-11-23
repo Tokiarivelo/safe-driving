@@ -54,7 +54,6 @@ export const submitClientData = async (formData: ClientSchemaType) => {
 export const usePreference = () => {
   const {
     data,
-    error,
     loading: queryLoading,
   } = useGetVehicleTypesQuery({
     fetchPolicy: 'cache-and-network',
@@ -63,7 +62,7 @@ export const usePreference = () => {
   const datas = data;
   const [upsertUserPreferenceMutation, { loading: userPrefLoading }] =
     useUpsertUserPreferenceMutation();
-  const [createVehicleTypeMutation, { loading: vehicleLoading }] = useCreateVehicleTypeMutation();
+  const [{ loading: vehicleLoading }] = useCreateVehicleTypeMutation();
   const [createUserQrMutation, { loading: qrLoading }] = useCreateUserQrsMutation();
   const [updateUser, { loading: loadingUpdateUser }] = useUpdateUserMutation();
   const [errors, setErrors] = useState<any>(null);
@@ -83,7 +82,7 @@ export const usePreference = () => {
       });
       toast.success('QR code créé avec succès !🎉');
       return result;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error creating QR:', error);
 
       // Check raha unique constraint error

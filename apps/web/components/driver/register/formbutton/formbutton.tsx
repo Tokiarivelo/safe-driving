@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './formbutton.module.css';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { usebutton } from './formbuttonAction';
+import { useButton } from './formbuttonAction';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
@@ -49,10 +49,9 @@ function FormButton() {
     butnotif,
     butpref,
     butrecap,
-  } = usebutton();
+  } = useButton();
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [openItem, setOpenItem] = useState<string | null>(null);
   const totalSteps = 11;
 
   const updateProgress = () => {
@@ -129,15 +128,10 @@ function FormButton() {
     return '';
   };
 
-  const getButtonText = () => {
-    return currentStep === totalSteps ? 'Commencer' : 'Continuer';
-  };
-
   const { strokeDashoffset, circumference } = updateProgress();
 
-  const router = useRouter();
   const { t, ready } = useTranslation('registerDriver/stepList');
-  const handleSubmit = async (data: { name: string; email: string; phone: string }) => {};
+  const handleSubmit = async () => {};
   const handleUpdateNotif = (data: { sms: boolean; email: boolean; push: boolean }) => {
     console.log('Préférences de notification mises à jour:', data);
   };

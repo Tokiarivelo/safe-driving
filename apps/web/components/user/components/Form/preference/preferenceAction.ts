@@ -57,8 +57,6 @@ export const submitClientData = async (formData: ClientSchemaType) => {
 export const usepreference = () => {
   const {
     data,
-    error,
-    loading: queryLoading,
   } = useGetVehicleTypesQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',

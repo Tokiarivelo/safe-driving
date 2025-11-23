@@ -1,4 +1,4 @@
-import { LatLngExpression, LatLng } from 'leaflet';
+import { LatLngExpression } from 'leaflet';
 import { Circle, Marker } from 'react-leaflet';
 import { useState, useEffect, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';

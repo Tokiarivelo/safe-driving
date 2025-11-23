@@ -78,9 +78,9 @@ export const useVehicleInfoAction = (
       // Rediriger vers la page d'upload avec l'ID du véhicule
       router.push(`vehiculeUpload?vehicleId=${vehicleId}`);
       
-    } catch (error: any) {
+    } catch (error) {
       console.error('Erreur lors de l\'enregistrement:', error);
-      toast.error(error.message || 'Erreur lors de l\'enregistrement du véhicule');
+      toast.error(error instanceof Error ? error.message : 'Erreur lors de l\'enregistrement du véhicule');
     }
   };
 

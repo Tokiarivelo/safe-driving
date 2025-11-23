@@ -94,7 +94,6 @@ function ProgressPill({ label }: ProgressPillProps) {
 export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) {
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
-  const [progress, setProgress] = useState(0);
   const [count, setCount] = useState(0);
 
   const markersRef = useRef<L.Marker[]>([]);

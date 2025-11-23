@@ -3,7 +3,7 @@
 import ReactFlagsSelect from 'react-flags-select';
 import styles from './preference.module.css';
 import { useRouter } from 'next/navigation';
-import { Radio, RadioGroup } from '@/components/ui/radiogroup';
+import { Radio } from '@/components/ui/radiogroup';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -20,12 +20,7 @@ export const Preference = () => {
     theme: '',
     preferedvelicles: [],
   });
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const {
-    data,
-    error,
-    loading: queryLoading,
-  } = useGetMyUserPreferenceQuery({
+  const { data, loading: queryLoading } = useGetMyUserPreferenceQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
