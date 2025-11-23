@@ -63,7 +63,7 @@ export const useUploadComponent = (props: UploadComponentProps) => {
       }
       if (onComplete) onComplete(results);
       return results;
-    } catch (err: any) {
+    } catch (err) {
       setStatus('error');
       setErrorMsg(err?.message || 'Upload failed');
       if (onError) onError(err);
@@ -72,7 +72,7 @@ export const useUploadComponent = (props: UploadComponentProps) => {
   // handleChange amélioré
   const handleChange = useCallback(
     (
-      incoming: FileList | File[] | any,
+      incoming: FileList | File[],
       options?: { replace?: boolean; removeUploadedOnAdd?: boolean },
     ) => {
       const incomingArr: File[] = Array.from(incoming || []);
@@ -85,7 +85,7 @@ export const useUploadComponent = (props: UploadComponentProps) => {
           if (Array.isArray(prev)) return incomingArr.map(() => 0);
           const nextObj: Record<string, number> = {};
           incomingArr.forEach(f => (nextObj[fileKey(f)] = 0));
-          return nextObj as any;
+          return nextObj;
         });
         setStatus('idle');
         setErrorMsg(null);
@@ -106,7 +106,7 @@ export const useUploadComponent = (props: UploadComponentProps) => {
           // uploadProgress est mapping { key: number }
           baseFiles = existingFiles.filter(f => {
             const k = fileKey(f);
-            return ((uploadProgress as any)?.[k] ?? 0) < 100;
+            return ((uploadProgress as Record<string, number>)?.[k] ?? 0) < 100;
           });
         }
       }
@@ -137,9 +137,9 @@ export const useUploadComponent = (props: UploadComponentProps) => {
         const nextObj: Record<string, number> = {};
         merged.forEach(f => {
           const k = fileKey(f);
-          nextObj[k] = (prev && (prev as any)[k]) ?? 0;
+          nextObj[k] = (prev && (prev as Record<string, number>)[k]) ?? 0;
         });
-        return nextObj as any;
+        return nextObj as Record<string, number>;
       });
 
       setStatus('idle');

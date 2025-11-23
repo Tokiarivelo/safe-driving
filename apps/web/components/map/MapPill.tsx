@@ -94,14 +94,13 @@ function ProgressPill({ label }: ProgressPillProps) {
 export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) {
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
-  const [progress, setProgress] = useState(0);
   const [count, setCount] = useState(0);
 
   const markersRef = useRef<L.Marker[]>([]);
   const moveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const clearMarkers = () => {
-    markersRef.current.forEach((marker: any) => {
+    markersRef.current.forEach((marker: L.Marker) => {
       marker.remove();
     });
     markersRef.current = [];
@@ -123,7 +122,7 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
     clearMarkers();
   };
 
-  async function fetchOverpassData(query: string): Promise<any[]> {
+  async function fetchOverpassData(query: string): Promise<Array<{ type?: string; lat?: number; lon?: number; geometry?: Array<{ lon: number; lat: number }> }>> {
     const response = await fetch(
       `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`,
     );
@@ -132,7 +131,7 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
     return data.elements || [];
   }
 
-  function renderMarkers(map: L.Map, elements: any[], pill: string): L.Marker[] {
+  function renderMarkers(map: L.Map, elements: Array<{ type?: string; lat?: number; lon?: number; geometry?: Array<{ lon: number; lat: number }> }>, pill: string): L.Marker[] {
     const markers: L.Marker[] = [];
     const bounds = map.getBounds();
 
@@ -147,7 +146,7 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
         lat = el.lat;
         lon = el.lon;
       } else if (el.type === 'way' && el.geometry?.length) {
-        const coords = el.geometry.map((g: any) => [g.lon, g.lat]);
+        const coords = el.geometry.map((g: { lon: number; lat: number }) => [g.lon, g.lat]);
         if (
           coords[0][0] !== coords[coords.length - 1][0] ||
           coords[0][1] !== coords[coords.length - 1][1]

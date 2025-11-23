@@ -8,18 +8,12 @@ import { useExperiencePreferences } from './useAction';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { Form } from '@/components/ui/form';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './preference.module.css';
 
-export const ExperiencePreferences = ({ onUpdate }: { onUpdate: (data: any) => void }) => {
+export const ExperiencePreferences = ({ onUpdate }: { onUpdate: (data: unknown) => void }) => {
   const { t } = useTranslation(['registerDriver/step9']);
   const { form, preferences, isRequesting, isSubmitting, handleThemeChange, handleLanguageChange, onSubmit } = useExperiencePreferences();
-
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  useEffect(() => {
-    const html = document.documentElement;
-    setTheme(html.classList.contains('dark') ? 'dark' : 'light');
-  }, []);
 
   useEffect(() => { if (onUpdate) onUpdate(preferences); }, [preferences, onUpdate]);
 

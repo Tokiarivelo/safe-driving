@@ -77,7 +77,7 @@ export function useConversations() {
         });
 
         return data?.createConversation as Conversation | undefined;
-      } catch (err: any) {
+      } catch (err) {
         setError(err.message || 'Erreur lors de la création de la conversation');
         throw err;
       } finally {
@@ -101,7 +101,7 @@ export function useConversations() {
         });
 
         return data?.updateConversation;
-      } catch (err: any) {
+      } catch (err) {
         setError(err.message || 'Erreur lors de la mise à jour de la conversation');
         throw err;
       } finally {
@@ -130,7 +130,7 @@ export function useConversations() {
                 return {
                   ...existing,
                   conversations: existing.conversations.filter(
-                    (conv: any) => conv.id !== conversationId,
+                    (conv: { id: string }) => conv.id !== conversationId,
                   ),
                 };
               },
@@ -138,7 +138,7 @@ export function useConversations() {
           });
         },
       });
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Erreur lors de la suppression de la conversation');
       throw err;
     } finally {
@@ -154,7 +154,7 @@ export function useConversations() {
       await addParticipantMutation({
         variables: { input },
       });
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || "Erreur lors de l'ajout du participant");
       throw err;
     } finally {
@@ -170,7 +170,7 @@ export function useConversations() {
       await removeParticipantMutation({
         variables: { input },
       });
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Erreur lors de la suppression du participant');
       throw err;
     } finally {

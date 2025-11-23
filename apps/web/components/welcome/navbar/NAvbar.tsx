@@ -15,7 +15,7 @@ const Navbar = () => {
           Contact
         </a>
         <div>
-          <Button>S'authentifier</Button>
+          <Button>S&apos;authentifier</Button>
         </div>
       </div>
     </div>

@@ -41,7 +41,7 @@ export const useResetPassword = () => {
 
   const resetPassword = async (values: RessetpassFormValues) => {
     try {
-      const { confirmPassword, ...dataInput } = values;
+      const { password } = values;
 
       if (!sessionToken) {
         toast.error('Jeton manquant', {
@@ -52,7 +52,7 @@ export const useResetPassword = () => {
 
       const { data, errors } = await mutationResetPassword({
         variables: {
-          newPassword: dataInput.password,
+          newPassword: password,
           sessionToken,
         },
       });

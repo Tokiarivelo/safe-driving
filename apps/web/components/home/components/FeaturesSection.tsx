@@ -42,7 +42,7 @@ export default function FeaturesSection() {
             </span>
           </h2>
           <p className="max-w-3xl mx-auto text-xl text-gray-600 dark:text-gray-300">
-            Nos fonctionnalités intelligentes conçues pour votre sécurité et tranquillité d'esprit
+            Nos fonctionnalités intelligentes conçues pour votre sécurité et tranquillité d&apos;esprit
           </p>
         </div>
 

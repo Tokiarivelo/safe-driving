@@ -1,12 +1,8 @@
-import React from 'react';
+// import React from 'react';
 import { useMapEvents } from 'react-leaflet';
 
 export function TempMarker({
   setTempMarker,
-  addLocationAt,
-}: {
-  setTempMarker: React.Dispatch<React.SetStateAction<{ lat: number; lon: number } | null>>;
-  addLocationAt: (lat: number, lon: number) => void;
 }) {
   useMapEvents({
     contextmenu(e) {

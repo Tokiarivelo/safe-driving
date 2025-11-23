@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import {
   useUpsertUserPreferenceMutation,
-  useCreateVehicleTypeMutation,
 } from '@/graphql/generated/graphql';
 import { useRouter } from 'next/navigation';
 import { ClientSchemaType, ClientSchema } from './preference.shema';
@@ -14,10 +13,6 @@ interface UserPreferenceUpsertInput {
   theme: string;
   language: string;
   preferedVehicleTypeIds: string[];
-}
-
-interface VehicleTypeCreateInput {
-  name: string;
 }
 
 export const submitClientData = async (formData: ClientSchemaType) => {
@@ -54,11 +49,9 @@ export const submitClientData = async (formData: ClientSchemaType) => {
   }
 };
 
-export const usepreference = () => {
+export const usePreference = () => {
   const {
     data,
-    error,
-    loading: queryLoading,
   } = useGetVehicleTypesQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
@@ -66,8 +59,7 @@ export const usepreference = () => {
   const datas = data;
   const [upsertUserPreferenceMutation, { loading: userPrefLoading }] =
     useUpsertUserPreferenceMutation();
-  const [createVehicleTypeMutation, { loading: vehicleLoading }] = useCreateVehicleTypeMutation();
-  const [errors, setErrors] = useState<any>(null);
+  const [errors, setErrors] = useState<unknown>(null);
   const router = useRouter();
 
   const loading = userPrefLoading || vehicleLoading;
@@ -150,4 +142,4 @@ export const usepreference = () => {
   };
 };
 
-export default usepreference;
+export default usePreference;

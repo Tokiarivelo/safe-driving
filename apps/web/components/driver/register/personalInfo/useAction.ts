@@ -11,7 +11,7 @@ import { useMeQuery, useUpdateUserMutation } from '@/graphql/generated/graphql';
 
 export const usePersonalInfoAction = () => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   const { data: userData, loading: queryLoading, error: queryError } = useMeQuery({
     skip: status !== 'authenticated', 

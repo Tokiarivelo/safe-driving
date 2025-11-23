@@ -1,7 +1,6 @@
 'use client';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { useRegisterUserMutation } from '@/graphql/generated/graphql';
@@ -41,11 +40,11 @@ export const useRegister = () => {
 
   const register = async (values: SignUpFormValues) => {
     try {
-      const { confirmPassword, ...dataInput } = values;
+      const { email, firstName, lastName, password } = values;
 
       const { data, errors } = await mutationRegister({
         variables: {
-          data: { ...dataInput },
+          data: { email, firstName, lastName, password },
         },
       });
 

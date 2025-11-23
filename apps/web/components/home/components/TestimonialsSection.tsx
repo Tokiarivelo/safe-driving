@@ -42,7 +42,7 @@ export default function TestimonialsSection() {
             </span>
           </h2>
           <p className="max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-300">
-            Découvrez l'expérience de nos utilisateurs avec SafeDriving
+            Découvrez l&apos;expérience de nos utilisateurs avec SafeDriving
           </p>
         </div>
 
@@ -60,7 +60,7 @@ export default function TestimonialsSection() {
               </div>
 
               <blockquote className="text-gray-600 dark:text-gray-300 mb-8 italic">
-                "{testimonial.comment}"
+                &quot;{testimonial.comment}&quot;
               </blockquote>
 
               <div className="flex items-center">

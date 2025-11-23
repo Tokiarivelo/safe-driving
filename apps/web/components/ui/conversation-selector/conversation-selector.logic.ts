@@ -4,7 +4,7 @@ import { ConversationSelectorProps } from './conversation-selector.interface';
 
 export function useConversationSelector({
   selectedConversationId,
-  onConversationSelect,
+//  onConversationSelect,
 }: Pick<ConversationSelectorProps, 'selectedConversationId' | 'onConversationSelect'>) {
   const [searchTerm, setSearchTerm] = useState('');
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useConversations } from '@/lib/conversation/useConversations';
 
 interface ParticipantManagerProps {
-  conversation: any;
+  conversation: { id: string; name?: string };
   currentUserId: string;
   onParticipantChange?: () => void;
 }
@@ -113,7 +113,7 @@ export function ParticipantManager({
 
       {/* Liste des participants */}
       <div className="space-y-2">
-        {conversation.participants?.map((participant: any) => (
+        {conversation.participants?.map((participant: { id: string; name?: string }) => (
           <div
             key={participant.id}
             className="flex items-center justify-between p-3 bg-gray-50 rounded-md"

@@ -105,9 +105,9 @@ export const useSelfieVerificationAction = () => {
       router.push('gps');
       return { success: true };
 
-    } catch (error: any) {
+    } catch (error) {
       console.error("Erreur:", error);
-      toast.error(error.message || "Erreur lors de l’envoi du selfie");
+      toast.error(error instanceof Error ? error.message : "Erreur lors de l’envoi du selfie");
       return { success: false, error };
     }
   };

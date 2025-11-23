@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useGpsSettings } from './gpsAction';
-import { useNotifications } from '@/hooks/useNotifications';
 import { Radio } from '@/components/ui/radiogroup';
 import { useGetMyUserPreferenceQuery } from '@/graphql/generated/graphql';
 import styles from './gps.module.css';
@@ -15,16 +14,6 @@ export const Gps: React.FC = () => {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const {
-    token,
-    isSupported,
-    permission,
-    requestPermission: requestNotificationPermission,
-    showTest,
-  } = useNotifications();
-
-  const {
-    data,
-    error,
     loading: queryLoading,
   } = useGetMyUserPreferenceQuery({
     fetchPolicy: 'cache-and-network',

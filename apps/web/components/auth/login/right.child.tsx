@@ -6,7 +6,7 @@ import { useLogin } from './useActions';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { EyeIcon, EyeOffIcon, LockKeyhole, Router, UserRound } from 'lucide-react';
+import { EyeIcon, EyeOffIcon, LockKeyhole, UserRound } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';

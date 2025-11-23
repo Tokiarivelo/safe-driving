@@ -2,6 +2,6 @@
 import { PersonalInfoForm } from '@/components/driver/register/personalInfo/PersonalInfo';
 
 export default function WelcomePage() {
-  const handleSubmit = async (data: { name: string; email: string; phone: string }) => {};
+  const handleSubmit = async () => {};
   return <PersonalInfoForm onSubmit={handleSubmit} />;
 }

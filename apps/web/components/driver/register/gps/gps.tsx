@@ -31,7 +31,6 @@ export const LocationPermission = () => {
   
   const { watch, setValue } = form;
   const locationEnabled = watch('locationEnabled');
-  const rememberChoice = watch('rememberChoice');
 
   if (!isClient) {
     return <div className="flex items-center justify-center min-h-[50vh] animate-pulse">Chargement...</div>;
@@ -48,7 +47,7 @@ export const LocationPermission = () => {
         {!checkLocationSupport() ? (
           <div className="text-destructive p-6 border border-destructive rounded-lg bg-destructive/5 max-w-2xl mx-auto">
             <div className="flex items-center space-x-2">
-              <span className="font-medium">La géolocalisation n'est pas supportée par ce navigateur</span>
+              <span className="font-medium">La géolocalisation n&apos;est pas supportée par ce navigateur</span>
             </div>
           </div>
         ) : (

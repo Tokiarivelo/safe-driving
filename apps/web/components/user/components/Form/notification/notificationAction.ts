@@ -35,7 +35,7 @@ export const useNotificationSettings = () => {
           serverMessage = errors[0].message || serverMessage;
         }
         throw new Error(serverMessage);
-      } catch (err: any) {
+      } catch (err) {
         let message = 'Un problème inconnu est survenu avec le Notification.';
         if (err.networkError) message = 'Impossible de se connecter au serveur.';
         else if (err.graphQLErrors?.length) message = err.graphQLErrors[0].message || message;

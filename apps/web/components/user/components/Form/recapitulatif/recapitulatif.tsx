@@ -3,7 +3,7 @@
 import ReactFlagsSelect from 'react-flags-select';
 import styles from './recapitulatif.module.css';
 import { useRouter } from 'next/navigation';
-import { Radio, RadioGroup } from '@/components/ui/radiogroup';
+import { Radio } from '@/components/ui/radiogroup';
 import ToggleSwitch from '@/components/ui/ToggleSwitch';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
@@ -30,18 +30,7 @@ export default function Recapitulatif() {
     theme: 'claire',
   });
 
-  const handleToggle = (type: string) => {
-    console.log(`${type} toggled`);
-  };
-
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const [localToggle, setLocalToggle] = useState<boolean>(false);
-
-  const {
-    data,
-    error,
-    loading: queryLoading,
-  } = useGetMyUserPreferenceQuery({
+  const { data } = useGetMyUserPreferenceQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
@@ -167,7 +156,7 @@ export default function Recapitulatif() {
               value="claire"
               id="claire"
               checked={formData.theme === 'claire'}
-              onChange={e => setFormData(prev => ({ ...prev, theme: 'claire' }))}
+              onChange={() => setFormData(prev => ({ ...prev, theme: 'claire' }))}
             />
             <label htmlFor="claire" className={styles.auth_not8}>
               {t('title4')}

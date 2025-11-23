@@ -2,13 +2,13 @@ import { useState, useMemo, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
+//  DialogDescription,
+//  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button } from '../button';
+// import { Button } from '../button';
 
 // Small ImagePreview component: thumbnails, remove, modal preview, per-image progress
 export function ImagePreview({

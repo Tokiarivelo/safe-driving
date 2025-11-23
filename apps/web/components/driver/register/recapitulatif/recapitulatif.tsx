@@ -62,7 +62,7 @@ export function Recap() {
           </div>
 
           {/* Véhicules */}
-          {vehicles.map((vehicle: any) => (
+          {vehicles.map((vehicle: { id: string; type?: { name?: string }; brand?: string; model?: string; licensePlate?: string }) => (
             <div key={vehicle.id} className={styles.card}>
               <div className={styles.cardHeader}>
                 <h2 className={styles.cardTitle}>Véhicule</h2>

@@ -38,7 +38,7 @@ export const useLocationPermissionAction = ({
   const [isGettingLocation, setIsGettingLocation] = useState(false);
 
   const hasInitialized = useRef(false);
-  const lastPreferenceData = useRef<any>(null);
+  const lastPreferenceData = useRef<unknown>(null);
 
   const {
     isEnabled,

@@ -3,7 +3,7 @@
 import ReactFlagsSelect from 'react-flags-select';
 import styles from './preference.module.css';
 import { useRouter } from 'next/navigation';
-import { Radio, RadioGroup } from '@/components/ui/radiogroup';
+import { Radio } from '@/components/ui/radiogroup';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { usepreference } from './preferenceAction';
 import { ClientSchemaType } from './preference.shema';
 import { MultiSelect } from '@/components/ui/multi-select';
-import { useGetMyUserPreferenceQuery } from '@/graphql/generated/graphql';
 
 export const Preference = () => {
   const [formData, setFormData] = useState<ClientSchemaType>({
@@ -19,15 +18,6 @@ export const Preference = () => {
     country: '',
     theme: '',
     preferedvelicles: [],
-  });
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const {
-    data,
-    error,
-    loading: queryLoading,
-  } = useGetMyUserPreferenceQuery({
-    fetchPolicy: 'cache-and-network',
-    errorPolicy: 'all',
   });
 
   useEffect(() => {
@@ -110,7 +100,7 @@ export const Preference = () => {
               value="claire"
               id="claire"
               checked={formData.theme === 'claire'}
-              onChange={e => setFormData(prev => ({ ...prev, theme: 'claire' }))}
+              onChange={() => setFormData(prev => ({ ...prev, theme: 'claire' }))}
             />
             <label htmlFor="claire" className={styles.auth_not8}>
               {t('title4')}
