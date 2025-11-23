@@ -1,4 +1,4 @@
-import { Conversation, UserConversation } from '@/graphql/generated/graphql';
+import { UserConversation } from '@/graphql/generated/graphql';
 
 export interface ConversationSelectorProps {
   selectedConversationId?: string;

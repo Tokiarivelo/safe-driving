@@ -30,7 +30,7 @@ export default function Recapitulatif() {
     theme: 'claire',
   });
 
-  const { data, loading: _queryLoading } = useGetMyUserPreferenceQuery({
+  const { data } = useGetMyUserPreferenceQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });

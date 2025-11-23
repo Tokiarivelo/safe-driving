@@ -13,10 +13,6 @@ import { useRouter } from 'next/navigation';
 import { ClientSchemaType, ClientSchema } from './recapitulatuf.schema';
 import { useGetVehicleTypesQuery } from '@/graphql/generated/graphql';
 
-interface VehicleTypeCreateInput {
-  name: string;
-}
-
 export const submitClientData = async (formData: ClientSchemaType) => {
   const validation = ClientSchema.safeParse(formData);
 
@@ -65,7 +61,7 @@ export const usePreference = () => {
   const [{ loading: vehicleLoading }] = useCreateVehicleTypeMutation();
   const [createUserQrMutation, { loading: qrLoading }] = useCreateUserQrsMutation();
   const [updateUser, { loading: loadingUpdateUser }] = useUpdateUserMutation();
-  const [errors, setErrors] = useState<any>(null);
+  const [errors, setErrors] = useState<unknown>(null);
   const router = useRouter();
 
   const loading = useMemo(
@@ -75,7 +71,7 @@ export const usePreference = () => {
 
   const handleCreateQr = async () => {
     try {
-      const result = await (createUserQrMutation as any)({
+      const result = await (createUserQrMutation)({
         variables: {
           type: 'png',
         },

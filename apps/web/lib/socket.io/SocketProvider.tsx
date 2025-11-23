@@ -36,7 +36,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     (async () => {
       const session = await getSession();
-      const token = (session as any)?.accessToken;
+      const token = (session as { accessToken?: string })?.accessToken;
       if (!token) return;
 
       console.log('[SocketProvider] init token:', token);

@@ -85,7 +85,7 @@ export const useUploadComponent = (props: UploadComponentProps) => {
           if (Array.isArray(prev)) return incomingArr.map(() => 0);
           const nextObj: Record<string, number> = {};
           incomingArr.forEach(f => (nextObj[fileKey(f)] = 0));
-          return nextObj as any;
+          return nextObj;
         });
         setStatus('idle');
         setErrorMsg(null);

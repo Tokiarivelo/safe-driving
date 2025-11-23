@@ -10,7 +10,7 @@ export const convertToRelative = (url: string) => {
 
     // Sinon, on garde l'URL absolue
     return url;
-  } catch (err) {
+  } catch {
     // Si ce n'est pas une URL absolue valide, on retourne tel quel (probablement déjà relative)
     return url;
   }

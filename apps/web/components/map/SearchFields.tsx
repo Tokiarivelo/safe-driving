@@ -3,7 +3,7 @@
 import React from 'react';
 import { ArrowUpDown, Plus, Trash2 } from 'lucide-react';
 import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Location } from '@/components/map/Location';
 import { SortableLocationItem } from '@/components/map/SortableLocationItem';
 

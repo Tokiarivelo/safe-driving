@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { usepreference } from './preferenceAction';
 import { ClientSchemaType } from './preference.shema';
 import { MultiSelect } from '@/components/ui/multi-select';
-import { useGetMyUserPreferenceQuery } from '@/graphql/generated/graphql';
 
 export const Preference = () => {
   const [formData, setFormData] = useState<ClientSchemaType>({
@@ -19,10 +18,6 @@ export const Preference = () => {
     country: '',
     theme: '',
     preferedvelicles: [],
-  });
-  const { data, loading: _ } = useGetMyUserPreferenceQuery({
-    fetchPolicy: 'cache-and-network',
-    errorPolicy: 'all',
   });
 
   useEffect(() => {
