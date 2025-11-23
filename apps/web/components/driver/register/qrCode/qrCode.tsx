@@ -1,5 +1,5 @@
 'use client'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import styles from '../../../user/components/Form/codeqr/codeqr.module.css'
 

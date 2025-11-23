@@ -45,7 +45,7 @@ export const RealTimeDriverZone = ({
       console.log('❌ Disconnected from server');
     });
 
-    socket.on('drivers:list:result', (payload: any) => {
+    socket.on('drivers:list:result', (payload: { drivers?: Array<{ id: string; location?: { lat: number; lng: number } }> }) => {
       if (!payload?.items) return;
       const map = new Map<string, Driver>();
       for (const it of payload.items) {
@@ -56,7 +56,7 @@ export const RealTimeDriverZone = ({
       setDrivers(map);
     });
 
-    socket.on('drivers:update', (payload: any) => {
+    socket.on('drivers:update', (payload: { id: string; location?: { lat: number; lng: number } }) => {
       if (!payload?.value?.coords) return;
       setDrivers(prev => {
         const copy = new Map(prev);

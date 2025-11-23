@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useConversations } from '@/lib/conversation/useConversations';
 
 interface ParticipantManagerProps {
-  conversation: any;
+  conversation: { id: string; name?: string };
   currentUserId: string;
   onParticipantChange?: () => void;
 }

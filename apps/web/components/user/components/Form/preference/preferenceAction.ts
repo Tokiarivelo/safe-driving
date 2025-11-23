@@ -54,7 +54,7 @@ export const submitClientData = async (formData: ClientSchemaType) => {
   }
 };
 
-export const usepreference = () => {
+export const usePreference = () => {
   const {
     data,
   } = useGetVehicleTypesQuery({
@@ -148,4 +148,4 @@ export const usepreference = () => {
   };
 };
 
-export default usepreference;
+export default usePreference;

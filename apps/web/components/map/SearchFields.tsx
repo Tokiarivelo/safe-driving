@@ -30,7 +30,7 @@ export default function SearchFields({
 }) {
   const sensors = useSensors(useSensor(PointerSensor));
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: { active: { id: string }; over: { id: string } | null }) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
       const oldIndex = locations.findIndex(loc => loc.id === active.id);

@@ -1,15 +1,13 @@
 'use client';
 
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import styles from './formbutton.module.css';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { usebutton } from './formbuttonAction';
+import { useButton } from './formbuttonAction';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import BjrForm from '../bjr/bjr';
 import GpsForm from '../gps/gps';
 import NotificationForm from '../notification/notification';
@@ -21,7 +19,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { ChevronDown } from 'lucide-react';
 
 function FormButton() {
   const {
@@ -84,8 +81,6 @@ function FormButton() {
   };
 
   const { strokeDashoffset, circumference } = updateProgress();
-
-  const router = useRouter();
 
   if (!ready) return null;
   return (

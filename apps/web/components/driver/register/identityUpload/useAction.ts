@@ -93,7 +93,7 @@ export const useIdentityUploadAction = () => {
       // 1. Obtenir les URLs présignées
       const { data: presignedData } = await createPresignedUrls({
         variables: {
-          files: fileMetas.map(({ documentType: _, ...rest }) => rest),
+          files: fileMetas.map(fm => ({ name: fm.name, size: fm.size, type: fm.type })),
           type: FileType.USER,
         },
       });

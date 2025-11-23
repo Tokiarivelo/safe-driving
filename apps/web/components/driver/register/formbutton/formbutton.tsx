@@ -9,7 +9,6 @@ import { useButton } from './formbuttonAction';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { WelcomeStep } from '../welcome/WelcomeStep';
 import { PersonalInfoForm } from '../personalInfo/PersonalInfo';
 import { IdentityUploadForm } from '../identityUpload/identityUpload';

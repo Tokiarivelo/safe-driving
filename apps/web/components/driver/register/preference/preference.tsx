@@ -8,7 +8,7 @@ import { useExperiencePreferences } from './useAction';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { Form } from '@/components/ui/form';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './preference.module.css';
 
 export const ExperiencePreferences = ({ onUpdate }: { onUpdate: (data: unknown) => void }) => {

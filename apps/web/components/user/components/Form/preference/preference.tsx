@@ -20,7 +20,7 @@ export const Preference = () => {
     theme: '',
     preferedvelicles: [],
   });
-  const { data, loading: queryLoading } = useGetMyUserPreferenceQuery({
+  const { data, loading: _ } = useGetMyUserPreferenceQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
@@ -105,7 +105,7 @@ export const Preference = () => {
               value="claire"
               id="claire"
               checked={formData.theme === 'claire'}
-              onChange={e => setFormData(prev => ({ ...prev, theme: 'claire' }))}
+              onChange={() => setFormData(prev => ({ ...prev, theme: 'claire' }))}
             />
             <label htmlFor="claire" className={styles.auth_not8}>
               {t('title4')}

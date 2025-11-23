@@ -45,7 +45,7 @@ export default function HeroSection() {
             {/* Boutons avec le nouveau gradient */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <button className="safe-btn-gradient-large group">
-                <span>Télécharger l'app</span>
+                <span>Télécharger l\Télécharger l&apos;appapos;app</span>
                 <Icon
                   icon="material-symbols:download"
                   className="w-5 h-5 group-hover:translate-x-1 transition-transform"

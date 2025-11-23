@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { UploadCloud, X } from 'lucide-react';
-import { Button } from './button';
+// import { Button } from './button';
 import { cn } from '@/lib/utils';
 
 interface FileUploadProps {

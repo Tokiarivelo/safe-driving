@@ -11,7 +11,7 @@ export interface UploadComponentProps {
   fileTypes?: string[];
   concurrency?: number;
   maxRetries?: number;
-  onComplete?: (results: any[]) => void;
+  onComplete?: (results: Array<{ key?: string; success: boolean }>) => void;
   onError?: (error: Error) => void;
   className?: string;
   style?: React.CSSProperties;

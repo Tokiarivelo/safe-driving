@@ -30,7 +30,7 @@ export default function Recapitulatif() {
     theme: 'claire',
   });
 
-  } = useGetMyUserPreferenceQuery({
+  const { data, loading: _queryLoading } = useGetMyUserPreferenceQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
@@ -156,7 +156,7 @@ export default function Recapitulatif() {
               value="claire"
               id="claire"
               checked={formData.theme === 'claire'}
-              onChange={e => setFormData(prev => ({ ...prev, them\_: 'claire' }))}
+              onChange={() => setFormData(prev => ({ ...prev, theme: 'claire' }))}
             />
             <label htmlFor="claire" className={styles.auth_not8}>
               {t('title4')}

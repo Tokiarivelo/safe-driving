@@ -9,7 +9,7 @@ import { Loader2 } from 'lucide-react';
 import styles from './terms.module.css';
 import { Button } from '@/components/ui/button';
 
-export const TermsAcceptance = ({ onUpdate }: { onUpdate?: (data: unknown) => void; }) => {
+export const TermsAcceptance = () => {
   const { t } = useTranslation(['registerDriver/step10', 'registerDriver/CGU', 'registerDriver/politiqueConf']);
 
   const { form, currentDocument, documentRead, handleOpenDocument, handleAcceptanceChange, setCurrentDocument, onSubmit } = useTermsAcceptance();
