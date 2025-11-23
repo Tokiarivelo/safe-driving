@@ -135,11 +135,7 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
     const markers: L.Marker[] = [];
     const bounds = map.getBounds();
 
-    elements.forEach((el, index) => {
-      // Update progress as we process markers
-      const renderProgress = 70 + ((index + 1) / elements.length) * 30; // 70-100%
-      setProgress(Math.min(renderProgress, 100));
-
+    elements.forEach((el) => {
       let lat, lon;
 
       if (el.type === 'node') {
@@ -209,16 +205,13 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
     const north = bounds.getNorth();
     const east = bounds.getEast();
 
-    setProgress(30);
     const query = `
     [out:json][timeout:25];
     nwr["tourism"="hotel"](${south},${west},${north},${east});
     out geom;
   `;
 
-    setProgress(50);
     const elements = await fetchOverpassData(query);
-    setProgress(70);
     return renderMarkers(map, elements, 'Hotels');
   }
 
@@ -229,16 +222,13 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
     const north = bounds.getNorth();
     const east = bounds.getEast();
 
-    setProgress(30);
     const query = `
       [out:json][timeout:25];
       nwr["amenity"="restaurant"](${south},${west},${north},${east});
       out geom;
     `;
 
-    setProgress(50);
     const elements = await fetchOverpassData(query);
-    setProgress(70);
     return renderMarkers(map, elements, 'Restaurants');
   }
 
@@ -249,7 +239,6 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
     const north = bounds.getNorth();
     const east = bounds.getEast();
 
-    setProgress(30);
     const query = `
       [out:json][timeout:25];
       (
@@ -261,9 +250,7 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
       out geom;
     `;
 
-    setProgress(50);
     const elements = await fetchOverpassData(query);
-    setProgress(70);
     return renderMarkers(map, elements, 'Shops');
   }
 
@@ -282,7 +269,6 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
     }
 
     setLoading(activeLabel);
-    setProgress(10);
 
     try {
       switch (activeLabel) {
@@ -296,16 +282,13 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
           await fetchAndRenderShops(mapRef.current);
           break;
       }
-      setProgress(100);
-      // Small delay to show 100% before hiding
+      // Small delay to show loading before hiding
       setTimeout(() => {
         setLoading(null);
-        setProgress(0);
       }, 300);
     } catch (error) {
       console.error('Error fetching data:', error);
       setLoading(null);
-      setProgress(0);
     }
   };
 
