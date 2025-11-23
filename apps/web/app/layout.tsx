@@ -1,11 +1,5 @@
-import ApolloWrapper from '@/lib/apollo/apollo-provider';
-import { Toaster } from '@/components/ui/sonner';
-import { SessionProvider } from 'next-auth/react';
 import { type Locale } from '@/lib/i18n';
-import { ClientI18nProvider } from './client-i18n-provider';
 import './global.css';
-import { SocketProvider } from '@/lib/socket.io/SocketProvider';
-import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
 export const metadata = {
   title: {
@@ -33,26 +27,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <main>
-          <SocketProvider>
-            <ClientI18nProvider locale={locale}>
-              <SessionProvider refetchOnWindowFocus={false}>
-                <ApolloWrapper>
-                  <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                    storageKey="safe-drive-theme"
-                  >
-                    {children}
-                  </ThemeProvider>
-                </ApolloWrapper>
-                <Toaster position="top-right" richColors closeButton />
-              </SessionProvider>
-            </ClientI18nProvider>
-          </SocketProvider>
-        </main>
+        <main>{children}</main>
       </body>
     </html>
   );
