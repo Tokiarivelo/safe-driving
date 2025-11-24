@@ -3,7 +3,9 @@
 import { useEffect, useState, useMemo } from 'react';
 import { DriverMarker } from './DriverMarker';
 import { Driver, useNearbyDriversQuery } from '@/graphql/generated/graphql';
-import MarkerClusterGroup from './MarkerClusterGroup';
+import MarkerClusterGroup from 'react-leaflet-cluster';
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.css';
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css';
 
 interface NearbyDriversZoneProps {
   userLocation: [number, number] | null;
