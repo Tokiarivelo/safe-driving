@@ -1,15 +1,15 @@
 'use client';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { useForm, UseFormReturn, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { vehicleDocumentsSchema, VehicleDocumentsFormValues } from './schema';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
-import { 
-  useCreateBatchPresignedUrlsMutation, 
+import {
+  useCreateBatchPresignedUrlsMutation,
   useCompleteUploadBulkMutation,
   FileType,
   VehicleDocumentType,
-  useUpdateDriverVehicleMutation
+  useUpdateDriverVehicleMutation,
 } from '@/graphql/generated/graphql';
 import { uploadMultipleWithLimit } from '@/components/ui/upload/upload-component.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,12 +23,12 @@ type UseVehicleDocumentsActionReturn = {
 };
 
 export const useVehicleDocumentsAction = (
-  initialData: Partial<VehicleDocumentsFormValues> = {}
+  initialData: Partial<VehicleDocumentsFormValues> = {},
 ): UseVehicleDocumentsActionReturn => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session } = useSession();
-  
+
   const [createPresignedUrls] = useCreateBatchPresignedUrlsMutation();
   const [completeUploadBulk] = useCompleteUploadBulkMutation();
   const [updateDriverVehicle] = useUpdateDriverVehicleMutation();
@@ -37,12 +37,12 @@ export const useVehicleDocumentsAction = (
   const vehicleId = searchParams.get('vehicleId') || localStorage.getItem('currentVehicleId');
 
   const form = useForm<VehicleDocumentsFormValues>({
-    resolver: zodResolver(vehicleDocumentsSchema),
+    resolver: zodResolver(vehicleDocumentsSchema) as Resolver<VehicleDocumentsFormValues>,
     defaultValues: {
       registrationFiles: initialData.registrationFiles || [],
       insuranceFiles: initialData.insuranceFiles || [],
-      vehiclePhotos: initialData.vehiclePhotos || []
-    }
+      vehiclePhotos: initialData.vehiclePhotos || [],
+    },
   });
 
   const onSubmit = async (data: VehicleDocumentsFormValues): Promise<void> => {
@@ -52,7 +52,7 @@ export const useVehicleDocumentsAction = (
     }
 
     if (!vehicleId) {
-      toast.error('ID du véhicule manquant. Veuillez créer un véhicule d\'abord.');
+      toast.error("ID du véhicule manquant. Veuillez créer un véhicule d'abord.");
       return;
     }
 
@@ -60,7 +60,7 @@ export const useVehicleDocumentsAction = (
       const allFiles: File[] = [
         ...data.registrationFiles,
         ...data.insuranceFiles,
-        ...data.vehiclePhotos
+        ...data.vehiclePhotos,
       ];
 
       if (allFiles.length === 0) {
@@ -69,10 +69,10 @@ export const useVehicleDocumentsAction = (
       }
 
       // Générer les métadonnées pour chaque fichier
-      const fileMetas = allFiles.map((file) => ({
+      const fileMetas = allFiles.map(file => ({
         originalName: file.name,
         contentType: file.type || 'application/octet-stream',
-        uniqueId: uuidv4()
+        uniqueId: uuidv4(),
       }));
 
       // Récupérer les URLs présignées
@@ -93,13 +93,13 @@ export const useVehicleDocumentsAction = (
         allFiles,
         () => {},
         3,
-        3
+        3,
       );
 
       const successResults = results.filter(r => r.success);
-      
+
       if (successResults.length === 0) {
-        throw new Error('Aucun fichier n\'a pu être uploadé');
+        throw new Error("Aucun fichier n'a pu être uploadé");
       }
 
       // Marquer les fichiers comme complets
@@ -115,20 +115,22 @@ export const useVehicleDocumentsAction = (
         ...data.registrationFiles.map((file, index) => ({
           documentType: VehicleDocumentType.REGISTRATION,
           file: {
-            key: successResults[index]?.key || ''
-          }
+            key: successResults[index]?.key || '',
+          },
         })),
         ...data.insuranceFiles.map((file, index) => ({
           documentType: VehicleDocumentType.INSURANCE,
           file: {
-            key: successResults[data.registrationFiles.length + index]?.key || ''
-          }
-        }))
+            key: successResults[data.registrationFiles.length + index]?.key || '',
+          },
+        })),
       ];
 
       // Mapper les photos du véhicule
       const uploadImages = data.vehiclePhotos.map((file, index) => ({
-        key: successResults[data.registrationFiles.length + data.insuranceFiles.length + index]?.key || ''
+        key:
+          successResults[data.registrationFiles.length + data.insuranceFiles.length + index]?.key ||
+          '',
       }));
 
       // Mise à jour du véhicule côté backend
@@ -137,17 +139,18 @@ export const useVehicleDocumentsAction = (
           vehicleId: vehicleId,
           input: {
             uploadDocuments,
-            uploadImages
-          }
-        }
+            uploadImages,
+          },
+        },
       });
 
       toast.success('Documents véhicule uploadés avec succès');
       router.push('selfieVerif');
-      
     } catch (error) {
-      console.error('Erreur lors de l\'upload:', error);
-      toast.error(error instanceof Error ? error.message : 'Erreur lors de l\'enregistrement des documents');
+      console.error("Erreur lors de l'upload:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Erreur lors de l'enregistrement des documents",
+      );
     }
   };
 
@@ -155,6 +158,6 @@ export const useVehicleDocumentsAction = (
     form,
     handleSubmit: form.handleSubmit(onSubmit),
     isSubmitting: form.formState.isSubmitting,
-    vehicleId
+    vehicleId,
   };
 };

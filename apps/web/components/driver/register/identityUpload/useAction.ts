@@ -6,12 +6,12 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { 
-  useCreateBatchPresignedUrlsMutation, 
+import {
+  useCreateBatchPresignedUrlsMutation,
   useCompleteUploadBulkMutation,
   FileType,
   useUploadUserDocumentMutation,
-  UserDocumentType
+  UserDocumentType,
 } from '@/graphql/generated/graphql';
 
 import { uploadMultipleWithLimit } from '@/components/ui/upload/upload-component.service';
@@ -21,7 +21,7 @@ export const useIdentityUploadAction = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [isUploading, setIsUploading] = useState(false);
-  
+
   const [createPresignedUrls] = useCreateBatchPresignedUrlsMutation();
   const [completeUploadBulk] = useCompleteUploadBulkMutation();
   const [uploadUserDocument] = useUploadUserDocumentMutation();
@@ -31,8 +31,8 @@ export const useIdentityUploadAction = () => {
     defaultValues: {
       idCardFront: undefined,
       idCardBack: undefined,
-      license: undefined
-    }
+      license: undefined,
+    },
   });
 
   const handleSubmit = async (data: IdentityUploadFormValues) => {
@@ -42,12 +42,13 @@ export const useIdentityUploadAction = () => {
     }
 
     setIsUploading(true);
-    
+
     try {
       const filesToUpload: File[] = [];
       const fileMetas: Array<{
         originalName: string;
         contentType: string;
+        size: number;
         uniqueId: string;
         documentType: UserDocumentType;
       }> = [];
@@ -58,8 +59,9 @@ export const useIdentityUploadAction = () => {
         fileMetas.push({
           originalName: data.idCardFront.name,
           contentType: data.idCardFront.type || 'application/octet-stream',
+          size: data.idCardFront.size,
           uniqueId: uuidv4(),
-          documentType: UserDocumentType.ID_CARD_FRONT
+          documentType: UserDocumentType.ID_CARD_FRONT,
         });
       }
 
@@ -69,8 +71,9 @@ export const useIdentityUploadAction = () => {
         fileMetas.push({
           originalName: data.idCardBack.name,
           contentType: data.idCardBack.type || 'application/octet-stream',
+          size: data.idCardBack.size,
           uniqueId: uuidv4(),
-          documentType: UserDocumentType.ID_CARD_BACK
+          documentType: UserDocumentType.ID_CARD_BACK,
         });
       }
 
@@ -80,8 +83,9 @@ export const useIdentityUploadAction = () => {
         fileMetas.push({
           originalName: data.license.name,
           contentType: data.license.type || 'application/octet-stream',
+          size: data.license.size,
           uniqueId: uuidv4(),
-          documentType: UserDocumentType.DRIVER_LICENSE
+          documentType: UserDocumentType.DRIVER_LICENSE,
         });
       }
 
@@ -93,7 +97,11 @@ export const useIdentityUploadAction = () => {
       // 1. Obtenir les URLs présignées
       const { data: presignedData } = await createPresignedUrls({
         variables: {
-          files: fileMetas.map(fm => ({ name: fm.name, size: fm.size, type: fm.type })),
+          files: fileMetas.map(fm => ({
+            originalName: fm.originalName,
+            size: fm.size,
+            contentType: fm.contentType,
+          })),
           type: FileType.USER,
         },
       });
@@ -106,13 +114,13 @@ export const useIdentityUploadAction = () => {
       const results = await uploadMultipleWithLimit(
         presignedData.createBatchPresignedUrls,
         filesToUpload,
-        () => {}, 
-        3, 
-        3 
+        () => {},
+        3,
+        3,
       );
 
       const successResults = results.filter(r => r.success);
-      
+
       if (successResults.length > 0) {
         // 3. Marquer les uploads comme complétés
         await completeUploadBulk({
@@ -126,26 +134,28 @@ export const useIdentityUploadAction = () => {
           documentType: fileMetas[index].documentType,
           name: fileMetas[index].originalName, // Utiliser le nom original comme "name"
           file: {
-            key: result.key || '' // Format attendu par votre backend
-          }
+            key: result.key || '', // Format attendu par votre backend
+          },
         }));
 
         await uploadUserDocument({
           variables: {
-            input: uploadInput
-          }
+            input: uploadInput,
+          },
         });
       }
 
       if (successResults.length !== filesToUpload.length) {
-        throw new Error('Certains fichiers n\'ont pas pu être uploadés');
+        throw new Error("Certains fichiers n'ont pas pu être uploadés");
       }
 
       toast.success('Documents uploadés et liés avec succès');
       router.push('/vehiculeInfo');
     } catch (error) {
       console.error('Erreur lors du processus:', error);
-      toast.error(error instanceof Error ? error.message : 'Erreur lors du traitement des documents');
+      toast.error(
+        error instanceof Error ? error.message : 'Erreur lors du traitement des documents',
+      );
     } finally {
       setIsUploading(false);
     }

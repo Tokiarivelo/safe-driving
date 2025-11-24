@@ -4,6 +4,14 @@ import L from 'leaflet';
 import centroid from '@turf/centroid';
 import { polygon } from '@turf/helpers';
 
+type OverpassElement = {
+  type?: string;
+  lat?: number;
+  lon?: number;
+  geometry?: Array<{ lon: number; lat: number }>;
+  tags?: Record<string, string>;
+};
+
 type PillProps = {
   label: string;
   onClick: () => void;
@@ -107,7 +115,7 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
   };
 
   const removeOutOfBoundsMarkers = (bounds: L.LatLngBounds) => {
-    markersRef.current = markersRef.current.filter((marker) => {
+    markersRef.current = markersRef.current.filter(marker => {
       const pos = marker.getLatLng();
       if (!bounds.contains(pos)) {
         marker.remove();
@@ -122,7 +130,7 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
     clearMarkers();
   };
 
-  async function fetchOverpassData(query: string): Promise<Array<{ type?: string; lat?: number; lon?: number; geometry?: Array<{ lon: number; lat: number }> }>> {
+  async function fetchOverpassData(query: string): Promise<OverpassElement[]> {
     const response = await fetch(
       `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`,
     );
@@ -131,11 +139,11 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
     return data.elements || [];
   }
 
-  function renderMarkers(map: L.Map, elements: Array<{ type?: string; lat?: number; lon?: number; geometry?: Array<{ lon: number; lat: number }> }>, pill: string): L.Marker[] {
+  function renderMarkers(map: L.Map, elements: OverpassElement[], pill: string): L.Marker[] {
     const markers: L.Marker[] = [];
     const bounds = map.getBounds();
 
-    elements.forEach((el) => {
+    elements.forEach(el => {
       let lat, lon;
 
       if (el.type === 'node') {
@@ -373,11 +381,7 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
       />
 
       {/* Progress Pill */}
-      {loading && (
-        <ProgressPill
-          label={`Loading ${loading}...`}
-        />
-      )}
+      {loading && <ProgressPill label={`Loading ${loading}...`} />}
     </div>
   );
 }

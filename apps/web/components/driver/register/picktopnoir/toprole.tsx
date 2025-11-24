@@ -32,5 +32,3 @@ function TopRole() {
 }
 
 export default TopRole;
-
-export default toprole;

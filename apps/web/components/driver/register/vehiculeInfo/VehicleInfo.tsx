@@ -2,7 +2,13 @@
 import { useVehicleInfoAction } from './useAction';
 import { Form, FormField } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import styles from './vehicle.module.css';
@@ -19,7 +25,8 @@ interface VehicleInfoFormProps {
 
 export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
   const { t } = useTranslation(['registerDriver/step4']);
-  const { form, handleSubmit, isSubmitting, vehicleTypes, loadingTypes } = useVehicleInfoAction(initialData);
+  const { form, handleSubmit, isSubmitting, vehicleTypes, loadingTypes } =
+    useVehicleInfoAction(initialData);
 
   return (
     <div className="w-full px-4 py-8">
@@ -31,12 +38,16 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
 
         <div className={styles.formContainer}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 max-w-md mx-auto">
+            <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
               <FormField
                 control={form.control}
                 name="brand"
                 render={({ field }) => (
-                  <Input label={t('form.brand.label')} placeholder={t('form.brand.placeholder')} {...field} />
+                  <Input
+                    label={t('form.brand.label')}
+                    placeholder={t('form.brand.placeholder')}
+                    {...field}
+                  />
                 )}
               />
 
@@ -44,7 +55,11 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                 control={form.control}
                 name="model"
                 render={({ field }) => (
-                  <Input label={t('form.model.label')} placeholder={t('form.model.placeholder')} {...field} />
+                  <Input
+                    label={t('form.model.label')}
+                    placeholder={t('form.model.placeholder')}
+                    {...field}
+                  />
                 )}
               />
 
@@ -52,7 +67,11 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                 control={form.control}
                 name="plate"
                 render={({ field }) => (
-                  <Input label={t('form.plate.label')} placeholder={t('form.plate.placeholder')} {...field} />
+                  <Input
+                    label={t('form.plate.label')}
+                    placeholder={t('form.plate.placeholder')}
+                    {...field}
+                  />
                 )}
               />
 
@@ -65,7 +84,7 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                     placeholder={t('form.seats.placeholder')}
                     type="number"
                     {...field}
-                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                    onChange={e => field.onChange(parseInt(e.target.value) || 0)}
                   />
                 )}
               />
@@ -78,7 +97,11 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                     <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       {t('form.type.label')}
                     </label>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      value={field.value}
+                    >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder={t('form.type.placeholder')} />
                       </SelectTrigger>
@@ -92,7 +115,7 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                             Aucun type de véhicule disponible
                           </SelectItem>
                         ) : (
-                          vehicleTypes.map((vehicleType) => (
+                          vehicleTypes.map(vehicleType => (
                             <SelectItem key={vehicleType.id} value={vehicleType.id}>
                               {vehicleType.name}
                             </SelectItem>
@@ -108,7 +131,11 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                 <Button type="button" variant="outline" className={styles.buttonOutline}>
                   {t('buttons.later')}
                 </Button>
-                <Button type="submit" disabled={isSubmitting || loadingTypes} className={styles.buttonPrimary}>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || loadingTypes}
+                  className={styles.buttonPrimary}
+                >
                   {isSubmitting ? t('buttons.processing') : t('buttons.validate')}
                 </Button>
               </div>

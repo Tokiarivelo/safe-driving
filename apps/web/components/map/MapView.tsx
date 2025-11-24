@@ -11,7 +11,6 @@ import { Marker } from '@/components/map/Marker';
 import { defaultLocations, Location } from '@/components/map/Location';
 import { arrayMove } from '@dnd-kit/sortable';
 import * as polyline from '@mapbox/polyline';
-import { TempMarker } from '@/components/map/TempMarker';
 import { NearbyDriversZone } from '@/components/map/NearbyDriversZone';
 import { UserPositionZone } from '@/components/map/UserPositionZone';
 import { useRouteWorker, useGeocodingWorker } from '@/hooks/useMapWorkers';
@@ -384,7 +383,7 @@ export default function Map({ coordinates }: Props) {
           />
         )}
 
-        <TempMarker setTempMarker={setTempMarker} addLocationAt={addLocationAt} />
+        {/* <TempMarker setTempMarker={setTempMarker} addLocationAt={addLocationAt} /> */}
 
         {/* Show nearby drivers using GraphQL query with mock data */}
         <NearbyDriversZone

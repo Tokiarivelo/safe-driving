@@ -45,25 +45,64 @@ export const RealTimeDriverZone = ({
       console.log('❌ Disconnected from server');
     });
 
-    socket.on('drivers:list:result', (payload: { drivers?: Array<{ id: string; location?: { lat: number; lng: number } }> }) => {
-      if (!payload?.items) return;
-      const map = new Map<string, Driver>();
-      for (const it of payload.items) {
-        if (it.value?.coords) {
-          map.set(it.key, { key: it.key, coords: it.value.coords });
-        }
-      }
-      setDrivers(map);
-    });
+    socket.on(
+      'drivers:list:result',
+      (payload: {
+        drivers?: Array<{ id: string; location?: { lat: number; lng: number } }>;
+        items?: Array<{ key: string; value?: { coords: [number, number] } }>;
+      }) => {
+        const map = new Map<string, Driver>();
 
-    socket.on('drivers:update', (payload: { id: string; location?: { lat: number; lng: number } }) => {
-      if (!payload?.value?.coords) return;
-      setDrivers(prev => {
-        const copy = new Map(prev);
-        copy.set(payload.key, { key: payload.key, coords: payload.value.coords });
-        return copy;
-      });
-    });
+        // Handle "drivers" format
+        if (payload?.drivers) {
+          for (const d of payload.drivers) {
+            if (d.location) {
+              map.set(d.id, { key: d.id, coords: [d.location.lat, d.location.lng] });
+            }
+          }
+        }
+
+        // Handle "items" format
+        if (payload?.items) {
+          for (const it of payload.items) {
+            if (it.value?.coords) {
+              map.set(it.key, { key: it.key, coords: it.value.coords });
+            }
+          }
+        }
+
+        setDrivers(map);
+      },
+    );
+
+    socket.on(
+      'drivers:update',
+      (payload: {
+        id?: string;
+        location?: { lat: number; lng: number };
+        key?: string;
+        value?: { coords: [number, number] };
+      }) => {
+        setDrivers(prev => {
+          const copy = new Map(prev);
+
+          // Handle "drivers" format
+          if (payload.id && payload.location) {
+            copy.set(payload.id, {
+              key: payload.id,
+              coords: [payload.location.lat, payload.location.lng],
+            });
+          }
+
+          // Handle "items" format
+          if (payload.key && payload.value?.coords) {
+            copy.set(payload.key, { key: payload.key, coords: payload.value.coords });
+          }
+
+          return copy;
+        });
+      },
+    );
 
     return () => {
       socket.disconnect();

@@ -3,19 +3,33 @@ import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useExperiencePreferences } from './useAction';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { Form } from '@/components/ui/form';
 import { useEffect } from 'react';
 import styles from './preference.module.css';
+import { ExperiencePreferencesValues } from './schema';
 
-export const ExperiencePreferences = ({ onUpdate }: { onUpdate: (data: unknown) => void }) => {
+export const ExperiencePreferences = ({
+  onUpdate,
+}: {
+  onUpdate: (data: ExperiencePreferencesValues) => void;
+}) => {
   const { t } = useTranslation(['registerDriver/step9']);
-  const { form, preferences, isRequesting, isSubmitting, handleThemeChange, handleLanguageChange, onSubmit } = useExperiencePreferences();
+  const { form, preferences, isSubmitting, handleThemeChange, handleLanguageChange, onSubmit } =
+    useExperiencePreferences();
 
-  useEffect(() => { if (onUpdate) onUpdate(preferences); }, [preferences, onUpdate]);
+  useEffect(() => {
+    if (onUpdate) onUpdate(preferences);
+  }, [preferences, onUpdate]);
 
   const themeOptions = { light: t('theme.light'), dark: t('theme.dark') } as const;
   const languageOptions = { french: t('language.french'), english: t('language.english') } as const;
@@ -23,7 +37,7 @@ export const ExperiencePreferences = ({ onUpdate }: { onUpdate: (data: unknown) 
   return (
     <div className="w-full px-4 py-8">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+        <form onSubmit={onSubmit} className="w-full">
           <div className={styles.contentContainer}>
             <div className={styles.textContainer}>
               <h1 className={styles.title}>{t('title')}</h1>
@@ -69,16 +83,23 @@ export const ExperiencePreferences = ({ onUpdate }: { onUpdate: (data: unknown) 
 
             {/* Boutons */}
             <div className={styles.buttonContainer}>
-              <Button type="button" variant="outline" disabled={isRequesting || isSubmitting} className={styles.buttonOutline}>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={isSubmitting}
+                className={styles.buttonOutline}
+              >
                 {t('buttons.later')}
               </Button>
-              <Button type="submit" disabled={isRequesting || isSubmitting} className={styles.buttonPrimary}>
+              <Button type="submit" disabled={isSubmitting} className={styles.buttonPrimary}>
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     {t('buttons.processing')}
                   </>
-                ) : t('buttons.validate')}
+                ) : (
+                  t('buttons.validate')
+                )}
               </Button>
             </div>
           </div>

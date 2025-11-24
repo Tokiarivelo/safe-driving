@@ -9,7 +9,8 @@
     "lint": "next lint",
     "i18n:extract": "i18next",
     "generate": "graphql-codegen --config codegen.ts",
-    "translate": "translate-locales"
+    "translate": "translate-locales",
+    "start": "next start"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",

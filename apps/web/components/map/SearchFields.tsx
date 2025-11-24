@@ -2,7 +2,14 @@
 
 import React from 'react';
 import { ArrowUpDown, Plus, Trash2 } from 'lucide-react';
-import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import {
+  closestCenter,
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Location } from '@/components/map/Location';
 import { SortableLocationItem } from '@/components/map/SortableLocationItem';
@@ -30,7 +37,7 @@ export default function SearchFields({
 }) {
   const sensors = useSensors(useSensor(PointerSensor));
 
-  const handleDragEnd = (event: { active: { id: string }; over: { id: string } | null }) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
       const oldIndex = locations.findIndex(loc => loc.id === active.id);

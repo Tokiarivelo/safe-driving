@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import {
   useUpsertUserPreferenceMutation,
-  useCreateVehicleTypeMutation,
   useCreateUserQrsMutation,
   useUpdateUserMutation,
   UserPreferenceUpsertInput,
@@ -12,6 +11,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { ClientSchemaType, ClientSchema } from './recapitulatuf.schema';
 import { useGetVehicleTypesQuery } from '@/graphql/generated/graphql';
+import { ZodFormattedError } from 'zod';
 
 export const submitClientData = async (formData: ClientSchemaType) => {
   const validation = ClientSchema.safeParse(formData);
@@ -48,30 +48,29 @@ export const submitClientData = async (formData: ClientSchemaType) => {
 };
 
 export const usePreference = () => {
-  const {
-    data,
-    loading: queryLoading,
-  } = useGetVehicleTypesQuery({
+  const { data, loading: queryLoading } = useGetVehicleTypesQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
   const datas = data;
   const [upsertUserPreferenceMutation, { loading: userPrefLoading }] =
     useUpsertUserPreferenceMutation();
-  const [{ loading: vehicleLoading }] = useCreateVehicleTypeMutation();
+
   const [createUserQrMutation, { loading: qrLoading }] = useCreateUserQrsMutation();
   const [updateUser, { loading: loadingUpdateUser }] = useUpdateUserMutation();
-  const [errors, setErrors] = useState<unknown>(null);
+  const [errors, setErrors] = useState<
+    ZodFormattedError<ClientSchemaType> | Record<string, string>
+  >();
   const router = useRouter();
 
   const loading = useMemo(
-    () => userPrefLoading || vehicleLoading || qrLoading || loadingUpdateUser || queryLoading,
-    [userPrefLoading, vehicleLoading, qrLoading, loadingUpdateUser, queryLoading],
+    () => userPrefLoading || qrLoading || loadingUpdateUser || queryLoading,
+    [userPrefLoading, qrLoading, loadingUpdateUser, queryLoading],
   );
 
   const handleCreateQr = async () => {
     try {
-      const result = await (createUserQrMutation)({
+      const result = await createUserQrMutation({
         variables: {
           type: 'png',
         },
@@ -79,10 +78,11 @@ export const usePreference = () => {
       toast.success('QR code créé avec succès !🎉');
       return result;
     } catch (error: unknown) {
-      console.error('Error creating QR:', error);
+      const err = error as Error;
+      console.error('Error creating QR:', err);
 
       // Check raha unique constraint error
-      if (error.message?.includes('Unique constraint') || error.message?.includes('email')) {
+      if (err.message?.includes('Unique constraint') || err.message?.includes('email')) {
         toast.warning('Utilisateur déjà existant', {
           description: 'QR code non créé car utilisateur existe déjà',
         });
@@ -90,12 +90,12 @@ export const usePreference = () => {
       }
 
       toast.error('Erreur lors de la création du QR code');
-      throw error;
+      throw err;
     }
   };
 
   const submitClientData = async (formData: ClientSchemaType) => {
-    setErrors(null);
+    setErrors(undefined);
     const validation = ClientSchema.safeParse(formData);
 
     if (!validation.success) {

@@ -8,7 +8,7 @@ import { Icon } from '@iconify/react';
 import { useButton } from './formbuttonAction';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { WelcomeStep } from '../welcome/WelcomeStep';
 import { PersonalInfoForm } from '../personalInfo/PersonalInfo';
 import { IdentityUploadForm } from '../identityUpload/identityUpload';
@@ -64,54 +64,6 @@ function FormButton() {
       circumference,
     };
   };
-
-  useEffect(() => {
-    if (datawelcome) {
-      setOpenItem('item-1');
-      setCurrentStep(2);
-    } else if (datapersonalInfo) {
-      setOpenItem('item-2');
-      setCurrentStep(3);
-    } else if (dataidentityUpload) {
-      setOpenItem('item-3');
-      setCurrentStep(4);
-    } else if (datavehicle) {
-      setOpenItem('item-4');
-      setCurrentStep(5);
-    } else if (datauploadVehicle) {
-      setOpenItem('item-5');
-      setCurrentStep(6);
-    } else if (dataselfie) {
-      setOpenItem('item-6');
-      setCurrentStep(6);
-    } else if (datagps) {
-      setOpenItem('item-7');
-      setCurrentStep(6);
-    } else if (datanotif) {
-      setOpenItem('item-8');
-      setCurrentStep(6);
-    } else if (datapref) {
-      setOpenItem('item-9');
-      setCurrentStep(6);
-    } else if (datarecap) {
-      setOpenItem('item-10');
-      setCurrentStep(6);
-    } else {
-      setOpenItem(null);
-      setCurrentStep(1);
-    }
-  }, [
-    datawelcome,
-    datapersonalInfo,
-    dataidentityUpload,
-    datavehicle,
-    datauploadVehicle,
-    dataselfie,
-    datagps,
-    datanotif,
-    datapref,
-    datarecap,
-  ]);
 
   const getDescription = () => {
     if (datawelcome) return 'Bienvenue';

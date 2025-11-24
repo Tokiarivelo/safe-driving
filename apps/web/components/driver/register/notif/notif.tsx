@@ -10,7 +10,11 @@ import { Form } from '@/components/ui/form';
 import { NotificationPreferencesValues } from './schema';
 import styles from './notif.module.css';
 
-export const NotificationPreferences = ({ onUpdate }: { onUpdate: (data: NotificationPreferencesValues) => void; }) => {
+export const NotificationPreferences = ({
+  onUpdate,
+}: {
+  onUpdate: (data: NotificationPreferencesValues) => void;
+}) => {
   const { t } = useTranslation(['registerDriver/step8']);
   const {
     form,
@@ -24,7 +28,7 @@ export const NotificationPreferences = ({ onUpdate }: { onUpdate: (data: Notific
   } = useNotificationPreferences();
 
   useEffect(() => {
-    const subscription = form.watch((value) => {
+    const subscription = form.watch(value => {
       onUpdate(value as NotificationPreferencesValues);
     });
     return () => subscription.unsubscribe();
@@ -32,7 +36,7 @@ export const NotificationPreferences = ({ onUpdate }: { onUpdate: (data: Notific
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full px-4 py-8">
+      <form onSubmit={onSubmit} className="w-full px-4 py-8">
         <div className={styles.contentContainer}>
           <div className={styles.textContainer}>
             <h1 className={styles.title}>{t('title')}</h1>
@@ -50,7 +54,7 @@ export const NotificationPreferences = ({ onUpdate }: { onUpdate: (data: Notific
               <Checkbox
                 id="notif-push"
                 checked={preferences.push}
-                onCheckedChange={(checked) => handlePreferenceChange('push', !!checked)}
+                onCheckedChange={checked => handlePreferenceChange('push', !!checked)}
                 disabled={isRequesting || !isPushSupported}
               />
               <div className="flex-1">
@@ -59,14 +63,10 @@ export const NotificationPreferences = ({ onUpdate }: { onUpdate: (data: Notific
                   {isRequesting && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
                 </Label>
                 {browserPermission === 'denied' && (
-                  <p className="text-sm text-red-500 mt-1">
-                    {t('notifications.permissionDenied')}
-                  </p>
+                  <p className="text-sm text-red-500 mt-1">{t('notifications.permissionDenied')}</p>
                 )}
                 {form.formState.errors.push && (
-                  <p className="text-sm text-red-500 mt-1">
-                    {form.formState.errors.push.message}
-                  </p>
+                  <p className="text-sm text-red-500 mt-1">{form.formState.errors.push.message}</p>
                 )}
               </div>
             </div>
@@ -75,7 +75,7 @@ export const NotificationPreferences = ({ onUpdate }: { onUpdate: (data: Notific
               <Checkbox
                 id="notif-email"
                 checked={preferences.email}
-                onCheckedChange={(checked) => handlePreferenceChange('email', !!checked)}
+                onCheckedChange={checked => handlePreferenceChange('email', !!checked)}
                 disabled={isRequesting}
               />
               <Label htmlFor="notif-email">{t('notifications.email')}</Label>
@@ -86,13 +86,19 @@ export const NotificationPreferences = ({ onUpdate }: { onUpdate: (data: Notific
             <Button type="button" variant="outline" className={styles.buttonOutline}>
               {t('buttons.later')}
             </Button>
-            <Button type="submit" disabled={isRequesting || isSubmitting} className={styles.buttonPrimary}>
+            <Button
+              type="submit"
+              disabled={isRequesting || isSubmitting}
+              className={styles.buttonPrimary}
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   {t('buttons.processing')}
                 </>
-              ) : t('buttons.validate')}
+              ) : (
+                t('buttons.validate')
+              )}
             </Button>
           </div>
         </div>

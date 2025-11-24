@@ -6,9 +6,9 @@ import { locationPermissionSchema, LocationPermissionValues } from './schema';
 import { useRouter } from 'next/navigation';
 import { useLocationContext } from './LocationContext';
 import { useSession } from 'next-auth/react';
-import { 
-  useUpsertUserPreferenceMutation, 
-  useGetMyUserPreferenceQuery
+import {
+  useUpsertUserPreferenceMutation,
+  useGetMyUserPreferenceQuery,
 } from '@/graphql/generated/graphql';
 import { toast } from 'sonner';
 
@@ -24,21 +24,22 @@ type UseLocationPermissionActionProps = {
 
 export const useLocationPermissionAction = ({
   onSuccess,
-  onLocationUpdate
+  onLocationUpdate,
 }: UseLocationPermissionActionProps = {}) => {
   const router = useRouter();
   const { data: session } = useSession();
   const [upsertUserPreference] = useUpsertUserPreferenceMutation();
   const { data: preferenceData } = useGetMyUserPreferenceQuery({
-    skip: !session?.user?.id
+    skip: !session?.user?.id,
   });
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
 
   const hasInitialized = useRef(false);
-  const lastPreferenceData = useRef<unknown>(null);
+  const lastPreferenceData =
+    useRef<NonNullable<typeof preferenceData>['userPreference']>(undefined);
 
   const {
     isEnabled,
@@ -55,8 +56,8 @@ export const useLocationPermissionAction = ({
     resolver: zodResolver(locationPermissionSchema),
     defaultValues: {
       locationEnabled: false,
-      rememberChoice: false
-    }
+      rememberChoice: false,
+    },
   });
 
   useEffect(() => {
@@ -64,26 +65,29 @@ export const useLocationPermissionAction = ({
   }, []);
 
   useEffect(() => {
-    if (preferenceData?.userPreference && 
-        (!hasInitialized.current || lastPreferenceData.current?.activateLocation !== preferenceData.userPreference.activateLocation)) {
-      
+    if (
+      preferenceData?.userPreference &&
+      (!hasInitialized.current ||
+        lastPreferenceData.current?.activateLocation !==
+          preferenceData.userPreference.activateLocation)
+    ) {
       lastPreferenceData.current = preferenceData.userPreference;
       hasInitialized.current = true;
-      
+
       const activateLocation = preferenceData.userPreference.activateLocation;
       form.setValue('locationEnabled', activateLocation);
-      
+
       setTimeout(() => {
         setLocationEnabled(activateLocation);
       }, 0);
     }
-  }, [preferenceData?.userPreference?.activateLocation]); 
+  }, [preferenceData?.userPreference?.activateLocation]);
 
   useEffect(() => {
     if (currentPosition && onLocationUpdate) {
       onLocationUpdate(currentPosition);
     }
-  }, [currentPosition]); 
+  }, [currentPosition]);
 
   const checkLocationSupport = useCallback(() => {
     if (!isClient || typeof window === 'undefined') {
@@ -94,7 +98,7 @@ export const useLocationPermissionAction = ({
 
   const getCurrentLocation = useCallback(async () => {
     if (!hasPermission || !checkLocationSupport()) {
-      throw new Error("Permission de géolocalisation requise");
+      throw new Error('Permission de géolocalisation requise');
     }
 
     setIsGettingLocation(true);
@@ -108,78 +112,87 @@ export const useLocationPermissionAction = ({
     }
   }, [hasPermission, checkLocationSupport, updateLocation]);
 
-  const onSubmit = useCallback(async (data: LocationPermissionValues) => {
-    if (!session?.user?.id) {
-      toast.error('Utilisateur non connecté');
-      return { success: false, error: 'Utilisateur non connecté' };
-    }
-
-    setIsLoading(true);
-    
-    try {
-      const { errors } = await upsertUserPreference({
-        variables: {
-          input: {
-            activateLocation: data.locationEnabled
-          }
-        }
-      });
-
-      if (errors) {
-        console.error('Erreurs GraphQL:', errors);
-        throw new Error(errors.map(e => e.message).join(', '));
+  const onSubmit = useCallback(
+    async (data: LocationPermissionValues) => {
+      if (!session?.user?.id) {
+        toast.error('Utilisateur non connecté');
+        return { success: false, error: 'Utilisateur non connecté' };
       }
 
-      setTimeout(() => {
-        setLocationEnabled(data.locationEnabled);
-        setRememberChoice(data.rememberChoice);
-      }, 0);
+      setIsLoading(true);
 
-      if (data.locationEnabled) {
-        try {
-          const permissionGranted = await requestPermission();
-          
-          if (!permissionGranted) {
-            throw new Error("Permission de géolocalisation refusée par l'utilisateur");
-          }
-
-          console.log('Permission accordée, position récupérée');
-          
-        } catch (err) {
-          console.error("Erreur lors de la demande de permission GPS:", err);
-          throw err;
-        }
-      }
-
-      if (onSuccess) {
-        onSuccess({
-          locationEnabled: data.locationEnabled,
-          rememberChoice: data.rememberChoice,
-          hasPermission: data.locationEnabled ? hasPermission : false,
-          position: currentPosition || undefined
+      try {
+        const { errors } = await upsertUserPreference({
+          variables: {
+            input: {
+              activateLocation: data.locationEnabled,
+            },
+          },
         });
-      }
 
-      toast.success('Préférences de localisation enregistrées');
-      
-      setTimeout(() => {
-        router.push('/notif');
-      }, 100);
-      
-      return { success: true };
-      
-    } catch (error) {
-      console.error("Erreur lors de la soumission:", error);
-      toast.error('Erreur lors de la sauvegarde des préférences');
-      
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Erreur inconnue' 
-      };
-    } finally {
-      setIsLoading(false);
-    }
-  }, [session?.user?.id, upsertUserPreference, requestPermission, hasPermission, currentPosition, onSuccess, router]);
+        if (errors) {
+          console.error('Erreurs GraphQL:', errors);
+          throw new Error(errors.map(e => e.message).join(', '));
+        }
+
+        setTimeout(() => {
+          setLocationEnabled(data.locationEnabled);
+          setRememberChoice(data.rememberChoice);
+        }, 0);
+
+        if (data.locationEnabled) {
+          try {
+            const permissionGranted = await requestPermission();
+
+            if (!permissionGranted) {
+              throw new Error("Permission de géolocalisation refusée par l'utilisateur");
+            }
+
+            console.log('Permission accordée, position récupérée');
+          } catch (err) {
+            console.error('Erreur lors de la demande de permission GPS:', err);
+            throw err;
+          }
+        }
+
+        if (onSuccess) {
+          onSuccess({
+            locationEnabled: data.locationEnabled,
+            rememberChoice: data.rememberChoice,
+            hasPermission: data.locationEnabled ? hasPermission : false,
+            position: currentPosition || undefined,
+          });
+        }
+
+        toast.success('Préférences de localisation enregistrées');
+
+        setTimeout(() => {
+          router.push('/notif');
+        }, 100);
+
+        return { success: true };
+      } catch (error) {
+        console.error('Erreur lors de la soumission:', error);
+        toast.error('Erreur lors de la sauvegarde des préférences');
+
+        return {
+          success: false,
+          error: error instanceof Error ? error.message : 'Erreur inconnue',
+        };
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [
+      session?.user?.id,
+      upsertUserPreference,
+      requestPermission,
+      hasPermission,
+      currentPosition,
+      onSuccess,
+      router,
+    ],
+  );
 
   return {
     form,
@@ -193,6 +206,6 @@ export const useLocationPermissionAction = ({
     getCurrentLocation,
     userPreference: preferenceData?.userPreference,
     isLocationEnabled: isEnabled,
-    locationRememberChoice: rememberChoice
+    locationRememberChoice: rememberChoice,
   };
 };

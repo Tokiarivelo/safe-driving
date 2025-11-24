@@ -30,6 +30,8 @@ export default function Recapitulatif() {
     theme: 'claire',
   });
 
+  const [localToggle, setLocalToggle] = useState<boolean>(false);
+
   const { data } = useGetMyUserPreferenceQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
@@ -45,7 +47,6 @@ export default function Recapitulatif() {
         country: data.userPreference?.language || '',
         theme: data.userPreference?.theme === 'dark' ? 'dark' : 'claire',
       }));
-      setIsDataLoaded(true);
       setLocalToggle(Boolean(data.userPreference?.activateLocation));
     }
   }, [data?.userPreference]);
@@ -55,7 +56,7 @@ export default function Recapitulatif() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors(null);
+    setErrors(undefined);
 
     try {
       const result = await submitClientData(formData);
@@ -180,7 +181,7 @@ export default function Recapitulatif() {
             </label>
           </motion.div>
         </div>
-        {errors?.theme && <p className={styles.auth_erreur1}>{errors.theme._errors[0]}</p>}
+        {errors?.theme && <p className={styles.auth_erreur1}>{errors.theme.toString()}</p>}
 
         <div className={styles.auth_pref11}>
           <form>
@@ -202,7 +203,7 @@ export default function Recapitulatif() {
                 className={styles.auth_pref14}
               />
               {errors?.typetrasport && (
-                <p className={styles.auth_erreur2}>{errors.typetrasport._errors[0]}</p>
+                <p className={styles.auth_erreur2}>{errors.typetrasport.toString()}</p>
               )}
             </motion.div>
 
@@ -224,7 +225,7 @@ export default function Recapitulatif() {
                 className={styles.auth_ReactFlagsSelect}
               />
               {errors?.country && (
-                <p className={styles.auth_erreur3}>{errors.country._errors[0]}</p>
+                <p className={styles.auth_erreur3}>{errors.country.toString()}</p>
               )}
             </motion.div>
           </form>

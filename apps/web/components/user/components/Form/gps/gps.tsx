@@ -8,14 +8,20 @@ import { useGpsSettings } from './gpsAction';
 import { Radio } from '@/components/ui/radiogroup';
 import { useGetMyUserPreferenceQuery } from '@/graphql/generated/graphql';
 import styles from './gps.module.css';
+import { useNotifications } from '@/hooks/useNotifications';
 
 export const Gps: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const {
-    loading: queryLoading,
-  } = useGetMyUserPreferenceQuery({
+    isSupported,
+    permission,
+    requestPermission: requestNotificationPermission,
+    showTest,
+  } = useNotifications();
+
+  const { data, loading: queryLoading } = useGetMyUserPreferenceQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });

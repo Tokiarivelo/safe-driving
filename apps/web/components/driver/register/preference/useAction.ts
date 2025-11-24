@@ -63,13 +63,13 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
   }, [preferenceData, form, setTheme, i18n]);
 
   // Appliquer le thème globalement
-  useEffect(() => {
-    const html = document.documentElement;
-    if (theme === 'dark') html.classList.add('dark');
-    else html.classList.remove('dark');
+  // useEffect(() => {
+  //   const html = document.documentElement;
+  //   if (theme === 'dark') html.classList.add('dark');
+  //   else html.classList.remove('dark');
 
-    localStorage.setItem('preferred-theme', theme);
-  }, [theme]);
+  //   localStorage.setItem('preferred-theme', theme);
+  // }, [theme]);
 
   // Changer le thème
   const handleThemeChange = async (selectedTheme: 'light' | 'dark') => {

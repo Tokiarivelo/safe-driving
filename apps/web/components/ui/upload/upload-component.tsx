@@ -6,11 +6,7 @@ import { useUploadComponent } from './upload-component.logic';
 import { ImagePreview } from './image-preview';
 
 export function UploadComponent(props: UploadComponentProps) {
-  const {
-    className,
-    style,
-    fileTypes = ['JPG', 'PNG', 'JPEG', 'PDF'],
-  } = props;
+  const { className, style, fileTypes = ['JPG', 'PNG', 'JPEG', 'PDF'] } = props;
 
   const { files, uploadProgress, status, errorMsg, handleChange, removeFile, handleStartUpload } =
     useUploadComponent(props);

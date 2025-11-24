@@ -1,24 +1,24 @@
 'use client';
 
-import React from 'react';
-import styles from './formbutton.module.css';
-import Link from 'next/link';
-import { Icon } from '@iconify/react';
-import { useButton } from './formbuttonAction';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
-import BjrForm from '../bjr/bjr';
-import GpsForm from '../gps/gps';
-import NotificationForm from '../notification/notification';
-import PreferenceForm from '../preference/preference';
-import RecapitulatifForm from '../recapitulatif/recapitulatif';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Icon } from '@iconify/react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import BjrForm from '../bjr/bjr';
+import GpsForm from '../gps/gps';
+import NotificationForm from '../notification/notification';
+import PreferenceForm from '../preference/preference';
+import RecapitulatifForm from '../recapitulatif/recapitulatif';
+import styles from './formbutton.module.css';
+import { useButton } from './formbuttonAction';
 
 function FormButton() {
   const {
@@ -33,7 +33,7 @@ function FormButton() {
     butpref,
     butreca,
   } = useButton();
-
+  const { t, ready } = useTranslation('auth/login');
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 6;
 
@@ -48,28 +48,6 @@ function FormButton() {
       circumference,
     };
   };
-
-  useEffect(() => {
-    if (databjr) {
-      setOpenItem('item-1');
-      setCurrentStep(2);
-    } else if (datagps) {
-      setOpenItem('item-2');
-      setCurrentStep(3);
-    } else if (datanot) {
-      setOpenItem('item-3');
-      setCurrentStep(4);
-    } else if (datapref) {
-      setOpenItem('item-4');
-      setCurrentStep(5);
-    } else if (datareca) {
-      setOpenItem('item-5');
-      setCurrentStep(6);
-    } else {
-      setOpenItem(null);
-      setCurrentStep(1);
-    }
-  }, [databjr, datagps, datanot, datapref, datareca]);
 
   const getDescription = () => {
     if (databjr) return 'Bienvenue';

@@ -1,52 +1,52 @@
-'use client'
+'use client';
 
-import styles from './personal.module.css'
-import { usePersonalInfoAction } from './useAction'
-import { useTranslation } from 'react-i18next'
-import { Form, FormField } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { useSession } from 'next-auth/react'
-import { PersonalInfoFormValues } from './schema'
+import styles from './personal.module.css';
+import { usePersonalInfoAction } from './useAction';
+import { useTranslation } from 'react-i18next';
+import { Form, FormField } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { useSession } from 'next-auth/react';
+import { PersonalInfoFormValues } from './schema';
 
 interface PersonalInfoFormProps {
   initialData?: {
-    name?: string
-    email?: string
-    phone?: string
-  }
-  onSubmit: (data: PersonalInfoFormValues & { userId: string }) => Promise<void> | void
+    name?: string;
+    email?: string;
+    phone?: string;
+  };
+  onSubmit: (data: PersonalInfoFormValues & { userId: string }) => Promise<void> | void;
 }
 
-export const PersonalInfoForm = ({ initialData, onSubmit }: PersonalInfoFormProps) => {
-  const { form, handleFormSubmit, loading, error } = usePersonalInfoAction(initialData)
-  const { t } = useTranslation(['registerDriver/step2'])
-  const { data: session } = useSession()
+export const PersonalInfoForm = ({ onSubmit }: PersonalInfoFormProps) => {
+  const { form, handleFormSubmit, loading, error } = usePersonalInfoAction();
+  const { t } = useTranslation(['registerDriver/step2']);
+  const { data: session } = useSession();
 
   const processSubmit = async (data: PersonalInfoFormValues) => {
     try {
       if (!session?.user?.id) {
-        throw new Error('User not authenticated')
+        throw new Error('User not authenticated');
       }
 
       await onSubmit({
         ...data,
         userId: session.user.id,
-      })
-      await handleFormSubmit(data)
+      });
+      await handleFormSubmit(data);
     } catch (error) {
-      console.error('Erreur lors de la soumission:', error)
+      console.error('Erreur lors de la soumission:', error);
     }
-  }
+  };
 
   if (loading) {
-    return <div>Chargement des données utilisateur...</div>
+    return <div>Chargement des données utilisateur...</div>;
   }
 
   if (error) {
     return (
       <div className="text-red-500 p-4">
-        Erreur lors du chargement des données: {error}
+        Erreur lors du chargement des données: {error.message}
         <button
           onClick={() => window.location.reload()}
           className="ml-4 bg-blue-500 text-white px-4 py-2 rounded"
@@ -54,7 +54,7 @@ export const PersonalInfoForm = ({ initialData, onSubmit }: PersonalInfoFormProp
           Réessayer
         </button>
       </div>
-    )
+    );
   }
 
   return (
@@ -80,7 +80,11 @@ export const PersonalInfoForm = ({ initialData, onSubmit }: PersonalInfoFormProp
                     control={form.control}
                     name="name"
                     render={({ field }) => (
-                      <Input placeholder={t('form.name.placeholder')} wrapperClassName="px-3" {...field} />
+                      <Input
+                        placeholder={t('form.name.placeholder')}
+                        wrapperClassName="px-3"
+                        {...field}
+                      />
                     )}
                   />
                 </div>
@@ -142,5 +146,5 @@ export const PersonalInfoForm = ({ initialData, onSubmit }: PersonalInfoFormProp
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

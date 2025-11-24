@@ -65,17 +65,19 @@ export const useUploadComponent = (props: UploadComponentProps) => {
       return results;
     } catch (err) {
       setStatus('error');
-      setErrorMsg(err?.message || 'Upload failed');
-      if (onError) onError(err);
+      const errorMsg = err instanceof Error ? err.message : 'Upload failed';
+      setErrorMsg(errorMsg);
+      if (onError) onError(err instanceof Error ? err : new Error(errorMsg));
     }
   };
   // handleChange amélioré
   const handleChange = useCallback(
     (
-      incoming: FileList | File[],
+      incoming: FileList | File[] | File,
       options?: { replace?: boolean; removeUploadedOnAdd?: boolean },
     ) => {
-      const incomingArr: File[] = Array.from(incoming || []);
+      const incomingArr: File[] =
+        incoming instanceof File ? [incoming] : Array.from(incoming || []);
       const removeUploaded = options?.removeUploadedOnAdd ?? true;
 
       // remplacement pur si demandé

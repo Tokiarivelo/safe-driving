@@ -20,19 +20,19 @@ export const IdentityUploadForm = () => {
 
         <div className={styles.formContainer}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6 max-w-3xl mx-auto">
+            <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto">
               {/* Section Carte d'identité */}
               <div className="flex flex-col w-full">
-                <h4 className={`${styles.subtitle} text-left mb-4`}>
-                  {t('id_card.front.title')}
-                </h4>
+                <h4 className={`${styles.subtitle} text-left mb-4`}>{t('id_card.front.title')}</h4>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Recto */}
                   <div className={styles.uploadBlock}>
                     <p className={styles.uploadSubtitle}>{t('id_card.front.subtitle')}</p>
                     <FileUpload
-                      onUpload={(file) => form.setValue('idCardFront', file, { shouldValidate: true })}
+                      onUpload={file =>
+                        form.setValue('idCardFront', file, { shouldValidate: true })
+                      }
                       onRemove={() => removeFile('idCardFront')}
                       file={form.watch('idCardFront')}
                       className={styles.uploadSmall}
@@ -45,7 +45,7 @@ export const IdentityUploadForm = () => {
                   <div className={styles.uploadBlock}>
                     <p className={styles.uploadSubtitle}>{t('id_card.back.subtitle')}</p>
                     <FileUpload
-                      onUpload={(file) => form.setValue('idCardBack', file, { shouldValidate: true })}
+                      onUpload={file => form.setValue('idCardBack', file, { shouldValidate: true })}
                       onRemove={() => removeFile('idCardBack')}
                       file={form.watch('idCardBack')}
                       className={styles.uploadSmall}
@@ -64,7 +64,7 @@ export const IdentityUploadForm = () => {
 
                 <div className={styles.uploadBlock}>
                   <FileUpload
-                    onUpload={(file) => form.setValue('license', file, { shouldValidate: true })}
+                    onUpload={file => form.setValue('license', file, { shouldValidate: true })}
                     onRemove={() => removeFile('license')}
                     file={form.watch('license')}
                     className={styles.uploadSmall}
@@ -76,19 +76,11 @@ export const IdentityUploadForm = () => {
 
               {/* Boutons */}
               <div className={styles.buttonContainer}>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className={styles.buttonOutline}
-                >
+                <Button type="button" variant="outline" className={styles.buttonOutline}>
                   {t('buttons.later')}
                 </Button>
 
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={styles.buttonPrimary}
-                >
+                <Button type="submit" disabled={isSubmitting} className={styles.buttonPrimary}>
                   {isSubmitting ? t('buttons.processing') : t('buttons.validate')}
                 </Button>
               </div>

@@ -24,8 +24,16 @@ const { handlers } = NextAuth({
           cache: new InMemoryCache(),
         });
 
+        console.log(
+          'process.env.NEXT_PUBLIC_GRAPHQL_API_URL :>> ',
+          process.env.NEXT_PUBLIC_GRAPHQL_API_URL,
+        );
+
         try {
           const { email, password } = credentials;
+
+          console.log('credentials :>> ', credentials);
+
           // 2. Appelez la mutation
           const { data } = await client.mutate<{
             login: { token: string; user: User };

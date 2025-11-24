@@ -8,9 +8,10 @@ import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { usepreference } from './preferenceAction';
+import { usePreference } from './preferenceAction';
 import { ClientSchemaType } from './preference.shema';
 import { MultiSelect } from '@/components/ui/multi-select';
+import { useGetMyUserPreferenceQuery } from '@/graphql/generated/graphql';
 
 export const Preference = () => {
   const [formData, setFormData] = useState<ClientSchemaType>({
@@ -19,6 +20,13 @@ export const Preference = () => {
     theme: '',
     preferedvelicles: [],
   });
+
+  const { data } = useGetMyUserPreferenceQuery({
+    fetchPolicy: 'cache-and-network',
+    errorPolicy: 'all',
+  });
+  const router = useRouter();
+  const { datas, loading, errors, submitClientData, setErrors } = usePreference();
 
   useEffect(() => {
     if (data?.userPreference) {
@@ -29,15 +37,12 @@ export const Preference = () => {
         theme: data.userPreference?.theme === 'dark' ? 'dark' : 'claire',
         preferedvelicles: data.userPreference?.preferedvelicles || [],
       }));
-      setIsDataLoaded(true);
     }
   }, [data?.userPreference]);
-  const router = useRouter();
-  const { datas, loading, errors, submitClientData, setErrors } = usepreference();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors(null);
+    setErrors(undefined);
     try {
       const result = await submitClientData(formData);
       if (!result.success) {
@@ -124,7 +129,7 @@ export const Preference = () => {
             </label>
           </motion.div>
         </div>
-        {errors?.theme && <p className={styles.auth_errer1}>{errors.theme._errors[0]}</p>}
+        {errors?.theme && <p className={styles.auth_errer1}>{errors.theme?.toString()}</p>}
 
         <div className={styles.auth_pref11}>
           <form>
@@ -146,7 +151,7 @@ export const Preference = () => {
                 className={styles.auth_pref14}
               />
               {errors?.typetrasport && (
-                <p className={styles.auth_errer2}>{errors.typetrasport._errors[0]}</p>
+                <p className={styles.auth_errer2}>{errors.typetrasport?.toString()}</p>
               )}
             </motion.div>
 
@@ -167,7 +172,9 @@ export const Preference = () => {
                 searchable={true}
                 className={styles.auth_errer3}
               />
-              {errors?.country && <p className={styles.auth_errer4}>{errors.country._errors[0]}</p>}
+              {errors?.country && (
+                <p className={styles.auth_errer4}>{errors.country?.toString()}</p>
+              )}
             </motion.div>
           </form>
         </div>

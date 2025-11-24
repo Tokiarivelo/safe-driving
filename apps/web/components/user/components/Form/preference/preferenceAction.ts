@@ -2,12 +2,11 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
-import {
-  useUpsertUserPreferenceMutation,
-} from '@/graphql/generated/graphql';
+import { useUpsertUserPreferenceMutation } from '@/graphql/generated/graphql';
 import { useRouter } from 'next/navigation';
 import { ClientSchemaType, ClientSchema } from './preference.shema';
 import { useGetVehicleTypesQuery } from '@/graphql/generated/graphql';
+import type { ZodFormattedError } from 'zod';
 
 interface UserPreferenceUpsertInput {
   theme: string;
@@ -50,22 +49,22 @@ export const submitClientData = async (formData: ClientSchemaType) => {
 };
 
 export const usePreference = () => {
-  const {
-    data,
-  } = useGetVehicleTypesQuery({
+  const { data } = useGetVehicleTypesQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
   const datas = data;
   const [upsertUserPreferenceMutation, { loading: userPrefLoading }] =
     useUpsertUserPreferenceMutation();
-  const [errors, setErrors] = useState<unknown>(null);
+  const [errors, setErrors] = useState<
+    ZodFormattedError<ClientSchemaType> | Record<string, string>
+  >();
   const router = useRouter();
 
-  const loading = userPrefLoading || vehicleLoading;
+  const loading = userPrefLoading;
 
   const submitClientData = async (formData: ClientSchemaType) => {
-    setErrors(null);
+    setErrors(undefined);
     const validation = ClientSchema.safeParse(formData);
 
     if (!validation.success) {

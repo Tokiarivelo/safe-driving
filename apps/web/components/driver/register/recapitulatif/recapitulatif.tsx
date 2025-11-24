@@ -2,11 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import {
-  GetMyUserPreferenceDocument,
-  GetVehiclesDocument,
-  MeDocument,
+  useGetMyUserPreferenceQuery,
+  useGetVehiclesQuery,
+  useMeQuery,
 } from '@/graphql/generated/graphql';
-import { useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import styles from './recapitulatif.module.css';
@@ -15,9 +14,9 @@ import { useQrCodeForRecap } from './useAction';
 export function Recap() {
   const { t } = useTranslation(['registerDriver/step11']);
 
-  const { data: userDataRes, loading: loadingUser } = useQuery(MeDocument);
-  const { data: vehicleDataRes, loading: loadingVehicle } = useQuery(GetVehiclesDocument);
-  const { data: prefDataRes, loading: loadingPref } = useQuery(GetMyUserPreferenceDocument);
+  const { data: userDataRes, loading: loadingUser } = useMeQuery();
+  const { data: vehicleDataRes, loading: loadingVehicle } = useGetVehiclesQuery();
+  const { data: prefDataRes, loading: loadingPref } = useGetMyUserPreferenceQuery();
   const { handleCreateQrAndRedirect, loading } = useQrCodeForRecap();
 
   const userData = userDataRes?.me;
@@ -62,7 +61,7 @@ export function Recap() {
           </div>
 
           {/* Véhicules */}
-          {vehicles.map((vehicle: { id: string; type?: { name?: string }; brand?: string; model?: string; licensePlate?: string }) => (
+          {vehicles.map(vehicle => (
             <div key={vehicle.id} className={styles.card}>
               <div className={styles.cardHeader}>
                 <h2 className={styles.cardTitle}>Véhicule</h2>
@@ -73,9 +72,9 @@ export function Recap() {
                 </Link>
               </div>
               <p>Type : {vehicle.type?.name || '-'}</p>
-              <p>Marque : {vehicle.brand}</p>
-              <p>Modèle : {vehicle.model}</p>
-              <p>Immatriculation : {vehicle.registrationNumber}</p>
+              <p>Marque : {vehicle.brand || '-'}</p>
+              <p>Modèle : {vehicle.model || '-'}</p>
+              <p>Immatriculation : {vehicle.registrationNumber || '-'}</p>
               <p>Nombre de place : {vehicle.place}</p>
               <p>Documents uploadés : {vehicle.VehicleDocument?.length || 0}</p>
               <p>Photos uploadées : {vehicle.VehicleImage?.length || 0}</p>

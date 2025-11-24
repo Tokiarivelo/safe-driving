@@ -40,11 +40,16 @@ export const useGpsSettings = () => {
           serverMessage = errors[0].message || serverMessage;
         }
         throw new Error(serverMessage);
-      } catch (err) {
+      } catch (err: unknown) {
+        const error = err as {
+          networkError?: unknown;
+          graphQLErrors?: { message: string }[];
+          message?: string;
+        };
         let message = 'Un problème inconnu est survenu avec le GPS.';
-        if (err.networkError) message = 'Impossible de se connecter au serveur.';
-        else if (err.graphQLErrors?.length) message = err.graphQLErrors[0].message || message;
-        else if (err.message) message = err.message;
+        if (error.networkError) message = 'Impossible de se connecter au serveur.';
+        else if (error.graphQLErrors?.length) message = error.graphQLErrors[0].message || message;
+        else if (error.message) message = error.message;
 
         toast.error(message, { duration: 2000, position: 'top-right' });
         return false;

@@ -1,27 +1,24 @@
 'use client';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { vehicleInfoSchema, VehicleInfoFormValues } from './schema';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { useMutation, useQuery } from '@apollo/client';
-import { 
-  CreateDriverVehicleDocument, 
-  GetVehicleTypesDocument 
+import {
+  useCreateDriverVehicleMutation,
+  useGetVehicleTypesQuery,
 } from '@/graphql/generated/graphql';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { VehicleInfoFormValues, vehicleInfoSchema } from './schema';
 
-export const useVehicleInfoAction = (
-  initialData: Partial<VehicleInfoFormValues> = {}
-) => {
+export const useVehicleInfoAction = (initialData: Partial<VehicleInfoFormValues> = {}) => {
   const router = useRouter();
   const [createdVehicleId, setCreatedVehicleId] = useState<string>('');
-  
-  const [createDriverVehicle, { loading: creating }] = useMutation(CreateDriverVehicleDocument);
-  
+
+  const [createDriverVehicle, { loading: creating }] = useCreateDriverVehicleMutation();
+
   // Récupérer les types de véhicules depuis l'API
-  const { data: vehicleTypesData, loading: loadingTypes } = useQuery(GetVehicleTypesDocument);
-  
+  const { data: vehicleTypesData, loading: loadingTypes } = useGetVehicleTypesQuery();
+
   const vehicleTypes = vehicleTypesData?.vehicleTypes || [];
 
   const form = useForm<VehicleInfoFormValues>({
@@ -31,8 +28,8 @@ export const useVehicleInfoAction = (
       model: initialData.model || '',
       plate: initialData.plate || '',
       seats: initialData.seats || 4,
-      type: initialData.type || ''
-    }
+      type: initialData.type || '',
+    },
   });
 
   const handleSubmit = async (data: VehicleInfoFormValues) => {
@@ -53,9 +50,9 @@ export const useVehicleInfoAction = (
             place: data.seats,
             vehicleTypeId: data.type,
             uploadDocuments: [], // Vide pour l'instant
-            uploadImages: []     // Vide pour l'instant
-          }
-        }
+            uploadImages: [], // Vide pour l'instant
+          },
+        },
       });
 
       if (result.errors) {
@@ -69,18 +66,19 @@ export const useVehicleInfoAction = (
       // Stocker l'ID du véhicule créé
       const vehicleId = result.data.createDriverVehicle.id;
       setCreatedVehicleId(vehicleId);
-      
+
       // Stocker aussi dans le localStorage pour la navigation
       localStorage.setItem('currentVehicleId', vehicleId);
 
       toast.success('Véhicule enregistré avec succès');
-      
+
       // Rediriger vers la page d'upload avec l'ID du véhicule
       router.push(`vehiculeUpload?vehicleId=${vehicleId}`);
-      
     } catch (error) {
-      console.error('Erreur lors de l\'enregistrement:', error);
-      toast.error(error instanceof Error ? error.message : 'Erreur lors de l\'enregistrement du véhicule');
+      console.error("Erreur lors de l'enregistrement:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Erreur lors de l'enregistrement du véhicule",
+      );
     }
   };
 
@@ -90,6 +88,6 @@ export const useVehicleInfoAction = (
     isSubmitting: form.formState.isSubmitting || creating,
     vehicleTypes,
     loadingTypes,
-    createdVehicleId // Retourner l'ID créé
+    createdVehicleId, // Retourner l'ID créé
   };
 };
