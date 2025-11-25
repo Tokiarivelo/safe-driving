@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { useConversations } from '@/lib/conversation/useConversations';
 import { useSendMessageMutation, ConversationType } from '@/graphql/generated/graphql';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface DriverMarkerProps {
   id: string;
@@ -38,6 +39,7 @@ export const DriverMarker = memo(
     const { data: session } = useSession();
     const { getDirectConversationBetweenUsers, createConversation } = useConversations();
     const [sendMessageMutation] = useSendMessageMutation();
+    const router = useRouter();
 
     // Determine marker color based on status
     const getMarkerColor = (status?: string | null) => {
@@ -99,6 +101,7 @@ export const DriverMarker = memo(
 
         const conversation = await getDirectConversationBetweenUsers({
           variables: { otherUserId: id },
+          fetchPolicy: 'cache-and-network',
         });
         const existingConversation = conversation.data?.directConversationBetweenUsers;
 
@@ -129,12 +132,15 @@ export const DriverMarker = memo(
           },
         }).then(() => {
           // push to dashboard/messages/conversationId
-          window.history.pushState({}, '', `/user/dashboard/messages/${conversationId}`);
+          router.push(`/user/dashboard/messages/${conversationId}`);
         });
+
+        console.log('here :>> ');
 
         toast.success('Message envoyé avec succès');
         setMessage('');
       } catch (error) {
+        console.log('error :>> ', error);
         console.error('Error sending message:', error);
         toast.error("Erreur lors de l'envoi du message");
       } finally {
@@ -198,7 +204,7 @@ export const DriverMarker = memo(
                 type="text"
                 value={message}
                 onChange={e => setMessage(e.target.value)}
-                onKeyPress={e => e.key === 'Enter' && handleSendMessage()}
+                onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Envoyer un message"
                 disabled={sending}
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"

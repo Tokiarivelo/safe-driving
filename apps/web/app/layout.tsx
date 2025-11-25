@@ -1,5 +1,6 @@
 import { type Locale } from '@/lib/i18n';
 import './global.css';
+import LoadingIndicator from '@/components/ui/loading-indicator/loading-indicator';
 
 export const metadata = {
   title: {
@@ -27,6 +28,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body suppressHydrationWarning>
+        <LoadingIndicator />
         <main>{children}</main>
       </body>
     </html>
