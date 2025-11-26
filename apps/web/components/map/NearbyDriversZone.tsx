@@ -85,6 +85,8 @@ export const NearbyDriversZone = ({
     return null;
   }
 
+  console.log('drivers :>>>>>>>>>>>>>>> ', drivers);
+
   return (
     <MarkerClusterGroup chunkedLoading maxClusterRadius={60} spiderfyOnMaxZoom={true}>
       {driverMarkers}

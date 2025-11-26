@@ -145,6 +145,7 @@ export class ConversationService {
         userId,
         otherUserId,
       );
+      console.log('existingConversation :>> ', existingConversation);
       if (existingConversation) {
         return existingConversation as UserConversation;
       }
@@ -433,8 +434,7 @@ export class ConversationService {
     userId1: string,
     userId2: string,
   ): Promise<UserConversation | null> {
-    const userIds = [userId1, userId2].sort();
-    const directHash = userIds.join('-');
+    const directHash = makeDirectHash(userId1, userId2);
 
     return this.prisma.conversation.findFirst({
       where: {
