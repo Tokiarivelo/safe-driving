@@ -31,7 +31,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   }
 
   return (
-    <div className="overflow-y-auto" style={{ maxHeight }}>
+    <div className="overflow-y-auto flex-1">
       {conversations.map(conversation => (
         <div key={conversation.id} className="relative group">
           <ConversationItem
