@@ -153,7 +153,7 @@ function Dashboard() {
                 </div>
                 <div className="w-40 h-10 flex items-center">Sombre</div>
               </div>
-              <hr className="h-[1px] w-full bg-black" />
+              <hr className="h-px w-full bg-black" />
               <div className="w-full h-10 flex">
                 <div className="w-10 h-10 flex justify-center items-center">
                   <Icon icon="material-symbols:logout" width="24" height="24" />

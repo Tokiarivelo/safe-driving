@@ -125,13 +125,13 @@ const MessageBubble: React.FC<{
                     setIsEditing(false);
                     setEditContent(message.content || '');
                   }}
-                  className="text-xs px-2 py-1 rounded hover:bg-black hover:bg-opacity-10"
+                  className="text-xs px-2 py-1 rounded hover:bg-black/10"
                 >
                   Annuler
                 </button>
                 <button
                   onClick={handleEdit}
-                  className="text-xs px-2 py-1 rounded hover:bg-black hover:bg-opacity-10"
+                  className="text-xs px-2 py-1 rounded hover:bg-black/10"
                 >
                   Modifier
                 </button>

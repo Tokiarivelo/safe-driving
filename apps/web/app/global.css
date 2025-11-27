@@ -1403,10 +1403,13 @@
     border-left: 2px solid #c02aa8;
   }
 
-  html, body {
+  html,
+  body {
     background: var(--background);
     color: var(--foreground);
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
   }
 }
 
@@ -1431,7 +1434,8 @@
 
 /* Pulse animation for user position marker */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
@@ -1455,4 +1459,34 @@
 
 .driver-popup .leaflet-popup-tip {
   border-radius: 2px;
+}
+
+/* Safari-like Scrollbar Styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+*:hover {
+  scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 20px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.5);
 }

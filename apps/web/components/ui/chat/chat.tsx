@@ -179,7 +179,7 @@ export const Chat: React.FC<ChatProps> = ({
     <div className={`relative flex flex-col h-screen w-full bg-gray-50 ${className}`}>
       {/* Loading overlay when fetching messages around searched message */}
       {loadingAround && (
-        <div className="absolute inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
+        <div className="absolute inset-0 bg-black/50 z-40 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <div className="flex items-center gap-3">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>

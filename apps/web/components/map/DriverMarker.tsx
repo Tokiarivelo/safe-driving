@@ -150,8 +150,6 @@ const DriverPopupContent = ({
         fetchPolicy: 'cache-and-network',
       });
 
-      console.log('conversation :>> ', conversation);
-
       const existingConversation = conversation.data?.directConversationBetweenUsers;
 
       if (existingConversation) {
