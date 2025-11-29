@@ -31,7 +31,7 @@ export function RedirectHandler() {
 
     startProgress();
 
-    let redirectPath = '/login';
+    let redirectPath: string;
 
     if (isVerified) {
       if (isAdmin) {
@@ -40,12 +40,18 @@ export function RedirectHandler() {
         redirectPath = '/driver/dashboard';
       } else if (isUser) {
         redirectPath = '/user/dashboard';
+      } else {
+        redirectPath = '/login';
       }
     } else {
-      if (isDriver) {
+      if (isAdmin) {
+        redirectPath = '/admin/dashboard';
+      } else if (isDriver) {
         redirectPath = '/driver/register/welcome';
       } else if (isUser) {
         redirectPath = '/user/form/name/bjr';
+      } else {
+        redirectPath = '/login';
       }
     }
 

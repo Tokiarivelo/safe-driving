@@ -24,7 +24,7 @@ export function LoadingScreen() {
             repeat: Infinity,
             ease: 'linear',
           }}
-          style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
+          className="[transform-style:preserve-3d] [perspective:1000px]"
         >
           <Image
             src="/logo.svg"
