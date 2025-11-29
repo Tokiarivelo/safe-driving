@@ -3,6 +3,8 @@
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
+import { useMeQuery } from '@/graphql/generated/graphql';
+import { useMemo } from 'react';
 
 interface ProfileMenuProps {
   isOpen: boolean;
@@ -11,6 +13,7 @@ interface ProfileMenuProps {
 
 export default function ProfileMenu({ isOpen, onToggle }: ProfileMenuProps) {
   const { data: session } = useSession();
+  const { data: me } = useMeQuery();
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' });
@@ -21,23 +24,42 @@ export default function ProfileMenu({ isOpen, onToggle }: ProfileMenuProps) {
     onToggle(); // Ferme le menu lors du clic sur un lien
   };
 
-  const menuItems = [
-    {
-      icon: 'material-symbols:dashboard',
-      label: 'Dashboard',
-      href: '/dashboard',
-    },
-    {
-      icon: 'material-symbols:person',
-      label: 'Mon Profil',
-      href: '/profile',
-    },
-    {
-      icon: 'material-symbols:settings',
-      label: 'Paramètres',
-      href: '/settings',
-    },
-  ];
+  const menuItems = useMemo(() => {
+    if (!me?.me) return [];
+
+    const isAdmin = me.me.Role?.some(role => role.name === 'ADMIN');
+    const isDriver = me.me.Role?.some(role => role.name === 'DRIVER');
+    const user = me.me.Role?.some(role => role.name === 'USER');
+
+    let baseLink = 'user';
+    if (user) {
+      baseLink = 'user';
+    }
+    if (isDriver) {
+      baseLink = 'driver';
+    }
+    if (isAdmin) {
+      baseLink = 'admin';
+    }
+
+    return [
+      {
+        icon: 'material-symbols:dashboard',
+        label: 'Dashboard',
+        href: `${baseLink}/dashboard`,
+      },
+      {
+        icon: 'material-symbols:person',
+        label: 'Mon Profil',
+        href: `${baseLink}/profile`,
+      },
+      {
+        icon: 'material-symbols:settings',
+        label: 'Paramètres',
+        href: `${baseLink}/settings`,
+      },
+    ];
+  }, [me]);
 
   return (
     <div className="relative">
@@ -46,7 +68,7 @@ export default function ProfileMenu({ isOpen, onToggle }: ProfileMenuProps) {
         className="flex items-center space-x-2 p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300"
         aria-label="Profile menu"
       >
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white text-sm">
+        <div className="w-8 h-8 rounded-full bg-linear-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white text-sm">
           {session?.user?.firstName?.[0]?.toUpperCase() || 'U'}
         </div>
         <Icon

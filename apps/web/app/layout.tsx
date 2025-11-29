@@ -1,6 +1,7 @@
+import { ProgressBar, ProgressBarProvider } from 'react-transition-progress';
+
 import { type Locale } from '@/lib/i18n';
 import './global.css';
-import LoadingIndicator from '@/components/ui/loading-indicator/loading-indicator';
 
 export const metadata = {
   title: {
@@ -28,8 +29,12 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <LoadingIndicator />
-        <main>{children}</main>
+        <ProgressBarProvider>
+          {/* I.e. using Tailwind CSS to show the progress bar with custom styling */}
+          <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-sky-500 top-0 z-50" />
+
+          <main>{children}</main>
+        </ProgressBarProvider>
       </body>
     </html>
   );

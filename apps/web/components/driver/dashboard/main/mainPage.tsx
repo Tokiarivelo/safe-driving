@@ -248,7 +248,7 @@ function Dashboard() {
               </Link>
 
               {/* Bloc Notification */}
-              <Link href="/user/form/name/bjr">
+              <Link href="/driver/dashboard/notifications">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon
@@ -267,7 +267,7 @@ function Dashboard() {
               </Link>
 
               {/* Bloc Trajet en cours */}
-              <Link href="/user/form/name/bjr">
+              <Link href="/driver/dashboard/rides">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="icon-park:gps" width="56" height="56" />
@@ -296,7 +296,7 @@ function Dashboard() {
             {/* Troisième ligne */}
             <div className="w-full p-5 sm:p-0 flex justify-between items-center">
               {/* Bloc Parametre */}
-              <Link href="/user/form/name/bjr">
+              <Link href="/driver/dashboard/settings">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="uil:setting" width="58" height="58" className="text-pink-500" />
@@ -308,7 +308,7 @@ function Dashboard() {
               </Link>
 
               {/* Bloc Assistance */}
-              <Link href="/user/form/name/bjr">
+              <Link href="/driver/dashboard/support">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="flat-color-icons:online-support" width="58" height="58" />
