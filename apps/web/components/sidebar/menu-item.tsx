@@ -2,12 +2,12 @@
 
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Icon } from '@iconify/react';
-import Link from 'next/link';
+import ProgressLink from '@/components/ui/progress-link';
 import { MenuItemProps } from './interfaces';
 
 function MenuItem({ href, icon, name, isActive }: MenuItemProps) {
   return (
-    <Link href={href}>
+    <ProgressLink href={href}>
       <div
         className={`bg-white w-16 h-16 rounded-full border flex justify-center items-center ${isActive ? 'border-pink-600 shadow-md shadow-gray-400' : 'border-white'}`}
       >
@@ -25,7 +25,7 @@ function MenuItem({ href, icon, name, isActive }: MenuItemProps) {
           </TooltipContent>
         </Tooltip>
       </div>
-    </Link>
+    </ProgressLink>
   );
 }
 

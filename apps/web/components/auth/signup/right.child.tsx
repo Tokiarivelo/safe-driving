@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import { ProgressLink } from '@/components/ui/progress-link';
 import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -207,24 +207,42 @@ function RightChild() {
               <div className={style.auth_signup34}>
                 <div className={style.auth_signup35}>
                   <button type="button" className={styles.auth_button_google}>
-                    <img src="/login/google.svg" alt="" className={style.auth_signup36} />
+                    <Image
+                      src="/login/google.svg"
+                      alt="Google login"
+                      width={24}
+                      height={24}
+                      className={style.auth_signup36}
+                    />
                   </button>
 
                   <button type="button" className={styles.auth_button_google}>
-                    <img src="/login/apple.svg" alt="" className={style.auth_signup36} />
+                    <Image
+                      src="/login/apple.svg"
+                      alt="Apple login"
+                      width={24}
+                      height={24}
+                      className={style.auth_signup36}
+                    />
                   </button>
 
                   <button type="button" className={styles.auth_button_google}>
-                    <img src="/login/facebook.svg" alt="" className={style.auth_signup36} />
+                    <Image
+                      src="/login/facebook.svg"
+                      alt="Facebook login"
+                      width={24}
+                      height={24}
+                      className={style.auth_signup36}
+                    />
                   </button>
                 </div>
               </div>
               <div className={style.auth_signup37}>
                 <p className={style.auth_signup38}>
                   {t('title7')}{' '}
-                  <Link href="/login" className={style.auth_signup39}>
+                  <ProgressLink href="/login" className={style.auth_signup39}>
                     {t('title8')}
-                  </Link>
+                  </ProgressLink>
                 </p>
               </div>
             </div>

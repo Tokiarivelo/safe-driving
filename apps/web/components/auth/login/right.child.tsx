@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { EyeIcon, EyeOffIcon, LockKeyhole, UserRound } from 'lucide-react';
-import Link from 'next/link';
+import { ProgressLink } from '@/components/ui/progress-link';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -94,9 +94,9 @@ export const RightChild = () => {
           </div>
 
           <div className={style.auth_txt18}>
-            <Link href="/forget-password" className={style.auth_txt19}>
+            <ProgressLink href="/forget-password" className={style.auth_txt19}>
               {t('title6')}
-            </Link>
+            </ProgressLink>
           </div>
 
           <Button
@@ -137,15 +137,33 @@ export const RightChild = () => {
           <div className={style.auth_txt26}>
             <div className={style.auth_txt27}>
               <button className={styles.auth_button_google}>
-                <img src="/login/google.svg" alt="" className={style.auth_txt28} />
+                <Image
+                  src="/login/google.svg"
+                  alt="Google"
+                  width={24}
+                  height={24}
+                  className={style.auth_txt28}
+                />
               </button>
 
               <button className={styles.auth_button_google}>
-                <img src="/login/apple.svg" alt="" className={style.auth_txt28} />
+                <Image
+                  src="/login/apple.svg"
+                  alt="Apple"
+                  width={24}
+                  height={24}
+                  className={style.auth_txt28}
+                />
               </button>
 
               <button className={styles.auth_button_google}>
-                <img src="/login/facebook.svg" alt="" className={style.auth_txt28} />
+                <Image
+                  src="/login/facebook.svg"
+                  alt="Facebook"
+                  width={24}
+                  height={24}
+                  className={style.auth_txt28}
+                />
               </button>
             </div>
           </div>
@@ -153,9 +171,9 @@ export const RightChild = () => {
           <div className={style.auth_txt29}>
             <p className={style.auth_txt30}>
               {t('title10')}{' '}
-              <Link href="/signup" className={style.auth_txt31}>
+              <ProgressLink href="/signup" className={style.auth_txt31}>
                 {t('title5')}
-              </Link>
+              </ProgressLink>
             </p>
           </div>
         </div>

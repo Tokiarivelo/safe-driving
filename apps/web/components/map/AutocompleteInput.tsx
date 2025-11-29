@@ -46,7 +46,7 @@ export const AutocompleteInput = ({
       .finally(() => setLoading(false));
 
     return () => controller.abort();
-  }, [query]);
+  }, [query, location?.source]);
 
   const handleInputChange = (value: string, lat?: number, lon?: number) => {
     setQuery(value);
@@ -168,7 +168,9 @@ export const AutocompleteInput = ({
                 }}
                 style={listItemStyle}
                 onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.05)')}
-                onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.0)')}
+                onMouseLeave={e =>
+                  (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.0)')
+                }
               >
                 {res.display_name}
               </li>

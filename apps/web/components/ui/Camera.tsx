@@ -1,5 +1,6 @@
 'use client';
 import React, { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
 import styles from '../driver/register/selfieVerif/selfieVerif.module.css';
 
 type PhotoCaptureProps = {
@@ -88,10 +89,13 @@ export default function PhotoCapture({ onCapture }: PhotoCaptureProps) {
       {photo && (
         <>
           <div>
-            <img
+            <Image
               src={photo}
               alt="Aperçu"
+              width={400}
+              height={400}
               style={{ width: '100%', maxWidth: 400, borderRadius: '0.5rem' }}
+              unoptimized
             />
           </div>
           <div className={styles.buttonContainer}>

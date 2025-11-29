@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import {
   Dialog,
   DialogContent,
-//  DialogDescription,
-//  DialogFooter,
+  //  DialogDescription,
+  //  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -52,10 +53,13 @@ export function ImagePreview({
                 className="border-none p-0 bg-transparent cursor-pointer"
                 aria-label={`Preview ${u.name}`}
               >
-                <img
+                <Image
                   src={u.url}
                   alt={u.name}
+                  width={96}
+                  height={96}
                   className="w-[96px] h-[96px] object-cover rounded-md shadow"
+                  unoptimized
                 />
               </button>
             </DialogTrigger>
@@ -102,10 +106,13 @@ export function ImagePreview({
             >
               {/* zone scrollable si l'image est trop grande */}
               <div className="max-w-full max-h-full overflow-auto">
-                <img
+                <Image
                   src={urls[selected].url}
                   alt={urls[selected].name}
+                  width={800}
+                  height={600}
                   className="max-w-full max-h-[70vh] md:max-h-[80vh] object-contain block"
+                  unoptimized
                 />
               </div>
             </div>

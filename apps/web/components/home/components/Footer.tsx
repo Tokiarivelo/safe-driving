@@ -2,7 +2,7 @@
 
 import { Icon } from '@iconify/react';
 import Image from 'next/image';
-import Link from 'next/link';
+import ProgressLink from '@/components/ui/progress-link';
 
 const socialLinks = [
   { name: 'twitter', icon: 'mdi:twitter', href: '#' },
@@ -57,7 +57,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand section */}
           <div className="space-y-6">
-            <Link href="/" className="flex items-center space-x-3 group">
+            <ProgressLink href="/" className="flex items-center space-x-3 group">
               <div className="w-10 h-10 p-2 bg-white dark:bg-gray-800 rounded-xl transition-transform duration-300 group-hover:scale-105 shadow-lg border border-gray-200 dark:border-gray-700">
                 <Image
                   src="/logo.svg"
@@ -70,10 +70,10 @@ export default function Footer() {
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 dark:from-blue-300 dark:to-indigo-300 bg-clip-text text-transparent">
                 SafeDriving
               </span>
-            </Link>
+            </ProgressLink>
             <p className="text-gray-400 dark:text-gray-300 max-w-sm">
-              L&apos;avenir de la mobilité urbaine sécurisée. Intelligence artificielle, suivi temps réel
-              et protection avancée.
+              L&apos;avenir de la mobilité urbaine sécurisée. Intelligence artificielle, suivi temps
+              réel et protection avancée.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map(social => (

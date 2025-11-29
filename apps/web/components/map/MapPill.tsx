@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import centroid from '@turf/centroid';
 import { polygon } from '@turf/helpers';
@@ -102,7 +102,6 @@ function ProgressPill({ label }: ProgressPillProps) {
 export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) {
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
-  const [count, setCount] = useState(0);
 
   const markersRef = useRef<L.Marker[]>([]);
   const moveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -130,48 +129,49 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
     clearMarkers();
   };
 
-  async function fetchOverpassData(query: string): Promise<OverpassElement[]> {
+  const fetchOverpassData = useCallback(async (query: string): Promise<OverpassElement[]> => {
     const response = await fetch(
       `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`,
     );
     if (!response.ok) throw new Error(`Overpass API error: ${response.statusText}`);
     const data = await response.json();
     return data.elements || [];
-  }
+  }, []);
 
-  function renderMarkers(map: L.Map, elements: OverpassElement[], pill: string): L.Marker[] {
-    const markers: L.Marker[] = [];
-    const bounds = map.getBounds();
+  const renderMarkers = useCallback(
+    (map: L.Map, elements: OverpassElement[], pill: string): L.Marker[] => {
+      const markers: L.Marker[] = [];
+      const bounds = map.getBounds();
 
-    elements.forEach(el => {
-      let lat, lon;
+      elements.forEach(el => {
+        let lat, lon;
 
-      if (el.type === 'node') {
-        lat = el.lat;
-        lon = el.lon;
-      } else if (el.type === 'way' && el.geometry?.length) {
-        const coords = el.geometry.map((g: { lon: number; lat: number }) => [g.lon, g.lat]);
-        if (
-          coords[0][0] !== coords[coords.length - 1][0] ||
-          coords[0][1] !== coords[coords.length - 1][1]
-        ) {
-          coords.push(coords[0]); // ensure closed polygon
+        if (el.type === 'node') {
+          lat = el.lat;
+          lon = el.lon;
+        } else if (el.type === 'way' && el.geometry?.length) {
+          const coords = el.geometry.map((g: { lon: number; lat: number }) => [g.lon, g.lat]);
+          if (
+            coords[0][0] !== coords[coords.length - 1][0] ||
+            coords[0][1] !== coords[coords.length - 1][1]
+          ) {
+            coords.push(coords[0]); // ensure closed polygon
+          }
+          const poly = polygon([coords]);
+          const c = centroid(poly).geometry.coordinates;
+          lon = c[0];
+          lat = c[1];
         }
-        const poly = polygon([coords]);
-        const c = centroid(poly).geometry.coordinates;
-        lon = c[0];
-        lat = c[1];
-      }
 
-      if (!lat || !lon) return;
+        if (!lat || !lon) return;
 
-      // Only add markers that are within current bounds
-      const markerLatLng = L.latLng(lat, lon);
-      if (!bounds.contains(markerLatLng)) return;
+        // Only add markers that are within current bounds
+        const markerLatLng = L.latLng(lat, lon);
+        if (!bounds.contains(markerLatLng)) return;
 
-      const markerName = el.tags?.name || 'Unnamed ' + pill;
+        const markerName = el.tags?.name || 'Unnamed ' + pill;
 
-      const markerHtml = `
+        const markerHtml = `
       <div style="
         display:flex;
         align-items:center;
@@ -192,62 +192,71 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
       </div>
     `;
 
-      const customIcon = L.divIcon({
-        html: markerHtml,
-        className: '',
-        iconAnchor: [15, 15],
+        const customIcon = L.divIcon({
+          html: markerHtml,
+          className: '',
+          iconAnchor: [15, 15],
+        });
+
+        const marker = L.marker([lat, lon], { icon: customIcon }).addTo(map);
+        markers.push(marker);
+        markersRef.current.push(marker);
       });
 
-      const marker = L.marker([lat, lon], { icon: customIcon }).addTo(map);
-      markers.push(marker);
-      markersRef.current.push(marker);
-    });
+      return markers;
+    },
+    [],
+  );
 
-    return markers;
-  }
+  const fetchAndRenderHotels = useCallback(
+    async (map: L.Map): Promise<L.Marker[]> => {
+      const bounds = map.getBounds();
+      const south = bounds.getSouth();
+      const west = bounds.getWest();
+      const north = bounds.getNorth();
+      const east = bounds.getEast();
 
-  async function fetchAndRenderHotels(map: L.Map): Promise<L.Marker[]> {
-    const bounds = map.getBounds();
-    const south = bounds.getSouth();
-    const west = bounds.getWest();
-    const north = bounds.getNorth();
-    const east = bounds.getEast();
-
-    const query = `
+      const query = `
     [out:json][timeout:25];
     nwr["tourism"="hotel"](${south},${west},${north},${east});
     out geom;
   `;
 
-    const elements = await fetchOverpassData(query);
-    return renderMarkers(map, elements, 'Hotels');
-  }
+      const elements = await fetchOverpassData(query);
+      return renderMarkers(map, elements, 'Hotels');
+    },
+    [fetchOverpassData, renderMarkers],
+  );
 
-  async function fetchAndRenderRestaurants(map: L.Map): Promise<L.Marker[]> {
-    const bounds = map.getBounds();
-    const south = bounds.getSouth();
-    const west = bounds.getWest();
-    const north = bounds.getNorth();
-    const east = bounds.getEast();
+  const fetchAndRenderRestaurants = useCallback(
+    async (map: L.Map): Promise<L.Marker[]> => {
+      const bounds = map.getBounds();
+      const south = bounds.getSouth();
+      const west = bounds.getWest();
+      const north = bounds.getNorth();
+      const east = bounds.getEast();
 
-    const query = `
+      const query = `
       [out:json][timeout:25];
       nwr["amenity"="restaurant"](${south},${west},${north},${east});
       out geom;
     `;
 
-    const elements = await fetchOverpassData(query);
-    return renderMarkers(map, elements, 'Restaurants');
-  }
+      const elements = await fetchOverpassData(query);
+      return renderMarkers(map, elements, 'Restaurants');
+    },
+    [fetchOverpassData, renderMarkers],
+  );
 
-  async function fetchAndRenderShops(map: L.Map): Promise<L.Marker[]> {
-    const bounds = map.getBounds();
-    const south = bounds.getSouth();
-    const west = bounds.getWest();
-    const north = bounds.getNorth();
-    const east = bounds.getEast();
+  const fetchAndRenderShops = useCallback(
+    async (map: L.Map): Promise<L.Marker[]> => {
+      const bounds = map.getBounds();
+      const south = bounds.getSouth();
+      const west = bounds.getWest();
+      const north = bounds.getNorth();
+      const east = bounds.getEast();
 
-    const query = `
+      const query = `
       [out:json][timeout:25];
       (
         nwr["shop"="supermarket"](${south},${west},${north},${east});
@@ -258,52 +267,55 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
       out geom;
     `;
 
-    const elements = await fetchOverpassData(query);
-    return renderMarkers(map, elements, 'Shops');
-  }
+      const elements = await fetchOverpassData(query);
+      return renderMarkers(map, elements, 'Shops');
+    },
+    [fetchOverpassData, renderMarkers],
+  );
 
-  const fetchAndRender = async (clearExisting = true) => {
-    if (!mapRef.current) return;
+  const fetchAndRender = useCallback(
+    async (clearExisting = true) => {
+      if (!mapRef.current) return;
 
-    setCount(count + 1);
-
-    if (clearExisting) {
-      clearMarkers();
-    }
-
-    if (!activeLabel) {
-      setLoading(null);
-      return;
-    }
-
-    setLoading(activeLabel);
-
-    try {
-      switch (activeLabel) {
-        case 'Hotels':
-          await fetchAndRenderHotels(mapRef.current);
-          break;
-        case 'Restaurants':
-          await fetchAndRenderRestaurants(mapRef.current);
-          break;
-        case 'Shops':
-          await fetchAndRenderShops(mapRef.current);
-          break;
+      if (clearExisting) {
+        clearMarkers();
       }
-      // Small delay to show loading before hiding
-      setTimeout(() => {
+
+      if (!activeLabel) {
         setLoading(null);
-      }, 300);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      setLoading(null);
-    }
-  };
+        return;
+      }
+
+      setLoading(activeLabel);
+
+      try {
+        switch (activeLabel) {
+          case 'Hotels':
+            await fetchAndRenderHotels(mapRef.current);
+            break;
+          case 'Restaurants':
+            await fetchAndRenderRestaurants(mapRef.current);
+            break;
+          case 'Shops':
+            await fetchAndRenderShops(mapRef.current);
+            break;
+        }
+        // Small delay to show loading before hiding
+        setTimeout(() => {
+          setLoading(null);
+        }, 300);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(null);
+      }
+    },
+    [mapRef, activeLabel, fetchAndRenderHotels, fetchAndRenderRestaurants, fetchAndRenderShops],
+  );
 
   // Handle initial fetch when activeLabel changes
   useEffect(() => {
     fetchAndRender().then();
-  }, [activeLabel]);
+  }, [activeLabel, fetchAndRender]);
 
   // Handle map move events
   useEffect(() => {
@@ -348,7 +360,7 @@ export function MapPills({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) 
         clearTimeout(moveTimeoutRef.current);
       }
     };
-  }, [activeLabel]);
+  }, [activeLabel, mapRef, fetchAndRender]);
 
   return (
     <div

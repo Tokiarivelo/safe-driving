@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
+import Image from 'next/image';
 import {
   useMeQuery,
   useGetqrQuery,
@@ -165,7 +166,9 @@ export default function ProfilePage() {
         refetchMe();
       } catch (error) {
         console.error('Upload failed:', error);
-        toast.error(error instanceof Error ? error.message : "Erreur lors de l'upload de la couverture");
+        toast.error(
+          error instanceof Error ? error.message : "Erreur lors de l'upload de la couverture",
+        );
         setCoverImage(null);
       }
     }
@@ -260,9 +263,21 @@ export default function ProfilePage() {
             <div className={styles.profileSection}>
               <div className={styles.profileImageContainer} onClick={handleProfileClick}>
                 {profileImage ? (
-                  <img src={profileImage} alt="Profil" className={styles.profileImage} />
+                  <Image
+                    src={profileImage}
+                    alt="Profil"
+                    className={styles.profileImage}
+                    width={200}
+                    height={200}
+                  />
                 ) : user?.avatar?.url ? (
-                  <img src={user.avatar.url} alt="Profil" className={styles.profileImage} />
+                  <Image
+                    src={user.avatar.url}
+                    alt="Profil"
+                    className={styles.profileImage}
+                    width={200}
+                    height={200}
+                  />
                 ) : (
                   <div className={styles.uploadPlaceholder}>+ Upload</div>
                 )}
@@ -279,7 +294,13 @@ export default function ProfilePage() {
                   <div className={styles.qrLoading}>Loading QR...</div>
                 ) : qrData?.getUserQr ? (
                   <div className={styles.qrContainer}>
-                    <img src={qrData.getUserQr} alt="QR Code" className={styles.qrImage} />
+                    <Image
+                      src={qrData.getUserQr}
+                      alt="QR Code"
+                      className={styles.qrImage}
+                      width={200}
+                      height={200}
+                    />
                   </div>
                 ) : (
                   <div className={styles.qrUnavailable}>QR Code not available</div>
@@ -314,11 +335,13 @@ export default function ProfilePage() {
               </div>
               <div className={styles.galleryGrid}>
                 {userImages.map(image => (
-                  <img
+                  <Image
                     key={image.id}
                     src={image.file.url || ''}
                     alt="User Image"
                     className={styles.galleryImage}
+                    width={300}
+                    height={300}
                   />
                 ))}
               </div>

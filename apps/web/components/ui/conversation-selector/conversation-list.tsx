@@ -8,7 +8,6 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   selectedConversationId,
   isLoading,
   searchTerm,
-  maxHeight = '400px',
   onConversationSelect,
   onEdit,
   onDelete,

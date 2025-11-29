@@ -85,7 +85,7 @@ export function useConversations() {
         setLoading(false);
       }
     },
-    [],
+    [createConversationMutation],
   );
 
   const updateConversation = useCallback(
@@ -110,78 +110,87 @@ export function useConversations() {
         setLoading(false);
       }
     },
-    [conversations],
+    [updateConversationMutation],
   );
 
-  const deleteConversation = useCallback(async (conversationId: string): Promise<void> => {
-    setLoading(true);
-    setError(null);
+  const deleteConversation = useCallback(
+    async (conversationId: string): Promise<void> => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      // Mock implementation
-      setConversations(prev => prev.filter(conv => conv.id !== conversationId));
+      try {
+        // Mock implementation
+        setConversations(prev => prev.filter(conv => conv.id !== conversationId));
 
-      // Real implementation:
+        // Real implementation:
 
-      await deleteConversationMutation({
-        variables: { conversationId },
-        update: cache => {
-          cache.modify({
-            fields: {
-              userConversations(existing) {
-                return {
-                  ...existing,
-                  conversations: existing.conversations.filter(
-                    (conv: { id: string }) => conv.id !== conversationId,
-                  ),
-                };
+        await deleteConversationMutation({
+          variables: { conversationId },
+          update: cache => {
+            cache.modify({
+              fields: {
+                userConversations(existing) {
+                  return {
+                    ...existing,
+                    conversations: existing.conversations.filter(
+                      (conv: { id: string }) => conv.id !== conversationId,
+                    ),
+                  };
+                },
               },
-            },
-          });
-        },
-      });
-    } catch (error: unknown) {
-      const err = error as Error;
-      setError(err.message || 'Erreur lors de la suppression de la conversation');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+            });
+          },
+        });
+      } catch (error: unknown) {
+        const err = error as Error;
+        setError(err.message || 'Erreur lors de la suppression de la conversation');
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [deleteConversationMutation],
+  );
 
-  const addParticipant = useCallback(async (input: AddParticipantInput): Promise<void> => {
-    setLoading(true);
-    setError(null);
+  const addParticipant = useCallback(
+    async (input: AddParticipantInput): Promise<void> => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      await addParticipantMutation({
-        variables: { input },
-      });
-    } catch (error: unknown) {
-      const err = error as Error;
-      setError(err.message || "Erreur lors de l'ajout du participant");
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+      try {
+        await addParticipantMutation({
+          variables: { input },
+        });
+      } catch (error: unknown) {
+        const err = error as Error;
+        setError(err.message || "Erreur lors de l'ajout du participant");
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [addParticipantMutation],
+  );
 
-  const removeParticipant = useCallback(async (input: RemoveParticipantInput): Promise<void> => {
-    setLoading(true);
-    setError(null);
+  const removeParticipant = useCallback(
+    async (input: RemoveParticipantInput): Promise<void> => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      await removeParticipantMutation({
-        variables: { input },
-      });
-    } catch (error: unknown) {
-      const err = error as Error;
-      setError(err.message || 'Erreur lors de la suppression du participant');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+      try {
+        await removeParticipantMutation({
+          variables: { input },
+        });
+      } catch (error: unknown) {
+        const err = error as Error;
+        setError(err.message || 'Erreur lors de la suppression du participant');
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [removeParticipantMutation],
+  );
 
   // Utilitaire pour obtenir une conversation par ID
   const getConversationById = useCallback(

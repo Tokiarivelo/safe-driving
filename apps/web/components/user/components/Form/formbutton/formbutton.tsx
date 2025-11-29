@@ -9,7 +9,7 @@ import {
 import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
+
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import BjrForm from '../bjr/bjr';
@@ -19,6 +19,7 @@ import PreferenceForm from '../preference/preference';
 import RecapitulatifForm from '../recapitulatif/recapitulatif';
 import styles from './formbutton.module.css';
 import { useButton } from './formbuttonAction';
+import ProgressLink from '@/components/ui/progress-link';
 
 function FormButton() {
   const {
@@ -140,7 +141,7 @@ function FormButton() {
       >
         <div className={styles.auth_btn14}>
           <div>
-            <Link href="/user/form/name/bjr">
+            <ProgressLink href="/user/form/name/bjr">
               <AccordionItem
                 value="item-1"
                 className={`tag ${databjr ? styles.auth_btn15 : ''}`}
@@ -162,10 +163,10 @@ function FormButton() {
                   <BjrForm />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/user/form/name/gps">
+            <ProgressLink href="/user/form/name/gps">
               <AccordionItem
                 value="item-2"
                 className={`tag ${datagps ? styles.auth_btn23 : ''}`}
@@ -200,10 +201,10 @@ function FormButton() {
                   <GpsForm />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/user/form/name/notification">
+            <ProgressLink href="/user/form/name/notification">
               <AccordionItem
                 value="item-3"
                 className={`tog ${datanot ? styles.auth_btn33 : ''}`}
@@ -238,10 +239,10 @@ function FormButton() {
                   <NotificationForm />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/user/form/name/preference">
+            <ProgressLink href="/user/form/name/preference">
               <AccordionItem
                 value="item-4"
                 className={`teg ${datapref ? styles.auth_btn43 : ''}`}
@@ -276,10 +277,10 @@ function FormButton() {
                   <PreferenceForm />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/user/form/name/recapitulatif">
+            <ProgressLink href="/user/form/name/recapitulatif">
               <AccordionItem
                 value="item-5"
                 className={`tig ${datareca ? styles.auth_btn53 : ''}`}
@@ -314,7 +315,7 @@ function FormButton() {
                   <RecapitulatifForm />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
         </div>
       </Accordion>

@@ -7,6 +7,7 @@
     "web:generate": "pnpm --filter web generate",
     "web:translate": "pnpm --filter web translate",
     "web:build": "pnpm --filter web build",
+    "web:start": "pnpm --filter web start",
     "graphql:dev": "pnpm --filter graphql-server start:dev",
     "graphql:build": "pnpm --filter graphql-server build",
     "graphql:start:prod": "pnpm --filter graphql-server start:prod",

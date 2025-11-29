@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import Link from 'next/link';
+import ProgressLink from '@/components/ui/progress-link';
 import { signOut, useSession } from 'next-auth/react';
 import { useMeQuery } from '@/graphql/generated/graphql';
 import { useMemo } from 'react';
@@ -91,7 +91,7 @@ export default function ProfileMenu({ isOpen, onToggle }: ProfileMenuProps) {
 
           {/* Menu Items */}
           {menuItems.map(item => (
-            <Link
+            <ProgressLink
               key={item.href}
               href={item.href}
               className="flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -99,7 +99,7 @@ export default function ProfileMenu({ isOpen, onToggle }: ProfileMenuProps) {
             >
               <Icon icon={item.icon} className="w-5 h-5 text-gray-600 dark:text-gray-400" />
               <span className="text-gray-700 dark:text-gray-300">{item.label}</span>
-            </Link>
+            </ProgressLink>
           ))}
 
           {/* Separator */}

@@ -4,7 +4,7 @@ import { ConversationSelectorProps } from './conversation-selector.interface';
 
 export function useConversationSelector({
   selectedConversationId,
-//  onConversationSelect,
+  //  onConversationSelect,
 }: Pick<ConversationSelectorProps, 'selectedConversationId' | 'onConversationSelect'>) {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -15,7 +15,10 @@ export function useConversationSelector({
     errorPolicy: 'all',
   });
 
-  const conversations = data?.userConversations?.conversations || [];
+  const conversations = useMemo(
+    () => data?.userConversations?.conversations || [],
+    [data?.userConversations?.conversations],
+  );
 
   const filteredConversations = useMemo(() => {
     if (!searchTerm) return conversations;

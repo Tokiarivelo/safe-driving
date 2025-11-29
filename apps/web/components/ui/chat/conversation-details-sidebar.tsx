@@ -1,5 +1,6 @@
 import { MessageFragmentFragment, UserConversation } from '@/graphql/generated/graphql';
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface ConversationDetailsSidebarProps {
   conversation: UserConversation;
@@ -21,13 +22,15 @@ export const ConversationDetailsSidebar: React.FC<ConversationDetailsSidebarProp
   });
 
   // Get the other participant (excluding current user)
-  const displayParticipant = conversation.participants?.find(
-    p => p.user.id !== currentUserId,
-  ) || conversation.participants?.[0];
+  const displayParticipant =
+    conversation.participants?.find(p => p.user.id !== currentUserId) ||
+    conversation.participants?.[0];
 
   // Filter messages with attachments
   // TODO: Use AttachmentType enum from generated types once available
-  const fileAttachments = messages.flatMap(m => m.attachments?.filter(a => a.type === 'FILE') || []);
+  const fileAttachments = messages.flatMap(
+    m => m.attachments?.filter(a => a.type === 'FILE') || [],
+  );
   const linkAttachments = messages.flatMap(
     m => m.attachments?.filter(a => a.type === 'LINK' || a.linkTitle) || [],
   );
@@ -55,10 +58,12 @@ export const ConversationDetailsSidebar: React.FC<ConversationDetailsSidebarProp
           {/* Avatar */}
           <div className="w-20 h-20 rounded-full bg-gray-300 mb-3 overflow-hidden">
             {displayParticipant?.user?.avatar?.url ? (
-              <img
+              <Image
                 src={displayParticipant.user.avatar.url}
                 alt="Avatar"
-                className="w-full h-full object-cover"
+                width={80}
+                height={80}
+                className="object-cover"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-2xl text-gray-600">
@@ -126,7 +131,12 @@ export const ConversationDetailsSidebar: React.FC<ConversationDetailsSidebarProp
           className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
         >
           <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-5 h-5 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -159,7 +169,12 @@ export const ConversationDetailsSidebar: React.FC<ConversationDetailsSidebarProp
                 key={attachment.id || index}
                 className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded-md cursor-pointer"
               >
-                <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-4 h-4 text-blue-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -188,7 +203,12 @@ export const ConversationDetailsSidebar: React.FC<ConversationDetailsSidebarProp
           className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
         >
           <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-5 h-5 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -224,7 +244,12 @@ export const ConversationDetailsSidebar: React.FC<ConversationDetailsSidebarProp
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded-md"
               >
-                <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-4 h-4 text-blue-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

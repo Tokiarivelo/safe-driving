@@ -22,10 +22,7 @@ export const Notification: React.FC = () => {
     showTest,
   } = useNotifications();
 
-  const {
-    data,
-    loading: queryLoading,
-  } = useGetMyUserPreferenceQuery({
+  const { data, loading: queryLoading } = useGetMyUserPreferenceQuery({
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
@@ -39,7 +36,7 @@ export const Notification: React.FC = () => {
       }
       setIsDataLoaded(true);
     }
-  }, [data?.userPreference?.activateNotifications]);
+  }, [data?.userPreference]);
 
   const router = useRouter();
   const { t, ready } = useTranslation('user/notification');

@@ -81,13 +81,13 @@ export const useLocationPermissionAction = ({
         setLocationEnabled(activateLocation);
       }, 0);
     }
-  }, [preferenceData?.userPreference?.activateLocation]);
+  }, [preferenceData?.userPreference, form, setLocationEnabled]);
 
   useEffect(() => {
     if (currentPosition && onLocationUpdate) {
       onLocationUpdate(currentPosition);
     }
-  }, [currentPosition]);
+  }, [currentPosition, onLocationUpdate]);
 
   const checkLocationSupport = useCallback(() => {
     if (!isClient || typeof window === 'undefined') {
@@ -191,6 +191,8 @@ export const useLocationPermissionAction = ({
       currentPosition,
       onSuccess,
       router,
+      setLocationEnabled,
+      setRememberChoice,
     ],
   );
 

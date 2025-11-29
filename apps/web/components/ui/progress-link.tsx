@@ -2,7 +2,7 @@
 
 import NextLink, { LinkProps } from 'next/link';
 import { useProgress } from 'react-transition-progress';
-import { ReactNode, useCallback } from 'react';
+import { ReactNode, useCallback, startTransition } from 'react';
 
 interface ProgressLinkProps extends LinkProps {
   children: ReactNode;
@@ -13,7 +13,9 @@ export function ProgressLink({ children, className, ...props }: ProgressLinkProp
   const startProgress = useProgress();
 
   const handleClick = useCallback(() => {
-    startProgress();
+    startTransition(() => {
+      startProgress();
+    });
   }, [startProgress]);
 
   return (

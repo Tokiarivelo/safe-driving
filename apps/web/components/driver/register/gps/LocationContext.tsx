@@ -1,5 +1,12 @@
 'use client';
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from 'react';
 
 interface LocationState {
   isEnabled: boolean;
@@ -41,15 +48,57 @@ export const LocationProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   };
 
+  const requestLocationPermission = useCallback(
+    async (currentState?: LocationState): Promise<boolean> => {
+      if (!navigator.geolocation) {
+        return false;
+      }
+
+      return new Promise(resolve => {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const newState = {
+              ...(currentState || locationState),
+              hasPermission: true,
+              currentPosition: position,
+              lastUpdated: Date.now(),
+            };
+            setLocationState(newState);
+            saveToStorage(newState);
+            resolve(true);
+          },
+          error => {
+            console.error('Permission de géolocalisation refusée:', error);
+            const newState = {
+              ...(currentState || locationState),
+              hasPermission: false,
+              currentPosition: null,
+              lastUpdated: null,
+            };
+            setLocationState(newState);
+            saveToStorage(newState);
+            resolve(false);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 300000,
+          },
+        );
+      });
+    },
+    [locationState],
+  );
+
   useEffect(() => {
     const savedData = localStorage.getItem(STORAGE_KEY);
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
-        
+
         const now = Date.now();
-        const isPositionExpired = parsed.lastUpdated && (now - parsed.lastUpdated) > POSITION_EXPIRY;
-        
+        const isPositionExpired = parsed.lastUpdated && now - parsed.lastUpdated > POSITION_EXPIRY;
+
         const initialState = {
           ...parsed,
           currentPosition: isPositionExpired ? null : parsed.currentPosition,
@@ -67,55 +116,16 @@ export const LocationProvider: React.FC<{ children: ReactNode }> = ({ children }
         console.error('Erreur lors du chargement des préférences de géolocalisation:', error);
       }
     }
-  }, []);
-
-  const requestLocationPermission = async (currentState?: LocationState): Promise<boolean> => {
-    if (!navigator.geolocation) {
-      return false;
-    }
-
-    return new Promise((resolve) => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const newState = {
-            ...(currentState || locationState),
-            hasPermission: true,
-            currentPosition: position,
-            lastUpdated: Date.now(),
-          };
-          setLocationState(newState);
-          saveToStorage(newState);
-          resolve(true);
-        },
-        (error) => {
-          console.error('Permission de géolocalisation refusée:', error);
-          const newState = {
-            ...(currentState || locationState),
-            hasPermission: false,
-            currentPosition: null,
-            lastUpdated: null,
-          };
-          setLocationState(newState);
-          saveToStorage(newState);
-          resolve(false);
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 15000,
-          maximumAge: 300000,
-        }
-      );
-    });
-  };
+  }, [requestLocationPermission]);
 
   const updateLocation = async (): Promise<void> => {
     if (!locationState.hasPermission || !navigator.geolocation) {
-      throw new Error("Permission de géolocalisation requise");
+      throw new Error('Permission de géolocalisation requise');
     }
 
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        position => {
           const newState = {
             ...locationState,
             currentPosition: position,
@@ -125,7 +135,7 @@ export const LocationProvider: React.FC<{ children: ReactNode }> = ({ children }
           saveToStorage(newState);
           resolve();
         },
-        (error) => {
+        error => {
           console.error('Erreur lors de la mise à jour de position:', error);
           reject(error);
         },
@@ -133,7 +143,7 @@ export const LocationProvider: React.FC<{ children: ReactNode }> = ({ children }
           enableHighAccuracy: true,
           timeout: 15000,
           maximumAge: 0,
-        }
+        },
       );
     });
   };

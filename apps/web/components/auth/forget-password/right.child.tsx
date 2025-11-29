@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useForgotPassword } from './forget-passwordAction';
 import { MoveLeft, UserRound } from 'lucide-react';
-import Link from 'next/link';
+import { ProgressLink } from '@/components/ui/progress-link';
 import Image from 'next/image';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 function RightChild() {
@@ -90,9 +90,9 @@ function RightChild() {
             </Button>
           </div>
           <div className={style.auth_show18}>
-            <Link href="/login" className={style.auth_show19}>
+            <ProgressLink href="/login" className={style.auth_show19}>
               <MoveLeft size={25} strokeWidth={1.5} /> {t('title7')}
-            </Link>
+            </ProgressLink>
           </div>
         </Form>
       </motion.div>

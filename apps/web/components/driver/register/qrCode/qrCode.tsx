@@ -1,22 +1,23 @@
-'use client'
-import { useSearchParams } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import styles from '../../../user/components/Form/codeqr/codeqr.module.css'
+'use client';
+import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import styles from '../../../user/components/Form/codeqr/codeqr.module.css';
 
 export default function UserQrPage() {
-  const searchParams = useSearchParams()
-  const qrUrl = searchParams.get('qrUrl')
+  const searchParams = useSearchParams();
+  const qrUrl = searchParams.get('qrUrl');
 
-  if (!qrUrl) return <div>Erreur lors de la récupération du QR Code</div>
+  if (!qrUrl) return <div>Erreur lors de la récupération du QR Code</div>;
 
   const downloadQr = () => {
-    const link = document.createElement('a')
-    link.href = qrUrl
-    link.download = 'qr-code.png'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
+    const link = document.createElement('a');
+    link.href = qrUrl;
+    link.download = 'qr-code.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="w-full px-4 py-8">
@@ -25,7 +26,14 @@ export default function UserQrPage() {
       </div>
 
       <div className={styles.auth_Qr11}>
-        <img src={qrUrl!} alt="QR Code" className={`${styles.auth_Qr16} w-[160px] h-[160px]`} />
+        <Image
+          src={qrUrl!}
+          alt="QR Code"
+          width={160}
+          height={160}
+          className={styles.auth_Qr16}
+          unoptimized
+        />
       </div>
 
       <div className={styles.auth_Qr19}>
@@ -38,5 +46,5 @@ export default function UserQrPage() {
         </Button>
       </div>
     </div>
-  )
+  );
 }

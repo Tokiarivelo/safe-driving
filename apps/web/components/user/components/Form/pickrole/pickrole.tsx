@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import ProgressLink from '@/components/ui/progress-link';
 import Image from 'next/image';
 import styles from './pickrole.module.css';
 import { useTranslation } from 'react-i18next';
@@ -26,13 +26,13 @@ export const PickRole = () => {
       </div>
 
       <div className=" w-ful gap-[100%] px-40  h-30 sm:h-50 flex items-center justify-center sm:gap-40">
-        <Link href="/user/form/name/bjr" className={styles.auth_pickrole5}>
+        <ProgressLink href="/user/form/name/bjr" className={styles.auth_pickrole5}>
           <div className={styles.auth_pickrole6}>{t('title2')}</div>
-        </Link>
+        </ProgressLink>
 
-        <Link href="/driver/register/welcome" className={styles.auth_pickrole7}>
+        <ProgressLink href="/driver/register/welcome" className={styles.auth_pickrole7}>
           <div className={styles.auth_pickrole8}>{t('title3')}</div>
-        </Link>
+        </ProgressLink>
       </div>
     </>
   );

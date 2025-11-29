@@ -35,7 +35,7 @@ export const Gps: React.FC = () => {
       }
       setIsDataLoaded(true);
     }
-  }, [data?.userPreference?.activateNotifications]);
+  }, [data?.userPreference]);
 
   const router = useRouter();
   const { t, ready } = useTranslation('user/gps');

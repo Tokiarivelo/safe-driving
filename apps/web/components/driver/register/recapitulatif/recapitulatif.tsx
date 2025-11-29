@@ -6,7 +6,7 @@ import {
   useGetVehiclesQuery,
   useMeQuery,
 } from '@/graphql/generated/graphql';
-import Link from 'next/link';
+import ProgressLink from '@/components/ui/progress-link';
 import { useTranslation } from 'react-i18next';
 import styles from './recapitulatif.module.css';
 import { useQrCodeForRecap } from './useAction';
@@ -46,11 +46,11 @@ export function Recap() {
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <h2 className={styles.cardTitle}>Infos personnelles</h2>
-              <Link href="/personalInfo">
+              <ProgressLink href="/personalInfo">
                 <Button variant="outline" size="sm">
                   Modifier
                 </Button>
-              </Link>
+              </ProgressLink>
             </div>
             <p>
               Nom : {userData?.firstName} {userData?.lastName}
@@ -65,11 +65,11 @@ export function Recap() {
             <div key={vehicle.id} className={styles.card}>
               <div className={styles.cardHeader}>
                 <h2 className={styles.cardTitle}>Véhicule</h2>
-                <Link href={`/vehiculeInfo`}>
+                <ProgressLink href={`/vehiculeInfo`}>
                   <Button variant="outline" size="sm">
                     Modifier
                   </Button>
-                </Link>
+                </ProgressLink>
               </div>
               <p>Type : {vehicle.type?.name || '-'}</p>
               <p>Marque : {vehicle.brand || '-'}</p>

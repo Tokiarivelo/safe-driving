@@ -3,7 +3,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './formbutton.module.css';
-import Link from 'next/link';
+import { ProgressLink } from '@/components/ui/progress-link';
 import { Icon } from '@iconify/react';
 import { useButton } from './formbuttonAction';
 import Image from 'next/image';
@@ -181,7 +181,7 @@ function FormButton() {
       >
         <div className={styles.auth_btn14}>
           <div>
-            <Link href="/driver/register/welcome">
+            <ProgressLink href="/driver/register/welcome">
               <AccordionItem
                 value="item-1"
                 className={`tag ${datawelcome ? styles.auth_btn15 : ''}`}
@@ -203,10 +203,10 @@ function FormButton() {
                   <WelcomeStep />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/driver/register/personalInfo">
+            <ProgressLink href="/driver/register/personalInfo">
               <AccordionItem
                 value="item-2"
                 className={`tag ${datapersonalInfo ? styles.auth_btn23 : ''}`}
@@ -241,10 +241,10 @@ function FormButton() {
                   <PersonalInfoForm onSubmit={handleSubmit} />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/driver/register/identityUpload">
+            <ProgressLink href="/driver/register/identityUpload">
               <AccordionItem
                 value="item-3"
                 className={`tog ${dataidentityUpload ? styles.auth_btn33 : ''}`}
@@ -279,10 +279,10 @@ function FormButton() {
                   <IdentityUploadForm />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/driver/register/vehiculeInfo">
+            <ProgressLink href="/driver/register/vehiculeInfo">
               <AccordionItem
                 value="item-4"
                 className={`teg ${datavehicle ? styles.auth_btn43 : ''}`}
@@ -317,10 +317,10 @@ function FormButton() {
                   <VehicleInfoForm />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/driver/register/vehiculeUpload">
+            <ProgressLink href="/driver/register/vehiculeUpload">
               <AccordionItem
                 value="item-5"
                 className={`tig ${datauploadVehicle ? styles.auth_btn53 : ''}`}
@@ -355,10 +355,10 @@ function FormButton() {
                   <VehicleDocumentsForm />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/driver/register/selfieVerif">
+            <ProgressLink href="/driver/register/selfieVerif">
               <AccordionItem
                 value="item-6"
                 className={`tag ${dataselfie ? styles.auth_btn23 : ''}`}
@@ -393,10 +393,10 @@ function FormButton() {
                   <SelfieVerification />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/driver/register/gps">
+            <ProgressLink href="/driver/register/gps">
               <AccordionItem
                 value="item-7"
                 className={`tag ${datagps ? styles.auth_btn23 : ''}`}
@@ -431,10 +431,10 @@ function FormButton() {
                   <LocationPermission />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/driver/register/notif">
+            <ProgressLink href="/driver/register/notif">
               <AccordionItem
                 value="item-8"
                 className={`tag ${datanotif ? styles.auth_btn23 : ''}`}
@@ -469,10 +469,10 @@ function FormButton() {
                   <NotificationPreferences onUpdate={handleUpdateNotif} />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/driver/register/preferences">
+            <ProgressLink href="/driver/register/preferences">
               <AccordionItem
                 value="item-9"
                 className={`tag ${datapref ? styles.auth_btn23 : ''}`}
@@ -507,10 +507,10 @@ function FormButton() {
                   <ExperiencePreferences onUpdate={handleUpdatePref} />;
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
           <div>
-            <Link href="/driver/register/recapitulatif">
+            <ProgressLink href="/driver/register/recapitulatif">
               <AccordionItem
                 value="item-10"
                 className={`tag ${datarecap ? styles.auth_btn23 : ''}`}
@@ -545,7 +545,7 @@ function FormButton() {
                   <Recap />
                 </AccordionContent>
               </AccordionItem>
-            </Link>
+            </ProgressLink>
           </div>
         </div>
       </Accordion>

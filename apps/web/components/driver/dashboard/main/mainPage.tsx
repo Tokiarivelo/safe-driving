@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
-import Link from 'next/link';
+import { ProgressLink } from '@/components/ui/progress-link';
 import { useMeQuery } from '@/graphql/generated/graphql';
 import ReactFlagsSelect from 'react-flags-select';
 import * as Popover from '@radix-ui/react-popover';
@@ -178,7 +178,7 @@ function Dashboard() {
               </Popover.Root>
 
               {/* Bloc Rechercher */}
-              <Link href="/driver/dashboard/search">
+              <ProgressLink href="/driver/dashboard/search">
                 <div
                   className={`${blockClass} border-2 border-l-[#c02aa8] border-b-[#c02aa8] border-r-[#fe7f78] border-t-[#ee6984]`}
                 >
@@ -196,10 +196,10 @@ function Dashboard() {
                     Rechercher des Courses
                   </p>
                 </div>
-              </Link>
+              </ProgressLink>
 
               {/* Bloc Messages */}
-              <Link href="/driver/dashboard/messages">
+              <ProgressLink href="/driver/dashboard/messages">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="streamline-ultimate-color:messages-logo" width="58" height="58" />
@@ -211,10 +211,10 @@ function Dashboard() {
                     Messages
                   </p>
                 </div>
-              </Link>
+              </ProgressLink>
 
               {/* Bloc Mes Courses */}
-              <Link href="/driver/dashboard/courses">
+              <ProgressLink href="/driver/dashboard/courses">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="streamline-kameleon-color:map" width="58" height="58" />
@@ -223,13 +223,13 @@ function Dashboard() {
                     Mes Courses
                   </p>
                 </div>
-              </Link>
+              </ProgressLink>
             </div>
 
             {/* Deuxième ligne */}
             <div className="w-full p-5 sm:p-0 flex justify-between items-center mb-5">
               {/* Bloc Scanner */}
-              <Link href="/driver/dashboard/scan">
+              <ProgressLink href="/driver/dashboard/scan">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="w-16 h-16 bg-[#C8E6FF] rounded-full flex items-center justify-center">
@@ -245,10 +245,10 @@ function Dashboard() {
                     Scanner Qr Code
                   </p>
                 </div>
-              </Link>
+              </ProgressLink>
 
               {/* Bloc Notification */}
-              <Link href="/driver/dashboard/notifications">
+              <ProgressLink href="/driver/dashboard/notifications">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon
@@ -264,10 +264,10 @@ function Dashboard() {
                     Notification
                   </p>
                 </div>
-              </Link>
+              </ProgressLink>
 
               {/* Bloc Trajet en cours */}
-              <Link href="/driver/dashboard/rides">
+              <ProgressLink href="/driver/dashboard/rides">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="icon-park:gps" width="56" height="56" />
@@ -276,10 +276,10 @@ function Dashboard() {
                     Trajet en cours
                   </p>
                 </div>
-              </Link>
+              </ProgressLink>
 
               {/* Bloc Profil */}
-              <Link href="/driver/dashboard/profile">
+              <ProgressLink href="/driver/dashboard/profile">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="w-16 h-16 bg-[#9EDD28] rounded-full flex items-center justify-center">
@@ -290,13 +290,13 @@ function Dashboard() {
                     Profil
                   </p>
                 </div>
-              </Link>
+              </ProgressLink>
             </div>
 
             {/* Troisième ligne */}
             <div className="w-full p-5 sm:p-0 flex justify-between items-center">
               {/* Bloc Parametre */}
-              <Link href="/driver/dashboard/settings">
+              <ProgressLink href="/driver/dashboard/settings">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="uil:setting" width="58" height="58" className="text-pink-500" />
@@ -305,10 +305,10 @@ function Dashboard() {
                     Parametre
                   </p>
                 </div>
-              </Link>
+              </ProgressLink>
 
               {/* Bloc Assistance */}
-              <Link href="/driver/dashboard/support">
+              <ProgressLink href="/driver/dashboard/support">
                 <div className={`${blockClass} auth-border`}>
                   <div className="flex-1 flex items-center justify-center">
                     <Icon icon="flat-color-icons:online-support" width="58" height="58" />
@@ -317,7 +317,7 @@ function Dashboard() {
                     Assistance
                   </p>
                 </div>
-              </Link>
+              </ProgressLink>
 
               {/* Blocs vides */}
               <div className={blockClass}></div>

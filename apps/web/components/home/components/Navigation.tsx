@@ -2,7 +2,7 @@
 
 import { Icon } from '@iconify/react';
 import { useTheme } from 'next-themes';
-import Link from 'next/link';
+import ProgressLink from '@/components/ui/progress-link';
 import Image from 'next/image';
 import NoSSR from '@/components/NoSSR';
 import { useSession } from 'next-auth/react';
@@ -101,7 +101,11 @@ export default function Navigation({ mobileMenuOpen, setMobileMenuOpen }: Naviga
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group" onClick={closeAllMenus}>
+          <ProgressLink
+            href="/"
+            className="flex items-center space-x-3 group"
+            onClick={closeAllMenus}
+          >
             <div className="relative">
               <div className="w-12 h-12 p-2 rounded-xl bg-white dark:bg-gray-800 shadow-lg transition-transform duration-300 group-hover:scale-105 border border-gray-200 dark:border-gray-700">
                 <Image
@@ -118,7 +122,7 @@ export default function Navigation({ mobileMenuOpen, setMobileMenuOpen }: Naviga
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
               SafeDriving
             </span>
-          </Link>
+          </ProgressLink>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -168,23 +172,23 @@ export default function Navigation({ mobileMenuOpen, setMobileMenuOpen }: Naviga
             ) : (
               /* Guest User Buttons */
               <>
-                <Link
+                <ProgressLink
                   href="/login"
                   className="hidden md:inline-flex items-center space-x-2 px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm transition-all duration-300"
                   onClick={closeAllMenus}
                 >
                   <Icon icon="material-symbols:login" className="w-4 h-4" />
                   <span>Connexion</span>
-                </Link>
+                </ProgressLink>
 
-                <Link
+                <ProgressLink
                   href="/signup"
                   className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-400 dark:to-indigo-400 text-white hover:from-blue-600 hover:to-indigo-600 dark:hover:from-blue-300 dark:hover:to-indigo-300 shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={closeAllMenus}
                 >
                   <Icon icon="material-symbols:add-circle-outline" className="w-4 h-4" />
                   <span>Essai gratuit</span>
-                </Link>
+                </ProgressLink>
               </>
             )}
 
@@ -239,7 +243,7 @@ export default function Navigation({ mobileMenuOpen, setMobileMenuOpen }: Naviga
           {/* Mobile buttons for guests */}
           {!isAuthenticated && (
             <div className="pt-4 space-y-3 border-t border-gray-200 dark:border-gray-700">
-              <Link
+              <ProgressLink
                 href="/login"
                 className="block px-4 py-3 rounded-xl text-center border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-800 transition-all duration-300"
                 onClick={() => {
@@ -248,9 +252,9 @@ export default function Navigation({ mobileMenuOpen, setMobileMenuOpen }: Naviga
                 }}
               >
                 Connexion
-              </Link>
+              </ProgressLink>
 
-              <Link
+              <ProgressLink
                 href="/signup"
                 className="block px-4 py-3 rounded-xl text-center bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-400 dark:to-indigo-400 text-white hover:from-blue-600 hover:to-indigo-600 dark:hover:from-blue-300 dark:hover:to-indigo-300 transition-all duration-300"
                 onClick={() => {
@@ -259,7 +263,7 @@ export default function Navigation({ mobileMenuOpen, setMobileMenuOpen }: Naviga
                 }}
               >
                 Essai gratuit
-              </Link>
+              </ProgressLink>
             </div>
           )}
         </div>

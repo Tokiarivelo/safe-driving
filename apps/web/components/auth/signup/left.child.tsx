@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import styles from '../common/auth.module.css';
 import style from './signup.module.css';
-import Link from 'next/link';
+import { ProgressLink } from '@/components/ui/progress-link';
 export const LeftChild = () => {
   const { t, ready } = useTranslation('auth/signup');
   if (!ready) return null;
@@ -27,9 +27,9 @@ export const LeftChild = () => {
       <p className="text-sm mb-8 opacity-80 hidden sm:block sm:text-md sm:mb-4 lg:px-20">
         {t('title4')}
       </p>
-      <Link href="/login" className={styles.auth_button_Sign}>
+      <ProgressLink href="/login" className={styles.auth_button_Sign}>
         {t('title5')}
-      </Link>
+      </ProgressLink>
     </div>
   );
 };
