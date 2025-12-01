@@ -1,7 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
-import { X, Plus } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
+import dynamic from 'next/dynamic';
+import { X, Plus, MapPin } from 'lucide-react';
+import type { PickedLocation } from '@/components/map/LocationPickerMap';
+
+// Import LocationPickerMap dynamically to avoid SSR issues with Leaflet
+const LocationPickerMap = dynamic(() => import('@/components/map/LocationPickerMap'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[300px] flex items-center justify-center bg-gray-100 rounded-md">
+      <span className="text-gray-500">Chargement de la carte...</span>
+    </div>
+  ),
+});
 
 export interface CreateRideFormData {
   departureAddress: string;
@@ -54,15 +66,18 @@ export function CreateRideDialog({
 }: CreateRideDialogProps) {
   const [formData, setFormData] = useState<CreateRideFormData>(defaultFormData);
   const [errors, setErrors] = useState<Partial<Record<keyof CreateRideFormData, string>>>({});
+  const [pickingMode, setPickingMode] = useState<'departure' | 'arrival' | null>(null);
+  const [departure, setDeparture] = useState<PickedLocation | null>(null);
+  const [arrival, setArrival] = useState<PickedLocation | null>(null);
 
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof CreateRideFormData, string>> = {};
 
     if (!formData.departureAddress.trim()) {
-      newErrors.departureAddress = 'L\'adresse de départ est requise';
+      newErrors.departureAddress = "L'adresse de départ est requise";
     }
     if (!formData.arrivalAddress.trim()) {
-      newErrors.arrivalAddress = 'L\'adresse d\'arrivée est requise';
+      newErrors.arrivalAddress = "L'adresse d'arrivée est requise";
     }
     if (!formData.scheduledDeparture) {
       newErrors.scheduledDeparture = 'La date de départ est requise';
@@ -88,6 +103,8 @@ export function CreateRideDialog({
     try {
       await onSubmit(formData);
       setFormData(defaultFormData);
+      setDeparture(null);
+      setArrival(null);
       onClose();
     } catch (error) {
       console.error('Erreur lors de la création de la course:', error);
@@ -111,17 +128,54 @@ export function CreateRideDialog({
     }
   };
 
+  const handleDepartureChange = useCallback((location: PickedLocation) => {
+    setDeparture(location);
+    setFormData((prev) => ({
+      ...prev,
+      departureAddress: location.address,
+      departureLat: location.lat,
+      departureLng: location.lng,
+    }));
+    // Clear error
+    setErrors((prev) => ({ ...prev, departureAddress: undefined }));
+  }, []);
+
+  const handleArrivalChange = useCallback((location: PickedLocation) => {
+    setArrival(location);
+    setFormData((prev) => ({
+      ...prev,
+      arrivalAddress: location.address,
+      arrivalLat: location.lat,
+      arrivalLng: location.lng,
+    }));
+    // Clear error
+    setErrors((prev) => ({ ...prev, arrivalAddress: undefined }));
+  }, []);
+
+  const handlePickingModeChange = useCallback((mode: 'departure' | 'arrival' | null) => {
+    setPickingMode(mode);
+  }, []);
+
+  const handleClose = () => {
+    setFormData(defaultFormData);
+    setDeparture(null);
+    setArrival(null);
+    setPickingMode(null);
+    setErrors({});
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-lg p-6 w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900">
             {variant === 'user' ? 'Créer une nouvelle course' : 'Proposer une course'}
           </h2>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="text-gray-400 hover:text-gray-600"
             type="button"
             disabled={loading}
@@ -131,46 +185,93 @@ export function CreateRideDialog({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Departure Address */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Adresse de départ *
-            </label>
-            <input
-              type="text"
-              name="departureAddress"
-              value={formData.departureAddress}
-              onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.departureAddress ? 'border-red-500' : 'border-gray-300'
-              }`}
-              placeholder="Ex: Anosy, Antananarivo"
-              disabled={loading}
-            />
-            {errors.departureAddress && (
-              <p className="text-red-500 text-sm mt-1">{errors.departureAddress}</p>
-            )}
+          {/* Map for picking locations */}
+          <div className="rounded-md overflow-hidden border border-gray-300">
+            <div className="h-[300px]">
+              <LocationPickerMap
+                departure={departure}
+                arrival={arrival}
+                onDepartureChange={handleDepartureChange}
+                onArrivalChange={handleArrivalChange}
+                pickingMode={pickingMode}
+                onPickingModeChange={handlePickingModeChange}
+              />
+            </div>
           </div>
 
-          {/* Arrival Address */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Adresse d&apos;arrivée *
-            </label>
-            <input
-              type="text"
-              name="arrivalAddress"
-              value={formData.arrivalAddress}
-              onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.arrivalAddress ? 'border-red-500' : 'border-gray-300'
-              }`}
-              placeholder="Ex: Analakely, Antananarivo"
-              disabled={loading}
-            />
-            {errors.arrivalAddress && (
-              <p className="text-red-500 text-sm mt-1">{errors.arrivalAddress}</p>
-            )}
+          {/* Location inputs with map pick buttons */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Departure Address */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Adresse de départ *
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  name="departureAddress"
+                  value={formData.departureAddress}
+                  onChange={handleChange}
+                  className={`flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    errors.departureAddress ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="Ex: Anosy, Antananarivo"
+                  disabled={loading}
+                />
+                <button
+                  type="button"
+                  onClick={() => setPickingMode(pickingMode === 'departure' ? null : 'departure')}
+                  className={`px-3 py-2 rounded-md flex items-center gap-1 transition-colors ${
+                    pickingMode === 'departure'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                  disabled={loading}
+                  title="Sélectionner sur la carte"
+                >
+                  <MapPin className="w-4 h-4" />
+                </button>
+              </div>
+              {errors.departureAddress && (
+                <p className="text-red-500 text-sm mt-1">{errors.departureAddress}</p>
+              )}
+            </div>
+
+            {/* Arrival Address */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Adresse d&apos;arrivée *
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  name="arrivalAddress"
+                  value={formData.arrivalAddress}
+                  onChange={handleChange}
+                  className={`flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    errors.arrivalAddress ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="Ex: Analakely, Antananarivo"
+                  disabled={loading}
+                />
+                <button
+                  type="button"
+                  onClick={() => setPickingMode(pickingMode === 'arrival' ? null : 'arrival')}
+                  className={`px-3 py-2 rounded-md flex items-center gap-1 transition-colors ${
+                    pickingMode === 'arrival'
+                      ? 'bg-red-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                  disabled={loading}
+                  title="Sélectionner sur la carte"
+                >
+                  <MapPin className="w-4 h-4" />
+                </button>
+              </div>
+              {errors.arrivalAddress && (
+                <p className="text-red-500 text-sm mt-1">{errors.arrivalAddress}</p>
+              )}
+            </div>
           </div>
 
           {/* Scheduled Departure */}
@@ -313,7 +414,7 @@ export function CreateRideDialog({
           <div className="flex space-x-3 pt-4">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50"
               disabled={loading}
             >
