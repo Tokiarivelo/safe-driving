@@ -1,0 +1,49 @@
+fragment MockUserFragment on MockUser {
+  id
+  firstName
+  lastName
+  email
+  phone
+  avatarUrl
+  rating
+}
+
+fragment MockVehicleFragment on MockVehicle {
+  brand
+  model
+  seats
+  type
+}
+
+fragment MockRideFragment on MockRide {
+  id
+  status
+  departureAddress
+  departureLat
+  departureLng
+  arrivalAddress
+  arrivalLat
+  arrivalLng
+  scheduledDeparture
+  price
+  currency
+  vehicleType
+  requiredSeats
+  acceptsAnimals
+  acceptsBaggage
+  baggageDetails
+  otherPreferences
+  preferredLanguages
+  minDriverRating
+  driver {
+    ...MockUserFragment
+  }
+  passengers {
+    ...MockUserFragment
+  }
+  vehicle {
+    ...MockVehicleFragment
+  }
+  finishedAt
+  createdAt
+}

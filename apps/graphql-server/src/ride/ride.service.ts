@@ -38,8 +38,32 @@ export class RideService {
 
     const ride = await this.prisma.ride.create({
       data: {
-        driverId: input.driverId || userId,
-        status: input.status || 'REQUESTED',
+        driverId: input.driverId || null,
+        status: input.status || 'PENDING',
+        // Location fields
+        departureAddress: input.departureAddress,
+        departureLat: input.departureLat,
+        departureLng: input.departureLng,
+        arrivalAddress: input.arrivalAddress,
+        arrivalLat: input.arrivalLat,
+        arrivalLng: input.arrivalLng,
+        // Scheduling
+        scheduledDeparture: input.scheduledDeparture
+          ? new Date(input.scheduledDeparture)
+          : null,
+        // Pricing
+        price: input.price,
+        currency: input.currency || 'MGA',
+        // Vehicle requirements
+        vehicleTypeId: input.vehicleTypeId,
+        requiredSeats: input.requiredSeats || 1,
+        // Preferences
+        acceptsAnimals: input.acceptsAnimals ?? false,
+        acceptsBaggage: input.acceptsBaggage ?? true,
+        baggageDetails: input.baggageDetails,
+        otherPreferences: input.otherPreferences,
+        minDriverRating: input.minDriverRating,
+        preferredLanguages: input.preferredLanguages || [],
         RideParticipant: {
           create: input.participantIds.map((participantId) => ({
             userId: participantId,
@@ -52,6 +76,7 @@ export class RideService {
       },
       include: {
         Driver: true,
+        vehicleType: true,
         RideParticipant: {
           include: { user: true },
         },
@@ -74,9 +99,26 @@ export class RideService {
     const ride = await this.prisma.ride.findUnique({
       where: { id: rideId },
       include: {
-        Driver: true,
+        Driver: {
+          include: {
+            avatar: true,
+            vehicles: {
+              include: {
+                type: true,
+              },
+            },
+            review: true,
+          },
+        },
+        vehicleType: true,
         RideParticipant: {
-          include: { user: true },
+          include: {
+            user: {
+              include: {
+                avatar: true,
+              },
+            },
+          },
         },
         Message: {
           orderBy: { createdAt: 'desc' },
@@ -136,9 +178,26 @@ export class RideService {
     const rides = await this.prisma.ride.findMany({
       where,
       include: {
-        Driver: true,
+        Driver: {
+          include: {
+            avatar: true,
+            vehicles: {
+              include: {
+                type: true,
+              },
+            },
+            review: true,
+          },
+        },
+        vehicleType: true,
         RideParticipant: {
-          include: { user: true },
+          include: {
+            user: {
+              include: {
+                avatar: true,
+              },
+            },
+          },
         },
         _count: {
           select: {
@@ -147,7 +206,7 @@ export class RideService {
           },
         },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { scheduledDeparture: 'desc' },
       take: limit + 1,
       ...(cursor && {
         cursor: { id: cursor },
@@ -180,31 +239,64 @@ export class RideService {
     userId: string,
     input: UpdateRideInput,
   ): Promise<Ride> {
-    // Vérifier que l'utilisateur est le conducteur
+    // Vérifier que l'utilisateur est le conducteur ou un participant
     const ride = await this.prisma.ride.findUnique({
       where: { id: rideId },
-      include: { Driver: true },
+      include: {
+        Driver: true,
+        RideParticipant: true,
+      },
     });
 
     if (!ride) {
       throw new NotFoundException(`Ride ${rideId} not found`);
     }
 
-    if (ride.driverId !== userId) {
-      throw new ForbiddenException('Only the driver can update the ride');
+    const isParticipant = ride.RideParticipant.some((p) => p.userId === userId);
+    if (ride.driverId !== userId && !isParticipant) {
+      throw new ForbiddenException('Only the driver or a participant can update the ride');
     }
 
     const updatedRide = await this.prisma.ride.update({
       where: { id: rideId },
       data: {
-        ...input,
+        ...(input.status && { status: input.status }),
         ...(input.startedAt && { startedAt: new Date(input.startedAt) }),
         ...(input.finishedAt && { finishedAt: new Date(input.finishedAt) }),
+        ...(input.departureAddress !== undefined && { departureAddress: input.departureAddress }),
+        ...(input.departureLat !== undefined && { departureLat: input.departureLat }),
+        ...(input.departureLng !== undefined && { departureLng: input.departureLng }),
+        ...(input.arrivalAddress !== undefined && { arrivalAddress: input.arrivalAddress }),
+        ...(input.arrivalLat !== undefined && { arrivalLat: input.arrivalLat }),
+        ...(input.arrivalLng !== undefined && { arrivalLng: input.arrivalLng }),
+        ...(input.scheduledDeparture && { scheduledDeparture: new Date(input.scheduledDeparture) }),
+        ...(input.price !== undefined && { price: input.price }),
+        ...(input.currency !== undefined && { currency: input.currency }),
+        ...(input.acceptsAnimals !== undefined && { acceptsAnimals: input.acceptsAnimals }),
+        ...(input.acceptsBaggage !== undefined && { acceptsBaggage: input.acceptsBaggage }),
+        ...(input.baggageDetails !== undefined && { baggageDetails: input.baggageDetails }),
+        ...(input.otherPreferences !== undefined && { otherPreferences: input.otherPreferences }),
       },
       include: {
-        Driver: true,
+        Driver: {
+          include: {
+            avatar: true,
+            vehicles: {
+              include: {
+                type: true,
+              },
+            },
+          },
+        },
+        vehicleType: true,
         RideParticipant: {
-          include: { user: true },
+          include: {
+            user: {
+              include: {
+                avatar: true,
+              },
+            },
+          },
         },
       },
     });
