@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { MapContainer, Polyline, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -89,7 +89,6 @@ export default function LocationPickerMap({
   pickingMode,
   onPickingModeChange,
 }: LocationPickerMapProps) {
-  const mapRef = useRef<L.Map | null>(null);
   const [route, setRoute] = useState<[number, number][]>([]);
   const [distKm, setDistKm] = useState<string>('-');
   const [durationMin, setDurationMin] = useState<string>('-');
@@ -148,13 +147,14 @@ export default function LocationPickerMap({
 
   // Route calculation
   useEffect(() => {
-    if (departure && arrival) {
+    const orsUrl = process.env.NEXT_PUBLIC_ORS_URL;
+    if (departure && arrival && orsUrl) {
       const coordinates: [number, number][] = [
         [departure.lng, departure.lat], // ORS expects [lon, lat]
         [arrival.lng, arrival.lat],
       ];
 
-      calculateRouteWorker(coordinates, process.env.NEXT_PUBLIC_ORS_URL || '', (result) => {
+      calculateRouteWorker(coordinates, orsUrl, (result) => {
         if (result.type === 'ROUTE_CALCULATED') {
           const coords = polyline.decode(result.data.geometry) as [number, number][];
           setRoute(coords);
@@ -190,8 +190,8 @@ export default function LocationPickerMap({
         <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md">
           <span className="text-sm font-medium">
             {pickingMode === 'departure'
-              ? 'Cliquez sur la carte pour sélectionner le départ'
-              : 'Cliquez sur la carte pour sélectionner l\'arrivée'}
+              ? "Cliquez sur la carte pour sélectionner le départ"
+              : "Cliquez sur la carte pour sélectionner l'arrivée"}
           </span>
           <button
             onClick={() => onPickingModeChange(null)}
