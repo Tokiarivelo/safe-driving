@@ -191,7 +191,7 @@ export default function UserRidesPage() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const newRide: Ride = {
-        id: `temp-${Date.now()}`,
+        id: crypto.randomUUID(),
         status: 'PENDING',
         departureAddress: data.departureAddress,
         departureLat: data.departureLat,
