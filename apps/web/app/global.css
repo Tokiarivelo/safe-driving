@@ -345,6 +345,18 @@
   background: var(--auth-gradient-but-card);
 }
 
+/* =========== Conversation List Gradients ======== */
+@utility conversation-gradient-bg {
+  background: linear-gradient(135deg, #FF7F41 0%, #C82BA0 100%);
+}
+@utility conversation-gradient-border {
+  border-right: 4px solid;
+  border-image: linear-gradient(to bottom, #FF7F41, #C82BA0) 1;
+}
+@utility conversation-selected-bg {
+  background: linear-gradient(to right, rgba(255, 127, 65, 0.08) 0%, rgba(200, 43, 160, 0.08) 100%);
+}
+
 /* ===============================
    2) Styles existants
    =============================== */

@@ -55,8 +55,8 @@ export interface ConversationListProps {
   searchTerm?: string;
   maxHeight?: string;
   onConversationSelect: (conversationId: string, conversation?: UserConversation) => void;
-  onEdit: (conversation: UserConversation) => void;
-  onDelete: (conversationId: string) => void;
+  onEdit?: (conversation: UserConversation) => void;
+  onDelete?: (conversationId: string) => void;
 }
 
 export interface UserSearchResult {

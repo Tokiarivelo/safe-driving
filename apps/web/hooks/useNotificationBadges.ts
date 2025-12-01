@@ -47,16 +47,22 @@ export function useNotificationBadges(): NotificationBadges {
     errorPolicy: 'all',
   });
 
-  // Update message count based on conversations with messages
+  // Update message count based on unread messages in conversations
+  // This should count actual unread messages, not total messages
   useEffect(() => {
     if (conversationsData?.userConversations?.conversations) {
-      // Count conversations that have messages (indicating activity)
-      // This shows the count of active conversations as a notification indicator
+      // Count total unread messages across all conversations
+      // This requires the backend to provide unreadCount in each conversation
       const conversations = conversationsData.userConversations.conversations;
-      const conversationsWithMessages = conversations.filter(
-        (conv) => conv._count?.messages && conv._count.messages > 0
-      );
-      setMessagesCount(conversationsWithMessages.length);
+      let totalUnread = 0;
+      conversations.forEach((conv) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const unreadCount = (conv as any).unreadCount;
+        if (typeof unreadCount === 'number' && unreadCount > 0) {
+          totalUnread += unreadCount;
+        }
+      });
+      setMessagesCount(totalUnread);
     }
   }, [conversationsData]);
 
