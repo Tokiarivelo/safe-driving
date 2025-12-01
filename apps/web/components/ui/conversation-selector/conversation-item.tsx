@@ -79,15 +79,22 @@ export function ConversationItem({ conversation, isSelected, onClick }: Conversa
 
   /**
    * Get unread message count for the notification badge.
-   * TODO: When the API provides unreadCount field in UserConversation,
-   * this should return that value directly.
-   * For now, uses message count as a demonstration of the UI component.
+   * This returns the actual unread count from the conversation data.
+   * The badge will only be shown when there are unread messages
+   * and will disappear when the user reads the messages.
+   * 
+   * Note: This requires the backend to provide unreadCount in the
+   * UserConversation type. Until then, no badge will be shown.
    */
   const getUnreadCount = () => {
-    // Demonstration using message count
-    // In production, replace with actual unreadCount from API
-    const count = conversation._count?.messages ?? 0;
-    return count > 0 ? Math.min(count, 9) : 0;
+    // Use actual unreadCount from the conversation if available
+    // This field should be provided by the backend API
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const unreadCount = (conversation as any).unreadCount;
+    if (typeof unreadCount === 'number' && unreadCount > 0) {
+      return Math.min(unreadCount, 99);
+    }
+    return 0;
   };
 
   const getParticipantAvatar = () => {
