@@ -14,7 +14,7 @@ export class SeedService implements OnModuleInit {
   async onModuleInit() {
     await this.seedRoles();
     // Uncomment to seed rides (for development only)
-    // await this.seedMockRides();
+    await this.seedMockRides();
   }
 
   async seedRoles() {
@@ -89,26 +89,19 @@ export class SeedService implements OnModuleInit {
       },
     });
 
-    const mockUser = await this.prisma.user.upsert({
-      where: { email: 'user@example.com' },
-      update: {},
-      create: {
-        email: 'user@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        phone: '(+261) 34 00 000 00',
-        password: hashedPassword,
-        isVerified: true,
-        Role: {
-          connect: { id: userRole.id },
-        },
-      },
+    const mockUser = await this.prisma.user.findFirst({
+      where: { email: 'test@email.com' },
     });
 
+    if (!mockUser) {
+      this.logger.warn('User not found, skipping ride seed');
+      return;
+    }
+
     // Get vehicle type
-    const vehicleType = await this.prisma.vehicleType.findFirst({
-      where: { name: 'Voiture' },
-    });
+    const vehicleType = await this.prisma.vehicleType.findFirst();
+
+    console.log('vehicleType :>> ', vehicleType?.id);
 
     // Create mock driver vehicle if doesn't exist
     const driverVehicle = await this.prisma.driverVehicle.upsert({
@@ -145,7 +138,8 @@ export class SeedService implements OnModuleInit {
         baggageDetails: 'valise, vélo',
         preferredLanguages: ['Malagasy', 'Française'],
         minDriverRating: 3,
-        otherPreferences: 'Chauffeurs dynamique et cool et qui conduit prudemment',
+        otherPreferences:
+          'Chauffeurs dynamique et cool et qui conduit prudemment',
       },
       {
         driverId: null,
@@ -186,7 +180,8 @@ export class SeedService implements OnModuleInit {
         baggageDetails: 'valise, vélo',
         preferredLanguages: ['Malagasy', 'Française'],
         minDriverRating: 3,
-        otherPreferences: 'Chauffeurs dynamique et cool et qui conduit prudemment',
+        otherPreferences:
+          'Chauffeurs dynamique et cool et qui conduit prudemment',
       },
       {
         driverId: null,
