@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated graphql types (generate with pnpm generate when backend is running)
+/graphql/generated/
