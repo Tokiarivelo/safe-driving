@@ -258,6 +258,7 @@ model VehicleType {
   name           String           @unique
   vehicles       DriverVehicle[]
   UserPreference UserPreference[] @relation("UserPreferencePreferedvelicles")
+  Ride           Ride[]
 }
 
 model DriverVehicle {
@@ -278,13 +279,52 @@ model DriverVehicle {
   @@index([userId], map: "DriverVehicle_userId_fkey")
 }
 
+// Ride status enumeration
+enum RideStatus {
+  PENDING // En attente
+  IN_PROGRESS // En cours
+  COMPLETED // Terminée
+  CANCELLED // Annulée
+}
+
 model Ride {
-  id         String    @id @default(uuid())
+  id         String     @id @default(uuid())
   driverId   String?
-  status     String // ex: REQUESTED, ONGOING, FINISHED
+  status     RideStatus @default(PENDING)
   startedAt  DateTime?
   finishedAt DateTime?
-  createdAt  DateTime  @default(now())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime?  @updatedAt
+
+  // Locations
+  departureAddress String?
+  departureLat     Decimal? @db.Decimal(10, 7)
+  departureLng     Decimal? @db.Decimal(10, 7)
+  arrivalAddress   String?
+  arrivalLat       Decimal? @db.Decimal(10, 7)
+  arrivalLng       Decimal? @db.Decimal(10, 7)
+
+  // Scheduling
+  scheduledDeparture DateTime?
+
+  // Pricing
+  price    Decimal? @db.Decimal(10, 2)
+  currency String?  @default("MGA")
+
+  // Vehicle requirements
+  vehicleTypeId String?
+  vehicleType   VehicleType? @relation(fields: [vehicleTypeId], references: [id])
+  requiredSeats Int?         @default(1)
+
+  // Preferences
+  acceptsAnimals   Boolean? @default(false)
+  acceptsBaggage   Boolean? @default(true)
+  baggageDetails   String?
+  otherPreferences String?
+
+  // Driver preferences (for user rides)
+  minDriverRating    Float?
+  preferredLanguages String[] // e.g., ["Malagasy", "Française"]
 
   // optional relation to positions
   positions       Position[]
@@ -294,6 +334,8 @@ model Ride {
   Attachment      Attachment[]
 
   @@index([driverId, createdAt])
+  @@index([status])
+  @@index([scheduledDeparture])
 }
 
 model RideParticipant {
