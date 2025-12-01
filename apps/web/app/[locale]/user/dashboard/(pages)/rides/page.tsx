@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { RideContainer, Ride } from '@/components/ride';
+import { RideContainer, Ride, CreateRideFormData } from '@/components/ride';
 
 // Mock data for development - This will be replaced with GraphQL query
 const mockRides: Ride[] = [
@@ -156,6 +156,7 @@ const mockRides: Ride[] = [
 export default function UserRidesPage() {
   const [rides, setRides] = useState<Ride[]>([]);
   const [loading, setLoading] = useState(true);
+  const [createLoading, setCreateLoading] = useState(false);
 
   useEffect(() => {
     // Simulate loading
@@ -182,6 +183,46 @@ export default function UserRidesPage() {
     // TODO: Navigate to messages
   };
 
+  const handleCreateRide = async (data: CreateRideFormData) => {
+    setCreateLoading(true);
+    try {
+      // TODO: Replace with actual GraphQL mutation
+      // For now, simulate API call and add to local state
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const newRide: Ride = {
+        id: crypto.randomUUID(),
+        status: 'PENDING',
+        departureAddress: data.departureAddress,
+        departureLat: data.departureLat,
+        departureLng: data.departureLng,
+        arrivalAddress: data.arrivalAddress,
+        arrivalLat: data.arrivalLat,
+        arrivalLng: data.arrivalLng,
+        scheduledDeparture: new Date(data.scheduledDeparture),
+        price: data.price,
+        currency: data.currency,
+        requiredSeats: data.requiredSeats,
+        acceptsAnimals: data.acceptsAnimals,
+        acceptsBaggage: data.acceptsBaggage,
+        baggageDetails: data.baggageDetails,
+        otherPreferences: data.otherPreferences,
+        driver: null,
+        passengers: [],
+        vehicle: null,
+        createdAt: new Date(),
+      };
+
+      setRides((prev) => [newRide, ...prev]);
+      console.log('Created ride:', newRide);
+    } catch (error) {
+      console.error('Error creating ride:', error);
+      throw error;
+    } finally {
+      setCreateLoading(false);
+    }
+  };
+
   return (
     <div className="h-full">
       <RideContainer
@@ -192,6 +233,8 @@ export default function UserRidesPage() {
         onArchive={handleArchive}
         onDelete={handleDelete}
         onMessage={handleMessage}
+        onCreateRide={handleCreateRide}
+        createRideLoading={createLoading}
       />
     </div>
   );
