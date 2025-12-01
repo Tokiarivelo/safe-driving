@@ -1,0 +1,123 @@
+query MockRides($status: String, $limit: Int) {
+  mockRides(status: $status, limit: $limit) {
+    rides {
+      ...MockRideFragment
+    }
+    total
+    hasMore
+  }
+}
+
+query UserRides($limit: Int, $cursor: String, $filter: RideFilterInput) {
+  userRides(limit: $limit, cursor: $cursor, filter: $filter) {
+    rides {
+      id
+      status
+      departureAddress
+      departureLat
+      departureLng
+      arrivalAddress
+      arrivalLat
+      arrivalLng
+      scheduledDeparture
+      price
+      currency
+      requiredSeats
+      acceptsAnimals
+      acceptsBaggage
+      baggageDetails
+      otherPreferences
+      preferredLanguages
+      minDriverRating
+      startedAt
+      finishedAt
+      createdAt
+      Driver {
+        id
+        firstName
+        lastName
+        phone
+        email
+        avatar {
+          url
+        }
+      }
+      vehicleType {
+        id
+        name
+      }
+      RideParticipant {
+        id
+        userId
+        role
+        user {
+          id
+          firstName
+          lastName
+          avatar {
+            url
+          }
+        }
+      }
+      participantCount
+      messageCount
+    }
+    nextCursor
+    hasMore
+  }
+}
+
+query GetRide($id: String!) {
+  ride(id: $id) {
+    id
+    status
+    departureAddress
+    departureLat
+    departureLng
+    arrivalAddress
+    arrivalLat
+    arrivalLng
+    scheduledDeparture
+    price
+    currency
+    requiredSeats
+    acceptsAnimals
+    acceptsBaggage
+    baggageDetails
+    otherPreferences
+    preferredLanguages
+    minDriverRating
+    startedAt
+    finishedAt
+    createdAt
+    Driver {
+      id
+      firstName
+      lastName
+      phone
+      email
+      avatar {
+        url
+      }
+    }
+    vehicleType {
+      id
+      name
+    }
+    RideParticipant {
+      id
+      userId
+      role
+      user {
+        id
+        firstName
+        lastName
+        avatar {
+          url
+        }
+      }
+    }
+    participantCount
+    messageCount
+  }
+}

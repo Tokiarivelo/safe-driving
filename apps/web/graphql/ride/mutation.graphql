@@ -1,0 +1,33 @@
+mutation CreateRide($input: CreateRideInput!) {
+  createRide(input: $input) {
+    id
+    status
+    departureAddress
+    departureLat
+    departureLng
+    arrivalAddress
+    arrivalLat
+    arrivalLng
+    scheduledDeparture
+    price
+    currency
+    createdAt
+  }
+}
+
+mutation UpdateRide($rideId: String!, $input: UpdateRideInput!) {
+  updateRide(rideId: $rideId, input: $input) {
+    id
+    status
+    departureAddress
+    arrivalAddress
+    scheduledDeparture
+    price
+  }
+}
+
+mutation DeleteRide($rideId: String!) {
+  deleteRide(rideId: $rideId) {
+    id
+  }
+}
