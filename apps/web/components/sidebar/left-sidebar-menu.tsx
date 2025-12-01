@@ -1,11 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useMeQuery } from '@/graphql/generated/graphql';
 import { usePathname } from 'next/navigation';
 import { MenuItemProps } from './interfaces';
 import MenuItem from './menu-item';
+import { useNotificationBadges } from '@/hooks/useNotificationBadges';
 
 interface LeftSidebarMenuProps {
   menuItems: MenuItemProps[];
@@ -16,6 +17,8 @@ function LeftSidebarMenu({ menuItems }: LeftSidebarMenuProps) {
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
   });
+
+  const { messagesCount, ridesCount } = useNotificationBadges();
 
   // get location
   const location = usePathname();
@@ -30,6 +33,21 @@ function LeftSidebarMenu({ menuItems }: LeftSidebarMenuProps) {
   }
   const bgColor = stringToColor(`${data?.me?.firstName}${data?.me?.lastName}`);
 
+  // Enhance menu items with badge counts
+  const enhancedMenuItems = useMemo(() => {
+    return menuItems.map((item) => {
+      // Add badge for messages menu
+      if (item.href.includes('/messages')) {
+        return { ...item, badgeCount: messagesCount };
+      }
+      // Add badge for rides menu
+      if (item.href.includes('/rides')) {
+        return { ...item, badgeCount: ridesCount };
+      }
+      return item;
+    });
+  }, [menuItems, messagesCount, ridesCount]);
+
   return (
     <div className="w-16 h-auto z-100 ml-5 mt-3">
       <div className="w-16 h-16 mb-5 flex justify-center items-center rounded-full border-2 border-pink-600">
@@ -42,7 +60,7 @@ function LeftSidebarMenu({ menuItems }: LeftSidebarMenuProps) {
         </div>
       </div>
       <div className="bg-white w-16 h-auto space-y-4 rounded-full shadow-auth-card">
-        {menuItems.map((item, index) => (
+        {enhancedMenuItems.map((item, index) => (
           <div key={index}>
             <MenuItem {...item} isActive={location.endsWith(item.href)} />
           </div>
