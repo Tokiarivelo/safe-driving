@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { ConversationSelectorProps, ConversationFormData } from './types';
 import { ConversationSearchBar } from './conversation-search-bar';
@@ -6,6 +6,7 @@ import { ConversationList } from './conversation-list';
 import { ConversationFormModal } from './conversation-form-modal';
 import { useConversations } from '@/lib/conversation/useConversations';
 import { useConversationSearch } from './useConversationSearch';
+import { useSocketConnection } from '@/lib/socket.io/SocketProvider';
 import {
   CreateConversationInput,
   UpdateConversationInput,
@@ -29,6 +30,9 @@ export function ConversationSelectorWithCRUD({
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingConversation, setEditingConversation] = useState<UserConversation | null>(null);
 
+  // Get socket connection for real-time notifications
+  const { socket, isConnected } = useSocketConnection();
+
   const {
     conversations,
     loading,
@@ -36,6 +40,7 @@ export function ConversationSelectorWithCRUD({
     createConversation,
     updateConversation,
     deleteConversation,
+    refetch,
   } = useConversations();
 
   // Use custom search hook
@@ -47,6 +52,35 @@ export function ConversationSelectorWithCRUD({
   const displayConversations = searchTerm.trim().length >= 2 ? searchResults : conversations;
 
   const isLoading = searchTerm.trim().length >= 2 ? isSearching : loading;
+
+  // Handle new message event - refetch to update unread counts
+  const handleNewMessage = useCallback(() => {
+    refetch?.();
+  }, [refetch]);
+
+  // Handle conversation update events
+  const handleConversationUpdate = useCallback(() => {
+    refetch?.();
+  }, [refetch]);
+
+  // Subscribe to Socket.IO events for real-time notifications
+  useEffect(() => {
+    if (!socket || !isConnected) return;
+
+    // Subscribe to new message events for notification updates
+    socket.on('newMessage', handleNewMessage);
+    
+    // Subscribe to conversation update events
+    socket.on('conversationUpdate', handleConversationUpdate);
+    socket.on('conversationUpdated', handleConversationUpdate);
+
+    // Cleanup subscriptions on unmount
+    return () => {
+      socket.off('newMessage', handleNewMessage);
+      socket.off('conversationUpdate', handleConversationUpdate);
+      socket.off('conversationUpdated', handleConversationUpdate);
+    };
+  }, [socket, isConnected, handleNewMessage, handleConversationUpdate]);
 
   const handleCreateConversation = async (data: ConversationFormData) => {
     try {
@@ -97,19 +131,27 @@ export function ConversationSelectorWithCRUD({
     }
   };
 
+  const handleLoadMore = () => {
+    // TODO: Implement pagination for loading more conversations
+    console.log('Load more conversations');
+  };
+
   return (
     <div
       className={`bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col ${className}`}
       style={style}
     >
       {/* Header */}
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-semibold text-gray-900">Messages</h2>
+      <div className="p-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="relative">
+            <h2 className="text-xl font-bold text-gray-900">Messages</h2>
+            <div className="absolute -bottom-2 left-0 w-full h-0.5 bg-gray-200"></div>
+          </div>
           {showCreateButton && (
             <button
               onClick={() => setShowCreateModal(true)}
-              className="flex items-center gap-1 px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              className="flex items-center gap-1 px-3 py-1 text-sm conversation-gradient-bg text-white rounded-md hover:opacity-90 transition-opacity"
               disabled={isLoading}
             >
               <Plus className="w-4 h-4" />
@@ -119,11 +161,13 @@ export function ConversationSelectorWithCRUD({
         </div>
 
         {showSearch && (
-          <ConversationSearchBar
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            isLoading={isLoading}
-          />
+          <div className="mt-4">
+            <ConversationSearchBar
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              isLoading={isLoading}
+            />
+          </div>
         )}
 
         {error && (
@@ -145,10 +189,14 @@ export function ConversationSelectorWithCRUD({
         maxHeight={maxHeight}
       />
 
-      {/* Footer avec informations */}
-      <div className="p-3 border-t border-gray-200 bg-gray-50 text-xs text-gray-500 text-center">
-        {displayConversations.length} conversation{displayConversations.length > 1 ? 's' : ''}
-        {searchTerm && ` trouvée${displayConversations.length > 1 ? 's' : ''}`}
+      {/* Footer with Load More button */}
+      <div className="p-4 border-t border-gray-100">
+        <button
+          onClick={handleLoadMore}
+          className="w-full py-2.5 conversation-gradient-bg text-white text-sm font-medium rounded-full hover:opacity-90 transition-opacity"
+        >
+          Charger plus
+        </button>
       </div>
 
       {/* Modals */}
