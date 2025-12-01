@@ -81,7 +81,7 @@ export function RideDetails({ ride, variant, onEdit, onMessage }: RideDetailsPro
 
         {/* Date and time */}
         <div>
-          <h3 className="text-sm font-medium text-gray-700 mb-1">Date et heure de départ prevue</h3>
+          <h3 className="text-sm font-medium text-gray-700 mb-1">Date et heure de départ prévue</h3>
           <p className="text-base">{formattedDate} à {formattedTime}</p>
         </div>
 
@@ -130,7 +130,7 @@ export function RideDetails({ ride, variant, onEdit, onMessage }: RideDetailsPro
             <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
               {ride.minDriverRating && <li>Note: {ride.minDriverRating} et plus</li>}
               {ride.preferredLanguages && ride.preferredLanguages.length > 0 && (
-                <li>Parlan: {ride.preferredLanguages.join(', ')}</li>
+                <li>Parlant: {ride.preferredLanguages.join(', ')}</li>
               )}
             </ul>
           </div>
