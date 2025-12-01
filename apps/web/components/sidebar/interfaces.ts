@@ -3,4 +3,5 @@ export interface MenuItemProps {
   icon: string;
   name?: string;
   isActive?: boolean;
+  badgeCount?: number;
 }
