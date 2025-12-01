@@ -11,13 +11,13 @@ interface NotificationBadges {
 
 /**
  * Hook to get notification badge counts for messages and rides
- * Returns counts of unread messages (new conversations) and new pending rides
+ * Returns counts of active conversations (with messages) and pending rides
  */
 export function useNotificationBadges(): NotificationBadges {
   const [messagesCount, setMessagesCount] = useState(0);
   const [ridesCount, setRidesCount] = useState(0);
 
-  // Fetch user conversations - count new ones without messages read
+  // Fetch user conversations - count active ones with messages
   const {
     data: conversationsData,
     loading: conversationsLoading,
@@ -44,25 +44,20 @@ export function useNotificationBadges(): NotificationBadges {
   useEffect(() => {
     if (conversationsData?.userConversations?.conversations) {
       // Count conversations that have messages (indicating activity)
-      // In a real implementation, this would track unread message counts
+      // This shows the count of active conversations as a notification indicator
       const conversations = conversationsData.userConversations.conversations;
       const conversationsWithMessages = conversations.filter(
         (conv) => conv._count?.messages && conv._count.messages > 0
       );
-      // For now, we'll show the count of active conversations as a simple indicator
-      // This can be refined when backend provides unread message counts
-      setMessagesCount(conversationsWithMessages.length > 0 ? conversationsWithMessages.length : 0);
+      setMessagesCount(conversationsWithMessages.length);
     }
   }, [conversationsData]);
 
-  // Update ride count based on pending rides
+  // Update ride count based on pending rides from the query
   useEffect(() => {
     if (ridesData?.userRides?.rides) {
-      // Count pending rides that need attention
-      const pendingRides = ridesData.userRides.rides.filter(
-        (ride) => ride.status === 'PENDING'
-      );
-      setRidesCount(pendingRides.length);
+      // The query already filters for PENDING status, so we just count the results
+      setRidesCount(ridesData.userRides.rides.length);
     }
   }, [ridesData]);
 
