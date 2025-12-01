@@ -44,8 +44,15 @@ export function ConversationItem({ conversation, isSelected, onClick }: Conversa
     }
   };
 
+  /**
+   * Get the last message preview for display.
+   * TODO: When the API provides lastMessage field in UserConversation,
+   * this should return the actual message content truncated.
+   * For now, returns a placeholder matching the design mockup.
+   */
   const getLastMessagePreview = () => {
-    // Use the last message content if available, otherwise show a placeholder
+    // Placeholder text matching the design mockup
+    // Will be replaced when lastMessage field is available in the API
     return 'Lorem ipsum dolor ...';
   };
 
@@ -58,22 +65,28 @@ export function ConversationItem({ conversation, isSelected, onClick }: Conversa
     return `${formattedHours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
   };
 
-  // Online status - can be enhanced with socket.io real-time updates
-  // For now, we check if there are any participants (simulated status)
+  /**
+   * Check if the participant is online.
+   * TODO: Integrate with socket.io to receive real-time user presence updates.
+   * The socket.io provider should emit 'userOnline' and 'userOffline' events
+   * that can be subscribed to for updating this status.
+   */
   const isOnline = () => {
-    if (conversation.participants && conversation.participants.length > 0) {
-      // This can be replaced with real-time status from socket.io
-      return false; // Default to offline, will be updated by socket.io
-    }
+    // Placeholder - will be updated by socket.io presence events
+    // Return false until real-time presence is implemented
     return false;
   };
 
-  // Get unread message count - use _count.messages as a proxy for now
-  // This should be replaced with actual unread count when available in the API
+  /**
+   * Get unread message count for the notification badge.
+   * TODO: When the API provides unreadCount field in UserConversation,
+   * this should return that value directly.
+   * For now, uses message count as a demonstration of the UI component.
+   */
   const getUnreadCount = () => {
-    // Using message count as a demo - in production, use actual unreadCount field
+    // Demonstration using message count
+    // In production, replace with actual unreadCount from API
     const count = conversation._count?.messages ?? 0;
-    // Only show badge if there are messages (simulating unread)
     return count > 0 ? Math.min(count, 9) : 0;
   };
 
@@ -88,7 +101,7 @@ export function ConversationItem({ conversation, isSelected, onClick }: Conversa
               alt={`${participant.user.firstName} ${participant.user.lastName}`}
               width={52}
               height={52}
-              className="w-13 h-13 rounded-full object-cover border-2 border-white shadow-sm"
+              className="w-[52px] h-[52px] rounded-full object-cover border-2 border-white shadow-sm"
               style={{ objectFit: 'cover' }}
             />
             {isOnline() && (
@@ -101,7 +114,7 @@ export function ConversationItem({ conversation, isSelected, onClick }: Conversa
 
     return (
       <div className="relative">
-        <div className="w-13 h-13 rounded-full bg-gray-300 flex items-center justify-center text-xl border-2 border-white shadow-sm">
+        <div className="w-[52px] h-[52px] rounded-full bg-gray-300 flex items-center justify-center text-xl border-2 border-white shadow-sm">
           {getTypeIcon()}
         </div>
         {isOnline() && (

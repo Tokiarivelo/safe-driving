@@ -131,9 +131,19 @@ export function ConversationSelectorWithCRUD({
     }
   };
 
+  /**
+   * Handle loading more conversations (pagination).
+   * TODO: Implement cursor-based pagination using the useConversations hook.
+   * The GraphQL query supports limit/offset or cursor-based pagination.
+   * This will need to:
+   * 1. Track the current page/cursor state
+   * 2. Call the refetch or fetchMore function with new pagination params
+   * 3. Append results to the existing conversations list
+   */
   const handleLoadMore = () => {
-    // TODO: Implement pagination for loading more conversations
-    console.log('Load more conversations');
+    // Placeholder for pagination implementation
+    // This button is shown to match the design mockup
+    console.log('Load more conversations - pagination to be implemented');
   };
 
   return (
