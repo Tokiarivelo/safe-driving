@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { Plus } from 'lucide-react';
 import { ConversationSelectorProps, ConversationFormData } from './types';
 import { ConversationSearchBar } from './conversation-search-bar';
@@ -22,13 +23,18 @@ export function ConversationSelectorWithCRUD({
   maxHeight = '400px',
   showSearch = true,
   showCreateButton = true,
+  currentUserId: propCurrentUserId,
   onConversationChange,
 }: ConversationSelectorProps & {
   onConversationChange?: (conversations: UserConversation[]) => void;
 }) {
+  const { data: session } = useSession();
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingConversation, setEditingConversation] = useState<UserConversation | null>(null);
+
+  // Use propCurrentUserId if provided, otherwise get from session
+  const currentUserId = propCurrentUserId || session?.user?.id;
 
   // Get socket connection for real-time notifications
   const { socket, isConnected } = useSocketConnection();
@@ -69,7 +75,7 @@ export function ConversationSelectorWithCRUD({
 
     // Subscribe to new message events for notification updates
     socket.on('newMessage', handleNewMessage);
-    
+
     // Subscribe to conversation update events
     socket.on('conversationUpdate', handleConversationUpdate);
     socket.on('conversationUpdated', handleConversationUpdate);
@@ -197,6 +203,7 @@ export function ConversationSelectorWithCRUD({
         isLoading={isLoading}
         searchTerm={searchTerm}
         maxHeight={maxHeight}
+        currentUserId={currentUserId}
       />
 
       {/* Footer with Load More button */}

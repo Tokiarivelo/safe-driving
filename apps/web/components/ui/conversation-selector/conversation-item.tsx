@@ -3,7 +3,12 @@ import Image from 'next/image';
 import { ConversationItemProps } from './conversation-selector.interface';
 import { ConversationType } from '@/graphql/generated/graphql';
 
-export function ConversationItem({ conversation, isSelected, onClick }: ConversationItemProps) {
+export function ConversationItem({
+  conversation,
+  isSelected,
+  onClick,
+  currentUserId,
+}: ConversationItemProps) {
   const getConversationTitle = () => {
     if (conversation.title) {
       return conversation.title;
@@ -14,7 +19,10 @@ export function ConversationItem({ conversation, isSelected, onClick }: Conversa
       conversation.participants &&
       conversation.participants.length > 0
     ) {
-      const participant = conversation.participants[0];
+      // Get the first participant that is not the current user
+      const participant =
+        conversation.participants.find(p => p.user.id !== currentUserId) ||
+        conversation.participants[0];
       const firstName = participant.user.firstName || '';
       const lastName = participant.user.lastName || '';
       return `${firstName} ${lastName}`.trim() || 'Utilisateur inconnu';
@@ -82,7 +90,7 @@ export function ConversationItem({ conversation, isSelected, onClick }: Conversa
    * This returns the actual unread count from the conversation data.
    * The badge will only be shown when there are unread messages
    * and will disappear when the user reads the messages.
-   * 
+   *
    * Note: This requires the backend to provide unreadCount in the
    * UserConversation type. Until then, no badge will be shown.
    */
@@ -99,7 +107,10 @@ export function ConversationItem({ conversation, isSelected, onClick }: Conversa
 
   const getParticipantAvatar = () => {
     if (conversation.participants && conversation.participants.length > 0) {
-      const participant = conversation.participants[0];
+      // Get the first participant that is not the current user
+      const participant =
+        conversation.participants.find(p => p.user.id !== currentUserId) ||
+        conversation.participants[0];
       if (participant.user.avatar?.url) {
         return (
           <div className="relative">
@@ -137,9 +148,7 @@ export function ConversationItem({ conversation, isSelected, onClick }: Conversa
     <button
       onClick={onClick}
       className={`w-full px-4 py-3 text-left transition-all duration-200 border-b border-gray-100 ${
-        isSelected
-          ? 'conversation-selected-bg conversation-gradient-border'
-          : 'hover:bg-gray-50'
+        isSelected ? 'conversation-selected-bg conversation-gradient-border' : 'hover:bg-gray-50'
       }`}
     >
       <div className="flex items-center space-x-3">
@@ -147,7 +156,9 @@ export function ConversationItem({ conversation, isSelected, onClick }: Conversa
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-gray-900 truncate">{getConversationTitle()}</h3>
+            <h3 className="text-sm font-semibold text-gray-900 truncate">
+              {getConversationTitle()}
+            </h3>
             <span className="text-xs text-gray-500 font-medium">
               {formatTime(conversation.createdAt)}
             </span>

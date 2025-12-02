@@ -7,6 +7,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   selectedConversationId,
   isLoading,
   searchTerm,
+  currentUserId,
   onConversationSelect,
 }) => {
   if (isLoading) {
@@ -34,6 +35,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
           conversation={conversation}
           isSelected={selectedConversationId === conversation.id}
           onClick={() => onConversationSelect(conversation.id, conversation)}
+          currentUserId={currentUserId}
         />
       ))}
     </div>

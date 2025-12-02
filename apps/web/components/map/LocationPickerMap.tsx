@@ -44,7 +44,7 @@ const MapClickHandler = React.memo(function MapClickHandler({
   onMapClick: (lat: number, lng: number) => void;
 }) {
   useMapEvents({
-    click: (e) => {
+    click: e => {
       if (pickingMode) {
         onMapClick(e.latlng.lat, e.latlng.lng);
       }
@@ -66,10 +66,7 @@ const MapBoundsHandler = React.memo(function MapBoundsHandler({
 
   useEffect(() => {
     if (departure && arrival) {
-      const bounds = L.latLngBounds(
-        [departure.lat, departure.lng],
-        [arrival.lat, arrival.lng]
-      );
+      const bounds = L.latLngBounds([departure.lat, departure.lng], [arrival.lat, arrival.lng]);
       map.fitBounds(bounds, { padding: [50, 50] });
     } else if (departure) {
       map.setView([departure.lat, departure.lng], 15);
@@ -99,7 +96,10 @@ export default function LocationPickerMap({
 
   const center = useMemo(() => {
     if (departure && arrival) {
-      return [(departure.lat + arrival.lat) / 2, (departure.lng + arrival.lng) / 2] as [number, number];
+      return [(departure.lat + arrival.lat) / 2, (departure.lng + arrival.lng) / 2] as [
+        number,
+        number,
+      ];
     }
     if (departure) return [departure.lat, departure.lng] as [number, number];
     if (arrival) return [arrival.lat, arrival.lng] as [number, number];
@@ -111,38 +111,43 @@ export default function LocationPickerMap({
       if (!pickingMode) return;
 
       // Use worker for reverse geocoding
-      reverseGeocodeWorker(lat, lng, process.env.NEXT_PUBLIC_NOMINATIM_URL || 'https://nominatim.openstreetmap.org/reverse', (result) => {
-        if (result.type === 'GEOCODE_RESULT') {
-          const locationData: PickedLocation = {
-            address: result.data.locationName,
-            lat,
-            lng,
-          };
+      reverseGeocodeWorker(
+        lat,
+        lng,
+        process.env.NEXT_PUBLIC_NOMINATIM_URL || 'https://nominatim.openstreetmap.org/reverse',
+        result => {
+          if (result.type === 'GEOCODE_RESULT') {
+            const locationData: PickedLocation = {
+              address: result.data.locationName,
+              lat,
+              lng,
+            };
 
-          if (pickingMode === 'departure') {
-            onDepartureChange(locationData);
-          } else {
-            onArrivalChange(locationData);
+            if (pickingMode === 'departure') {
+              onDepartureChange(locationData);
+            } else {
+              onArrivalChange(locationData);
+            }
+            onPickingModeChange(null);
+          } else if (result.type === 'GEOCODE_ERROR') {
+            console.error('Geocoding failed:', result.error);
+            // Still set the location with coordinates only
+            const locationData: PickedLocation = {
+              address: `${lat.toFixed(6)}, ${lng.toFixed(6)}`,
+              lat,
+              lng,
+            };
+            if (pickingMode === 'departure') {
+              onDepartureChange(locationData);
+            } else {
+              onArrivalChange(locationData);
+            }
+            onPickingModeChange(null);
           }
-          onPickingModeChange(null);
-        } else if (result.type === 'GEOCODE_ERROR') {
-          console.error('Geocoding failed:', result.error);
-          // Still set the location with coordinates only
-          const locationData: PickedLocation = {
-            address: `${lat.toFixed(6)}, ${lng.toFixed(6)}`,
-            lat,
-            lng,
-          };
-          if (pickingMode === 'departure') {
-            onDepartureChange(locationData);
-          } else {
-            onArrivalChange(locationData);
-          }
-          onPickingModeChange(null);
-        }
-      });
+        },
+      );
     },
-    [pickingMode, reverseGeocodeWorker, onDepartureChange, onArrivalChange, onPickingModeChange]
+    [pickingMode, reverseGeocodeWorker, onDepartureChange, onArrivalChange, onPickingModeChange],
   );
 
   // Route calculation
@@ -154,7 +159,7 @@ export default function LocationPickerMap({
         [arrival.lng, arrival.lat],
       ];
 
-      calculateRouteWorker(coordinates, orsUrl, (result) => {
+      calculateRouteWorker(coordinates, orsUrl, result => {
         if (result.type === 'ROUTE_CALCULATED') {
           const coords = polyline.decode(result.data.geometry) as [number, number][];
           setRoute(coords);
@@ -190,7 +195,7 @@ export default function LocationPickerMap({
         <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md">
           <span className="text-sm font-medium">
             {pickingMode === 'departure'
-              ? "Cliquez sur la carte pour sélectionner le départ"
+              ? 'Cliquez sur la carte pour sélectionner le départ'
               : "Cliquez sur la carte pour sélectionner l'arrivée"}
           </span>
           <button
@@ -206,8 +211,12 @@ export default function LocationPickerMap({
       {departure && arrival && (
         <div className="absolute bottom-2 left-2 z-[1000] bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-md">
           <div className="flex gap-4 text-sm">
-            <span><strong>Distance:</strong> {distKm} km</span>
-            <span><strong>Durée:</strong> {durationMin} min</span>
+            <span>
+              <strong>Distance:</strong> {distKm} km
+            </span>
+            <span>
+              <strong>Durée:</strong> {durationMin} min
+            </span>
           </div>
         </div>
       )}
@@ -218,7 +227,6 @@ export default function LocationPickerMap({
         scrollWheelZoom
         zoomControl={true}
         style={{ height: '100%', width: '100%', cursor: getCursorStyle() }}
-        ref={mapRef}
       >
         <TileLayer
           attribution="&copy; <a href='https://osm.org/copyright'>OpenStreetMap</a> contributors"

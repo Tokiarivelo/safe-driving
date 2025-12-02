@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, startTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMeQuery } from '@/graphql/generated/graphql';
 import { useProgress } from 'react-transition-progress';
@@ -25,11 +25,13 @@ export function RedirectHandler() {
     const user = data.me;
     const isVerified = user.isVerified;
 
-    const isAdmin = user.Role?.some((role) => role.name === 'ADMIN');
-    const isDriver = user.Role?.some((role) => role.name === 'DRIVER');
-    const isUser = user.Role?.some((role) => role.name === 'USER');
+    const isAdmin = user.Role?.some(role => role.name === 'ADMIN');
+    const isDriver = user.Role?.some(role => role.name === 'DRIVER');
+    const isUser = user.Role?.some(role => role.name === 'USER');
 
-    startProgress();
+    startTransition(() => {
+      startProgress();
+    });
 
     let redirectPath: string;
 
@@ -41,7 +43,7 @@ export function RedirectHandler() {
       } else if (isUser) {
         redirectPath = '/user/dashboard';
       } else {
-        redirectPath = '/login';
+        redirectPath = '/user/form/role';
       }
     } else {
       if (isAdmin) {
@@ -51,7 +53,7 @@ export function RedirectHandler() {
       } else if (isUser) {
         redirectPath = '/user/form/name/bjr';
       } else {
-        redirectPath = '/login';
+        redirectPath = '/user/form/role';
       }
     }
 

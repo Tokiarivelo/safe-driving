@@ -8,6 +8,7 @@ export interface ConversationSelectorProps {
   maxHeight?: string;
   showSearch?: boolean;
   showCreateButton?: boolean;
+  currentUserId?: string;
   onConversationChange?: (conversations: UserConversation[]) => void;
 }
 
@@ -54,6 +55,7 @@ export interface ConversationListProps {
   isLoading: boolean;
   searchTerm?: string;
   maxHeight?: string;
+  currentUserId?: string;
   onConversationSelect: (conversationId: string, conversation?: UserConversation) => void;
   onEdit?: (conversation: UserConversation) => void;
   onDelete?: (conversationId: string) => void;

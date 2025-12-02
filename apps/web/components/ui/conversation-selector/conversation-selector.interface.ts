@@ -15,4 +15,5 @@ export interface ConversationItemProps {
   conversation: UserConversation;
   isSelected: boolean;
   onClick: () => void;
+  currentUserId?: string;
 }
