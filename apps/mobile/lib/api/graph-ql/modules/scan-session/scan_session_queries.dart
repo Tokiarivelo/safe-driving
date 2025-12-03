@@ -1,0 +1,9 @@
+const String getScanSessionStatusQuery = r'''
+  query GetScanSessionStatus($sessionId: String!) {
+    getScanSessionStatus(sessionId: $sessionId) {
+      sessionId
+      status
+      scannedValue
+    }
+  }
+''';

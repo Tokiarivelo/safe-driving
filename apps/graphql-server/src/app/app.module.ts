@@ -22,6 +22,7 @@ import { ReactionModule } from 'src/reaction/reaction.module';
 import { LinkPreviewModule } from 'src/link-preview/link-preview.module';
 import { ElasticModule } from 'src/elasticsearch/elastic/elastic.module';
 import { RideModule } from 'src/ride/drivers.module';
+import { ScanSessionModule } from 'src/scan-session/scan-session.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { RideModule } from 'src/ride/drivers.module';
     LinkPreviewModule,
     ElasticModule,
     RideModule,
+    ScanSessionModule,
   ],
   providers: [DateTimeScalar],
 })

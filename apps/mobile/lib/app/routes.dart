@@ -9,6 +9,7 @@ import 'package:safe_driving/features/home/acceuil/ui/screens/exemple_page.dart'
 import 'package:safe_driving/features/home/acceuil/ui/screens/home_screen.dart';
 import 'package:safe_driving/features/home/map/ui/screens/map_screen.dart';
 import 'package:safe_driving/features/home/map/ui/widgets/map_view.dart';
+import 'package:safe_driving/features/scan_session/ui/screens/scan_user_page.dart';
 import 'package:latlong2/latlong.dart';
 
 class AppRoutes {
@@ -22,6 +23,7 @@ class AppRoutes {
   static const String message = '/message';
   static const String map = '/map';
   static const String searchTransport = '/home/search_transport';
+  static const String scanSession = '/scan_session';
 
   static Map<String, WidgetBuilder> routes = {
     loading: (context) => const AuthLoadingScreen(),
@@ -52,6 +54,16 @@ class AppRoutes {
         if (o is bool) openFilters = o;
       }
       return MapView(initialCenter: initialCenter, openFilters: openFilters);
+    },
+    scanSession: (context) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      String sessionId = '';
+      if (args is Map) {
+        final m = args.cast<String, dynamic>();
+        final s = m['sessionId'];
+        if (s is String) sessionId = s;
+      }
+      return ScanUserPage(sessionId: sessionId);
     },
   };
 }

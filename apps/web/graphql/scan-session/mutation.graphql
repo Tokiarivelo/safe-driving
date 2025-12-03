@@ -1,0 +1,10 @@
+mutation CreateScanSession {
+  createScanSession {
+    sessionId
+    qrBase64
+  }
+}
+
+mutation SendScanResult($input: SendScanResultInput!) {
+  sendScanResult(input: $input)
+}
