@@ -35,7 +35,7 @@ function LeftSidebarMenu({ menuItems }: LeftSidebarMenuProps) {
 
   // Enhance menu items with badge counts
   const enhancedMenuItems = useMemo(() => {
-    return menuItems.map((item) => {
+    return menuItems.map(item => {
       // Add badge for messages menu
       if (item.href.includes('/messages')) {
         return { ...item, badgeCount: messagesCount };
@@ -62,7 +62,7 @@ function LeftSidebarMenu({ menuItems }: LeftSidebarMenuProps) {
       <div className="bg-white w-16 h-auto space-y-4 rounded-full shadow-auth-card">
         {enhancedMenuItems.map((item, index) => (
           <div key={index}>
-            <MenuItem {...item} isActive={location.endsWith(item.href)} />
+            <MenuItem {...item} isActive={item.href !== '/' && location.includes(item.href)} />
           </div>
         ))}
       </div>

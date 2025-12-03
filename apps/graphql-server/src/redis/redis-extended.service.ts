@@ -434,7 +434,6 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
       // Sinon (il y a au moins JSON.SET), utilisons pipeline + call() — robuste pour les modules
       const p = this.cache.pipeline();
       for (const [cmd, ...args] of normalized) {
-        console.log('cmd, ...args :>> ', cmd, ...args);
         p.call(cmd, ...args);
       }
 

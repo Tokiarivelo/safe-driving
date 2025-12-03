@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { ConversationItemProps } from './conversation-selector.interface';
-import { ConversationType } from '@/graphql/generated/graphql';
+import { ConversationType, MessageState } from '@/graphql/generated/graphql';
 
 export function ConversationItem({
   conversation,
@@ -98,7 +98,9 @@ export function ConversationItem({
     // Use actual unreadCount from the conversation if available
     // This field should be provided by the backend API
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const unreadCount = (conversation as any).unreadCount;
+    const unreadCount = conversation.messages?.filter(
+      message => message.state !== MessageState.READ && message.state !== MessageState.FAILED,
+    ).length;
     if (typeof unreadCount === 'number' && unreadCount > 0) {
       return Math.min(unreadCount, 99);
     }
@@ -106,6 +108,8 @@ export function ConversationItem({
   };
 
   const getParticipantAvatar = () => {
+    console.log('conversation :>> ', conversation);
+
     if (conversation.participants && conversation.participants.length > 0) {
       // Get the first participant that is not the current user
       const participant =
