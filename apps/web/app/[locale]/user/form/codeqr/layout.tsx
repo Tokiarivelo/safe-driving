@@ -3,7 +3,7 @@
 import styles from './codeqr.module.css';
 import { motion } from 'framer-motion';
 import TopRoles from '../../../../../components/user/components/Form/picktopgreen/toprole';
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default function CodeQrLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.auth_container}>
       <motion.div

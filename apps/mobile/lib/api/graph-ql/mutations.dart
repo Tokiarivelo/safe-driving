@@ -16,6 +16,8 @@ export 'modules/s3/s3_mutations.dart';
 
 export 'modules/qr/qr_mutations.dart';
 
+export 'modules/scan-session/scan_session_mutations.dart';
+
 import 'modules/auth/auth_mutations.dart';
 import 'modules/s3/s3_mutations.dart' as s3;
 

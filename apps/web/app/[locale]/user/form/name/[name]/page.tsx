@@ -13,7 +13,7 @@ const pages: Record<string, JSX.Element> = {
   preference: <PreferenceForm />,
 };
 
-export default async function LoginPage({ params }: { params: Promise<{ name: string }> }) {
+export default async function FormPage({ params }: { params: Promise<{ name: string }> }) {
   const { name } = await params;
 
   return pages[name];

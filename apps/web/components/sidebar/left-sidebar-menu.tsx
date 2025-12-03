@@ -48,6 +48,10 @@ function LeftSidebarMenu({ menuItems }: LeftSidebarMenuProps) {
     });
   }, [menuItems, messagesCount, ridesCount]);
 
+  const removeLocale = (href: string) => {
+    return href.replace('/user/dashboard', '').replace('/driver/dashboard', '');
+  };
+
   return (
     <div className="w-16 h-auto z-100 ml-5 mt-3">
       <div className="w-16 h-16 mb-5 flex justify-center items-center rounded-full border-2 border-pink-600">
@@ -62,7 +66,10 @@ function LeftSidebarMenu({ menuItems }: LeftSidebarMenuProps) {
       <div className="bg-white w-16 h-auto space-y-4 rounded-full shadow-auth-card">
         {enhancedMenuItems.map((item, index) => (
           <div key={index}>
-            <MenuItem {...item} isActive={item.href !== '/' && location.includes(item.href)} />
+            <MenuItem
+              {...item}
+              isActive={removeLocale(location).includes(removeLocale(item.href))}
+            />
           </div>
         ))}
       </div>
