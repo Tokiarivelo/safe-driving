@@ -18,6 +18,11 @@ class _ScanUserPageState extends State<ScanUserPage> {
   String? _error;
   bool _scanComplete = false;
 
+  // TODO: Remove this demo method in production when using actual QR scanner
+  String _generateDemoScanValue() {
+    return 'demo_scanned_value_${DateTime.now().millisecondsSinceEpoch}';
+  }
+
   // Note: In production, integrate with mobile_scanner or qr_code_scanner package
   // For now, this provides the UI structure and simulated scanning
   Future<void> _handleScanResult(String scannedValue) async {
@@ -169,7 +174,7 @@ class _ScanUserPageState extends State<ScanUserPage> {
             child: ElevatedButton.icon(
               onPressed: _isLoading
                   ? null
-                  : () => _handleScanResult('demo_scanned_value_${DateTime.now().millisecondsSinceEpoch}'),
+                  : () => _handleScanResult(_generateDemoScanValue()),
               icon: const Icon(Icons.qr_code),
               label: const Text('Simulate Scan'),
               style: ElevatedButton.styleFrom(

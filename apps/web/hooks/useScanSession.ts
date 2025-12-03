@@ -3,6 +3,8 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 
+const DEFAULT_SOCKET_URL = 'http://localhost:4000';
+
 interface ScanResult {
   sessionId: string;
   scannedValue: string;
@@ -39,7 +41,7 @@ export function useScanSession(
     if (!sessionId || socketRef.current) return;
 
     try {
-      const socketUrl = process.env.NEXT_PUBLIC_API_GRAPHQL_BASE_URL || 'http://localhost:4000';
+      const socketUrl = process.env.NEXT_PUBLIC_API_GRAPHQL_BASE_URL || DEFAULT_SOCKET_URL;
       
       socketRef.current = io(`${socketUrl}/scan`, {
         transports: ['websocket'],

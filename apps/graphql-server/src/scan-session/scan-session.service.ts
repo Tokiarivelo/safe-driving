@@ -7,8 +7,11 @@ import {
   ScanSessionStatus,
 } from 'src/dtos/scan-session/scan-session.output';
 
+// Redis key prefix and TTL for scan sessions
+// These are intentionally constants as they define the contract for temporary scan sessions
 const SCAN_SESSION_PREFIX = 'scan:session:';
-const SCAN_SESSION_TTL = 60; // 60 seconds TTL
+const SCAN_SESSION_TTL = 60; // 60 seconds TTL for initial session
+const SCAN_SESSION_EXTENDED_TTL = 30; // 30 seconds TTL after scan completion
 
 export interface ScanSessionData {
   status: 'waiting' | 'scanned' | 'expired';
@@ -109,7 +112,7 @@ export class ScanSessionService {
       await this.redisService.set(
         sessionKey,
         JSON.stringify(sessionData),
-        30, // 30 seconds additional TTL after scan
+        SCAN_SESSION_EXTENDED_TTL,
       );
 
       this.logger.log(`Updated scan session: ${sessionId} with value`);
