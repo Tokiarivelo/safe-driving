@@ -8,11 +8,11 @@ import TopRole from '../../../../../components/user/components/Form/picktopnoir/
 import TopRoles from '../../../../../components/user/components/Form/picktopgreen/toprole';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { motion } from 'framer-motion';
-interface AuthLayoutProps {
+interface FormLayoutProps {
   children: React.ReactNode;
 }
 
-const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
+const FormLayout: React.FC<FormLayoutProps> = ({ children }) => {
   const segment = useSelectedLayoutSegment();
   return (
     <div className={styles.auth_container}>
@@ -61,4 +61,4 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
   );
 };
 
-export default AuthLayout;
+export default FormLayout;

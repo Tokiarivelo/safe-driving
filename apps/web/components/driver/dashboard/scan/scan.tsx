@@ -10,7 +10,7 @@ import { Popup } from '@/components/ui/popup';
 import { useConversations } from '@/lib/conversation/useConversations';
 import Image from 'next/image';
 
-export default function ScanPage() {
+export default function ScanQrCodeComponent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
