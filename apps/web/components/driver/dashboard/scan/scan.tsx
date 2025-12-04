@@ -6,11 +6,10 @@ import { useRouter } from 'next/navigation';
 import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser';
 import { useLazyQuery, useMutation, gql } from '@apollo/client';
 import { ConversationType, UserByTokenDocument } from '@/graphql/generated/graphql';
-import { Popup } from '@/components/ui/popup';
 import { useConversations } from '@/lib/conversation/useConversations';
 import { useScanSession } from '@/hooks/useScanSession';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
+import UserInfoPopup from '@/components/scan/UserInfoPopup';
 
 const CREATE_SCAN_SESSION = gql`
   mutation CreateScanSession {
@@ -336,92 +335,53 @@ export default function ScanQrCodeComponent({
   // Camera scan mode
   if (scanMode === 'camera') {
     return (
-      <div className="flex min-h-screen">
-        <div className="flex flex-col flex-1 items-center py-8 space-y-6">
-          <div className="flex items-center gap-4">
-            <Button onClick={handleBack} variant="outline" className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-              Retour
-            </Button>
-            <h1 className="text-xl font-bold dark:text-white">Scan QR Code - Caméra</h1>
-          </div>
+      <div className="flex min-h-screen flex-col items-center bg-white">
+        {/* Header */}
+        <div className="w-full max-w-2xl px-4 py-6">
+          <h1 className="text-2xl font-bold text-center text-gray-800">Scanner un QR Code</h1>
+          <p className="text-gray-500 text-center mt-2 text-sm">
+            Positionnez le QRCode devant la caméra pour l&apos;analyser.
+          </p>
+        </div>
 
-          {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+
+        {/* Scanner area */}
+        <div
+          className="relative bg-gray-700 rounded-lg overflow-hidden"
+          style={{ width: '400px', height: '300px' }}
+        >
           <video
             ref={videoRef}
             width="400"
             height="300"
-            className="border rounded"
+            className="w-full h-full object-cover"
             autoPlay
             playsInline
           />
 
-          {userLoading && <p>Chargement de l&apos;utilisateur...</p>}
-          {userError && <p className="text-red-500">Erreur: {userError.message}</p>}
+          {/* Corner frames */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Top-left corner */}
+            <div className="absolute top-4 left-4 w-12 h-12 border-l-4 border-t-4 border-white" />
+            {/* Top-right corner */}
+            <div className="absolute top-4 right-4 w-12 h-12 border-r-4 border-t-4 border-white" />
+            {/* Bottom-left corner */}
+            <div className="absolute bottom-4 left-4 w-12 h-12 border-l-4 border-b-4 border-white" />
+            {/* Bottom-right corner */}
+            <div className="absolute bottom-4 right-4 w-12 h-12 border-r-4 border-b-4 border-white" />
+          </div>
 
-          {showPopup && user && (
-            <Popup
-              title="Utilisateur trouvé"
-              onClose={() => setShowPopup(false)}
-              content={
-                <div className="space-y-2">
-                  <p>
-                    <strong>Nom :</strong> {user.firstName} {user.lastName}
-                  </p>
-                  <p>
-                    <strong>Email :</strong> {user.email}
-                  </p>
-                  <p>
-                    <strong>Téléphone :</strong> {user.phone}
-                  </p>
-                  <p>
-                    <strong>Username :</strong> {user.username}
-                  </p>
-                  {user.UserImage?.url && (
-                    <Image
-                      src={user.UserImage.url}
-                      alt="Profile"
-                      width={100}
-                      height={100}
-                      className="rounded"
-                    />
-                  )}
-                  {user.Role && (
-                    <p>
-                      <strong>Rôle :</strong> {user.Role.name}
-                    </p>
-                  )}
-
-                  <button
-                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                    onClick={handleContact}
-                    disabled={loadingConversation}
-                  >
-                    {loadingConversation ? 'Ouverture...' : 'Contacter'}
-                  </button>
-                </div>
-              }
-            />
-          )}
+          {/* Scan button */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
+            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-red-400" />
+            </div>
+          </div>
         </div>
-      </div>
-    );
-  }
 
-  // Phone scan mode (showing QR for phone to scan)
-  return (
-    <div className="flex min-h-screen">
-      <div className="flex flex-col flex-1 items-center py-8 space-y-6">
-        <div className="flex items-center gap-4">
+        {/* Back button */}
+        <div className="mt-6">
           <Button onClick={handleBack} variant="outline" className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -435,7 +395,6 @@ export default function ScanQrCodeComponent({
             </svg>
             Retour
           </Button>
-          <h1 className="text-xl font-bold dark:text-white">Scanner par téléphone</h1>
         </div>
 
         {error && <p className="text-red-500">{error}</p>}
@@ -501,52 +460,125 @@ export default function ScanQrCodeComponent({
             </div>
           </div>
         )}
+        {userLoading && <p className="mt-4">Chargement de l&apos;utilisateur...</p>}
+        {userError && <p className="text-red-500 mt-4">Erreur: {userError.message}</p>}
 
         {showPopup && user && (
-          <Popup
-            title="Utilisateur trouvé"
+          <UserInfoPopup
+            user={user}
             onClose={() => setShowPopup(false)}
-            content={
-              <div className="space-y-2">
-                <p>
-                  <strong>Nom :</strong> {user.firstName} {user.lastName}
-                </p>
-                <p>
-                  <strong>Email :</strong> {user.email}
-                </p>
-                <p>
-                  <strong>Téléphone :</strong> {user.phone}
-                </p>
-                <p>
-                  <strong>Username :</strong> {user.username}
-                </p>
-                {user.UserImage?.url && (
-                  <Image
-                    src={user.UserImage.url}
-                    alt="Profile"
-                    width={100}
-                    height={100}
-                    className="rounded"
-                  />
-                )}
-                {user.Role && (
-                  <p>
-                    <strong>Rôle :</strong> {user.Role.name}
-                  </p>
-                )}
-
-                <button
-                  className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                  onClick={handleContact}
-                  disabled={loadingConversation}
-                >
-                  {loadingConversation ? 'Ouverture...' : 'Contacter'}
-                </button>
-              </div>
-            }
+            onContact={handleContact}
+            isLoadingContact={loadingConversation}
           />
         )}
       </div>
+    );
+  }
+
+  // Phone scan mode (showing QR for phone to scan)
+  return (
+    <div className="flex min-h-screen flex-col items-center bg-white">
+      {/* Header */}
+      <div className="w-full max-w-2xl px-4 py-6">
+        <h1 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
+          Scanner un QR Code
+        </h1>
+        <p className="text-gray-500 text-center mt-2 text-sm">
+          Scannez le QR code affiché avec votre téléphone.
+        </p>
+      </div>
+
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {socketError && (
+        <p className="text-red-500 mb-4">Erreur de connexion: {socketError.message}</p>
+      )}
+
+      {/* Back button */}
+      <div className="mb-6">
+        <Button onClick={handleBack} variant="outline" className="flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Retour
+        </Button>
+      </div>
+
+      {userLoading && <p>Chargement de l&apos;utilisateur...</p>}
+      {userError && <p className="text-red-500">Erreur: {userError.message}</p>}
+
+      {/* Phone scan modal */}
+      {isPhoneModalOpen && qrBase64 && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full mx-4 shadow-xl">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold dark:text-white">
+                Scannez avec votre téléphone
+              </h2>
+              <button
+                onClick={handleClosePhoneModal}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                aria-label="Fermer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div className="text-center">
+              <div className="mb-4">
+                <img
+                  src={qrBase64}
+                  alt="QR Code à scanner avec votre téléphone"
+                  className="mx-auto w-64 h-64"
+                />
+              </div>
+
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                Scannez ce QR code avec l&apos;application mobile pour continuer
+              </p>
+
+              <div className="flex items-center justify-center gap-2 text-sm">
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    isConnected ? 'bg-green-500' : 'bg-yellow-500'
+                  }`}
+                />
+                <span className="text-gray-500 dark:text-gray-400">
+                  {isConnected ? 'Connecté - En attente du scan...' : 'Connexion en cours...'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showPopup && user && (
+        <UserInfoPopup
+          user={user}
+          onClose={() => setShowPopup(false)}
+          onContact={handleContact}
+          isLoadingContact={loadingConversation}
+        />
+      )}
     </div>
   );
 }

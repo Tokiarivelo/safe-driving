@@ -124,6 +124,22 @@ export class UsersService {
 
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
+      include: {
+        Role: true,
+        UserPreference: {
+          include: { preferedvelicles: true },
+        },
+        UserImage: { include: { file: true } },
+        avatar: true,
+        UserCover: { include: { file: true } },
+        vehicles: {
+          include: {
+            type: true,
+            VehicleImage: { include: { file: true } },
+          },
+        },
+        review: true,
+      },
     });
     return user;
   }

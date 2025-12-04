@@ -6,6 +6,8 @@ fragment userFragment on User {
   phone
   username
   isVerified
+  status
+  driverStatus
   avatar {
     id
     url
@@ -58,6 +60,33 @@ fragment userFragment on User {
       id
       name
     }
+  }
+  vehicles {
+    id
+    brand
+    model
+    registrationNumber
+    place
+    vehicleTypeId
+    type {
+      id
+      name
+    }
+    VehicleImage {
+      id
+      file {
+        id
+        url
+        key
+        originalName
+      }
+    }
+  }
+  review {
+    id
+    content
+    rating
+    createdAt
   }
 }
 
