@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
 import { RoleEnum } from 'src/dtos/enums/role.enum';
 import { PrismaService } from 'src/prisma-module/prisma.service';
 import { VehicleTypeEnum } from '../dtos/enums/vehicleType.enum';
-import { RideStatus } from '@prisma/client';
+import { RideStatus, NotificationType } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -15,6 +15,8 @@ export class SeedService implements OnModuleInit {
     await this.seedRoles();
     // Uncomment to seed rides (for development only)
     await this.seedMockRides();
+    // Seed notifications for development
+    await this.seedMockNotifications();
   }
 
   async seedRoles() {
@@ -243,5 +245,224 @@ export class SeedService implements OnModuleInit {
     }
 
     this.logger.log('✅ Mock rides seeded');
+  }
+
+  /**
+   * Seed mock notifications for development/testing
+   * Based on the UI design with various notification types
+   */
+  async seedMockNotifications() {
+    this.logger.log('Seeding mock notifications...');
+
+    // Check if notifications already exist
+    const existingNotifications = await this.prisma.notification.count();
+    if (existingNotifications > 0) {
+      this.logger.log('Notifications already exist, skipping seed');
+      return;
+    }
+
+    // Get a user to receive notifications
+    const mockUser = await this.prisma.user.findFirst({
+      where: { email: 'test@email.com' },
+    });
+
+    if (!mockUser) {
+      this.logger.warn('User not found, skipping notification seed');
+      return;
+    }
+
+    // Get a driver to be the sender of some notifications
+    const mockDriver = await this.prisma.user.findFirst({
+      where: { email: 'driver@example.com' },
+    });
+
+    // Get a ride to link some notifications to
+    const mockRide = await this.prisma.ride.findFirst();
+
+    // Base date for notifications (today)
+    const baseDate = new Date('2025-07-19T07:40:00');
+
+    // Mock notification data based on the UI design
+    const mockNotifications = [
+      {
+        userId: mockUser.id,
+        type: NotificationType.RIDE_CONFIRMED,
+        title: 'Course confirmée',
+        message:
+          'Andry Rakoto a confirmé votre réservation de Anosy à Ankorondrano pour le 20/07/2025 à 14h30',
+        read: false,
+        senderId: mockDriver?.id,
+        rideId: mockRide?.id,
+        createdAt: baseDate,
+        metadata: {
+          departure: 'Anosy',
+          arrival: 'Ankorondrano',
+          scheduledDate: '20/07/2025',
+          scheduledTime: '14h30',
+        },
+      },
+      {
+        userId: mockUser.id,
+        type: NotificationType.DRIVER_EN_ROUTE,
+        title: 'Chauffeur en route',
+        message:
+          'Andry Rakoto se dirige vers vous, arrivée estimée dans 3 min.',
+        read: false,
+        senderId: mockDriver?.id,
+        rideId: mockRide?.id,
+        createdAt: baseDate,
+        metadata: {
+          estimatedArrival: '3 min',
+          driverName: 'Andry Rakoto',
+        },
+      },
+      {
+        userId: mockUser.id,
+        type: NotificationType.DRIVER_ARRIVED,
+        title: 'Chauffeur arrivé',
+        message: "Andry Rakoto est à l'emplacement indiqué. Bon trajet !",
+        read: false,
+        senderId: mockDriver?.id,
+        rideId: mockRide?.id,
+        createdAt: baseDate,
+        metadata: {
+          driverName: 'Andry Rakoto',
+        },
+      },
+      {
+        userId: mockUser.id,
+        type: NotificationType.RIDE_STARTED,
+        title: 'Course démarrée',
+        message: 'Votre course pour Gare Soarano a débuté à 14h07.',
+        read: true,
+        rideId: mockRide?.id,
+        createdAt: baseDate,
+        metadata: {
+          destination: 'Gare Soarano',
+          startTime: '14h07',
+        },
+      },
+      {
+        userId: mockUser.id,
+        type: NotificationType.RIDE_COMPLETED,
+        title: 'Course terminée',
+        message: 'Course terminée : 4 800 Ar. Merci et à bientôt !',
+        read: false,
+        rideId: mockRide?.id,
+        createdAt: baseDate,
+        metadata: {
+          price: 4800,
+          currency: 'Ar',
+        },
+      },
+      {
+        userId: mockUser.id,
+        type: NotificationType.NEW_MESSAGE,
+        title: 'Nouveau message',
+        message:
+          'Message de Andry : "Je suis un peu en retard, j\'arrive dans 2 min....."',
+        read: false,
+        senderId: mockDriver?.id,
+        createdAt: baseDate,
+        metadata: {
+          senderName: 'Andry',
+          messagePreview: "Je suis un peu en retard, j'arrive dans 2 min.....",
+        },
+      },
+      {
+        userId: mockUser.id,
+        type: NotificationType.MISSED_CALL,
+        title: 'Appel manqué',
+        message: 'Vous avez manqué un appel de Andry.',
+        read: false,
+        senderId: mockDriver?.id,
+        createdAt: baseDate,
+        metadata: {
+          callerName: 'Andry',
+        },
+      },
+      {
+        userId: mockUser.id,
+        type: NotificationType.PROMOTION,
+        title: 'Offre & promotion',
+        message:
+          'Andry Rakoto a posté une course promotionnelle de Tanjombato à Ankorondrano pour 10.000MGA',
+        read: false,
+        senderId: mockDriver?.id,
+        createdAt: baseDate,
+        metadata: {
+          departure: 'Tanjombato',
+          arrival: 'Ankorondrano',
+          promotionalPrice: 10000,
+          currency: 'MGA',
+        },
+      },
+      {
+        userId: mockUser.id,
+        type: NotificationType.RIDE_REMINDER,
+        title: 'Rappel de course programmée',
+        message:
+          "Rappel : votre course de 18h pour l'aéroport commence dans 30 min.",
+        read: false,
+        rideId: mockRide?.id,
+        createdAt: baseDate,
+        metadata: {
+          destination: "l'aéroport",
+          scheduledTime: '18h',
+          reminderBefore: '30 min',
+        },
+      },
+      {
+        userId: mockUser.id,
+        type: NotificationType.REVIEW_REQUEST,
+        title: 'Invitation à donner un avis',
+        message: "Comment s'est passée votre course ? Laissez un avis à Andry.",
+        read: false,
+        senderId: mockDriver?.id,
+        rideId: mockRide?.id,
+        createdAt: baseDate,
+        metadata: {
+          driverName: 'Andry',
+        },
+      },
+      {
+        userId: mockUser.id,
+        type: NotificationType.DRIVER_REVIEW,
+        title: "Avis reçu du chauffeur sur l'utilisateur",
+        message:
+          'Nouveau avis de Andry Rakoto : ⭐ 5/5 - "Utilisateur très courtois et ponctuel."',
+        read: false,
+        senderId: mockDriver?.id,
+        createdAt: baseDate,
+        metadata: {
+          reviewerName: 'Andry Rakoto',
+          rating: 5,
+          comment: 'Utilisateur très courtois et ponctuel.',
+        },
+      },
+      {
+        userId: mockUser.id,
+        type: NotificationType.SECURITY_ALERT,
+        title: 'Alerte de sécurité / incident',
+        message:
+          "Signalement : un message d'alerte a été envoyé au support. Nous vous tenons informé.",
+        read: false,
+        createdAt: baseDate,
+        metadata: {
+          alertType: 'support_contacted',
+        },
+      },
+    ];
+
+    // Create notifications
+    for (const notificationData of mockNotifications) {
+      await this.prisma.notification.create({
+        data: notificationData,
+      });
+    }
+
+    this.logger.log(
+      `✅ Mock notifications seeded (${mockNotifications.length} notifications)`,
+    );
   }
 }
