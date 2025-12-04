@@ -124,12 +124,20 @@ export function useNotificationsData({
   const [cursor, setCursor] = useState<string | undefined>(undefined);
   const { socket, isConnected } = useSocketConnection();
 
+  // Check if filter has any properties set
+  const hasFilter =
+    filter &&
+    (filter.search !== undefined ||
+      filter.type !== undefined ||
+      filter.read !== undefined ||
+      filter.archived !== undefined);
+
   // Query notifications
   const { data, loading, error, refetch, fetchMore } = useQuery<NotificationsQueryResult>(
     GET_NOTIFICATIONS,
     {
       variables: {
-        filter: filter?.search || filter?.type ? filter : undefined,
+        filter: hasFilter ? filter : undefined,
         cursor,
         limit,
       },
@@ -213,16 +221,23 @@ export function useNotificationsData({
     [markAsReadMutation]
   );
 
+  // Get current query variables for cache operations
+  const queryVariables = {
+    filter: hasFilter ? filter : undefined,
+    cursor,
+    limit,
+  };
+
   // Mark all notifications as read
   const markAllAsRead = useCallback(async () => {
     try {
       await markAllAsReadMutation({
-        refetchQueries: [{ query: GET_NOTIFICATIONS, variables: { limit } }],
+        refetchQueries: [{ query: GET_NOTIFICATIONS, variables: queryVariables }],
       });
     } catch (err) {
       console.error('Error marking all notifications as read:', err);
     }
-  }, [markAllAsReadMutation, limit]);
+  }, [markAllAsReadMutation, queryVariables]);
 
   // Archive a notification
   const archiveNotification = useCallback(
@@ -234,13 +249,13 @@ export function useNotificationsData({
             // Remove from current list by modifying the query data
             const existingData = cache.readQuery<NotificationsQueryResult>({
               query: GET_NOTIFICATIONS,
-              variables: { limit },
+              variables: queryVariables,
             });
 
             if (existingData) {
               cache.writeQuery({
                 query: GET_NOTIFICATIONS,
-                variables: { limit },
+                variables: queryVariables,
                 data: {
                   notifications: {
                     ...existingData.notifications,
@@ -258,7 +273,7 @@ export function useNotificationsData({
         console.error('Error archiving notification:', err);
       }
     },
-    [archiveNotificationMutation, limit]
+    [archiveNotificationMutation, queryVariables]
   );
 
   // Delete a notification
@@ -271,7 +286,7 @@ export function useNotificationsData({
             // Remove from current list
             const existingData = cache.readQuery<NotificationsQueryResult>({
               query: GET_NOTIFICATIONS,
-              variables: { limit },
+              variables: queryVariables,
             });
 
             if (existingData) {
@@ -282,7 +297,7 @@ export function useNotificationsData({
 
               cache.writeQuery({
                 query: GET_NOTIFICATIONS,
-                variables: { limit },
+                variables: queryVariables,
                 data: {
                   notifications: {
                     ...existingData.notifications,
@@ -303,19 +318,19 @@ export function useNotificationsData({
         console.error('Error deleting notification:', err);
       }
     },
-    [deleteNotificationMutation, limit]
+    [deleteNotificationMutation, queryVariables]
   );
 
   // Delete all notifications
   const deleteAllNotifications = useCallback(async () => {
     try {
       await deleteAllNotificationsMutation({
-        refetchQueries: [{ query: GET_NOTIFICATIONS, variables: { limit } }],
+        refetchQueries: [{ query: GET_NOTIFICATIONS, variables: queryVariables }],
       });
     } catch (err) {
       console.error('Error deleting all notifications:', err);
     }
-  }, [deleteAllNotificationsMutation, limit]);
+  }, [deleteAllNotificationsMutation, queryVariables]);
 
   // Listen for real-time updates via Socket.IO
   useEffect(() => {

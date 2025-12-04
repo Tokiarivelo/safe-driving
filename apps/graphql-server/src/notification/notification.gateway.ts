@@ -74,8 +74,11 @@ export class NotificationGateway
       const roomName = `user_notifications_${userId}`;
       client.join(roomName);
 
-      // Store socket connection in Redis
-      await this.redisService.sadd(`user:${userId}:notificationSockets`, client.id);
+      // Store socket connection in Redis with TTL of 24 hours
+      const socketKey = `user:${userId}:notificationSockets`;
+      await this.redisService.sadd(socketKey, client.id);
+      // Set TTL to prevent orphaned socket IDs from accumulating
+      await this.redisService.expire(socketKey, 86400);
 
       // Get unread count and send to client
       const unreadCount = await this.notificationService.getUnreadCount(userId);

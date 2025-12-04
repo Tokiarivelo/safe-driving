@@ -184,13 +184,30 @@ export class NotificationResolver {
     });
 
     const pubsub = this.redisService.getPubSub();
-    const iterator = pubsub?.asyncIterator
-      ? pubsub.asyncIterator(channelName)
-      : null;
+
+    if (!pubsub) {
+      this.logger.error('Redis PubSub service is not available');
+      throw new Error(
+        'Notification subscription service is temporarily unavailable. Please try again later.',
+      );
+    }
+
+    if (typeof pubsub.asyncIterator !== 'function') {
+      this.logger.error('PubSub asyncIterator method is not available', {
+        pubsubType: typeof pubsub,
+        hasAsyncIterator: 'asyncIterator' in pubsub,
+      });
+      throw new Error(
+        'Notification subscription service is misconfigured. Please contact support.',
+      );
+    }
+
+    const iterator = pubsub.asyncIterator(channelName);
 
     if (!iterator) {
+      this.logger.error(`Failed to create asyncIterator for channel "${channelName}"`);
       throw new Error(
-        `Could not create asyncIterator for channel "${channelName}"`,
+        `Could not establish notification subscription for channel "${channelName}"`,
       );
     }
 

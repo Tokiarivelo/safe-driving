@@ -369,6 +369,9 @@ export class NotificationService {
   }
 
   // Redis helper methods for caching
+  // Note: We use getPublisher() for atomic incr/decr operations as the RedisExtendedService
+  // doesn't expose public incr/decr methods. The publisher instance ensures atomic operations
+  // which is important for maintaining accurate unread counts across concurrent requests.
   private async incrementUnreadCount(userId: string): Promise<void> {
     const key = `user:${userId}:unreadNotifications`;
     await this.redisService.getPublisher().incr(key);
