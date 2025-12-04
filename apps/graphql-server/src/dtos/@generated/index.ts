@@ -235,6 +235,21 @@ export enum NullableJsonNullValueInput {
     JsonNull = "JsonNull"
 }
 
+export enum NotificationType {
+    RIDE_CONFIRMED = "RIDE_CONFIRMED",
+    DRIVER_EN_ROUTE = "DRIVER_EN_ROUTE",
+    DRIVER_ARRIVED = "DRIVER_ARRIVED",
+    RIDE_STARTED = "RIDE_STARTED",
+    RIDE_COMPLETED = "RIDE_COMPLETED",
+    NEW_MESSAGE = "NEW_MESSAGE",
+    MISSED_CALL = "MISSED_CALL",
+    PROMOTION = "PROMOTION",
+    RIDE_REMINDER = "RIDE_REMINDER",
+    REVIEW_REQUEST = "REVIEW_REQUEST",
+    DRIVER_REVIEW = "DRIVER_REVIEW",
+    SECURITY_ALERT = "SECURITY_ALERT"
+}
+
 export enum MessageState {
     SENT = "SENT",
     DELIVERED = "DELIVERED",
@@ -286,6 +301,23 @@ export enum PositionScalarFieldEnum {
     is_mock = "is_mock",
     clientTempId = "clientTempId",
     createdBy = "createdBy"
+}
+
+export enum NotificationScalarFieldEnum {
+    id = "id",
+    userId = "userId",
+    type = "type",
+    title = "title",
+    message = "message",
+    read = "read",
+    archived = "archived",
+    deleted = "deleted",
+    createdAt = "createdAt",
+    updatedAt = "updatedAt",
+    readAt = "readAt",
+    rideId = "rideId",
+    senderId = "senderId",
+    metadata = "metadata"
 }
 
 export enum MessageReadReceiptScalarFieldEnum {
@@ -393,12 +425,14 @@ registerEnumType(DriverVehicleScalarFieldEnum, { name: 'DriverVehicleScalarField
 registerEnumType(FileScalarFieldEnum, { name: 'FileScalarFieldEnum', description: undefined })
 registerEnumType(MessageScalarFieldEnum, { name: 'MessageScalarFieldEnum', description: undefined })
 registerEnumType(MessageReadReceiptScalarFieldEnum, { name: 'MessageReadReceiptScalarFieldEnum', description: undefined })
+registerEnumType(NotificationScalarFieldEnum, { name: 'NotificationScalarFieldEnum', description: undefined })
 registerEnumType(PositionScalarFieldEnum, { name: 'PositionScalarFieldEnum', description: undefined })
 registerEnumType(AttachmentType, { name: 'AttachmentType', description: undefined })
 registerEnumType(ConversationType, { name: 'ConversationType', description: undefined })
 registerEnumType(FileType, { name: 'FileType', description: undefined })
 registerEnumType(JsonNullValueFilter, { name: 'JsonNullValueFilter', description: undefined })
 registerEnumType(MessageState, { name: 'MessageState', description: undefined })
+registerEnumType(NotificationType, { name: 'NotificationType', description: undefined })
 registerEnumType(NullableJsonNullValueInput, { name: 'NullableJsonNullValueInput', description: undefined })
 registerEnumType(NullsOrder, { name: 'NullsOrder', description: undefined })
 registerEnumType(QueryMode, { name: 'QueryMode', description: undefined })
@@ -15383,6 +15417,2063 @@ export class UpsertOneMessageReadReceiptArgs {
 }
 
 @ObjectType()
+export class AggregateNotification {
+    @Field(() => NotificationCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof NotificationCountAggregate>;
+    @Field(() => NotificationMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof NotificationMinAggregate>;
+    @Field(() => NotificationMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof NotificationMaxAggregate>;
+}
+
+@ArgsType()
+export class CreateManyNotificationArgs {
+    @Field(() => [NotificationCreateManyInput], {nullable:false})
+    @Type(() => NotificationCreateManyInput)
+    data!: Array<NotificationCreateManyInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@ArgsType()
+export class CreateOneNotificationArgs {
+    @Field(() => NotificationCreateInput, {nullable:false})
+    @Type(() => NotificationCreateInput)
+    data!: InstanceType<typeof NotificationCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManyNotificationArgs {
+    @Field(() => NotificationWhereInput, {nullable:true})
+    @Type(() => NotificationWhereInput)
+    where?: InstanceType<typeof NotificationWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class DeleteOneNotificationArgs {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindFirstNotificationOrThrowArgs {
+    @Field(() => NotificationWhereInput, {nullable:true})
+    @Type(() => NotificationWhereInput)
+    where?: InstanceType<typeof NotificationWhereInput>;
+    @Field(() => [NotificationOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<NotificationOrderByWithRelationInput>;
+    @Field(() => NotificationWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [NotificationScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${NotificationScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstNotificationArgs {
+    @Field(() => NotificationWhereInput, {nullable:true})
+    @Type(() => NotificationWhereInput)
+    where?: InstanceType<typeof NotificationWhereInput>;
+    @Field(() => [NotificationOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<NotificationOrderByWithRelationInput>;
+    @Field(() => NotificationWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [NotificationScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${NotificationScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManyNotificationArgs {
+    @Field(() => NotificationWhereInput, {nullable:true})
+    @Type(() => NotificationWhereInput)
+    where?: InstanceType<typeof NotificationWhereInput>;
+    @Field(() => [NotificationOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<NotificationOrderByWithRelationInput>;
+    @Field(() => NotificationWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [NotificationScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${NotificationScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueNotificationOrThrowArgs {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindUniqueNotificationArgs {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class NotificationAggregateArgs {
+    @Field(() => NotificationWhereInput, {nullable:true})
+    @Type(() => NotificationWhereInput)
+    where?: InstanceType<typeof NotificationWhereInput>;
+    @Field(() => [NotificationOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<NotificationOrderByWithRelationInput>;
+    @Field(() => NotificationWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => NotificationCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof NotificationCountAggregateInput>;
+    @Field(() => NotificationMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof NotificationMinAggregateInput>;
+    @Field(() => NotificationMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof NotificationMaxAggregateInput>;
+}
+
+@InputType()
+export class NotificationCountAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    type?: true;
+    @Field(() => Boolean, {nullable:true})
+    title?: true;
+    @Field(() => Boolean, {nullable:true})
+    message?: true;
+    @Field(() => Boolean, {nullable:true})
+    read?: true;
+    @Field(() => Boolean, {nullable:true})
+    archived?: true;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    readAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    rideId?: true;
+    @Field(() => Boolean, {nullable:true})
+    senderId?: true;
+    @Field(() => Boolean, {nullable:true})
+    metadata?: true;
+    @Field(() => Boolean, {nullable:true})
+    _all?: true;
+}
+
+@ObjectType()
+export class NotificationCountAggregate {
+    @Field(() => Int, {nullable:false})
+    id!: number;
+    @Field(() => Int, {nullable:false})
+    userId!: number;
+    @Field(() => Int, {nullable:false})
+    type!: number;
+    @Field(() => Int, {nullable:false})
+    title!: number;
+    @Field(() => Int, {nullable:false})
+    message!: number;
+    @Field(() => Int, {nullable:false})
+    read!: number;
+    @Field(() => Int, {nullable:false})
+    archived!: number;
+    @Field(() => Int, {nullable:false})
+    deleted!: number;
+    @Field(() => Int, {nullable:false})
+    createdAt!: number;
+    @Field(() => Int, {nullable:false})
+    updatedAt!: number;
+    @Field(() => Int, {nullable:false})
+    readAt!: number;
+    @Field(() => Int, {nullable:false})
+    rideId!: number;
+    @Field(() => Int, {nullable:false})
+    senderId!: number;
+    @Field(() => Int, {nullable:false})
+    metadata!: number;
+    @Field(() => Int, {nullable:false})
+    _all!: number;
+}
+
+@InputType()
+export class NotificationCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    title?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    message?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    read?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    archived?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    deleted?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    readAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    rideId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    senderId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    metadata?: `${SortOrder}`;
+}
+
+@InputType()
+export class NotificationCreateManyRideInputEnvelope {
+    @Field(() => [NotificationCreateManyRideInput], {nullable:false})
+    @Type(() => NotificationCreateManyRideInput)
+    data!: Array<NotificationCreateManyRideInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class NotificationCreateManyRideInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    senderId?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationCreateManySenderInputEnvelope {
+    @Field(() => [NotificationCreateManySenderInput], {nullable:false})
+    @Type(() => NotificationCreateManySenderInput)
+    data!: Array<NotificationCreateManySenderInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class NotificationCreateManySenderInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationCreateManyUserInputEnvelope {
+    @Field(() => [NotificationCreateManyUserInput], {nullable:false})
+    @Type(() => NotificationCreateManyUserInput)
+    data!: Array<NotificationCreateManyUserInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class NotificationCreateManyUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    senderId?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationCreateManyInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    senderId?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationCreateNestedManyWithoutRideInput {
+    @Field(() => [NotificationCreateWithoutRideInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutRideInput)
+    create?: Array<NotificationCreateWithoutRideInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutRideInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutRideInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutRideInput>;
+    @Field(() => NotificationCreateManyRideInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManyRideInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManyRideInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class NotificationCreateNestedManyWithoutSenderInput {
+    @Field(() => [NotificationCreateWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutSenderInput)
+    create?: Array<NotificationCreateWithoutSenderInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutSenderInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutSenderInput>;
+    @Field(() => NotificationCreateManySenderInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManySenderInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManySenderInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class NotificationCreateNestedManyWithoutUserInput {
+    @Field(() => [NotificationCreateWithoutUserInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutUserInput)
+    create?: Array<NotificationCreateWithoutUserInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutUserInput>;
+    @Field(() => NotificationCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManyUserInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class NotificationCreateOrConnectWithoutRideInput {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => NotificationCreateWithoutRideInput, {nullable:false})
+    @Type(() => NotificationCreateWithoutRideInput)
+    create!: InstanceType<typeof NotificationCreateWithoutRideInput>;
+}
+
+@InputType()
+export class NotificationCreateOrConnectWithoutSenderInput {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => NotificationCreateWithoutSenderInput, {nullable:false})
+    @Type(() => NotificationCreateWithoutSenderInput)
+    create!: InstanceType<typeof NotificationCreateWithoutSenderInput>;
+}
+
+@InputType()
+export class NotificationCreateOrConnectWithoutUserInput {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => NotificationCreateWithoutUserInput, {nullable:false})
+    @Type(() => NotificationCreateWithoutUserInput)
+    create!: InstanceType<typeof NotificationCreateWithoutUserInput>;
+}
+
+@InputType()
+export class NotificationCreateWithoutRideInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+    @Field(() => UserCreateNestedOneWithoutNotificationsInput, {nullable:false})
+    @Type(() => UserCreateNestedOneWithoutNotificationsInput)
+    user!: InstanceType<typeof UserCreateNestedOneWithoutNotificationsInput>;
+    @Field(() => UserCreateNestedOneWithoutSentNotificationsInput, {nullable:true})
+    @Type(() => UserCreateNestedOneWithoutSentNotificationsInput)
+    sender?: InstanceType<typeof UserCreateNestedOneWithoutSentNotificationsInput>;
+}
+
+@InputType()
+export class NotificationCreateWithoutSenderInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+    @Field(() => UserCreateNestedOneWithoutNotificationsInput, {nullable:false})
+    @Type(() => UserCreateNestedOneWithoutNotificationsInput)
+    user!: InstanceType<typeof UserCreateNestedOneWithoutNotificationsInput>;
+    @Field(() => RideCreateNestedOneWithoutNotificationInput, {nullable:true})
+    @Type(() => RideCreateNestedOneWithoutNotificationInput)
+    ride?: InstanceType<typeof RideCreateNestedOneWithoutNotificationInput>;
+}
+
+@InputType()
+export class NotificationCreateWithoutUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+    @Field(() => UserCreateNestedOneWithoutSentNotificationsInput, {nullable:true})
+    @Type(() => UserCreateNestedOneWithoutSentNotificationsInput)
+    sender?: InstanceType<typeof UserCreateNestedOneWithoutSentNotificationsInput>;
+    @Field(() => RideCreateNestedOneWithoutNotificationInput, {nullable:true})
+    @Type(() => RideCreateNestedOneWithoutNotificationInput)
+    ride?: InstanceType<typeof RideCreateNestedOneWithoutNotificationInput>;
+}
+
+@InputType()
+export class NotificationCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+    @Field(() => UserCreateNestedOneWithoutNotificationsInput, {nullable:false})
+    @Type(() => UserCreateNestedOneWithoutNotificationsInput)
+    user!: InstanceType<typeof UserCreateNestedOneWithoutNotificationsInput>;
+    @Field(() => UserCreateNestedOneWithoutSentNotificationsInput, {nullable:true})
+    @Type(() => UserCreateNestedOneWithoutSentNotificationsInput)
+    sender?: InstanceType<typeof UserCreateNestedOneWithoutSentNotificationsInput>;
+    @Field(() => RideCreateNestedOneWithoutNotificationInput, {nullable:true})
+    @Type(() => RideCreateNestedOneWithoutNotificationInput)
+    ride?: InstanceType<typeof RideCreateNestedOneWithoutNotificationInput>;
+}
+
+@ArgsType()
+export class NotificationGroupByArgs {
+    @Field(() => NotificationWhereInput, {nullable:true})
+    @Type(() => NotificationWhereInput)
+    where?: InstanceType<typeof NotificationWhereInput>;
+    @Field(() => [NotificationOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<NotificationOrderByWithAggregationInput>;
+    @Field(() => [NotificationScalarFieldEnum], {nullable:false})
+    by!: Array<`${NotificationScalarFieldEnum}`>;
+    @Field(() => NotificationScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof NotificationScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => NotificationCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof NotificationCountAggregateInput>;
+    @Field(() => NotificationMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof NotificationMinAggregateInput>;
+    @Field(() => NotificationMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof NotificationMaxAggregateInput>;
+}
+
+@ObjectType()
+export class NotificationGroupBy {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:false})
+    read!: boolean;
+    @Field(() => Boolean, {nullable:false})
+    archived!: boolean;
+    @Field(() => Boolean, {nullable:false})
+    deleted!: boolean;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    senderId?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+    @Field(() => NotificationCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof NotificationCountAggregate>;
+    @Field(() => NotificationMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof NotificationMinAggregate>;
+    @Field(() => NotificationMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof NotificationMaxAggregate>;
+}
+
+@InputType()
+export class NotificationListRelationFilter {
+    @Field(() => NotificationWhereInput, {nullable:true})
+    every?: InstanceType<typeof NotificationWhereInput>;
+    @Field(() => NotificationWhereInput, {nullable:true})
+    some?: InstanceType<typeof NotificationWhereInput>;
+    @Field(() => NotificationWhereInput, {nullable:true})
+    none?: InstanceType<typeof NotificationWhereInput>;
+}
+
+@InputType()
+export class NotificationMaxAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    type?: true;
+    @Field(() => Boolean, {nullable:true})
+    title?: true;
+    @Field(() => Boolean, {nullable:true})
+    message?: true;
+    @Field(() => Boolean, {nullable:true})
+    read?: true;
+    @Field(() => Boolean, {nullable:true})
+    archived?: true;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    readAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    rideId?: true;
+    @Field(() => Boolean, {nullable:true})
+    senderId?: true;
+}
+
+@ObjectType()
+export class NotificationMaxAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => NotificationType, {nullable:true})
+    type?: `${NotificationType}`;
+    @Field(() => String, {nullable:true})
+    title?: string;
+    @Field(() => String, {nullable:true})
+    message?: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    senderId?: string;
+}
+
+@InputType()
+export class NotificationMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    title?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    message?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    read?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    archived?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    deleted?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    readAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    rideId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    senderId?: `${SortOrder}`;
+}
+
+@InputType()
+export class NotificationMinAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    type?: true;
+    @Field(() => Boolean, {nullable:true})
+    title?: true;
+    @Field(() => Boolean, {nullable:true})
+    message?: true;
+    @Field(() => Boolean, {nullable:true})
+    read?: true;
+    @Field(() => Boolean, {nullable:true})
+    archived?: true;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    readAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    rideId?: true;
+    @Field(() => Boolean, {nullable:true})
+    senderId?: true;
+}
+
+@ObjectType()
+export class NotificationMinAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => NotificationType, {nullable:true})
+    type?: `${NotificationType}`;
+    @Field(() => String, {nullable:true})
+    title?: string;
+    @Field(() => String, {nullable:true})
+    message?: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    senderId?: string;
+}
+
+@InputType()
+export class NotificationMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    title?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    message?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    read?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    archived?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    deleted?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    readAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    rideId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    senderId?: `${SortOrder}`;
+}
+
+@InputType()
+export class NotificationOrderByRelationAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    _count?: `${SortOrder}`;
+}
+
+@InputType()
+export class NotificationOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    title?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    message?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    read?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    archived?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    deleted?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    readAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    rideId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    senderId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    metadata?: InstanceType<typeof SortOrderInput>;
+    @Field(() => NotificationCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof NotificationCountOrderByAggregateInput>;
+    @Field(() => NotificationMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof NotificationMaxOrderByAggregateInput>;
+    @Field(() => NotificationMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof NotificationMinOrderByAggregateInput>;
+}
+
+@InputType()
+export class NotificationOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    title?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    message?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    read?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    archived?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    deleted?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    updatedAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    readAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    rideId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    senderId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    metadata?: InstanceType<typeof SortOrderInput>;
+    @Field(() => UserOrderByWithRelationInput, {nullable:true})
+    @Type(() => UserOrderByWithRelationInput)
+    user?: InstanceType<typeof UserOrderByWithRelationInput>;
+    @Field(() => UserOrderByWithRelationInput, {nullable:true})
+    @Type(() => UserOrderByWithRelationInput)
+    sender?: InstanceType<typeof UserOrderByWithRelationInput>;
+    @Field(() => RideOrderByWithRelationInput, {nullable:true})
+    @Type(() => RideOrderByWithRelationInput)
+    ride?: InstanceType<typeof RideOrderByWithRelationInput>;
+}
+
+@InputType()
+export class NotificationScalarWhereWithAggregatesInput {
+    @Field(() => [NotificationScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<NotificationScalarWhereWithAggregatesInput>;
+    @Field(() => [NotificationScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<NotificationScalarWhereWithAggregatesInput>;
+    @Field(() => [NotificationScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<NotificationScalarWhereWithAggregatesInput>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    userId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => EnumNotificationTypeWithAggregatesFilter, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    title?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    message?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    read?: InstanceType<typeof BoolWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    archived?: InstanceType<typeof BoolWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    deleted?: InstanceType<typeof BoolWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    readAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    rideId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    senderId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => JsonNullableWithAggregatesFilter, {nullable:true})
+    metadata?: InstanceType<typeof JsonNullableWithAggregatesFilter>;
+}
+
+@InputType()
+export class NotificationScalarWhereInput {
+    @Field(() => [NotificationScalarWhereInput], {nullable:true})
+    AND?: Array<NotificationScalarWhereInput>;
+    @Field(() => [NotificationScalarWhereInput], {nullable:true})
+    OR?: Array<NotificationScalarWhereInput>;
+    @Field(() => [NotificationScalarWhereInput], {nullable:true})
+    NOT?: Array<NotificationScalarWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => EnumNotificationTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    title?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    message?: InstanceType<typeof StringFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    read?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    archived?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    deleted?: InstanceType<typeof BoolFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    readAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    rideId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    senderId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => JsonNullableFilter, {nullable:true})
+    metadata?: InstanceType<typeof JsonNullableFilter>;
+}
+
+@InputType()
+export class NotificationUncheckedCreateNestedManyWithoutRideInput {
+    @Field(() => [NotificationCreateWithoutRideInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutRideInput)
+    create?: Array<NotificationCreateWithoutRideInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutRideInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutRideInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutRideInput>;
+    @Field(() => NotificationCreateManyRideInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManyRideInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManyRideInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class NotificationUncheckedCreateNestedManyWithoutSenderInput {
+    @Field(() => [NotificationCreateWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutSenderInput)
+    create?: Array<NotificationCreateWithoutSenderInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutSenderInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutSenderInput>;
+    @Field(() => NotificationCreateManySenderInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManySenderInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManySenderInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class NotificationUncheckedCreateNestedManyWithoutUserInput {
+    @Field(() => [NotificationCreateWithoutUserInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutUserInput)
+    create?: Array<NotificationCreateWithoutUserInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutUserInput>;
+    @Field(() => NotificationCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManyUserInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class NotificationUncheckedCreateWithoutRideInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    senderId?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUncheckedCreateWithoutSenderInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUncheckedCreateWithoutUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    senderId?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {nullable:true})
+    read?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    archived?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    deleted?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    readAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    rideId?: string;
+    @Field(() => String, {nullable:true})
+    senderId?: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUncheckedUpdateManyWithoutRideNestedInput {
+    @Field(() => [NotificationCreateWithoutRideInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutRideInput)
+    create?: Array<NotificationCreateWithoutRideInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutRideInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutRideInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutRideInput>;
+    @Field(() => [NotificationUpsertWithWhereUniqueWithoutRideInput], {nullable:true})
+    @Type(() => NotificationUpsertWithWhereUniqueWithoutRideInput)
+    upsert?: Array<NotificationUpsertWithWhereUniqueWithoutRideInput>;
+    @Field(() => NotificationCreateManyRideInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManyRideInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManyRideInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationUpdateWithWhereUniqueWithoutRideInput], {nullable:true})
+    @Type(() => NotificationUpdateWithWhereUniqueWithoutRideInput)
+    update?: Array<NotificationUpdateWithWhereUniqueWithoutRideInput>;
+    @Field(() => [NotificationUpdateManyWithWhereWithoutRideInput], {nullable:true})
+    @Type(() => NotificationUpdateManyWithWhereWithoutRideInput)
+    updateMany?: Array<NotificationUpdateManyWithWhereWithoutRideInput>;
+    @Field(() => [NotificationScalarWhereInput], {nullable:true})
+    @Type(() => NotificationScalarWhereInput)
+    deleteMany?: Array<NotificationScalarWhereInput>;
+}
+
+@InputType()
+export class NotificationUncheckedUpdateManyWithoutRideInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    senderId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUncheckedUpdateManyWithoutSenderNestedInput {
+    @Field(() => [NotificationCreateWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutSenderInput)
+    create?: Array<NotificationCreateWithoutSenderInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutSenderInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutSenderInput>;
+    @Field(() => [NotificationUpsertWithWhereUniqueWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationUpsertWithWhereUniqueWithoutSenderInput)
+    upsert?: Array<NotificationUpsertWithWhereUniqueWithoutSenderInput>;
+    @Field(() => NotificationCreateManySenderInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManySenderInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManySenderInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationUpdateWithWhereUniqueWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationUpdateWithWhereUniqueWithoutSenderInput)
+    update?: Array<NotificationUpdateWithWhereUniqueWithoutSenderInput>;
+    @Field(() => [NotificationUpdateManyWithWhereWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationUpdateManyWithWhereWithoutSenderInput)
+    updateMany?: Array<NotificationUpdateManyWithWhereWithoutSenderInput>;
+    @Field(() => [NotificationScalarWhereInput], {nullable:true})
+    @Type(() => NotificationScalarWhereInput)
+    deleteMany?: Array<NotificationScalarWhereInput>;
+}
+
+@InputType()
+export class NotificationUncheckedUpdateManyWithoutSenderInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUncheckedUpdateManyWithoutUserNestedInput {
+    @Field(() => [NotificationCreateWithoutUserInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutUserInput)
+    create?: Array<NotificationCreateWithoutUserInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutUserInput>;
+    @Field(() => [NotificationUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => NotificationUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<NotificationUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => NotificationCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManyUserInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => NotificationUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<NotificationUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [NotificationUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => NotificationUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<NotificationUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [NotificationScalarWhereInput], {nullable:true})
+    @Type(() => NotificationScalarWhereInput)
+    deleteMany?: Array<NotificationScalarWhereInput>;
+}
+
+@InputType()
+export class NotificationUncheckedUpdateManyWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    senderId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    senderId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUncheckedUpdateWithoutRideInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    senderId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUncheckedUpdateWithoutSenderInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUncheckedUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    senderId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    rideId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    senderId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+}
+
+@InputType()
+export class NotificationUpdateManyWithWhereWithoutRideInput {
+    @Field(() => NotificationScalarWhereInput, {nullable:false})
+    @Type(() => NotificationScalarWhereInput)
+    where!: InstanceType<typeof NotificationScalarWhereInput>;
+    @Field(() => NotificationUpdateManyMutationInput, {nullable:false})
+    @Type(() => NotificationUpdateManyMutationInput)
+    data!: InstanceType<typeof NotificationUpdateManyMutationInput>;
+}
+
+@InputType()
+export class NotificationUpdateManyWithWhereWithoutSenderInput {
+    @Field(() => NotificationScalarWhereInput, {nullable:false})
+    @Type(() => NotificationScalarWhereInput)
+    where!: InstanceType<typeof NotificationScalarWhereInput>;
+    @Field(() => NotificationUpdateManyMutationInput, {nullable:false})
+    @Type(() => NotificationUpdateManyMutationInput)
+    data!: InstanceType<typeof NotificationUpdateManyMutationInput>;
+}
+
+@InputType()
+export class NotificationUpdateManyWithWhereWithoutUserInput {
+    @Field(() => NotificationScalarWhereInput, {nullable:false})
+    @Type(() => NotificationScalarWhereInput)
+    where!: InstanceType<typeof NotificationScalarWhereInput>;
+    @Field(() => NotificationUpdateManyMutationInput, {nullable:false})
+    @Type(() => NotificationUpdateManyMutationInput)
+    data!: InstanceType<typeof NotificationUpdateManyMutationInput>;
+}
+
+@InputType()
+export class NotificationUpdateManyWithoutRideNestedInput {
+    @Field(() => [NotificationCreateWithoutRideInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutRideInput)
+    create?: Array<NotificationCreateWithoutRideInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutRideInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutRideInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutRideInput>;
+    @Field(() => [NotificationUpsertWithWhereUniqueWithoutRideInput], {nullable:true})
+    @Type(() => NotificationUpsertWithWhereUniqueWithoutRideInput)
+    upsert?: Array<NotificationUpsertWithWhereUniqueWithoutRideInput>;
+    @Field(() => NotificationCreateManyRideInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManyRideInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManyRideInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationUpdateWithWhereUniqueWithoutRideInput], {nullable:true})
+    @Type(() => NotificationUpdateWithWhereUniqueWithoutRideInput)
+    update?: Array<NotificationUpdateWithWhereUniqueWithoutRideInput>;
+    @Field(() => [NotificationUpdateManyWithWhereWithoutRideInput], {nullable:true})
+    @Type(() => NotificationUpdateManyWithWhereWithoutRideInput)
+    updateMany?: Array<NotificationUpdateManyWithWhereWithoutRideInput>;
+    @Field(() => [NotificationScalarWhereInput], {nullable:true})
+    @Type(() => NotificationScalarWhereInput)
+    deleteMany?: Array<NotificationScalarWhereInput>;
+}
+
+@InputType()
+export class NotificationUpdateManyWithoutSenderNestedInput {
+    @Field(() => [NotificationCreateWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutSenderInput)
+    create?: Array<NotificationCreateWithoutSenderInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutSenderInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutSenderInput>;
+    @Field(() => [NotificationUpsertWithWhereUniqueWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationUpsertWithWhereUniqueWithoutSenderInput)
+    upsert?: Array<NotificationUpsertWithWhereUniqueWithoutSenderInput>;
+    @Field(() => NotificationCreateManySenderInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManySenderInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManySenderInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationUpdateWithWhereUniqueWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationUpdateWithWhereUniqueWithoutSenderInput)
+    update?: Array<NotificationUpdateWithWhereUniqueWithoutSenderInput>;
+    @Field(() => [NotificationUpdateManyWithWhereWithoutSenderInput], {nullable:true})
+    @Type(() => NotificationUpdateManyWithWhereWithoutSenderInput)
+    updateMany?: Array<NotificationUpdateManyWithWhereWithoutSenderInput>;
+    @Field(() => [NotificationScalarWhereInput], {nullable:true})
+    @Type(() => NotificationScalarWhereInput)
+    deleteMany?: Array<NotificationScalarWhereInput>;
+}
+
+@InputType()
+export class NotificationUpdateManyWithoutUserNestedInput {
+    @Field(() => [NotificationCreateWithoutUserInput], {nullable:true})
+    @Type(() => NotificationCreateWithoutUserInput)
+    create?: Array<NotificationCreateWithoutUserInput>;
+    @Field(() => [NotificationCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => NotificationCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<NotificationCreateOrConnectWithoutUserInput>;
+    @Field(() => [NotificationUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => NotificationUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<NotificationUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => NotificationCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => NotificationCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof NotificationCreateManyUserInputEnvelope>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationWhereUniqueInput], {nullable:true})
+    @Type(() => NotificationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>>;
+    @Field(() => [NotificationUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => NotificationUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<NotificationUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [NotificationUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => NotificationUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<NotificationUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [NotificationScalarWhereInput], {nullable:true})
+    @Type(() => NotificationScalarWhereInput)
+    deleteMany?: Array<NotificationScalarWhereInput>;
+}
+
+@InputType()
+export class NotificationUpdateWithWhereUniqueWithoutRideInput {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => NotificationUpdateWithoutRideInput, {nullable:false})
+    @Type(() => NotificationUpdateWithoutRideInput)
+    data!: InstanceType<typeof NotificationUpdateWithoutRideInput>;
+}
+
+@InputType()
+export class NotificationUpdateWithWhereUniqueWithoutSenderInput {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => NotificationUpdateWithoutSenderInput, {nullable:false})
+    @Type(() => NotificationUpdateWithoutSenderInput)
+    data!: InstanceType<typeof NotificationUpdateWithoutSenderInput>;
+}
+
+@InputType()
+export class NotificationUpdateWithWhereUniqueWithoutUserInput {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => NotificationUpdateWithoutUserInput, {nullable:false})
+    @Type(() => NotificationUpdateWithoutUserInput)
+    data!: InstanceType<typeof NotificationUpdateWithoutUserInput>;
+}
+
+@InputType()
+export class NotificationUpdateWithoutRideInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+    @Field(() => UserUpdateOneRequiredWithoutNotificationsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneRequiredWithoutNotificationsNestedInput)
+    user?: InstanceType<typeof UserUpdateOneRequiredWithoutNotificationsNestedInput>;
+    @Field(() => UserUpdateOneWithoutSentNotificationsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneWithoutSentNotificationsNestedInput)
+    sender?: InstanceType<typeof UserUpdateOneWithoutSentNotificationsNestedInput>;
+}
+
+@InputType()
+export class NotificationUpdateWithoutSenderInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+    @Field(() => UserUpdateOneRequiredWithoutNotificationsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneRequiredWithoutNotificationsNestedInput)
+    user?: InstanceType<typeof UserUpdateOneRequiredWithoutNotificationsNestedInput>;
+    @Field(() => RideUpdateOneWithoutNotificationNestedInput, {nullable:true})
+    @Type(() => RideUpdateOneWithoutNotificationNestedInput)
+    ride?: InstanceType<typeof RideUpdateOneWithoutNotificationNestedInput>;
+}
+
+@InputType()
+export class NotificationUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+    @Field(() => UserUpdateOneWithoutSentNotificationsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneWithoutSentNotificationsNestedInput)
+    sender?: InstanceType<typeof UserUpdateOneWithoutSentNotificationsNestedInput>;
+    @Field(() => RideUpdateOneWithoutNotificationNestedInput, {nullable:true})
+    @Type(() => RideUpdateOneWithoutNotificationNestedInput)
+    ride?: InstanceType<typeof RideUpdateOneWithoutNotificationNestedInput>;
+}
+
+@InputType()
+export class NotificationUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumNotificationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    message?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    archived?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    deleted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    readAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+    @Field(() => UserUpdateOneRequiredWithoutNotificationsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneRequiredWithoutNotificationsNestedInput)
+    user?: InstanceType<typeof UserUpdateOneRequiredWithoutNotificationsNestedInput>;
+    @Field(() => UserUpdateOneWithoutSentNotificationsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneWithoutSentNotificationsNestedInput)
+    sender?: InstanceType<typeof UserUpdateOneWithoutSentNotificationsNestedInput>;
+    @Field(() => RideUpdateOneWithoutNotificationNestedInput, {nullable:true})
+    @Type(() => RideUpdateOneWithoutNotificationNestedInput)
+    ride?: InstanceType<typeof RideUpdateOneWithoutNotificationNestedInput>;
+}
+
+@InputType()
+export class NotificationUpsertWithWhereUniqueWithoutRideInput {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => NotificationUpdateWithoutRideInput, {nullable:false})
+    @Type(() => NotificationUpdateWithoutRideInput)
+    update!: InstanceType<typeof NotificationUpdateWithoutRideInput>;
+    @Field(() => NotificationCreateWithoutRideInput, {nullable:false})
+    @Type(() => NotificationCreateWithoutRideInput)
+    create!: InstanceType<typeof NotificationCreateWithoutRideInput>;
+}
+
+@InputType()
+export class NotificationUpsertWithWhereUniqueWithoutSenderInput {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => NotificationUpdateWithoutSenderInput, {nullable:false})
+    @Type(() => NotificationUpdateWithoutSenderInput)
+    update!: InstanceType<typeof NotificationUpdateWithoutSenderInput>;
+    @Field(() => NotificationCreateWithoutSenderInput, {nullable:false})
+    @Type(() => NotificationCreateWithoutSenderInput)
+    create!: InstanceType<typeof NotificationCreateWithoutSenderInput>;
+}
+
+@InputType()
+export class NotificationUpsertWithWhereUniqueWithoutUserInput {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => NotificationUpdateWithoutUserInput, {nullable:false})
+    @Type(() => NotificationUpdateWithoutUserInput)
+    update!: InstanceType<typeof NotificationUpdateWithoutUserInput>;
+    @Field(() => NotificationCreateWithoutUserInput, {nullable:false})
+    @Type(() => NotificationCreateWithoutUserInput)
+    create!: InstanceType<typeof NotificationCreateWithoutUserInput>;
+}
+
+@InputType()
+export class NotificationWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => [NotificationWhereInput], {nullable:true})
+    AND?: Array<NotificationWhereInput>;
+    @Field(() => [NotificationWhereInput], {nullable:true})
+    OR?: Array<NotificationWhereInput>;
+    @Field(() => [NotificationWhereInput], {nullable:true})
+    NOT?: Array<NotificationWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => EnumNotificationTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    title?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    message?: InstanceType<typeof StringFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    read?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    archived?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    deleted?: InstanceType<typeof BoolFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    readAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    rideId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    senderId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => JsonNullableFilter, {nullable:true})
+    metadata?: InstanceType<typeof JsonNullableFilter>;
+    @Field(() => UserScalarRelationFilter, {nullable:true})
+    @Type(() => UserScalarRelationFilter)
+    user?: InstanceType<typeof UserScalarRelationFilter>;
+    @Field(() => UserNullableScalarRelationFilter, {nullable:true})
+    @Type(() => UserNullableScalarRelationFilter)
+    sender?: InstanceType<typeof UserNullableScalarRelationFilter>;
+    @Field(() => RideNullableScalarRelationFilter, {nullable:true})
+    @Type(() => RideNullableScalarRelationFilter)
+    ride?: InstanceType<typeof RideNullableScalarRelationFilter>;
+}
+
+@InputType()
+export class NotificationWhereInput {
+    @Field(() => [NotificationWhereInput], {nullable:true})
+    AND?: Array<NotificationWhereInput>;
+    @Field(() => [NotificationWhereInput], {nullable:true})
+    OR?: Array<NotificationWhereInput>;
+    @Field(() => [NotificationWhereInput], {nullable:true})
+    NOT?: Array<NotificationWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: InstanceType<typeof StringFilter>;
+    @Field(() => EnumNotificationTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumNotificationTypeFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    title?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    message?: InstanceType<typeof StringFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    read?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    archived?: InstanceType<typeof BoolFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    deleted?: InstanceType<typeof BoolFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    readAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    rideId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    senderId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => JsonNullableFilter, {nullable:true})
+    metadata?: InstanceType<typeof JsonNullableFilter>;
+    @Field(() => UserScalarRelationFilter, {nullable:true})
+    @Type(() => UserScalarRelationFilter)
+    user?: InstanceType<typeof UserScalarRelationFilter>;
+    @Field(() => UserNullableScalarRelationFilter, {nullable:true})
+    @Type(() => UserNullableScalarRelationFilter)
+    sender?: InstanceType<typeof UserNullableScalarRelationFilter>;
+    @Field(() => RideNullableScalarRelationFilter, {nullable:true})
+    @Type(() => RideNullableScalarRelationFilter)
+    ride?: InstanceType<typeof RideNullableScalarRelationFilter>;
+}
+
+@ObjectType()
+export class Notification {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    userId!: string;
+    @Field(() => NotificationType, {nullable:false})
+    type!: `${NotificationType}`;
+    @Field(() => String, {nullable:false})
+    title!: string;
+    @Field(() => String, {nullable:false})
+    message!: string;
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
+    read!: boolean;
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
+    archived!: boolean;
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
+    deleted!: boolean;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
+    @Field(() => Date, {nullable:true})
+    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:true})
+    readAt!: Date | null;
+    @Field(() => String, {nullable:true})
+    rideId!: string | null;
+    @Field(() => String, {nullable:true})
+    senderId!: string | null;
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata!: any | null;
+    @Field(() => User, {nullable:false})
+    user?: InstanceType<typeof User>;
+    @Field(() => User, {nullable:true})
+    sender?: InstanceType<typeof User> | null;
+    @Field(() => Ride, {nullable:true})
+    ride?: InstanceType<typeof Ride> | null;
+}
+
+@ArgsType()
+export class UpdateManyNotificationArgs {
+    @Field(() => NotificationUpdateManyMutationInput, {nullable:false})
+    @Type(() => NotificationUpdateManyMutationInput)
+    data!: InstanceType<typeof NotificationUpdateManyMutationInput>;
+    @Field(() => NotificationWhereInput, {nullable:true})
+    @Type(() => NotificationWhereInput)
+    where?: InstanceType<typeof NotificationWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class UpdateOneNotificationArgs {
+    @Field(() => NotificationUpdateInput, {nullable:false})
+    @Type(() => NotificationUpdateInput)
+    data!: InstanceType<typeof NotificationUpdateInput>;
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpsertOneNotificationArgs {
+    @Field(() => NotificationWhereUniqueInput, {nullable:false})
+    @Type(() => NotificationWhereUniqueInput)
+    where!: Prisma.AtLeast<NotificationWhereUniqueInput, 'id'>;
+    @Field(() => NotificationCreateInput, {nullable:false})
+    @Type(() => NotificationCreateInput)
+    create!: InstanceType<typeof NotificationCreateInput>;
+    @Field(() => NotificationUpdateInput, {nullable:false})
+    @Type(() => NotificationUpdateInput)
+    update!: InstanceType<typeof NotificationUpdateInput>;
+}
+
+@ObjectType()
 export class AggregatePosition {
     @Field(() => PositionCountAggregate, {nullable:true})
     _count?: InstanceType<typeof PositionCountAggregate>;
@@ -17949,6 +20040,42 @@ export class EnumMessageStateWithAggregatesFilter {
 }
 
 @InputType()
+export class EnumNotificationTypeFieldUpdateOperationsInput {
+    @Field(() => NotificationType, {nullable:true})
+    set?: `${NotificationType}`;
+}
+
+@InputType()
+export class EnumNotificationTypeFilter {
+    @Field(() => NotificationType, {nullable:true})
+    equals?: `${NotificationType}`;
+    @Field(() => [NotificationType], {nullable:true})
+    in?: Array<`${NotificationType}`>;
+    @Field(() => [NotificationType], {nullable:true})
+    notIn?: Array<`${NotificationType}`>;
+    @Field(() => NestedEnumNotificationTypeFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumNotificationTypeFilter>;
+}
+
+@InputType()
+export class EnumNotificationTypeWithAggregatesFilter {
+    @Field(() => NotificationType, {nullable:true})
+    equals?: `${NotificationType}`;
+    @Field(() => [NotificationType], {nullable:true})
+    in?: Array<`${NotificationType}`>;
+    @Field(() => [NotificationType], {nullable:true})
+    notIn?: Array<`${NotificationType}`>;
+    @Field(() => NestedEnumNotificationTypeWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumNotificationTypeWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumNotificationTypeFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumNotificationTypeFilter>;
+    @Field(() => NestedEnumNotificationTypeFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumNotificationTypeFilter>;
+}
+
+@InputType()
 export class EnumRideStatusFieldUpdateOperationsInput {
     @Field(() => RideStatus, {nullable:true})
     set?: `${RideStatus}`;
@@ -18760,6 +20887,36 @@ export class NestedEnumMessageStateWithAggregatesFilter {
     _min?: InstanceType<typeof NestedEnumMessageStateFilter>;
     @Field(() => NestedEnumMessageStateFilter, {nullable:true})
     _max?: InstanceType<typeof NestedEnumMessageStateFilter>;
+}
+
+@InputType()
+export class NestedEnumNotificationTypeFilter {
+    @Field(() => NotificationType, {nullable:true})
+    equals?: `${NotificationType}`;
+    @Field(() => [NotificationType], {nullable:true})
+    in?: Array<`${NotificationType}`>;
+    @Field(() => [NotificationType], {nullable:true})
+    notIn?: Array<`${NotificationType}`>;
+    @Field(() => NestedEnumNotificationTypeFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumNotificationTypeFilter>;
+}
+
+@InputType()
+export class NestedEnumNotificationTypeWithAggregatesFilter {
+    @Field(() => NotificationType, {nullable:true})
+    equals?: `${NotificationType}`;
+    @Field(() => [NotificationType], {nullable:true})
+    in?: Array<`${NotificationType}`>;
+    @Field(() => [NotificationType], {nullable:true})
+    notIn?: Array<`${NotificationType}`>;
+    @Field(() => NestedEnumNotificationTypeWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumNotificationTypeWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumNotificationTypeFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumNotificationTypeFilter>;
+    @Field(() => NestedEnumNotificationTypeFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumNotificationTypeFilter>;
 }
 
 @InputType()
@@ -23546,6 +25703,8 @@ export class RideCount {
     Message?: number;
     @Field(() => Int, {nullable:false})
     Attachment?: number;
+    @Field(() => Int, {nullable:false})
+    Notification?: number;
 }
 
 @InputType()
@@ -23810,6 +25969,19 @@ export class RideCreateNestedOneWithoutMessageInput {
 }
 
 @InputType()
+export class RideCreateNestedOneWithoutNotificationInput {
+    @Field(() => RideCreateWithoutNotificationInput, {nullable:true})
+    @Type(() => RideCreateWithoutNotificationInput)
+    create?: InstanceType<typeof RideCreateWithoutNotificationInput>;
+    @Field(() => RideCreateOrConnectWithoutNotificationInput, {nullable:true})
+    @Type(() => RideCreateOrConnectWithoutNotificationInput)
+    connectOrCreate?: InstanceType<typeof RideCreateOrConnectWithoutNotificationInput>;
+    @Field(() => RideWhereUniqueInput, {nullable:true})
+    @Type(() => RideWhereUniqueInput)
+    connect?: Prisma.AtLeast<RideWhereUniqueInput, 'id'>;
+}
+
+@InputType()
 export class RideCreateNestedOneWithoutPositionsInput {
     @Field(() => RideCreateWithoutPositionsInput, {nullable:true})
     @Type(() => RideCreateWithoutPositionsInput)
@@ -23863,6 +26035,16 @@ export class RideCreateOrConnectWithoutMessageInput {
     @Field(() => RideCreateWithoutMessageInput, {nullable:false})
     @Type(() => RideCreateWithoutMessageInput)
     create!: InstanceType<typeof RideCreateWithoutMessageInput>;
+}
+
+@InputType()
+export class RideCreateOrConnectWithoutNotificationInput {
+    @Field(() => RideWhereUniqueInput, {nullable:false})
+    @Type(() => RideWhereUniqueInput)
+    where!: Prisma.AtLeast<RideWhereUniqueInput, 'id'>;
+    @Field(() => RideCreateWithoutNotificationInput, {nullable:false})
+    @Type(() => RideCreateWithoutNotificationInput)
+    create!: InstanceType<typeof RideCreateWithoutNotificationInput>;
 }
 
 @InputType()
@@ -23967,6 +26149,9 @@ export class RideCreateWithoutAttachmentInput {
     @Field(() => MessageCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => MessageCreateNestedManyWithoutRideInput)
     Message?: InstanceType<typeof MessageCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -24041,6 +26226,9 @@ export class RideCreateWithoutDriverInput {
     @Field(() => AttachmentCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -24112,6 +26300,86 @@ export class RideCreateWithoutMessageInput {
     @Field(() => RideParticipantCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => RideParticipantCreateNestedManyWithoutRideInput)
     RideParticipant?: InstanceType<typeof RideParticipantCreateNestedManyWithoutRideInput>;
+    @Field(() => AttachmentCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => AttachmentCreateNestedManyWithoutRideInput)
+    Attachment?: InstanceType<typeof AttachmentCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationCreateNestedManyWithoutRideInput>;
+}
+
+@InputType()
+export class RideCreateWithoutNotificationInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => RideStatus, {nullable:true})
+    status?: `${RideStatus}`;
+    @Field(() => Date, {nullable:true})
+    startedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    finishedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    departureAddress?: string;
+    @Field(() => GraphQLDecimal, {nullable:true})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    departureLat?: Decimal;
+    @Field(() => GraphQLDecimal, {nullable:true})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    departureLng?: Decimal;
+    @Field(() => String, {nullable:true})
+    arrivalAddress?: string;
+    @Field(() => GraphQLDecimal, {nullable:true})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    arrivalLat?: Decimal;
+    @Field(() => GraphQLDecimal, {nullable:true})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    arrivalLng?: Decimal;
+    @Field(() => Date, {nullable:true})
+    scheduledDeparture?: Date | string;
+    @Field(() => GraphQLDecimal, {nullable:true})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    price?: Decimal;
+    @Field(() => String, {nullable:true})
+    currency?: string;
+    @Field(() => Int, {nullable:true})
+    requiredSeats?: number;
+    @Field(() => Boolean, {nullable:true})
+    acceptsAnimals?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    acceptsBaggage?: boolean;
+    @Field(() => String, {nullable:true})
+    baggageDetails?: string;
+    @Field(() => String, {nullable:true})
+    otherPreferences?: string;
+    @Field(() => Float, {nullable:true})
+    minDriverRating?: number;
+    @Field(() => RideCreatepreferredLanguagesInput, {nullable:true})
+    @Type(() => RideCreatepreferredLanguagesInput)
+    preferredLanguages?: InstanceType<typeof RideCreatepreferredLanguagesInput>;
+    @Field(() => VehicleTypeCreateNestedOneWithoutRideInput, {nullable:true})
+    @Type(() => VehicleTypeCreateNestedOneWithoutRideInput)
+    vehicleType?: InstanceType<typeof VehicleTypeCreateNestedOneWithoutRideInput>;
+    @Field(() => PositionCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => PositionCreateNestedManyWithoutRideInput)
+    positions?: InstanceType<typeof PositionCreateNestedManyWithoutRideInput>;
+    @Field(() => UserCreateNestedOneWithoutRidesInput, {nullable:true})
+    @Type(() => UserCreateNestedOneWithoutRidesInput)
+    Driver?: InstanceType<typeof UserCreateNestedOneWithoutRidesInput>;
+    @Field(() => RideParticipantCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => RideParticipantCreateNestedManyWithoutRideInput)
+    RideParticipant?: InstanceType<typeof RideParticipantCreateNestedManyWithoutRideInput>;
+    @Field(() => MessageCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => MessageCreateNestedManyWithoutRideInput)
+    Message?: InstanceType<typeof MessageCreateNestedManyWithoutRideInput>;
     @Field(() => AttachmentCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentCreateNestedManyWithoutRideInput>;
@@ -24189,6 +26457,9 @@ export class RideCreateWithoutPositionsInput {
     @Field(() => AttachmentCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -24263,6 +26534,9 @@ export class RideCreateWithoutRideParticipantInput {
     @Field(() => AttachmentCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -24337,6 +26611,9 @@ export class RideCreateWithoutVehicleTypeInput {
     @Field(() => AttachmentCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -24414,6 +26691,9 @@ export class RideCreateInput {
     @Field(() => AttachmentCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -24992,6 +27272,9 @@ export class RideOrderByWithRelationInput {
     @Field(() => AttachmentOrderByRelationAggregateInput, {nullable:true})
     @Type(() => AttachmentOrderByRelationAggregateInput)
     Attachment?: InstanceType<typeof AttachmentOrderByRelationAggregateInput>;
+    @Field(() => NotificationOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => NotificationOrderByRelationAggregateInput)
+    Notification?: InstanceType<typeof NotificationOrderByRelationAggregateInput>;
 }
 
 @InputType()
@@ -25292,6 +27575,9 @@ export class RideUncheckedCreateWithoutAttachmentInput {
     @Field(() => MessageUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => MessageUncheckedCreateNestedManyWithoutRideInput)
     Message?: InstanceType<typeof MessageUncheckedCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -25365,6 +27651,9 @@ export class RideUncheckedCreateWithoutDriverInput {
     @Field(() => AttachmentUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentUncheckedCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -25434,6 +27723,84 @@ export class RideUncheckedCreateWithoutMessageInput {
     @Field(() => RideParticipantUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => RideParticipantUncheckedCreateNestedManyWithoutRideInput)
     RideParticipant?: InstanceType<typeof RideParticipantUncheckedCreateNestedManyWithoutRideInput>;
+    @Field(() => AttachmentUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => AttachmentUncheckedCreateNestedManyWithoutRideInput)
+    Attachment?: InstanceType<typeof AttachmentUncheckedCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutRideInput>;
+}
+
+@InputType()
+export class RideUncheckedCreateWithoutNotificationInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    driverId?: string;
+    @Field(() => RideStatus, {nullable:true})
+    status?: `${RideStatus}`;
+    @Field(() => Date, {nullable:true})
+    startedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    finishedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    departureAddress?: string;
+    @Field(() => GraphQLDecimal, {nullable:true})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    departureLat?: Decimal;
+    @Field(() => GraphQLDecimal, {nullable:true})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    departureLng?: Decimal;
+    @Field(() => String, {nullable:true})
+    arrivalAddress?: string;
+    @Field(() => GraphQLDecimal, {nullable:true})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    arrivalLat?: Decimal;
+    @Field(() => GraphQLDecimal, {nullable:true})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    arrivalLng?: Decimal;
+    @Field(() => Date, {nullable:true})
+    scheduledDeparture?: Date | string;
+    @Field(() => GraphQLDecimal, {nullable:true})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    price?: Decimal;
+    @Field(() => String, {nullable:true})
+    currency?: string;
+    @Field(() => String, {nullable:true})
+    vehicleTypeId?: string;
+    @Field(() => Int, {nullable:true})
+    requiredSeats?: number;
+    @Field(() => Boolean, {nullable:true})
+    acceptsAnimals?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    acceptsBaggage?: boolean;
+    @Field(() => String, {nullable:true})
+    baggageDetails?: string;
+    @Field(() => String, {nullable:true})
+    otherPreferences?: string;
+    @Field(() => Float, {nullable:true})
+    minDriverRating?: number;
+    @Field(() => RideCreatepreferredLanguagesInput, {nullable:true})
+    @Type(() => RideCreatepreferredLanguagesInput)
+    preferredLanguages?: InstanceType<typeof RideCreatepreferredLanguagesInput>;
+    @Field(() => PositionUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => PositionUncheckedCreateNestedManyWithoutRideInput)
+    positions?: InstanceType<typeof PositionUncheckedCreateNestedManyWithoutRideInput>;
+    @Field(() => RideParticipantUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => RideParticipantUncheckedCreateNestedManyWithoutRideInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedCreateNestedManyWithoutRideInput>;
+    @Field(() => MessageUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => MessageUncheckedCreateNestedManyWithoutRideInput)
+    Message?: InstanceType<typeof MessageUncheckedCreateNestedManyWithoutRideInput>;
     @Field(() => AttachmentUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentUncheckedCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedCreateNestedManyWithoutRideInput>;
@@ -25509,6 +27876,9 @@ export class RideUncheckedCreateWithoutPositionsInput {
     @Field(() => AttachmentUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentUncheckedCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -25581,6 +27951,9 @@ export class RideUncheckedCreateWithoutRideParticipantInput {
     @Field(() => AttachmentUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentUncheckedCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -25654,6 +28027,9 @@ export class RideUncheckedCreateWithoutVehicleTypeInput {
     @Field(() => AttachmentUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentUncheckedCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -25729,6 +28105,9 @@ export class RideUncheckedCreateInput {
     @Field(() => AttachmentUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
     @Type(() => AttachmentUncheckedCreateNestedManyWithoutRideInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedCreateNestedManyWithoutRideInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutRideInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutRideInput)
+    Notification?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutRideInput>;
 }
 
 @InputType()
@@ -26040,6 +28419,9 @@ export class RideUncheckedUpdateWithoutAttachmentInput {
     @Field(() => MessageUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => MessageUncheckedUpdateManyWithoutRideNestedInput)
     Message?: InstanceType<typeof MessageUncheckedUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -26108,6 +28490,9 @@ export class RideUncheckedUpdateWithoutDriverInput {
     @Field(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -26172,6 +28557,79 @@ export class RideUncheckedUpdateWithoutMessageInput {
     @Field(() => RideParticipantUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => RideParticipantUncheckedUpdateManyWithoutRideNestedInput)
     RideParticipant?: InstanceType<typeof RideParticipantUncheckedUpdateManyWithoutRideNestedInput>;
+    @Field(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput)
+    Attachment?: InstanceType<typeof AttachmentUncheckedUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutRideNestedInput>;
+}
+
+@InputType()
+export class RideUncheckedUpdateWithoutNotificationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumRideStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof EnumRideStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    startedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    finishedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    departureAddress?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDecimalFieldUpdateOperationsInput, {nullable:true})
+    @Type(() => NullableDecimalFieldUpdateOperationsInput)
+    departureLat?: InstanceType<typeof NullableDecimalFieldUpdateOperationsInput>;
+    @Field(() => NullableDecimalFieldUpdateOperationsInput, {nullable:true})
+    @Type(() => NullableDecimalFieldUpdateOperationsInput)
+    departureLng?: InstanceType<typeof NullableDecimalFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    arrivalAddress?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDecimalFieldUpdateOperationsInput, {nullable:true})
+    @Type(() => NullableDecimalFieldUpdateOperationsInput)
+    arrivalLat?: InstanceType<typeof NullableDecimalFieldUpdateOperationsInput>;
+    @Field(() => NullableDecimalFieldUpdateOperationsInput, {nullable:true})
+    @Type(() => NullableDecimalFieldUpdateOperationsInput)
+    arrivalLng?: InstanceType<typeof NullableDecimalFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    scheduledDeparture?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDecimalFieldUpdateOperationsInput, {nullable:true})
+    @Type(() => NullableDecimalFieldUpdateOperationsInput)
+    price?: InstanceType<typeof NullableDecimalFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    currency?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    vehicleTypeId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    requiredSeats?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    acceptsAnimals?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    acceptsBaggage?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    baggageDetails?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    otherPreferences?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableFloatFieldUpdateOperationsInput, {nullable:true})
+    minDriverRating?: InstanceType<typeof NullableFloatFieldUpdateOperationsInput>;
+    @Field(() => RideUpdatepreferredLanguagesInput, {nullable:true})
+    @Type(() => RideUpdatepreferredLanguagesInput)
+    preferredLanguages?: InstanceType<typeof RideUpdatepreferredLanguagesInput>;
+    @Field(() => PositionUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => PositionUncheckedUpdateManyWithoutRideNestedInput)
+    positions?: InstanceType<typeof PositionUncheckedUpdateManyWithoutRideNestedInput>;
+    @Field(() => RideParticipantUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => RideParticipantUncheckedUpdateManyWithoutRideNestedInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedUpdateManyWithoutRideNestedInput>;
+    @Field(() => MessageUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => MessageUncheckedUpdateManyWithoutRideNestedInput)
+    Message?: InstanceType<typeof MessageUncheckedUpdateManyWithoutRideNestedInput>;
     @Field(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedUpdateManyWithoutRideNestedInput>;
@@ -26242,6 +28700,9 @@ export class RideUncheckedUpdateWithoutPositionsInput {
     @Field(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -26309,6 +28770,9 @@ export class RideUncheckedUpdateWithoutRideParticipantInput {
     @Field(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -26377,6 +28841,9 @@ export class RideUncheckedUpdateWithoutVehicleTypeInput {
     @Field(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -26447,6 +28914,9 @@ export class RideUncheckedUpdateInput {
     @Field(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUncheckedUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUncheckedUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -26667,6 +29137,31 @@ export class RideUpdateOneWithoutMessageNestedInput {
 }
 
 @InputType()
+export class RideUpdateOneWithoutNotificationNestedInput {
+    @Field(() => RideCreateWithoutNotificationInput, {nullable:true})
+    @Type(() => RideCreateWithoutNotificationInput)
+    create?: InstanceType<typeof RideCreateWithoutNotificationInput>;
+    @Field(() => RideCreateOrConnectWithoutNotificationInput, {nullable:true})
+    @Type(() => RideCreateOrConnectWithoutNotificationInput)
+    connectOrCreate?: InstanceType<typeof RideCreateOrConnectWithoutNotificationInput>;
+    @Field(() => RideUpsertWithoutNotificationInput, {nullable:true})
+    @Type(() => RideUpsertWithoutNotificationInput)
+    upsert?: InstanceType<typeof RideUpsertWithoutNotificationInput>;
+    @Field(() => RideWhereInput, {nullable:true})
+    @Type(() => RideWhereInput)
+    disconnect?: InstanceType<typeof RideWhereInput>;
+    @Field(() => RideWhereInput, {nullable:true})
+    @Type(() => RideWhereInput)
+    delete?: InstanceType<typeof RideWhereInput>;
+    @Field(() => RideWhereUniqueInput, {nullable:true})
+    @Type(() => RideWhereUniqueInput)
+    connect?: Prisma.AtLeast<RideWhereUniqueInput, 'id'>;
+    @Field(() => RideUpdateToOneWithWhereWithoutNotificationInput, {nullable:true})
+    @Type(() => RideUpdateToOneWithWhereWithoutNotificationInput)
+    update?: InstanceType<typeof RideUpdateToOneWithWhereWithoutNotificationInput>;
+}
+
+@InputType()
 export class RideUpdateOneWithoutPositionsNestedInput {
     @Field(() => RideCreateWithoutPositionsInput, {nullable:true})
     @Type(() => RideCreateWithoutPositionsInput)
@@ -26709,6 +29204,16 @@ export class RideUpdateToOneWithWhereWithoutMessageInput {
     @Field(() => RideUpdateWithoutMessageInput, {nullable:false})
     @Type(() => RideUpdateWithoutMessageInput)
     data!: InstanceType<typeof RideUpdateWithoutMessageInput>;
+}
+
+@InputType()
+export class RideUpdateToOneWithWhereWithoutNotificationInput {
+    @Field(() => RideWhereInput, {nullable:true})
+    @Type(() => RideWhereInput)
+    where?: InstanceType<typeof RideWhereInput>;
+    @Field(() => RideUpdateWithoutNotificationInput, {nullable:false})
+    @Type(() => RideUpdateWithoutNotificationInput)
+    data!: InstanceType<typeof RideUpdateWithoutNotificationInput>;
 }
 
 @InputType()
@@ -26818,6 +29323,9 @@ export class RideUpdateWithoutAttachmentInput {
     @Field(() => MessageUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => MessageUpdateManyWithoutRideNestedInput)
     Message?: InstanceType<typeof MessageUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -26887,6 +29395,9 @@ export class RideUpdateWithoutDriverInput {
     @Field(() => AttachmentUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -26953,6 +29464,81 @@ export class RideUpdateWithoutMessageInput {
     @Field(() => RideParticipantUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => RideParticipantUpdateManyWithoutRideNestedInput)
     RideParticipant?: InstanceType<typeof RideParticipantUpdateManyWithoutRideNestedInput>;
+    @Field(() => AttachmentUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => AttachmentUpdateManyWithoutRideNestedInput)
+    Attachment?: InstanceType<typeof AttachmentUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUpdateManyWithoutRideNestedInput>;
+}
+
+@InputType()
+export class RideUpdateWithoutNotificationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumRideStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof EnumRideStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    startedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    finishedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    departureAddress?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDecimalFieldUpdateOperationsInput, {nullable:true})
+    @Type(() => NullableDecimalFieldUpdateOperationsInput)
+    departureLat?: InstanceType<typeof NullableDecimalFieldUpdateOperationsInput>;
+    @Field(() => NullableDecimalFieldUpdateOperationsInput, {nullable:true})
+    @Type(() => NullableDecimalFieldUpdateOperationsInput)
+    departureLng?: InstanceType<typeof NullableDecimalFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    arrivalAddress?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDecimalFieldUpdateOperationsInput, {nullable:true})
+    @Type(() => NullableDecimalFieldUpdateOperationsInput)
+    arrivalLat?: InstanceType<typeof NullableDecimalFieldUpdateOperationsInput>;
+    @Field(() => NullableDecimalFieldUpdateOperationsInput, {nullable:true})
+    @Type(() => NullableDecimalFieldUpdateOperationsInput)
+    arrivalLng?: InstanceType<typeof NullableDecimalFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    scheduledDeparture?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDecimalFieldUpdateOperationsInput, {nullable:true})
+    @Type(() => NullableDecimalFieldUpdateOperationsInput)
+    price?: InstanceType<typeof NullableDecimalFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    currency?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    requiredSeats?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    acceptsAnimals?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    acceptsBaggage?: InstanceType<typeof NullableBoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    baggageDetails?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    otherPreferences?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableFloatFieldUpdateOperationsInput, {nullable:true})
+    minDriverRating?: InstanceType<typeof NullableFloatFieldUpdateOperationsInput>;
+    @Field(() => RideUpdatepreferredLanguagesInput, {nullable:true})
+    @Type(() => RideUpdatepreferredLanguagesInput)
+    preferredLanguages?: InstanceType<typeof RideUpdatepreferredLanguagesInput>;
+    @Field(() => VehicleTypeUpdateOneWithoutRideNestedInput, {nullable:true})
+    @Type(() => VehicleTypeUpdateOneWithoutRideNestedInput)
+    vehicleType?: InstanceType<typeof VehicleTypeUpdateOneWithoutRideNestedInput>;
+    @Field(() => PositionUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => PositionUpdateManyWithoutRideNestedInput)
+    positions?: InstanceType<typeof PositionUpdateManyWithoutRideNestedInput>;
+    @Field(() => UserUpdateOneWithoutRidesNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneWithoutRidesNestedInput)
+    Driver?: InstanceType<typeof UserUpdateOneWithoutRidesNestedInput>;
+    @Field(() => RideParticipantUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => RideParticipantUpdateManyWithoutRideNestedInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUpdateManyWithoutRideNestedInput>;
+    @Field(() => MessageUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => MessageUpdateManyWithoutRideNestedInput)
+    Message?: InstanceType<typeof MessageUpdateManyWithoutRideNestedInput>;
     @Field(() => AttachmentUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUpdateManyWithoutRideNestedInput>;
@@ -27025,6 +29611,9 @@ export class RideUpdateWithoutPositionsInput {
     @Field(() => AttachmentUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -27094,6 +29683,9 @@ export class RideUpdateWithoutRideParticipantInput {
     @Field(() => AttachmentUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -27163,6 +29755,9 @@ export class RideUpdateWithoutVehicleTypeInput {
     @Field(() => AttachmentUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -27235,6 +29830,9 @@ export class RideUpdateInput {
     @Field(() => AttachmentUpdateManyWithoutRideNestedInput, {nullable:true})
     @Type(() => AttachmentUpdateManyWithoutRideNestedInput)
     Attachment?: InstanceType<typeof AttachmentUpdateManyWithoutRideNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutRideNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutRideNestedInput)
+    Notification?: InstanceType<typeof NotificationUpdateManyWithoutRideNestedInput>;
 }
 
 @InputType()
@@ -27292,6 +29890,19 @@ export class RideUpsertWithoutMessageInput {
     @Field(() => RideCreateWithoutMessageInput, {nullable:false})
     @Type(() => RideCreateWithoutMessageInput)
     create!: InstanceType<typeof RideCreateWithoutMessageInput>;
+    @Field(() => RideWhereInput, {nullable:true})
+    @Type(() => RideWhereInput)
+    where?: InstanceType<typeof RideWhereInput>;
+}
+
+@InputType()
+export class RideUpsertWithoutNotificationInput {
+    @Field(() => RideUpdateWithoutNotificationInput, {nullable:false})
+    @Type(() => RideUpdateWithoutNotificationInput)
+    update!: InstanceType<typeof RideUpdateWithoutNotificationInput>;
+    @Field(() => RideCreateWithoutNotificationInput, {nullable:false})
+    @Type(() => RideCreateWithoutNotificationInput)
+    create!: InstanceType<typeof RideCreateWithoutNotificationInput>;
     @Field(() => RideWhereInput, {nullable:true})
     @Type(() => RideWhereInput)
     where?: InstanceType<typeof RideWhereInput>;
@@ -27405,6 +30016,9 @@ export class RideWhereUniqueInput {
     @Field(() => AttachmentListRelationFilter, {nullable:true})
     @Type(() => AttachmentListRelationFilter)
     Attachment?: InstanceType<typeof AttachmentListRelationFilter>;
+    @Field(() => NotificationListRelationFilter, {nullable:true})
+    @Type(() => NotificationListRelationFilter)
+    Notification?: InstanceType<typeof NotificationListRelationFilter>;
 }
 
 @InputType()
@@ -27489,6 +30103,9 @@ export class RideWhereInput {
     @Field(() => AttachmentListRelationFilter, {nullable:true})
     @Type(() => AttachmentListRelationFilter)
     Attachment?: InstanceType<typeof AttachmentListRelationFilter>;
+    @Field(() => NotificationListRelationFilter, {nullable:true})
+    @Type(() => NotificationListRelationFilter)
+    Notification?: InstanceType<typeof NotificationListRelationFilter>;
 }
 
 @ObjectType()
@@ -27553,6 +30170,8 @@ export class Ride {
     Message?: Array<Message>;
     @Field(() => [Attachment], {nullable:true})
     Attachment?: Array<Attachment>;
+    @Field(() => [Notification], {nullable:true})
+    Notification?: Array<Notification>;
     @Field(() => RideCount, {nullable:false})
     _count?: InstanceType<typeof RideCount>;
 }
@@ -29599,6 +32218,10 @@ export class UserCount {
     MessageReadReceipt?: number;
     @Field(() => Int, {nullable:false})
     QrToken?: number;
+    @Field(() => Int, {nullable:false})
+    notifications?: number;
+    @Field(() => Int, {nullable:false})
+    sentNotifications?: number;
 }
 
 @InputType()
@@ -29741,6 +32364,19 @@ export class UserCreateNestedOneWithoutMessageInput {
 }
 
 @InputType()
+export class UserCreateNestedOneWithoutNotificationsInput {
+    @Field(() => UserCreateWithoutNotificationsInput, {nullable:true})
+    @Type(() => UserCreateWithoutNotificationsInput)
+    create?: InstanceType<typeof UserCreateWithoutNotificationsInput>;
+    @Field(() => UserCreateOrConnectWithoutNotificationsInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutNotificationsInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutNotificationsInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+}
+
+@InputType()
 export class UserCreateNestedOneWithoutQrTokenInput {
     @Field(() => UserCreateWithoutQrTokenInput, {nullable:true})
     @Type(() => UserCreateWithoutQrTokenInput)
@@ -29800,6 +32436,19 @@ export class UserCreateNestedOneWithoutRidesInput {
     @Field(() => UserCreateOrConnectWithoutRidesInput, {nullable:true})
     @Type(() => UserCreateOrConnectWithoutRidesInput)
     connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutRidesInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+}
+
+@InputType()
+export class UserCreateNestedOneWithoutSentNotificationsInput {
+    @Field(() => UserCreateWithoutSentNotificationsInput, {nullable:true})
+    @Type(() => UserCreateWithoutSentNotificationsInput)
+    create?: InstanceType<typeof UserCreateWithoutSentNotificationsInput>;
+    @Field(() => UserCreateOrConnectWithoutSentNotificationsInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutSentNotificationsInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutSentNotificationsInput>;
     @Field(() => UserWhereUniqueInput, {nullable:true})
     @Type(() => UserWhereUniqueInput)
     connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
@@ -29924,6 +32573,16 @@ export class UserCreateOrConnectWithoutMessageInput {
 }
 
 @InputType()
+export class UserCreateOrConnectWithoutNotificationsInput {
+    @Field(() => UserWhereUniqueInput, {nullable:false})
+    @Type(() => UserWhereUniqueInput)
+    where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserCreateWithoutNotificationsInput, {nullable:false})
+    @Type(() => UserCreateWithoutNotificationsInput)
+    create!: InstanceType<typeof UserCreateWithoutNotificationsInput>;
+}
+
+@InputType()
 export class UserCreateOrConnectWithoutQrTokenInput {
     @Field(() => UserWhereUniqueInput, {nullable:false})
     @Type(() => UserWhereUniqueInput)
@@ -29981,6 +32640,16 @@ export class UserCreateOrConnectWithoutRoleInput {
     @Field(() => UserCreateWithoutRoleInput, {nullable:false})
     @Type(() => UserCreateWithoutRoleInput)
     create!: InstanceType<typeof UserCreateWithoutRoleInput>;
+}
+
+@InputType()
+export class UserCreateOrConnectWithoutSentNotificationsInput {
+    @Field(() => UserWhereUniqueInput, {nullable:false})
+    @Type(() => UserWhereUniqueInput)
+    where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserCreateWithoutSentNotificationsInput, {nullable:false})
+    @Type(() => UserCreateWithoutSentNotificationsInput)
+    create!: InstanceType<typeof UserCreateWithoutSentNotificationsInput>;
 }
 
 @InputType()
@@ -30105,6 +32774,12 @@ export class UserCreateWithoutAvatarInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30169,6 +32844,12 @@ export class UserCreateWithoutConversationParticipantInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30233,6 +32914,12 @@ export class UserCreateWithoutMessageReadReceiptInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30296,6 +32983,81 @@ export class UserCreateWithoutMessageInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+}
+
+@InputType()
+export class UserCreateWithoutNotificationsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
+    @Field(() => String, {nullable:true})
+    userCoverId?: string;
+    @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
+    avatar?: InstanceType<typeof FileCreateNestedOneWithoutUserInput>;
+    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => DriverVehicleCreateNestedManyWithoutUserInput)
+    vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
+    @Field(() => RideCreateNestedManyWithoutDriverInput, {nullable:true})
+    @Type(() => RideCreateNestedManyWithoutDriverInput)
+    rides?: InstanceType<typeof RideCreateNestedManyWithoutDriverInput>;
+    @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutUserInput>;
+    @Field(() => ReviewCreateNestedManyWithoutUserInput, {nullable:true})
+    review?: InstanceType<typeof ReviewCreateNestedManyWithoutUserInput>;
+    @Field(() => RideParticipantCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => RideParticipantCreateNestedManyWithoutUserInput)
+    RideParticipant?: InstanceType<typeof RideParticipantCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => MessageCreateNestedManyWithoutSenderInput)
+    Message?: InstanceType<typeof MessageCreateNestedManyWithoutSenderInput>;
+    @Field(() => ConversationParticipantCreateNestedManyWithoutUserInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantCreateNestedManyWithoutUserInput>;
+    @Field(() => ReactionCreateNestedManyWithoutUserInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30360,6 +33122,12 @@ export class UserCreateWithoutQrTokenInput {
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30424,6 +33192,12 @@ export class UserCreateWithoutReactionInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30488,6 +33262,12 @@ export class UserCreateWithoutReviewInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30551,6 +33331,12 @@ export class UserCreateWithoutRideParticipantInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30614,6 +33400,12 @@ export class UserCreateWithoutRidesInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30678,6 +33470,81 @@ export class UserCreateWithoutRoleInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+}
+
+@InputType()
+export class UserCreateWithoutSentNotificationsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
+    @Field(() => String, {nullable:true})
+    userCoverId?: string;
+    @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
+    avatar?: InstanceType<typeof FileCreateNestedOneWithoutUserInput>;
+    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => DriverVehicleCreateNestedManyWithoutUserInput)
+    vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
+    @Field(() => RideCreateNestedManyWithoutDriverInput, {nullable:true})
+    @Type(() => RideCreateNestedManyWithoutDriverInput)
+    rides?: InstanceType<typeof RideCreateNestedManyWithoutDriverInput>;
+    @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutUserInput>;
+    @Field(() => ReviewCreateNestedManyWithoutUserInput, {nullable:true})
+    review?: InstanceType<typeof ReviewCreateNestedManyWithoutUserInput>;
+    @Field(() => RideParticipantCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => RideParticipantCreateNestedManyWithoutUserInput)
+    RideParticipant?: InstanceType<typeof RideParticipantCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => MessageCreateNestedManyWithoutSenderInput)
+    Message?: InstanceType<typeof MessageCreateNestedManyWithoutSenderInput>;
+    @Field(() => ConversationParticipantCreateNestedManyWithoutUserInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantCreateNestedManyWithoutUserInput>;
+    @Field(() => ReactionCreateNestedManyWithoutUserInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -30742,6 +33609,12 @@ export class UserCreateWithoutTokensInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30806,6 +33679,12 @@ export class UserCreateWithoutUserCoverInput {
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
     @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30870,6 +33749,12 @@ export class UserCreateWithoutUserDocumentInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30934,6 +33819,12 @@ export class UserCreateWithoutUserImageInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -30998,6 +33889,12 @@ export class UserCreateWithoutUserPreferenceInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -31061,6 +33958,12 @@ export class UserCreateWithoutVehiclesInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -31127,6 +34030,12 @@ export class UserCreateInput {
     QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
 }
 
 @ArgsType()
@@ -31510,6 +34419,12 @@ export class UserOrderByWithRelationInput {
     QrToken?: InstanceType<typeof QrTokenOrderByRelationAggregateInput>;
     @Field(() => UserCoverOrderByWithRelationInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverOrderByWithRelationInput>;
+    @Field(() => NotificationOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => NotificationOrderByRelationAggregateInput)
+    notifications?: InstanceType<typeof NotificationOrderByRelationAggregateInput>;
+    @Field(() => NotificationOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => NotificationOrderByRelationAggregateInput)
+    sentNotifications?: InstanceType<typeof NotificationOrderByRelationAggregateInput>;
 }
 
 @InputType()
@@ -31687,6 +34602,12 @@ export class UserUncheckedCreateWithoutAvatarInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -31751,6 +34672,12 @@ export class UserUncheckedCreateWithoutConversationParticipantInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -31815,6 +34742,12 @@ export class UserUncheckedCreateWithoutMessageReadReceiptInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -31878,6 +34811,81 @@ export class UserUncheckedCreateWithoutMessageInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+}
+
+@InputType()
+export class UserUncheckedCreateWithoutNotificationsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    avatarId?: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
+    @Field(() => String, {nullable:true})
+    userCoverId?: string;
+    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput)
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RideUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    @Type(() => RideUncheckedCreateNestedManyWithoutDriverInput)
+    rides?: InstanceType<typeof RideUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => ReviewUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RideParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => RideParticipantUncheckedCreateNestedManyWithoutUserInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => MessageUncheckedCreateNestedManyWithoutSenderInput)
+    Message?: InstanceType<typeof MessageUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => ConversationParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => ReactionUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -31942,6 +34950,12 @@ export class UserUncheckedCreateWithoutQrTokenInput {
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32006,6 +35020,12 @@ export class UserUncheckedCreateWithoutReactionInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32070,6 +35090,12 @@ export class UserUncheckedCreateWithoutReviewInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32133,6 +35159,12 @@ export class UserUncheckedCreateWithoutRideParticipantInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32196,6 +35228,12 @@ export class UserUncheckedCreateWithoutRidesInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32260,6 +35298,81 @@ export class UserUncheckedCreateWithoutRoleInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+}
+
+@InputType()
+export class UserUncheckedCreateWithoutSentNotificationsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    avatarId?: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
+    @Field(() => String, {nullable:true})
+    userCoverId?: string;
+    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput)
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RideUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    @Type(() => RideUncheckedCreateNestedManyWithoutDriverInput)
+    rides?: InstanceType<typeof RideUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => ReviewUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RideParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => RideParticipantUncheckedCreateNestedManyWithoutUserInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => MessageUncheckedCreateNestedManyWithoutSenderInput)
+    Message?: InstanceType<typeof MessageUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => ConversationParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => ReactionUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -32324,6 +35437,12 @@ export class UserUncheckedCreateWithoutTokensInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32388,6 +35507,12 @@ export class UserUncheckedCreateWithoutUserCoverInput {
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32452,6 +35577,12 @@ export class UserUncheckedCreateWithoutUserDocumentInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32516,6 +35647,12 @@ export class UserUncheckedCreateWithoutUserImageInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32580,6 +35717,12 @@ export class UserUncheckedCreateWithoutUserPreferenceInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32643,6 +35786,12 @@ export class UserUncheckedCreateWithoutVehiclesInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32709,6 +35858,12 @@ export class UserUncheckedCreateInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
     @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
 }
 
 @InputType()
@@ -32938,6 +36093,12 @@ export class UserUncheckedUpdateWithoutAvatarInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33002,6 +36163,12 @@ export class UserUncheckedUpdateWithoutConversationParticipantInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33066,6 +36233,12 @@ export class UserUncheckedUpdateWithoutMessageReadReceiptInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33129,6 +36302,81 @@ export class UserUncheckedUpdateWithoutMessageInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+}
+
+@InputType()
+export class UserUncheckedUpdateWithoutNotificationsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput)
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    @Type(() => RideUncheckedUpdateManyWithoutDriverNestedInput)
+    rides?: InstanceType<typeof RideUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReviewUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => RideParticipantUncheckedUpdateManyWithoutUserNestedInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => MessageUncheckedUpdateManyWithoutSenderNestedInput)
+    Message?: InstanceType<typeof MessageUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReactionUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33193,6 +36441,12 @@ export class UserUncheckedUpdateWithoutQrTokenInput {
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33257,6 +36511,12 @@ export class UserUncheckedUpdateWithoutReactionInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33321,6 +36581,12 @@ export class UserUncheckedUpdateWithoutReviewInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33384,6 +36650,12 @@ export class UserUncheckedUpdateWithoutRideParticipantInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33447,6 +36719,12 @@ export class UserUncheckedUpdateWithoutRidesInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33511,6 +36789,81 @@ export class UserUncheckedUpdateWithoutRoleInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+}
+
+@InputType()
+export class UserUncheckedUpdateWithoutSentNotificationsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput)
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    @Type(() => RideUncheckedUpdateManyWithoutDriverNestedInput)
+    rides?: InstanceType<typeof RideUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReviewUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => RideParticipantUncheckedUpdateManyWithoutUserNestedInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => MessageUncheckedUpdateManyWithoutSenderNestedInput)
+    Message?: InstanceType<typeof MessageUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReactionUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -33575,6 +36928,12 @@ export class UserUncheckedUpdateWithoutTokensInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33639,6 +36998,12 @@ export class UserUncheckedUpdateWithoutUserCoverInput {
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33703,6 +37068,12 @@ export class UserUncheckedUpdateWithoutUserDocumentInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33767,6 +37138,12 @@ export class UserUncheckedUpdateWithoutUserImageInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33831,6 +37208,12 @@ export class UserUncheckedUpdateWithoutUserPreferenceInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33894,6 +37277,12 @@ export class UserUncheckedUpdateWithoutVehiclesInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -33960,6 +37349,12 @@ export class UserUncheckedUpdateInput {
     QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -34138,6 +37533,25 @@ export class UserUpdateOneRequiredWithoutMessageReadReceiptNestedInput {
     @Field(() => UserUpdateToOneWithWhereWithoutMessageReadReceiptInput, {nullable:true})
     @Type(() => UserUpdateToOneWithWhereWithoutMessageReadReceiptInput)
     update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutMessageReadReceiptInput>;
+}
+
+@InputType()
+export class UserUpdateOneRequiredWithoutNotificationsNestedInput {
+    @Field(() => UserCreateWithoutNotificationsInput, {nullable:true})
+    @Type(() => UserCreateWithoutNotificationsInput)
+    create?: InstanceType<typeof UserCreateWithoutNotificationsInput>;
+    @Field(() => UserCreateOrConnectWithoutNotificationsInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutNotificationsInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutNotificationsInput>;
+    @Field(() => UserUpsertWithoutNotificationsInput, {nullable:true})
+    @Type(() => UserUpsertWithoutNotificationsInput)
+    upsert?: InstanceType<typeof UserUpsertWithoutNotificationsInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserUpdateToOneWithWhereWithoutNotificationsInput, {nullable:true})
+    @Type(() => UserUpdateToOneWithWhereWithoutNotificationsInput)
+    update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutNotificationsInput>;
 }
 
 @InputType()
@@ -34356,6 +37770,31 @@ export class UserUpdateOneWithoutRidesNestedInput {
 }
 
 @InputType()
+export class UserUpdateOneWithoutSentNotificationsNestedInput {
+    @Field(() => UserCreateWithoutSentNotificationsInput, {nullable:true})
+    @Type(() => UserCreateWithoutSentNotificationsInput)
+    create?: InstanceType<typeof UserCreateWithoutSentNotificationsInput>;
+    @Field(() => UserCreateOrConnectWithoutSentNotificationsInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutSentNotificationsInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutSentNotificationsInput>;
+    @Field(() => UserUpsertWithoutSentNotificationsInput, {nullable:true})
+    @Type(() => UserUpsertWithoutSentNotificationsInput)
+    upsert?: InstanceType<typeof UserUpsertWithoutSentNotificationsInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    disconnect?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    delete?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserUpdateToOneWithWhereWithoutSentNotificationsInput, {nullable:true})
+    @Type(() => UserUpdateToOneWithWhereWithoutSentNotificationsInput)
+    update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutSentNotificationsInput>;
+}
+
+@InputType()
 export class UserUpdateToOneWithWhereWithoutConversationParticipantInput {
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
@@ -34383,6 +37822,16 @@ export class UserUpdateToOneWithWhereWithoutMessageInput {
     @Field(() => UserUpdateWithoutMessageInput, {nullable:false})
     @Type(() => UserUpdateWithoutMessageInput)
     data!: InstanceType<typeof UserUpdateWithoutMessageInput>;
+}
+
+@InputType()
+export class UserUpdateToOneWithWhereWithoutNotificationsInput {
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserUpdateWithoutNotificationsInput, {nullable:false})
+    @Type(() => UserUpdateWithoutNotificationsInput)
+    data!: InstanceType<typeof UserUpdateWithoutNotificationsInput>;
 }
 
 @InputType()
@@ -34433,6 +37882,16 @@ export class UserUpdateToOneWithWhereWithoutRidesInput {
     @Field(() => UserUpdateWithoutRidesInput, {nullable:false})
     @Type(() => UserUpdateWithoutRidesInput)
     data!: InstanceType<typeof UserUpdateWithoutRidesInput>;
+}
+
+@InputType()
+export class UserUpdateToOneWithWhereWithoutSentNotificationsInput {
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserUpdateWithoutSentNotificationsInput, {nullable:false})
+    @Type(() => UserUpdateWithoutSentNotificationsInput)
+    data!: InstanceType<typeof UserUpdateWithoutSentNotificationsInput>;
 }
 
 @InputType()
@@ -34577,6 +38036,12 @@ export class UserUpdateWithoutAvatarInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -34641,6 +38106,12 @@ export class UserUpdateWithoutConversationParticipantInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -34705,6 +38176,12 @@ export class UserUpdateWithoutMessageReadReceiptInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -34768,6 +38245,81 @@ export class UserUpdateWithoutMessageInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+}
+
+@InputType()
+export class UserUpdateWithoutNotificationsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
+    avatar?: InstanceType<typeof FileUpdateOneWithoutUserNestedInput>;
+    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => DriverVehicleUpdateManyWithoutUserNestedInput)
+    vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideUpdateManyWithoutDriverNestedInput, {nullable:true})
+    @Type(() => RideUpdateManyWithoutDriverNestedInput)
+    rides?: InstanceType<typeof RideUpdateManyWithoutDriverNestedInput>;
+    @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReviewUpdateManyWithoutUserNestedInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => RideParticipantUpdateManyWithoutUserNestedInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => MessageUpdateManyWithoutSenderNestedInput)
+    Message?: InstanceType<typeof MessageUpdateManyWithoutSenderNestedInput>;
+    @Field(() => ConversationParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReactionUpdateManyWithoutUserNestedInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -34832,6 +38384,12 @@ export class UserUpdateWithoutQrTokenInput {
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -34896,6 +38454,12 @@ export class UserUpdateWithoutReactionInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -34960,6 +38524,12 @@ export class UserUpdateWithoutReviewInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -35023,6 +38593,12 @@ export class UserUpdateWithoutRideParticipantInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -35086,6 +38662,12 @@ export class UserUpdateWithoutRidesInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -35150,6 +38732,81 @@ export class UserUpdateWithoutRoleInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+}
+
+@InputType()
+export class UserUpdateWithoutSentNotificationsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
+    avatar?: InstanceType<typeof FileUpdateOneWithoutUserNestedInput>;
+    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => DriverVehicleUpdateManyWithoutUserNestedInput)
+    vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideUpdateManyWithoutDriverNestedInput, {nullable:true})
+    @Type(() => RideUpdateManyWithoutDriverNestedInput)
+    rides?: InstanceType<typeof RideUpdateManyWithoutDriverNestedInput>;
+    @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReviewUpdateManyWithoutUserNestedInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => RideParticipantUpdateManyWithoutUserNestedInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => MessageUpdateManyWithoutSenderNestedInput)
+    Message?: InstanceType<typeof MessageUpdateManyWithoutSenderNestedInput>;
+    @Field(() => ConversationParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReactionUpdateManyWithoutUserNestedInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -35214,6 +38871,12 @@ export class UserUpdateWithoutTokensInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -35278,6 +38941,12 @@ export class UserUpdateWithoutUserCoverInput {
     MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
     @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -35342,6 +39011,12 @@ export class UserUpdateWithoutUserDocumentInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -35406,6 +39081,12 @@ export class UserUpdateWithoutUserImageInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -35470,6 +39151,12 @@ export class UserUpdateWithoutUserPreferenceInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -35533,6 +39220,12 @@ export class UserUpdateWithoutVehiclesInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -35599,6 +39292,12 @@ export class UserUpdateInput {
     QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
     @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
 }
 
 @InputType()
@@ -35667,6 +39366,19 @@ export class UserUpsertWithoutMessageInput {
 }
 
 @InputType()
+export class UserUpsertWithoutNotificationsInput {
+    @Field(() => UserUpdateWithoutNotificationsInput, {nullable:false})
+    @Type(() => UserUpdateWithoutNotificationsInput)
+    update!: InstanceType<typeof UserUpdateWithoutNotificationsInput>;
+    @Field(() => UserCreateWithoutNotificationsInput, {nullable:false})
+    @Type(() => UserCreateWithoutNotificationsInput)
+    create!: InstanceType<typeof UserCreateWithoutNotificationsInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+}
+
+@InputType()
 export class UserUpsertWithoutQrTokenInput {
     @Field(() => UserUpdateWithoutQrTokenInput, {nullable:false})
     @Type(() => UserUpdateWithoutQrTokenInput)
@@ -35726,6 +39438,19 @@ export class UserUpsertWithoutRidesInput {
     @Field(() => UserCreateWithoutRidesInput, {nullable:false})
     @Type(() => UserCreateWithoutRidesInput)
     create!: InstanceType<typeof UserCreateWithoutRidesInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+}
+
+@InputType()
+export class UserUpsertWithoutSentNotificationsInput {
+    @Field(() => UserUpdateWithoutSentNotificationsInput, {nullable:false})
+    @Type(() => UserUpdateWithoutSentNotificationsInput)
+    update!: InstanceType<typeof UserUpdateWithoutSentNotificationsInput>;
+    @Field(() => UserCreateWithoutSentNotificationsInput, {nullable:false})
+    @Type(() => UserCreateWithoutSentNotificationsInput)
+    create!: InstanceType<typeof UserCreateWithoutSentNotificationsInput>;
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
     where?: InstanceType<typeof UserWhereInput>;
@@ -35881,6 +39606,12 @@ export class UserWhereUniqueInput {
     QrToken?: InstanceType<typeof QrTokenListRelationFilter>;
     @Field(() => UserCoverNullableScalarRelationFilter, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverNullableScalarRelationFilter>;
+    @Field(() => NotificationListRelationFilter, {nullable:true})
+    @Type(() => NotificationListRelationFilter)
+    notifications?: InstanceType<typeof NotificationListRelationFilter>;
+    @Field(() => NotificationListRelationFilter, {nullable:true})
+    @Type(() => NotificationListRelationFilter)
+    sentNotifications?: InstanceType<typeof NotificationListRelationFilter>;
 }
 
 @InputType()
@@ -35955,6 +39686,12 @@ export class UserWhereInput {
     QrToken?: InstanceType<typeof QrTokenListRelationFilter>;
     @Field(() => UserCoverNullableScalarRelationFilter, {nullable:true})
     UserCover?: InstanceType<typeof UserCoverNullableScalarRelationFilter>;
+    @Field(() => NotificationListRelationFilter, {nullable:true})
+    @Type(() => NotificationListRelationFilter)
+    notifications?: InstanceType<typeof NotificationListRelationFilter>;
+    @Field(() => NotificationListRelationFilter, {nullable:true})
+    @Type(() => NotificationListRelationFilter)
+    sentNotifications?: InstanceType<typeof NotificationListRelationFilter>;
 }
 
 @ObjectType()
@@ -36019,6 +39756,10 @@ export class User {
     QrToken?: Array<QrToken>;
     @Field(() => UserCover, {nullable:true})
     UserCover?: InstanceType<typeof UserCover> | null;
+    @Field(() => [Notification], {nullable:true})
+    notifications?: Array<Notification>;
+    @Field(() => [Notification], {nullable:true})
+    sentNotifications?: Array<Notification>;
     @Field(() => UserCount, {nullable:false})
     _count?: InstanceType<typeof UserCount>;
 }

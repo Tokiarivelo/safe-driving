@@ -89,9 +89,11 @@ model User {
   status                  UserStatus?               @default(OFFLINE)
   driverStatus            UserDriverStatus?         @default(AVAILABLE)
 
-  QrToken     QrToken[]
-  userCoverId String?
-  UserCover   UserCover?
+  QrToken               QrToken[]
+  userCoverId           String?
+  UserCover             UserCover?
+  notifications         Notification[]
+  sentNotifications     Notification[]            @relation("NotificationSender")
 }
 
 // --------------- Token -----------------------//
@@ -332,6 +334,7 @@ model Ride {
   RideParticipant RideParticipant[]
   Message         Message[]
   Attachment      Attachment[]
+  Notification    Notification[]
 
   @@index([driverId, createdAt])
   @@index([status])
@@ -540,4 +543,49 @@ enum ConversationType {
   DIRECT
   GROUP
   RIDE_LINKED
+}
+
+// ==================== Notification System ====================
+
+enum NotificationType {
+  RIDE_CONFIRMED       // Course confirmée
+  DRIVER_EN_ROUTE      // Chauffeur en route
+  DRIVER_ARRIVED       // Chauffeur arrivé
+  RIDE_STARTED         // Course démarrée
+  RIDE_COMPLETED       // Course terminée
+  NEW_MESSAGE          // Nouveau message
+  MISSED_CALL          // Appel manqué
+  PROMOTION            // Offre & promotion
+  RIDE_REMINDER        // Rappel de course programmée
+  REVIEW_REQUEST       // Invitation à donner un avis
+  DRIVER_REVIEW        // Avis reçu du chauffeur sur l'utilisateur
+  SECURITY_ALERT       // Alerte de sécurité / incident
+}
+
+model Notification {
+  id          String           @id @default(uuid())
+  userId      String           // User who receives the notification
+  type        NotificationType
+  title       String
+  message     String
+  read        Boolean          @default(false)
+  archived    Boolean          @default(false)
+  deleted     Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime?        @updatedAt
+  readAt      DateTime?
+  
+  // Optional references for context
+  rideId      String?          // Related ride if applicable
+  senderId    String?          // Sender user (e.g., driver or passenger)
+  metadata    Json?            // Additional data like price, location, etc.
+
+  // Relations
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sender      User?            @relation("NotificationSender", fields: [senderId], references: [id])
+  ride        Ride?            @relation(fields: [rideId], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([userId, read])
+  @@index([type])
 }
