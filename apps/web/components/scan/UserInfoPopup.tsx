@@ -80,7 +80,7 @@ export default function UserInfoPopup({
   const profileImage = user.avatar?.url;
   const rating = user.review?.length
     ? (user.review.reduce((acc, r) => acc + r.rating, 0) / user.review.length).toFixed(1)
-    : '4.2';
+    : '-';
 
   const defaultTab: TabType = isDriver ? 'about' : 'photos';
   const [activeTab, setActiveTab] = useState<TabType>(defaultTab);
@@ -131,7 +131,7 @@ export default function UserInfoPopup({
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span className="text-gray-500">Langues parlées</span>
-                  <span className="font-medium">Français, Anglais</span>
+                  <span className="font-medium">-</span>
                 </div>
               </>
             )}
@@ -292,10 +292,12 @@ export default function UserInfoPopup({
             </button>
           </div>
 
-          {/* Bio */}
-          <p className="text-gray-500 text-center mt-3 italic text-sm max-w-md">
-            « Passionné de la route depuis 10 ans, votre confort et votre sécurité sont ma priorité. »
-          </p>
+          {/* Bio - displayed as placeholder for future implementation */}
+          {isDriver && (
+            <p className="text-gray-500 text-center mt-3 italic text-sm max-w-md">
+              « Conducteur vérifié sur Safe Driving »
+            </p>
+          )}
         </div>
 
         {/* Tabs */}
