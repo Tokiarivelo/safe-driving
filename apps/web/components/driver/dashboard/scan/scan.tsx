@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { BrowserQRCodeReader } from '@zxing/browser';
+import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser';
 import { useLazyQuery, useMutation, gql } from '@apollo/client';
 import { ConversationType, UserByTokenDocument } from '@/graphql/generated/graphql';
 import { Popup } from '@/components/ui/popup';
@@ -25,11 +25,14 @@ interface ScanQrCodeComponentProps {
   redirectPath?: string; // Allow customizing where to redirect for messages
 }
 
-export default function ScanQrCodeComponent({ redirectPath = '/driver/dashboard/messages' }: ScanQrCodeComponentProps) {
+export default function ScanQrCodeComponent({
+  redirectPath = '/driver/dashboard/messages',
+}: ScanQrCodeComponentProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const controlsRef = useRef<IScannerControls | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [qrData, setQrData] = useState<Record<string, string> | null>(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -49,28 +52,25 @@ export default function ScanQrCodeComponent({ redirectPath = '/driver/dashboard/
   const [createScanSession, { loading: createSessionLoading }] = useMutation(CREATE_SCAN_SESSION);
 
   // Handle scan result from phone
-  const handlePhoneScanResult = useCallback(
-    (result: { scannedValue: string }) => {
-      try {
-        const url = new URL(result.scannedValue);
-        const params: Record<string, string> = {};
-        url.searchParams.forEach((value, key) => {
-          params[key] = value;
-        });
-        setQrData(params);
-        setIsPhoneModalOpen(false);
-        setSessionId(null);
-        setQrBase64(null);
-      } catch {
-        // If not a URL, try to use it as a token directly
-        setQrData({ token: result.scannedValue });
-        setIsPhoneModalOpen(false);
-        setSessionId(null);
-        setQrBase64(null);
-      }
-    },
-    []
-  );
+  const handlePhoneScanResult = useCallback((result: { scannedValue: string }) => {
+    try {
+      const url = new URL(result.scannedValue);
+      const params: Record<string, string> = {};
+      url.searchParams.forEach((value, key) => {
+        params[key] = value;
+      });
+      setQrData(params);
+      setIsPhoneModalOpen(false);
+      setSessionId(null);
+      setQrBase64(null);
+    } catch {
+      // If not a URL, try to use it as a token directly
+      setQrData({ token: result.scannedValue });
+      setIsPhoneModalOpen(false);
+      setSessionId(null);
+      setQrBase64(null);
+    }
+  }, []);
 
   const handleSessionExpired = useCallback(() => {
     setIsPhoneModalOpen(false);
@@ -107,32 +107,48 @@ export default function ScanQrCodeComponent({ redirectPath = '/driver/dashboard/
         streamRef.current = stream;
         videoElement.srcObject = stream;
 
-        await codeReader.decodeFromConstraints(constraints, videoElement, (result, scanError) => {
-          if (!active) return;
+        const controls = await codeReader.decodeFromConstraints(
+          constraints,
+          videoElement,
+          (result, scanError) => {
+            if (!active) return;
 
-          if (result) {
-            try {
-              const url = new URL(result.getText());
-              const params: Record<string, string> = {};
-              url.searchParams.forEach((value, key) => {
-                params[key] = value;
-              });
-              setQrData(params);
+            if (result) {
+              try {
+                const url = new URL(result.getText());
+                const params: Record<string, string> = {};
+                url.searchParams.forEach((value, key) => {
+                  params[key] = value;
+                });
+                setQrData(params);
 
-              active = false;
-              // Stop the stream
-              if (streamRef.current) {
-                streamRef.current.getTracks().forEach(track => track.stop());
+                active = false;
+                // Stop the stream and controls
+                if (controlsRef.current) {
+                  controlsRef.current.stop();
+                  controlsRef.current = null;
+                }
+                if (streamRef.current) {
+                  streamRef.current.getTracks().forEach(track => track.stop());
+                }
+              } catch {
+                setError('QR code illisible.');
               }
-            } catch {
-              setError('QR code illisible.');
             }
-          }
 
-          if (scanError && scanError.name !== 'NotFoundException') {
-            console.error(scanError);
-          }
-        });
+            if (scanError && scanError.name !== 'NotFoundException') {
+              console.error(scanError);
+            }
+          },
+        );
+
+        if (!active) {
+          // Component unmounted or stopped while initializing
+          controls.stop();
+          return;
+        }
+
+        controlsRef.current = controls;
       } catch (err) {
         console.error(err);
         setError("Impossible d'accéder à la caméra.");
@@ -143,7 +159,11 @@ export default function ScanQrCodeComponent({ redirectPath = '/driver/dashboard/
 
     return () => {
       active = false;
-      // Cleanup stream on unmount
+      // Cleanup stream and controls on unmount
+      if (controlsRef.current) {
+        controlsRef.current.stop();
+        controlsRef.current = null;
+      }
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
         streamRef.current = null;
@@ -198,6 +218,10 @@ export default function ScanQrCodeComponent({ redirectPath = '/driver/dashboard/
     setError(null);
     setQrData(null);
     // Stop camera if running
+    if (controlsRef.current) {
+      controlsRef.current.stop();
+      controlsRef.current = null;
+    }
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
@@ -265,27 +289,41 @@ export default function ScanQrCodeComponent({ redirectPath = '/driver/dashboard/
           <p className="text-gray-600 dark:text-gray-300 text-center max-w-md">
             Choisissez comment vous souhaitez scanner le QR code
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
             <Button
               onClick={handleStartCameraScan}
               className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                <circle cx="12" cy="13" r="4"/>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                <circle cx="12" cy="13" r="4" />
               </svg>
               Scanner avec la caméra
             </Button>
-            
+
             <Button
               onClick={handleStartPhoneScan}
               disabled={createSessionLoading}
               className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-                <line x1="12" y1="18" x2="12.01" y2="18"/>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                <line x1="12" y1="18" x2="12.01" y2="18" />
               </svg>
               {createSessionLoading ? 'Chargement...' : 'Scanner par un téléphone'}
             </Button>
@@ -302,8 +340,15 @@ export default function ScanQrCodeComponent({ redirectPath = '/driver/dashboard/
         <div className="flex flex-col flex-1 items-center py-8 space-y-6">
           <div className="flex items-center gap-4">
             <Button onClick={handleBack} variant="outline" className="flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M19 12H5M12 19l-7-7 7-7" />
               </svg>
               Retour
             </Button>
@@ -378,8 +423,15 @@ export default function ScanQrCodeComponent({ redirectPath = '/driver/dashboard/
       <div className="flex flex-col flex-1 items-center py-8 space-y-6">
         <div className="flex items-center gap-4">
           <Button onClick={handleBack} variant="outline" className="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             Retour
           </Button>
@@ -397,7 +449,9 @@ export default function ScanQrCodeComponent({ redirectPath = '/driver/dashboard/
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full mx-4 shadow-xl">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-semibold dark:text-white">Scannez avec votre téléphone</h2>
+                <h2 className="text-lg font-semibold dark:text-white">
+                  Scannez avec votre téléphone
+                </h2>
                 <button
                   onClick={handleClosePhoneModal}
                   className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"

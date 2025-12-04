@@ -17,6 +17,7 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
   private pubSub: RedisPubSub;
   private publisher: Redis;
   private subscriber: Redis;
+  private monitorClient: Redis | null = null;
   cache: Redis; // Instance séparée pour le cache
 
   constructor(private configService: RedisConfigService) {}
@@ -45,9 +46,22 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
   private setupDataFlowMonitoring() {
     // Monitoring des commandes sur l'instance cache
     this.cache.on('connect', () => {
+      // Clean up existing monitor if any to prevent leaks
+      if (this.monitorClient) {
+        this.monitorClient.disconnect();
+        this.monitorClient = null;
+      }
+
       this.cache
         .monitor()
         .then((monitor) => {
+          this.monitorClient = monitor;
+
+          // Add error handler to prevent crashes
+          monitor.on('error', (err) => {
+            this.dataFlowLogger.error('Redis monitor error:', err);
+          });
+
           monitor.on('monitor', (time, args, source, database) => {
             const command = args[0];
             const key = args[1];
@@ -87,9 +101,9 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
             }
           });
         })
-        .catch(() => {
+        .catch((err) => {
           // Monitor peut ne pas être disponible en mode cluster
-          this.dataFlowLogger.warn('Redis monitor not available');
+          this.dataFlowLogger.warn('Redis monitor not available', err);
         });
     });
   }
@@ -650,6 +664,7 @@ export class RedisExtendedService implements OnModuleInit, OnModuleDestroy {
       this.publisher.quit(),
       this.subscriber.quit(),
       this.cache.quit(),
+      this.monitorClient ? this.monitorClient.quit() : Promise.resolve(),
     ]);
     this.logger.log('All Redis connections closed');
   }
