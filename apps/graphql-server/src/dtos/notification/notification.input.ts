@@ -1,7 +1,8 @@
 import { InputType, Field, registerEnumType } from '@nestjs/graphql';
-import { NotificationType } from '@prisma/client';
+
 import { IsOptional, IsString, IsUUID, IsEnum } from 'class-validator';
 import GraphQLJSON from 'graphql-type-json';
+import { NotificationType } from '../@generated';
 
 // Register the enum for GraphQL
 registerEnumType(NotificationType, {
