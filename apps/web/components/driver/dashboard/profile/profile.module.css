@@ -307,6 +307,27 @@
   text-align: center;
 }
 
+/* About Section */
+.aboutSection {
+  padding: 1.5rem;
+}
+
+.aboutCard {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid #f8b4d9;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.05);
+}
+
+.aboutText {
+  color: rgb(55 65 81);
+  font-size: 1rem;
+  line-height: 1.6;
+  font-style: italic;
+  text-align: center;
+}
+
 /* Reviews Section */
 .reviewsSection {
   padding: 1.5rem;

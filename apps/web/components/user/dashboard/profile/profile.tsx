@@ -25,7 +25,7 @@ import {
 import { UploadComponent } from '@/components/ui/upload/upload-component';
 import styles from './profile.module.css';
 
-type TabType = 'photos' | 'avis_recus' | 'avis_laisses';
+type TabType = 'a_propos' | 'photos' | 'avis_recus' | 'avis_laisses';
 
 // Default rating values when no reviews exist
 const DEFAULT_RATING = 4.2;
@@ -304,6 +304,16 @@ export default function UserProfilePage() {
 
   const renderTabContent = () => {
     switch (activeTab) {
+      case 'a_propos':
+        return (
+          <div className={styles.aboutSection}>
+            <div className={styles.aboutCard}>
+              <p className={styles.aboutText}>
+                {user?.bio || "« Passionné de la route depuis 10 ans, votre confort et votre sécurité sont ma priorité. »"}
+              </p>
+            </div>
+          </div>
+        );
       case 'photos':
         return (
           <div className={styles.gallerySection}>
@@ -511,6 +521,12 @@ export default function UserProfilePage() {
           {/* Right Column - Tabs and Content */}
           <div className={styles.rightColumn}>
             <div className={styles.tabsContainer}>
+              <button
+                className={`${styles.tab} ${activeTab === 'a_propos' ? styles.tabActive : ''}`}
+                onClick={() => setActiveTab('a_propos')}
+              >
+                A propos
+              </button>
               <button
                 className={`${styles.tab} ${activeTab === 'photos' ? styles.tabActive : ''}`}
                 onClick={() => setActiveTab('photos')}
