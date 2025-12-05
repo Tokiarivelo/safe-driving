@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Icon } from '@iconify/react';
+import { STATUS_LABELS, STATUS_COLORS, RideStatus } from '@/components/ride/types';
 
 interface RideInfoPanelProps {
   ride: {
@@ -23,20 +24,6 @@ interface RideInfoPanelProps {
   };
   variant?: 'user' | 'driver';
 }
-
-const STATUS_LABELS: Record<string, string> = {
-  PENDING: 'En attente',
-  IN_PROGRESS: 'En cours',
-  COMPLETED: 'Terminée',
-  CANCELLED: 'Annulée',
-};
-
-const STATUS_COLORS: Record<string, string> = {
-  PENDING: 'bg-yellow-500',
-  IN_PROGRESS: 'bg-green-500',
-  COMPLETED: 'bg-red-500',
-  CANCELLED: 'bg-gray-500',
-};
 
 // The variant prop is available for future use to customize UI based on user/driver view
 export default function RideInfoPanel({ ride }: RideInfoPanelProps) {
@@ -83,15 +70,15 @@ export default function RideInfoPanel({ ride }: RideInfoPanelProps) {
       {/* Price */}
       <div className="mb-3">
         <p className="text-xs text-gray-500 mb-1">Prix</p>
-        <p className="font-bold text-lg">{formattedPrice}{ride.currency}</p>
+        <p className="font-bold text-lg">{formattedPrice} {ride.currency}</p>
       </div>
 
       {/* Status */}
       <div className="mb-4">
         <p className="text-xs text-gray-500 mb-1">Status</p>
         <div className="flex items-center gap-2">
-          <span className="text-sm">{STATUS_LABELS[ride.status]}</span>
-          <div className={`w-2.5 h-2.5 rounded-full ${STATUS_COLORS[ride.status]}`} />
+          <span className="text-sm">{STATUS_LABELS[ride.status as RideStatus]}</span>
+          <div className={`w-2.5 h-2.5 rounded-full ${STATUS_COLORS[ride.status as RideStatus]}`} />
         </div>
       </div>
 

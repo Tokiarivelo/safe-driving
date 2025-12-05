@@ -33,7 +33,8 @@ const mockCurrentRide: RealtimeRideData = {
     lat: -18.8756,
     lng: 47.5256,
   },
-  scheduledDeparture: new Date('2025-07-12T12:00:00'),
+  // Use a time 30 minutes from now to simulate an ongoing ride
+  scheduledDeparture: new Date(Date.now() - 30 * 60 * 1000),
   price: 8000,
   currency: 'MGA',
   currentPosition: {
