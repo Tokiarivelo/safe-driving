@@ -27,6 +27,21 @@ import styles from './profile.module.css';
 
 type TabType = 'photos' | 'avis_recus' | 'avis_laisses';
 
+// Local types for when GraphQL types are not available
+interface Review {
+  id: string;
+  content: string;
+  rating: number;
+  createdAt: string;
+}
+
+interface UserImage {
+  id: string;
+  file: {
+    url?: string | null;
+  };
+}
+
 export default function UserProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [coverImage, setCoverImage] = useState<string | null>(null);
@@ -206,9 +221,9 @@ export default function UserProfilePage() {
 
   // Calculate rating from reviews
   const calculateRating = () => {
-    const reviews = user?.review;
+    const reviews = user?.review as Review[] | undefined;
     if (!reviews || reviews.length === 0) return { value: 4.2, count: 100 };
-    const total = reviews.reduce((acc, r) => acc + r.rating, 0);
+    const total = reviews.reduce((acc: number, r: Review) => acc + r.rating, 0);
     return { value: total / reviews.length, count: reviews.length };
   };
 
@@ -247,7 +262,7 @@ export default function UserProfilePage() {
   }
 
   const user = meData?.me;
-  const userImages = user?.UserImage || [];
+  const userImages = (user?.UserImage || []) as UserImage[];
   const userCover = user?.UserCover;
   const rating = calculateRating();
 
@@ -258,7 +273,7 @@ export default function UserProfilePage() {
           <div className={styles.gallerySection}>
             {userImages.length > 0 ? (
               <div className={styles.galleryGrid}>
-                {userImages.map(image => (
+                {userImages.map((image: UserImage) => (
                   <div key={image.id} className={styles.galleryImageContainer}>
                     <Image
                       src={image.file.url || ''}
@@ -282,7 +297,7 @@ export default function UserProfilePage() {
         return (
           <div className={styles.reviewsSection}>
             {user?.review && user.review.length > 0 ? (
-              user.review.map(review => (
+              (user.review as Review[]).map((review: Review) => (
                 <div key={review.id} className={styles.reviewCard}>
                   <div className={styles.reviewHeader}>
                     <span className={styles.reviewRating}>
