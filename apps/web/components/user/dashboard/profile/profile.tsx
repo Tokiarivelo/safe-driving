@@ -37,6 +37,14 @@ interface Review {
   content: string;
   rating: number;
   createdAt: string;
+  reviewer?: {
+    id?: string;
+    firstName?: string;
+    lastName?: string;
+    avatar?: {
+      url?: string | null;
+    } | null;
+  } | null;
 }
 
 interface UserImage {
@@ -329,20 +337,51 @@ export default function UserProfilePage() {
         return (
           <div className={styles.reviewsSection}>
             {user?.review && user.review.length > 0 ? (
-              (user.review as Review[]).map((review: Review) => (
-                <div key={review.id} className={styles.reviewCard}>
-                  <div className={styles.reviewHeader}>
-                    <span className={styles.reviewRating}>
-                      {'★'.repeat(review.rating)}
-                      {'☆'.repeat(5 - review.rating)}
-                    </span>
-                  </div>
-                  <p className={styles.reviewContent}>{review.content}</p>
-                  <p className={styles.reviewDate}>
-                    {new Date(review.createdAt).toLocaleDateString('fr-FR')}
-                  </p>
+              <>
+                <div className={styles.reviewsGrid}>
+                  {(user.review as Review[]).map((review: Review) => (
+                    <div key={review.id} className={styles.reviewCard}>
+                      <div className={styles.reviewHeader}>
+                        <div className={styles.reviewerAvatar}>
+                          {review.reviewer?.avatar?.url ? (
+                            <Image
+                              src={review.reviewer.avatar.url}
+                              alt={`${review.reviewer.firstName || 'Reviewer'}`}
+                              width={48}
+                              height={48}
+                              className={styles.reviewerAvatarImage}
+                            />
+                          ) : (
+                            <div className={styles.reviewerAvatarPlaceholder}>
+                              {review.reviewer?.firstName?.charAt(0) || '?'}
+                            </div>
+                          )}
+                        </div>
+                        <div className={styles.reviewerInfo}>
+                          <span className={styles.reviewerName}>
+                            {review.reviewer?.firstName || 'Anonyme'} {review.reviewer?.lastName?.charAt(0) || ''}.
+                          </span>
+                          <span className={styles.reviewDate}>
+                            {new Date(review.createdAt).toLocaleDateString('fr-FR', {
+                              day: '2-digit',
+                              month: 'long',
+                              year: 'numeric'
+                            })}
+                          </span>
+                        </div>
+                      </div>
+                      <div className={styles.reviewRating}>
+                        {'★'.repeat(review.rating)}
+                        {'☆'.repeat(5 - review.rating)}
+                      </div>
+                      <p className={styles.reviewContent}>{review.content}</p>
+                    </div>
+                  ))}
                 </div>
-              ))
+                <div className={styles.loadMoreContainer}>
+                  <button className={styles.loadMoreButton}>Charger plus</button>
+                </div>
+              </>
             ) : (
               <div className={styles.emptyState}>
                 <p>Aucun avis reçu</p>
