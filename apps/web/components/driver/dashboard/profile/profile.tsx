@@ -28,6 +28,10 @@ import styles from './profile.module.css';
 type TabType = 'photos' | 'avis_recus' | 'avis_laisses';
 type PhotoSubTab = 'mes_photos' | 'vehicule';
 
+// Default rating values when no reviews exist
+const DEFAULT_RATING = 4.2;
+const DEFAULT_VOTE_COUNT = 100;
+
 // Local types for when GraphQL types are not available
 interface Review {
   id: string;
@@ -236,15 +240,17 @@ export default function ProfilePage() {
     }
   };
 
-  // Calculate rating from reviews
+  // Calculate rating from reviews (uses DEFAULT_RATING and DEFAULT_VOTE_COUNT when no reviews)
   const calculateRating = () => {
     const reviews = user?.review as Review[] | undefined;
-    if (!reviews || reviews.length === 0) return { value: 4.2, count: 100 };
+    if (!reviews || reviews.length === 0) {
+      return { value: DEFAULT_RATING, count: DEFAULT_VOTE_COUNT };
+    }
     const total = reviews.reduce((acc: number, r: Review) => acc + r.rating, 0);
     return { value: total / reviews.length, count: reviews.length };
   };
 
-  // Render star rating
+  // Render star rating (displays full stars for integer values, half for decimals >= 0.5)
   const renderStars = (rating: number) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -258,6 +264,7 @@ export default function ProfilePage() {
           </span>,
         );
       } else if (i === fullStars && hasHalfStar) {
+        // Half star - we show it as a full star since there's no half character
         stars.push(
           <span key={i} className={styles.star}>
             ★
@@ -286,12 +293,13 @@ export default function ProfilePage() {
 
   const renderPhotoSubContent = () => {
     if (photoSubTab === 'mes_photos') {
-      return userImages.length > 0 ? (
+      const validImages = userImages.filter((image: UserImage) => image.file.url);
+      return validImages.length > 0 ? (
         <div className={styles.galleryGrid}>
-          {userImages.map((image: UserImage) => (
+          {validImages.map((image: UserImage) => (
             <div key={image.id} className={styles.galleryImageContainer}>
               <Image
-                src={image.file.url || ''}
+                src={image.file.url!}
                 alt="User Image"
                 className={styles.galleryImage}
                 fill
@@ -309,13 +317,15 @@ export default function ProfilePage() {
     }
 
     // Vehicle photos
-    const vehicleImages = vehicles.flatMap((v: Vehicle) => v.VehicleImage || []);
+    const vehicleImages = vehicles
+      .flatMap((v: Vehicle) => v.VehicleImage || [])
+      .filter((image: VehicleImage) => image.file.url);
     return vehicleImages.length > 0 ? (
       <div className={styles.galleryGrid}>
         {vehicleImages.map((image: VehicleImage) => (
           <div key={image.id} className={styles.galleryImageContainer}>
             <Image
-              src={image.file.url || ''}
+              src={image.file.url!}
               alt="Vehicle Image"
               className={styles.galleryImage}
               fill

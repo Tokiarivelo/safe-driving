@@ -27,6 +27,10 @@ import styles from './profile.module.css';
 
 type TabType = 'photos' | 'avis_recus' | 'avis_laisses';
 
+// Default rating values when no reviews exist
+const DEFAULT_RATING = 4.2;
+const DEFAULT_VOTE_COUNT = 100;
+
 // Local types for when GraphQL types are not available
 interface Review {
   id: string;
@@ -219,15 +223,17 @@ export default function UserProfilePage() {
     }
   };
 
-  // Calculate rating from reviews
+  // Calculate rating from reviews (uses DEFAULT_RATING and DEFAULT_VOTE_COUNT when no reviews)
   const calculateRating = () => {
     const reviews = user?.review as Review[] | undefined;
-    if (!reviews || reviews.length === 0) return { value: 4.2, count: 100 };
+    if (!reviews || reviews.length === 0) {
+      return { value: DEFAULT_RATING, count: DEFAULT_VOTE_COUNT };
+    }
     const total = reviews.reduce((acc: number, r: Review) => acc + r.rating, 0);
     return { value: total / reviews.length, count: reviews.length };
   };
 
-  // Render star rating
+  // Render star rating (displays full stars for integer values, half for decimals >= 0.5)
   const renderStars = (rating: number) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -241,6 +247,7 @@ export default function UserProfilePage() {
           </span>,
         );
       } else if (i === fullStars && hasHalfStar) {
+        // Half star - we show it as a full star since there's no half character
         stars.push(
           <span key={i} className={styles.star}>
             ★
@@ -273,17 +280,19 @@ export default function UserProfilePage() {
           <div className={styles.gallerySection}>
             {userImages.length > 0 ? (
               <div className={styles.galleryGrid}>
-                {userImages.map((image: UserImage) => (
-                  <div key={image.id} className={styles.galleryImageContainer}>
-                    <Image
-                      src={image.file.url || ''}
-                      alt="User Image"
-                      className={styles.galleryImage}
-                      fill
-                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                    />
-                  </div>
-                ))}
+                {userImages
+                  .filter((image: UserImage) => image.file.url)
+                  .map((image: UserImage) => (
+                    <div key={image.id} className={styles.galleryImageContainer}>
+                      <Image
+                        src={image.file.url!}
+                        alt="User Image"
+                        className={styles.galleryImage}
+                        fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                      />
+                    </div>
+                  ))}
               </div>
             ) : (
               <div className={styles.emptyState}>
@@ -391,33 +400,13 @@ export default function UserProfilePage() {
                 <div className={styles.contactInfo}>
                   {user?.phone && (
                     <div className={styles.contactItem}>
-                      <Image
-                        src="/icons/phone.svg"
-                        alt="Phone"
-                        width={20}
-                        height={20}
-                        className={styles.contactIcon}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                        }}
-                      />
+                      <span>📞</span>
                       <span>{user.phone}</span>
                     </div>
                   )}
                   {user?.email && (
                     <div className={styles.contactItem}>
-                      <Image
-                        src="/icons/email.svg"
-                        alt="Email"
-                        width={20}
-                        height={20}
-                        className={styles.contactIcon}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                        }}
-                      />
+                      <span>✉️</span>
                       <span>{user.email}</span>
                     </div>
                   )}
