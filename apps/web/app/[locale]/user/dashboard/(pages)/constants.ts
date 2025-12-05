@@ -33,7 +33,7 @@ export const USER_MENUES: MenuItemProps[] = [
   },
   {
     name: 'Trajet en Cours',
-    href: '/user/dashboard/current-ride',
+    href: '/user/dashboard/realtime-ride',
     icon: 'icon-park:gps',
   },
   {

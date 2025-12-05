@@ -33,7 +33,7 @@ export const DRIVER_MENUES: MenuItemProps[] = [
   },
   {
     name: 'Trajet en Cours',
-    href: '/driver/dashboard/current-ride',
+    href: '/driver/dashboard/realtime-ride',
     icon: 'icon-park:gps',
   },
   {
