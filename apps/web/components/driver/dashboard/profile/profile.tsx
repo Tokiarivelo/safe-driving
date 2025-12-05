@@ -26,7 +26,7 @@ import { UploadComponent } from '@/components/ui/upload/upload-component';
 import styles from './profile.module.css';
 
 type TabType = 'a_propos' | 'photos' | 'avis_recus' | 'avis_laisses';
-type PhotoSubTab = 'mes_photos' | 'vehicule';
+type PhotoSubTab = 'chauffeur' | 'vehicules';
 
 // Default rating values when no reviews exist
 const DEFAULT_RATING = 4.2;
@@ -74,7 +74,7 @@ export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [coverImage, setCoverImage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('photos');
-  const [photoSubTab, setPhotoSubTab] = useState<PhotoSubTab>('mes_photos');
+  const [photoSubTab, setPhotoSubTab] = useState<PhotoSubTab>('chauffeur');
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -335,7 +335,7 @@ export default function ProfilePage() {
   };
 
   const renderPhotoSubContent = () => {
-    if (photoSubTab === 'mes_photos') {
+    if (photoSubTab === 'chauffeur') {
       const validImages = userImages.filter((image: UserImage) => image.file.url);
       const imageUrls = validImages.map((image: UserImage) => image.file.url!);
       return validImages.length > 0 ? (
@@ -411,16 +411,16 @@ export default function ProfilePage() {
           <>
             <div className={styles.subTabsContainer}>
               <button
-                className={`${styles.subTab} ${photoSubTab === 'mes_photos' ? styles.subTabActive : ''}`}
-                onClick={() => setPhotoSubTab('mes_photos')}
+                className={`${styles.subTab} ${photoSubTab === 'chauffeur' ? styles.subTabActive : ''}`}
+                onClick={() => setPhotoSubTab('chauffeur')}
               >
-                Mes photos
+                Chauffeur
               </button>
               <button
-                className={`${styles.subTab} ${photoSubTab === 'vehicule' ? styles.subTabActive : ''}`}
-                onClick={() => setPhotoSubTab('vehicule')}
+                className={`${styles.subTab} ${photoSubTab === 'vehicules' ? styles.subTabActive : ''}`}
+                onClick={() => setPhotoSubTab('vehicules')}
               >
-                Véhicule
+                Véhicules
               </button>
             </div>
             <div className={styles.gallerySection}>{renderPhotoSubContent()}</div>
