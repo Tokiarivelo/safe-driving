@@ -1,0 +1,107 @@
+query GetNotifications($filter: NotificationsFilterInput, $cursor: String, $limit: Int) {
+  notifications(filter: $filter, cursor: $cursor, limit: $limit) {
+    notifications {
+      id
+      type
+      title
+      message
+      read
+      archived
+      createdAt
+      readAt
+      rideId
+      metadata
+      sender {
+        id
+        firstName
+        lastName
+        avatar {
+          url
+        }
+      }
+      ride {
+        id
+        departureAddress
+        arrivalAddress
+        price
+      }
+    }
+    totalCount
+    unreadCount
+    hasMore
+  }
+}
+
+query GetUnreadNotificationCount {
+  unreadNotificationCount
+}
+
+mutation MarkNotificationAsRead($notificationId: String!) {
+  markNotificationAsRead(notificationId: $notificationId) {
+    success
+    message
+    notification {
+      id
+      read
+      readAt
+    }
+  }
+}
+
+mutation MarkAllNotificationsAsRead {
+  markAllNotificationsAsRead {
+    success
+    count
+  }
+}
+
+mutation ArchiveNotification($notificationId: String!) {
+  archiveNotification(notificationId: $notificationId) {
+    success
+    message
+    notification {
+      id
+      archived
+    }
+  }
+}
+
+mutation DeleteNotification($notificationId: String!) {
+  deleteNotification(notificationId: $notificationId) {
+    success
+    message
+  }
+}
+
+mutation DeleteAllNotifications {
+  deleteAllNotifications {
+    success
+    count
+  }
+}
+
+subscription NotificationEvent {
+  notificationEvent {
+    notification {
+      id
+      type
+      title
+      message
+      read
+      archived
+      createdAt
+      readAt
+      rideId
+      metadata
+      sender {
+        id
+        firstName
+        lastName
+        avatar {
+          url
+        }
+      }
+    }
+    type
+  }
+}

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser';
+import NextImage from 'next/image';
 import { useLazyQuery, useMutation, gql } from '@apollo/client';
 import { ConversationType, UserByTokenDocument } from '@/graphql/generated/graphql';
 import { useConversations } from '@/lib/conversation/useConversations';
@@ -435,10 +436,12 @@ export default function ScanQrCodeComponent({
 
               <div className="text-center">
                 <div className="mb-4">
-                  <img
+                  <NextImage
                     src={qrBase64}
                     alt="QR Code à scanner avec votre téléphone"
-                    className="mx-auto w-64 h-64"
+                    width={256}
+                    height={256}
+                    className="mx-auto"
                   />
                 </div>
 
@@ -545,10 +548,12 @@ export default function ScanQrCodeComponent({
 
             <div className="text-center">
               <div className="mb-4">
-                <img
+                <NextImage
                   src={qrBase64}
                   alt="QR Code à scanner avec votre téléphone"
-                  className="mx-auto w-64 h-64"
+                  width={256}
+                  height={256}
+                  className="mx-auto"
                 />
               </div>
 

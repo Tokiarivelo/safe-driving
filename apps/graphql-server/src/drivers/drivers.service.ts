@@ -113,8 +113,6 @@ export class DriversService {
               nbPlaces: vehicle?.place || 4,
             };
           });
-
-          console.log('drivers :>> ', drivers);
         }
       } catch (error) {
         console.error('Error querying database for drivers:', error);
