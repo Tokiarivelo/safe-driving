@@ -26,13 +26,11 @@ import { UploadComponent } from '@/components/ui/upload/upload-component';
 import styles from './profile.module.css';
 
 type TabType = 'photos' | 'avis_recus' | 'avis_laisses';
-type PhotoSubTab = 'mes_photos' | 'vehicule';
 
-export default function ProfilePage() {
+export default function UserProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [coverImage, setCoverImage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('photos');
-  const [photoSubTab, setPhotoSubTab] = useState<PhotoSubTab>('mes_photos');
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const profileInputRef = useRef<HTMLInputElement>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
@@ -251,77 +249,34 @@ export default function ProfilePage() {
   const user = meData?.me;
   const userImages = user?.UserImage || [];
   const userCover = user?.UserCover;
-  const vehicles = user?.vehicles || [];
   const rating = calculateRating();
-
-  const renderPhotoSubContent = () => {
-    if (photoSubTab === 'mes_photos') {
-      return userImages.length > 0 ? (
-        <div className={styles.galleryGrid}>
-          {userImages.map(image => (
-            <div key={image.id} className={styles.galleryImageContainer}>
-              <Image
-                src={image.file.url || ''}
-                alt="User Image"
-                className={styles.galleryImage}
-                fill
-                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-              />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className={styles.emptyState}>
-          <p>Aucune photo disponible</p>
-          <p>Cliquez sur le bouton + pour ajouter des photos</p>
-        </div>
-      );
-    }
-
-    // Vehicle photos
-    const vehicleImages = vehicles.flatMap(v => v.VehicleImage || []);
-    return vehicleImages.length > 0 ? (
-      <div className={styles.galleryGrid}>
-        {vehicleImages.map(image => (
-          <div key={image.id} className={styles.galleryImageContainer}>
-            <Image
-              src={image.file.url || ''}
-              alt="Vehicle Image"
-              className={styles.galleryImage}
-              fill
-              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-            />
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div className={styles.emptyState}>
-        <p>Aucune photo de véhicule disponible</p>
-      </div>
-    );
-  };
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'photos':
         return (
-          <>
-            <div className={styles.subTabsContainer}>
-              <button
-                className={`${styles.subTab} ${photoSubTab === 'mes_photos' ? styles.subTabActive : ''}`}
-                onClick={() => setPhotoSubTab('mes_photos')}
-              >
-                Mes photos
-              </button>
-              <button
-                className={`${styles.subTab} ${photoSubTab === 'vehicule' ? styles.subTabActive : ''}`}
-                onClick={() => setPhotoSubTab('vehicule')}
-              >
-                Véhicule
-              </button>
-            </div>
-            <div className={styles.gallerySection}>{renderPhotoSubContent()}</div>
-          </>
+          <div className={styles.gallerySection}>
+            {userImages.length > 0 ? (
+              <div className={styles.galleryGrid}>
+                {userImages.map(image => (
+                  <div key={image.id} className={styles.galleryImageContainer}>
+                    <Image
+                      src={image.file.url || ''}
+                      alt="User Image"
+                      className={styles.galleryImage}
+                      fill
+                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <p>Aucune photo disponible</p>
+                <p>Cliquez sur le bouton + pour ajouter des photos</p>
+              </div>
+            )}
+          </div>
         );
       case 'avis_recus':
         return (
@@ -421,13 +376,33 @@ export default function ProfilePage() {
                 <div className={styles.contactInfo}>
                   {user?.phone && (
                     <div className={styles.contactItem}>
-                      <span>📞</span>
+                      <Image
+                        src="/icons/phone.svg"
+                        alt="Phone"
+                        width={20}
+                        height={20}
+                        className={styles.contactIcon}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
                       <span>{user.phone}</span>
                     </div>
                   )}
                   {user?.email && (
                     <div className={styles.contactItem}>
-                      <span>✉️</span>
+                      <Image
+                        src="/icons/email.svg"
+                        alt="Email"
+                        width={20}
+                        height={20}
+                        className={styles.contactIcon}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
                       <span>{user.email}</span>
                     </div>
                   )}
