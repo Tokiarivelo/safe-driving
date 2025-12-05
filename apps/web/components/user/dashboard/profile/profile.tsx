@@ -51,6 +51,8 @@ export default function UserProfilePage() {
   const [coverImage, setCoverImage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('photos');
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const profileInputRef = useRef<HTMLInputElement>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
 
@@ -270,20 +272,41 @@ export default function UserProfilePage() {
 
   const user = meData?.me;
   const userImages = (user?.UserImage || []) as UserImage[];
+  const validImages = userImages.filter((image: UserImage) => image.file.url);
   const userCover = user?.UserCover;
   const rating = calculateRating();
+
+  // Lightbox handlers
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    setIsLightboxOpen(true);
+  };
+
+  const handlePrevImage = () => {
+    setSelectedImageIndex((prev: number) => (prev > 0 ? prev - 1 : validImages.length - 1));
+  };
+
+  const handleNextImage = () => {
+    setSelectedImageIndex((prev: number) => (prev < validImages.length - 1 ? prev + 1 : 0));
+  };
+
+  const handleThumbnailClick = (index: number) => {
+    setSelectedImageIndex(index);
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'photos':
         return (
           <div className={styles.gallerySection}>
-            {userImages.length > 0 ? (
+            {validImages.length > 0 ? (
               <div className={styles.galleryGrid}>
-                {userImages
-                  .filter((image: UserImage) => image.file.url)
-                  .map((image: UserImage) => (
-                    <div key={image.id} className={styles.galleryImageContainer}>
+                {validImages.map((image: UserImage, index: number) => (
+                    <div
+                      key={image.id}
+                      className={styles.galleryImageContainer}
+                      onClick={() => handleImageClick(index)}
+                    >
                       <Image
                         src={image.file.url!}
                         alt="User Image"
@@ -494,6 +517,75 @@ export default function UserProfilePage() {
                 onError={error => toast.error(error.message)}
               />
             </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Image Lightbox Dialog */}
+        <Dialog open={isLightboxOpen} onOpenChange={setIsLightboxOpen}>
+          <DialogContent className={styles.lightboxDialog} showCloseButton={false}>
+            {validImages.length > 0 && (
+              <div className={styles.lightboxContainer}>
+                {/* Close button */}
+                <button
+                  className={styles.lightboxCloseButton}
+                  onClick={() => setIsLightboxOpen(false)}
+                  aria-label="Fermer"
+                >
+                  ×
+                </button>
+
+                {/* Main image container */}
+                <div className={styles.lightboxMainImage}>
+                  {/* Previous button */}
+                  <button
+                    className={styles.lightboxNavButton}
+                    onClick={handlePrevImage}
+                    aria-label="Image précédente"
+                  >
+                    ‹
+                  </button>
+
+                  {/* Current image */}
+                  <div className={styles.lightboxImageWrapper}>
+                    <Image
+                      src={validImages[selectedImageIndex]?.file.url || ''}
+                      alt={`Image ${selectedImageIndex + 1}`}
+                      fill
+                      className={styles.lightboxImage}
+                      sizes="90vw"
+                    />
+                  </div>
+
+                  {/* Next button */}
+                  <button
+                    className={styles.lightboxNavButton}
+                    onClick={handleNextImage}
+                    aria-label="Image suivante"
+                  >
+                    ›
+                  </button>
+                </div>
+
+                {/* Thumbnails strip */}
+                <div className={styles.lightboxThumbnails}>
+                  {validImages.map((image: UserImage, index: number) => (
+                    <button
+                      key={image.id}
+                      className={`${styles.lightboxThumbnail} ${index === selectedImageIndex ? styles.lightboxThumbnailActive : ''}`}
+                      onClick={() => handleThumbnailClick(index)}
+                    >
+                      <Image
+                        src={image.file.url!}
+                        alt={`Thumbnail ${index + 1}`}
+                        fill
+                        sizes="100px"
+                        className={styles.lightboxThumbnailImage}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </DialogContent>
         </Dialog>
       </div>

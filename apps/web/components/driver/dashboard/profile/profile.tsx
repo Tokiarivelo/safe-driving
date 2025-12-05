@@ -68,6 +68,9 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<TabType>('photos');
   const [photoSubTab, setPhotoSubTab] = useState<PhotoSubTab>('mes_photos');
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const profileInputRef = useRef<HTMLInputElement>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
 
@@ -291,13 +294,50 @@ export default function ProfilePage() {
   const vehicles = (user?.vehicles || []) as Vehicle[];
   const rating = calculateRating();
 
+  // Get valid images for current sub-tab
+  const getValidImages = (): string[] => {
+    if (photoSubTab === 'mes_photos') {
+      return userImages
+        .filter((image: UserImage) => image.file.url)
+        .map((image: UserImage) => image.file.url!);
+    }
+    return vehicles
+      .flatMap((v: Vehicle) => v.VehicleImage || [])
+      .filter((image: VehicleImage) => image.file.url)
+      .map((image: VehicleImage) => image.file.url!);
+  };
+
+  // Lightbox handlers
+  const handleImageClick = (images: string[], index: number) => {
+    setLightboxImages(images);
+    setSelectedImageIndex(index);
+    setIsLightboxOpen(true);
+  };
+
+  const handlePrevImage = () => {
+    setSelectedImageIndex((prev: number) => (prev > 0 ? prev - 1 : lightboxImages.length - 1));
+  };
+
+  const handleNextImage = () => {
+    setSelectedImageIndex((prev: number) => (prev < lightboxImages.length - 1 ? prev + 1 : 0));
+  };
+
+  const handleThumbnailClick = (index: number) => {
+    setSelectedImageIndex(index);
+  };
+
   const renderPhotoSubContent = () => {
     if (photoSubTab === 'mes_photos') {
       const validImages = userImages.filter((image: UserImage) => image.file.url);
+      const imageUrls = validImages.map((image: UserImage) => image.file.url!);
       return validImages.length > 0 ? (
         <div className={styles.galleryGrid}>
-          {validImages.map((image: UserImage) => (
-            <div key={image.id} className={styles.galleryImageContainer}>
+          {validImages.map((image: UserImage, index: number) => (
+            <div
+              key={image.id}
+              className={styles.galleryImageContainer}
+              onClick={() => handleImageClick(imageUrls, index)}
+            >
               <Image
                 src={image.file.url!}
                 alt="User Image"
@@ -320,10 +360,15 @@ export default function ProfilePage() {
     const vehicleImages = vehicles
       .flatMap((v: Vehicle) => v.VehicleImage || [])
       .filter((image: VehicleImage) => image.file.url);
+    const imageUrls = vehicleImages.map((image: VehicleImage) => image.file.url!);
     return vehicleImages.length > 0 ? (
       <div className={styles.galleryGrid}>
-        {vehicleImages.map((image: VehicleImage) => (
-          <div key={image.id} className={styles.galleryImageContainer}>
+        {vehicleImages.map((image: VehicleImage, index: number) => (
+          <div
+            key={image.id}
+            className={styles.galleryImageContainer}
+            onClick={() => handleImageClick(imageUrls, index)}
+          >
             <Image
               src={image.file.url!}
               alt="Vehicle Image"
@@ -555,6 +600,75 @@ export default function ProfilePage() {
                 onError={error => toast.error(error.message)}
               />
             </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Image Lightbox Dialog */}
+        <Dialog open={isLightboxOpen} onOpenChange={setIsLightboxOpen}>
+          <DialogContent className={styles.lightboxDialog} showCloseButton={false}>
+            {lightboxImages.length > 0 && (
+              <div className={styles.lightboxContainer}>
+                {/* Close button */}
+                <button
+                  className={styles.lightboxCloseButton}
+                  onClick={() => setIsLightboxOpen(false)}
+                  aria-label="Fermer"
+                >
+                  ×
+                </button>
+
+                {/* Main image container */}
+                <div className={styles.lightboxMainImage}>
+                  {/* Previous button */}
+                  <button
+                    className={styles.lightboxNavButton}
+                    onClick={handlePrevImage}
+                    aria-label="Image précédente"
+                  >
+                    ‹
+                  </button>
+
+                  {/* Current image */}
+                  <div className={styles.lightboxImageWrapper}>
+                    <Image
+                      src={lightboxImages[selectedImageIndex] || ''}
+                      alt={`Image ${selectedImageIndex + 1}`}
+                      fill
+                      className={styles.lightboxImage}
+                      sizes="90vw"
+                    />
+                  </div>
+
+                  {/* Next button */}
+                  <button
+                    className={styles.lightboxNavButton}
+                    onClick={handleNextImage}
+                    aria-label="Image suivante"
+                  >
+                    ›
+                  </button>
+                </div>
+
+                {/* Thumbnails strip */}
+                <div className={styles.lightboxThumbnails}>
+                  {lightboxImages.map((imageUrl: string, index: number) => (
+                    <button
+                      key={index}
+                      className={`${styles.lightboxThumbnail} ${index === selectedImageIndex ? styles.lightboxThumbnailActive : ''}`}
+                      onClick={() => handleThumbnailClick(index)}
+                    >
+                      <Image
+                        src={imageUrl}
+                        alt={`Thumbnail ${index + 1}`}
+                        fill
+                        sizes="100px"
+                        className={styles.lightboxThumbnailImage}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </DialogContent>
         </Dialog>
       </div>
