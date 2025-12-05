@@ -125,7 +125,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 1rem;
 }
 
 .ratingValue {
@@ -152,7 +152,6 @@
 .ratingCount {
   font-size: 0.75rem;
   color: rgb(107 114 128);
-  margin-bottom: 1rem;
 }
 
 .contactInfo {
@@ -168,6 +167,11 @@
   gap: 0.5rem;
   font-size: 0.875rem;
   color: rgb(75 85 99);
+}
+
+.contactIcon {
+  width: 20px;
+  height: 20px;
 }
 
 .qrLoading,
@@ -433,6 +437,12 @@
   transform: translateY(-1px);
 }
 
+@media (max-width: 768px) {
+  .reviewsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Floating Action Button */
 .fab {
   position: fixed;
@@ -474,6 +484,95 @@
 
 .uploadDialogContent {
   padding: 1rem 0;
+}
+
+.uploadDropzone {
+  border: 2px dashed #d1d5db;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.uploadDropzone:hover {
+  border-color: #ec4899;
+  background: rgb(253 242 248);
+}
+
+.uploadIcon {
+  font-size: 3rem;
+  color: #9ca3af;
+  margin-bottom: 1rem;
+}
+
+.uploadText {
+  color: rgb(107 114 128);
+  font-size: 0.875rem;
+}
+
+.uploadButton {
+  margin-top: 1rem;
+  background: linear-gradient(135deg, #f472b6, #ec4899);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.uploadButton:hover {
+  opacity: 0.9;
+}
+
+.uploadButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .leftColumn {
+    margin-top: -60px;
+    padding-bottom: 1.5rem;
+  }
+
+  .profileImageContainer {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .coverSection {
+    height: 200px;
+  }
+
+  .leftColumn {
+    margin-top: -50px;
+  }
+
+  .profileImageContainer {
+    width: 100px;
+    height: 100px;
+  }
+
+  .galleryGrid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .fab {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 48px;
+    height: 48px;
+  }
 }
 
 /* Lightbox Styles */
@@ -610,52 +709,7 @@
   object-fit: cover;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .contentGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .leftColumn {
-    margin-top: -60px;
-    padding-bottom: 1.5rem;
-  }
-
-  .profileImageContainer {
-    width: 120px;
-    height: 120px;
-  }
-}
-
 @media (max-width: 768px) {
-  .coverSection {
-    height: 200px;
-  }
-
-  .leftColumn {
-    margin-top: -50px;
-  }
-
-  .profileImageContainer {
-    width: 100px;
-    height: 100px;
-  }
-
-  .galleryGrid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
-
-  .reviewsGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .fab {
-    bottom: 1.5rem;
-    right: 1.5rem;
-    width: 48px;
-    height: 48px;
-  }
-
   .lightboxNavButton {
     width: 40px;
     height: 40px;
