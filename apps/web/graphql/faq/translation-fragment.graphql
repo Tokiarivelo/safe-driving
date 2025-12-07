@@ -1,0 +1,6 @@
+fragment FaqTranslationFields on FaqTranslation {
+  id
+  locale
+  question
+  answer
+}

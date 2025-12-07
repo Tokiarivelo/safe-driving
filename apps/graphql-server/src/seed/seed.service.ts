@@ -13,6 +13,8 @@ export class SeedService implements OnModuleInit {
 
   async onModuleInit() {
     await this.seedRoles();
+    // Seed FAQs
+    await this.seedFaqs();
     // Uncomment to seed rides (for development only)
     await this.seedMockRides();
     // Seed notifications for development
@@ -464,5 +466,120 @@ export class SeedService implements OnModuleInit {
     this.logger.log(
       `✅ Mock notifications seeded (${mockNotifications.length} notifications)`,
     );
+  }
+
+  /**
+   * Seed FAQ data with multilingual support
+   */
+  async seedFaqs() {
+    // Check if FAQs already exist
+    const existingFaqs = await this.prisma.faq.count();
+    if (existingFaqs > 0) {
+      this.logger.log('⏭️  FAQs already seeded, skipping...');
+      return;
+    }
+
+    const faqData = [
+      {
+        order: 1,
+        translations: [
+          {
+            locale: 'fr',
+            question: 'Comment réserver une course ?',
+            answer:
+              "Ouvre l'app, saisis ta destination, choisis ton type de véhicule, puis confirme la réservation.",
+          },
+          {
+            locale: 'en',
+            question: 'How to book a ride?',
+            answer:
+              'Open the app, enter your destination, choose your vehicle type, then confirm the booking.',
+          },
+        ],
+      },
+      {
+        order: 2,
+        translations: [
+          {
+            locale: 'fr',
+            question: 'Comment annuler une course ?',
+            answer:
+              "Depuis l'écran de suivi de course, appuie sur « Annuler la course ». Des frais peuvent s'appliquer selon le délai.",
+          },
+          {
+            locale: 'en',
+            question: 'How to cancel a ride?',
+            answer:
+              "From the ride tracking screen, tap 'Cancel ride'. Fees may apply depending on the delay.",
+          },
+        ],
+      },
+      {
+        order: 3,
+        translations: [
+          {
+            locale: 'fr',
+            question: 'Quels modes de paiement sont disponibles ?',
+            answer:
+              'Nous acceptons les cartes bancaires, les portefeuilles mobiles et les paiements en espèces.',
+          },
+          {
+            locale: 'en',
+            question: 'What payment methods are available?',
+            answer:
+              'We accept credit cards, mobile wallets, and cash payments.',
+          },
+        ],
+      },
+      {
+        order: 4,
+        translations: [
+          {
+            locale: 'fr',
+            question: 'Comment puis-je partager mon trajet avec un proche ?',
+            answer:
+              'Utilise la fonction de partage de trajet dans l'écran de course en cours pour envoyer ta position en temps réel.',
+          },
+          {
+            locale: 'en',
+            question: 'How can I share my trip with someone?',
+            answer:
+              'Use the trip sharing feature in the ongoing ride screen to send your real-time location.',
+          },
+        ],
+      },
+      {
+        order: 5,
+        translations: [
+          {
+            locale: 'fr',
+            question: 'Que faire si le chauffeur est en retard ?',
+            answer:
+              "Tu peux contacter directement le chauffeur via l'app ou annuler la course si le délai dépasse 10 minutes.",
+          },
+          {
+            locale: 'en',
+            question: 'What to do if the driver is late?',
+            answer:
+              'You can contact the driver directly via the app or cancel the ride if the delay exceeds 10 minutes.',
+          },
+        ],
+      },
+    ];
+
+    // Create FAQs with translations
+    for (const faq of faqData) {
+      await this.prisma.faq.create({
+        data: {
+          order: faq.order,
+          isActive: true,
+          translations: {
+            create: faq.translations,
+          },
+        },
+      });
+    }
+
+    this.logger.log(`✅ FAQs seeded (${faqData.length} FAQs with translations)`);
   }
 }

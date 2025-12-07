@@ -361,6 +361,22 @@ export enum FileScalarFieldEnum {
     type = "type"
 }
 
+export enum FaqTranslationScalarFieldEnum {
+    id = "id",
+    faqId = "faqId",
+    locale = "locale",
+    question = "question",
+    answer = "answer"
+}
+
+export enum FaqScalarFieldEnum {
+    id = "id",
+    order = "order",
+    isActive = "isActive",
+    createdAt = "createdAt",
+    updatedAt = "updatedAt"
+}
+
 export enum DriverVehicleScalarFieldEnum {
     id = "id",
     userId = "userId",
@@ -422,6 +438,8 @@ registerEnumType(ConversationScalarFieldEnum, { name: 'ConversationScalarFieldEn
 registerEnumType(ConversationParticipantScalarFieldEnum, { name: 'ConversationParticipantScalarFieldEnum', description: undefined })
 registerEnumType(CurrentPositionScalarFieldEnum, { name: 'CurrentPositionScalarFieldEnum', description: undefined })
 registerEnumType(DriverVehicleScalarFieldEnum, { name: 'DriverVehicleScalarFieldEnum', description: undefined })
+registerEnumType(FaqScalarFieldEnum, { name: 'FaqScalarFieldEnum', description: undefined })
+registerEnumType(FaqTranslationScalarFieldEnum, { name: 'FaqTranslationScalarFieldEnum', description: undefined })
 registerEnumType(FileScalarFieldEnum, { name: 'FileScalarFieldEnum', description: undefined })
 registerEnumType(MessageScalarFieldEnum, { name: 'MessageScalarFieldEnum', description: undefined })
 registerEnumType(MessageReadReceiptScalarFieldEnum, { name: 'MessageReadReceiptScalarFieldEnum', description: undefined })
@@ -7868,6 +7886,1581 @@ export class UpsertOneDriverVehicleArgs {
     @Field(() => DriverVehicleUpdateInput, {nullable:false})
     @Type(() => DriverVehicleUpdateInput)
     update!: InstanceType<typeof DriverVehicleUpdateInput>;
+}
+
+@ObjectType()
+export class AggregateFaq {
+    @Field(() => FaqCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof FaqCountAggregate>;
+    @Field(() => FaqAvgAggregate, {nullable:true})
+    _avg?: InstanceType<typeof FaqAvgAggregate>;
+    @Field(() => FaqSumAggregate, {nullable:true})
+    _sum?: InstanceType<typeof FaqSumAggregate>;
+    @Field(() => FaqMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof FaqMinAggregate>;
+    @Field(() => FaqMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof FaqMaxAggregate>;
+}
+
+@ArgsType()
+export class CreateManyFaqArgs {
+    @Field(() => [FaqCreateManyInput], {nullable:false})
+    @Type(() => FaqCreateManyInput)
+    data!: Array<FaqCreateManyInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@ArgsType()
+export class CreateOneFaqArgs {
+    @Field(() => FaqCreateInput, {nullable:false})
+    @Type(() => FaqCreateInput)
+    data!: InstanceType<typeof FaqCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManyFaqArgs {
+    @Field(() => FaqWhereInput, {nullable:true})
+    @Type(() => FaqWhereInput)
+    where?: InstanceType<typeof FaqWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class DeleteOneFaqArgs {
+    @Field(() => FaqWhereUniqueInput, {nullable:false})
+    @Type(() => FaqWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FaqAggregateArgs {
+    @Field(() => FaqWhereInput, {nullable:true})
+    @Type(() => FaqWhereInput)
+    where?: InstanceType<typeof FaqWhereInput>;
+    @Field(() => [FaqOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FaqOrderByWithRelationInput>;
+    @Field(() => FaqWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => FaqCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FaqCountAggregateInput>;
+    @Field(() => FaqAvgAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof FaqAvgAggregateInput>;
+    @Field(() => FaqSumAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof FaqSumAggregateInput>;
+    @Field(() => FaqMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FaqMinAggregateInput>;
+    @Field(() => FaqMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FaqMaxAggregateInput>;
+}
+
+@InputType()
+export class FaqAvgAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    order?: true;
+}
+
+@ObjectType()
+export class FaqAvgAggregate {
+    @Field(() => Float, {nullable:true})
+    order?: number;
+}
+
+@InputType()
+export class FaqAvgOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    order?: `${SortOrder}`;
+}
+
+@InputType()
+export class FaqCountAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    order?: true;
+    @Field(() => Boolean, {nullable:true})
+    isActive?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    _all?: true;
+}
+
+@ObjectType()
+export class FaqCountAggregate {
+    @Field(() => Int, {nullable:false})
+    id!: number;
+    @Field(() => Int, {nullable:false})
+    order!: number;
+    @Field(() => Int, {nullable:false})
+    isActive!: number;
+    @Field(() => Int, {nullable:false})
+    createdAt!: number;
+    @Field(() => Int, {nullable:false})
+    updatedAt!: number;
+    @Field(() => Int, {nullable:false})
+    _all!: number;
+}
+
+@InputType()
+export class FaqCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    order?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    isActive?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@ObjectType()
+export class FaqCount {
+    @Field(() => Int, {nullable:false})
+    translations?: number;
+}
+
+@InputType()
+export class FaqCreateManyInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Int, {nullable:true})
+    order?: number;
+    @Field(() => Boolean, {nullable:true})
+    isActive?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FaqCreateNestedOneWithoutTranslationsInput {
+    @Field(() => FaqCreateWithoutTranslationsInput, {nullable:true})
+    @Type(() => FaqCreateWithoutTranslationsInput)
+    create?: InstanceType<typeof FaqCreateWithoutTranslationsInput>;
+    @Field(() => FaqCreateOrConnectWithoutTranslationsInput, {nullable:true})
+    @Type(() => FaqCreateOrConnectWithoutTranslationsInput)
+    connectOrCreate?: InstanceType<typeof FaqCreateOrConnectWithoutTranslationsInput>;
+    @Field(() => FaqWhereUniqueInput, {nullable:true})
+    @Type(() => FaqWhereUniqueInput)
+    connect?: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+}
+
+@InputType()
+export class FaqCreateOrConnectWithoutTranslationsInput {
+    @Field(() => FaqWhereUniqueInput, {nullable:false})
+    @Type(() => FaqWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+    @Field(() => FaqCreateWithoutTranslationsInput, {nullable:false})
+    @Type(() => FaqCreateWithoutTranslationsInput)
+    create!: InstanceType<typeof FaqCreateWithoutTranslationsInput>;
+}
+
+@InputType()
+export class FaqCreateWithoutTranslationsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Int, {nullable:true})
+    order?: number;
+    @Field(() => Boolean, {nullable:true})
+    isActive?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FaqCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Int, {nullable:true})
+    order?: number;
+    @Field(() => Boolean, {nullable:true})
+    isActive?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => FaqTranslationCreateNestedManyWithoutFaqInput, {nullable:true})
+    translations?: InstanceType<typeof FaqTranslationCreateNestedManyWithoutFaqInput>;
+}
+
+@ArgsType()
+export class FaqGroupByArgs {
+    @Field(() => FaqWhereInput, {nullable:true})
+    @Type(() => FaqWhereInput)
+    where?: InstanceType<typeof FaqWhereInput>;
+    @Field(() => [FaqOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<FaqOrderByWithAggregationInput>;
+    @Field(() => [FaqScalarFieldEnum], {nullable:false})
+    by!: Array<`${FaqScalarFieldEnum}`>;
+    @Field(() => FaqScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof FaqScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => FaqCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FaqCountAggregateInput>;
+    @Field(() => FaqAvgAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof FaqAvgAggregateInput>;
+    @Field(() => FaqSumAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof FaqSumAggregateInput>;
+    @Field(() => FaqMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FaqMinAggregateInput>;
+    @Field(() => FaqMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FaqMaxAggregateInput>;
+}
+
+@ObjectType()
+export class FaqGroupBy {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => Int, {nullable:false})
+    order!: number;
+    @Field(() => Boolean, {nullable:false})
+    isActive!: boolean;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
+    @Field(() => FaqCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof FaqCountAggregate>;
+    @Field(() => FaqAvgAggregate, {nullable:true})
+    _avg?: InstanceType<typeof FaqAvgAggregate>;
+    @Field(() => FaqSumAggregate, {nullable:true})
+    _sum?: InstanceType<typeof FaqSumAggregate>;
+    @Field(() => FaqMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof FaqMinAggregate>;
+    @Field(() => FaqMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof FaqMaxAggregate>;
+}
+
+@InputType()
+export class FaqMaxAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    order?: true;
+    @Field(() => Boolean, {nullable:true})
+    isActive?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class FaqMaxAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Int, {nullable:true})
+    order?: number;
+    @Field(() => Boolean, {nullable:true})
+    isActive?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FaqMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    order?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    isActive?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class FaqMinAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    order?: true;
+    @Field(() => Boolean, {nullable:true})
+    isActive?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class FaqMinAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Int, {nullable:true})
+    order?: number;
+    @Field(() => Boolean, {nullable:true})
+    isActive?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FaqMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    order?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    isActive?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class FaqOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    order?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    isActive?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => FaqCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FaqCountOrderByAggregateInput>;
+    @Field(() => FaqAvgOrderByAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof FaqAvgOrderByAggregateInput>;
+    @Field(() => FaqMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FaqMaxOrderByAggregateInput>;
+    @Field(() => FaqMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FaqMinOrderByAggregateInput>;
+    @Field(() => FaqSumOrderByAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof FaqSumOrderByAggregateInput>;
+}
+
+@InputType()
+export class FaqOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    order?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    isActive?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => FaqTranslationOrderByRelationAggregateInput, {nullable:true})
+    translations?: InstanceType<typeof FaqTranslationOrderByRelationAggregateInput>;
+}
+
+@InputType()
+export class FaqScalarRelationFilter {
+    @Field(() => FaqWhereInput, {nullable:true})
+    is?: InstanceType<typeof FaqWhereInput>;
+    @Field(() => FaqWhereInput, {nullable:true})
+    isNot?: InstanceType<typeof FaqWhereInput>;
+}
+
+@InputType()
+export class FaqScalarWhereWithAggregatesInput {
+    @Field(() => [FaqScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<FaqScalarWhereWithAggregatesInput>;
+    @Field(() => [FaqScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<FaqScalarWhereWithAggregatesInput>;
+    @Field(() => [FaqScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<FaqScalarWhereWithAggregatesInput>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => IntWithAggregatesFilter, {nullable:true})
+    order?: InstanceType<typeof IntWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    isActive?: InstanceType<typeof BoolWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+}
+
+@InputType()
+export class FaqSumAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    order?: true;
+}
+
+@ObjectType()
+export class FaqSumAggregate {
+    @Field(() => Int, {nullable:true})
+    order?: number;
+}
+
+@InputType()
+export class FaqSumOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    order?: `${SortOrder}`;
+}
+
+@InputType()
+export class FaqUncheckedCreateWithoutTranslationsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Int, {nullable:true})
+    order?: number;
+    @Field(() => Boolean, {nullable:true})
+    isActive?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FaqUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Int, {nullable:true})
+    order?: number;
+    @Field(() => Boolean, {nullable:true})
+    isActive?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => FaqTranslationUncheckedCreateNestedManyWithoutFaqInput, {nullable:true})
+    translations?: InstanceType<typeof FaqTranslationUncheckedCreateNestedManyWithoutFaqInput>;
+}
+
+@InputType()
+export class FaqUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    order?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isActive?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FaqUncheckedUpdateWithoutTranslationsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    order?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isActive?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FaqUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    order?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isActive?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => FaqTranslationUncheckedUpdateManyWithoutFaqNestedInput, {nullable:true})
+    translations?: InstanceType<typeof FaqTranslationUncheckedUpdateManyWithoutFaqNestedInput>;
+}
+
+@InputType()
+export class FaqUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    order?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isActive?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FaqUpdateOneRequiredWithoutTranslationsNestedInput {
+    @Field(() => FaqCreateWithoutTranslationsInput, {nullable:true})
+    @Type(() => FaqCreateWithoutTranslationsInput)
+    create?: InstanceType<typeof FaqCreateWithoutTranslationsInput>;
+    @Field(() => FaqCreateOrConnectWithoutTranslationsInput, {nullable:true})
+    @Type(() => FaqCreateOrConnectWithoutTranslationsInput)
+    connectOrCreate?: InstanceType<typeof FaqCreateOrConnectWithoutTranslationsInput>;
+    @Field(() => FaqUpsertWithoutTranslationsInput, {nullable:true})
+    @Type(() => FaqUpsertWithoutTranslationsInput)
+    upsert?: InstanceType<typeof FaqUpsertWithoutTranslationsInput>;
+    @Field(() => FaqWhereUniqueInput, {nullable:true})
+    @Type(() => FaqWhereUniqueInput)
+    connect?: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+    @Field(() => FaqUpdateToOneWithWhereWithoutTranslationsInput, {nullable:true})
+    @Type(() => FaqUpdateToOneWithWhereWithoutTranslationsInput)
+    update?: InstanceType<typeof FaqUpdateToOneWithWhereWithoutTranslationsInput>;
+}
+
+@InputType()
+export class FaqUpdateToOneWithWhereWithoutTranslationsInput {
+    @Field(() => FaqWhereInput, {nullable:true})
+    @Type(() => FaqWhereInput)
+    where?: InstanceType<typeof FaqWhereInput>;
+    @Field(() => FaqUpdateWithoutTranslationsInput, {nullable:false})
+    @Type(() => FaqUpdateWithoutTranslationsInput)
+    data!: InstanceType<typeof FaqUpdateWithoutTranslationsInput>;
+}
+
+@InputType()
+export class FaqUpdateWithoutTranslationsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    order?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isActive?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FaqUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    order?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isActive?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => FaqTranslationUpdateManyWithoutFaqNestedInput, {nullable:true})
+    translations?: InstanceType<typeof FaqTranslationUpdateManyWithoutFaqNestedInput>;
+}
+
+@InputType()
+export class FaqUpsertWithoutTranslationsInput {
+    @Field(() => FaqUpdateWithoutTranslationsInput, {nullable:false})
+    @Type(() => FaqUpdateWithoutTranslationsInput)
+    update!: InstanceType<typeof FaqUpdateWithoutTranslationsInput>;
+    @Field(() => FaqCreateWithoutTranslationsInput, {nullable:false})
+    @Type(() => FaqCreateWithoutTranslationsInput)
+    create!: InstanceType<typeof FaqCreateWithoutTranslationsInput>;
+    @Field(() => FaqWhereInput, {nullable:true})
+    @Type(() => FaqWhereInput)
+    where?: InstanceType<typeof FaqWhereInput>;
+}
+
+@InputType()
+export class FaqWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => [FaqWhereInput], {nullable:true})
+    AND?: Array<FaqWhereInput>;
+    @Field(() => [FaqWhereInput], {nullable:true})
+    OR?: Array<FaqWhereInput>;
+    @Field(() => [FaqWhereInput], {nullable:true})
+    NOT?: Array<FaqWhereInput>;
+    @Field(() => IntFilter, {nullable:true})
+    order?: InstanceType<typeof IntFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    isActive?: InstanceType<typeof BoolFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => FaqTranslationListRelationFilter, {nullable:true})
+    translations?: InstanceType<typeof FaqTranslationListRelationFilter>;
+}
+
+@InputType()
+export class FaqWhereInput {
+    @Field(() => [FaqWhereInput], {nullable:true})
+    AND?: Array<FaqWhereInput>;
+    @Field(() => [FaqWhereInput], {nullable:true})
+    OR?: Array<FaqWhereInput>;
+    @Field(() => [FaqWhereInput], {nullable:true})
+    NOT?: Array<FaqWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    order?: InstanceType<typeof IntFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    isActive?: InstanceType<typeof BoolFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => FaqTranslationListRelationFilter, {nullable:true})
+    translations?: InstanceType<typeof FaqTranslationListRelationFilter>;
+}
+
+@ObjectType()
+export class Faq {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => Int, {defaultValue:0,nullable:false})
+    order!: number;
+    @Field(() => Boolean, {defaultValue:true,nullable:false})
+    isActive!: boolean;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
+    @Field(() => [FaqTranslation], {nullable:true})
+    translations?: Array<FaqTranslation>;
+    @Field(() => FaqCount, {nullable:false})
+    _count?: InstanceType<typeof FaqCount>;
+}
+
+@ArgsType()
+export class FindFirstFaqOrThrowArgs {
+    @Field(() => FaqWhereInput, {nullable:true})
+    @Type(() => FaqWhereInput)
+    where?: InstanceType<typeof FaqWhereInput>;
+    @Field(() => [FaqOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FaqOrderByWithRelationInput>;
+    @Field(() => FaqWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FaqScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${FaqScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstFaqArgs {
+    @Field(() => FaqWhereInput, {nullable:true})
+    @Type(() => FaqWhereInput)
+    where?: InstanceType<typeof FaqWhereInput>;
+    @Field(() => [FaqOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FaqOrderByWithRelationInput>;
+    @Field(() => FaqWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FaqScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${FaqScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManyFaqArgs {
+    @Field(() => FaqWhereInput, {nullable:true})
+    @Type(() => FaqWhereInput)
+    where?: InstanceType<typeof FaqWhereInput>;
+    @Field(() => [FaqOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FaqOrderByWithRelationInput>;
+    @Field(() => FaqWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FaqScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${FaqScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueFaqOrThrowArgs {
+    @Field(() => FaqWhereUniqueInput, {nullable:false})
+    @Type(() => FaqWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindUniqueFaqArgs {
+    @Field(() => FaqWhereUniqueInput, {nullable:false})
+    @Type(() => FaqWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpdateManyFaqArgs {
+    @Field(() => FaqUpdateManyMutationInput, {nullable:false})
+    @Type(() => FaqUpdateManyMutationInput)
+    data!: InstanceType<typeof FaqUpdateManyMutationInput>;
+    @Field(() => FaqWhereInput, {nullable:true})
+    @Type(() => FaqWhereInput)
+    where?: InstanceType<typeof FaqWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class UpdateOneFaqArgs {
+    @Field(() => FaqUpdateInput, {nullable:false})
+    @Type(() => FaqUpdateInput)
+    data!: InstanceType<typeof FaqUpdateInput>;
+    @Field(() => FaqWhereUniqueInput, {nullable:false})
+    @Type(() => FaqWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpsertOneFaqArgs {
+    @Field(() => FaqWhereUniqueInput, {nullable:false})
+    @Type(() => FaqWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqWhereUniqueInput, 'id'>;
+    @Field(() => FaqCreateInput, {nullable:false})
+    @Type(() => FaqCreateInput)
+    create!: InstanceType<typeof FaqCreateInput>;
+    @Field(() => FaqUpdateInput, {nullable:false})
+    @Type(() => FaqUpdateInput)
+    update!: InstanceType<typeof FaqUpdateInput>;
+}
+
+@ObjectType()
+export class AggregateFaqTranslation {
+    @Field(() => FaqTranslationCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof FaqTranslationCountAggregate>;
+    @Field(() => FaqTranslationMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof FaqTranslationMinAggregate>;
+    @Field(() => FaqTranslationMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof FaqTranslationMaxAggregate>;
+}
+
+@ArgsType()
+export class CreateManyFaqTranslationArgs {
+    @Field(() => [FaqTranslationCreateManyInput], {nullable:false})
+    @Type(() => FaqTranslationCreateManyInput)
+    data!: Array<FaqTranslationCreateManyInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@ArgsType()
+export class CreateOneFaqTranslationArgs {
+    @Field(() => FaqTranslationCreateInput, {nullable:false})
+    @Type(() => FaqTranslationCreateInput)
+    data!: InstanceType<typeof FaqTranslationCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManyFaqTranslationArgs {
+    @Field(() => FaqTranslationWhereInput, {nullable:true})
+    @Type(() => FaqTranslationWhereInput)
+    where?: InstanceType<typeof FaqTranslationWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class DeleteOneFaqTranslationArgs {
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:false})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+}
+
+@ArgsType()
+export class FaqTranslationAggregateArgs {
+    @Field(() => FaqTranslationWhereInput, {nullable:true})
+    @Type(() => FaqTranslationWhereInput)
+    where?: InstanceType<typeof FaqTranslationWhereInput>;
+    @Field(() => [FaqTranslationOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FaqTranslationOrderByWithRelationInput>;
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => FaqTranslationCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FaqTranslationCountAggregateInput>;
+    @Field(() => FaqTranslationMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FaqTranslationMinAggregateInput>;
+    @Field(() => FaqTranslationMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FaqTranslationMaxAggregateInput>;
+}
+
+@InputType()
+export class FaqTranslationCountAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    faqId?: true;
+    @Field(() => Boolean, {nullable:true})
+    locale?: true;
+    @Field(() => Boolean, {nullable:true})
+    question?: true;
+    @Field(() => Boolean, {nullable:true})
+    answer?: true;
+    @Field(() => Boolean, {nullable:true})
+    _all?: true;
+}
+
+@ObjectType()
+export class FaqTranslationCountAggregate {
+    @Field(() => Int, {nullable:false})
+    id!: number;
+    @Field(() => Int, {nullable:false})
+    faqId!: number;
+    @Field(() => Int, {nullable:false})
+    locale!: number;
+    @Field(() => Int, {nullable:false})
+    question!: number;
+    @Field(() => Int, {nullable:false})
+    answer!: number;
+    @Field(() => Int, {nullable:false})
+    _all!: number;
+}
+
+@InputType()
+export class FaqTranslationCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    faqId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    locale?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    question?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    answer?: `${SortOrder}`;
+}
+
+@InputType()
+export class FaqTranslationCreateManyFaqInputEnvelope {
+    @Field(() => [FaqTranslationCreateManyFaqInput], {nullable:false})
+    @Type(() => FaqTranslationCreateManyFaqInput)
+    data!: Array<FaqTranslationCreateManyFaqInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class FaqTranslationCreateManyFaqInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    locale!: string;
+    @Field(() => String, {nullable:false})
+    question!: string;
+    @Field(() => String, {nullable:false})
+    answer!: string;
+}
+
+@InputType()
+export class FaqTranslationCreateManyInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    faqId!: string;
+    @Field(() => String, {nullable:false})
+    locale!: string;
+    @Field(() => String, {nullable:false})
+    question!: string;
+    @Field(() => String, {nullable:false})
+    answer!: string;
+}
+
+@InputType()
+export class FaqTranslationCreateNestedManyWithoutFaqInput {
+    @Field(() => [FaqTranslationCreateWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationCreateWithoutFaqInput)
+    create?: Array<FaqTranslationCreateWithoutFaqInput>;
+    @Field(() => [FaqTranslationCreateOrConnectWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationCreateOrConnectWithoutFaqInput)
+    connectOrCreate?: Array<FaqTranslationCreateOrConnectWithoutFaqInput>;
+    @Field(() => FaqTranslationCreateManyFaqInputEnvelope, {nullable:true})
+    @Type(() => FaqTranslationCreateManyFaqInputEnvelope)
+    createMany?: InstanceType<typeof FaqTranslationCreateManyFaqInputEnvelope>;
+    @Field(() => [FaqTranslationWhereUniqueInput], {nullable:true})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>>;
+}
+
+@InputType()
+export class FaqTranslationCreateOrConnectWithoutFaqInput {
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:false})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+    @Field(() => FaqTranslationCreateWithoutFaqInput, {nullable:false})
+    @Type(() => FaqTranslationCreateWithoutFaqInput)
+    create!: InstanceType<typeof FaqTranslationCreateWithoutFaqInput>;
+}
+
+@InputType()
+export class FaqTranslationCreateWithoutFaqInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    locale!: string;
+    @Field(() => String, {nullable:false})
+    question!: string;
+    @Field(() => String, {nullable:false})
+    answer!: string;
+}
+
+@InputType()
+export class FaqTranslationCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    locale!: string;
+    @Field(() => String, {nullable:false})
+    question!: string;
+    @Field(() => String, {nullable:false})
+    answer!: string;
+    @Field(() => FaqCreateNestedOneWithoutTranslationsInput, {nullable:false})
+    faq!: InstanceType<typeof FaqCreateNestedOneWithoutTranslationsInput>;
+}
+
+@InputType()
+export class FaqTranslationFaqIdLocaleCompoundUniqueInput {
+    @Field(() => String, {nullable:false})
+    faqId!: string;
+    @Field(() => String, {nullable:false})
+    locale!: string;
+}
+
+@ArgsType()
+export class FaqTranslationGroupByArgs {
+    @Field(() => FaqTranslationWhereInput, {nullable:true})
+    @Type(() => FaqTranslationWhereInput)
+    where?: InstanceType<typeof FaqTranslationWhereInput>;
+    @Field(() => [FaqTranslationOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<FaqTranslationOrderByWithAggregationInput>;
+    @Field(() => [FaqTranslationScalarFieldEnum], {nullable:false})
+    by!: Array<`${FaqTranslationScalarFieldEnum}`>;
+    @Field(() => FaqTranslationScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof FaqTranslationScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => FaqTranslationCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FaqTranslationCountAggregateInput>;
+    @Field(() => FaqTranslationMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FaqTranslationMinAggregateInput>;
+    @Field(() => FaqTranslationMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FaqTranslationMaxAggregateInput>;
+}
+
+@ObjectType()
+export class FaqTranslationGroupBy {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    faqId!: string;
+    @Field(() => String, {nullable:false})
+    locale!: string;
+    @Field(() => String, {nullable:false})
+    question!: string;
+    @Field(() => String, {nullable:false})
+    answer!: string;
+    @Field(() => FaqTranslationCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof FaqTranslationCountAggregate>;
+    @Field(() => FaqTranslationMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof FaqTranslationMinAggregate>;
+    @Field(() => FaqTranslationMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof FaqTranslationMaxAggregate>;
+}
+
+@InputType()
+export class FaqTranslationListRelationFilter {
+    @Field(() => FaqTranslationWhereInput, {nullable:true})
+    every?: InstanceType<typeof FaqTranslationWhereInput>;
+    @Field(() => FaqTranslationWhereInput, {nullable:true})
+    some?: InstanceType<typeof FaqTranslationWhereInput>;
+    @Field(() => FaqTranslationWhereInput, {nullable:true})
+    none?: InstanceType<typeof FaqTranslationWhereInput>;
+}
+
+@InputType()
+export class FaqTranslationMaxAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    faqId?: true;
+    @Field(() => Boolean, {nullable:true})
+    locale?: true;
+    @Field(() => Boolean, {nullable:true})
+    question?: true;
+    @Field(() => Boolean, {nullable:true})
+    answer?: true;
+}
+
+@ObjectType()
+export class FaqTranslationMaxAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    faqId?: string;
+    @Field(() => String, {nullable:true})
+    locale?: string;
+    @Field(() => String, {nullable:true})
+    question?: string;
+    @Field(() => String, {nullable:true})
+    answer?: string;
+}
+
+@InputType()
+export class FaqTranslationMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    faqId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    locale?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    question?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    answer?: `${SortOrder}`;
+}
+
+@InputType()
+export class FaqTranslationMinAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    faqId?: true;
+    @Field(() => Boolean, {nullable:true})
+    locale?: true;
+    @Field(() => Boolean, {nullable:true})
+    question?: true;
+    @Field(() => Boolean, {nullable:true})
+    answer?: true;
+}
+
+@ObjectType()
+export class FaqTranslationMinAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    faqId?: string;
+    @Field(() => String, {nullable:true})
+    locale?: string;
+    @Field(() => String, {nullable:true})
+    question?: string;
+    @Field(() => String, {nullable:true})
+    answer?: string;
+}
+
+@InputType()
+export class FaqTranslationMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    faqId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    locale?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    question?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    answer?: `${SortOrder}`;
+}
+
+@InputType()
+export class FaqTranslationOrderByRelationAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    _count?: `${SortOrder}`;
+}
+
+@InputType()
+export class FaqTranslationOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    faqId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    locale?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    question?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    answer?: `${SortOrder}`;
+    @Field(() => FaqTranslationCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FaqTranslationCountOrderByAggregateInput>;
+    @Field(() => FaqTranslationMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FaqTranslationMaxOrderByAggregateInput>;
+    @Field(() => FaqTranslationMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FaqTranslationMinOrderByAggregateInput>;
+}
+
+@InputType()
+export class FaqTranslationOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    faqId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    locale?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    question?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    answer?: `${SortOrder}`;
+    @Field(() => FaqOrderByWithRelationInput, {nullable:true})
+    faq?: InstanceType<typeof FaqOrderByWithRelationInput>;
+}
+
+@InputType()
+export class FaqTranslationScalarWhereWithAggregatesInput {
+    @Field(() => [FaqTranslationScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<FaqTranslationScalarWhereWithAggregatesInput>;
+    @Field(() => [FaqTranslationScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<FaqTranslationScalarWhereWithAggregatesInput>;
+    @Field(() => [FaqTranslationScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<FaqTranslationScalarWhereWithAggregatesInput>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    faqId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    locale?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    question?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    answer?: InstanceType<typeof StringWithAggregatesFilter>;
+}
+
+@InputType()
+export class FaqTranslationScalarWhereInput {
+    @Field(() => [FaqTranslationScalarWhereInput], {nullable:true})
+    AND?: Array<FaqTranslationScalarWhereInput>;
+    @Field(() => [FaqTranslationScalarWhereInput], {nullable:true})
+    OR?: Array<FaqTranslationScalarWhereInput>;
+    @Field(() => [FaqTranslationScalarWhereInput], {nullable:true})
+    NOT?: Array<FaqTranslationScalarWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    faqId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    locale?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    question?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    answer?: InstanceType<typeof StringFilter>;
+}
+
+@InputType()
+export class FaqTranslationUncheckedCreateNestedManyWithoutFaqInput {
+    @Field(() => [FaqTranslationCreateWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationCreateWithoutFaqInput)
+    create?: Array<FaqTranslationCreateWithoutFaqInput>;
+    @Field(() => [FaqTranslationCreateOrConnectWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationCreateOrConnectWithoutFaqInput)
+    connectOrCreate?: Array<FaqTranslationCreateOrConnectWithoutFaqInput>;
+    @Field(() => FaqTranslationCreateManyFaqInputEnvelope, {nullable:true})
+    @Type(() => FaqTranslationCreateManyFaqInputEnvelope)
+    createMany?: InstanceType<typeof FaqTranslationCreateManyFaqInputEnvelope>;
+    @Field(() => [FaqTranslationWhereUniqueInput], {nullable:true})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>>;
+}
+
+@InputType()
+export class FaqTranslationUncheckedCreateWithoutFaqInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    locale!: string;
+    @Field(() => String, {nullable:false})
+    question!: string;
+    @Field(() => String, {nullable:false})
+    answer!: string;
+}
+
+@InputType()
+export class FaqTranslationUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    faqId!: string;
+    @Field(() => String, {nullable:false})
+    locale!: string;
+    @Field(() => String, {nullable:false})
+    question!: string;
+    @Field(() => String, {nullable:false})
+    answer!: string;
+}
+
+@InputType()
+export class FaqTranslationUncheckedUpdateManyWithoutFaqNestedInput {
+    @Field(() => [FaqTranslationCreateWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationCreateWithoutFaqInput)
+    create?: Array<FaqTranslationCreateWithoutFaqInput>;
+    @Field(() => [FaqTranslationCreateOrConnectWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationCreateOrConnectWithoutFaqInput)
+    connectOrCreate?: Array<FaqTranslationCreateOrConnectWithoutFaqInput>;
+    @Field(() => [FaqTranslationUpsertWithWhereUniqueWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationUpsertWithWhereUniqueWithoutFaqInput)
+    upsert?: Array<FaqTranslationUpsertWithWhereUniqueWithoutFaqInput>;
+    @Field(() => FaqTranslationCreateManyFaqInputEnvelope, {nullable:true})
+    @Type(() => FaqTranslationCreateManyFaqInputEnvelope)
+    createMany?: InstanceType<typeof FaqTranslationCreateManyFaqInputEnvelope>;
+    @Field(() => [FaqTranslationWhereUniqueInput], {nullable:true})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>>;
+    @Field(() => [FaqTranslationWhereUniqueInput], {nullable:true})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>>;
+    @Field(() => [FaqTranslationWhereUniqueInput], {nullable:true})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>>;
+    @Field(() => [FaqTranslationWhereUniqueInput], {nullable:true})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>>;
+    @Field(() => [FaqTranslationUpdateWithWhereUniqueWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationUpdateWithWhereUniqueWithoutFaqInput)
+    update?: Array<FaqTranslationUpdateWithWhereUniqueWithoutFaqInput>;
+    @Field(() => [FaqTranslationUpdateManyWithWhereWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationUpdateManyWithWhereWithoutFaqInput)
+    updateMany?: Array<FaqTranslationUpdateManyWithWhereWithoutFaqInput>;
+    @Field(() => [FaqTranslationScalarWhereInput], {nullable:true})
+    @Type(() => FaqTranslationScalarWhereInput)
+    deleteMany?: Array<FaqTranslationScalarWhereInput>;
+}
+
+@InputType()
+export class FaqTranslationUncheckedUpdateManyWithoutFaqInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    locale?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    question?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    answer?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FaqTranslationUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    faqId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    locale?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    question?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    answer?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FaqTranslationUncheckedUpdateWithoutFaqInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    locale?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    question?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    answer?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FaqTranslationUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    faqId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    locale?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    question?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    answer?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FaqTranslationUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    locale?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    question?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    answer?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FaqTranslationUpdateManyWithWhereWithoutFaqInput {
+    @Field(() => FaqTranslationScalarWhereInput, {nullable:false})
+    @Type(() => FaqTranslationScalarWhereInput)
+    where!: InstanceType<typeof FaqTranslationScalarWhereInput>;
+    @Field(() => FaqTranslationUpdateManyMutationInput, {nullable:false})
+    @Type(() => FaqTranslationUpdateManyMutationInput)
+    data!: InstanceType<typeof FaqTranslationUpdateManyMutationInput>;
+}
+
+@InputType()
+export class FaqTranslationUpdateManyWithoutFaqNestedInput {
+    @Field(() => [FaqTranslationCreateWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationCreateWithoutFaqInput)
+    create?: Array<FaqTranslationCreateWithoutFaqInput>;
+    @Field(() => [FaqTranslationCreateOrConnectWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationCreateOrConnectWithoutFaqInput)
+    connectOrCreate?: Array<FaqTranslationCreateOrConnectWithoutFaqInput>;
+    @Field(() => [FaqTranslationUpsertWithWhereUniqueWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationUpsertWithWhereUniqueWithoutFaqInput)
+    upsert?: Array<FaqTranslationUpsertWithWhereUniqueWithoutFaqInput>;
+    @Field(() => FaqTranslationCreateManyFaqInputEnvelope, {nullable:true})
+    @Type(() => FaqTranslationCreateManyFaqInputEnvelope)
+    createMany?: InstanceType<typeof FaqTranslationCreateManyFaqInputEnvelope>;
+    @Field(() => [FaqTranslationWhereUniqueInput], {nullable:true})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>>;
+    @Field(() => [FaqTranslationWhereUniqueInput], {nullable:true})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>>;
+    @Field(() => [FaqTranslationWhereUniqueInput], {nullable:true})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>>;
+    @Field(() => [FaqTranslationWhereUniqueInput], {nullable:true})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>>;
+    @Field(() => [FaqTranslationUpdateWithWhereUniqueWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationUpdateWithWhereUniqueWithoutFaqInput)
+    update?: Array<FaqTranslationUpdateWithWhereUniqueWithoutFaqInput>;
+    @Field(() => [FaqTranslationUpdateManyWithWhereWithoutFaqInput], {nullable:true})
+    @Type(() => FaqTranslationUpdateManyWithWhereWithoutFaqInput)
+    updateMany?: Array<FaqTranslationUpdateManyWithWhereWithoutFaqInput>;
+    @Field(() => [FaqTranslationScalarWhereInput], {nullable:true})
+    @Type(() => FaqTranslationScalarWhereInput)
+    deleteMany?: Array<FaqTranslationScalarWhereInput>;
+}
+
+@InputType()
+export class FaqTranslationUpdateWithWhereUniqueWithoutFaqInput {
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:false})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+    @Field(() => FaqTranslationUpdateWithoutFaqInput, {nullable:false})
+    @Type(() => FaqTranslationUpdateWithoutFaqInput)
+    data!: InstanceType<typeof FaqTranslationUpdateWithoutFaqInput>;
+}
+
+@InputType()
+export class FaqTranslationUpdateWithoutFaqInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    locale?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    question?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    answer?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FaqTranslationUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    locale?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    question?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    answer?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => FaqUpdateOneRequiredWithoutTranslationsNestedInput, {nullable:true})
+    faq?: InstanceType<typeof FaqUpdateOneRequiredWithoutTranslationsNestedInput>;
+}
+
+@InputType()
+export class FaqTranslationUpsertWithWhereUniqueWithoutFaqInput {
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:false})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+    @Field(() => FaqTranslationUpdateWithoutFaqInput, {nullable:false})
+    @Type(() => FaqTranslationUpdateWithoutFaqInput)
+    update!: InstanceType<typeof FaqTranslationUpdateWithoutFaqInput>;
+    @Field(() => FaqTranslationCreateWithoutFaqInput, {nullable:false})
+    @Type(() => FaqTranslationCreateWithoutFaqInput)
+    create!: InstanceType<typeof FaqTranslationCreateWithoutFaqInput>;
+}
+
+@InputType()
+export class FaqTranslationWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => FaqTranslationFaqIdLocaleCompoundUniqueInput, {nullable:true})
+    faqId_locale?: InstanceType<typeof FaqTranslationFaqIdLocaleCompoundUniqueInput>;
+    @Field(() => [FaqTranslationWhereInput], {nullable:true})
+    AND?: Array<FaqTranslationWhereInput>;
+    @Field(() => [FaqTranslationWhereInput], {nullable:true})
+    OR?: Array<FaqTranslationWhereInput>;
+    @Field(() => [FaqTranslationWhereInput], {nullable:true})
+    NOT?: Array<FaqTranslationWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    faqId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    locale?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    question?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    answer?: InstanceType<typeof StringFilter>;
+    @Field(() => FaqScalarRelationFilter, {nullable:true})
+    faq?: InstanceType<typeof FaqScalarRelationFilter>;
+}
+
+@InputType()
+export class FaqTranslationWhereInput {
+    @Field(() => [FaqTranslationWhereInput], {nullable:true})
+    AND?: Array<FaqTranslationWhereInput>;
+    @Field(() => [FaqTranslationWhereInput], {nullable:true})
+    OR?: Array<FaqTranslationWhereInput>;
+    @Field(() => [FaqTranslationWhereInput], {nullable:true})
+    NOT?: Array<FaqTranslationWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    faqId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    locale?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    question?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    answer?: InstanceType<typeof StringFilter>;
+    @Field(() => FaqScalarRelationFilter, {nullable:true})
+    faq?: InstanceType<typeof FaqScalarRelationFilter>;
+}
+
+@ObjectType()
+export class FaqTranslation {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    faqId!: string;
+    @Field(() => String, {nullable:false})
+    locale!: string;
+    @Field(() => String, {nullable:false})
+    question!: string;
+    @Field(() => String, {nullable:false})
+    answer!: string;
+    @Field(() => Faq, {nullable:false})
+    faq?: InstanceType<typeof Faq>;
+}
+
+@ArgsType()
+export class FindFirstFaqTranslationOrThrowArgs {
+    @Field(() => FaqTranslationWhereInput, {nullable:true})
+    @Type(() => FaqTranslationWhereInput)
+    where?: InstanceType<typeof FaqTranslationWhereInput>;
+    @Field(() => [FaqTranslationOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FaqTranslationOrderByWithRelationInput>;
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FaqTranslationScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${FaqTranslationScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstFaqTranslationArgs {
+    @Field(() => FaqTranslationWhereInput, {nullable:true})
+    @Type(() => FaqTranslationWhereInput)
+    where?: InstanceType<typeof FaqTranslationWhereInput>;
+    @Field(() => [FaqTranslationOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FaqTranslationOrderByWithRelationInput>;
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FaqTranslationScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${FaqTranslationScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManyFaqTranslationArgs {
+    @Field(() => FaqTranslationWhereInput, {nullable:true})
+    @Type(() => FaqTranslationWhereInput)
+    where?: InstanceType<typeof FaqTranslationWhereInput>;
+    @Field(() => [FaqTranslationOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FaqTranslationOrderByWithRelationInput>;
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FaqTranslationScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${FaqTranslationScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueFaqTranslationOrThrowArgs {
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:false})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+}
+
+@ArgsType()
+export class FindUniqueFaqTranslationArgs {
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:false})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+}
+
+@ArgsType()
+export class UpdateManyFaqTranslationArgs {
+    @Field(() => FaqTranslationUpdateManyMutationInput, {nullable:false})
+    @Type(() => FaqTranslationUpdateManyMutationInput)
+    data!: InstanceType<typeof FaqTranslationUpdateManyMutationInput>;
+    @Field(() => FaqTranslationWhereInput, {nullable:true})
+    @Type(() => FaqTranslationWhereInput)
+    where?: InstanceType<typeof FaqTranslationWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class UpdateOneFaqTranslationArgs {
+    @Field(() => FaqTranslationUpdateInput, {nullable:false})
+    @Type(() => FaqTranslationUpdateInput)
+    data!: InstanceType<typeof FaqTranslationUpdateInput>;
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:false})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+}
+
+@ArgsType()
+export class UpsertOneFaqTranslationArgs {
+    @Field(() => FaqTranslationWhereUniqueInput, {nullable:false})
+    @Type(() => FaqTranslationWhereUniqueInput)
+    where!: Prisma.AtLeast<FaqTranslationWhereUniqueInput, 'id' | 'faqId_locale'>;
+    @Field(() => FaqTranslationCreateInput, {nullable:false})
+    @Type(() => FaqTranslationCreateInput)
+    create!: InstanceType<typeof FaqTranslationCreateInput>;
+    @Field(() => FaqTranslationUpdateInput, {nullable:false})
+    @Type(() => FaqTranslationUpdateInput)
+    update!: InstanceType<typeof FaqTranslationUpdateInput>;
 }
 
 @ObjectType()
