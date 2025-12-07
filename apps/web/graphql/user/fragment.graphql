@@ -40,7 +40,9 @@ fragment userFragment on User {
       type
       meta
       name
+      originalName
     }
+    documentType
   }
   Role {
     id

@@ -56,13 +56,13 @@ function LeftSidebarMenu({ menuItems }: LeftSidebarMenuProps) {
     (href: string) => {
       const removeLocaleLocation = removeLocale(location);
       const removeLocaleHref = removeLocale(href);
-      return removeLocaleHref && removeLocaleLocation.includes(removeLocaleHref);
+      return !!removeLocaleHref && removeLocaleLocation.includes(removeLocaleHref);
     },
     [location],
   );
 
   return (
-    <div className="w-16 h-auto z-100 ml-5 mt-3">
+    <div className="w-16 h-auto ml-5 mt-3">
       <div className="w-16 h-16 mb-5 flex justify-center items-center rounded-full border-2 border-pink-600">
         <div
           className="text-white flex justify-center items-center w-14 h-14 rounded-full"

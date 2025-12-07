@@ -99,7 +99,6 @@ export const useIdentityUploadAction = () => {
         variables: {
           files: fileMetas.map(fm => ({
             originalName: fm.originalName,
-            size: fm.size,
             contentType: fm.contentType,
           })),
           type: FileType.USER,
@@ -150,7 +149,7 @@ export const useIdentityUploadAction = () => {
       }
 
       toast.success('Documents uploadés et liés avec succès');
-      router.push('/vehiculeInfo');
+      router.push('/driver/register/vehiculeInfo');
     } catch (error) {
       console.error('Erreur lors du processus:', error);
       toast.error(
