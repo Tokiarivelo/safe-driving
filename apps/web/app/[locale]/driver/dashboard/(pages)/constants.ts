@@ -42,6 +42,11 @@ export const DRIVER_MENUES: MenuItemProps[] = [
     icon: 'mdi:account',
   },
   {
+    name: 'Paramètres',
+    href: '/driver/dashboard/settings',
+    icon: 'mdi:cog',
+  },
+  {
     name: 'Assistance',
     href: '/driver/dashboard/support',
     icon: 'flat-color-icons:online-support',
