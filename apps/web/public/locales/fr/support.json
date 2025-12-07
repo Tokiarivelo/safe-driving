@@ -1,0 +1,80 @@
+{
+  "assistance": "Assistance",
+  "faq": "FAQ",
+  "tabs": {
+    "faq": "FAQ",
+    "contact": "Nous contacter",
+    "tutorials": "Tutoriels & Vidéos",
+    "feedback": "Feedback & Suggestions"
+  },
+  "faqSection": {
+    "title": "Questions Fréquentes",
+    "searchPlaceholder": "Rechercher",
+    "questions": {
+      "reserveCourse": {
+        "question": "Comment réserver une course ?",
+        "answer": "Ouvre l'app, saisis ta destination, choisis ton type de véhicule, puis confirme la réservation."
+      },
+      "cancelCourse": {
+        "question": "Comment annuler une course ?",
+        "answer": "Depuis l'écran de suivi de course, appuie sur « Annuler la course ». Des frais peuvent s'appliquer selon le délai."
+      },
+      "paymentMethods": {
+        "question": "Quels modes de paiement sont disponibles ?",
+        "answer": "Nous acceptons les cartes bancaires, les portefeuilles mobiles et les paiements en espèces."
+      },
+      "shareTrip": {
+        "question": "Comment puis-je partager mon trajet avec un proche ?",
+        "answer": "Utilise la fonction de partage de trajet dans l'écran de course en cours pour envoyer ta position en temps réel."
+      },
+      "lateDriver": {
+        "question": "Que faire si le chauffeur est en retard ?",
+        "answer": "Tu peux contacter directement le chauffeur via l'app ou annuler la course si le délai dépasse 10 minutes."
+      }
+    }
+  },
+  "contactSection": {
+    "title": "Nous contacter",
+    "options": {
+      "email": {
+        "title": "Envoyer un mail",
+        "description": "Contactez-nous par email"
+      },
+      "chat": {
+        "title": "Discuter directement",
+        "description": "Chat en direct avec notre équipe"
+      },
+      "phone": {
+        "title": "Téléphoner",
+        "description": "Appelez notre support"
+      },
+      "facebook": {
+        "title": "Contacter via facebook",
+        "description": "Suivez-nous sur Facebook"
+      },
+      "linkedin": {
+        "title": "Contacter via linkedin",
+        "description": "Rejoignez-nous sur LinkedIn"
+      }
+    }
+  },
+  "tutorialsSection": {
+    "title": "Tutoriels & Vidéos",
+    "comingSoon": "Contenu à venir...",
+    "description": "Des tutoriels et vidéos pour vous aider à mieux utiliser l'application seront bientôt disponibles."
+  },
+  "feedbackSection": {
+    "title": "Ecrivez vos feedbacks et suggestions",
+    "subtitle": "Comment était votre expérience sur l'application ?",
+    "descriptionPlaceholder": "Descriptions",
+    "categories": {
+      "feedback": "Feedback",
+      "suggestion": "Suggestion",
+      "other": "Autre"
+    },
+    "otherPlaceholder": "Autre",
+    "submitButton": "Envoyer",
+    "successMessage": "Merci pour votre retour !",
+    "errorMessage": "Erreur lors de l'envoi du feedback"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "assistance": "Assistance",
+  "faq": "FAQ",
+  "tabs": {
+    "faq": "FAQ",
+    "contact": "Contact Us",
+    "tutorials": "Tutorials & Videos",
+    "feedback": "Feedback & Suggestions"
+  },
+  "faqSection": {
+    "title": "Frequently Asked Questions",
+    "searchPlaceholder": "Search",
+    "questions": {
+      "reserveCourse": {
+        "question": "How to book a ride?",
+        "answer": "Open the app, enter your destination, choose your vehicle type, then confirm the booking."
+      },
+      "cancelCourse": {
+        "question": "How to cancel a ride?",
+        "answer": "From the ride tracking screen, tap 'Cancel ride'. Fees may apply depending on the delay."
+      },
+      "paymentMethods": {
+        "question": "What payment methods are available?",
+        "answer": "We accept credit cards, mobile wallets, and cash payments."
+      },
+      "shareTrip": {
+        "question": "How can I share my trip with someone?",
+        "answer": "Use the trip sharing feature in the ongoing ride screen to send your real-time location."
+      },
+      "lateDriver": {
+        "question": "What to do if the driver is late?",
+        "answer": "You can contact the driver directly via the app or cancel the ride if the delay exceeds 10 minutes."
+      }
+    }
+  },
+  "contactSection": {
+    "title": "Contact Us",
+    "options": {
+      "email": {
+        "title": "Send an email",
+        "description": "Contact us by email"
+      },
+      "chat": {
+        "title": "Chat directly",
+        "description": "Live chat with our team"
+      },
+      "phone": {
+        "title": "Call",
+        "description": "Call our support"
+      },
+      "facebook": {
+        "title": "Contact via Facebook",
+        "description": "Follow us on Facebook"
+      },
+      "linkedin": {
+        "title": "Contact via LinkedIn",
+        "description": "Join us on LinkedIn"
+      }
+    }
+  },
+  "tutorialsSection": {
+    "title": "Tutorials & Videos",
+    "comingSoon": "Coming soon...",
+    "description": "Tutorials and videos to help you better use the application will be available soon."
+  },
+  "feedbackSection": {
+    "title": "Write your feedbacks and suggestions",
+    "subtitle": "How was your experience on the application?",
+    "descriptionPlaceholder": "Description",
+    "categories": {
+      "feedback": "Feedback",
+      "suggestion": "Suggestion",
+      "other": "Other"
+    },
+    "otherPlaceholder": "Other",
+    "submitButton": "Send",
+    "successMessage": "Thank you for your feedback!",
+    "errorMessage": "Error sending feedback"
+  }
+}
