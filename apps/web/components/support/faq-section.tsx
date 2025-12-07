@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { useGetFaqsQuery } from '@/graphql/generated/graphql';
@@ -9,6 +9,13 @@ interface FaqItem {
   id: string;
   question: string;
   answer: string;
+}
+
+// Utility function for filtering FAQs
+function filterFaqs<T extends { question: string }>(items: T[], searchQuery: string): T[] {
+  if (!searchQuery.trim()) return items;
+  const query = searchQuery.toLowerCase();
+  return items.filter((item) => item.question.toLowerCase().includes(query));
 }
 
 export default function FaqSection() {
@@ -24,15 +31,20 @@ export default function FaqSection() {
   });
 
   // Map GraphQL data to FAQ items
-  const faqItems: FaqItem[] =
-    data?.faqs?.map((faq) => ({
-      id: faq.id,
-      question: faq.translations?.[0]?.question || '',
-      answer: faq.translations?.[0]?.answer || '',
-    })) || [];
+  const faqItems: FaqItem[] = useMemo(
+    () =>
+      data?.faqs?.map((faq) => ({
+        id: faq.id,
+        question: faq.translations?.[0]?.question || '',
+        answer: faq.translations?.[0]?.answer || '',
+      })) || [],
+    [data]
+  );
 
-  const filteredFaqs = faqItems.filter((item) =>
-    item.question.toLowerCase().includes(searchQuery.toLowerCase())
+  // Memoize filtered FAQs
+  const filteredFaqs = useMemo(
+    () => filterFaqs(faqItems, searchQuery),
+    [faqItems, searchQuery]
   );
 
   const toggleExpand = (index: number) => {
@@ -121,31 +133,38 @@ function FaqSectionFallback() {
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
-  const faqItems: Omit<FaqItem, 'id'>[] = [
+  const faqItems: Array<Omit<FaqItem, 'id'> & { key: string }> = [
     {
+      key: 'reserve-course',
       question: t('faqSection.questions.reserveCourse.question'),
       answer: t('faqSection.questions.reserveCourse.answer'),
     },
     {
+      key: 'cancel-course',
       question: t('faqSection.questions.cancelCourse.question'),
       answer: t('faqSection.questions.cancelCourse.answer'),
     },
     {
+      key: 'payment-methods',
       question: t('faqSection.questions.paymentMethods.question'),
       answer: t('faqSection.questions.paymentMethods.answer'),
     },
     {
+      key: 'share-trip',
       question: t('faqSection.questions.shareTrip.question'),
       answer: t('faqSection.questions.shareTrip.answer'),
     },
     {
+      key: 'late-driver',
       question: t('faqSection.questions.lateDriver.question'),
       answer: t('faqSection.questions.lateDriver.answer'),
     },
   ];
 
-  const filteredFaqs = faqItems.filter((item) =>
-    item.question.toLowerCase().includes(searchQuery.toLowerCase())
+  // Reuse filtering utility
+  const filteredFaqs = useMemo(
+    () => filterFaqs(faqItems, searchQuery),
+    [faqItems, searchQuery]
   );
 
   const toggleExpand = (index: number) => {
@@ -179,7 +198,7 @@ function FaqSectionFallback() {
       <div className="space-y-4">
         {filteredFaqs.map((item, index) => (
           <div
-            key={index}
+            key={item.key}
             className="border border-gray-200 rounded-lg overflow-hidden shadow-sm"
           >
             <button

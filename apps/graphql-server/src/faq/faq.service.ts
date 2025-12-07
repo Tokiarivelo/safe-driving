@@ -2,6 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma-module/prisma.service';
 import { Faq } from '@prisma/client';
 
+const DEFAULT_LOCALE = 'fr';
+
 @Injectable()
 export class FaqService {
   private readonly logger = new Logger(FaqService.name);
@@ -10,16 +12,16 @@ export class FaqService {
 
   /**
    * Get all active FAQs with translations for a specific locale
-   * Falls back to 'fr' if locale not found
+   * Falls back to DEFAULT_LOCALE if locale not found
    */
-  async getFaqsByLocale(locale: string = 'fr'): Promise<Faq[]> {
+  async getFaqsByLocale(locale: string = DEFAULT_LOCALE): Promise<Faq[]> {
     const faqs = await this.prisma.faq.findMany({
       where: { isActive: true },
       include: {
         translations: {
           where: {
             locale: {
-              in: [locale, 'fr'], // Always include French as fallback
+              in: [locale, DEFAULT_LOCALE], // Always include default locale as fallback
             },
           },
         },
@@ -27,12 +29,12 @@ export class FaqService {
       orderBy: { order: 'asc' },
     });
 
-    // Map to prefer requested locale, fall back to French
+    // Map to prefer requested locale, fall back to default locale
     return faqs.map((faq) => {
       const preferredTranslation = faq.translations.find(
         (t) => t.locale === locale,
       );
-      const fallbackTranslation = faq.translations.find((t) => t.locale === 'fr');
+      const fallbackTranslation = faq.translations.find((t) => t.locale === DEFAULT_LOCALE);
       const translation = preferredTranslation || fallbackTranslation;
 
       return {
