@@ -1,0 +1,7 @@
+fragment FaqFields on Faq {
+  id
+  order
+  isActive
+  createdAt
+  updatedAt
+}

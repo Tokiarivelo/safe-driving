@@ -1,0 +1,8 @@
+query GetFaqs($locale: String) {
+  faqs(locale: $locale) {
+    ...FaqFields
+    translations {
+      ...FaqTranslationFields
+    }
+  }
+}

@@ -5,7 +5,7 @@ This document describes the implementation of the Help Center + FAQ feature as r
 ## Overview
 
 The support center provides a comprehensive help and assistance interface for both users and drivers, featuring:
-- FAQ (Frequently Asked Questions)
+- FAQ (Frequently Asked Questions) **with multilingual support from GraphQL backend**
 - Contact options (Email, Chat, Phone, Facebook, LinkedIn)
 - Tutorials & Videos section (placeholder for future content)
 - Feedback & Suggestions form
@@ -15,31 +15,56 @@ The support center provides a comprehensive help and assistance interface for bo
 ### File Structure
 
 ```
-apps/web/
-├── app/[locale]/
-│   ├── user/dashboard/(pages)/support/
-│   │   └── page.tsx                          # User support page
-│   └── driver/dashboard/(pages)/support/
-│       └── page.tsx                          # Driver support page
-├── components/support/
-│   ├── index.ts                              # Exports all support components
-│   ├── support-component.tsx                 # Main support component with tab navigation
-│   ├── faq-section.tsx                       # FAQ with expandable questions
-│   ├── contact-section.tsx                   # Contact options grid
-│   ├── tutorials-section.tsx                 # Tutorials placeholder
-│   └── feedback-section.tsx                  # Feedback form with rating
-└── public/locales/
-    ├── fr/support.json                       # French translations
-    └── en/support.json                       # English translations
+apps/
+├── graphql-server/
+│   ├── prisma/
+│   │   ├── schema.prisma                         # Added Faq and FaqTranslation models
+│   │   └── migrations/
+│   │       └── *_add_faq_with_multilingual_support/
+│   │           └── migration.sql                 # Database migration for FAQ tables
+│   └── src/
+│       ├── faq/
+│       │   ├── faq.module.ts                     # FAQ NestJS module
+│       │   ├── faq.service.ts                    # FAQ business logic & database queries
+│       │   └── faq.resolver.ts                   # GraphQL resolver for FAQs
+│       ├── seed/
+│       │   └── seed.service.ts                   # Updated to include FAQ seeding
+│       └── app/
+│           └── app.module.ts                     # Registered FaqModule
+└── web/
+    ├── app/[locale]/
+    │   ├── user/dashboard/(pages)/support/
+    │   │   └── page.tsx                          # User support page
+    │   └── driver/dashboard/(pages)/support/
+    │       └── page.tsx                          # Driver support page
+    ├── components/support/
+    │   ├── index.ts                              # Exports all support components
+    │   ├── support-component.tsx                 # Main support component with tab navigation
+    │   ├── faq-section.tsx                       # FAQ with GraphQL integration
+    │   ├── contact-section.tsx                   # Contact options grid
+    │   ├── tutorials-section.tsx                 # Tutorials placeholder
+    │   └── feedback-section.tsx                  # Feedback form with rating
+    ├── graphql/faq/
+    │   ├── fragment.graphql                      # FAQ GraphQL fragment
+    │   ├── translation-fragment.graphql          # FaqTranslation fragment
+    │   └── queries.graphql                       # GetFaqs query
+    └── public/locales/
+        ├── fr/support.json                       # French translations (fallback)
+        └── en/support.json                       # English translations (fallback)
 ```
 
 ### Features
 
-#### 1. FAQ Section
+#### 1. FAQ Section (Multilingual with GraphQL Backend)
+- **Backend-driven content**: FAQ data is now stored in PostgreSQL database
+- **Multilingual support**: Each FAQ can have translations in multiple languages (fr, en, etc.)
+- **GraphQL API**: Frontend fetches FAQs via `GetFaqs` query with locale parameter
+- **Automatic fallback**: If requested locale not available, falls back to French
+- **Graceful degradation**: Falls back to translation files if API fails
 - **Searchable FAQ**: Users can search through frequently asked questions
 - **Expandable Answers**: Questions expand/collapse on click to show answers
 - **Default expanded**: First question is expanded by default
-- **Questions included**:
+- **Seeded questions**:
   - How to book a ride
   - How to cancel a ride
   - Payment methods available
@@ -145,10 +170,103 @@ Users and drivers can access the support center by:
 4. Contacting support through multiple channels
 5. Providing feedback and suggestions
 
+## Database Schema
+
+### Faq Table
+```prisma
+model Faq {
+  id        String   @id @default(uuid())
+  order     Int      @default(0)  // Display order
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  translations FaqTranslation[]
+}
+```
+
+### FaqTranslation Table
+```prisma
+model FaqTranslation {
+  id       String @id @default(uuid())
+  faqId    String
+  locale   String  // e.g., 'fr', 'en', 'mg'
+  question String
+  answer   String @db.Text
+  faq      Faq @relation(fields: [faqId], references: [id], onDelete: Cascade)
+  
+  @@unique([faqId, locale])
+}
+```
+
+## GraphQL API
+
+### Query: Get FAQs
+```graphql
+query GetFaqs($locale: String) {
+  faqs(locale: $locale) {
+    id
+    order
+    isActive
+    createdAt
+    updatedAt
+    translations {
+      id
+      locale
+      question
+      answer
+    }
+  }
+}
+```
+
+### Example Usage
+```typescript
+const { data } = useGetFaqsQuery({
+  variables: { locale: 'fr' }  // or 'en'
+});
+```
+
+## Seeding FAQs
+
+FAQs are automatically seeded when the application starts via `SeedService.seedFaqs()`. To manually seed:
+
+```bash
+cd apps/graphql-server
+pnpm seed
+```
+
+## Adding New FAQs
+
+### Via Database
+```typescript
+await prisma.faq.create({
+  data: {
+    order: 6,
+    isActive: true,
+    translations: {
+      create: [
+        {
+          locale: 'fr',
+          question: 'Nouvelle question?',
+          answer: 'Nouvelle réponse',
+        },
+        {
+          locale: 'en',
+          question: 'New question?',
+          answer: 'New answer',
+        },
+      ],
+    },
+  },
+});
+```
+
 ## Future Enhancements
 
+- Add admin interface for managing FAQs
 - Add actual backend integration for feedback submission
 - Populate tutorials section with video content
 - Add more FAQ questions based on user feedback
 - Integrate live chat functionality
 - Add analytics to track most viewed FAQs
+- Support additional languages (e.g., Malagasy)

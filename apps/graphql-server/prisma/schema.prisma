@@ -589,3 +589,30 @@ model Notification {
   @@index([userId, read])
   @@index([type])
 }
+
+// FAQ Support Model with multilingual support
+model Faq {
+  id        String   @id @default(uuid())
+  order     Int      @default(0) // Display order
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  translations FaqTranslation[]
+
+  @@index([isActive, order])
+}
+
+model FaqTranslation {
+  id       String @id @default(uuid())
+  faqId    String
+  locale   String // e.g., 'fr', 'en', 'mg'
+  question String
+  answer   String @db.Text
+
+  faq Faq @relation(fields: [faqId], references: [id], onDelete: Cascade)
+
+  @@unique([faqId, locale])
+  @@index([locale])
+}
