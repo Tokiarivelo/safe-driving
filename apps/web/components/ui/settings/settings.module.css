@@ -294,7 +294,7 @@
   min-width: fit-content;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .container {
     padding: 1rem;
   }

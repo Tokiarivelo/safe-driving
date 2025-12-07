@@ -86,6 +86,14 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Check if password change is requested
+    if (newPassword || confirmPassword || oldPassword) {
+      toast.warning('La modification du mot de passe nécessite une mutation GraphQL supplémentaire (à implémenter)');
+      // TODO: Implement password change mutation when backend supports it
+      // Should validate: oldPassword matches, newPassword === confirmPassword, password strength
+      return;
+    }
+    
     try {
       await updateUser({
         variables: {
@@ -110,8 +118,9 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
   const handleVehicleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Vehicle update logic would go here
-    toast.success('Véhicule mis à jour avec succès');
+    // TODO: Implement vehicle update mutation when backend is ready
+    // For now, just show a warning that this functionality is not yet implemented
+    toast.info('La mise à jour du véhicule sera disponible prochainement');
   };
 
   const handlePreferencesSubmit = async (e: React.FormEvent) => {
@@ -327,7 +336,7 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
 
         <div className={styles.formGroup}>
           <textarea
-            placeholder="Autre descriptions"
+            placeholder="Autres descriptions"
             value={otherDescriptions}
             onChange={(e) => setOtherDescriptions(e.target.value)}
             className={styles.textarea}
