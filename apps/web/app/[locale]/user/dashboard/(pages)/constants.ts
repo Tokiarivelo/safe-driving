@@ -42,6 +42,11 @@ export const USER_MENUES: MenuItemProps[] = [
     icon: 'mdi:account',
   },
   {
+    name: 'Paramètres',
+    href: '/user/dashboard/settings',
+    icon: 'mdi:cog',
+  },
+  {
     name: 'Assistance',
     href: '/user/dashboard/support',
     icon: 'flat-color-icons:online-support',
