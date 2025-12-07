@@ -1,6 +1,13 @@
 'use client';
 import { useVehicleInfoAction } from './useAction';
-import { Form, FormField } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -25,8 +32,16 @@ interface VehicleInfoFormProps {
 
 export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
   const { t } = useTranslation(['registerDriver/step4']);
-  const { form, handleSubmit, isSubmitting, vehicleTypes, loadingTypes } =
+  const { form, handleSubmit, isSubmitting, vehicleTypes, loadingTypes, loadingVehicle } =
     useVehicleInfoAction(initialData);
+
+  if (loadingVehicle) {
+    return (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full px-4 py-8">
@@ -38,16 +53,18 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
 
         <div className={styles.formContainer}>
           <Form {...form}>
-            <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
+            <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
               <FormField
                 control={form.control}
                 name="brand"
                 render={({ field }) => (
-                  <Input
-                    label={t('form.brand.label')}
-                    placeholder={t('form.brand.placeholder')}
-                    {...field}
-                  />
+                  <FormItem className="text-left">
+                    <FormLabel>{t('form.brand.label')}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t('form.brand.placeholder')} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
               />
 
@@ -55,11 +72,13 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                 control={form.control}
                 name="model"
                 render={({ field }) => (
-                  <Input
-                    label={t('form.model.label')}
-                    placeholder={t('form.model.placeholder')}
-                    {...field}
-                  />
+                  <FormItem className="text-left">
+                    <FormLabel>{t('form.model.label')}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t('form.model.placeholder')} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
               />
 
@@ -67,11 +86,13 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                 control={form.control}
                 name="plate"
                 render={({ field }) => (
-                  <Input
-                    label={t('form.plate.label')}
-                    placeholder={t('form.plate.placeholder')}
-                    {...field}
-                  />
+                  <FormItem className="text-left">
+                    <FormLabel>{t('form.plate.label')}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t('form.plate.placeholder')} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
               />
 
@@ -79,13 +100,18 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                 control={form.control}
                 name="seats"
                 render={({ field }) => (
-                  <Input
-                    label={t('form.seats.label')}
-                    placeholder={t('form.seats.placeholder')}
-                    type="number"
-                    {...field}
-                    onChange={e => field.onChange(parseInt(e.target.value) || 0)}
-                  />
+                  <FormItem className="text-left">
+                    <FormLabel>{t('form.seats.label')}</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={t('form.seats.placeholder')}
+                        type="number"
+                        {...field}
+                        onChange={e => field.onChange(parseInt(e.target.value) || 0)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
               />
 
@@ -93,18 +119,18 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                 control={form.control}
                 name="type"
                 render={({ field }) => (
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {t('form.type.label')}
-                    </label>
+                  <FormItem className="text-left">
+                    <FormLabel>{t('form.type.label')}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       value={field.value}
                     >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder={t('form.type.placeholder')} />
-                      </SelectTrigger>
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder={t('form.type.placeholder')} />
+                        </SelectTrigger>
+                      </FormControl>
                       <SelectContent>
                         {loadingTypes ? (
                           <SelectItem value="loading" disabled>
@@ -123,7 +149,8 @@ export const VehicleInfoForm = ({ initialData }: VehicleInfoFormProps) => {
                         )}
                       </SelectContent>
                     </Select>
-                  </div>
+                    <FormMessage />
+                  </FormItem>
                 )}
               />
 

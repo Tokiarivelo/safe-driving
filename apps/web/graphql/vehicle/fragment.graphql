@@ -25,6 +25,7 @@ fragment driverVehicleFragment on DriverVehicle {
   }
   VehicleDocument {
     id
+    documentType
     file {
       id
       key

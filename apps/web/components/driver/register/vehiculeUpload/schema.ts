@@ -20,9 +20,9 @@ const fileSchema = z
   });
 
 export const vehicleDocumentsSchema = z.object({
-  registrationFiles: z.array(fileSchema).min(1, 'Le certificat est requis'),
-  insuranceFiles: z.array(fileSchema).min(1, "L'attestation est requise"),
-  vehiclePhotos: z.array(fileSchema).min(3, 'Minimum 3 photos requises'),
+  registrationFiles: z.array(fileSchema).optional(),
+  insuranceFiles: z.array(fileSchema).optional(),
+  vehiclePhotos: z.array(fileSchema).optional(),
 });
 
 export type VehicleDocumentsFormValues = z.infer<typeof vehicleDocumentsSchema>;

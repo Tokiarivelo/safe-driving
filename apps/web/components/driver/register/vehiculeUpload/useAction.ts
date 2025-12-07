@@ -10,6 +10,7 @@ import {
   FileType,
   VehicleDocumentType,
   useUpdateDriverVehicleMutation,
+  useGetVehiclesQuery,
 } from '@/graphql/generated/graphql';
 import { uploadMultipleWithLimit } from '@/components/ui/upload/upload-component.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,6 +21,10 @@ type UseVehicleDocumentsActionReturn = {
   handleSubmit: ReturnType<UseFormReturn<VehicleDocumentsFormValues>['handleSubmit']>;
   isSubmitting: boolean;
   vehicleId: string | null;
+  initialRegistrationFiles: { url: string; name: string; key?: string }[];
+  initialInsuranceFiles: { url: string; name: string; key?: string }[];
+  initialVehiclePhotos: { url: string; name: string; key?: string }[];
+  loadingVehicle: boolean;
 };
 
 export const useVehicleDocumentsAction = (
@@ -35,6 +40,67 @@ export const useVehicleDocumentsAction = (
 
   // Récupérer le vehicleId depuis les paramètres d'URL ou le localStorage
   const vehicleId = searchParams.get('vehicleId') || localStorage.getItem('currentVehicleId');
+
+  const { data: vehicleDataRes, loading: loadingVehicle } = useGetVehiclesQuery({
+    fetchPolicy: 'cache-and-network',
+    skip: !vehicleId,
+  });
+
+  const currentVehicle = vehicleDataRes?.vehicles?.find(v => v.id === vehicleId);
+
+  const initialRegistrationFiles =
+    currentVehicle?.VehicleDocument?.filter(
+      (doc: { documentType: VehicleDocumentType }) =>
+        doc.documentType === VehicleDocumentType.REGISTRATION,
+    ).map(
+      (doc: {
+        file: {
+          url?: string | null;
+          originalName?: string | null;
+          name?: string | null;
+          key: string;
+        };
+      }) => ({
+        url: doc.file.url || '',
+        name: doc.file.originalName || doc.file.name || 'Document',
+        key: doc.file.key,
+      }),
+    ) || [];
+
+  const initialInsuranceFiles =
+    currentVehicle?.VehicleDocument?.filter(
+      (doc: { documentType: VehicleDocumentType }) =>
+        doc.documentType === VehicleDocumentType.INSURANCE,
+    ).map(
+      (doc: {
+        file: {
+          url?: string | null;
+          originalName?: string | null;
+          name?: string | null;
+          key: string;
+        };
+      }) => ({
+        url: doc.file.url || '',
+        name: doc.file.originalName || doc.file.name || 'Document',
+        key: doc.file.key,
+      }),
+    ) || [];
+
+  const initialVehiclePhotos =
+    currentVehicle?.VehicleImage?.map(
+      (img: {
+        file: {
+          url?: string | null;
+          originalName?: string | null;
+          name?: string | null;
+          key: string;
+        };
+      }) => ({
+        url: img.file.url || '',
+        name: img.file.originalName || img.file.name || 'Photo',
+        key: img.file.key,
+      }),
+    ) || [];
 
   const form = useForm<VehicleDocumentsFormValues>({
     resolver: zodResolver(vehicleDocumentsSchema) as Resolver<VehicleDocumentsFormValues>,
@@ -56,15 +122,36 @@ export const useVehicleDocumentsAction = (
       return;
     }
 
-    try {
-      const allFiles: File[] = [
-        ...data.registrationFiles,
-        ...data.insuranceFiles,
-        ...data.vehiclePhotos,
-      ];
+    const registrationFiles = data.registrationFiles || [];
+    const insuranceFiles = data.insuranceFiles || [];
+    const vehiclePhotos = data.vehiclePhotos || [];
 
+    // Validation manuelle prenant en compte les fichiers existants
+    const totalRegistration = registrationFiles.length + initialRegistrationFiles.length;
+    const totalInsurance = insuranceFiles.length + initialInsuranceFiles.length;
+    const totalPhotos = vehiclePhotos.length + initialVehiclePhotos.length;
+
+    if (totalRegistration < 1) {
+      toast.error("Le certificat d'immatriculation est requis");
+      return;
+    }
+
+    if (totalInsurance < 1) {
+      toast.error("L'attestation d'assurance est requise");
+      return;
+    }
+
+    if (totalPhotos < 3) {
+      toast.error('Minimum 3 photos du véhicule sont requises');
+      return;
+    }
+
+    try {
+      const allFiles: File[] = [...registrationFiles, ...insuranceFiles, ...vehiclePhotos];
+
+      // Si aucun nouveau fichier, on passe directement à l'étape suivante
       if (allFiles.length === 0) {
-        toast.error('Aucun fichier à uploader');
+        router.push('selfieVerif');
         return;
       }
 
@@ -112,25 +199,23 @@ export const useVehicleDocumentsAction = (
 
       // Mapper les documents (carte grise, assurance, etc.)
       const uploadDocuments = [
-        ...data.registrationFiles.map((file, index) => ({
+        ...registrationFiles.map((file, index) => ({
           documentType: VehicleDocumentType.REGISTRATION,
           file: {
             key: successResults[index]?.key || '',
           },
         })),
-        ...data.insuranceFiles.map((file, index) => ({
+        ...insuranceFiles.map((file, index) => ({
           documentType: VehicleDocumentType.INSURANCE,
           file: {
-            key: successResults[data.registrationFiles.length + index]?.key || '',
+            key: successResults[registrationFiles.length + index]?.key || '',
           },
         })),
       ];
 
       // Mapper les photos du véhicule
-      const uploadImages = data.vehiclePhotos.map((file, index) => ({
-        key:
-          successResults[data.registrationFiles.length + data.insuranceFiles.length + index]?.key ||
-          '',
+      const uploadImages = vehiclePhotos.map((file, index) => ({
+        key: successResults[registrationFiles.length + insuranceFiles.length + index]?.key || '',
       }));
 
       // Mise à jour du véhicule côté backend
@@ -159,5 +244,9 @@ export const useVehicleDocumentsAction = (
     handleSubmit: form.handleSubmit(onSubmit),
     isSubmitting: form.formState.isSubmitting,
     vehicleId,
+    initialRegistrationFiles,
+    initialInsuranceFiles,
+    initialVehiclePhotos,
+    loadingVehicle,
   };
 };

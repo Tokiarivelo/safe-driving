@@ -2,10 +2,11 @@
 import {
   useCreateDriverVehicleMutation,
   useGetVehicleTypesQuery,
+  useGetVehiclesQuery,
 } from '@/graphql/generated/graphql';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { VehicleInfoFormValues, vehicleInfoSchema } from './schema';
@@ -19,6 +20,11 @@ export const useVehicleInfoAction = (initialData: Partial<VehicleInfoFormValues>
   // Récupérer les types de véhicules depuis l'API
   const { data: vehicleTypesData, loading: loadingTypes } = useGetVehicleTypesQuery();
 
+  // Récupérer les véhicules existants de l'utilisateur
+  const { data: vehicleDataRes, loading: loadingVehicle } = useGetVehiclesQuery({
+    fetchPolicy: 'cache-and-network',
+  });
+
   const vehicleTypes = vehicleTypesData?.vehicleTypes || [];
 
   const form = useForm<VehicleInfoFormValues>({
@@ -31,6 +37,20 @@ export const useVehicleInfoAction = (initialData: Partial<VehicleInfoFormValues>
       type: initialData.type || '',
     },
   });
+
+  // Pré-remplir le formulaire si un véhicule existe déjà
+  useEffect(() => {
+    if (vehicleDataRes?.vehicles && vehicleDataRes.vehicles.length > 0) {
+      const existingVehicle = vehicleDataRes.vehicles[0];
+      form.reset({
+        brand: existingVehicle.brand || '',
+        model: existingVehicle.model || '',
+        plate: existingVehicle.registrationNumber || '',
+        seats: existingVehicle.place || 4,
+        type: existingVehicle.vehicleTypeId || '',
+      });
+    }
+  }, [vehicleDataRes, form]);
 
   const handleSubmit = async (data: VehicleInfoFormValues) => {
     try {
@@ -88,6 +108,7 @@ export const useVehicleInfoAction = (initialData: Partial<VehicleInfoFormValues>
     isSubmitting: form.formState.isSubmitting || creating,
     vehicleTypes,
     loadingTypes,
+    loadingVehicle,
     createdVehicleId, // Retourner l'ID créé
   };
 };

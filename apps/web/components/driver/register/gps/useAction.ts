@@ -167,7 +167,7 @@ export const useLocationPermissionAction = ({
         toast.success('Préférences de localisation enregistrées');
 
         setTimeout(() => {
-          router.push('/notif');
+          router.push('/driver/register/notif');
         }, 100);
 
         return { success: true };

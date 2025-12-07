@@ -58,7 +58,11 @@ export class ConversationService {
       include: {
         participants: {
           include: {
-            user: true,
+            user: {
+              include: {
+                avatar: true,
+              },
+            },
           },
         },
         _count: {
@@ -82,6 +86,8 @@ export class ConversationService {
     const nextCursor = hasNextPage
       ? resultConversations[resultConversations.length - 1].id
       : null;
+
+    console.log('conve :>>>>>>>>>>>>< ', JSON.stringify(conversations));
 
     return {
       conversations: resultConversations as UserConversation[],

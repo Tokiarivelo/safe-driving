@@ -57,26 +57,30 @@ export const LocationProvider: React.FC<{ children: ReactNode }> = ({ children }
       return new Promise(resolve => {
         navigator.geolocation.getCurrentPosition(
           position => {
-            const newState = {
-              ...(currentState || locationState),
-              hasPermission: true,
-              currentPosition: position,
-              lastUpdated: Date.now(),
-            };
-            setLocationState(newState);
-            saveToStorage(newState);
+            setLocationState(prev => {
+              const newState = {
+                ...(currentState || prev),
+                hasPermission: true,
+                currentPosition: position,
+                lastUpdated: Date.now(),
+              };
+              saveToStorage(newState);
+              return newState;
+            });
             resolve(true);
           },
           error => {
             console.error('Permission de géolocalisation refusée:', error);
-            const newState = {
-              ...(currentState || locationState),
-              hasPermission: false,
-              currentPosition: null,
-              lastUpdated: null,
-            };
-            setLocationState(newState);
-            saveToStorage(newState);
+            setLocationState(prev => {
+              const newState = {
+                ...(currentState || prev),
+                hasPermission: false,
+                currentPosition: null,
+                lastUpdated: null,
+              };
+              saveToStorage(newState);
+              return newState;
+            });
             resolve(false);
           },
           {
@@ -87,7 +91,7 @@ export const LocationProvider: React.FC<{ children: ReactNode }> = ({ children }
         );
       });
     },
-    [locationState],
+    [],
   );
 
   useEffect(() => {
@@ -118,7 +122,7 @@ export const LocationProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   }, [requestLocationPermission]);
 
-  const updateLocation = async (): Promise<void> => {
+  const updateLocation = useCallback(async (): Promise<void> => {
     if (!locationState.hasPermission || !navigator.geolocation) {
       throw new Error('Permission de géolocalisation requise');
     }
@@ -146,48 +150,56 @@ export const LocationProvider: React.FC<{ children: ReactNode }> = ({ children }
         },
       );
     });
-  };
+  }, [locationState]);
 
-  const setLocationEnabled = (enabled: boolean) => {
-    const newState = {
-      ...locationState,
-      isEnabled: enabled,
-      ...(enabled ? {} : { hasPermission: false, currentPosition: null, lastUpdated: null }),
-    };
-    setLocationState(newState);
-    saveToStorage(newState);
-  };
+  const setLocationEnabled = useCallback((enabled: boolean) => {
+    setLocationState(prev => {
+      const newState = {
+        ...prev,
+        isEnabled: enabled,
+        ...(enabled ? {} : { hasPermission: false, currentPosition: null, lastUpdated: null }),
+      };
+      saveToStorage(newState);
+      return newState;
+    });
+  }, []);
 
-  const setHasPermission = (permission: boolean) => {
-    const newState = {
-      ...locationState,
-      hasPermission: permission,
-      ...(permission ? {} : { currentPosition: null, lastUpdated: null }),
-    };
-    setLocationState(newState);
-    saveToStorage(newState);
-  };
+  const setHasPermission = useCallback((permission: boolean) => {
+    setLocationState(prev => {
+      const newState = {
+        ...prev,
+        hasPermission: permission,
+        ...(permission ? {} : { currentPosition: null, lastUpdated: null }),
+      };
+      saveToStorage(newState);
+      return newState;
+    });
+  }, []);
 
-  const setCurrentPosition = (position: GeolocationPosition | null) => {
-    const newState = {
-      ...locationState,
-      currentPosition: position,
-      lastUpdated: position ? Date.now() : null,
-    };
-    setLocationState(newState);
-    saveToStorage(newState);
-  };
+  const setCurrentPosition = useCallback((position: GeolocationPosition | null) => {
+    setLocationState(prev => {
+      const newState = {
+        ...prev,
+        currentPosition: position,
+        lastUpdated: position ? Date.now() : null,
+      };
+      saveToStorage(newState);
+      return newState;
+    });
+  }, []);
 
-  const setRememberChoice = (remember: boolean) => {
-    const newState = {
-      ...locationState,
-      rememberChoice: remember,
-    };
-    setLocationState(newState);
-    saveToStorage(newState);
-  };
+  const setRememberChoice = useCallback((remember: boolean) => {
+    setLocationState(prev => {
+      const newState = {
+        ...prev,
+        rememberChoice: remember,
+      };
+      saveToStorage(newState);
+      return newState;
+    });
+  }, []);
 
-  const clearLocationData = () => {
+  const clearLocationData = useCallback(() => {
     const newState = {
       isEnabled: false,
       hasPermission: false,
@@ -197,7 +209,7 @@ export const LocationProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
     setLocationState(newState);
     localStorage.removeItem(STORAGE_KEY);
-  };
+  }, []);
 
   return (
     <LocationContext.Provider

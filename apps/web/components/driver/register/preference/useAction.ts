@@ -194,7 +194,7 @@ export const useExperiencePreferences = (initialValues?: Partial<ExperiencePrefe
       await updateSession();
       toast.success('Préférences sauvegardées avec succès');
 
-      router.push(`/${languageCode}/register/terms`);
+      router.push(`/driver/register/terms`);
       return { success: true };
     } catch (error) {
       console.error('Erreur sauvegarde préférences:', error);

@@ -7,6 +7,8 @@ import { AuthModule } from 'src/auth/auth.module';
 import { ElasticModule } from 'src/elasticsearch/elastic/elastic.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ConversationSearchService } from './conversation-search.service';
+import { FileModule } from '../file/file.module';
+import { UserAvatarResolver } from './user-avatar.resolver';
 
 @Module({
   imports: [
@@ -21,11 +23,13 @@ import { ConversationSearchService } from './conversation-search.service';
     PrismaModule,
     RedisModule,
     AuthModule,
+    FileModule,
   ],
   providers: [
     ConversationService,
     ConversationResolver,
     ConversationSearchService,
+    UserAvatarResolver,
   ],
   exports: [ConversationService, ConversationSearchService],
 })

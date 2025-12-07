@@ -17,7 +17,23 @@ interface VehicleDocumentsFormProps {
 
 export const VehicleDocumentsForm = ({ initialData }: VehicleDocumentsFormProps) => {
   const { t } = useTranslation(['registerDriver/step5']);
-  const { form, handleSubmit, isSubmitting } = useVehicleDocumentsAction(initialData);
+  const {
+    form,
+    handleSubmit,
+    isSubmitting,
+    initialRegistrationFiles,
+    initialInsuranceFiles,
+    initialVehiclePhotos,
+    loadingVehicle,
+  } = useVehicleDocumentsAction(initialData);
+
+  if (loadingVehicle) {
+    return (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.pageContainer}>
@@ -35,16 +51,17 @@ export const VehicleDocumentsForm = ({ initialData }: VehicleDocumentsFormProps)
                 <h4 className={styles.formSubtitle}>{t('sections.registration')}</h4>
                 <MultiFileUpload
                   uniqueId="registration"
-                  files={form.watch('registrationFiles')}
+                  files={form.watch('registrationFiles') || []}
+                  initialFiles={initialRegistrationFiles}
                   buttonText={t('documents.registration.button')}
                   addMoreText=""
-                  onUpload={(files) => form.setValue('registrationFiles', files, { shouldValidate: true })}
+                  onUpload={files =>
+                    form.setValue('registrationFiles', files, { shouldValidate: true })
+                  }
                   multiple
                   accept="image/*,.pdf"
+                  error={form.formState.errors.registrationFiles?.message}
                 />
-                {form.formState.errors.registrationFiles && (
-                  <p className="text-xs text-destructive mt-1">{form.formState.errors.registrationFiles.message}</p>
-                )}
               </div>
 
               {/* Attestation d'assurance */}
@@ -52,16 +69,17 @@ export const VehicleDocumentsForm = ({ initialData }: VehicleDocumentsFormProps)
                 <h4 className={styles.formSubtitle}>{t('sections.insurance')}</h4>
                 <MultiFileUpload
                   uniqueId="insurance"
-                  files={form.watch('insuranceFiles')}
+                  files={form.watch('insuranceFiles') || []}
+                  initialFiles={initialInsuranceFiles}
                   buttonText={t('documents.insurance.button')}
                   addMoreText=""
-                  onUpload={(files) => form.setValue('insuranceFiles', files, { shouldValidate: true })}
+                  onUpload={files =>
+                    form.setValue('insuranceFiles', files, { shouldValidate: true })
+                  }
                   multiple
                   accept="image/*,.pdf"
+                  error={form.formState.errors.insuranceFiles?.message}
                 />
-                {form.formState.errors.insuranceFiles && (
-                  <p className="text-xs text-destructive mt-1">{form.formState.errors.insuranceFiles.message}</p>
-                )}
               </div>
 
               {/* Photos du véhicule */}
@@ -69,16 +87,17 @@ export const VehicleDocumentsForm = ({ initialData }: VehicleDocumentsFormProps)
                 <h4 className={styles.formSubtitle}>{t('sections.photos')}</h4>
                 <MultiFileUpload
                   uniqueId="photos"
-                  files={form.watch('vehiclePhotos')}
+                  files={form.watch('vehiclePhotos') || []}
+                  initialFiles={initialVehiclePhotos}
                   buttonText={t('documents.photos.button')}
                   addMoreText=""
-                  onUpload={(files) => form.setValue('vehiclePhotos', files, { shouldValidate: true })}
+                  onUpload={files =>
+                    form.setValue('vehiclePhotos', files, { shouldValidate: true })
+                  }
                   multiple
                   accept="image/*"
+                  error={form.formState.errors.vehiclePhotos?.message}
                 />
-                {form.formState.errors.vehiclePhotos && (
-                  <p className="text-xs text-destructive mt-1">{form.formState.errors.vehiclePhotos.message}</p>
-                )}
               </div>
 
               <div className={styles.buttonContainer}>

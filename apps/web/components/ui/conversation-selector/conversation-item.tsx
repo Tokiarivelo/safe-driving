@@ -108,8 +108,6 @@ export function ConversationItem({
   };
 
   const getParticipantAvatar = () => {
-    console.log('conversation :>> ', conversation);
-
     if (conversation.participants && conversation.participants.length > 0) {
       // Get the first participant that is not the current user
       const participant =

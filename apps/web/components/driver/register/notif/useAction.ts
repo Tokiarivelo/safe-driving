@@ -4,20 +4,22 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { 
-  useUpsertUserPreferenceMutation, 
-  useGetMyUserPreferenceQuery 
+import {
+  useUpsertUserPreferenceMutation,
+  useGetMyUserPreferenceQuery,
 } from '@/graphql/generated/graphql';
 import { toast } from 'sonner';
 import { notificationPreferencesSchema, NotificationPreferencesValues } from './schema';
 
-export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPreferencesValues>) => {
+export const useNotificationPreferences = (
+  initialPrefs?: Partial<NotificationPreferencesValues>,
+) => {
   const router = useRouter();
   const { data: session } = useSession();
-  
+
   const [upsertUserPreference] = useUpsertUserPreferenceMutation();
   const { data: preferenceData } = useGetMyUserPreferenceQuery({
-    skip: !session?.user?.id
+    skip: !session?.user?.id,
   });
 
   const [browserPermission, setBrowserPermission] = useState<NotificationPermission>('default');
@@ -29,9 +31,9 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
     defaultValues: {
       sms: initialPrefs?.sms ?? false,
       email: initialPrefs?.email ?? false,
-      push: initialPrefs?.push ?? false
+      push: initialPrefs?.push ?? false,
     },
-    mode: 'onChange'
+    mode: 'onChange',
   });
 
   // Synchroniser les valeurs du formulaire avec les données de la base
@@ -40,15 +42,15 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
       const dbNotifications = preferenceData.userPreference.activateNotifications;
       const dbSmsNotifications = preferenceData.userPreference.activateSmsNotifications;
       const dbEmailNotifications = preferenceData.userPreference.activateEmailNotifications;
-      
+
       if (dbNotifications !== null) {
         form.setValue('push', dbNotifications);
       }
-      
+
       if (dbSmsNotifications !== null) {
         form.setValue('sms', dbSmsNotifications);
       }
-      
+
       if (dbEmailNotifications !== null) {
         form.setValue('email', dbEmailNotifications);
       }
@@ -63,19 +65,19 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
 
   const requestBrowserNotification = async () => {
     if (!('Notification' in window)) return false;
-    
+
     setIsRequesting(true);
     try {
       const permission = await Notification.requestPermission();
       setBrowserPermission(permission);
-      
+
       if (permission === 'granted') {
         new Notification('Notifications activées', {
           body: 'Vous recevrez maintenant les notifications de cette application.',
-          icon: '/favicon.ico'
+          icon: '/favicon.ico',
         });
       }
-      
+
       return permission === 'granted';
     } catch (error) {
       console.error('Error requesting notification permission:', error);
@@ -85,7 +87,10 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
     }
   };
 
-  const handlePreferenceChange = async (field: keyof NotificationPreferencesValues, value: boolean) => {
+  const handlePreferenceChange = async (
+    field: keyof NotificationPreferencesValues,
+    value: boolean,
+  ) => {
     if (!session?.user?.id) {
       toast.error('Utilisateur non connecté');
       return false;
@@ -101,7 +106,7 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
     // Sauvegarder immédiatement en base de données
     try {
       let input: Record<string, boolean> = {};
-      
+
       switch (field) {
         case 'push':
           input = { activateNotifications: value };
@@ -115,7 +120,7 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
       }
 
       const { errors } = await upsertUserPreference({
-        variables: { input }
+        variables: { input },
       });
 
       if (errors) {
@@ -127,7 +132,7 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
       const notificationTypes = {
         push: 'notifications push',
         sms: 'notifications SMS',
-        email: 'notifications email'
+        email: 'notifications email',
       };
 
       toast.success(`${notificationTypes[field]} ${value ? 'activées' : 'désactivées'}`);
@@ -146,7 +151,7 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
     }
 
     setIsSubmitting(true);
-    
+
     try {
       // Sauvegarder toutes les préférences de notifications en base de données
       const { errors } = await upsertUserPreference({
@@ -154,27 +159,27 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
           input: {
             activateNotifications: data.push,
             activateSmsNotifications: data.sms,
-            activateEmailNotifications: data.email
-          }
-        }
+            activateEmailNotifications: data.email,
+          },
+        },
       });
 
       if (errors) {
         console.error('Erreurs GraphQL:', errors);
         throw new Error(errors.map(e => e.message).join(', '));
       }
-      
+
       toast.success('Préférences de notifications sauvegardées avec succès');
-      router.push('/preference');
-      
+      router.push('/driver/register/preference');
+
       return { success: true };
     } catch (error) {
       console.error('Erreur lors de la sauvegarde des préférences de notifications:', error);
       toast.error('Erreur lors de la sauvegarde des préférences de notifications');
-      
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Erreur inconnue' 
+
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erreur inconnue',
       };
     } finally {
       setIsSubmitting(false);
@@ -190,6 +195,6 @@ export const useNotificationPreferences = (initialPrefs?: Partial<NotificationPr
     handlePreferenceChange,
     onSubmit: form.handleSubmit(onSubmit),
     isPushSupported: typeof window !== 'undefined' && 'Notification' in window,
-    userPreference: preferenceData?.userPreference
+    userPreference: preferenceData?.userPreference,
   };
 };

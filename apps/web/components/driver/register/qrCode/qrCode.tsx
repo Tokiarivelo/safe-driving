@@ -3,6 +3,7 @@ import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import styles from '../../../user/components/Form/codeqr/codeqr.module.css';
+import ProgressLink from '@/components/ui/progress-link';
 
 export default function UserQrPage() {
   const searchParams = useSearchParams();
@@ -44,6 +45,9 @@ export default function UserQrPage() {
         <Button type="button" onClick={downloadQr} className={styles.auth_Qr23}>
           Télécharger le QR Code
         </Button>
+      </div>
+      <div className={styles.auth_Qr22}>
+        <ProgressLink href="/driver/dashboard">Dashboard</ProgressLink>
       </div>
     </div>
   );
