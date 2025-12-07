@@ -16,37 +16,31 @@ export interface SettingsComponentProps {
 export default function SettingsComponent({ variant }: SettingsComponentProps) {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   
-  // Form states for profile tab
+  // Form states for profile tab - only using fields that exist in schema
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [sex, setSex] = useState('');
-  const [language, setLanguage] = useState('fr');
+  const [username, setUsername] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [description, setDescription] = useState('');
 
   // Form states for vehicle tab (driver only)
   const [vehicleType, setVehicleType] = useState('');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
   const [registrationNumber, setRegistrationNumber] = useState('');
-  const [baggageVolume, setBaggageVolume] = useState('');
-  const [baggageWeight, setBaggageWeight] = useState('');
-  const [maxSpeed, setMaxSpeed] = useState('');
-  const [petsAllowed, setPetsAllowed] = useState(false);
-  const [babySeat, setBabySeat] = useState(false);
-  const [pmrAccessibility, setPmrAccessibility] = useState(false);
+  const [place, setPlace] = useState('');
   const [otherDescriptions, setOtherDescriptions] = useState('');
 
-  // Form states for preferences tab
-  const [gpsEnabled, setGpsEnabled] = useState(true);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [appLanguage, setAppLanguage] = useState('fr');
-  const [theme, setTheme] = useState('dark');
+  // Form states for preferences tab - using actual schema fields
+  const [activateLocation, setActivateLocation] = useState(false);
+  const [activateNotifications, setActivateNotifications] = useState(false);
+  const [activateSmsNotifications, setActivateSmsNotifications] = useState(false);
+  const [activateEmailNotifications, setActivateEmailNotifications] = useState(false);
+  const [language, setLanguage] = useState('fr');
+  const [theme, setTheme] = useState('light');
 
   const { data: meData, refetch: refetchMe } = useMeQuery({
     fetchPolicy: 'cache-and-network',
@@ -65,17 +59,16 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
       setLastName(user.lastName || '');
       setEmail(user.email || '');
       setPhone(user.phone || '');
-      setDateOfBirth(user.dateOfBirth || '');
-      setSex(user.sex || '');
-      setLanguage(user.language || 'fr');
-      setDescription(user.bio || '');
+      setUsername(user.username || '');
 
       // Load preferences - using the actual schema field names
-      if (user.userPreference) {
-        setGpsEnabled(user.userPreference.activateLocation ?? true);
-        setNotificationsEnabled(user.userPreference.activateNotifications ?? true);
-        setAppLanguage(user.userPreference.language || 'fr');
-        setTheme(user.userPreference.theme || 'dark');
+      if (user.UserPreference) {
+        setActivateLocation(user.UserPreference.activateLocation ?? false);
+        setActivateNotifications(user.UserPreference.activateNotifications ?? false);
+        setActivateSmsNotifications(user.UserPreference.activateSmsNotifications ?? false);
+        setActivateEmailNotifications(user.UserPreference.activateEmailNotifications ?? false);
+        setLanguage(user.UserPreference.language || 'fr');
+        setTheme(user.UserPreference.theme || 'light');
       }
 
       // Load vehicle data for drivers
@@ -84,8 +77,8 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
         setBrand(vehicle.brand || '');
         setModel(vehicle.model || '');
         setRegistrationNumber(vehicle.registrationNumber || '');
+        setPlace(vehicle.place?.toString() || '');
         setVehicleType(vehicle.vehicleType?.id || '');
-        // Additional vehicle fields would be loaded here if available in schema
       }
     }
   }, [user, isDriver]);
@@ -101,10 +94,7 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
             lastName: { set: lastName },
             email: { set: email },
             phone: { set: phone },
-            dateOfBirth: dateOfBirth ? { set: dateOfBirth } : undefined,
-            sex: sex ? { set: sex } : undefined,
-            language: { set: language },
-            bio: { set: description },
+            username: username ? { set: username } : undefined,
           },
         },
       });
@@ -131,9 +121,11 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
       await upsertUserPreference({
         variables: {
           input: {
-            activateLocation: gpsEnabled,
-            activateNotifications: notificationsEnabled,
-            language: appLanguage,
+            activateLocation,
+            activateNotifications,
+            activateSmsNotifications,
+            activateEmailNotifications,
+            language,
             theme,
           },
         },
@@ -160,6 +152,7 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 className={styles.input}
+                required
               />
             </div>
           </div>
@@ -186,6 +179,7 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={styles.input}
+              required
             />
           </div>
         </div>
@@ -205,45 +199,14 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
 
         <div className={styles.formGroup}>
           <div className={styles.inputWrapper}>
-            <Icon icon="mdi:calendar-outline" className={styles.inputIcon} />
+            <Icon icon="mdi:at" className={styles.inputIcon} />
             <input
-              type="date"
-              placeholder="Date de naissance"
-              value={dateOfBirth}
-              onChange={(e) => setDateOfBirth(e.target.value)}
+              type="text"
+              placeholder="Nom d'utilisateur"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className={styles.input}
             />
-          </div>
-        </div>
-
-        <div className={styles.formGroup}>
-          <div className={styles.selectWrapper}>
-            <Icon icon="mdi:gender-male-female" className={styles.inputIcon} />
-            <select
-              value={sex}
-              onChange={(e) => setSex(e.target.value)}
-              className={styles.select}
-            >
-              <option value="">Sexe</option>
-              <option value="male">Homme</option>
-              <option value="female">Femme</option>
-              <option value="other">Autre</option>
-            </select>
-          </div>
-        </div>
-
-        <div className={styles.formGroup}>
-          <div className={styles.selectWrapper}>
-            <Icon icon="mdi:translate" className={styles.inputIcon} />
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              className={styles.select}
-            >
-              <option value="fr">Français</option>
-              <option value="en">English</option>
-              <option value="mg">Malagasy</option>
-            </select>
           </div>
         </div>
 
@@ -282,19 +245,6 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className={styles.input}
-            />
-          </div>
-        </div>
-
-        <div className={styles.formGroup}>
-          <div className={styles.inputWrapper}>
-            <Icon icon="mdi:text-box-outline" className={styles.inputIcon} />
-            <textarea
-              placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className={styles.textarea}
-              style={{ border: 'none', padding: 0 }}
             />
           </div>
         </div>
@@ -363,84 +313,15 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
 
         <div className={styles.formGroup}>
           <div className={styles.inputWrapper}>
-            <Icon icon="mdi:bag-suitcase-outline" className={styles.inputIcon} />
+            <Icon icon="mdi:seat-outline" className={styles.inputIcon} />
             <input
-              type="text"
-              placeholder="Volume de baggage accepté"
-              value={baggageVolume}
-              onChange={(e) => setBaggageVolume(e.target.value)}
+              type="number"
+              placeholder="Nombre de places"
+              value={place}
+              onChange={(e) => setPlace(e.target.value)}
               className={styles.input}
+              min="1"
             />
-          </div>
-        </div>
-
-        <div className={styles.formGroup}>
-          <div className={styles.inputWrapper}>
-            <Icon icon="mdi:weight" className={styles.inputIcon} />
-            <input
-              type="text"
-              placeholder="Poids du baggage accepté"
-              value={baggageWeight}
-              onChange={(e) => setBaggageWeight(e.target.value)}
-              className={styles.input}
-            />
-          </div>
-        </div>
-
-        <div className={styles.formGroup}>
-          <div className={styles.numberInputGroup}>
-            <div className={styles.inputWrapper} style={{ flex: 1 }}>
-              <Icon icon="mdi:speedometer" className={styles.inputIcon} />
-              <input
-                type="number"
-                placeholder="Vitesse maximale"
-                value={maxSpeed}
-                onChange={(e) => setMaxSpeed(e.target.value)}
-                className={styles.input}
-              />
-            </div>
-            <span className={styles.unit}>Km/h</span>
-          </div>
-        </div>
-
-        <div className={styles.checkboxGroup}>
-          <div className={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              id="pets"
-              checked={petsAllowed}
-              onChange={(e) => setPetsAllowed(e.target.checked)}
-              className={styles.checkbox}
-            />
-            <label htmlFor="pets" className={styles.checkboxLabel}>
-              Animaux acceptés
-            </label>
-          </div>
-
-          <div className={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              id="babySeat"
-              checked={babySeat}
-              onChange={(e) => setBabySeat(e.target.checked)}
-              className={styles.checkbox}
-            />
-            <label htmlFor="babySeat" className={styles.checkboxLabel}>
-              Siège bébé
-            </label>
-          </div>
-
-          <div className={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              id="pmr"
-              checked={pmrAccessibility}
-              onChange={(e) => setPmrAccessibility(e.target.checked)}
-              className={styles.checkbox}
-            />
-            <label htmlFor="pmr" className={styles.checkboxLabel}>
-              Accessibilité PMR
-            </label>
           </div>
         </div>
 
@@ -468,8 +349,8 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
           <label className={styles.switch}>
             <input
               type="checkbox"
-              checked={gpsEnabled}
-              onChange={(e) => setGpsEnabled(e.target.checked)}
+              checked={activateLocation}
+              onChange={(e) => setActivateLocation(e.target.checked)}
               className={styles.switchInput}
             />
             <span className={styles.slider}></span>
@@ -481,8 +362,34 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
           <label className={styles.switch}>
             <input
               type="checkbox"
-              checked={notificationsEnabled}
-              onChange={(e) => setNotificationsEnabled(e.target.checked)}
+              checked={activateNotifications}
+              onChange={(e) => setActivateNotifications(e.target.checked)}
+              className={styles.switchInput}
+            />
+            <span className={styles.slider}></span>
+          </label>
+        </div>
+
+        <div className={styles.preferenceItem}>
+          <span className={styles.preferenceLabel}>Notifications SMS</span>
+          <label className={styles.switch}>
+            <input
+              type="checkbox"
+              checked={activateSmsNotifications}
+              onChange={(e) => setActivateSmsNotifications(e.target.checked)}
+              className={styles.switchInput}
+            />
+            <span className={styles.slider}></span>
+          </label>
+        </div>
+
+        <div className={styles.preferenceItem}>
+          <span className={styles.preferenceLabel}>Notifications Email</span>
+          <label className={styles.switch}>
+            <input
+              type="checkbox"
+              checked={activateEmailNotifications}
+              onChange={(e) => setActivateEmailNotifications(e.target.checked)}
               className={styles.switchInput}
             />
             <span className={styles.slider}></span>
@@ -494,8 +401,8 @@ export default function SettingsComponent({ variant }: SettingsComponentProps) {
           <div className={styles.selectWrapper}>
             <Icon icon="mdi:translate" className={styles.inputIcon} />
             <select
-              value={appLanguage}
-              onChange={(e) => setAppLanguage(e.target.value)}
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
               className={styles.select}
             >
               <option value="fr">Français</option>
