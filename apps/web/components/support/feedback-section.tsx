@@ -26,7 +26,7 @@ export default function FeedbackSection() {
 
   const handleSubmit = async () => {
     if (!rating || !description.trim()) {
-      toast.error('Veuillez sélectionner une note et ajouter une description');
+      toast.error(t('feedbackSection.validationError'));
       return;
     }
 
@@ -152,7 +152,7 @@ export default function FeedbackSection() {
           {isSubmitting ? (
             <span className="flex items-center gap-2">
               <Icon icon="mdi:loading" className="animate-spin w-5 h-5" />
-              Envoi...
+              {t('feedbackSection.submittingText')}
             </span>
           ) : (
             t('feedbackSection.submitButton')

@@ -10,6 +10,7 @@
   "faqSection": {
     "title": "Questions Fréquentes",
     "searchPlaceholder": "Rechercher",
+    "noResultsFound": "Aucune question trouvée",
     "questions": {
       "reserveCourse": {
         "question": "Comment réserver une course ?",
@@ -74,6 +75,8 @@
     },
     "otherPlaceholder": "Autre",
     "submitButton": "Envoyer",
+    "submittingText": "Envoi...",
+    "validationError": "Veuillez sélectionner une note et ajouter une description",
     "successMessage": "Merci pour votre retour !",
     "errorMessage": "Erreur lors de l'envoi du feedback"
   }

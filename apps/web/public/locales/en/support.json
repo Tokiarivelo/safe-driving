@@ -10,6 +10,7 @@
   "faqSection": {
     "title": "Frequently Asked Questions",
     "searchPlaceholder": "Search",
+    "noResultsFound": "No questions found",
     "questions": {
       "reserveCourse": {
         "question": "How to book a ride?",
@@ -74,6 +75,8 @@
     },
     "otherPlaceholder": "Other",
     "submitButton": "Send",
+    "submittingText": "Sending...",
+    "validationError": "Please select a rating and add a description",
     "successMessage": "Thank you for your feedback!",
     "errorMessage": "Error sending feedback"
   }

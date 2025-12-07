@@ -98,7 +98,7 @@ export default function FaqSection() {
 
       {filteredFaqs.length === 0 && (
         <div className="text-center py-12 text-gray-500">
-          Aucune question trouvée
+          {t('faqSection.noResultsFound')}
         </div>
       )}
     </div>
