@@ -538,7 +538,7 @@ export class SeedService implements OnModuleInit {
             locale: 'fr',
             question: 'Comment puis-je partager mon trajet avec un proche ?',
             answer:
-              'Utilise la fonction de partage de trajet dans l'écran de course en cours pour envoyer ta position en temps réel.',
+              "Utilise la fonction de partage de trajet dans l'écran de course en cours pour envoyer ta position en temps réel.",
           },
           {
             locale: 'en',
@@ -580,6 +580,8 @@ export class SeedService implements OnModuleInit {
       });
     }
 
-    this.logger.log(`✅ FAQs seeded (${faqData.length} FAQs with translations)`);
+    this.logger.log(
+      `✅ FAQs seeded (${faqData.length} FAQs with translations)`,
+    );
   }
 }
