@@ -97,7 +97,7 @@ export function ConversationItem({
   const getUnreadCount = () => {
     // Use actual unreadCount from the conversation if available
     // This field should be provided by the backend API
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const unreadCount = conversation.messages?.filter(
       message => message.state !== MessageState.READ && message.state !== MessageState.FAILED,
     ).length;
