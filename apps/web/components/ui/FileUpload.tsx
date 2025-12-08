@@ -38,16 +38,16 @@ export const FileUpload = ({
             text-center p-6">
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="mb-4">
               <defs>
-                <linearGradient id="uploadGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <linearGradient id="uploadGradientSingle" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#FF6B35" />
                   <stop offset="100%" stopColor="#E33486" />
                 </linearGradient>
               </defs>
               <path d="M20 28L32 16L44 28M32 16V44M52 44V52C52 54.2091 50.2091 56 48 56H16C13.7909 56 12 54.2091 12 52V44" 
-                stroke="url(#uploadGradient)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="32" cy="50" r="2" fill="url(#uploadGradient)"/>
-              <circle cx="20" cy="50" r="2" fill="url(#uploadGradient)"/>
-              <circle cx="44" cy="50" r="2" fill="url(#uploadGradient)"/>
+                stroke="url(#uploadGradientSingle)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="32" cy="50" r="2" fill="url(#uploadGradientSingle)"/>
+              <circle cx="20" cy="50" r="2" fill="url(#uploadGradientSingle)"/>
+              <circle cx="44" cy="50" r="2" fill="url(#uploadGradientSingle)"/>
             </svg>
             <h3 className="text-lg font-medium text-[#E33486] mb-2">
               Glissez / Déposez
