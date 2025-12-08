@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { UploadCloud, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -84,21 +84,41 @@ const MultiFileUpload = React.forwardRef<HTMLInputElement, MultiFileUploadProps>
       <div className={cn('space-y-2', className)}>
         {title && <h4 className="font-medium text-auth-color-text-custom-magenta">{title}</h4>}
 
-        <label
-          htmlFor={inputId}
+        <div
           className={cn(
-            'relative border-2 border-dashed border-[#E33486] bg-auth-color-input rounded-xl w-full h-[150px] flex flex-col items-center justify-center text-center cursor-pointer',
+            'relative border-2 border-dashed border-[#E33486] bg-auth-color-input rounded-xl w-full h-[200px] flex flex-col items-center justify-center text-center p-6',
             error && 'border-destructive',
           )}
         >
-          <UploadCloud className="text-[#E33486] w-8 h-8 mb-2" />
-          <div className="text-sm text-auth-color-placeholder font-normal">
-            {description || buttonText || 'Glissez un fichier ou cliquez pour télécharger'}
-          </div>
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="mb-4">
+            <defs>
+              <linearGradient id="uploadGradientMulti" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FF6B35" />
+                <stop offset="100%" stopColor="#E33486" />
+              </linearGradient>
+            </defs>
+            <path d="M20 28L32 16L44 28M32 16V44M52 44V52C52 54.2091 50.2091 56 48 56H16C13.7909 56 12 54.2091 12 52V44" 
+              stroke="url(#uploadGradientMulti)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            <circle cx="32" cy="50" r="2" fill="url(#uploadGradientMulti)"/>
+            <circle cx="20" cy="50" r="2" fill="url(#uploadGradientMulti)"/>
+            <circle cx="44" cy="50" r="2" fill="url(#uploadGradientMulti)"/>
+          </svg>
+          <h3 className="text-lg font-medium text-[#E33486] mb-2">
+            Glissez / Déposez
+          </h3>
+          <p className="text-sm text-auth-color-placeholder mb-4">
+            Les fichiers acceptés sont: JPEG, PNG, GIF avec une taille maximale de 15Mo
+          </p>
+          <label
+            htmlFor={inputId}
+            className="px-6 py-2 bg-[#E33486] text-white rounded-lg cursor-pointer hover:bg-[#c92a72] transition-colors font-medium"
+          >
+            Parcourir
+          </label>
           {maxFiles && (
             <p className="text-xs text-auth-color-placeholder mt-2">Maximum {maxFiles} fichiers</p>
           )}
-        </label>
+        </div>
 
         <input
           ref={ref}
