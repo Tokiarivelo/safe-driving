@@ -83,6 +83,7 @@
     "react-leaflet-cluster": "^4.0.0",
     "react-transition-progress": "^0.0.4",
     "react-webcam": "^7.2.0",
+    "recharts": "^3.5.1",
     "socket.io-client": "^4.8.1",
     "sonner": "^2.0.3",
     "swiper": "^11.2.6",

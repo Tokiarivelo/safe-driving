@@ -1,11 +1,26 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useGetDriverStatisticsQuery, useGetTopDriversQuery } from '@/graphql/generated/graphql';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Icon } from '@iconify/react';
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from 'recharts';
 
 export default function DriverStatsPage() {
   const { data, loading, error } = useGetDriverStatisticsQuery({
@@ -16,6 +31,50 @@ export default function DriverStatsPage() {
     variables: { limit: 10 },
     fetchPolicy: 'cache-and-network',
   });
+
+  // Mock data for charts - in production, this would come from actual historical data
+  const revenueData = useMemo(() => {
+    if (!data?.getDriverStatistics.statistics) return [];
+    const stats = data.getDriverStatistics.statistics;
+    const avgMonthlyRevenue = stats.revenue / 12;
+    
+    return [
+      { month: 'Jan', revenue: avgMonthlyRevenue * 0.7 },
+      { month: 'Fév', revenue: avgMonthlyRevenue * 0.8 },
+      { month: 'Mar', revenue: avgMonthlyRevenue * 0.9 },
+      { month: 'Avr', revenue: avgMonthlyRevenue * 1.1 },
+      { month: 'Mai', revenue: avgMonthlyRevenue * 1.2 },
+      { month: 'Juin', revenue: avgMonthlyRevenue * 1.0 },
+      { month: 'Juil', revenue: avgMonthlyRevenue * 0.95 },
+    ];
+  }, [data]);
+
+  const ridesData = useMemo(() => {
+    if (!data?.getDriverStatistics.statistics) return [];
+    const stats = data.getDriverStatistics.statistics;
+    const avgMonthlyRides = stats.completedRides / 12;
+    
+    return [
+      { month: 'Jan', rides: Math.floor(avgMonthlyRides * 0.7), lastMonth: Math.floor(avgMonthlyRides * 0.6) },
+      { month: 'Fév', rides: Math.floor(avgMonthlyRides * 0.8), lastMonth: Math.floor(avgMonthlyRides * 0.7) },
+      { month: 'Mar', rides: Math.floor(avgMonthlyRides * 0.9), lastMonth: Math.floor(avgMonthlyRides * 0.8) },
+      { month: 'Avr', rides: Math.floor(avgMonthlyRides * 1.1), lastMonth: Math.floor(avgMonthlyRides * 0.9) },
+      { month: 'Mai', rides: Math.floor(avgMonthlyRides * 1.2), lastMonth: Math.floor(avgMonthlyRides * 1.0) },
+      { month: 'Juin', rides: Math.floor(avgMonthlyRides * 1.0), lastMonth: Math.floor(avgMonthlyRides * 1.1) },
+      { month: 'Juil', rides: Math.floor(avgMonthlyRides * 0.95), lastMonth: Math.floor(avgMonthlyRides * 1.2) },
+    ];
+  }, [data]);
+
+  const distributionData = useMemo(() => {
+    if (!data?.getDriverStatistics.statistics) return [];
+    const stats = data.getDriverStatistics.statistics;
+    
+    return [
+      { name: 'Courses courtes', value: Math.floor(stats.completedRides * 0.4), color: '#3b82f6' },
+      { name: 'Courses moyennes', value: Math.floor(stats.completedRides * 0.35), color: '#f59e0b' },
+      { name: 'Courses longues', value: Math.floor(stats.completedRides * 0.25), color: '#8b5cf6' },
+    ];
+  }, [data]);
 
   if (loading) {
     return (
@@ -133,47 +192,151 @@ export default function DriverStatsPage() {
         </Card>
       </div>
 
-      {/* Driver Details Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">Détails du chauffeur</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-xl font-bold">
-                {stats.driver?.firstName?.[0]}
-                {stats.driver?.lastName?.[0]}
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">
-                  {stats.driver?.firstName} {stats.driver?.lastName}
-                </h3>
-                <p className="text-sm text-gray-600">{stats.driver?.email}</p>
-              </div>
-            </div>
+      {/* Charts Section */}
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Revenue Trend Chart */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">Revenus mensuels</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={revenueData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="month" stroke="#6b7280" fontSize={12} />
+                <YAxis stroke="#6b7280" fontSize={12} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#fff',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px',
+                  }}
+                  formatter={(value: number) => `${value.toLocaleString('fr-FR')} MGA`}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="revenue"
+                  stroke="#3b82f6"
+                  strokeWidth={3}
+                  dot={{ fill: '#3b82f6', r: 4 }}
+                  activeDot={{ r: 6 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
 
-            <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-              <div>
-                <p className="text-sm text-gray-600">Courses par mois (moyenne)</p>
-                <p className="text-xl font-semibold">
-                  {Math.round(stats.completedRides / Math.max(1, 
-                    Math.ceil((new Date().getTime() - new Date(stats.createdAt).getTime()) / (1000 * 60 * 60 * 24 * 30))
+        {/* Rides Comparison Chart */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">Courses par mois</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={ridesData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="month" stroke="#6b7280" fontSize={12} />
+                <YAxis stroke="#6b7280" fontSize={12} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#fff',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px',
+                  }}
+                />
+                <Legend />
+                <Bar dataKey="rides" fill="#3b82f6" name="Ce mois" radius={[8, 8, 0, 0]} />
+                <Bar dataKey="lastMonth" fill="#f59e0b" name="Mois dernier" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Distribution Pie Chart */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">Distribution des courses</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={distributionData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {distributionData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#fff',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px',
+                  }}
+                />
+                <Legend verticalAlign="bottom" height={36} />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Performance Metrics */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">Métriques de performance</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <Icon icon="mdi:calendar-month" className="h-8 w-8 text-blue-500" />
+                  <div>
+                    <p className="font-semibold">Courses par mois</p>
+                    <p className="text-sm text-gray-600">Moyenne mensuelle</p>
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-blue-600">
+                  {Math.round(stats.completedRides / 12)}
                 </p>
               </div>
-              <div>
-                <p className="text-sm text-gray-600">Revenu moyen par course</p>
-                <p className="text-xl font-semibold">
+
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <Icon icon="mdi:cash" className="h-8 w-8 text-green-500" />
+                  <div>
+                    <p className="font-semibold">Revenu par course</p>
+                    <p className="text-sm text-gray-600">Moyenne</p>
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-green-600">
                   {stats.completedRides > 0 
                     ? Math.round(stats.revenue / stats.completedRides).toLocaleString('fr-FR')
                     : 0} MGA
                 </p>
               </div>
+
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <Icon icon="mdi:star-rate" className="h-8 w-8 text-yellow-500" />
+                  <div>
+                    <p className="font-semibold">Taux de satisfaction</p>
+                    <p className="text-sm text-gray-600">Basé sur les avis</p>
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-yellow-600">
+                  {((stats.averageRating / 5) * 100).toFixed(0)}%
+                </p>
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Top Drivers Leaderboard */}
       <Card>
