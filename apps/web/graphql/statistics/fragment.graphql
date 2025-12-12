@@ -1,0 +1,24 @@
+fragment RideStatisticFragment on RideStatistic {
+  id
+  driverId
+  userId
+  completedRides
+  revenue
+  averageRating
+  totalReviews
+  motivationScore
+  createdAt
+  updatedAt
+}
+
+fragment TopDriverStatisticFragment on TopDriverStatistic {
+  driverId
+  firstName
+  lastName
+  avatarUrl
+  completedRides
+  revenue
+  averageRating
+  totalReviews
+  motivationScore
+}

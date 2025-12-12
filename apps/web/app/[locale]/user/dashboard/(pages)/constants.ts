@@ -22,6 +22,11 @@ export const USER_MENUES: MenuItemProps[] = [
     icon: 'streamline-kameleon-color:map',
   },
   {
+    name: 'Statistiques',
+    href: '/user/dashboard/stats',
+    icon: 'mdi:chart-line',
+  },
+  {
     name: 'Scanner Qr Code',
     href: '/user/dashboard/scan',
     icon: 'iconoir:scan-qr-code',

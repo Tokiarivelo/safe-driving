@@ -22,6 +22,11 @@ export const DRIVER_MENUES: MenuItemProps[] = [
     icon: 'streamline-kameleon-color:map',
   },
   {
+    name: 'Statistiques',
+    href: '/driver/dashboard/stats',
+    icon: 'mdi:chart-line',
+  },
+  {
     name: 'Scanner Qr Code',
     href: '/driver/dashboard/scan',
     icon: 'iconoir:scan-qr-code',
