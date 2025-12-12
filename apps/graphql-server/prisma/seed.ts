@@ -115,9 +115,108 @@ async function seedReviews() {
   console.log('✅ Reviews seeded.');
 }
 
+async function seedStatistics() {
+  console.log('📊 Seeding statistics...');
+
+  // Get all users
+  const allUsers = await prisma.user.findMany({
+    select: {
+      id: true,
+      firstName: true,
+      Role: true,
+    },
+  });
+
+  if (allUsers.length === 0) {
+    console.log('⚠️ No users found. Skipping statistics seeding.');
+    return;
+  }
+
+  // Separate drivers and regular users (drivers have roles, but for simplicity we'll use all users)
+  const drivers = allUsers.slice(0, Math.min(20, Math.floor(allUsers.length / 2)));
+  const users = allUsers.slice(drivers.length);
+
+  console.log(`📊 Creating statistics for ${drivers.length} drivers...`);
+
+  // Seed driver statistics
+  for (const driver of drivers) {
+    // Check if statistics already exist
+    const existingStats = await prisma.rideStatistic.findFirst({
+      where: { driverId: driver.id },
+    });
+
+    if (existingStats) {
+      console.log(`  - Driver ${driver.firstName} already has statistics, skipping.`);
+      continue;
+    }
+
+    // Generate random statistics
+    const completedRides = Math.floor(Math.random() * 290) + 10; // 10-300
+    const revenue = Math.floor(Math.random() * 900000) + 100000; // 100,000-1,000,000 MGA
+    const averageRating = parseFloat((Math.random() * 2 + 3).toFixed(1)); // 3.0-5.0
+    const totalReviews = Math.floor(Math.random() * 16) + 5; // 5-20
+    const motivationScore = Math.floor(Math.random() * 60) + 40; // 40-100
+
+    await prisma.rideStatistic.create({
+      data: {
+        driverId: driver.id,
+        completedRides,
+        revenue,
+        averageRating,
+        totalReviews,
+        motivationScore,
+      },
+    });
+
+    console.log(
+      `  ✓ Created statistics for driver ${driver.firstName}: ${completedRides} rides, ${revenue} MGA, ${averageRating}⭐`,
+    );
+  }
+
+  console.log(`📊 Creating statistics for ${Math.min(50, users.length)} users...`);
+
+  // Seed user statistics
+  const usersToSeed = users.slice(0, Math.min(50, users.length));
+  for (const user of usersToSeed) {
+    // Check if statistics already exist
+    const existingStats = await prisma.rideStatistic.findFirst({
+      where: { userId: user.id },
+    });
+
+    if (existingStats) {
+      console.log(`  - User ${user.firstName} already has statistics, skipping.`);
+      continue;
+    }
+
+    // Generate random statistics for users
+    const completedRides = Math.floor(Math.random() * 40) + 1; // 1-40
+    const averageRating = parseFloat((Math.random() * 2 + 3).toFixed(1)); // 3.0-5.0
+    const totalReviews = Math.floor(Math.random() * 10) + 1; // 1-10
+    const motivationScore = Math.floor(Math.random() * 70) + 20; // 20-90
+
+    await prisma.rideStatistic.create({
+      data: {
+        userId: user.id,
+        completedRides,
+        revenue: 0, // Users don't have revenue
+        averageRating,
+        totalReviews,
+        motivationScore,
+      },
+    });
+
+    console.log(
+      `  ✓ Created statistics for user ${user.firstName}: ${completedRides} rides, ${averageRating}⭐`,
+    );
+  }
+
+  console.log('✅ Statistics seeded.');
+}
+
 async function main() {
   await seedRoles();
   await seedReviews();
+  await seedStatistics();
 }
 
 main()

@@ -94,6 +94,8 @@ model User {
   UserCover             UserCover?
   notifications         Notification[]
   sentNotifications     Notification[]            @relation("NotificationSender")
+  driverStatistics      RideStatistic[]           @relation("DriverStatistics")
+  userStatistics        RideStatistic[]           @relation("UserStatistics")
 }
 
 // --------------- Token -----------------------//
@@ -615,4 +617,29 @@ model FaqTranslation {
 
   @@unique([faqId, locale])
   @@index([locale])
+}
+
+// ==================== Statistics System ====================
+
+model RideStatistic {
+  id              String    @id @default(uuid())
+  driverId        String?   // nullable for user-only statistics
+  userId          String?   // nullable for driver-only statistics
+  completedRides  Int       @default(0)
+  revenue         Float     @default(0) // in MGA
+  averageRating   Float     @default(0)
+  totalReviews    Int       @default(0)
+  motivationScore Int       @default(0) // 0-100, based on activity level
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Optional relations to User (driver or user)
+  driver User? @relation("DriverStatistics", fields: [driverId], references: [id], onDelete: Cascade)
+  user   User? @relation("UserStatistics", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([driverId])
+  @@index([userId])
+  @@index([revenue])
+  @@index([averageRating])
+  @@index([motivationScore])
 }
