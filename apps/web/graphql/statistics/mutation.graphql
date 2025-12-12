@@ -1,0 +1,23 @@
+mutation UpdateDriverStatistics($driverId: String!, $input: UpdateStatisticInput!) {
+  updateDriverStatistics(driverId: $driverId, input: $input) {
+    ...RideStatisticFragment
+  }
+}
+
+mutation UpdateUserStatistics($userId: String!, $input: UpdateStatisticInput!) {
+  updateUserStatistics(userId: $userId, input: $input) {
+    ...RideStatisticFragment
+  }
+}
+
+mutation RecalculateDriverStatistics($driverId: String) {
+  recalculateDriverStatistics(driverId: $driverId) {
+    ...RideStatisticFragment
+  }
+}
+
+mutation RecalculateUserStatistics($userId: String) {
+  recalculateUserStatistics(userId: $userId) {
+    ...RideStatisticFragment
+  }
+}

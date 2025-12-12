@@ -25,6 +25,7 @@ import { RideModule } from 'src/ride/drivers.module';
 import { ScanSessionModule } from 'src/scan-session/scan-session.module';
 import { NotificationModule } from 'src/notification/notification.module';
 import { FaqModule } from 'src/faq/faq.module';
+import { StatisticsModule } from 'src/statistics/statistics.module';
 
 @Module({
   imports: [
@@ -70,6 +71,7 @@ import { FaqModule } from 'src/faq/faq.module';
     ScanSessionModule,
     NotificationModule,
     FaqModule,
+    StatisticsModule,
   ],
   providers: [DateTimeScalar],
 })

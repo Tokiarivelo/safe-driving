@@ -1,0 +1,46 @@
+query GetDriverStatistics($driverId: String) {
+  getDriverStatistics(driverId: $driverId) {
+    statistics {
+      ...RideStatisticFragment
+      driver {
+        id
+        firstName
+        lastName
+        email
+        avatar {
+          url
+        }
+      }
+    }
+    success
+    message
+  }
+}
+
+query GetUserStatistics($userId: String) {
+  getUserStatistics(userId: $userId) {
+    statistics {
+      ...RideStatisticFragment
+      user {
+        id
+        firstName
+        lastName
+        email
+        avatar {
+          url
+        }
+      }
+    }
+    success
+    message
+  }
+}
+
+query GetTopDrivers($limit: Int) {
+  getTopDrivers(limit: $limit) {
+    drivers {
+      ...TopDriverStatisticFragment
+    }
+    total
+  }
+}

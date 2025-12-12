@@ -319,8 +319,21 @@ function Dashboard() {
                 </div>
               </ProgressLink>
 
-              {/* Blocs vides */}
-              <div className={blockClass}></div>
+              {/* Bloc Statistiques */}
+              <ProgressLink href="/driver/dashboard/stats">
+                <div className={`${blockClass} auth-border`}>
+                  <div className="flex-1 flex items-center justify-center">
+                    <div className="w-16 h-16 bg-[#E8B4F9] rounded-full flex items-center justify-center">
+                      <Icon icon="mdi:chart-line" width="36" height="36" className="text-purple-700" />
+                    </div>
+                  </div>
+                  <p className="absolute bottom-2 text-[10px] sm:text-sm md:text-base text-auth-color-placeholder font-medium">
+                    Statistiques
+                  </p>
+                </div>
+              </ProgressLink>
+
+              {/* Bloc vide */}
               <div className={blockClass}></div>
             </div>
           </div>

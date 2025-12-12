@@ -99,6 +99,19 @@ export enum RoleScalarFieldEnum {
     name = "name"
 }
 
+export enum RideStatisticScalarFieldEnum {
+    id = "id",
+    driverId = "driverId",
+    userId = "userId",
+    completedRides = "completedRides",
+    revenue = "revenue",
+    averageRating = "averageRating",
+    totalReviews = "totalReviews",
+    motivationScore = "motivationScore",
+    createdAt = "createdAt",
+    updatedAt = "updatedAt"
+}
+
 export enum RideParticipantScalarFieldEnum {
     id = "id",
     rideId = "rideId",
@@ -467,6 +480,7 @@ registerEnumType(RefreshTokenScalarFieldEnum, { name: 'RefreshTokenScalarFieldEn
 registerEnumType(ReviewScalarFieldEnum, { name: 'ReviewScalarFieldEnum', description: undefined })
 registerEnumType(RideScalarFieldEnum, { name: 'RideScalarFieldEnum', description: undefined })
 registerEnumType(RideParticipantScalarFieldEnum, { name: 'RideParticipantScalarFieldEnum', description: undefined })
+registerEnumType(RideStatisticScalarFieldEnum, { name: 'RideStatisticScalarFieldEnum', description: undefined })
 registerEnumType(RoleScalarFieldEnum, { name: 'RoleScalarFieldEnum', description: undefined })
 registerEnumType(UserScalarFieldEnum, { name: 'UserScalarFieldEnum', description: undefined })
 registerEnumType(UserCoverScalarFieldEnum, { name: 'UserCoverScalarFieldEnum', description: undefined })
@@ -21837,6 +21851,40 @@ export class EnumVehicleDocumentTypeWithAggregatesFilter {
 }
 
 @InputType()
+export class FloatFieldUpdateOperationsInput {
+    @Field(() => Float, {nullable:true})
+    set?: number;
+    @Field(() => Float, {nullable:true})
+    increment?: number;
+    @Field(() => Float, {nullable:true})
+    decrement?: number;
+    @Field(() => Float, {nullable:true})
+    multiply?: number;
+    @Field(() => Float, {nullable:true})
+    divide?: number;
+}
+
+@InputType()
+export class FloatFilter {
+    @Field(() => Float, {nullable:true})
+    equals?: number;
+    @Field(() => [Float], {nullable:true})
+    in?: Array<number>;
+    @Field(() => [Float], {nullable:true})
+    notIn?: Array<number>;
+    @Field(() => Float, {nullable:true})
+    lt?: number;
+    @Field(() => Float, {nullable:true})
+    lte?: number;
+    @Field(() => Float, {nullable:true})
+    gt?: number;
+    @Field(() => Float, {nullable:true})
+    gte?: number;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    not?: InstanceType<typeof NestedFloatFilter>;
+}
+
+@InputType()
 export class FloatNullableFilter {
     @Field(() => Float, {nullable:true})
     equals?: number;
@@ -21884,6 +21932,36 @@ export class FloatNullableWithAggregatesFilter {
     _min?: InstanceType<typeof NestedFloatNullableFilter>;
     @Field(() => NestedFloatNullableFilter, {nullable:true})
     _max?: InstanceType<typeof NestedFloatNullableFilter>;
+}
+
+@InputType()
+export class FloatWithAggregatesFilter {
+    @Field(() => Float, {nullable:true})
+    equals?: number;
+    @Field(() => [Float], {nullable:true})
+    in?: Array<number>;
+    @Field(() => [Float], {nullable:true})
+    notIn?: Array<number>;
+    @Field(() => Float, {nullable:true})
+    lt?: number;
+    @Field(() => Float, {nullable:true})
+    lte?: number;
+    @Field(() => Float, {nullable:true})
+    gt?: number;
+    @Field(() => Float, {nullable:true})
+    gte?: number;
+    @Field(() => NestedFloatWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedFloatWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    _avg?: InstanceType<typeof NestedFloatFilter>;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    _sum?: InstanceType<typeof NestedFloatFilter>;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedFloatFilter>;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedFloatFilter>;
 }
 
 @InputType()
@@ -22730,6 +22808,36 @@ export class NestedFloatNullableWithAggregatesFilter {
     _min?: InstanceType<typeof NestedFloatNullableFilter>;
     @Field(() => NestedFloatNullableFilter, {nullable:true})
     _max?: InstanceType<typeof NestedFloatNullableFilter>;
+}
+
+@InputType()
+export class NestedFloatWithAggregatesFilter {
+    @Field(() => Float, {nullable:true})
+    equals?: number;
+    @Field(() => [Float], {nullable:true})
+    in?: Array<number>;
+    @Field(() => [Float], {nullable:true})
+    notIn?: Array<number>;
+    @Field(() => Float, {nullable:true})
+    lt?: number;
+    @Field(() => Float, {nullable:true})
+    lte?: number;
+    @Field(() => Float, {nullable:true})
+    gt?: number;
+    @Field(() => Float, {nullable:true})
+    gte?: number;
+    @Field(() => NestedFloatWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedFloatWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    _avg?: InstanceType<typeof NestedFloatFilter>;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    _sum?: InstanceType<typeof NestedFloatFilter>;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedFloatFilter>;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedFloatFilter>;
 }
 
 @InputType()
@@ -32879,6 +32987,1534 @@ export class UpsertOneRideParticipantArgs {
 }
 
 @ObjectType()
+export class AggregateRideStatistic {
+    @Field(() => RideStatisticCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof RideStatisticCountAggregate>;
+    @Field(() => RideStatisticAvgAggregate, {nullable:true})
+    _avg?: InstanceType<typeof RideStatisticAvgAggregate>;
+    @Field(() => RideStatisticSumAggregate, {nullable:true})
+    _sum?: InstanceType<typeof RideStatisticSumAggregate>;
+    @Field(() => RideStatisticMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof RideStatisticMinAggregate>;
+    @Field(() => RideStatisticMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof RideStatisticMaxAggregate>;
+}
+
+@ArgsType()
+export class CreateManyRideStatisticArgs {
+    @Field(() => [RideStatisticCreateManyInput], {nullable:false})
+    @Type(() => RideStatisticCreateManyInput)
+    data!: Array<RideStatisticCreateManyInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@ArgsType()
+export class CreateOneRideStatisticArgs {
+    @Field(() => RideStatisticCreateInput, {nullable:false})
+    @Type(() => RideStatisticCreateInput)
+    data!: InstanceType<typeof RideStatisticCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManyRideStatisticArgs {
+    @Field(() => RideStatisticWhereInput, {nullable:true})
+    @Type(() => RideStatisticWhereInput)
+    where?: InstanceType<typeof RideStatisticWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class DeleteOneRideStatisticArgs {
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:false})
+    @Type(() => RideStatisticWhereUniqueInput)
+    where!: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindFirstRideStatisticOrThrowArgs {
+    @Field(() => RideStatisticWhereInput, {nullable:true})
+    @Type(() => RideStatisticWhereInput)
+    where?: InstanceType<typeof RideStatisticWhereInput>;
+    @Field(() => [RideStatisticOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<RideStatisticOrderByWithRelationInput>;
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [RideStatisticScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${RideStatisticScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstRideStatisticArgs {
+    @Field(() => RideStatisticWhereInput, {nullable:true})
+    @Type(() => RideStatisticWhereInput)
+    where?: InstanceType<typeof RideStatisticWhereInput>;
+    @Field(() => [RideStatisticOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<RideStatisticOrderByWithRelationInput>;
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [RideStatisticScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${RideStatisticScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManyRideStatisticArgs {
+    @Field(() => RideStatisticWhereInput, {nullable:true})
+    @Type(() => RideStatisticWhereInput)
+    where?: InstanceType<typeof RideStatisticWhereInput>;
+    @Field(() => [RideStatisticOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<RideStatisticOrderByWithRelationInput>;
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [RideStatisticScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${RideStatisticScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueRideStatisticOrThrowArgs {
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:false})
+    @Type(() => RideStatisticWhereUniqueInput)
+    where!: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindUniqueRideStatisticArgs {
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:false})
+    @Type(() => RideStatisticWhereUniqueInput)
+    where!: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class RideStatisticAggregateArgs {
+    @Field(() => RideStatisticWhereInput, {nullable:true})
+    @Type(() => RideStatisticWhereInput)
+    where?: InstanceType<typeof RideStatisticWhereInput>;
+    @Field(() => [RideStatisticOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<RideStatisticOrderByWithRelationInput>;
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => RideStatisticCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof RideStatisticCountAggregateInput>;
+    @Field(() => RideStatisticAvgAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof RideStatisticAvgAggregateInput>;
+    @Field(() => RideStatisticSumAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof RideStatisticSumAggregateInput>;
+    @Field(() => RideStatisticMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof RideStatisticMinAggregateInput>;
+    @Field(() => RideStatisticMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof RideStatisticMaxAggregateInput>;
+}
+
+@InputType()
+export class RideStatisticAvgAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    completedRides?: true;
+    @Field(() => Boolean, {nullable:true})
+    revenue?: true;
+    @Field(() => Boolean, {nullable:true})
+    averageRating?: true;
+    @Field(() => Boolean, {nullable:true})
+    totalReviews?: true;
+    @Field(() => Boolean, {nullable:true})
+    motivationScore?: true;
+}
+
+@ObjectType()
+export class RideStatisticAvgAggregate {
+    @Field(() => Float, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Float, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Float, {nullable:true})
+    motivationScore?: number;
+}
+
+@InputType()
+export class RideStatisticAvgOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    completedRides?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revenue?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    averageRating?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    totalReviews?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    motivationScore?: `${SortOrder}`;
+}
+
+@InputType()
+export class RideStatisticCountAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverId?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    completedRides?: true;
+    @Field(() => Boolean, {nullable:true})
+    revenue?: true;
+    @Field(() => Boolean, {nullable:true})
+    averageRating?: true;
+    @Field(() => Boolean, {nullable:true})
+    totalReviews?: true;
+    @Field(() => Boolean, {nullable:true})
+    motivationScore?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    _all?: true;
+}
+
+@ObjectType()
+export class RideStatisticCountAggregate {
+    @Field(() => Int, {nullable:false})
+    id!: number;
+    @Field(() => Int, {nullable:false})
+    driverId!: number;
+    @Field(() => Int, {nullable:false})
+    userId!: number;
+    @Field(() => Int, {nullable:false})
+    completedRides!: number;
+    @Field(() => Int, {nullable:false})
+    revenue!: number;
+    @Field(() => Int, {nullable:false})
+    averageRating!: number;
+    @Field(() => Int, {nullable:false})
+    totalReviews!: number;
+    @Field(() => Int, {nullable:false})
+    motivationScore!: number;
+    @Field(() => Int, {nullable:false})
+    createdAt!: number;
+    @Field(() => Int, {nullable:false})
+    updatedAt!: number;
+    @Field(() => Int, {nullable:false})
+    _all!: number;
+}
+
+@InputType()
+export class RideStatisticCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    completedRides?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revenue?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    averageRating?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    totalReviews?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    motivationScore?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class RideStatisticCreateManyDriverInputEnvelope {
+    @Field(() => [RideStatisticCreateManyDriverInput], {nullable:false})
+    @Type(() => RideStatisticCreateManyDriverInput)
+    data!: Array<RideStatisticCreateManyDriverInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class RideStatisticCreateManyDriverInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class RideStatisticCreateManyUserInputEnvelope {
+    @Field(() => [RideStatisticCreateManyUserInput], {nullable:false})
+    @Type(() => RideStatisticCreateManyUserInput)
+    data!: Array<RideStatisticCreateManyUserInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class RideStatisticCreateManyUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    driverId?: string;
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class RideStatisticCreateManyInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    driverId?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class RideStatisticCreateNestedManyWithoutDriverInput {
+    @Field(() => [RideStatisticCreateWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticCreateWithoutDriverInput)
+    create?: Array<RideStatisticCreateWithoutDriverInput>;
+    @Field(() => [RideStatisticCreateOrConnectWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticCreateOrConnectWithoutDriverInput)
+    connectOrCreate?: Array<RideStatisticCreateOrConnectWithoutDriverInput>;
+    @Field(() => RideStatisticCreateManyDriverInputEnvelope, {nullable:true})
+    @Type(() => RideStatisticCreateManyDriverInputEnvelope)
+    createMany?: InstanceType<typeof RideStatisticCreateManyDriverInputEnvelope>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class RideStatisticCreateNestedManyWithoutUserInput {
+    @Field(() => [RideStatisticCreateWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticCreateWithoutUserInput)
+    create?: Array<RideStatisticCreateWithoutUserInput>;
+    @Field(() => [RideStatisticCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<RideStatisticCreateOrConnectWithoutUserInput>;
+    @Field(() => RideStatisticCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => RideStatisticCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof RideStatisticCreateManyUserInputEnvelope>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class RideStatisticCreateOrConnectWithoutDriverInput {
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:false})
+    @Type(() => RideStatisticWhereUniqueInput)
+    where!: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+    @Field(() => RideStatisticCreateWithoutDriverInput, {nullable:false})
+    @Type(() => RideStatisticCreateWithoutDriverInput)
+    create!: InstanceType<typeof RideStatisticCreateWithoutDriverInput>;
+}
+
+@InputType()
+export class RideStatisticCreateOrConnectWithoutUserInput {
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:false})
+    @Type(() => RideStatisticWhereUniqueInput)
+    where!: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+    @Field(() => RideStatisticCreateWithoutUserInput, {nullable:false})
+    @Type(() => RideStatisticCreateWithoutUserInput)
+    create!: InstanceType<typeof RideStatisticCreateWithoutUserInput>;
+}
+
+@InputType()
+export class RideStatisticCreateWithoutDriverInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserCreateNestedOneWithoutUserStatisticsInput, {nullable:true})
+    @Type(() => UserCreateNestedOneWithoutUserStatisticsInput)
+    user?: InstanceType<typeof UserCreateNestedOneWithoutUserStatisticsInput>;
+}
+
+@InputType()
+export class RideStatisticCreateWithoutUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserCreateNestedOneWithoutDriverStatisticsInput, {nullable:true})
+    @Type(() => UserCreateNestedOneWithoutDriverStatisticsInput)
+    driver?: InstanceType<typeof UserCreateNestedOneWithoutDriverStatisticsInput>;
+}
+
+@InputType()
+export class RideStatisticCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserCreateNestedOneWithoutDriverStatisticsInput, {nullable:true})
+    @Type(() => UserCreateNestedOneWithoutDriverStatisticsInput)
+    driver?: InstanceType<typeof UserCreateNestedOneWithoutDriverStatisticsInput>;
+    @Field(() => UserCreateNestedOneWithoutUserStatisticsInput, {nullable:true})
+    @Type(() => UserCreateNestedOneWithoutUserStatisticsInput)
+    user?: InstanceType<typeof UserCreateNestedOneWithoutUserStatisticsInput>;
+}
+
+@ArgsType()
+export class RideStatisticGroupByArgs {
+    @Field(() => RideStatisticWhereInput, {nullable:true})
+    @Type(() => RideStatisticWhereInput)
+    where?: InstanceType<typeof RideStatisticWhereInput>;
+    @Field(() => [RideStatisticOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<RideStatisticOrderByWithAggregationInput>;
+    @Field(() => [RideStatisticScalarFieldEnum], {nullable:false})
+    by!: Array<`${RideStatisticScalarFieldEnum}`>;
+    @Field(() => RideStatisticScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof RideStatisticScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => RideStatisticCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof RideStatisticCountAggregateInput>;
+    @Field(() => RideStatisticAvgAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof RideStatisticAvgAggregateInput>;
+    @Field(() => RideStatisticSumAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof RideStatisticSumAggregateInput>;
+    @Field(() => RideStatisticMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof RideStatisticMinAggregateInput>;
+    @Field(() => RideStatisticMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof RideStatisticMaxAggregateInput>;
+}
+
+@ObjectType()
+export class RideStatisticGroupBy {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:true})
+    driverId?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => Int, {nullable:false})
+    completedRides!: number;
+    @Field(() => Float, {nullable:false})
+    revenue!: number;
+    @Field(() => Float, {nullable:false})
+    averageRating!: number;
+    @Field(() => Int, {nullable:false})
+    totalReviews!: number;
+    @Field(() => Int, {nullable:false})
+    motivationScore!: number;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
+    @Field(() => RideStatisticCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof RideStatisticCountAggregate>;
+    @Field(() => RideStatisticAvgAggregate, {nullable:true})
+    _avg?: InstanceType<typeof RideStatisticAvgAggregate>;
+    @Field(() => RideStatisticSumAggregate, {nullable:true})
+    _sum?: InstanceType<typeof RideStatisticSumAggregate>;
+    @Field(() => RideStatisticMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof RideStatisticMinAggregate>;
+    @Field(() => RideStatisticMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof RideStatisticMaxAggregate>;
+}
+
+@InputType()
+export class RideStatisticListRelationFilter {
+    @Field(() => RideStatisticWhereInput, {nullable:true})
+    every?: InstanceType<typeof RideStatisticWhereInput>;
+    @Field(() => RideStatisticWhereInput, {nullable:true})
+    some?: InstanceType<typeof RideStatisticWhereInput>;
+    @Field(() => RideStatisticWhereInput, {nullable:true})
+    none?: InstanceType<typeof RideStatisticWhereInput>;
+}
+
+@InputType()
+export class RideStatisticMaxAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverId?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    completedRides?: true;
+    @Field(() => Boolean, {nullable:true})
+    revenue?: true;
+    @Field(() => Boolean, {nullable:true})
+    averageRating?: true;
+    @Field(() => Boolean, {nullable:true})
+    totalReviews?: true;
+    @Field(() => Boolean, {nullable:true})
+    motivationScore?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class RideStatisticMaxAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    driverId?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class RideStatisticMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    completedRides?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revenue?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    averageRating?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    totalReviews?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    motivationScore?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class RideStatisticMinAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    driverId?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    completedRides?: true;
+    @Field(() => Boolean, {nullable:true})
+    revenue?: true;
+    @Field(() => Boolean, {nullable:true})
+    averageRating?: true;
+    @Field(() => Boolean, {nullable:true})
+    totalReviews?: true;
+    @Field(() => Boolean, {nullable:true})
+    motivationScore?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class RideStatisticMinAggregate {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    driverId?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class RideStatisticMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    driverId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    completedRides?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revenue?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    averageRating?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    totalReviews?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    motivationScore?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class RideStatisticOrderByRelationAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    _count?: `${SortOrder}`;
+}
+
+@InputType()
+export class RideStatisticOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    driverId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    userId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    completedRides?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revenue?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    averageRating?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    totalReviews?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    motivationScore?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => RideStatisticCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof RideStatisticCountOrderByAggregateInput>;
+    @Field(() => RideStatisticAvgOrderByAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof RideStatisticAvgOrderByAggregateInput>;
+    @Field(() => RideStatisticMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof RideStatisticMaxOrderByAggregateInput>;
+    @Field(() => RideStatisticMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof RideStatisticMinOrderByAggregateInput>;
+    @Field(() => RideStatisticSumOrderByAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof RideStatisticSumOrderByAggregateInput>;
+}
+
+@InputType()
+export class RideStatisticOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrderInput, {nullable:true})
+    driverId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    userId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    completedRides?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revenue?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    averageRating?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    totalReviews?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    motivationScore?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => UserOrderByWithRelationInput, {nullable:true})
+    @Type(() => UserOrderByWithRelationInput)
+    driver?: InstanceType<typeof UserOrderByWithRelationInput>;
+    @Field(() => UserOrderByWithRelationInput, {nullable:true})
+    @Type(() => UserOrderByWithRelationInput)
+    user?: InstanceType<typeof UserOrderByWithRelationInput>;
+}
+
+@InputType()
+export class RideStatisticScalarWhereWithAggregatesInput {
+    @Field(() => [RideStatisticScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<RideStatisticScalarWhereWithAggregatesInput>;
+    @Field(() => [RideStatisticScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<RideStatisticScalarWhereWithAggregatesInput>;
+    @Field(() => [RideStatisticScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<RideStatisticScalarWhereWithAggregatesInput>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    driverId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    userId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => IntWithAggregatesFilter, {nullable:true})
+    completedRides?: InstanceType<typeof IntWithAggregatesFilter>;
+    @Field(() => FloatWithAggregatesFilter, {nullable:true})
+    revenue?: InstanceType<typeof FloatWithAggregatesFilter>;
+    @Field(() => FloatWithAggregatesFilter, {nullable:true})
+    averageRating?: InstanceType<typeof FloatWithAggregatesFilter>;
+    @Field(() => IntWithAggregatesFilter, {nullable:true})
+    totalReviews?: InstanceType<typeof IntWithAggregatesFilter>;
+    @Field(() => IntWithAggregatesFilter, {nullable:true})
+    motivationScore?: InstanceType<typeof IntWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+}
+
+@InputType()
+export class RideStatisticScalarWhereInput {
+    @Field(() => [RideStatisticScalarWhereInput], {nullable:true})
+    AND?: Array<RideStatisticScalarWhereInput>;
+    @Field(() => [RideStatisticScalarWhereInput], {nullable:true})
+    OR?: Array<RideStatisticScalarWhereInput>;
+    @Field(() => [RideStatisticScalarWhereInput], {nullable:true})
+    NOT?: Array<RideStatisticScalarWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    driverId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    userId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    completedRides?: InstanceType<typeof IntFilter>;
+    @Field(() => FloatFilter, {nullable:true})
+    revenue?: InstanceType<typeof FloatFilter>;
+    @Field(() => FloatFilter, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+}
+
+@InputType()
+export class RideStatisticSumAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    completedRides?: true;
+    @Field(() => Boolean, {nullable:true})
+    revenue?: true;
+    @Field(() => Boolean, {nullable:true})
+    averageRating?: true;
+    @Field(() => Boolean, {nullable:true})
+    totalReviews?: true;
+    @Field(() => Boolean, {nullable:true})
+    motivationScore?: true;
+}
+
+@ObjectType()
+export class RideStatisticSumAggregate {
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+}
+
+@InputType()
+export class RideStatisticSumOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    completedRides?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    revenue?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    averageRating?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    totalReviews?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    motivationScore?: `${SortOrder}`;
+}
+
+@InputType()
+export class RideStatisticUncheckedCreateNestedManyWithoutDriverInput {
+    @Field(() => [RideStatisticCreateWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticCreateWithoutDriverInput)
+    create?: Array<RideStatisticCreateWithoutDriverInput>;
+    @Field(() => [RideStatisticCreateOrConnectWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticCreateOrConnectWithoutDriverInput)
+    connectOrCreate?: Array<RideStatisticCreateOrConnectWithoutDriverInput>;
+    @Field(() => RideStatisticCreateManyDriverInputEnvelope, {nullable:true})
+    @Type(() => RideStatisticCreateManyDriverInputEnvelope)
+    createMany?: InstanceType<typeof RideStatisticCreateManyDriverInputEnvelope>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class RideStatisticUncheckedCreateNestedManyWithoutUserInput {
+    @Field(() => [RideStatisticCreateWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticCreateWithoutUserInput)
+    create?: Array<RideStatisticCreateWithoutUserInput>;
+    @Field(() => [RideStatisticCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<RideStatisticCreateOrConnectWithoutUserInput>;
+    @Field(() => RideStatisticCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => RideStatisticCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof RideStatisticCreateManyUserInputEnvelope>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+}
+
+@InputType()
+export class RideStatisticUncheckedCreateWithoutDriverInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class RideStatisticUncheckedCreateWithoutUserInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    driverId?: string;
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class RideStatisticUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    driverId?: string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
+    @Field(() => Int, {nullable:true})
+    completedRides?: number;
+    @Field(() => Float, {nullable:true})
+    revenue?: number;
+    @Field(() => Float, {nullable:true})
+    averageRating?: number;
+    @Field(() => Int, {nullable:true})
+    totalReviews?: number;
+    @Field(() => Int, {nullable:true})
+    motivationScore?: number;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class RideStatisticUncheckedUpdateManyWithoutDriverNestedInput {
+    @Field(() => [RideStatisticCreateWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticCreateWithoutDriverInput)
+    create?: Array<RideStatisticCreateWithoutDriverInput>;
+    @Field(() => [RideStatisticCreateOrConnectWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticCreateOrConnectWithoutDriverInput)
+    connectOrCreate?: Array<RideStatisticCreateOrConnectWithoutDriverInput>;
+    @Field(() => [RideStatisticUpsertWithWhereUniqueWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticUpsertWithWhereUniqueWithoutDriverInput)
+    upsert?: Array<RideStatisticUpsertWithWhereUniqueWithoutDriverInput>;
+    @Field(() => RideStatisticCreateManyDriverInputEnvelope, {nullable:true})
+    @Type(() => RideStatisticCreateManyDriverInputEnvelope)
+    createMany?: InstanceType<typeof RideStatisticCreateManyDriverInputEnvelope>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticUpdateWithWhereUniqueWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticUpdateWithWhereUniqueWithoutDriverInput)
+    update?: Array<RideStatisticUpdateWithWhereUniqueWithoutDriverInput>;
+    @Field(() => [RideStatisticUpdateManyWithWhereWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticUpdateManyWithWhereWithoutDriverInput)
+    updateMany?: Array<RideStatisticUpdateManyWithWhereWithoutDriverInput>;
+    @Field(() => [RideStatisticScalarWhereInput], {nullable:true})
+    @Type(() => RideStatisticScalarWhereInput)
+    deleteMany?: Array<RideStatisticScalarWhereInput>;
+}
+
+@InputType()
+export class RideStatisticUncheckedUpdateManyWithoutDriverInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    completedRides?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    revenue?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class RideStatisticUncheckedUpdateManyWithoutUserNestedInput {
+    @Field(() => [RideStatisticCreateWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticCreateWithoutUserInput)
+    create?: Array<RideStatisticCreateWithoutUserInput>;
+    @Field(() => [RideStatisticCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<RideStatisticCreateOrConnectWithoutUserInput>;
+    @Field(() => [RideStatisticUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<RideStatisticUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => RideStatisticCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => RideStatisticCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof RideStatisticCreateManyUserInputEnvelope>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<RideStatisticUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [RideStatisticUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<RideStatisticUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [RideStatisticScalarWhereInput], {nullable:true})
+    @Type(() => RideStatisticScalarWhereInput)
+    deleteMany?: Array<RideStatisticScalarWhereInput>;
+}
+
+@InputType()
+export class RideStatisticUncheckedUpdateManyWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    completedRides?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    revenue?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class RideStatisticUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    completedRides?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    revenue?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class RideStatisticUncheckedUpdateWithoutDriverInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    completedRides?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    revenue?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class RideStatisticUncheckedUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    completedRides?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    revenue?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class RideStatisticUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    driverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    completedRides?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    revenue?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class RideStatisticUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    completedRides?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    revenue?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class RideStatisticUpdateManyWithWhereWithoutDriverInput {
+    @Field(() => RideStatisticScalarWhereInput, {nullable:false})
+    @Type(() => RideStatisticScalarWhereInput)
+    where!: InstanceType<typeof RideStatisticScalarWhereInput>;
+    @Field(() => RideStatisticUpdateManyMutationInput, {nullable:false})
+    @Type(() => RideStatisticUpdateManyMutationInput)
+    data!: InstanceType<typeof RideStatisticUpdateManyMutationInput>;
+}
+
+@InputType()
+export class RideStatisticUpdateManyWithWhereWithoutUserInput {
+    @Field(() => RideStatisticScalarWhereInput, {nullable:false})
+    @Type(() => RideStatisticScalarWhereInput)
+    where!: InstanceType<typeof RideStatisticScalarWhereInput>;
+    @Field(() => RideStatisticUpdateManyMutationInput, {nullable:false})
+    @Type(() => RideStatisticUpdateManyMutationInput)
+    data!: InstanceType<typeof RideStatisticUpdateManyMutationInput>;
+}
+
+@InputType()
+export class RideStatisticUpdateManyWithoutDriverNestedInput {
+    @Field(() => [RideStatisticCreateWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticCreateWithoutDriverInput)
+    create?: Array<RideStatisticCreateWithoutDriverInput>;
+    @Field(() => [RideStatisticCreateOrConnectWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticCreateOrConnectWithoutDriverInput)
+    connectOrCreate?: Array<RideStatisticCreateOrConnectWithoutDriverInput>;
+    @Field(() => [RideStatisticUpsertWithWhereUniqueWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticUpsertWithWhereUniqueWithoutDriverInput)
+    upsert?: Array<RideStatisticUpsertWithWhereUniqueWithoutDriverInput>;
+    @Field(() => RideStatisticCreateManyDriverInputEnvelope, {nullable:true})
+    @Type(() => RideStatisticCreateManyDriverInputEnvelope)
+    createMany?: InstanceType<typeof RideStatisticCreateManyDriverInputEnvelope>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticUpdateWithWhereUniqueWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticUpdateWithWhereUniqueWithoutDriverInput)
+    update?: Array<RideStatisticUpdateWithWhereUniqueWithoutDriverInput>;
+    @Field(() => [RideStatisticUpdateManyWithWhereWithoutDriverInput], {nullable:true})
+    @Type(() => RideStatisticUpdateManyWithWhereWithoutDriverInput)
+    updateMany?: Array<RideStatisticUpdateManyWithWhereWithoutDriverInput>;
+    @Field(() => [RideStatisticScalarWhereInput], {nullable:true})
+    @Type(() => RideStatisticScalarWhereInput)
+    deleteMany?: Array<RideStatisticScalarWhereInput>;
+}
+
+@InputType()
+export class RideStatisticUpdateManyWithoutUserNestedInput {
+    @Field(() => [RideStatisticCreateWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticCreateWithoutUserInput)
+    create?: Array<RideStatisticCreateWithoutUserInput>;
+    @Field(() => [RideStatisticCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<RideStatisticCreateOrConnectWithoutUserInput>;
+    @Field(() => [RideStatisticUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<RideStatisticUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => RideStatisticCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => RideStatisticCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof RideStatisticCreateManyUserInputEnvelope>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticWhereUniqueInput], {nullable:true})
+    @Type(() => RideStatisticWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>>;
+    @Field(() => [RideStatisticUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<RideStatisticUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [RideStatisticUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => RideStatisticUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<RideStatisticUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [RideStatisticScalarWhereInput], {nullable:true})
+    @Type(() => RideStatisticScalarWhereInput)
+    deleteMany?: Array<RideStatisticScalarWhereInput>;
+}
+
+@InputType()
+export class RideStatisticUpdateWithWhereUniqueWithoutDriverInput {
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:false})
+    @Type(() => RideStatisticWhereUniqueInput)
+    where!: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+    @Field(() => RideStatisticUpdateWithoutDriverInput, {nullable:false})
+    @Type(() => RideStatisticUpdateWithoutDriverInput)
+    data!: InstanceType<typeof RideStatisticUpdateWithoutDriverInput>;
+}
+
+@InputType()
+export class RideStatisticUpdateWithWhereUniqueWithoutUserInput {
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:false})
+    @Type(() => RideStatisticWhereUniqueInput)
+    where!: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+    @Field(() => RideStatisticUpdateWithoutUserInput, {nullable:false})
+    @Type(() => RideStatisticUpdateWithoutUserInput)
+    data!: InstanceType<typeof RideStatisticUpdateWithoutUserInput>;
+}
+
+@InputType()
+export class RideStatisticUpdateWithoutDriverInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    completedRides?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    revenue?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => UserUpdateOneWithoutUserStatisticsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneWithoutUserStatisticsNestedInput)
+    user?: InstanceType<typeof UserUpdateOneWithoutUserStatisticsNestedInput>;
+}
+
+@InputType()
+export class RideStatisticUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    completedRides?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    revenue?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => UserUpdateOneWithoutDriverStatisticsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneWithoutDriverStatisticsNestedInput)
+    driver?: InstanceType<typeof UserUpdateOneWithoutDriverStatisticsNestedInput>;
+}
+
+@InputType()
+export class RideStatisticUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    completedRides?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    revenue?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => UserUpdateOneWithoutDriverStatisticsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneWithoutDriverStatisticsNestedInput)
+    driver?: InstanceType<typeof UserUpdateOneWithoutDriverStatisticsNestedInput>;
+    @Field(() => UserUpdateOneWithoutUserStatisticsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneWithoutUserStatisticsNestedInput)
+    user?: InstanceType<typeof UserUpdateOneWithoutUserStatisticsNestedInput>;
+}
+
+@InputType()
+export class RideStatisticUpsertWithWhereUniqueWithoutDriverInput {
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:false})
+    @Type(() => RideStatisticWhereUniqueInput)
+    where!: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+    @Field(() => RideStatisticUpdateWithoutDriverInput, {nullable:false})
+    @Type(() => RideStatisticUpdateWithoutDriverInput)
+    update!: InstanceType<typeof RideStatisticUpdateWithoutDriverInput>;
+    @Field(() => RideStatisticCreateWithoutDriverInput, {nullable:false})
+    @Type(() => RideStatisticCreateWithoutDriverInput)
+    create!: InstanceType<typeof RideStatisticCreateWithoutDriverInput>;
+}
+
+@InputType()
+export class RideStatisticUpsertWithWhereUniqueWithoutUserInput {
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:false})
+    @Type(() => RideStatisticWhereUniqueInput)
+    where!: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+    @Field(() => RideStatisticUpdateWithoutUserInput, {nullable:false})
+    @Type(() => RideStatisticUpdateWithoutUserInput)
+    update!: InstanceType<typeof RideStatisticUpdateWithoutUserInput>;
+    @Field(() => RideStatisticCreateWithoutUserInput, {nullable:false})
+    @Type(() => RideStatisticCreateWithoutUserInput)
+    create!: InstanceType<typeof RideStatisticCreateWithoutUserInput>;
+}
+
+@InputType()
+export class RideStatisticWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => [RideStatisticWhereInput], {nullable:true})
+    AND?: Array<RideStatisticWhereInput>;
+    @Field(() => [RideStatisticWhereInput], {nullable:true})
+    OR?: Array<RideStatisticWhereInput>;
+    @Field(() => [RideStatisticWhereInput], {nullable:true})
+    NOT?: Array<RideStatisticWhereInput>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    driverId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    userId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    completedRides?: InstanceType<typeof IntFilter>;
+    @Field(() => FloatFilter, {nullable:true})
+    revenue?: InstanceType<typeof FloatFilter>;
+    @Field(() => FloatFilter, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => UserNullableScalarRelationFilter, {nullable:true})
+    @Type(() => UserNullableScalarRelationFilter)
+    driver?: InstanceType<typeof UserNullableScalarRelationFilter>;
+    @Field(() => UserNullableScalarRelationFilter, {nullable:true})
+    @Type(() => UserNullableScalarRelationFilter)
+    user?: InstanceType<typeof UserNullableScalarRelationFilter>;
+}
+
+@InputType()
+export class RideStatisticWhereInput {
+    @Field(() => [RideStatisticWhereInput], {nullable:true})
+    AND?: Array<RideStatisticWhereInput>;
+    @Field(() => [RideStatisticWhereInput], {nullable:true})
+    OR?: Array<RideStatisticWhereInput>;
+    @Field(() => [RideStatisticWhereInput], {nullable:true})
+    NOT?: Array<RideStatisticWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    driverId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    userId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    completedRides?: InstanceType<typeof IntFilter>;
+    @Field(() => FloatFilter, {nullable:true})
+    revenue?: InstanceType<typeof FloatFilter>;
+    @Field(() => FloatFilter, {nullable:true})
+    averageRating?: InstanceType<typeof FloatFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    totalReviews?: InstanceType<typeof IntFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    motivationScore?: InstanceType<typeof IntFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => UserNullableScalarRelationFilter, {nullable:true})
+    @Type(() => UserNullableScalarRelationFilter)
+    driver?: InstanceType<typeof UserNullableScalarRelationFilter>;
+    @Field(() => UserNullableScalarRelationFilter, {nullable:true})
+    @Type(() => UserNullableScalarRelationFilter)
+    user?: InstanceType<typeof UserNullableScalarRelationFilter>;
+}
+
+@ObjectType()
+export class RideStatistic {
+    @Field(() => String, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:true})
+    driverId!: string | null;
+    @Field(() => String, {nullable:true})
+    userId!: string | null;
+    @Field(() => Int, {defaultValue:0,nullable:false})
+    completedRides!: number;
+    @Field(() => Float, {defaultValue:0,nullable:false})
+    revenue!: number;
+    @Field(() => Float, {defaultValue:0,nullable:false})
+    averageRating!: number;
+    @Field(() => Int, {defaultValue:0,nullable:false})
+    totalReviews!: number;
+    @Field(() => Int, {defaultValue:0,nullable:false})
+    motivationScore!: number;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
+    @Field(() => User, {nullable:true})
+    driver?: InstanceType<typeof User> | null;
+    @Field(() => User, {nullable:true})
+    user?: InstanceType<typeof User> | null;
+}
+
+@ArgsType()
+export class UpdateManyRideStatisticArgs {
+    @Field(() => RideStatisticUpdateManyMutationInput, {nullable:false})
+    @Type(() => RideStatisticUpdateManyMutationInput)
+    data!: InstanceType<typeof RideStatisticUpdateManyMutationInput>;
+    @Field(() => RideStatisticWhereInput, {nullable:true})
+    @Type(() => RideStatisticWhereInput)
+    where?: InstanceType<typeof RideStatisticWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class UpdateOneRideStatisticArgs {
+    @Field(() => RideStatisticUpdateInput, {nullable:false})
+    @Type(() => RideStatisticUpdateInput)
+    data!: InstanceType<typeof RideStatisticUpdateInput>;
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:false})
+    @Type(() => RideStatisticWhereUniqueInput)
+    where!: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpsertOneRideStatisticArgs {
+    @Field(() => RideStatisticWhereUniqueInput, {nullable:false})
+    @Type(() => RideStatisticWhereUniqueInput)
+    where!: Prisma.AtLeast<RideStatisticWhereUniqueInput, 'id'>;
+    @Field(() => RideStatisticCreateInput, {nullable:false})
+    @Type(() => RideStatisticCreateInput)
+    create!: InstanceType<typeof RideStatisticCreateInput>;
+    @Field(() => RideStatisticUpdateInput, {nullable:false})
+    @Type(() => RideStatisticUpdateInput)
+    update!: InstanceType<typeof RideStatisticUpdateInput>;
+}
+
+@ObjectType()
 export class AggregateRole {
     @Field(() => RoleCountAggregate, {nullable:true})
     _count?: InstanceType<typeof RoleCountAggregate>;
@@ -33815,6 +35451,10 @@ export class UserCount {
     notifications?: number;
     @Field(() => Int, {nullable:false})
     sentNotifications?: number;
+    @Field(() => Int, {nullable:false})
+    driverStatistics?: number;
+    @Field(() => Int, {nullable:false})
+    userStatistics?: number;
 }
 
 @InputType()
@@ -33925,6 +35565,19 @@ export class UserCreateNestedOneWithoutConversationParticipantInput {
     @Field(() => UserCreateOrConnectWithoutConversationParticipantInput, {nullable:true})
     @Type(() => UserCreateOrConnectWithoutConversationParticipantInput)
     connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutConversationParticipantInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+}
+
+@InputType()
+export class UserCreateNestedOneWithoutDriverStatisticsInput {
+    @Field(() => UserCreateWithoutDriverStatisticsInput, {nullable:true})
+    @Type(() => UserCreateWithoutDriverStatisticsInput)
+    create?: InstanceType<typeof UserCreateWithoutDriverStatisticsInput>;
+    @Field(() => UserCreateOrConnectWithoutDriverStatisticsInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutDriverStatisticsInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutDriverStatisticsInput>;
     @Field(() => UserWhereUniqueInput, {nullable:true})
     @Type(() => UserWhereUniqueInput)
     connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
@@ -34113,6 +35766,19 @@ export class UserCreateNestedOneWithoutUserPreferenceInput {
 }
 
 @InputType()
+export class UserCreateNestedOneWithoutUserStatisticsInput {
+    @Field(() => UserCreateWithoutUserStatisticsInput, {nullable:true})
+    @Type(() => UserCreateWithoutUserStatisticsInput)
+    create?: InstanceType<typeof UserCreateWithoutUserStatisticsInput>;
+    @Field(() => UserCreateOrConnectWithoutUserStatisticsInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutUserStatisticsInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutUserStatisticsInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+}
+
+@InputType()
 export class UserCreateNestedOneWithoutVehiclesInput {
     @Field(() => UserCreateWithoutVehiclesInput, {nullable:true})
     @Type(() => UserCreateWithoutVehiclesInput)
@@ -34143,6 +35809,16 @@ export class UserCreateOrConnectWithoutConversationParticipantInput {
     @Field(() => UserCreateWithoutConversationParticipantInput, {nullable:false})
     @Type(() => UserCreateWithoutConversationParticipantInput)
     create!: InstanceType<typeof UserCreateWithoutConversationParticipantInput>;
+}
+
+@InputType()
+export class UserCreateOrConnectWithoutDriverStatisticsInput {
+    @Field(() => UserWhereUniqueInput, {nullable:false})
+    @Type(() => UserWhereUniqueInput)
+    where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserCreateWithoutDriverStatisticsInput, {nullable:false})
+    @Type(() => UserCreateWithoutDriverStatisticsInput)
+    create!: InstanceType<typeof UserCreateWithoutDriverStatisticsInput>;
 }
 
 @InputType()
@@ -34296,6 +35972,16 @@ export class UserCreateOrConnectWithoutUserPreferenceInput {
 }
 
 @InputType()
+export class UserCreateOrConnectWithoutUserStatisticsInput {
+    @Field(() => UserWhereUniqueInput, {nullable:false})
+    @Type(() => UserWhereUniqueInput)
+    where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserCreateWithoutUserStatisticsInput, {nullable:false})
+    @Type(() => UserCreateWithoutUserStatisticsInput)
+    create!: InstanceType<typeof UserCreateWithoutUserStatisticsInput>;
+}
+
+@InputType()
 export class UserCreateOrConnectWithoutVehiclesInput {
     @Field(() => UserWhereUniqueInput, {nullable:false})
     @Type(() => UserWhereUniqueInput)
@@ -34373,6 +36059,10 @@ export class UserCreateWithoutAvatarInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -34443,6 +36133,84 @@ export class UserCreateWithoutConversationParticipantInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserCreateWithoutDriverStatisticsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
+    @Field(() => String, {nullable:true})
+    userCoverId?: string;
+    @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
+    avatar?: InstanceType<typeof FileCreateNestedOneWithoutUserInput>;
+    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => DriverVehicleCreateNestedManyWithoutUserInput)
+    vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
+    @Field(() => RideCreateNestedManyWithoutDriverInput, {nullable:true})
+    @Type(() => RideCreateNestedManyWithoutDriverInput)
+    rides?: InstanceType<typeof RideCreateNestedManyWithoutDriverInput>;
+    @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutUserInput>;
+    @Field(() => ReviewCreateNestedManyWithoutUserInput, {nullable:true})
+    review?: InstanceType<typeof ReviewCreateNestedManyWithoutUserInput>;
+    @Field(() => RideParticipantCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => RideParticipantCreateNestedManyWithoutUserInput)
+    RideParticipant?: InstanceType<typeof RideParticipantCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => MessageCreateNestedManyWithoutSenderInput)
+    Message?: InstanceType<typeof MessageCreateNestedManyWithoutSenderInput>;
+    @Field(() => ConversationParticipantCreateNestedManyWithoutUserInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantCreateNestedManyWithoutUserInput>;
+    @Field(() => ReactionCreateNestedManyWithoutUserInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -34513,6 +36281,10 @@ export class UserCreateWithoutMessageReadReceiptInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -34582,6 +36354,10 @@ export class UserCreateWithoutMessageInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -34651,6 +36427,10 @@ export class UserCreateWithoutNotificationsInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -34721,6 +36501,10 @@ export class UserCreateWithoutQrTokenInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -34791,6 +36575,10 @@ export class UserCreateWithoutReactionInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -34861,6 +36649,10 @@ export class UserCreateWithoutReviewInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -34930,6 +36722,10 @@ export class UserCreateWithoutRideParticipantInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -34999,6 +36795,10 @@ export class UserCreateWithoutRidesInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -35069,6 +36869,10 @@ export class UserCreateWithoutRoleInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -35138,6 +36942,10 @@ export class UserCreateWithoutSentNotificationsInput {
     @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutUserInput)
     notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -35208,6 +37016,10 @@ export class UserCreateWithoutTokensInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -35278,6 +37090,10 @@ export class UserCreateWithoutUserCoverInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -35348,6 +37164,10 @@ export class UserCreateWithoutUserDocumentInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -35418,6 +37238,10 @@ export class UserCreateWithoutUserImageInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -35488,6 +37312,84 @@ export class UserCreateWithoutUserPreferenceInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserCreateWithoutUserStatisticsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
+    @Field(() => String, {nullable:true})
+    userCoverId?: string;
+    @Field(() => FileCreateNestedOneWithoutUserInput, {nullable:true})
+    avatar?: InstanceType<typeof FileCreateNestedOneWithoutUserInput>;
+    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => DriverVehicleCreateNestedManyWithoutUserInput)
+    vehicles?: InstanceType<typeof DriverVehicleCreateNestedManyWithoutUserInput>;
+    @Field(() => RideCreateNestedManyWithoutDriverInput, {nullable:true})
+    @Type(() => RideCreateNestedManyWithoutDriverInput)
+    rides?: InstanceType<typeof RideCreateNestedManyWithoutDriverInput>;
+    @Field(() => UserPreferenceCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentCreateNestedManyWithoutUserInput>;
+    @Field(() => ReviewCreateNestedManyWithoutUserInput, {nullable:true})
+    review?: InstanceType<typeof ReviewCreateNestedManyWithoutUserInput>;
+    @Field(() => RideParticipantCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => RideParticipantCreateNestedManyWithoutUserInput)
+    RideParticipant?: InstanceType<typeof RideParticipantCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => MessageCreateNestedManyWithoutSenderInput)
+    Message?: InstanceType<typeof MessageCreateNestedManyWithoutSenderInput>;
+    @Field(() => ConversationParticipantCreateNestedManyWithoutUserInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantCreateNestedManyWithoutUserInput>;
+    @Field(() => ReactionCreateNestedManyWithoutUserInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageReadReceiptCreateNestedManyWithoutUserInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenCreateNestedManyWithoutUserInput>;
+    @Field(() => UserCoverCreateNestedOneWithoutUserInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
 }
 
 @InputType()
@@ -35557,6 +37459,10 @@ export class UserCreateWithoutVehiclesInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -35629,6 +37535,10 @@ export class UserCreateInput {
     @Field(() => NotificationCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticCreateNestedManyWithoutUserInput>;
 }
 
 @ArgsType()
@@ -36018,6 +37928,10 @@ export class UserOrderByWithRelationInput {
     @Field(() => NotificationOrderByRelationAggregateInput, {nullable:true})
     @Type(() => NotificationOrderByRelationAggregateInput)
     sentNotifications?: InstanceType<typeof NotificationOrderByRelationAggregateInput>;
+    @Field(() => RideStatisticOrderByRelationAggregateInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticOrderByRelationAggregateInput>;
+    @Field(() => RideStatisticOrderByRelationAggregateInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticOrderByRelationAggregateInput>;
 }
 
 @InputType()
@@ -36201,6 +38115,10 @@ export class UserUncheckedCreateWithoutAvatarInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -36271,6 +38189,84 @@ export class UserUncheckedCreateWithoutConversationParticipantInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserUncheckedCreateWithoutDriverStatisticsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    avatarId?: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
+    @Field(() => String, {nullable:true})
+    userCoverId?: string;
+    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput)
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RideUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    @Type(() => RideUncheckedCreateNestedManyWithoutDriverInput)
+    rides?: InstanceType<typeof RideUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => ReviewUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RideParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => RideParticipantUncheckedCreateNestedManyWithoutUserInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => MessageUncheckedCreateNestedManyWithoutSenderInput)
+    Message?: InstanceType<typeof MessageUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => ConversationParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => ReactionUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -36341,6 +38337,10 @@ export class UserUncheckedCreateWithoutMessageReadReceiptInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -36410,6 +38410,10 @@ export class UserUncheckedCreateWithoutMessageInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -36479,6 +38483,10 @@ export class UserUncheckedCreateWithoutNotificationsInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -36549,6 +38557,10 @@ export class UserUncheckedCreateWithoutQrTokenInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -36619,6 +38631,10 @@ export class UserUncheckedCreateWithoutReactionInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -36689,6 +38705,10 @@ export class UserUncheckedCreateWithoutReviewInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -36758,6 +38778,10 @@ export class UserUncheckedCreateWithoutRideParticipantInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -36827,6 +38851,10 @@ export class UserUncheckedCreateWithoutRidesInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -36897,6 +38925,10 @@ export class UserUncheckedCreateWithoutRoleInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -36966,6 +38998,10 @@ export class UserUncheckedCreateWithoutSentNotificationsInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
     notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -37036,6 +39072,10 @@ export class UserUncheckedCreateWithoutTokensInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -37106,6 +39146,10 @@ export class UserUncheckedCreateWithoutUserCoverInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -37176,6 +39220,10 @@ export class UserUncheckedCreateWithoutUserDocumentInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -37246,6 +39294,10 @@ export class UserUncheckedCreateWithoutUserImageInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -37316,6 +39368,84 @@ export class UserUncheckedCreateWithoutUserPreferenceInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserUncheckedCreateWithoutUserStatisticsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    firstName!: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    username?: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Boolean, {nullable:true})
+    isVerified?: boolean;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    avatarId?: string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => UserStatus, {nullable:true})
+    status?: `${UserStatus}`;
+    @Field(() => UserDriverStatus, {nullable:true})
+    driverStatus?: `${UserDriverStatus}`;
+    @Field(() => String, {nullable:true})
+    userCoverId?: string;
+    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RoleUncheckedCreateNestedManyWithoutUsersInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedCreateNestedManyWithoutUsersInput>;
+    @Field(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => DriverVehicleUncheckedCreateNestedManyWithoutUserInput)
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RideUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    @Type(() => RideUncheckedCreateNestedManyWithoutDriverInput)
+    rides?: InstanceType<typeof RideUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => UserPreferenceUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => UserImageUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserDocumentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => ReviewUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => RideParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => RideParticipantUncheckedCreateNestedManyWithoutUserInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => MessageUncheckedCreateNestedManyWithoutSenderInput)
+    Message?: InstanceType<typeof MessageUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => ConversationParticipantUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => ReactionUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => QrTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => UserCoverUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUncheckedCreateNestedOneWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutUserInput)
+    notifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutUserInput>;
+    @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
+    @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
 }
 
 @InputType()
@@ -37385,6 +39515,10 @@ export class UserUncheckedCreateWithoutVehiclesInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -37457,6 +39591,10 @@ export class UserUncheckedCreateInput {
     @Field(() => NotificationUncheckedCreateNestedManyWithoutSenderInput, {nullable:true})
     @Type(() => NotificationUncheckedCreateNestedManyWithoutSenderInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedCreateNestedManyWithoutSenderInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutDriverInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutDriverInput>;
+    @Field(() => RideStatisticUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -37692,6 +39830,10 @@ export class UserUncheckedUpdateWithoutAvatarInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -37762,6 +39904,84 @@ export class UserUncheckedUpdateWithoutConversationParticipantInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserUncheckedUpdateWithoutDriverStatisticsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput)
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    @Type(() => RideUncheckedUpdateManyWithoutDriverNestedInput)
+    rides?: InstanceType<typeof RideUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReviewUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => RideParticipantUncheckedUpdateManyWithoutUserNestedInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => MessageUncheckedUpdateManyWithoutSenderNestedInput)
+    Message?: InstanceType<typeof MessageUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReactionUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -37832,6 +40052,10 @@ export class UserUncheckedUpdateWithoutMessageReadReceiptInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -37901,6 +40125,10 @@ export class UserUncheckedUpdateWithoutMessageInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -37970,6 +40198,10 @@ export class UserUncheckedUpdateWithoutNotificationsInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38040,6 +40272,10 @@ export class UserUncheckedUpdateWithoutQrTokenInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38110,6 +40346,10 @@ export class UserUncheckedUpdateWithoutReactionInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38180,6 +40420,10 @@ export class UserUncheckedUpdateWithoutReviewInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38249,6 +40493,10 @@ export class UserUncheckedUpdateWithoutRideParticipantInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38318,6 +40566,10 @@ export class UserUncheckedUpdateWithoutRidesInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38388,6 +40640,10 @@ export class UserUncheckedUpdateWithoutRoleInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38457,6 +40713,10 @@ export class UserUncheckedUpdateWithoutSentNotificationsInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
     notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38527,6 +40787,10 @@ export class UserUncheckedUpdateWithoutTokensInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38597,6 +40861,10 @@ export class UserUncheckedUpdateWithoutUserCoverInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38667,6 +40935,10 @@ export class UserUncheckedUpdateWithoutUserDocumentInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38737,6 +41009,10 @@ export class UserUncheckedUpdateWithoutUserImageInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38807,6 +41083,84 @@ export class UserUncheckedUpdateWithoutUserPreferenceInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserUncheckedUpdateWithoutUserStatisticsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    avatarId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUncheckedUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUncheckedUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => DriverVehicleUncheckedUpdateManyWithoutUserNestedInput)
+    vehicles?: InstanceType<typeof DriverVehicleUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    @Type(() => RideUncheckedUpdateManyWithoutDriverNestedInput)
+    rides?: InstanceType<typeof RideUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => UserPreferenceUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReviewUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => RideParticipantUncheckedUpdateManyWithoutUserNestedInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => MessageUncheckedUpdateManyWithoutSenderNestedInput)
+    Message?: InstanceType<typeof MessageUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReactionUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserCoverUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUncheckedUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
 }
 
 @InputType()
@@ -38876,6 +41230,10 @@ export class UserUncheckedUpdateWithoutVehiclesInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -38948,6 +41306,10 @@ export class UserUncheckedUpdateInput {
     @Field(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUncheckedUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUncheckedUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -39338,6 +41700,31 @@ export class UserUpdateOneRequiredWithoutVehiclesNestedInput {
 }
 
 @InputType()
+export class UserUpdateOneWithoutDriverStatisticsNestedInput {
+    @Field(() => UserCreateWithoutDriverStatisticsInput, {nullable:true})
+    @Type(() => UserCreateWithoutDriverStatisticsInput)
+    create?: InstanceType<typeof UserCreateWithoutDriverStatisticsInput>;
+    @Field(() => UserCreateOrConnectWithoutDriverStatisticsInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutDriverStatisticsInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutDriverStatisticsInput>;
+    @Field(() => UserUpsertWithoutDriverStatisticsInput, {nullable:true})
+    @Type(() => UserUpsertWithoutDriverStatisticsInput)
+    upsert?: InstanceType<typeof UserUpsertWithoutDriverStatisticsInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    disconnect?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    delete?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserUpdateToOneWithWhereWithoutDriverStatisticsInput, {nullable:true})
+    @Type(() => UserUpdateToOneWithWhereWithoutDriverStatisticsInput)
+    update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutDriverStatisticsInput>;
+}
+
+@InputType()
 export class UserUpdateOneWithoutRidesNestedInput {
     @Field(() => UserCreateWithoutRidesInput, {nullable:true})
     @Type(() => UserCreateWithoutRidesInput)
@@ -39388,6 +41775,31 @@ export class UserUpdateOneWithoutSentNotificationsNestedInput {
 }
 
 @InputType()
+export class UserUpdateOneWithoutUserStatisticsNestedInput {
+    @Field(() => UserCreateWithoutUserStatisticsInput, {nullable:true})
+    @Type(() => UserCreateWithoutUserStatisticsInput)
+    create?: InstanceType<typeof UserCreateWithoutUserStatisticsInput>;
+    @Field(() => UserCreateOrConnectWithoutUserStatisticsInput, {nullable:true})
+    @Type(() => UserCreateOrConnectWithoutUserStatisticsInput)
+    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutUserStatisticsInput>;
+    @Field(() => UserUpsertWithoutUserStatisticsInput, {nullable:true})
+    @Type(() => UserUpsertWithoutUserStatisticsInput)
+    upsert?: InstanceType<typeof UserUpsertWithoutUserStatisticsInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    disconnect?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    delete?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    @Type(() => UserWhereUniqueInput)
+    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'username'>;
+    @Field(() => UserUpdateToOneWithWhereWithoutUserStatisticsInput, {nullable:true})
+    @Type(() => UserUpdateToOneWithWhereWithoutUserStatisticsInput)
+    update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutUserStatisticsInput>;
+}
+
+@InputType()
 export class UserUpdateToOneWithWhereWithoutConversationParticipantInput {
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
@@ -39395,6 +41807,16 @@ export class UserUpdateToOneWithWhereWithoutConversationParticipantInput {
     @Field(() => UserUpdateWithoutConversationParticipantInput, {nullable:false})
     @Type(() => UserUpdateWithoutConversationParticipantInput)
     data!: InstanceType<typeof UserUpdateWithoutConversationParticipantInput>;
+}
+
+@InputType()
+export class UserUpdateToOneWithWhereWithoutDriverStatisticsInput {
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserUpdateWithoutDriverStatisticsInput, {nullable:false})
+    @Type(() => UserUpdateWithoutDriverStatisticsInput)
+    data!: InstanceType<typeof UserUpdateWithoutDriverStatisticsInput>;
 }
 
 @InputType()
@@ -39538,6 +41960,16 @@ export class UserUpdateToOneWithWhereWithoutUserPreferenceInput {
 }
 
 @InputType()
+export class UserUpdateToOneWithWhereWithoutUserStatisticsInput {
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+    @Field(() => UserUpdateWithoutUserStatisticsInput, {nullable:false})
+    @Type(() => UserUpdateWithoutUserStatisticsInput)
+    data!: InstanceType<typeof UserUpdateWithoutUserStatisticsInput>;
+}
+
+@InputType()
 export class UserUpdateToOneWithWhereWithoutVehiclesInput {
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
@@ -39635,6 +42067,10 @@ export class UserUpdateWithoutAvatarInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -39705,6 +42141,84 @@ export class UserUpdateWithoutConversationParticipantInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserUpdateWithoutDriverStatisticsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
+    avatar?: InstanceType<typeof FileUpdateOneWithoutUserNestedInput>;
+    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => DriverVehicleUpdateManyWithoutUserNestedInput)
+    vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideUpdateManyWithoutDriverNestedInput, {nullable:true})
+    @Type(() => RideUpdateManyWithoutDriverNestedInput)
+    rides?: InstanceType<typeof RideUpdateManyWithoutDriverNestedInput>;
+    @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReviewUpdateManyWithoutUserNestedInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => RideParticipantUpdateManyWithoutUserNestedInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => MessageUpdateManyWithoutSenderNestedInput)
+    Message?: InstanceType<typeof MessageUpdateManyWithoutSenderNestedInput>;
+    @Field(() => ConversationParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReactionUpdateManyWithoutUserNestedInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -39775,6 +42289,10 @@ export class UserUpdateWithoutMessageReadReceiptInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -39844,6 +42362,10 @@ export class UserUpdateWithoutMessageInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -39913,6 +42435,10 @@ export class UserUpdateWithoutNotificationsInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -39983,6 +42509,10 @@ export class UserUpdateWithoutQrTokenInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40053,6 +42583,10 @@ export class UserUpdateWithoutReactionInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40123,6 +42657,10 @@ export class UserUpdateWithoutReviewInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40192,6 +42730,10 @@ export class UserUpdateWithoutRideParticipantInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40261,6 +42803,10 @@ export class UserUpdateWithoutRidesInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40331,6 +42877,10 @@ export class UserUpdateWithoutRoleInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40400,6 +42950,10 @@ export class UserUpdateWithoutSentNotificationsInput {
     @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutUserNestedInput)
     notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40470,6 +43024,10 @@ export class UserUpdateWithoutTokensInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40540,6 +43098,10 @@ export class UserUpdateWithoutUserCoverInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40610,6 +43172,10 @@ export class UserUpdateWithoutUserDocumentInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40680,6 +43246,10 @@ export class UserUpdateWithoutUserImageInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40750,6 +43320,84 @@ export class UserUpdateWithoutUserPreferenceInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserUpdateWithoutUserStatisticsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isVerified?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof NullableEnumUserStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableEnumUserDriverStatusFieldUpdateOperationsInput, {nullable:true})
+    driverStatus?: InstanceType<typeof NullableEnumUserDriverStatusFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userCoverId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => FileUpdateOneWithoutUserNestedInput, {nullable:true})
+    avatar?: InstanceType<typeof FileUpdateOneWithoutUserNestedInput>;
+    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    tokens?: InstanceType<typeof RefreshTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => RoleUpdateManyWithoutUsersNestedInput, {nullable:true})
+    Role?: InstanceType<typeof RoleUpdateManyWithoutUsersNestedInput>;
+    @Field(() => DriverVehicleUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => DriverVehicleUpdateManyWithoutUserNestedInput)
+    vehicles?: InstanceType<typeof DriverVehicleUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideUpdateManyWithoutDriverNestedInput, {nullable:true})
+    @Type(() => RideUpdateManyWithoutDriverNestedInput)
+    rides?: InstanceType<typeof RideUpdateManyWithoutDriverNestedInput>;
+    @Field(() => UserPreferenceUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserPreference?: InstanceType<typeof UserPreferenceUpdateOneWithoutUserNestedInput>;
+    @Field(() => UserImageUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserImage?: InstanceType<typeof UserImageUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserDocumentUpdateManyWithoutUserNestedInput, {nullable:true})
+    UserDocument?: InstanceType<typeof UserDocumentUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReviewUpdateManyWithoutUserNestedInput, {nullable:true})
+    review?: InstanceType<typeof ReviewUpdateManyWithoutUserNestedInput>;
+    @Field(() => RideParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => RideParticipantUpdateManyWithoutUserNestedInput)
+    RideParticipant?: InstanceType<typeof RideParticipantUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => MessageUpdateManyWithoutSenderNestedInput)
+    Message?: InstanceType<typeof MessageUpdateManyWithoutSenderNestedInput>;
+    @Field(() => ConversationParticipantUpdateManyWithoutUserNestedInput, {nullable:true})
+    ConversationParticipant?: InstanceType<typeof ConversationParticipantUpdateManyWithoutUserNestedInput>;
+    @Field(() => ReactionUpdateManyWithoutUserNestedInput, {nullable:true})
+    Reaction?: InstanceType<typeof ReactionUpdateManyWithoutUserNestedInput>;
+    @Field(() => MessageReadReceiptUpdateManyWithoutUserNestedInput, {nullable:true})
+    MessageReadReceipt?: InstanceType<typeof MessageReadReceiptUpdateManyWithoutUserNestedInput>;
+    @Field(() => QrTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    QrToken?: InstanceType<typeof QrTokenUpdateManyWithoutUserNestedInput>;
+    @Field(() => UserCoverUpdateOneWithoutUserNestedInput, {nullable:true})
+    UserCover?: InstanceType<typeof UserCoverUpdateOneWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutUserNestedInput)
+    notifications?: InstanceType<typeof NotificationUpdateManyWithoutUserNestedInput>;
+    @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
+    @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
+    sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
 }
 
 @InputType()
@@ -40819,6 +43467,10 @@ export class UserUpdateWithoutVehiclesInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40891,6 +43543,10 @@ export class UserUpdateInput {
     @Field(() => NotificationUpdateManyWithoutSenderNestedInput, {nullable:true})
     @Type(() => NotificationUpdateManyWithoutSenderNestedInput)
     sentNotifications?: InstanceType<typeof NotificationUpdateManyWithoutSenderNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutDriverNestedInput, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutDriverNestedInput>;
+    @Field(() => RideStatisticUpdateManyWithoutUserNestedInput, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -40927,6 +43583,19 @@ export class UserUpsertWithoutConversationParticipantInput {
     @Field(() => UserCreateWithoutConversationParticipantInput, {nullable:false})
     @Type(() => UserCreateWithoutConversationParticipantInput)
     create!: InstanceType<typeof UserCreateWithoutConversationParticipantInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+}
+
+@InputType()
+export class UserUpsertWithoutDriverStatisticsInput {
+    @Field(() => UserUpdateWithoutDriverStatisticsInput, {nullable:false})
+    @Type(() => UserUpdateWithoutDriverStatisticsInput)
+    update!: InstanceType<typeof UserUpdateWithoutDriverStatisticsInput>;
+    @Field(() => UserCreateWithoutDriverStatisticsInput, {nullable:false})
+    @Type(() => UserCreateWithoutDriverStatisticsInput)
+    create!: InstanceType<typeof UserCreateWithoutDriverStatisticsInput>;
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
     where?: InstanceType<typeof UserWhereInput>;
@@ -41115,6 +43784,19 @@ export class UserUpsertWithoutUserPreferenceInput {
 }
 
 @InputType()
+export class UserUpsertWithoutUserStatisticsInput {
+    @Field(() => UserUpdateWithoutUserStatisticsInput, {nullable:false})
+    @Type(() => UserUpdateWithoutUserStatisticsInput)
+    update!: InstanceType<typeof UserUpdateWithoutUserStatisticsInput>;
+    @Field(() => UserCreateWithoutUserStatisticsInput, {nullable:false})
+    @Type(() => UserCreateWithoutUserStatisticsInput)
+    create!: InstanceType<typeof UserCreateWithoutUserStatisticsInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: InstanceType<typeof UserWhereInput>;
+}
+
+@InputType()
 export class UserUpsertWithoutVehiclesInput {
     @Field(() => UserUpdateWithoutVehiclesInput, {nullable:false})
     @Type(() => UserUpdateWithoutVehiclesInput)
@@ -41205,6 +43887,10 @@ export class UserWhereUniqueInput {
     @Field(() => NotificationListRelationFilter, {nullable:true})
     @Type(() => NotificationListRelationFilter)
     sentNotifications?: InstanceType<typeof NotificationListRelationFilter>;
+    @Field(() => RideStatisticListRelationFilter, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticListRelationFilter>;
+    @Field(() => RideStatisticListRelationFilter, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticListRelationFilter>;
 }
 
 @InputType()
@@ -41285,6 +43971,10 @@ export class UserWhereInput {
     @Field(() => NotificationListRelationFilter, {nullable:true})
     @Type(() => NotificationListRelationFilter)
     sentNotifications?: InstanceType<typeof NotificationListRelationFilter>;
+    @Field(() => RideStatisticListRelationFilter, {nullable:true})
+    driverStatistics?: InstanceType<typeof RideStatisticListRelationFilter>;
+    @Field(() => RideStatisticListRelationFilter, {nullable:true})
+    userStatistics?: InstanceType<typeof RideStatisticListRelationFilter>;
 }
 
 @ObjectType()
@@ -41353,6 +44043,10 @@ export class User {
     notifications?: Array<Notification>;
     @Field(() => [Notification], {nullable:true})
     sentNotifications?: Array<Notification>;
+    @Field(() => [RideStatistic], {nullable:true})
+    driverStatistics?: Array<RideStatistic>;
+    @Field(() => [RideStatistic], {nullable:true})
+    userStatistics?: Array<RideStatistic>;
     @Field(() => UserCount, {nullable:false})
     _count?: InstanceType<typeof UserCount>;
 }
