@@ -205,8 +205,8 @@ export default function DriverStatsPage() {
                     {index + 1}
                   </div>
                   <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold">
-                    {driver.firstName[0]}
-                    {driver.lastName?.[0]}
+                    {driver.firstName?.[0] || ''}
+                    {driver.lastName?.[0] || ''}
                   </div>
                   <div className="flex-1">
                     <h4 className="font-semibold">

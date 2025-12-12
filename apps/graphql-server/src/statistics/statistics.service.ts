@@ -253,6 +253,9 @@ export class StatisticsService {
 
   /**
    * Calculate and update statistics based on actual data
+   * Note: Review model currently only tracks review author (userId).
+   * This calculates average of reviews GIVEN by the driver.
+   * If you need reviews ABOUT the driver, update the Review model to include targetId.
    */
   async recalculateDriverStatistics(driverId: string): Promise<RideStatistic> {
     this.logger.log(`Recalculating statistics for driver ${driverId}`);
@@ -281,10 +284,11 @@ export class StatisticsService {
       return sum + (ride.price ? parseFloat(ride.price.toString()) : 0);
     }, 0);
 
-    // Get reviews for this driver
+    // Get reviews given by this user (not about the user)
+    // In the current schema, userId is the review author
     const reviews = await this.prisma.review.findMany({
       where: {
-        userId: driverId,
+        userId,
       },
       select: {
         rating: true,
