@@ -313,7 +313,18 @@ function Dashboard() {
                   </div>
                 </div>
               </ProgressLink>
-              <div className=" w-20 h-20 sm:w-32 sm:h-32 md:w-40 md:h-40"></div>
+              <ProgressLink href="/user/dashboard/stats">
+                <div className="cursor-pointer hover:scale-110 transition-transform duration-200 hover:shadow-sm shadow-pink-400 w-20 h-20 auth-border overflow-hidden rounded-md sm:w-32 sm:h-32 md:w-40 md:h-40">
+                  <div className="md:w-39 h-10 mt-12 w-20 text-center text-[12px] text-auth-color-placeholder absolute z-10 md:mt-29 sm:mt-23 sm:h-7 sm:w-31  sm:text-[16px] flex justify-center">
+                    Statistiques
+                  </div>
+                  <div className="w-full h-13 md:h-40 flex items-center justify-center sm:h-32">
+                    <div className="w-13 h-13 bg-[#E8B4F9] rounded-full flex items-center justify-center">
+                      <Icon icon="mdi:chart-line" width="30" height="30" className="text-purple-700" />
+                    </div>
+                  </div>
+                </div>
+              </ProgressLink>
               <div className=" w-20 h-20 sm:w-32 sm:h-32 md:w-40 md:h-40"></div>
             </div>
           </div>
