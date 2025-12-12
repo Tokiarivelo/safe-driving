@@ -53,11 +53,25 @@ export class StatisticsService {
       // If no statistics exist, create them
       if (!statistics) {
         this.logger.log(`Creating new statistics for driver ${driverId}`);
-        statistics = await this.createDriverStatistics(driverId);
+        const newStats = await this.createDriverStatistics(driverId);
+        // Re-fetch with includes to match the expected type
+        statistics = await this.prisma.rideStatistic.findFirst({
+          where: { id: newStats.id },
+          include: {
+            driver: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+              },
+            },
+          },
+        });
       }
 
       return {
-        statistics,
+        statistics: statistics as any,
         success: true,
         message: 'Statistics retrieved successfully',
       };
@@ -109,11 +123,25 @@ export class StatisticsService {
       // If no statistics exist, create them
       if (!statistics) {
         this.logger.log(`Creating new statistics for user ${userId}`);
-        statistics = await this.createUserStatistics(userId);
+        const newStats = await this.createUserStatistics(userId);
+        // Re-fetch with includes to match the expected type
+        statistics = await this.prisma.rideStatistic.findFirst({
+          where: { id: newStats.id },
+          include: {
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+              },
+            },
+          },
+        });
       }
 
       return {
-        statistics,
+        statistics: statistics as any,
         success: true,
         message: 'Statistics retrieved successfully',
       };
@@ -288,7 +316,7 @@ export class StatisticsService {
     // In the current schema, userId is the review author
     const reviews = await this.prisma.review.findMany({
       where: {
-        userId,
+        userId: driverId,
       },
       select: {
         rating: true,
